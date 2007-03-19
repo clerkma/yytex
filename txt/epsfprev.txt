@@ -1,0 +1,64 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+-------------------------------------------------------
+Adding a preview to an EPS file that does not have one:
+-------------------------------------------------------
+
+DVIWindo shows previews in either TIFF or EPSI format in EPS files.
+Most Windows graphics applications add a TIFF preview to EPS files.
+Many Unix graphics applications add an EPSI format preview to EPS files.
+
+If you have an EPS file without preview, you can add one using a commercial 
+product such as `Transverter Pro' from `TechPool Software'
+1463 Warrensville Center Road, Cleveland, Ohio 44121-2676 USA
+(216) 291-1922 (voice) and (216) 382-1915 (fax)
+
+Or you can use GhostScript 2.6.1 and GhostView 0.7 for Windows 
+--- which is public domain, but much harder to install and use.
+In GhostView select `Edit' from the menu, then select `Add EPS Preview'.
+This adds a preview in TIFF format, which DVIWindo understands.
+
+Or, use  ps2epsi.bat <infile.ps> <outfile.ps> in DOS.  Read ps2epsi.doc for
+details.  This adds a preview in EPSI format, which DVIWindo also understands.
+
+Or use pstoepsi available from ftp.cs.purdue.edu in the directory /pub/dgc
+
+WARNING: It's a bit of work installing GhostView and GhostScript, the files
+take up some space, and it may take a while to get it all working smoothly.
+Also, you may have problems with some files that GhostScript cannot handle.
+
+PC/Windows version of Ghostscript 2.6.1:
+----------------------------------------
+
+You need the files:
+
+	gs261win.zip
+	gs261ini.zip
+	gs261386.zip	(or gs261286.zip if your machine is a 286)
+
+You may NOT want to get the `gsf' fonts that go with this, in files
+
+	gs22fnta.zip, gs22fntb.zip, ... gs22fne.zip
+
+Use real Adobe Type 1 fonts instead.  Rename  fontmap.atm => fontmap. 
+Rendering of Type 1 fonts will not be as good as with ATM, of course.
+
+Look around for the ready-made PC versions of GhostScript.
+One site is  ftp.ruf.uni-freiburg.de  in directory  pc/ghostscript.
+
+For GhostView 0.7 beta:
+-----------------------
+
+You need the file:		gsview07.zip
+
+One site is ftp.cs.wisc.edu  in directory pub/ghost.
+Another is ftp.cica.inidiana.edu  in pub/pc/win3/util.
+
+If you have trouble locating GhostScript or GhostView, try `archie.'
+Potential sites include  oak.oakland.edu,  ftp.cs.wisc.edu,  
+ftp.cica.inidiana.edu (and its mirrors), and prep.ai.mit.edu.
+
+Avoid versions that need to be compiled, or are for other platforms.
+Avoid versions that use other compression schemes than zip,
+including tar format that has do be undone on Unix first.

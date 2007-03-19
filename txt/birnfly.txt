@@ -1,0 +1,139 @@
+	===================================================
+	Outline Fonts and Font Metrics Manipulation Package
+	===================================================
+
+	reviewed by: David J. Birnbaum
+
+A Review that appeared in 
+
+	`TEXT Technology -- The Journal of Computer Text Processing'
+
+	Volume 5, No. 1, pg 65--69, Spring 1995.
+
+	published by College of Liberal Arts, Dakota State University
+
+The Y&Y Font Manipulation Package is a suite of over thirty command-line
+MSDOS programs designed to modify font files and convert among different font
+formats.  These programs do everything one could imagine doing to a font
+except for editing character outlines, and they greatly simplify what would
+otherwise be complex operations on existing font files.
+
+Conversion Utilities
+
+Font files are an alphabet soup of abbreviations.  As an example, PostScript
+fonts normally consist of two files, one with the outline data and the other
+with metrics (width, kerning, etc.) information.  The outline data may be
+encoded as either a PFB (Printer font Binary) file for Microsoft Windows and
+OS/2, a PFA (Printer Font ASCII) file for UNIX/NeXT, or a special Macintosh
+format font file.  The metrics data may be encoded as an AFM (Adobe Font
+Metrics) file used by Microsoft Windows, or a special Macintosh screen font
+format.  Additionally, TeX, a popular typesetting Program with excellent
+support for representing typographically complex mathematical formulae, uses
+its own TFM (TeX Font Metrics) files.
+
+TeX was originally designed to work with a particular set of bitmapped fonts,
+but implementations that support PostScript fonts are available, including
+Y&Y's own `bitmap-free TeX packages.'
+
+The Y&Y utilities include programs to convert from any one of these outline
+file formats to any other, and from any one of the metrics file formats to
+any other.  Wherever possible, these conversions are exact; for example, the
+PFA, PFB and macintosh outline formats contain exactly the same information,
+and even hinting is preserved during conversion.  In other cases exact
+conversion is impossible; for example, AFM files contain more data than PFM
+and TFM, and the user may need to supply additional information when
+converting from one of these latter formats into AFM.  The Y&Y utilities are
+not designed for manipulating True Type fonts.
+
+Modifications
+
+The conversion utilities are probably the most useful, but the Y&Y package
+also includes a series of programs for modifying system-wide information in
+existing fonts.  Specialized programs can be used to reencode PostScript
+outline fonts according to a user-specified vector (mapping files for common
+assignments are included), rename characters, modify widths and sidebearings,
+manipulate composite characters, merge the characters from two fonts into
+one, perform simple geometric transformations (slant, condense, or expand
+characters), and modify the encoding of accented characters to work around a
+bug in Adobe Type Manager for Windows.
+
+As is noted above, PFB and PFA files contain the same PostScript outline
+information, but the PFB file is in a compressed binary format that cannot be
+edited directly.  
+
+For this reason, the font modification programs described here are used on
+PFA files, and those who work with PFB files (OS/2 or Microsoft Windows) can
+use the accompanying conversion programs to translate their PFB files to PFA,
+modify them as needed, and then convert the new version back to PFB.
+
+AFM files are plain text and can be edited by hand, but doing so runs the
+risk of introducing incompatibilities between and AFM file and its associated
+PFA file.  The Y&Y Utilities provide an encode batch file that is designed to
+reencode outline fonts and all associated metrics files simultaneously,
+thereby ensuring that the same encoding vector is maintained throughout.  
+An accompanying decode batch file can be used to verify whether a set of
+outline and metrics files for a single font implement the same encoding.  
+
+Miscellaneous
+
+Finally the Y&Y utilities include a handful of other tools, some of which do
+not manipulate fonts directly, but can nonetheless be useful when working
+with PostScript printers.  These include:
+
+MODEX can set serial port baud rates as high as 57600.  
+DOWNLOAD can download fonts, reset the printer, and request a font list from
+	the printer, 
+SERIAL provides facilities for communicating with a printer over a serial Line.
+NAMECASE changes the case of font names in PostScript files.  
+MACANAL show fork information for a Macintosh file.  
+EHANDLER.PS is an improved PostScript error handler that can be downloaded to
+	the printer. 
+
+Documentation
+
+The printed and on-line documentation is brief but comprehensive, and full of
+hints and suggestions not only about the accompanying utilities, but about
+font encoding in general.  However, it also presumes a general understanding
+of font encoding issues, such as those outlined in the accompanying sidebar,
+and users who are not familiar with font encoding vectors or the way Windows
+remaps AdobeStandardEncoding fonts to Windows ANSI may have trouble grasping
+some of the details.  This is unimportant for simple conversions, but
+understanding these issues is crucial to deriving full benefit from several
+of the modification utilities.  Users are expecially encouraged to read the
+on-line morass.txt file, which provides a good introduction to font encoding
+issues in the guise of what the documentation describes as `a diatribe
+about the font encoding problem' and how to deal with it.
+
+Conclusion
+
+The Y&Y Outline Fonts and Font Metrics Manipulation Package is an exceptional
+suite of tools, thoughtfully designed to provide access to just about any
+part of a font file that a user might want to change except individual
+character outlines.  It overlaps somewhat in function with Fontographer (both
+programs can reset character widths, for example), but users will find that
+certain operations are more easily performed at the command line with the Y&Y
+utilities, while others are more easily performed in Fontographer's
+graphical environment.  Some degree of knowledge about font architecture is
+required to use the utilities successfully, but much of this available in the
+accompanying documentation.
+
+Name of Program: Outline Font and Font Metrics Manipulation Package.
+Version Reviewed: 1.3
+Company Name: Y&Y, Inc.
+Address: 45 Walden Street, Concord, MA  01742
+Phone: 800-742-4059, 978-371-3286
+Fax:                 978-371-2004
+List Price: $95 (ed.) $145 (non ed.)
+System Requirements: DOS compatible computer. The system used for this review
+	was a 50MHz 80486DX with XGA graphics, 16MB RAM, and 256k SRAM cache,
+	running 0S/2, 2.11.
+Printer Manuals: 29 page guide to the programs.
+On-Line Help: Plain text documentation for each program.
+
+David J. Birnbaum is Assistant Professor of Slavic Languages and Literatures
+at the University of Pittsburgh.  He is a Slavic linguist whose research
+interests include the use of computers to edit and analyze medieval Slavic
+manuscripts.  He can be reached at djbpitt+@pitt.edu or DJBPITT@PITTVMS.BITNET
+
+
+

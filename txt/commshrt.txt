@@ -1,0 +1,392 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=========================================================
+Complete summary of command line flags as of 1997 July 20
+=========================================================
+
+You don't normally need command line flags, but when you do...
+
+------------------------------------------------------
+Command line args for DVIWindo (yes, there are some!):
+------------------------------------------------------
+
+These are mostly to enable `drag and drop' opening of DVI files,
+and `drag and drop' printing of DVI files.  Additional arguments
+can be used when called from other programs like Scientific Word.
+
+<DVI file> open <DVI file> (should be last argument on line)
+-p=<n>	   open file on page <n>
+
+-w=...	print file - specifies printer to send document to, e.g.
+	-w="Apple Laser Writer II NT",pscript,COM1:
+	-w@Apple@Laser@Writer@II@NT,pscript,COM1:
+-c=<n>	number of copies to print
+-b=<n>	beginning page
+-e=<n>	ending page
+-r	print pages in reverse order
+-g	odd pages only
+-h	even pages only
+-s	print alternating pages
+
+Most options/preferences in DVIWindo are controlled from the [Window]
+section of the dviwindo.ini file.
+
+================================
+[Window] section of dviwindo.ini
+================================
+
+MaxDocuments=8	Length of Most Recently Used Document list
+		(default 8 on hires screens, 4 on lores screens)
+SmallStep=1	Reduce magnification steps to approx 10% instead of approx 20%
+MagBase=1000	Base of magnification steps (default 1000)
+Escape=0	do not quit DVIWindo when escape key is hit
+Deslash=1	convert \ to / when calling apps from TeX Menu
+		(not required for Y&Y TeX which does its own)
+Aspect=0	do not force aspect ratio of zoom triangle to equal window
+Screen=1	use elliptical screen rather than device halftone screen
+Frequency=75	Halftone screen frequency (default: used device default)
+Angle=45	Halftone screen angle
+CmdShow=1	Control how Windows application called from TeX menu shows:
+    0 Hide, 1 ShowNormal/Normal, 2 ShowMinimized, 3 ShowMaximized/Maximize 
+    4 ShowNoactive, 5 Show, 6 Minimize, 7 ShowMinNoactive, 8 ShowNA, 9 Restore
+		1 is default, to show full screen set to 3.
+StringLimit=8	Maximum number of characters allowed in string before TextOut
+		can affect spacing on screen particularly for fixed width font
+PassSize=0	Do not pass page size to DVIPSONE when printing
+PassOrientation=0 Do not pass page orientation to DVIPSONE when printing
+PassDuplex=0	Do not pass duplex information to DVIPSONE when printing
+HyperText=0	turn off hypertext support
+ShowMetaFile=0	turn off Windows MetaFile support
+CommFind=0	use old Find/Search dialog box
+CommFont=0	use old Font dialog box
+LongNames=0	show abbreviated short names in File Open dialog box
+Share=0		turn off periodic checking of DVI file for new version 
+		(avoid some sharing problems --- but no automatic refresh)
+PreventConflict=0 allow painting of screen while called application running
+RefreshDelay=1	How many clock ticks to delay refreshing screen
+	(default is to refresh on click tick where change in DVI file noticed)
+ISOTROPIC=0	Do not mark output MetaFiles as MM_ISOTROPIC
+		(which means they can be scaled anisotropically)
+SciWord=1	Allow figure inclusion \special used by Scientific Word
+RawSpecial=1	Allow figure inclusion \special of OzTeX and PSPRINT
+PaletteOffset=	Offset in palette used for coloring fonts
+MaxBright=	Max brightness allowed in color used for coloring fonts (< 256)
+ColorStable=1	Use colors based on TeX internal font numbers, not assigned
+SnapTo=0	Do not grid fit coordinates for rules
+IgnoreLigatures=0 Do not step over apparent ligatures in DVI file search
+ClipRules=0	Do not clip rules to window
+ShowName=0	don't show file name in EPS file rectangle
+ForceTIFF=1	Force search for .tif file corresponding to .eps file
+		(default: look only if specified EPS file has no extension)
+DefaultTIFFDPI=300	DPI assumed for TIFF files with resolution tag
+CompressColor=0	Do not compress 24 bit RGB to palette color (TIFF images)
+StretchColor=0	Do not expand color range to fill available gamute
+StretchGray=0	Do not expand gray level range to fill black-white range
+StripPath=1	Strip path from ? replacement in menu call
+AdvancedGraphics=0 Do not allow AdvancedGraphics mode (WIN32) (CTM \special)
+UseCTM=0	Do not translate certain verbatim PS sequences into
+		equivalent CTM \specials for rotation and scaling (WIN32)
+
+Font Related:
+-------------
+
+AllowTruncate=0	Do not allow TFM file name truncation (to DOS 8.3)
+Remap=0		turn off remapping of control character range (0-31 to 161-195)
+Remap=1		remap control character range if a `TeX' font (default)
+Remap=2		always remap control character range
+TTRemap=1	remap control character range in TrueType fonts
+TTOnly=1	use/allow only TrueType fonts
+T1Only=1	use/allow only Type 1 fonts
+IgnoreBadEncoding=1	ignore encoding errors of the following type:
+		Control characters used in ANSI encoded (i.e. text) fonts.
+		(Typically because of incorrectly marked TrueType CM fonts).
+ANSITeX=0	do not remap control character range in ANSI encoded fonts
+IgnoreBadInstall=1	ignore errors in TrueType font names
+			(better solution: run setupttf utility)
+WarnOnce=1	Warn only once about TrueType font name problems
+IgnoreFontCase=0 Take into account font case when checking whether Windows 
+		supplied the requested font
+TTFontSection=0	Do *not* look in [TTFonts] section of win.ini
+		(this section is set up by setupttf)
+FontMap=0	do not use texfonts.map font naming aliasing
+ATMPrefer=0	Do not try to force selection of Type 1 fonts if possible
+ATMExactWidth=0	Do not try and force ATM to use exact width for characters
+UseGetProfileATM=1	Use GetPrivateProfile on ATM.INI
+		(default is to read the file directly which is faster)
+UseGetProfileTT=0	Do not use GetPrivateProfile on WIN.INI
+		(default is to use GetPrivateProfile which is safer)
+UseTTMapping=0	Do not set up TT font name mapping table ahead of time
+AllowVersion=0	Do not allow mismatch in numeric suffix in TT font file name
+UseATMINI=0	Do not use ATM.INI for Type 1 font information
+		1 use ATM.INI if ATM loaded properly, 2 always use ATM.INI
+		(default 1 in WIN16 and 2 in WIN32)
+UseTTFINI=0	Do not use WIN.INI for TrueType font information
+		1 use WIN.INI if TrueType enabled, 2 always use WIN.INI
+		(default 1 in WIN16 and 2 in WIN32)
+UseUSRINI=0	Do not try look for specific font substitution <filename>.fnt
+UseTEXINI=0	Do not try look for generic font substitution dviwindo.fnt
+UseRegEnumValue=0 Do not use RegEnumValue to read registry directly for fonts
+UseRegistry=1	Call RegEdit to write out registry in ttfonts.reg and read that
+UseATMFontInfo=0	Use ATMGetFontInfo (WIN32 only)
+AutoActivate=0	Do not allow autoactivation of fonts with ATM 4.0
+		(default is for DVIWindo to read ATMREG.ATM for font info)
+KeepZeroKern=1	Keep kern pairs of zero width when writing AFM file
+UseBaseFont=0	Do not share metric information for different font sizes
+
+------------------------------
+Command line args for Y&Y TeX:
+------------------------------
+
+&format	specifies .fmt file to use (default plain.fmt)
++format	specifies .fmt file to use (default plain.fmt)
+
+-?	show short usage summary
+-v	verbose mode	(show implementation version number)
+-i	run as ini TeX	(create format file)
+-Q	TeX quiet mode
+-R	TeX run mode
+-S	TeX scroll mode
+-T	TeX normal mode
+-8	shorten long file names to 8+3 DOS convention
+-I	disable format specific versions of TEXINPUTS env variable
+-L	show file name in error message (similar to C compiler output)
+-Z	show TeX metric files (TFM) in log file
+-O	don't show format file name in log file
+-C	don't look in current directory for input files first
+-c	don't look in current directory for TFM files first
+-r	don't allow `return' (C-M) alone as line terminator (Mac style)
+-d	don't convert \ to / in format and file name (DOS style file name)
+-z	don't discard C-Z at end of file (treat as valid character instead)
+-p	allow patterns to be redefined (after loading format in ini TeX)
+-n	restrict input to `ASCII' (complain if character code > 127)
+-w	do not show `non ASCII' characters in hex onscreen and log file output
+-j	convert from IBM OEM to Windows when showing `non ASCII' characters
+-N	don't show character code in decimal (in addition to hex)
+-M	don't show missing character error messages on screen
+-J	don't show paragraph line breaking statistics in log file
+-W	don't use dviwindo.ini for environment variable lookup
+-K	disable all extensions to Knuthian TeX
+
+-x=	use specified `character remapping' file (mapping character codes)
+-k=	use specified `key replacement' file (replacing with TeX notation)
+-m=	initial main memory allocation in kilo words (ini TeX only)
+-e=	hyphenation exception dictionary size (ini TeX only)
+-h=	hyphenation pattern `trie' memory allocation (ini TeX only)
+-H=	tab increment when expanding tabs into spaces
+-P=	TeX's default rule width (26214 = 0.4pt default)
+-o=	write .dvi files to specified directory
+-l=	write .log files to specified directory
+-a=	write .aux files to specified directory
+
+--------------------------------
+Command line arguments for TWOUP
+--------------------------------
+
+-?	show short usage summary
+-v	verbose mode
+-o	print odd pages on right side, even on left
+-e	print even pages on right side, odd on left
+-g	print odd pages ready for saddle back stapling (implies -s)
+-h	print even pages ready for saddle back stapling (implies -s)
+-r	reverse order of pages (typically used with one of -g or -h)
+-s	print for saddle back stapling
+-z	use second number in %%Page comments, instead of default first
+	(second number is physical page, first typically is logical page)
+-i	invert pages (i.e. rotate 180 degrees)
+-a	invert (i.e. rotate 180 degrees) alternate pages in output
+-O	tell printer to use duplex mode - if it has one.
+-T	tell printer to tumble (in duplex mode) - if it can do this.
+-J	flip state of Ctrl-D flag (i.e. whether Ctrl-D is at end of output)
+	normally Ctrl-D is appended when output to printer, but not to file
+-n	do not trip out when meeting %%Trailer or %%EOF at top nesting level
+
+-m=	relative magnification (w.r.t. to default)
+	default magnification is the largest that will permit fitting
+	both logical pages into the space provided by the physical page
+-M=	absolute magnification
+-x=	horizontal shift in pt (left page shifted left, right page right)
+	if -x= is used twice, first applies to left page, second to right
+-y=	vertical shift in pt (up is positive).
+-c=	number of copies to print (uncollated)
+-d=	output device (or file)
+-l=	specify logical paper size (default `letter') supported arguments: 
+	letter, note, legal, folio, ledger, tabloid, executive, quarto
+	a3, a4, a5, b4, b5
+-p=	specify physical paper size (default `letter') see -l=
+-w=	prolog file to be inserted
+
+----------------------------
+DVIPSONE command line flags:
+----------------------------
+
+-?	show usage
+-v	verbose mode
+-r	print in reverse order
+-g	print only odd pages
+-h	print only even pages
+-P	suppress partial font downloading (include complete fonts)
+-k	pretend that ALL fonts are resident (do not include any in PS output)
+-K	pretend that NO fonts are printer resident (include all in PS output)
+-j	allow certain kinds of verbatim PS (and other dangerous things)
+-Z	do NOT pass through comments in EPS files (dangerous with AI EPS)
+-I	ignore all \specials
+-z	avoid non-EPS material in PS output (jobname, DOCINFO pdfmarks etc)
+-V	show font tables
+-S	show font substitution table
+-M	show command line (useful when called from some other program)
+-Y	don't strip comments when going direct to printer
+-W	toggle whether or not Ctrl-D will be put in at end of PS output
+	(normally it will when going direct to printer, but not to file)
+-U	convert all FontNames to upper case (CM, AMS, extra LaTeX + SliTeX)
+-O	do not use standard \b, \t, \n, \f abbreviations in strings
+-J	do not force full 256 characters in /Encoding array
+
+`Extended flags'
+
+-*O	landscape printing
+-*b	keep black --- suppress effect of \special{color ...}
+-*c	allow color --- allow us of colorimage operator for TIFF
+	(even though colorimage is not a standard PS level 1 operator)
+-*f	check whether fonts loaded on printer before printing job
+-*8	send error output to stdout instead of stderr (so can redirect)
+-*r	request duplex printing
+-*w	request tumble in duplex printing
+-*i	do not insert fonts specified by %%IncludeFonts: ... in EPS files
+-*s	do not pay attention %%EOF DSC comments and such in inserted EPS files
+-*R	remap control character range (0-9 => 161-170 10-32 => 173-195)
+-*2	remap `space' (32 => 195, 13 => 176, 0 => 161)
+-*p	do not pass through EPS file
+-*M	do not use texfonts.map for font name aliases
+-*X	replace aliases from texfonts.map up front (not after fail to find PFB)
+-*l	do not force long form of octal strings (needed for Apple Laser Writer)
+-*S	allow \special for figure inclusion used by Scientific Word (ps: ...)
+-*E	do not check encoding for text fonts versus TFM file checksum.
+-*x	add random prefix to font names
+-*W	try and prevent long lines in inserted PS and EPS
+-*T	force standard form of encoding vector (write out in full)
+-*G	make 1 byte adjustment for error in GhostScript TIFF files
+-*Q	pass through control characters in EPS files
+-*3	do not give up after seeing 64 errors
+-*4	show counter[0]-counter[1] in %%Page DSC (instead of just counter[0])
+-*6	do not write pdfmarks to PS output
+-*7	suppress background in imagemask (monochrome images)
+-*B	use `return' + `newline' (default uses just `newline')
+	(this will however break binary inclusions in EPS files)
+-*H	do not wrap ps: code (i.e. treat like ps::) - more like DVIPS
+-*I	bind all procedures at top of page (this is a speed up ---
+	but may not be safe when doing page imposition, color separation etc.)
+-*L	Output is for PS level 2 (use compression for inserted TIFF images)
+-*Z	Allow only ASCII85 coding of TIFF files (not actual compression)
+-*M	reduce font substitution size to save memory (16 bit version only)
+-*F	reduce font table size to save memory (16 bit version only)
+
+Command line arguments:
+
+-d=	output PORT or file name (if this ends in `:' or starts 
+	with `\\' then it is considered a direct connection to a printer)
+-b=	beginning page (logical)
+-e=	ending page (logical)
+-B=	beginning page (physical)
+-E=	ending page (physical)
+-m=	magnification
+-o=	rotation
+-x=	horizontal offset
+-y=	vertical offset
+-c=	number of copies (uncollated)
+-C=	number of copies (collated)
+-f=	font search path (or use PSFONTS environment variable)
+-i=	EPS file search path (or use EPSPATH environment variable)
+-G=	encoding vector path (or use VECPATH environment variable)
+-A=	preamble file path (or use PREPATH environment variable)
+-H=	substitution file path (or use SUBPATH environment variable)
+-t=	TFM file search path (used only if font substituted for)
+-a=	AFM file search path (used only if font substituted for)
+-p=	PFM file search path (used only if font substituted for)
+-s=	font substitution file (default is standard.sub)
+	(this argument may occur more than once)
+-l=	paper type:
+	letter, note, legal, folio, ledger, tabloid, executive, quarto
+	a2, a3, a4, a5, b3, b4, b5
+	or <w>*<h>, where <w> is width and <h> is height in points
+-w=	insert prolog specified (this argument may occur more than once)
+-F=	add specified prefix to all font names
+-D=	make dvidict this large (default about 256 + number of fonts)
+
+-*h=	halftone screen frequency 
+	-h=73  force it to use 73,
+	-h=73+ use 73 or higher (if default on device is higher)
+	-h=73- use 73 or lower  (if default on device is lower)
+	also can specify screen angle with second argument: 
+	-h=73:45, -h=73+45, -h=73-45
+-*P=	use specified papersize for defining %%BoundingBox
+-*D=	extra DSC comment to include in header of output file
+-*A=	divide all coordinates by specified number
+	(useful for getting around bugs in Viper based RIPs)
+-*C=	minimum rule thickness (in scaled points)
+-*J=	default dpi flag for TIFF files that don't specify resolution
+
+============================
+AFMtoTFM command line flags:
+============================
+
+-?	show usage
+-v	verbose mode
+-x	do not extend file name with x if font is reencoded
+	(default is to append x to name to distinguish from unencoded version,
+	unless it already ends in x).
+-n	suppress ligatures listed in AFM file
+	(default: use ligatures in AFm files unless fixed pitch font)
+-L	allow ligatures for fixed pitch font 
+	(default is to suppress ligatures for fixed width fonts)
+-a	insert fixe standard TeX f-ligatures and six pseudo ligatures for
+	endash, emdash, questiondown, exclamdown, quotedblleft, quotedblright
+-f	insert just the six standard pseudo ligatures (above minus f-ligs)
+-d	insert five pseudo ligatures for 
+	quillemotleft, quillemotright, quotedblbase, lslash, Lslash
+-j	insert pseudo ligatures for the 58 standard accented characters
+-u	retain underscores in file names
+	(default is to strip trailing underscores so tir_____ becomes tir)
+-E	direct error output to stdout instead of stderr
+	(so can redirect error output to file)
+-0	do not ignore zero width kerns
+-b	backward compatability (old style TFM) limit to 255 kern pairs
+-1	do not add some TeX text characters (16-32) if Windows ANSI
+
+-S	add glyphs borrowed from Symbol font if Macintosh encoding used
+-t	insert `codingscheme' and `fontID' in the way Textures needs
+-I	suppress italic, pretend font is not italic (for Textures)
+-B	suppress bold, pretend font is not bold (for Textures)
+-M	use Macintosh 5+3+3... contracted font name for FontID
+
+-P	spacestretch = spacewidth / 2 and spaceshrink = spacewidth / 6
+-J	spacestretch = spacewidth / 3 and spaceshrink = spacewidth / 3
+-R	spacestretch = spacewidth * 3 / 5 and spaceshrink = spacewidth * 6 / 25
+-N	spacestretch = spacewidth * 3 / 5 + 160) / 2 and 
+	spaceshrink = spacewidth * 3 / 10 + 110) / 2
+Default:  Use Comment Space <width> <stretch> <shrink> line in AFM
+	or - if not given -
+	spacewidth = 300, spacestretch = 160, spaceshrink = 110, except
+	spacewidth is overridden by width of `space' character if found
+	Can be overriden from command line using -s=...
+
+-q	do not allow ligatures based on `dotlessi'	(e.g. \'\i)
+-Q	allow ligatures based on `i'	(e.g. \'i)
+
+Command line arguments:
+
+-c=	encoding vector to use (default: use encoding in AFM file)
+-p=	path for encoding vectors (default: VECPATH environment variable)
+-O=	path for output (default: current directory)
+-s=	width of space, can also give three args -s=n1:n2:n3
+	which will be spacewidth, spacestretch, spaceshrink
+-e=	extra space (at end of sentence)
+	Default: read  Comment ExtraSpace line in AFM  or - if not given - 
+	((500 - spacewidth) + 110) / 2 if spacewidth < 500) else 110
+-m=	maximum number of kern pairs per char 
+-l=	minimum kern width (smaller kerns will be discarded)
+-C=	use given checksum (given in hex) for TFM file
+	(default: compute checksum based on font encoding name)
+-Z=	`italic fuzz' italic correction adjustment (default 30)
+	(xur + italic fuzz) = (width + italic correction)
+
+=======================================================================

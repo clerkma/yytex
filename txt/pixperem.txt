@@ -1,0 +1,74 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+======================================================================
+	Apparent Character Height as a Function of Resolution
+======================================================================
+
+At most resolutions and sizes, the rendering of the Blue Sky Research (BSR)
+Computer Modern (CM) fonts in Adobe Type 1 format are very similar to the
+METAFONT created PK bitmapped font versions of the CM fonts.  For a small
+number of resolution and size combinations, differences appear that are
+noticable in side-by-side comparison.  This is a note addressing that issue.
+
+First of all, the controlling factor is not device resolution or font point
+size per se, but `pixels per em' (PEM).  At high PEM, effects of the
+discrete grid of pixels are minimal, and the quality of `hinting,' as well as
+the properties of the rasterizer are not an issue.  At low PEM, rasterization
+must be controlled by suitable `grid fitting' code that tries to deal
+with issues arising when only a small number of pixels is available for
+rendering.  For example, two stems of the same thickness should be drawn
+using the same number of pixels, independent of the exact alignment of the
+character outline with the underlying grid.
+
+Both METAFONT and Adobe Type 1 format provide for `grid fitting' or
+`hinting'.  However, the details of how this is implemented are entirely
+different.  Just as there is no way to simply `translate' METAFONT outline
+shape code into Adobe Type 1 code, so there is no way to `translate' METAFONT
+grid fitting code into Adobe Type 1 hints.  Consequently, a font rendered
+using the METAFONT code and the corresponding Type 1 code will not blacken
+exactly the same pixels.  At high enough PEM the differences are not noticable.
+
+At low PEM differences can occur.  In some cases these are simply due to
+differences in rounding of coordinates.  More significantly, Type 1 format
+has an algorithm for allocating pixels that depends on such factors as
+x-height and cap-height in a font.  This will at certain PEM cause 
+letters to appear more `open' because it tries to make sure that there
+are enough pixels to prevent `clogging' of the `bowls' in rounded letters.
+
+Another issues is that of overshoot correction.  Rounded glyphs (like `o,
+`e', `c, etc.) are purposefully designed to `overshoot' the `flat' positions
+so they subjectively look the same size as corresponding non-rounded letters
+(such as `x').  That is, in the glyph for the letter `o' the bottom goes
+slightly below the baseline on which the `x' sets, while the top goes
+slightly above x-height.  If the rounded letters were not designed this way,
+they would look smaller then `flat' letters.
+
+Normally, the `overshoot' is quite small --- perhaps only 1% or 2% of the
+x-height.  At certain PEM, the `overshoot' can be quite noticable, however.
+If there are only a few pixels in the x-height, then an extra pixel above and
+below may appear to be too much.  Which is why such overshoots are suppressed
+below certain sizes.  The exact PEM value below which overshoot is suppressed
+is always a compromise, and different designers will choose different points.
+
+The BSR CM fonts use a /BlueScale value of .04379, which means that on a 300
+dpi device, overshoot suppression trunes off at 11pt. Hence CMR10 at design
+size will have overshoots suppressed, while CMR12 at design size will not.
+
+Because of the quantization involved, different ways of rasterizing the
+same underlying shape will tend to match well over most of the PEM range,
+but tend to be off by one pixel (or in rare cases more) over small parts 
+of the PEM range.  
+
+Note that it is not so much that one way of approximating the underlying
+continuous shape on a discrete grid is `wrong,' as that it is *different*
+from another way of approximating it.  Which method is `better' is often a
+matter of taste. 
+
+The effect of rounding on devices of different resolution, as well as the
+effect of overshoot control are discussed in detail in Adobe's TN #5046.
+
+Reference:
+
+`Character Height Variations As a Function of Resolution'
+Technical Note #5046, 1990 August 24
+Adobe Developer Support Group

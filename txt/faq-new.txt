@@ -1,0 +1,471 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===============================================================================
+    Some Frequently Asked Questions about Fonts, Encoding and other things:
+===============================================================================
+
+Q1: Mysteriously, the glyph `AE' shows up in my printed output when I 
+    \input a particular file.
+
+A: You probably have a Ctrl-Z (character code 26) in the file. Ctrl-Z
+   used to be used to indicate the end of the file, and so Y&Y TeX ignores
+   a Ctrl-Z that is the last byte in a file (unless you use the command 
+   line flag -z).  But *inside* a file Y&Y TeX allows *all* character codes
+   including `control' characters.  You most likely have some invisible 
+   white space after the Ctrl-Z and before the true end of file. 
+
+
+Q2: Accents appear *before* the letter to be accented, rather than over it.
+    What is wrong?
+
+A:  Normally this should work no matter how you call for the accented
+    characters. If it doesn't work try switching from `old style'
+    syntax of the form
+
+	\"{a},\'e, \c{c} etc.
+
+    to the following syntax
+
+	\"a, \'s, \c c etc.
+   
+
+Q3:  How can I build accented characters other than the 58 `standard' ones
+     available in most text fonts?
+
+A:  Normally this is automatic.  With \usepackage[LY1]{fontenc}
+    (or \input texnansi) pre-built composites will be used if available,
+    and others will be built by over-printing.
+
+
+Q4: I use Computer Modern fonts.  The character layout of the CM text fonts
+    does not appear to be affected by `on the fly' encoding.
+
+A: The CM text fonts are not standard text fonts that use Windows ANSI
+   encoding as default.  In order for the CM fonts to work in Windows as
+   required by TeX, they are marked symbol/math/decorative rather than
+   `ANSI text'.  As a result they are *not* affected by the automatic
+   reencoding of standard text fonts specified by the ENCODING environment
+   variable (in the [Environment] section of dviwindo.ini).
+
+   It is possible to reencode the CM fonts so as to make the 58 accented
+   characters accessible.  Before you do this though, consider that the
+   modified fonts then would no longer act the way TeX expects, since special
+   characters will be in different places.  You would then need to read in a
+   suitable TeX macro header file (such as texnansi.tex).  And remember that
+   TeX uses the text fonts for upright upper case Greek letters (!).
+
+   Also, the CM text fonts do not have a full complement of glyphs.  There are
+   only 128 - 16 + 58 out of the `standard' 228 glyphs found in regular text
+   fonts.  They even lack some ASCII characters like `braceleft' and
+   `braceright', as well as `less', `greater', `underscore', `backslash',
+   `bar', `quotesingle', `quotedbl',  `asciitilde', `asccicircumflex' etc.
+
+
+Q5: If I try and launch `DVIWindo Help' there are complaints about missing
+    fonts like `Times New Roman', `Arial', and `Courier New.'
+
+A: The `DVIWindo Help' file uses standard Windows 3.1 TrueType fonts.
+   Make sure you have TrueType enabled (click on `Fonts' in the Control
+   Panel to check).  Check that these fonts show up in the `Character Map'
+   utility found in the `Main' program group.
+
+   If the fonts do not show up in `Character Map' then reinstall the TrueType
+   fonts from your Windows 3.1 diskettes.  Make sure you have the
+   corresponding `.ttf' and `.fot' files actually on your hard disk (they are
+   placed there by installation of Windows).   Check that the entries in the
+   [fonts] section of WIN.INI refer to the correct directory for the fonts.
+
+
+Q6: I am using `TeX n ANSI' encoding for text fonts.  Accented characters,
+    special characters like `germandbls', and most accents work fine, but
+    `dotaccent' (sometimes used for derivatives) does not.
+
+A: While most special characters and accents in `TeX n ANSI' are in the
+   same place as the `TeX text' encoding (OT1) used in most Computer Modern
+   text fonts, a few are not.  This is because `TeX text' does *not* match
+   `ASCII' encoding (contrary to what you may have been told :=).  To use 
+   `TeX n ANSI' effectively you should add \input texnansi to your TeX source
+   file --- in LaTeX 2e add instead \usepackage[LY1]{fontenc}.
+   That way you gain access to `dotaccent', `hungarumlaut' and `ogonek' 
+   --- and also set up proper `lower case codes' for the accented characters.
+
+
+Q7: I switched to `TeX n ANSI' encoding (or other encoding) and now ligatures, 
+    or special characters, or accented characters, don't show up correctly
+    in some text font (i.e. are blank, missing or replaced with a `bullet',
+    or replaced with the wrong glyph).
+
+A: These are typical encoding problem. 
+
+   Make sure you have the encoding vector `texnansi.vec' (or whatever you
+   are using) where DVIWindo, AFMtoTFM and DVIPSONE can find it.  Typically
+   the environment variable VECPATH points to the directory with vectors.
+
+   Then check that the text font is showing up properly in DVIWindo.  
+   Use `Show Font' from the `Font' menu.  In the case of `TeX n ANSI',
+   the first line should show `dotaccent, `hungarumlaut, `ogonek' `fraction'
+   and the f-ligatures (while these lines are *blank* for Windows ANSI).
+   The last six lines should show most of the 58 standard accented chars.
+
+   Make sure you are telling TeX about the position of special characters
+   in the encoding you have selected.  Use the appropriate TeX header file
+   in your plain TeX or LaTeX source file. For plain TeX, AMS TeX, LaTeX 2.09:
+
+	\input texnansi % for TeX n ANSI encoding
+   or
+	\input ansiacce % for Windows ANSI encoding
+
+   In LaTeX 2e add instead 
+
+	\usepackage[LY1]{fontenc}	% for TeX n ANSI encoding
+   or	
+	\usepackage[ansinew]{texnansi}	% for Windows ANSI encoding
+
+   Check that `dviwindo.ini' has a line of the form:	ENCODING=texnansi
+   (or whatever encoding vector you have chosen).  
+   This line must be in the [Environment] section (not [Window] section).
+
+   NOTE: for Windows ANSI encoding there should be *no* ENCODING=... 
+   line, instead there should be a line of the form TEXANSI=1.
+
+
+Q8: How can I check that the actual font files are set up properly for 
+   `on the fly' font encoding?
+
+A: There are three files of importance: (i) PFB (actual outline font file),
+   (ii) PFM (Windows metric file), and (iii) TFM (TeX metric file). 
+   The utility DECODE can be used to check these files (it reads flags in
+   the files, as well as hidden comments placed there by AFMtoTFM & AFMtoPFM).
+
+   (i) Check that the PFB file for the font in question is set up properly.
+       Use the utility DECODE.  It should say something like:
+
+	Processing c:\psfonts\tir_____.pfb
+	WARNING: may need AFM file to say much about PFB file
+	Adobe Standard Encoding
+	(which means ATM will reencode to Windows ANSI!)
+
+   (ii) Check that the PFM file for the font is set up properly. 
+        DECODE should yield something like:
+
+	Processing c:\psfonts\pfm\tir_____.pfm
+	Sorry, PFM file does not contain encoding comment
+	Hence probably Windows ANSI if a plain text font
+	EncodingScheme (based on flags):  MS Windows ANSI
+
+   (iii) Check that the TFM file for the font is set up properly. 
+         DECODE should yield something like:
+
+	Processing c:\yandytex\tfm\tir.tfm
+	Partial encoding vector from checksum: texnan..
+	Claims to use `TeX typewriter and Windows ANSI' coding scheme
+	Claims to use `texnansi' encoding vector
+
+   (or whatever encoding vector you have chosen).
+
+
+Q9: After running the DECODE utility I have ascertained that my PFB, PFM
+    or TFM files are not set up for the appropriate encoding.  What to do?
+
+A: This only applies to text fonts.  Math fonts have hard-wired encoding.
+
+   If the PFB and/or PFM files are incorrect, then simply re-install the PFB
+   and PFM files off the original font diskette using ATM.  This will give
+   you the original files, which are set up as required.
+
+   If you do *not* have the original PFB and PFM files, then you have to
+   `revert' the font files.  Start by copying the existing PFB file to 
+   an empty directory. 
+
+   Use AFMtoPFM to make a proper Windows ANSI PFM file for the font
+   (you need the font's AFM file for this) --- in the same directory:
+
+	afmtopfm -v tir_____.afm
+
+   Use the REENCODE utility to `revert' the PFB file to Adobe StandardEncoding
+   (be careful to do this *only* for text fonts - not for math fonts): 
+
+	reencode -v tir_____.pfb
+
+   Then re-install the PFB and PFM files from that directory using ATM.
+
+   If the TFM file is incorrect, create a new one using AFMtoTFM:
+
+	afmtotfm -vadjx -c=texnansi tir_____.afm
+
+   Make sure you have no old versions of AFMtoTFM.EXE on your hard disk.
+
+   Or, use `WriteTFM...' from DVIWindo *after* installing the proper PFB
+   and PFM files, and *after* setting the ENCODING variable properly in 
+   the [Environment] section of dviwindo.ini. 
+
+
+Q10:  I use `TeX formats' that include TeX macro header files that I use
+    frequently.  Now I can't get `on the fly' reencoding to work.  What gives?
+
+A:  `TeX format' files include `frozen' in TFM files of fonts called for by
+    the format.  Changes you make to the TFM files in the TEXFONTS directory
+    *after* creating the format have no effect.  You can check whether TeX is
+    using `frozen' TFM metrics or instead reading TFM files from disk, by
+    using the -Z  command line flag when running Y&Y TeX.  This lists all TFM
+    files actually read by TeX (as opposed to found in the format).  
+    The listing of TFM files read appears in the log file.
+
+
+Q12:  I am running Y&Y TeX System under Windows NT and DVIWindo complains 
+    that it cannot find any of the fonts I use, even though I installed them
+    using the Control Panel Font Installer (which automatically converted
+    them from Type 1 to TrueType format).
+
+A:  The font installer in Windows NT 3.51 creates *.FOT and *.TTF
+    files with the correct font names embedded, but then `installs'
+    the font with the wrong name in the registry.   This may be fixed
+    in future releases of Windows NT.  For the moment the following works:
+
+    Determine what *.FOT and *.TTF files correspond to the fonts you
+    installed.  One way to do this is to look with the `registry editor'
+    (c:\windows\system32\regedt32.exe) in the registry under
+
+    HKEY_LOCAL_MACHINE\Software\MicroSoft\Windows NT\CurrentVersion\Fonts
+
+    You can also use the utility SETUPTTF to list *.FOT files and the
+    names recorded in them.  For example:	setupttf -Z
+    If you use non-standard directories, use -? on the command line to
+    learn how to tell SETUPTTF where your font files are.
+
+    Move all of the font files you installed (typically in c:\windows\system) 
+    to a temporary directory.  Delete the original files.  
+    Then `Remove' all of the fonts from `Fonts' in the Control Panel.
+
+    Finally, re-install the fonts from the temporary directory.
+    Then run the SETUPTTF utility again.
+
+
+Q13: My text fonts show up correctly on screen - complete with ligatures and
+   special characters - but the ligatures and/or special characters do not
+   print correctly on a PostScript printer.  What could be the problem?
+
+A: Mismatch between on-screen view and printing to a PostScript printer
+   can be the result of a mismatch between what the PFB and the PFM files
+   say about encoding.  For a text font, the PFB file should contain the
+   line `/Encoding StandardEncoding def'.  The PFM file should be set up 
+   for Windows ANSI encoding.  Use the DECODE utility to verify this.
+
+   Also, if you use `on the fly' reencoding make sure you have set the
+   ENCODING variable in the [Environment] section of `dviwindo.ini'.
+   It should be set to the name of the desired encoding vector.  
+   Also, TEXANSI should *not* be set to 1.
+
+   If you use Windows ANSI encoding, then make sure that the ENCODING
+   variable is *not* set, and that the variable TEXANSI is set to 1.
+
+   If you run DVIPSONE outside Windows, you may find it helpful to add
+   
+	SET WINDIR=c:\windows
+
+   to your `autoexec.bat' file so DVIPSONE can be sure to find `dviwindo.ini'
+
+
+Q14: My text fonts print correctly on a PostScript printer, but do not show
+   up correctly on screen - the ligatures and/or special characters do not
+   show correctly.  What could be the problem?
+
+A: Check that you have version 2.6 or later of ATM.  Verify that ATM is On.
+
+   Check that the encoding vector you specified is somewhere where DVIWindo
+   can find it.  Typically the environment variable VECPATH points to a
+   directory with encoding vectors.
+
+   For example, the .vec files appear in the c:\dvipsone directory. Add:
+
+	VECPATH=c:\dvipsone
+
+   under the [Environment] section of dviwindo.ini.  
+
+   Or set VECPATH to c:\dvipsone  in autoexec.bat:
+
+	SET  VECPATH=c:\yandy\dviwindo
+
+   See also Q7.
+
+
+Q15: With some fonts, `WriteTFM...' does not appear to produce the correct
+   result.  Also, on screen display does not match the vector specified
+   by the ENCODING environment variable.
+
+A: This can happen if the flags in the PFM file are not set correctly.
+   Use DECODE on the PFM file to check that it is set up for Windows ANSI.
+
+   Also, ATM's font cache can get corrupted if you make many changes, have
+   many fonts, or use the encode.bat batch file to modify PFB and PFM files.
+   In this case, exit Windows, delete the ATMFONTS.QLC file (which should be
+   in your PSFONTS directory).  This file will be rebuilt fresh by ATM the
+   next time you launch Windows. 
+
+	del c:\psfonts\atmfonts.qlc
+
+
+Q16: I am switching to the new color \special from the old ones.  
+   But I seem to be missing a file called `color.eps'
+
+A: The `new style' color \special require release 1.2 of Y&Y TeX System.
+   Make sure you have installed release 1.2 of DVIWindo and DVIPSONE
+   (alternatively switch back to the old style color \specials).
+
+   Unfortunately \special{color ...} does not use a distinguishing
+   delimiter after the token `color' (not our idea mind you!), so it 
+   is interpreted as possibly the name of an EPS file to be inserted
+   (By the way, just mentioning the name of an EPS file in a \special{...} 
+   - without any key word or other mark - is another unusually bad idea, 
+   but one supported by some other drivers, which is where this particular
+   problem originates). 
+
+
+Q17: Everytime I launch TeX from DVIWindo I get this horrible
+   `This application has violated system integrity' error message. 
+
+A: Try launching a DOS box by double clicking with the mouse --- you most
+   likely will get the same error message.  Try launching TeX using a hot key
+   instead of using the mouse to select from the `TeX Menu' --- you most
+   likely will *not* get the message.  If this is the case, you have a
+   conflict between Windows mouse service and DOS mouse service.  You may
+   have to comment out the line in autoexec.bat that launches your DOS mouse
+   TSR  (e.g. comment out C:\MSINPUT\MOUSE\MOUSE.EXE /Q).
+
+
+Q18: Whenever I print, the `Use DVIPSONE' check box is checked, even when I
+   want to print to a non-PostScript device like my fax board.  I can always
+   `uncheck' the check box it when I `print' to a non-PS printer, but this is
+   inconvenient.
+
+A: You can control whether the `Use DVIPSONE' box is checked or not for a
+   given printer using an entry in `dviwindo.ini'. Add a line listing the
+   ports on which you have PostScript devices.  This semi-colon separated
+   list should go in the [Window] section of `dviwindo.ini'.  For example:
+
+		UseDVIPSONE=LPT1:;COM2:;FILE:
+
+   If *never* want the `Use DVIPSONE' check box checked: `UseDVIPSONE=BOGUS:'
+
+
+Q19: Timothy Van Zandt's PSTricks doesn't seem to work properly with DVIPSONE.
+
+A: PSTricks uses raw PostScript to do all the wonderful things it does.
+   Each printer driver creates a different PostScript environment, so
+   PSTricks needs to be told what DVIPSONE uses.  Look in the PS directory
+   on the DVIPSONE diskette for the files pstricks.pro, pst-show.pro, and
+   pstricks.con (a TeX header file) specially modified to work with DVIPSONE.
+
+
+Q20: DVIWindo doesn't seem to recognize a new TrueType font I installed.  
+   It shows up in `Fonts'|`Show Fonts', but I when I use it in TeX,
+   DVIWindo complains it can't find it.
+
+A: Check the name under which the font is installed using the registration
+   data base editor as described in the answer to Q12.  It most probably does
+   not match the `Full Name' in the FOT file.  Use the SETUPTTF utility
+   with -Z on the command line to check on the names in the FOT file.
+   Reinstall the font as described in the anser to Q12, if the font is
+   mistakenly installed under the PS FontName instead of the PS FullName.
+
+
+Q21: How could I tell LaTeX to use the VI editor when LaTeX encounters
+   a syntax error and I want to edit the line that is causing the error?
+
+A: Add to the [Environment] section of dviwindo.ini 
+
+	TEXEDIT=vi +%%d %%s
+
+   Or add to your autoexec.bat file the line
+
+	SET  TEXEDIT=vi +%%d %%s
+   
+   Then, when (La)TeX encounters an error, instead of using `x' to
+   terminate execution, use `e' to edit the file.
+
+Q22:  How can I add a link to my VI editor in the `TeX' menu.
+
+A:  You can edit the `TeX' menu directly from DVIWindo 
+    (refer to Y&Y TeX System Manual).  Alternatively, in the [Applications]
+    section of `dviwindo.ini' you may want to add 
+
+	VI|F9=c:\tools\cmds\vi.exe @.tex
+
+   so you will be able to press F9 whenever you want to edit the file 
+   that you are viewing under DVIWINDO.  Please substitute your actual 
+   path for `vi.exe' in the above for `c:\tools\cmds '
+
+
+Q23:  When insert a PS level 2 EPS file, pages of junk come out of the printer.
+
+A: DVIPSONE will pass through level 2 code, including binary data. However,
+   (i)   An EPS figure made for a level 2 printer will most likely not print
+         on a level 1 PS printer.  Make sure your printer is level 2.
+   (ii)  An EPS file containing binary data will most likely not print over
+         a serial or a parallel link even if the printer is a level 2 printer.
+         Use an AppleTalk or EtherNet connection - which have separate job
+	 control channels - to avoid interpreting data as job control commands.
+   (iii) When transferring an EPS file containing binary data from a
+	 Macintosh to an IBM PC, make sure that it is *not* treated as a text
+	 file.  Otherwise translation of line termination characters will most
+	 likely corrupt the binary part. 
+   (iv)  Finally, if your EPS file contains binary data, suppress DVIPSONE's
+         own line termination translation using the command line flag -R.
+
+    Moral: Avoid binary data in EPS files (except for the TIFF header)
+           if at all possible.  And use TIFF files for images instead.
+
+Q24: I get errors in `makefont' and `scalefont' on my image setter with
+     PS files made by DVIPSONE.
+
+A:   You have an `Emerald based' RIP (probably an AGFA Viper or Lino 50). 
+     These have an error in the matrix multiplication arithmetic in 
+     makefont and scalefont.  
+     Use -*A=10000 on the command line with DVIPSONE for a work-around.
+
+
+Q25: I print on A4 paper and rules (like division lines) near the top of
+     the page come out too low on the page.
+
+A:   You probably have a QMS 1660-2 or related printer.  These printers have
+     an arithmetic overflow error which appears when using large coordinates. 
+     Use -*A=10000 on the command line with DVIPSONE for a work-around.
+
+
+Q26: LucidaBright Roman (or other upright font) is showing italic on screen.
+
+A:   Select the font in question in `Fonts'|`Show Font'  Check all four
+     styles.  If *SYNTHETIC* shows up in the title bar then it means
+     there is a problem with the font files for that style.  For example,
+     the PFM file may be missing or corrupted.  Reinstall the fonts.
+     Alternatively, in rare cases, the ATM `Quick Load Cache' may get
+     corrupted.  In that case, exit Windows, delete the file ATMFONTS.QLC 
+     (typically in c:\psfonts).    Then relaunch Windows.
+
+
+Q27: When I print to my QMS printer, output from DVIPSONE is shown as
+     ASCII PostScript code instead of being interpreted as PostScript.
+     But if I `print to file' from DVIPSONE and then COPY to LPT1: it 
+     works just fine.  What gives?
+
+A:   Different printers use different methods for deciding whether the
+     input data they receive is PostScript code or not.  Some QMS printers
+     require more than just a line starting %!PS-Adobe-3.0...  Now DVIPSONE
+     leaves out most header comment lines when sending output direct to a
+     printer.   You can force it to include all header comment lines by using
+     -Y on the command line.
+
+
+Q: When I use Lucida Bright the bullets in itemize environment are too small
+
+A: Lucida Bright has a bullet but it is smaller than the math font bullet
+used with Computer Modern.  You can use the bullet in Lucida New Math Symbol
+instead as follows.  Add the following code after \usepackage{lucidabr} and
+before \begin{document}.
+
+\chardef\atcode=\catcode`\@
+\catcode`\@=11
+\expandafter\let\csname LY1\string\textbullet\endcsname\@undefined
+\DeclareTextSymbol{\textbullet}{OMS}{15}
+\catcode`\@=\atcode
+

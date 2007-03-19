@@ -1,0 +1,47 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-------------------------------------------------------------
+Entering accented/special characters in system customization:
+-------------------------------------------------------------
+
+To get an acute accent put a ' before the letter:	'e  ‚  eacute
+
+To get a grave accent put a ` before the letter:	`o  •  ograve
+
+To get a tilde accent put a ~ before the letter:	~n  ¤  ntilde
+
+To get a dieresis accent put a " before the letter:	"y  ˜  ydieresis
+
+To get an `eszet' (German sharp s):			"s  á  germandbls
+
+To get a circumflex accent put a ^ before the letter:	^u  –  ucircumflex
+
+To get a caron accent put a ^ before the letter:	^s     scaron
+
+To get a ring accent out a * before the letter:		*a  †  aring
+
+To get a cedilla put a * before the letter:		*c  ‡  cedilla
+
+To get `oslash' or `Oslash' put a \ before the letter	\o  ›  oslash
+
+To get `ae', `oe' put | before a, o			|A  ’  AE
+
+To get eth, Eth, thorn, Thorn put | before d, p		|P  è  Thorn
+
+To get a left quote, use ``				``  `  quoteleft
+
+To get a right quote, use ''				''  '  quoteright
+
+To get one of the above prefix letters, double it up:	**  *  asterisk
+
+--------------------------------------------------------------------------
+
+Notes: 
+
+DOS code page 850 and 437 do not have oe and OE.
+DOS code page 850 and 437 do not have scaron and Scaron.
+
+DOS code page 437 does not have oslash and Oslash (cent and yen instead)
+DOS code page 437 does not have eth and Eth (boxes instead)
+DOS code page 437 does not have thorn and Thorn (tau and Phi instead)
+

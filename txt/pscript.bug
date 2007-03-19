@@ -1,0 +1,69 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Some Problems with PSCRIPT.DRV
+==============================
+
+New with Windows 3.1:
+---------------------
+
+(*) The PostScript driver seems to have a problem with the way WIN.INI is now
+set up, with specific printer name used instead of the Generic `PostScript'.
+Can only get things to work correctly by manually editing WIN.INI to get rid
+of new names and replace with `PostScript'.
+
+(*) The Error Handler cannot be disabled.  Checking or Unchecking error
+handler in the `Advanced' section of the `Setup' dialog has no effect.
+The code for the error handler is always there, as is the call to `ErrHandler'
+This is a big problem, because this error handler provides only minimal
+information and overrides any error handler downloaded previously.
+We supply our customers with an error handler that is much more sophisticated
+than the one supplied by Adobe.  But they can't use it, since Windows
+PostScript output overrides it.
+
+(*) The restriction to around 165 - 170 fonts is getting to be an even more
+serious problem than before, since TrueType fonts count as part of the total.
+
+(*) The lack of a warning error message when there are too many softfonts,
+means lots of people will be wasting time trying to figure out why the
+printer driver won't load.  There should be some message that explains why
+things don't work.
+
+Not new with Windows 3.1, but still serious:
+--------------------------------------------
+
+(*) In the PostScript code produced, the coordinate transformation upon entry
+is not preserved.  This makes it hard for inserted EPS code to be run in the
+default coordinate system, without doing something nasty like calling
+`initmatrix' or `matrix defaultmatrix setmatrix'...
+
+(*) The unpacking of PFB to PFA format of Type 1 fonts has problems under
+certain circumstances.  For example, if the zeros at the end are not arranged
+exactly as 8 lines of 64 zeros, something may go amiss - such as the
+`cleartomark' getting lost.  If there are 508 zeros instead of 512, the font
+still works, but NOT after being unpacked by PSCRIPT.DRV.
+
+(*) Unpacking PFB to PFA in such a way that the hexadecimal code is one long
+string is not a good idea, since it makes it hard to edit or transmit a PS
+file produced this way.  Break it up into lines of 78 characters (or 128 if
+you must).  Otherwise, it can't be edited, sent in email and so on.
+
+(*) Unpacking PFB to PFA so as to only use `return' (control M) as line
+breaks is not a good idea, since editing of the file in ASCII mode is not
+possible without the danger of loosing the `returns'. Use `newline' or
+`return' followed by `newline'. PostScript is supposed to be human-readable
+editable code, not binary.  The proper PostScript line terminator is
+`newline', not `return' (despite what people on the MacIntosh may think (:-)).
+
+(*) I know this has been discussed to death, but I still think there
+shouldn't be a control D at the beginning of the file.  This may be OK when
+output goes directly to a printer, but NOT when printing to file...
+
+
+Wish List:
+==========
+
+It would be so nice if PSCRIPT.DRV did partial font downloading!
+
+Why make Adobe Type 1 look so bad by insisting on shipping complete fonts?
+
+(Our DOS applications do this and make temporary downloading a great win).

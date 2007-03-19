@@ -1,0 +1,281 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==============================================================================
+Using release 1.2 of the Y&Y TeX System in Windows 95		(win95old.txt)
+==============================================================================
+
+NOTE:	If you just received the Y&Y TeX system, then just install it.
+
+The Y&Y TeX System can be installed in Windows 95 simply by following the
+installation instruction sheet.  Y&Y TeX itself runs `native' in Windows 95
+(without using the TNT DOS extender) - so it loads even faster than before!
+
+The Y&Y TeX System comes with fonts in Adobe Type 1 format.  These work as
+soon as you install Adobe Type Manager in Windows 95.  If you plan to also
+use TrueType fonts, then go to step (T):
+
+------------------------------------------------------------------------------
+		Knows Windows 95 bugs and problems:
+------------------------------------------------------------------------------
+
+(0) For general Windows 95 info: see `programs.txt' in your Windows directory.
+
+(1) ATM 3.01 may have problems using `soft fonts' when printing to PCL printers
+    under Windows 95.  Contact Adobe for information on how to deal with this. 
+
+(2) WinFax Pro 4.0 appears to have a problem with Type 1 fonts in Windows 95.
+    See `programs.txt' in your Windows directory for more info.
+    Note that the MicroSoft Windows 95 fax driver does support ATM fonts.
+
+(3) The SysSeg utility will not show useful information in Windows 95
+    (Type Alt-F4 to get rid of it if you started it inadvertendly).
+    Use `Fonts|System Info' instead to get system information.
+
+(4) Ini TeX refers to the `string pool' file as `tex.pool'.  In a FAT file
+    system this gets truncated to `tex.poo'.  Long file names are supported
+    under Windows 95, so ini TeX may complain about not being able to find
+    `tex.pool' (which is in the `fmt' sub-directory of your yandytex
+    directory).  In this case, just ask TeX to truncate names to the DOS 8+3
+    convention by using -8 on the command line.  For convenience, the -8 can
+    be added to batch files (tex.bat and initex.bat) that you use to call TeX
+    or add a line TeX=-8 to the [Window] section of `dviwindi.ini' in the
+    Windows directory.
+
+(5) Files with long file names have abbreviated DOS names that include 
+    character 126 (~).  For example c:\My TeX Files\book.tex might have
+    a DOS file name like c:\mytexf~1\book.tex.  This is a problem, since TeX
+    interprets the command line, and since this character is `active' and
+    translated to `space' --- thus truncating the file name.
+    Some work around will be provided in a future release of Y&Y TeX itself.
+
+-------------------------------------------------------------------
+DOS Problems in Windows 95 (`Incorrect DOS Version' error messages):
+-------------------------------------------------------------------
+
+The DOS under Windows 95 is DOS version 7.0. If you installed on top of an
+older version of DOS, and your PATH is not set up correctly, you may get
+`Incorrect DOS Version' errors (while installation Y&Y TeX for example).
+
+Your path should list \windows\command (the new DOS directory) first, before
+\dos (the old DOS directory) otherwise XCOPY and FIND will not work.  In
+addition, the PATH should list both the new DOS directory and the old DOS
+directory, otherwise other DOS commands like REPLACE will not work (since
+they are not defined in the new directory).  A typical PATH definition for
+the AUTOEXEC.BAT file might be:
+
+	PATH c:\windows;c:\windows\command;c:\dos;c:\utility...
+
+-----------------------------------------------------------------------------
+		Inactive DOS boxes in Windows 95:
+-----------------------------------------------------------------------------
+
+If the DOS box in which YandYTeX, DVIPSONE, or AFMtoTFM are running do not 
+close automatically after these programs run to completion, click on the
+title bar with the *right* mouse button, select `Properties,' and check
+`Close on Exit'.  Then click the `Close' icon (cross in top right corner of
+Window).  The new setting will be remembered for the next time the program is
+called. 
+
+NOTE: If you don't use TrueType fonts you can *also* ignore the rest of this.
+
+-----------------------------------------------------------------------------
+Switching to Windows 95 *after* installing the Y&Y TeX System on Windows 3.1:
+-----------------------------------------------------------------------------
+
+(1) Re-install Adobe Type Manager (ATM) in Windows 95.
+
+*	ATM *cannot* be installed under Windows 95 simply by copying files.
+	You need at least ATM 3.01 for Windows 95. Earlier versions won't run.
+	Ask Adobe for upgrade information (you did send in the ATM
+	registration card right?).
+
+(2) Find out what your Windows directory is:
+
+    To find out what the `Windows' directory is, go into a DOS box, type SET
+    and hit <Enter>.  Look for the value of the environment variable `windir.'
+
+    If you installed Windows 95 on top of a dual-boot DOS/Windows NT setup,
+    then Windows 95 will not install into the default Windows directory
+    c:\windows, but somewhere else, e.g. c:\windows.000  If the Windows
+    directory under Windows 95 is not the same as it was under Windows 3.1,
+    then copy the old `dviwindo.ini' file to the new Windows directory. 
+    Also copy any PIF files you may have for tex, dvipsone, afmtotfm etc.
+
+(3a) Re-install DVIWindo from the diskette, *or*
+
+(3b) create a new icon for DVIWindo in Windows 95, using the old copy 
+     already installed under Windows 3.1.  But make *sure* DVIWindo can 
+     find `dviwindo.ini' -- it must be in the new Windows directory.
+
+............................................................................
+
+WARNING: if you do not copy the old dviwindo.ini file to the new Windows
+	 directory, and you have no fonts installed, then DVIWindo may 
+	 give you a GPF (ugh!) when you try to open a DVI file. Check that:
+
+     (i)   `dviwindo.ini' is in the Windows directory, 
+     (ii)  `dviwindo.ini' has an [Environment] section, 
+     (iii) the environment variable TEXFONTS is defined,
+     (iv)  the TEXFONTS env var points to where your TFM files are, 
+     (v)   one of the TEXFONTS directories has a file called `texfonts.map'
+	   (which is put their by installation of Y&Y TeX itself). 
+
+............................................................................
+
+(4a) If you are using fonts in Adobe Type 1 format (a.k.a `PostScript'
+     fonts), make sure that ATM is installed, *and* knows about the fonts 
+     you have (go in ATM control panel to check what fonts it knows about).
+     Reinstall the fonts if ATM did not pick them up automatically.  You can 
+     `install' the fonts from the PFM sub-directory of the PSFONTS directory
+
+(4b) If you are using TrueType fonts see section (T) below.
+
+In either case, check font installation using `Font|Show Fonts' in DVIWindo.
+
+-------------------------------------------------------------------------------
+(T)		TrueType fonts and older versions of DVIWINDO:
+-------------------------------------------------------------------------------
+
+NOTE:	You can ignore this section if you use only fonts in Type 1 format!
+
+NOTE:	You can ignore this section if your `dviwindo.exe' has a date of
+	1995/Aug/24 (Windows 95 release) or later (release 1.2.6).
+	Check in `File|About' for full pedigree of your `dviwindo.exe.'
+
+If it is older, read on.  Things have changed regarding TrueType font handling:
+
+(1) Windows 95, does a really silly thing with the list of installed TrueType
+    fonts when it is launched:  It reads the entries in the [fonts] section
+    of `win.ini,' copies the information to the registry, and then
+    *deletes* the entries in the [fonts] section of win.ini!
+
+   Which wouldn't be so bad, if Windows 3.1 programs running in Windows 95
+   could get at the relevant part of the registry!  And that in turn 
+   wouldn't be so bad if Windows 95 redirected `GetProfileString' calls to 
+   use the registry (as is done in Windows NT)!  For work-around see below.
+
+(2) TrueType fonts are in the `fonts' sub-directory of the Windows directory,
+    *not* the `system' sub-directory --- as in Windows 3.1 and Windows NT. 
+
+(3) TrueType fonts now consist of just one file, the TTF file --- 
+    the FOT files used in Windows 3.1 and Windows NT are gone.
+
+------------------------------------------------------------------------------
+	Installing and Deleting TrueType Fonts in Windows 95:
+------------------------------------------------------------------------------
+
+Click on `Start', select `Settings', select `Control Panel.'
+Then in `Control Panel,' double click `Fonts'.  Then:
+
+To *install* new TrueType fonts use `File|Install New Fonts'
+
+To *delete* fonts, select the fonts using the mouse, and then use `File|Delete'
+
+------------------------------------------------------------------------------
+    Font file name changes when TrueType fonts are `re-installed'
+------------------------------------------------------------------------------
+
+Before installing a new version of a TrueType font, make sure to *remove*
+the old one --- including the corresponding font file (TTF).  Otherwise you
+may end up with several copies of the font file with slightly different
+names.  Windows 95 automatically extends the font name with underscores
+and modifies the last letter to create a new unique font file name.
+
+For example, if you install LBMS several times without removing old 
+copies you may end up with: lbms.ttf, lbms___0.ttf, lbms___2.ttf, etc.
+This breaks the fixed relationship between font and font file name.
+
+DVIWindo tries to deal with this problem when searching for fonts, as well 
+as when you use WriteTFM, WriteAFM.  It always finds the correct font if
+there is at least one underscore between the original font file name and
+the `version number' added at the end. If the original font file name is
+already 7 or 8 characters long and there are several fonts with similar
+names, then this algorithm may fail.  The best solution is to avoid having
+more than one font file for a given font (this also saves disk space!).
+
+------------------------------------------------------------------------------
+Older versions of DVIWindo complain about being unable to find TrueType fonts:
+------------------------------------------------------------------------------
+
+DVIWindo release 1.2.6 (dated 1995/August/24 or later) can access the hidden
+font information in Windows 95.  Earliers versions may or may not, so read on.
+
+As a result of the `mis-feature' of Windows 95 described above, you may find
+that DVIWindo gives you error messages when you try to view DVI files calling
+for TrueType fonts (or when trying to display a file that calls for Type 1
+fonts of which at least one is missing).  In this case, try the following
+steps in sequence.  Stop when TrueType fonts start to work in DVIWindo.  
+One quick check to see whether TrueType fonts are working properly is to
+check whether the `DVI Help' file can be opened in DVIWindo without error.
+
+(A) Launch the registration data base editor (Click on `Start', select
+    `Run,' type `regedit' and hit the Enter key).  Navigate down to:
+
+    HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Fonts
+
+    This shows the installed TrueType fonts. Write out this branch of the
+    registration data base into a file called `ttfonts.reg' in your Windows
+    directory by selecting `Registry|Export Registry File.' 
+
+    This will work in recent versions of DVIWindo (release 1.2.5 or later).  
+    You have to repeat this procedure when you install additional TT fonts.
+
+(B) If the above fails to solve the problem, run the utility SETUPTTF to 
+    add the missing TrueType font entries to a [TTFonts] section of WIN.INI.
+
+	setupttf -vfmn
+
+	-f  get font names from TTF files instead of FOT files
+	-m  add missing TrueType font entries to win.ini
+	-n  create a [TTFonts] section instead of using the [Fonts] section.
+
+    This will work in recent versions of DVIWindo (release 1.2.4 or later).
+    DVIWindo has been modified to look in both [Fonts] and [TTFonts].
+    You have to repeat this procedure when you install additional TT fonts.
+
+(C) If the above fails to solve the problem, run the utility SETUPTTF without
+    the -n command line flag to add entries to the [Fonts] section instead:
+
+	setupttf -vfm
+
+    This command has to be run every time you launch Windows 95 
+    (since Windows 95 deletes the [Fonts] entries again!)
+
+If your SETUPTTF does not appear to be adding the list of TrueType fonts to
+the [TTFonts] or [Fonts] sections of WIN.INI, then you may need to explicitly
+give it the list of TrueType fonts on the command line.  For example:
+
+	setupttf -vfmn c:\windows\fonts\*.ttf
+
+If your copy of SETUPTTF doesn't understand the command line flags given
+in the above examples, then please contact us for the latest version.  
+
+---------------------------------------------------------------------------
+	Mismatch in TrueType font full name list:
+----------------------------------------------------------------------------
+
+You will be warned if the TrueType font list enumerated by Windows does not
+match the [Font] information in WIN.INI --- or the registry.  These latter
+names are supposed to be the `Full Names' of the TrueType fonts.  There are
+three cases to consider:
+
+Windows 95	Name error in TT font (Probably in Windows 95).
+		Run SETUPTTF utility to add [TTFonts] to WIN.INI,
+		Use setupttf -vfnm
+
+This is the result of Windows 95 removing the [Fonts] information.  See above.
+
+Windows NT	Name error in TT font (Probably auto-converted T1 font).
+		Move FOT and TTF files to empty directory,
+		`Remove' font; then `Add...' using `Fonts' in Control Panel
+
+This is typically due to a bug in the T1 to TT converter in Windows NT 3.51.  
+The fonts are installed under the wrong name.  Reinstall the TTF & FOT files.
+
+Windows 3.1	Name error in TT font (Windows 3.1).
+		[Fonts] section of WIN.INI inconsistent,
+		Use setupttf -vfnm
+
+This happens if WIN.INI does not list all TrueType fonts, or if the names
+there do not match those supplied by Windows.  The latter can happen if
+the names in WIN.INI are not the English names of the fonts. Run SETUPTTF.

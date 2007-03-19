@@ -1,0 +1,146 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Introduction 
+	Quick Start - install, run, print
+	What DVIPSONE does
+	What DVIPSONE does not do
+	Level 0 draft standard - minus bitmapped fonts
+	Where to get CM outline fonts?
+		BSR MacIntosh and PC fonts
+		ArborText PC fonts
+	What are outline fonts?
+		advantages over bitmaps
+		lack of dot-growth
+		rendering hints
+		across-job caching
+	Advantages of DVIPSONE
+		Resolution Independent Output
+		Advanced Printer Font Management
+
+Installation
+	Automatic
+	Manual
+	Upgrading
+
+How to Use
+	Invocation
+	Command Line Arguments
+	Environment Variables
+	Obtaining Help using -?
+	Directing the Output
+
+More how to Use
+	Making multiple copies
+	Page range limiting - two styles
+	Reverse order printing
+	Two sided printing
+	Scaling, rotating, offsetting
+	Paper Size Specification
+
+Font Substitution
+	Font Substitution Files
+	Missing Fonts
+	Forced Substitution
+	Aliases
+	Printer Resident Fonts
+	Remapping - encoding vectors
+	Allowed Combinations
+	Sample substitution files
+	
+Figure Insertion
+	PostScript, Encapsulated PostScript, EPSI, EPSF
+	\special and lack of standardization
+	DVI2PS style
+	Textures style
+	DVIALW style	
+	suppressing \special mismatch error messages -q or -z
+
+Format of font files
+	PFB, PFA and Mac format font files
+
+Format of DVI files
+	TeX DVI files
+	Textures DVI Mac files 
+	DVItool
+
+Font Metric information
+	Why and when needed
+	TFM, AFM, PFM
+
+Advanced Topics
+	order of precedence: built-in, environment, command line
+	permanent (`manual') downloading of fonts
+	generating TFM from AFM for TeX
+	remapping font encoding
+	sample encoding vectors
+	checking on rendering speed and page VM usage
+	running out of VM
+		use forced substitution
+		use page range selection
+
+Search order for files
+	Search paths
+	File name extensions
+	input:	.dvi, then .tex
+	font:	.pfb, .pfa, null, __.pfb, __.pfa
+	illus	as specified, in pspath, in PS file dir, in current dir
+	default directories - in ps file dir, in dvipsone program dir
+	subs	
+	vec
+	pream
+
+Specifications
+	Level 0 draft standard
+	64 fonts
+	font numbers up to 255
+	characters in range 0 to 255
+	no restrictions on number of characters on page
+	no restrictions on number of rules on page
+	no restriction on size of character
+	no restriction on size of rule
+	stack depth and alternate preamble
+	beyond level 0 draft standard
+	128 entries in font substitution file
+
+Performance
+	AT class 286 without coprocessor
+
+Interpreting output from DVIPSONE
+	verbose mode
+	Timing information
+
+Error Messages
+	error message
+	current task when error occured
+	position in DVI file
+
+What to about bugs in DVIPSONE
+	there shouldn't be any
+	using ehandler.ps
+	serial number, date and time of compilation
+	supplying DVI file generating error
+
+Appendix
+
+Getting optimum performance
+	Main Limitation: I/O
+	Disk Cache
+	Virtual Disk for PS output
+	Print Spooler
+	Parallel ports preferred
+	Increasing baud rate on serial ports
+
+Auxiliary Utility Programs (supplied without warranty)
+	MODEX.COM
+	DOWNLOAD.EXE
+	AFMTOTFM.EXE
+	EHANDLER.PS
+
+Also available: Mac to PC diskette copying
+Also available: Reprocess for use with ATM, convert AFM to PFM.
+Also available: Complete set of CM fonts - get the missing 35 fonts
+
+% BBox at end treated correctly
+% EPSI, EPSF treated correctly
+% (one page) output can be treated as EPS file
+

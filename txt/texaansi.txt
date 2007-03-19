@@ -1,0 +1,112 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Design principles of `tex&ansi.vec':
+
+*	Have accents and special chars where plain TeX has them hard-wired.
+	(so don't need to do something like \input ansiacce or stanacce).
+
+*	Make most accented / composite characters directly accessible
+	(so don't need to use TeX's \accent mechanism)
+
+*	Follow TeX text in 0 -- 127 as much as reasonable
+
+*	Follow Windows ANSI in 128 -- 255 as much as reasonable
+
+*	glyphs accessed only via ligature mechanism in TFM can be anywhere:
+	ff/fi/fl/ffi/ffl	
+	exclamdown/questiondown	 quotedblleft/quotedblright  endash/emdash
+
+Following shows departures from Windows ANSI.
+
+Not a good idea to use `control characters' (0 -- 31 and 127), but we have to...
+
+0 -- 10		only CM has upright upper case Greek in roman text font...
+		so forget this...
+
+11 -- 15	ff/fi/fl/ffi/ffl	can actually be anywhere...
+
+16 -- 17	dotlessi/dotlessj	\i, \j
+
+18 -- 24	grave/acute/caron/breve/macron/ring/cedilla
+		some accents occur again higher up:
+		(96), 180, *, *, 175, *, 184 
+
+25 -- 31	germandbls/ae/oe/oslash/AE/OE/Oslash
+		all special characters occur again higher up:
+		223, 230, 156, 248, 198, 140, 216
+
+32		space (any sane font should have this)
+
+% NO:	34		quotedblright (148)	keep: quotedbl
+
+39		quoteright (146)		*not* quotesingle
+
+% NO:	60		exclamdown (161)	keep: less
+
+% NO:	62		questiondown (191)	keep: greater
+
+NOTE: exclamdown and questiondown can go anywhere
+
+% NO:	92		quotedblleft (147)	keep: backslash
+
+NOTE: quotedblleft and quotedblright can go anywhere
+
+94		circumflex (136)		*not* asciicircum
+
+95		dotaccent (*)			*not* underscore
+
+96		quoteleft (145)			*not* grave
+
+% NO: 123		endash	(150)		keep: braceleft
+% NO: 124		emdash  (151)		keep: bar
+
+NOTE:		endash/emdash			can go anywhere
+
+125		hungarumlaut (*)		*not* braceright
+126		tilde (152)			*not* asciitilde
+127		dieresis (168)			nothing in ANSI
+
+So we have displaced 6 characters (out of 12 possibles) from Windows ANSI: 
+
+	quotesingle (39), asciicircum (94), asciitilde (126),
+	underscore (95), braceright (125), grave (96).
+
+but not:	quotedbl (34), less (60), greater (62), 
+but not:	backslash (92), bar (124), braceleft (123), 
+
+The above should then be patched in higher up.
+
+Conversely, we have moved down from Windows ANSI accents and special chars:
+
+	grave (96), acute (180), macron (175), cedilla (184),
+	circumflex (136), tilde (152), dieresis (168),
+	quoteleft (145), quoteright (146), 
+	germandbls (223), ae (230), oe (156), oslash (248), 
+	AE (198), OE (140), Oslash (216).
+
+but not:	quotedblleft (147), quotedblright (148), 
+but not:	exclamdown (161), questiondown (191)
+but not:	endash (150), emdash (151), 
+
+(This opens up slots higher up that could be filled with other things).
+
+There are eight gaps in Windows ANSI: 128, 129, 141, 142, 143, 144, 157, 158,
+we need them for characters displaced from lower down:
+
+	quotesingle (39), underscore (95), braceright (125), 
+	asciicircum (94), asciitilde (126), grave (96), 
+
+We can omit grave, because it appears at 18 now.
+
+Finally, randomly filling in the gaps, and adding ogonek, Lslash, lslash....
+
+128	braceright
+129	underscore
+141	quotesingle
+142	ogonek	
+143	asciicircum
+144	asciitilde
+157	Lslash
+158	lslash
+

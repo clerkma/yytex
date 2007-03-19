@@ -1,0 +1,202 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Some Notes on TPIC \specials:
+============================
+
+TPIC \specials are used by various TeX macro packages (such as `curvesls.sty'
+and `eepic.sty') to draw simple shapes in a device independent way.  
+TPIC is the low level language used by these higher-level TeX macro packages.
+Several DVI processors now support TPIC \specials, including DVIPSONE,
+DVIWindo and DVIPS. 
+
+One use of TPIC specials depends on accumulating a polygonal path,
+and then `stroking' this path using solid, dashed or dotted lines
+or even quadratic splines; and/or `filling' the shape obtained by 
+closing the polygonal path.
+
+It is also possible to draw circles, ciruclar disks, ellipses aligned
+with the coordinate axes and elliptical arcs.
+
+TPIC commands are two-letter words followed in some cases by numeric
+arguments. The command words are meant to be mnemonic (but are mostly
+mnemonic only in a somewhat misleading way).
+
+Here follow some notes on TPIC \specials:
+-----------------------------------------
+
+(*)	The origin of the coordinate system is at TeX's current point ---
+	x increasing to the right and y increasing downward.
+
+(*)	TeX's current point is NOT disturbed by TPIC \specials
+	(so this is NOT a way to displace text typeset in TeX).
+
+(*)	Lengths, widths and coordinates are in milli-inches (0.001")
+	Only integers are permitted.  An exception is the specification
+	of dash length and dot interval, which is in inches.
+
+(*)	Angles are in radians, clockwise (!) from the horizontal.
+	(Angles are allowed to be reals, of course).
+
+(*)	Grey-levels lie between 0.0 and 1.0 --- 0 being white, 1 black.
+	(Note that this is reversed from common usage).
+
+(*)	`stroke' here means draw a solid, dashed, or dotted line, or a 
+	spline with a pen of specified width. Strokes are always black.
+
+(*)	`fill' here means to fill a closed shape with a specified grey level.
+	If no grey-level is explicitely specified, then black is assumed.
+	The shape will be implicitly closed if it is not closed already.
+
+(*)	Stroking and/or filling a polygonal path resets it.
+	The next path-accumulating command starts a new path.
+
+(*)	Explicitly setting the grey level implies that the next shape is to
+	be filled. The request to fill a shape is reset after it is filled.
+	To fill the next shape, the grey-level must be specified again.
+
+(*)	Some implementations have limits on how many lines a polygonal path
+	may consist of (600 typically).
+
+(*)	Unfortunately, there are some ambiguities in the definitions.
+	Different implementations will do different things in some cases.
+	Often implementation choices reflect what is easy to do	in a 
+	particular graphics model. See notes near the end.
+
+Here are the TPIC \special commands:
+------------------------------------
+
+pn <n>		set pen width for stroking to <n> (milli-inches).
+
+bk		flag next graphic to be filled, and 
+		set grey-level for fill to 1 (black).
+
+wh		flag next graphic to be filled, and 
+		set grey-level for fill to 0 (white).
+
+sh [<g>]	flag next graphic to be filled, and 
+		set grey-level for fill to <g>, if optional argument is given;
+		otherwise set grey-level to the default which is 0.5 (grey).
+
+tx <hex>	use specified bit-pattern for filling. 
+		This is	typically translated to an equivalent grey level.
+
+pa <x> <y>	Add the point <x> <y> to the current path. That is,
+		move to <x> <y>, if this is the first point in new path, 
+		otherwise add a line to <x> <y> to the path being accumulated.
+
+fp		stroke solid polygonal line defined using sequence of `pa's.
+		If shading was requested using `bk', `gr' or `wh',
+		then also fill the shape defined by closing the figure.
+
+ip		fill polygonal shape that was defined by sequence of `pa's.
+		Use the grey level specified by `bk', `gr' or `wh'.
+		The shape is closed first if necessary.
+
+da <l>		stroke dashed polygonal line defined using sequence of `pa's.
+		<l> is the length of dashes, and the inter-dash interval
+		(specified in inches).
+		The length of the dash is adjusted so that each line starts
+		and ends with a full length dash.
+		If shading was requested using `bk', `gr' or `wh',
+		then also fill the shape defined by closing the figure.
+
+dt <l>		stroke dotted polygonal line defined using sequence of `pa's.
+		<l> is the interval between dots (specified in inches).
+		The interval between dots is adjusted so that each line
+		starts and ends with a dot.
+		If shading was requested using `bk', `gr' or `wh',
+		then also fill the shape defined by closing the figure.
+
+sp [<l>]	stroke a quadratic spline through the midpoints of the lines
+		defined using a sequence of `pa's. The spline starts
+		with a straight line from the first point to the mid-point
+		of the first line.  The spline ends with a straight line
+		from the mid-point of the last line to the last point.
+
+		If the optional <l> is omitted (or zero) then the spline 
+		is stroked solid.
+		If <l> is positive, then it gives the length of the dashes
+		and the interval between dashes to be used (in inches).
+		If <l> is negative, then its magnitude indicates the
+		interval between dots to be used (in inches).
+
+ar <xo> <yo> <xr> <yr> <sa> <ea>
+
+		Stroke an elliptical arc.  The center of the ellipse is
+		at <xo> <yo>.  The major and minor axes are aligned with
+		the coordinate system axes.  The horizontal and vertical
+		semi-axes have lengths <xr> and <yr> respectively. 
+		The arc goes clockwise from the starting angle <sa> to
+		the ending angle <ea>. 
+		If shading is requested using `bk', `gr' or `wh',
+		then also fill the shape defined by closing the figure.
+
+ia <xo> <yo> <xr> <yr> <sa> <ea>
+
+		Fill an elliptical arc after closing the figure.
+		Use the grey level specified by `bk', `gr' or `wh'.
+		The center of the ellipse is at <xo> <yo>.  
+		The major and minor axes are aligned with the coordinate 
+		system axes.  The horizontal and vertical
+		semi-axes have lengths <xr> and <yr> respectively. 
+		The arc goes clockwise from the starting angle <sa> to
+		the ending angle <ea>. 
+
+Note that TPIC state information, such as pen width and grey level cannot
+be carried across page boundaries, or page independence will be lost.
+
+There are several ambiguities in the interpretation of TPIC \specials.
+Avoid the grey areas if maximum portability is a concern.
+To be safe, always specify the pen-width using `pn' before starting to put
+together a new polygonal path or drawing an elliptical arc.
+To be safe, always explicitly set the grey level if filling is desired 
+using `bk', `wh', or `sh'.
+
+Ambiguities:
+------------
+
+	How should an elliptical arc be `filled' when the difference
+	in angles is not 2 pi?
+	It could be either as a chord, or as a pie slice.
+	The former being easier to implement, the latter more useful.
+
+	What is the width of the pen when it is not explicitly specified?
+	Does it remain at the last used value or is it reset to some default?
+	
+	How should the `line join' and `line cap' be set?
+	Some implementations set `line cap' to `round' and 
+	leave `line join' set to `mitered'. 
+	Some graphics models do not provide a choice, and force use of
+	`round' for both.
+
+	Should the lengths of dashes be reduced to account for the round ends?
+
+	Should dots in a dotted curve be circular or should they be somewhat
+	elongated (much like very short dashes)?
+
+	Can dashed and dotted paths be filled?
+
+	Can paths drawn as splines be filled?
+
+	For ip and ia, should filling ONLY occur if shading has been
+	explicitly specified?
+
+	For fp, da, dt, should the path be explicitly closed if the 
+	last point is the same as the first? (It matters, since
+	`line join' rather than `line cap' comes into play if it is closed).
+
+	Can the dash/dot interval argument be given in milli-inches 
+	(like all other dimensions) or only in inches?
+
+
+Possibly Desirable Extensions:
+-----------------------------
+
+	provide for shading of shape defined by quadratic spline
+
+	provide for dashed/dotted ellipses
+
+	provide for smoothly closing paths defined by quadratic splines
+
+	allow paths to be built up from lines AND elliptic arcs.
+

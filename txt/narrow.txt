@@ -1,0 +1,59 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=======================================================================
+Making fake condensed (narrow), expanded, and obliqued (slanted) fonts:
+=======================================================================
+
+In the Unix/DVIPS world, people often create modified versions of
+`PostScript' (Type 1) fonts using `PostScript Trickery'.  This is
+convenient, but device dependent.  The result is not an ATM compatible 
+Type 1 font.  The easiest way to do such things on IBM PC is to use the 
+`Font Manipulation Package' from Y&Y.  
+
+You can do some of these things also by hand, with the utilities that
+come with the Y&Y TeX System, although it takes a bit more work:
+
+(a) Use PFBtoPFA on the file original PFB file to create an editable
+PFA file.  Then take this file into an ordinary text edior (like PFE)
+and change the FontMatrix line, which normally looks like
+
+	/FontMatrix [0.001 0 0 0.001 0 0] readonly def
+
+For example, to make an 82% narrow version of a font use
+
+	/FontMatrix [0.00082 0 0 0.001 0 0] readonly def
+
+You must also (i) change the /FontName and /FullName, (ii) change the
+file name, and (iii) comment out the /UniqueID line (using %)
+(The encrypted UniqueID will still be the original one, but it will not 
+have any effect since it no longer matches the visible UniqueID - to 
+change the encrypted UniqueID also you need the FMP).
+
+Now use PFAtoPFB to construct the new PFB file.
+
+(b) Edit the AFM file (this takes some work!)  Adjust all WX advance width
+entries.  For the above fake condensed font, multiply each value by 0.82.
+You do *not* need to adjust the character bounding boxes. Change the 
+FullName, FamilyName, and the file name to match the PFB file information.
+
+Now use AFMtoPFM to make a PFM file from the revised AFM file.
+
+DO *not* use AFMtoTFM to make a TFM file, since the char bounding box are wrong.
+
+(c) Install the PFB and PFM files from a common directory using ATM.
+Check in DVIWindo `Fonts > ShowFont' to make sure it displays OK.
+
+(d) Now use `Fonts > WriteTFM...' to create a TFM file for the font.
+
+Footnote: 
+
+The term `condensed' is reserved for a font that is not simply `squashed,'
+but adjusted typographically to look right. Fake condensed fonts are usually
+referred to instead as `narrow' fonts.  
+
+Similarly, `obliqued' fonts are often derived simply by slanting an upright
+font, while `italic' fonts not only are `written at an angle' but are
+typographically different.  
+
+Finally, fake smallcaps fonts made by scaling upper case letters are just
+that: fake.  True smallcaps require a typographer's eye.

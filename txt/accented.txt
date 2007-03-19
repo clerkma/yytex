@@ -1,0 +1,83 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Accented Characters in Computer Modern outline fonts from Y&Y:
+=================================================================
+
+The Computer Modern outline fonts from Y&Y contain 58 composite (accented)
+characters in addition to the 128 characters normally expected.
+
+The accented characters available are the 58 standard ones found in
+Adobe fonts - these are the ones needed for the ISO Latin 1 character
+set and for the MacIntosh character set (see AFM files for listing).
+
+The composite characters do not appear in the encoding vectors (otherwise
+these fonts couldn't be called Computer Modern fonts!).  To use the
+extra characters, the font has to be reencoded (and should be renamed).
+
+A font can be reencoded using the utility REENCODE supplied with the fonts.
+REENCODE needs an encoding vector file specifying the mapping from
+numeric character code to character name.  To specify, for example,
+that character code 65 stands for upper case `A', the file could
+contain the line `65 A'.  For examples, see files with extension `vec'.
+
+Another way to change the encoding of a Printer font binary (PFB) file is 
+to first convert it to Printer font ASCII (PFA) format using PFBtoPFA
+(your font set may already be in PFA format) and then editing the file.
+
+The lines following the line `/Encoding 256 array def' can be freely 
+edited in the PFA file, since it contains only alphanumeric characters.  
+(Never try to edit a PFB file directly - it contains binary length 
+fields so it will no longer work correctly if the length of some section 
+of the file changes.)  The PFA file can be turned back into a PFB file using
+PFAtoPFB.  PFBtoPFA and PFAtoPFB are supplied with the CM fonts. 
+
+For use with Display PostScript you may also want reencode the AFM
+file. The utility REENCODE can do this, or you can just edit the AFM
+file directly.
+
+Turning the PFB file into a PFA file is useful also when the name of a font
+is to be changed.  Change the /FontName, and the /FullName (and possibly the
+/FamilyName) fields.  Also change the name in the first line of the font
+(this is only a comment, but it is confusing if the name here is different
+from the actual /FontName).  And change the name of the file, as desired. 
+
+When a font has been reencoded, a new TeX font metric (TFM) file will
+need to be created from the Adobe font metric (AFM) file using AFMtoTFM.
+Specify the same encoding vector when using AFMtoTFM as that used to
+reencode the font (AFMtoTFM is supplied with DVIPSONE and DVIWindo).
+
+For use with Windows, a new Printer font metric (PFM) file will have
+to created also using AFMtoPFM.  Specify the same encoding vector when
+using AFMtoPFM as that used to reencode the font.  (AFMtoPFM is
+supplied with DVIWindo).
+
+Appendix:
+=========
+
+Due to a `mis-features' of many PostScript interpreters, 
+there are some restrictions on how to reencode a font:
+
+(*) The base and accent characters must to be in the encoding of the
+    font - at least on most `non-clone' PS interpreters (such as ALW II NT).
+    Otherwise one gets an `invalidfont' error.  
+    Most `clones' (such as NewGen Turbo 480) don't have this problem.
+    This means the encoding chosen should contain the accents:
+    grave, acute, dieresis, cedilla, ring, caron, circumflex, and tilde,
+    and the base characters:  A, C, E, I, N, O, S, U, Y, Z, 
+    a, c, e, dotlessi, n, o, s, u, y, and z. 
+
+(*) Annoyingly, with some PS interpreters the accents (and base characters)
+    must be in predefined positions.  This is mostly only a problem with
+    ATM for MS Windows, where for ATM 2.5 or earlier:
+
+    grave, acute, dieresis, cedilla, ring, macron must be in ANSI positions;
+    dotlessi, circumflex, tilde must be in specially defined ATM positions;
+    caron, breve, hungarumlaut, ogonek (if used) must be in their 
+    StandardEncoding positions;
+
+    while for ATM 2.6 or later they must be in StandardEncoding position.
+
+    See the file `texansi.vec' for a sample encoding that will work with
+    printer PostScript interpreters as well as ATM for MS Windows.
+
+    

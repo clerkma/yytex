@@ -1,0 +1,41 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+---------------------------------------------------------------
+Checksum mismatches in DVIPS when using scalable outline fonts:
+---------------------------------------------------------------
+
+DVIPS sometimes throws up spurious `checksum mismatch' messages when using
+fonts other than bitmapped (PK) fonts.
+
+These are often benign error messages that you can ignore (but see below).
+You can suppress them in several ways, the easiest of which is to zero out
+the checksum in the TFM files (e.g. by running the TFM file through TFtoPL,
+editing the checksum field, and then running the PL file back through PLtoTF
+--- or by using an editor on the TFM file and zeroing out bytes 24, 25, 26,
+and 27).
+
+DVIPS was originally designed for bitmapped fonts, where matching TFM metric
+files with PK bitmapped font files is important.  This is why it matches the
+checksum from the TFM file with the checksum in the corresponding PK font
+file.  The checksum from the TFM file is recorded in the DVI file for each
+font used.  The checksum in this case is computed by METAFONT.
+
+In the case of scalable outline fonts, DVIPS/AFM2TFM uses a different
+checksum hashing algorithm that is specific to that software.  What is more,
+this algorithm has changed over the years, so that TFM files made some time
+ago with AFM2TFM may no longer match what DVIPS computes today.
+
+There is *one* situation where checksum mismatches in DVIPS are actually
+significant and you'd want to check for this.  DVIPS is unique in reading TFM
+files (other drivers assume that the font knows it own metrics).  If the TFM
+file that DVIPS sees does not match the TFM file that TeX sees, you will get
+such a mismatch.
+
+This can be a symptom of a serious problem.  For example, the TFM files that
+DVIPS sees may be set up for different encoding than those that your TeX
+sees.  In this case the metrics of some characters will be corrupted since
+DVIPS overwrites the advance widths of the actual font.  
+
+*	So you should check that DVIPS is looking at the same TFM
+	files as your TeX is.
+

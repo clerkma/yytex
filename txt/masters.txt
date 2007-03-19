@@ -1,0 +1,118 @@
+    This file placed in the public domain in 2006 by the TeX Users Group.
+
+===============================================================================
+    Using Adobe Multiple Master Fonts with the Y&Y TeX System (95/Feb/1)
+===============================================================================
+
+Adobe Multiple Master fonts can be used with the Y&Y TeX System:
+
+Multiple Master Instances:
+--------------------------
+
+Multiple Master fonts come with ready-made prime instances.  With ATM 3.0 
+for Windows you can also create new instances of Multiple Master Fonts
+(ATM 2.6 already had the ability to *rasterize* multiple master fonts ---
+since that is needed by the Acrobat Reader --- but it did not include 
+a control panel entry providing for *creation* of new instances*).
+
+For additional details refer to `techref.wri' on the ATM 3.0 diskette.
+
+Making TeX Font Metric (TFM) files for MM fonts:
+-------------------------------------------------
+
+For use with TeX you need a TFM file.  TFM files are created by AFMtoTFM.
+However, AFMtoTFM cannot interpret Multiple Master Metric metric files, only
+ordinary AFMs.  The solution is to create a suitable AFM file using DVIWIndo:
+
+(*)	In DVIWindo, one can write an AFM file for any installed font by
+	selecting `Write AFM...' from the `Font' menu.  For text fonts, select
+	`ansinew' as the encoding.  When it is done, DVIWindo tells you where
+	it wrote the AFM file, and what it is called.  Make a note of this
+	information, since it will be needed later.
+
+	The AFM file will normally be placed in your DVIWindo directory, and
+	the file name will be the same as that of the corresponding PFM file.
+	Use AFMtoTFM from a `DOS box' to create a TFM file and move it to
+	where your TeX looks for TFM files (as specified by TEXFONTS).   
+	For text fonts specify the command line arguments -vadjx -c=ansinew:
+
+		afmtotfm -vadjx -c=ansinew myfont.afm
+		copy myfont.tfm c:\y&ytex\tfm
+
+(*)	In release 1.2 of the Y&Y TeX System, DVIWindo can also call AFMtoTFM
+	directly.  Select `WriteTFM...' instead of `WriteAFM...'  For text
+	fonts, the currently selected text font encoding will be use. This is
+	determined by the value of the ENCODING env var in the [Environment]
+	section of your `dviwindo.ini' file.  An intermediate AFM file is
+	written in the AFM sub-directory of your DVIWINDO directory.  
+	(Should there be any problems, you can inspect this file, and run
+	AFMtoTFM `manually' on an edited version if needed). 
+
+NOTE:	AFMtoTFM can make TFM files for math fonts, but *only* if the AFM
+	file contains a lot of additional information needed by TeX.  This
+	information *cannot* be obtained from the font itself in Windows.
+	Always use the original TFM files supplied with math fonts. 
+
+Alternative Method for Obtaining AFM files:
+-------------------------------------------
+
+An alternative, less desirable method for getting an AFM file is the following:
+
+(*)	Each MM instance is represented by a PFM file containing the metrics,
+	and a PSS file which contains some PostScript code linking to the
+	base MM font. You can use PFMtoAFM to extract a metrics file in AFM
+	format from the PFM file.  The resulting AFM file will be placed in
+	the current directory by PFMtoAFM.  
+
+	An AFM file created this way will not be as complete or accurate as
+	an AFM file create with `AFMWrite...' since the PFM file format does
+	not contain equivalent fields for all the fields in an AFM file ---
+	but it is typically adequate for the purpose at hand. 
+
+	Once you have the AFM file, use AFMtoTFM to create a suitable TFM
+	file for TeX (select `ansinew' as the encoding).  Copy the TFM file
+	to where your TeX expects to find TFM files (one of the directories
+	listed in the TEXFONTS list of directories).
+
+Printing with Multiple Master Fonts:
+------------------------------------
+
+You can print from DVIWindo using Multiple Master fonts.  This works for
+non-PS printers as well as PostScript printers.  For non-PS printers ATM
+does the rasterizing.  For PS printers, the PostScript stub file (PSS) is
+downloaded, as well as the base MM font.
+
+DVIPSONE now also downloads Multiple Master fonts.  If the DVI file calls 
+for a Multiple Master instance, then DVIPSONE will expand the PSS stub.
+It will also load the corresponding Multiple Master base font.  The base
+font is, of course, included only once, even if several different instances
+of the font are referred to.
+
+Finding the PFM file corresponding to a particular instance:
+-----------------------------------------------------------
+
+When Acrobat creates a Multiple Master `instance' it creates a new PFM 
+(Printer Font Metric) file for it and a new PSS (PostScript Stub) file.  
+The base MM font is contained in a PFB file and its metrics in an MMM file,
+The PFM files for the MM instances have file names that end in a three digit
+number.  You can find out which PFM file corresponds to which MM instance by
+looking in ATM.INI. You will find entries like:
+
+TektoMM_240 RG 564 NO=c:\psfonts\pfm\zjrg_004.pfm,c:\psfonts\zjrg_004.pss
+
+The Windows face name --- listed in font menus --- is the part before the `='
+The first few letters give the base MM font name --- `TektoMM' in this case.
+In the illustration here, the first axis (weight) is 240 and the RG denotes
+Regular weight.  The second axis (width) is set to 564 and the NO indicates
+Normal width. 
+
+The corresponding PFM file may be found in c:\psfonts\pfm\zjrg_004.pfm.
+The line also refers to the MM PostScript `stub' c:\psfonts\zjrg_004.pss
+This defines the instance in terms of the base MM fonts which itself is
+defined by the following entry in the ATM.INI file:
+
+	TektoMM=c:\psfonts\pfm\zjrg____.pfm,c:\psfonts\zjrg____.pfb
+
+If you were to select this font directly you would get the `default'
+instance.  This is not recommded, rather call for the corresponding
+ready-made instance.

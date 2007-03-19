@@ -1,0 +1,39 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+----------------------------------------------------------------
+ATM 4.0 Light for Windows NT 4.0, and ATM 4.0 Light for Windows 95
+----------------------------------------------------------------
+
+In the ATM folder you will find atmnt4.exe and atm95.exe.
+These are self-extracting ZIP archives that will deposit their 
+contents in a temporary directory you can choose.  
+Pick the appropriate executable for your operating system and run it.  
+
+Let's say you chose c:\temp as a good place for temporary files.
+Then the self-extracting archive will unpack itself into either
+c:\temp\adobe\utils_nt4 or c:\temp\adobe\utils_95.
+
+At the end of this operation you will be shown a short `readme.wri' file 
+(which may also be found in the corresponding sub-folder).  More info in
+	c:\temp\adobe\utils_xx\atm_Lite\readme.wri
+
+To actually install ATM 4.0 Lite, run either 
+	c:\temp\adobe\utils_nt4\atm_lite\setup.exe or
+	c:\temp\adobe\utils_95\atm_lite\install.exe
+(That is, use `Start > Run,' and type in those file names).
+
+Documentation on ATM itself exist in Acrobat PDF format in 
+	c:\temp\adobe\utils_xx\atm_lite\atm user guide.pdf
+
+For deep technical questions look at either
+	c:\temp\adobe\util_nt4\atm_lite\technical reference guide.wri or
+	c:\temp\adobe\utils_95\atm_lite\techref.wri
+
+You can delete the files in the temporary directory after installing ATM.
+In Windows 95 you may find DELTREE handy for this purpose:
+	deltree c:\temp\adobe
+while in Windows NT you can you the /s argument:
+	del c:\temp\*.* /s
+
+(R) Adobe Type Manager and ATM are a registered trademarks of Adobe Systems, Inc.
+

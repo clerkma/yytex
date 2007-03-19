@@ -1,0 +1,61 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+============================================================================
+	Long File Name mini-upgrade of Y&Y TeX System for Windows 95:
+============================================================================
+
+The executables on this diskette are designed to work in 32 bit operating
+systems (Windows 95 and Windows NT), and all support long file names.
+They will not work in 16 bit operating systems line Windows 3.1.
+
+DVIPSONE:
+=========
+
+  dvipsone.exe     248,832   4-03-96   9:19p
+  dvipream.enc      16,311   2-25-96   3:27p
+
+DVIPSONE.EXE on this diskette is the new 32 bit version of DVIPSONE.  
+It handles long files names, and is about 32% faster.  Note:
+
+*	Make sure to copy DVIPREAM.ENC also to your DVIPSONE directory, 
+	because DVIPSONE checks the version number in the preamble file.
+
+Y&Y TeX:
+========
+
+  yandytex.exe      311,808  2-16-96   6:44a
+
+YANDYTEX.EXE on this diskette is TeX 3.141 --- without PharLap DOS extender.
+
+This version of Y&Y TeX handles tilde (~) in file names on the command line
+--- despite the fact that TeX parses the command line and treats ~ special.
+This is important because in Windows 95 you may encounter both the actual
+long file names *and* their shortened DOS equivalents --- which contain
+tilde characters.  
+
+Note, however that TeX cannot handle file names that contain spaces 
+(since it does not know where the names ends on the command line).
+
+
+DVIWindo:
+=========
+
+  dviwindo.exe     301,952   4-06-96  10:04a
+
+DVIWINDO.EXE is the new version of DVIWindo which can handle long file names.
+This is still a WIN16 program.
+
+To actually see the long file names in DVIWindo's file open dialog box
+(rather than their shortened DOS equivalents) add LongNames=1 to the 
+[Window] section of dviwindo.ini (in your Windows directory):
+
+[Window]
+LongNames=1
+
+For fun, add a [Document] section to the dviwindo.ini file (if you 
+do not already have one) and add one arbitrary DVI file name, e.g.
+
+[Documents]
+File1=c:\dviwindo\dvi_help.dvi
+

@@ -1,0 +1,341 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+THE FONT ENCODING MORASS:	(1991/June/1, revised 1992/June/1, 1993/June/1)
+=========================
+
+This is a diatribe about the `font encoding problem' and how to deal with it.
+
+Definition:  encoding vector --- a mapping from numeric character codes to
+	     characters.  Characters in the encoding vector may be referred
+	     to using character names.
+
+Definition:  unencoded character --- a character in a font that is not
+	     listed in the current encoding vector, hence not accessible
+	     without reencoding the font.
+
+Definition:  reencoding --- providing a font with a new encoding vector.
+	     Note that this requires corresponding changes to the metric
+	     files belonging to the font as well.
+
+NOTE:	This document starts with a general discussion of the encoding issues.
+	TeX-specific font encoding issues are discussed in the Appendix.
+
+What's the problem?
+-------------------
+
+We usually think of text files as containing characters.  We know
+perfectly well that they `really' contain just numeric codes (0--255)
+stored in 8-bit bytes.  Yet the illusion that they contain characters is
+quite persuasive.  We press a key, and we see a glyph drawn on the screen
+that (more or less) matches the character shown on the key.  We store
+the file, and later retrieve it and the same glyphs appear on screen. 
+We print a plain text file and the glyphs shown on the hard copy again
+shows the  same sorts of glyphs.  The file we created really does appear
+to consist of characters!
+
+At least that is what happens most of the time when we use plain ASCII
+characters --- letters A--Z, a--z, the numerals 0--9 and perhaps some 32
+or so punctuation and special characters.  The facade is cracked when
+we use characters that do not belong to this limited set, for example,
+accented characters --- like `A' with `dieresis' --- or special symbols
+like the ones for `copyright' or `integral'.  Then what we see on screen
+may not match what we key in, and what gets printed may not match what we
+see on screen.  Indeed it may take several key strokes or combination of key
+depressions to enter such a character.   But worst of all, what gets shown
+on screen and what gets printed depends on what machine we are on and how
+the fonts in the printer that we are using are set up!  
+
+Suddenly the illusion is destroyed.  We really are dealing just with numbers.
+
+When we press a key, some numeric code is sent from the key board (often 16
+bit wide).  This is translated somewhere in the operating system and/or
+application to some other numeric code (typically 8-bit wide) for convenient
+storage and manipulation.  We think of these codes as representing characters
+(input side --- something with a certain semantics).  A sequence of such
+codes may go through additional transformation and yield other numeric codes
+(typically also 8-bit wide) that are then used for output.  We think of
+these codes as representing glyphs (output side --- something with a
+characteristic shape).  In the simplest case, the numeric codes used for
+output are the same as those used for input, but this need not be the case.
+
+Which numeric code is used to represent a particular character is purely
+a matter of convention.  Even for the upper case letter `A', EBCDIC uses a
+different numeric code (193) than does ASCII (65).  Similarly, what numeric
+code is used to  represent a particular glyphs is purely a matter of
+convention.  Adobe text fonts use a different numeric code for the ligature
+glyph `fi' (174) than does `Macintosh standard roman encoding' (222).
+
+It is clear that the mapping between `character'and numeric code is quite
+arbitrary.  And because there are very many more characters than the 256
+numeric codes possible with 8 bits, there will be a need for more than one
+possible mapping or `font encoding'.  There can be no `standard' encoding
+that suits all purposes, just because the number of abailable numeric codes
+is much too small.
+
+It is the other guys problem!
+-----------------------------
+
+If you always work on the same platform, and always use the same application,
+you may not yet have stumbled into the encoding morass.  Or you did once upon
+a time and have now forgotten!  You figured out how it works in that
+application - on that platform - and never looked back.  And you may believe
+that encoding problems are something that only afflicts people working on
+`inferior' (i.e. some other) platforms, with `inferior' applications (i.e.
+the ones you eschew :=).
+
+On the other hand, if you ever move documents between platforms,
+and often even just between applications on the same platform, you
+may have run into problems, particularly with characters that are not
+in the  basic ASCII set, such as ligatures and accented characters. 
+And yes, sometimes even with characters (other than letters and digits)
+in the ASCII set!
+
+Many encoding schemes agree on at least part of the code range,
+namely the ASCII character set between 32 and 126.  But this leads
+to a false sense of security!  For even in this restricted range,
+one finds exceptions and variations (such as `grave' versus
+`quoteleft', `hyphen' versus `minus' etc).  So actually the only
+really dependably constant part are the upper and lower case letters
+and the digits (that is, if we ignore EBCDIC for the moment!).
+
+`Standard' Encoding Schemes:
+----------------------------
+
+There are at least several *dozen* commonly used coding schemes, each claiming
+to be general and important.  Some try to encourage acceptance by having
+names that suggest standardization.  For example, there is `standard roman
+encoding', which is `standard', but only on the Macintosh, and there is
+`MS Windows ANSI', which suggests a connection with the American National
+Standards Institute, yet changed when a new release of Windows come out.
+The `native' encoding of many Adobe Type 1 text fonts is `Adobe
+StandardEncoding'.  In X Windows on Unix ISO Latin 1 (ISO 8859-1) seems to
+be the encoding in force.   Although on some platforms support for scalable
+outline fonts is as yet so weak that it isn't clear where they stand on the
+encoding issue. 
+
+All of the listed encoding schemes have drawbacks.  Adobe StandardEncoding
+does not provide access to accented characters (such as `Adieresis').
+MS Windows ANSI does not provide access to the ligatures `fi' and `fl'. 
+Mac `standard roman encoding' does not provide access to some
+not uncommon accented characters (e.g. yacute, Yacute, scaron, Scaron,
+zcaron, Zcaron) or to the Icelandic characters (eth, Eth, thorn,
+Thorn).  And so on.  Hence it is NOT a question of choosing one of
+these schemes and making it the universal standard.
+
+The solution: Encoding Vectors.
+-------------------------------
+
+Adobe had the right idea in introducing the idea of an encoding vector in
+PostScript fonts, and in labelling glyphs with character names, not numbers.
+Unfortunately few applications make it possible to exploit this power.
+Indeed, most use a fixed encoding scheme that the user cannot modify. 
+Also, operating systems conspire to neutralize the great promise of the
+encoding vector idea.  For example, on the Macintosh, plain vanilla text
+fonts are always reencoded to `Macintosh standard roman encoding', and in
+MS Windows, the same fonts are always reencoded to `MS Windows ANSI'.
+
+One would think that font generation software would be particularly
+likely to take advantage of the notion of an encoding vector. 
+Yet many of them use a hard-wired relationship between numbers and
+character names.  That is, the character names are used merely as
+*aliases* for numbers (NUL is 0, Eth is 1, eth is 2, Lslash is 3 etc)!
+The character names bear no relationship to the glyphs.  Just because
+something is called `Lslash' doesn't mean it is the Polish letter `L'
+with a short inclined stroke through it.  Just because a character
+has the name `less' doesn't mean it represents the mathematical
+relationship `less than' --- it could instead very well be `exclamdown'. 
+This is the worst possible corruption of the PostScript encoding vector idea! 
+
+What makes the encoding problem particularly aggravating is that hardly
+ever does software provide for reencoding based on a user-specified
+encoding vector.  In MS Windows, for example, a font can be set up in only
+two ways: (a) use the fonts `native' or `raw' encoding (for a `Decorative'
+or `Symbol' font), or (b) reencode the font to Windows ANSI (for a `text'
+font).  And this decision is hard-wired into the font metric file (PFM).
+Reencoding a font on-the-fly is unheard of.  Exactly the same goes
+for the Macintosh, where the FOND resource in the `screen font' specifies
+whether a font is to be used (a) `uncoordinated', that is, with its raw
+encoding (for a `Pi' font), or (b) reencoded to Mac `standard roman
+encoding' (for a `text' font).  The situation on some other platforms is
+even more restrictive.
+
+Font Metric Files:
+------------------
+
+Font metric files should be organized around characters, not numeric
+character codes.  Unfortunately compact binary forms like PFM or TFM do not
+even provide for specification of an encoding vector.  The FOND resource in
+a Mac screen font does, but only in a very limited way (usually noting the
+difference between the fonts `native' encoding and the desired encoding).
+Adobe Font Metric (AFM) files, on the other hand, are organized around
+character names (althoug they do also give the encoding of the `native'
+or `raw' form of the font).
+
+When moving text files between platforms, there seem to be two choices:
+(a) accept that applications on the two platforms used different encoding
+schemes and provide a `translation filter', or (b) carry around the
+information about what encoding is in use with the fonts or with the document.
+
+Presently we mostly depend on (a) above, which has the serious drawback
+that characters that exists in the encoding used on one platform but not
+the other are lost (17 of the 217 characters in MS Windows ANSI do not
+exist in Mac `standard roman encoding', while 23 of the 223 characters in
+Mac `standard roman encoding' do not exist in MS Windows ANSI).
+Obviously the second alternative --- noting what encoding a font uses ---
+is better, but there is precious little software out there now that
+supports this idea.
+
+Conclusions:
+------------
+
+(1) We need to raise the level of awareness of the `font encoding issue.'
+    Many users are surprised when things don't work as expected.
+    Being forwarned is being prepared!
+
+(2) We need to reduce platform bigotry.  This is NOT a Macintosh,
+    or a MS Windows, or a Unix problem - it is universal.  It is not a
+    problem specific to a particular word-processing application or to TeX -
+    it applies to all software dealing with text.
+
+(3) We must accept that there can be no universally accepted encoding
+    (using 8-bit character codes) that is suitable for all purposes.
+
+(4) When referring to a font, it is NOT sufficient to specify a font
+    name, one must also say what encoding is in effect.
+
+(5) Documentation of software that enforces its own encoding vector
+    should clearly state this fact, and spell out the encoding vector used.
+    Hiding such reencoding under the rug eventually leads to serious confusion.
+
+(6) Font metric information should be provided in a form that ties metrics
+    to characters, not to numeric character codes.  Or, if it does use
+    numeric codes, then it must at least make provision for specification
+    of an encoding vector mapping these numbers into character names.
+
+(7) If a metric file format does not provide for specification of an
+    encoding vector (such as PFM and TFM), then at least there must be
+    easily accessible tools for making such metric files based on
+    *arbitrary* user selectable encoding vectors from metric file formats
+    that are complete (such as AFM).
+
+(8) Ideally, applications (and operating systems) should provide for
+    `on the fly' reencoding of fonts (Santa are you listening?).
+
+UNICODE:
+--------
+
+Finally: Let us hope that UNICODE with its 16-bit characters will help
+resolve some of these problems.  It may not, however.  The reason is that
+UNICODE is by design a `character' encoding (input side), not a `glyph'
+encoding (output side).  This means, for example, that it cannot be used
+for specifying `glyphs' in fonts for printing.  Purists insist, for
+example, that the ligatures `fi' and `fl' are `glyphs', not `characters',
+and hence have no business being in UNICODE!
+
+Clearly, what is needed is another universally agreed upon encoding scheme
+(UNIGLYPH?) for specifying glyphs.  For there can be no fine typesetting
+without ligatures.  UNICODE provides an encoding for characters.
+Unfortunately, some operating systems make the mistake of using UNICODE to
+encode glyphs also.  And ligatures are not considered characters.  Sigh...
+
+The AFII 32-bit glyph encoding standard may provide the answer, but it
+has yet to gain wide-spread acceptance.
+
+Political Analysts pay attention:  MicroSoft has UNICODE in its platform,
+Adobe is pushing AFII...
+
+Appendix: TeX specific font encoding issues:
+============================================
+
+There are three gaping wounds in the TeX environment today that
+prevent seamless electronic publishing:
+
+(a) lack of standardization of \special for figure insertion
+    (its to embarassing to even mention other uses of \special!);
+
+(b) lack of standardization of names of non-CM fonts
+    (although Karl Berry has made a valiant effort in this regard);
+
+(c) lack of standardization of font encoding and means for reencoding fonts.
+
+In each case, the DVI processor (printer driver or previewer) has to
+deal with these issues.  And each driver does it in a different way.
+In fact DVI driver authors appear to have a sworn pact not to copy
+each others \special syntax (:-)!   Each author cooks up a new one.
+
+Font encoding issue in Computer Modern fonts:
+---------------------------------------------
+
+TeX's Computer Modern fonts alone use *ten* different encoding schemes
+for the code range 0 - 127, and one has to depend on agreed upon
+conventions about which font uses which, since TeX has no provision
+for specifying an encoding vector in its metric files (aside from an
+optional field that *may* be used to record a short name for the encoding).  
+
+Trivia Buffs: Did you know that CMR5 uses a different encoding vector
+from CMR7 - which supposedly is the same font just at another size?
+And that only one of the ten encodings used by Computer Modern font's
+agree with ASCII even in the very restricted 64 - 126 range?  This despite
+the fact that TeX's internal code is often jokingly referred to as `ASCII'
+(Knuth is careful to say only that it is `based on' ASCII).
+
+Also note that assumptions about these CM encodings are hard-wired into
+commonly used formats such as plain TeX and LaTeX, and into many TeX
+macro packages --- see for example `plain.tex' and `lplain.tex'.
+
+Note that reencoding a font is a more general operation than permuting the
+entries in the encoding vector.  TeX's virtual font mechanism, for example,
+allows one to renumber characters, but it cannot make unencoded characters
+accessible.  This is because -- like the rest of TeX --- it deals with
+characters strictly as numbers.  
+
+Correspondingly, one cannot `reencode' a PFM or TFM file, since these
+metric file formats contain no information about unencoded characters -
+and reencoding can make previously unencoded characters accessible. 
+One has to refer back to more complete information, such as that provided
+in Adobe Font Metric (AFM) files.
+
+There are presently three levels of support for font encoding:
+
+(a) Use the font's `native' or `raw' encoding (typically `StandardEncoding');
+
+(b) Use a driver-specific hard-wired reencoding (mixture of `TeX text'
+    and Adobe StandardEncoding for older versions of DVIPS and Textures).
+
+(c) Provide for arbitrary user-selectable on-the-fly reencoding (DVIPSONE).
+
+Each DVI processor must come with a suitable AFM-to-TFM program that supports
+one of the above choices, since the TeX Font Metric (TFM) file must reflect
+the encoding used.  And it is impossible to use fonts in TeX without TFM
+files.  These TFM files should be complete with not only character advance
+widths, but ligature and kerning information.  It is also obviously
+impossible to supply each font with a set of TFM files for all possible
+encoding vectors!
+
+For use with MS Windows, in addition, tools must be provided for
+creating PFM (Printer Font Metric) files based on arbitrary encoding
+vectors, as well as for reencoding PFB (Printer Font Binary) files.
+Similarly, on the Macintosh, tools must be provided for creating new
+`screen fonts' --- which is particularly awkward, since `screen fonts'
+contain bitmapped fonts for some font sizes in addition to the metric
+information. 
+
+How to Wade through the Morass:
+--------------------------------
+
+The key to survival is to have all applications that deal with a particular
+document agree on the encoding.
+
+In the case of TeX, for example, this means that the following need to
+all use the same encoding: 
+
+(*) The TeX Metric File (TFM);
+
+(*) The font (as modified by the DVI processor for display or printing);
+
+(*) Any metric files used in display or printing, such as PFM files;
+
+(*) The TeX macros that have hard-wired assumptions about encoding.
+
+And that is actually all there is to it!
+

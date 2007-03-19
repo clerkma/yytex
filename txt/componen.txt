@@ -1,0 +1,48 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+============================================================================
+                Y&Y TeX System Components          (compon.txt)
+============================================================================
+
+Y&Y's TeX System is sold only as a system;  i.e., only the font sets are
+also available separately.  The system's components are:
+
+  * TeX itself.  This implements the same language as the TeX you can
+    get in the public domain --- but we have enhanced it in a number of
+    ways.  For example, it `grows' its memory requirements as it needs
+    --- so if you're processing a very large file, it doesn't choke on
+    pre-configured memory limits.  This is a full 32-bit implementation 
+    that runs `native' under Windows 95 and Windows NT.
+
+  * DVIWindo. A full Windows NT/95 program that uses scalable (Type 1,
+   `PostScript') fonts to display the DVI files created by TeX.  It
+    has a `TeX Menu' from which you can access all of the other system
+    components --- TeX, DVIPSONE, editor.
+
+  * DVIPSONE.  A highly optimized PostScript printer driver for
+    outputting your DVI files. (If you don't have a PostScript printer,
+    you can *also* print, from DVIWindo, to *any other* installed
+    Windows printer.  We do not have to provide additional printer 
+    drivers --- you simply use what is available under Windows or
+    what was shipped with your printer.)
+
+  * Adobe Type Manager (ATM) -- the rasterizer that controls
+    screen display in DVIWindo and printing to everything but
+    PostScript devices.
+
+  * PFE.  A Windows editor.  Shareware from Alan Phillips which we
+    have licensed for inclusion in our system. (But you can also
+    link any other editor into DVIWindo's TeX Menu.)
+
+  * Your choice of *one* of the following three Type 1 font sets:
+    (i) Computer Modern + `Extra LaTeX+SliTeX,' + AMS Font Set
+    (ii) Lucida Bright + Lucida NewMath + Expert,
+    (iii) MathTime 1.1 + Times + Helvetica + Courier,
+    (iv) MathTime 1.1 + MathTime Plus + Times + Helvetica + Courier.
+    (v) European Modern 
+    Computer Modern is the `canonical' TeX font set...most public-domain
+    versions of TeX use bitmapped (.pk) versions of CM.
+
+We also supply the necessary packages and style files, supporting
+plain TeX, AMS TeX, LaTeX 2.09 and LaTeX2e. 
+

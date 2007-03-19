@@ -1,0 +1,45 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+You may find the following notes helpful when adding a space to the math fonts.
+
+(*) The math fonts do not have a space character, since they are not
+    intended to be used for continuous text, but for individual mathematical
+    symbols, operators, delimiters, and relations.  
+
+(*) In fact, if you put letters from the math italic font next to each other,
+    you will not get italic writing, but a sequence of apparently badly
+    spaced letters.  Which is appropriate for math, since justaposition of
+    variables is meant to indicate multiplication, and this is usually
+    indicated by additional space between the variables.
+
+(*) For detailed spacing adjustments, if required, character codes 252
+    through 255 provide various kinds of thin spaces, including a negative
+    thin space. 
+
+(*) The math fonts do have an actual `space' character in 160.
+    In the PFA file:	dup 160 /space put	
+    In the AFM file:	C 160 ; WX 795 ; N space ; B 0 0 0 0 ;
+
+(*) The math fonts have some other character in code position 32.
+    For LNM-Italic and LNM-AltItalic this is `psi'
+    For LNM-Symbol it is `arrowleft'
+    For LNM-Arrows it is `notexistential'
+    For LNM-Extension it is `parenleftBigg'
+
+(*) `spacify' interchanges what is in 160 with what is in 32.
+    It uses a very simple-minded method to do this.
+    Since the PFA and AFM files are plain ASCII you can check on this.
+
+(*) The characters from 0 - 32 use repeated encoding.  
+    They appear again in 161 -- 195.
+    Character 32 actually appears in three places: 32, 128, and 195.
+
+(*) Some applications can only reference a character via the first mentioned
+    encoding position.  So if 
+	dup 195 /space put
+	dup 128 /space put
+    appears before
+	dup 32 /space put
+    in the PFA file then you may only be able to get at `space' using 195,
+    not 32 as desired. Reverse the order of these lines in the PFA file to
+    correct this if needed.

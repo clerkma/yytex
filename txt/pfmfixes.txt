@@ -1,0 +1,46 @@
+**************************************************************************
+	Copyright (C) 1993-1997 Y&Y, Inc.  All Rights Reserved
+	Placed in the public domain in 2006 by the TeX Users Group.
+**************************************************************************
+
+Work-around for bug in Windows printer drivers for `narrow' characters
+======================================================================
+
+These modified PFM files provide a work-around for a bug in several
+Windows printer drivers.  The problem occurs with characters that have
+zero advance widths, such as `negation slash' and `mapsto' in cmsy*
+fonts.  Such a character is dropped by the printer driver when it is
+printed isolated between font changes (it works OK when followed or
+preceded by characters of non-zero width in the same font).
+
+NOTE:	Adobe PostScript drivers for Windows do	not have this problem.  
+If you are using a PS device then you may wish to aim a web browser at
+http://www.adobe.com and do a search on that site for AdobePS.
+
+Put the original PFB files (CMSY5.PFB ... CMSY10.PFB) and the modified
+PFM files of the CMSY* fonts in a temporary directory (rename the
+files with extension .PFX to have extension .PFM).
+
+If you are using ATM, install the fonts from that directory using the
+ATM Control Panel.  
+
+If you are using NT without ATM, then drag the PFM files to the `fonts'
+folder (subfolder of your windows folder, typically c:\winnt\fonts).
+
+You should now be able to print using the Windows printer driver
+without losing the `negations slash' and the `mapsto' characters in
+cmsy* fonts.
+
+This fix is tuned to the size of the font.  It will work when the
+font is used at a larger size (cmsy10 at 12pt for example), but not
+when used at a smaller size (cmsy5 at 4pt for example).
+
+There will be a tiny error in positioning, since the modified PFM files
+specify non-zero width for these characters.  The error will be about
+1/2 device pixel.  Since PSCRIPT.DRV usually thinks it is printing at
+300 dpi, this means a horizontal positioning error of 0.13 pt.
+
+Fortunately, even this small error usually disappears soon after the
+place where it is introduced, since, when typesetting math, TeX tends
+to make heavy use of `push'ing and `pop'ing of coordinates.  The
+positioning error vanishes at the next `pop'.

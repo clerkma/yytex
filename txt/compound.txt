@@ -1,0 +1,71 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-----------------------------------------------------------------------------
+	Hyphenating compound words			(compound.txt)
+-----------------------------------------------------------------------------
+
+TeX normally will not attempt to hyphenate compound words (i.e. words that
+already contain a hyphen).  This can be a problem when using languages 
+(s.a. German) in which compound words are common.  
+
+There is a way to deal with this if the font encoding contains `hyphen'
+in two places.  This is the case with TeX 'n ANSI encoding, Windows ANSI
+encoding, as well as Cork (T1) encoding.  This cannot be dealt with when
+using the old `TeX text' (OT1) encoding (as used by CM text fonts).
+
+(1) The first step is to tell TeX that `hyphen' is to be treated just like 
+    an ordinary letter, by giving it a valid `lower case code.' E.g.
+
+	\lccode`\-=`\-		% or \lcode45=45
+
+(2) The next step is to tell TeX to use the character code for the *second*
+    occurence of `hyphen' in the encoding when inserting a `hyphen'
+    (The reason for this will become apparent in the next step).
+    Typically `hyphen' will occur at char code 45 in the character layout.  
+    In TeX 'n ANSI, and Windows ANSI, it is repeated at char code 173
+    (the latest interpretation of Cork encoding has it appear again at 127).
+
+    It is possible to set the default hyphen character:
+
+	\defaulthyphenchar=173
+
+    Note that this will *only* affect fonts read in after this definition
+    (So add this *before* \input lcdplain, \input lcdlatex, \input mtplain,
+    \input \mtlatex etc.)  Note also that fonts for which metric files have
+    already been loaded in the TeX `format' are *not* affected.
+
+    One can also change the \hyphenchar for a specific font: 
+
+	\hyphenchar\myfont=173
+
+(3) With this change, it can happen that TeX decides to hyphenate a word at
+    an existing hyphen; thus creating a *double* hyphen.  This problem can be
+    dealt with by creating a pseudo ligature that maps `hyphen' followed by
+    `hypen' into a single `hyphen'.  
+
+    It should now be clear why we could not let TeX simply use the ordinary
+    hyphen when it decides to break a compound word: we would have had a
+    conflict with the existing standard pseudo ligature `hyphen' `hyphen' =>
+    `endash'.  The new pseudo ligature instead is `hyphen' `sfthyphen' =>
+    `sfthyphen' where `sfthyphen' stands here for the character code of the
+    second occurence of `hyphen'. 
+
+    AFMtoTFM version 2.6 (or later) automatically creates the required 
+    pseudo ligature when the font encoding contains two copies of `hyphen'
+    (assuming it has been asked to insert standard ligatures using `-a').
+    If there is no second copy of hyphen it will look for `sfthyphen'.
+
+(4) Finally, the hyphenation tables have to be re-created to take into 
+    account compound words.  The new hyphenation patterns will contain
+    some patterns that involve `hyphen'.  This requires rebuilding the
+    hyphenation patterns for a language that has many compound words.
+    While this is likely to be quite a bit of work, it only has to be done
+    once for a given language (watch CTAN for new hyphenation patterns).  
+
+    A short-cut --- if a full revision of the patterns is not feasable ---
+    is to use the file `hypht1.tex' that may be found on CTAN.  It takes
+    existing patterns and adds patterns that prevent hyphenation near
+    an explicit hyphen (see instructions in the file itself).
+
+    Such new patterns will work for a variety of encodings, since `hyphen' is
+    at char code 45 in virtually all resonable encoding for Western languages.

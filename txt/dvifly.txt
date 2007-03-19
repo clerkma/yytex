@@ -1,0 +1,193 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+********************************************************************
+			TeX  without  Bitmaps
+********************************************************************
+
+Wouldn't it be nice to be able to preview DVI files at any magnification,
+not just those for which bitmap fonts have been pre-built?  Or to produce 
+truly resolution-independent output that will run on any PostScript device,
+whether image setter or laser printer?
+
+Perhaps you are looking for an alternative to Computer Modern?  There now
+exist outline font families complete with math fonts for use with TeX.  
+Even if you want to remain faithful to CM, there are distinct advantages to
+switching to the outline version of these fonts.
+
+Described here are tools for use of TeX without resort to bitmapped fonts:
+
+*	DVIWindo - only Windows based previewer using scalable outline fonts
+	
+*	DVIPSONE - only program using partial font downloading on Type 1 fonts
+
+DVIWindo runs in MS Windows and DVIPSONE in DOS on IBM PC compatibles.  
+Suitable font sets  - on the other hand - are available for a variety of
+platforms, including Macintosh, IBM PC compatible, and Unix/NeXT:
+
+*	Lucida Bright + Lucida New Math font set in Type 1 format.
+
+*	Blue Sky Research Computer Modern font set in Type 1 format
+
+*	AMS font set in Type 1 format
+
+*	Extra LaTeX + SliTeX font set in Type 1 format
+
+*	MathTime in ATM compatible Type 1 format
+
+
+DVIWindo (TM) --- Windows based DVI previewer using scalable outline fonts
+==========================================================================
+
+DVIWindo is the DVI file previewer that uses scalable outline fonts.  
+DIVWindo can display a document at any desired magnification.  
+DVIWindo makes it possible to preview documents that use arbitrary 
+outline fonts (not just Computer Modern). 
+
+DVIWindo is an easy-to-use Windows application that shows images in 
+EPSF and TIFF files.  Adobe Type Manager (R) is included.
+
+Requirements:  
+
+(a)	Support for scalable outline fonts --- 
+	hence MicroSoft	Windows 3.0 or later ---
+	in standard or enhanced mode ---
+	hence at least an Intel 286 processor.
+
+(b)	Outline fonts --- Adobe Type 1 (PFB) font files for ATM ---
+	or TrueType fonts in Windows 3.1, for example.
+
+Advantages of DVIWindo:
+-----------------------
+
+*	Allows previewing of TeX documents without the need for bitmap fonts;
+
+*	Enables preview of documents that call for non-Computer Modern fonts;
+
+*	Provides for previewing at any size, not just one of a predetermined
+	set of magnifications - inserted figures are scaled correctly;
+
+*	Printing to any device with a Windows printer driver, including
+	HP, IBM, dot-matrix, PostScript and even some fax boards;
+
+*	Copies regions to clipboard for pasting into other Windows applications
+
+*	Uses the standard MicroSoft Windows graphical user interface (GUI).
+	Hardly anything new to learn!
+
+*	`TeX Menu' provides integration of DVIWindo, DVIPSONE and Y&YTeX.
+	The `TeX Menu' is fully customizable - call any Windows or DOS program!
+	
+
+DVIWindo also has many advanced features, such as:
+
+*	Supports the ten most popular \special's for figure inclusion ---
+	shows preview images in EPSF and EPSI format files;
+
+*	Insertion of images in TIFF format using \special;
+
+*	Colored text, colored rules and reverse video using \special;
+
+*	Text string search, two page `spreads', and `greyed text';
+
+*	DVIWindo has \special's for hyper-text linkage;
+
+*	DVIWindo supports the TPIC \specials for device independent graphics;
+
+*	DVIWindo notices when the DVI file has changed and redisplays;
+
+*	Preserves user preferences, graphical specification of zoom area;
+
+*	Multiple instances loaded simultaneously to view different documents;
+
+*	Display of list of fonts used, display of character sets in all fonts;
+
+*	Creates AFM and TFM files for any scalable outline font in Windows.
+
+*	Color coding of text in different fonts, and more...
+
+=====>	DVIWindo & DVIPSONE provide bitmap-free support for TeX!	<======
+
+
+DVIPSONE (TM) - the only program using partial font downloading on Type 1 fonts
+===============================================================================
+
+DVIPSONE produces truly resolution-independent page-independent PostScript (PS)
+output from TeX DVI files.  DVIPSONE runs on IBM PC compatible computers
+and uses Adobe Type 1 (R) outline fonts (in ATM compatible form).  
+DVIPSONE is built from the ground up for use of outline fonts in Type 1 format.
+Support for scalable fonts is _not_ an add-on to a basically bitmap-font
+oriented design.
+
+Special Features of DVIPSONE:
+-----------------------------
+
+*	DVIPSONE uses partial font downloading for fonts in Adobe Type 1
+	format to greatly reduce the PostScript file size, the time to
+	print, and use of printer virtual memory.  This is particularly
+	important when using TeX, since TeX likes to use many fonts.
+
+*	The output produced by DVIPSONE is resolution-independent --- 
+	it can be sent, without alteration, to any PostScript device --- 
+	high-resolution imagesetter as well as low-resolution laser printer.  
+
+*	Output from DVIPSONE is `page-independent'.  Pages can be arbitrarily
+	permuted, and pages can be removed without affecting the integrity of
+	the PostScript print job.  Important for page imposition software!
+
+*	DVIPSONE is unique in providing for `on-the-fly' reencoding of
+	outline fonts.  This makes it possible to rearrange the character
+	set layout and also to make unencoded characters accessible.
+
+*	DVIPSONE can use the Computer Modern outline fonts, printer
+	resident fonts, any of over 1,700 fonts Adobe font library --- 
+	in fact, any of over 15,000 fonts now available in Type 1 format. 
+
+*	DVIPSONE supports the ten most popular schemes for inclusion of
+	illustrations in Encapsulated PostScript (EPS) form. 
+
+*	There is no approximation of coordinates 
+	(such as rounding to the nearest device pixel position) 
+	in DVIPSONE's output, so positioning of characters and rules 
+	will be as accurate as the output device allows.
+
+*	DVIPSONE can use Type 1 fonts in Printer Font Binary (PFB) form,
+	Printer Font ASCII (PFA) form, or even MacIntosh font file format
+	(It is even possible to use bitmapped fonts with DVIPSONE).
+
+*	DVIPSONE itself is fast, and the PostScript output it produces
+	is concise, and executes rapidly in the printer. 
+
+*	DVIPSONE supports TPIC \specials for device independent graphics.
+
+*	Normally DVIPSONE does not require font metric files, since it
+	obtains metric information directly from the outline font file.
+	If the font file is missing, it can use TeX font metric files (TFM),
+	Adobe font metric file (AFM), or even MicroSoft Windows font metric
+	files (PFM) to adjust the font metrics of a replacement font.
+
+*	A service bureau printing PostScript files produced by DVIPSONE
+	need not be knowledgeable about TeX or DVI files.
+
+*	A service bureau printing PostScript files produced by DVIPSONE 
+	need not have access to high resolution bitmap fonts.
+
+Standardization and Additional Capabilities:
+--------------------------------------------
+
+DVIPSONE meets or exceeds the requirements of the `Level 0' standard for DVI
+drivers (announced by the TUG DVI driver standards committee) --- except, of
+course, that DVIPSONE does not normally use bit-mapped fonts!
+
+Font substitution can be used to print a document calling for fonts that are
+not available.  Printer resident fonts can be used, as can any Adobe Type 1
+font in ATM compatible form.  Outline fonts can be remapped by DVIPSONE to
+use different character encodings, as, for example, the encoding normally
+employed by TeX in text fonts.  
+
+A utility program supplied with DVIPSONE called AFMtoTFM can be used to
+produce TeX font metric files (TFM), needed by TeX, from Adobe font metric
+files (AFM).  Another utility called PKtoPS makes Adobe Type 3 fonts from TeX
+bitmap fonts (PK files) --- in case a font is needed that is not yet
+available in outline form. 
+
+=====>	DVIWindo & DVIPSONE provide bitmap-free support for TeX!	<======

@@ -1,0 +1,51 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+============================================================================
+    ATM 4.0 for Windows 95/98, ATM 4.0 for Windows NT, and Base 13 fonts.
+============================================================================
+
+Windows 95/98: To install ATM 4.0, double click `My Computer', then `ATM',
+			   then `Win95', and finally `install.exe'		
+
+Windows NT 4:  To install ATM 4.0, double click `My Computer', then `ATM',
+			   then `NT4', and finally `setup.exe'		
+
+The above procedure will also install the `Base 13' fonts
+(Times, Helvetica, and Courier families, and Symbol).
+These are the fonts recently revised by Adobe for PostScript 3, 
+with improved hinting and improved kerning pairs.
+
+If you are installing ATM 4.0 from a Y&Y TeX System CD, then the 
+above will *also* install the fonts that came with the TeX system.  
+If you need to install just ATM itself, without these additional fonts, 
+then install from `\ATM\Win95_NoFonts' or `\ATM\NT4_NoFonts' instead.
+
+Trouble Shooting:
+
+In Windows 95, if you have many fonts, you may run out of space
+in win.ini, which is limited to 64k bytes.  This happens when
+you have several [PostScript,...] sections for different printers.
+You can either remove the sections you don't need, or change the
+preference settings in ATM control panel.
+
+You get to the ATM control panel using `Start > Programs > Adobe > ATM'
+Select the `Settings' tab and click on `MS PostScript Driver'.
+Click on `Mark as Not to be installed for PostScript Printer'.
+This does mean that you won't be able to print to PostScript devices 
+with these fonts from Windows applications.
+
+If you are using a PCL printer in Windows 95/98 then you may have
+problems with reencoded fonts. One way to try and work around this bug 
+in the MS and HP printer drivers is to check `Print Fonts as Graphics'
+in the `Advanced' section of the `Settings' tab of the ATM control panel.
+If this doesn't solve the problem, look for settings like 
+`Print TrueType fonts as bitmaps' or `Print whole page as bitmap'
+in the printer driver reached from `Start > Settings > Printers'.
+
+------------------------------------------------------------------------------
+Adobe Type Manager 4.0 for Windows 95 is Copyright 1991-1996 Adobe Systems, Inc. 
+Adobe Type Manager 4.0 for Windows NT is Copyright 1993-1997 Adobe Systems, Inc.
+ATM is protected by US patents 5,200,740; 5,233,336; 5,237,313; 5,255,357.
+Adobe Type Manager and ATM are registered trademarks of Adobe Systems, Inc. 
+Windows and Windows NT are registered trademarks of Microsoft, Inc.
+------------------------------------------------------------------------------

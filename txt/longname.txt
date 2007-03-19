@@ -1,0 +1,52 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Long file names in TeX	 (longnames.txt):
+=========================================
+
+If you install release 2.0, the correct long names will be used for the
+handful of files that have long names.  Ignore this file in that case.
+
+Y&Y TeX can handle long files in Windows 95 and Windows NT.  This leads
+to a problem if the files are stored under a truncated, abbreviated name
+(something that is ironically not a problem in Windows 3.1 or DOS).
+
+Most file names in the TeX world are 8 characters or less, with file
+extensions of 3 characters or less.  This way, names can be the same
+on all platforms including DOS.
+
+A few names, however, do not fit this pattern:
+
+	tex.pool	used by ini-TeX when creating a new format
+
+Y&Y TeX `special cases' tex.pool, and automatically looks for `tex.poo' 
+if `tex.pool' is not found.
+
+	lcircle10.tfm	font used by LaTeX in picture environment
+	lcirclew10.tfm	font used by LaTeX in picture environment
+
+In addition, some style files in the `tools' package for LaTeX 2e:
+
+	longtable.dtx
+	afterpage.dtx
+	enumerate.dtx
+	indentfirst.dtx
+
+If you unpack files from a DOS diskette or from a ZIP file you may find that
+you have shortened names, truncated to 8 characters.  There are a couple of
+ways to deal with this (in decreasing order of desirability):
+
+(1)	Rename the files to have the long names.  If you do this in Windows 95 
+	using the `rename' command from the DOS prompt you will be in the
+	fortunate position where the file can be accessed using *either* the
+	shortened or the long name. For example, after
+
+		rename longtabl.dtx longtable.dtx
+
+	you can refer to the file by either name.
+
+(2)	Use -8 on the Y&Y TeX command line.  This automatically truncates
+	all file names to the DOS 8+3 convention.  You can add this command
+	line option in the tex.bat batch file, or perhaps more conveniently,
+	in a TEX=... line in the [Window] section of dviwindo.ini.
+
+(3)	Shorten the file names in the source files that call for them.

@@ -1,0 +1,39 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+/* INTERACTIVE MODE FUNCTION KEYS: */
+
+/* escape		stop analysis at this point, close files, and exit */
+/* left arrow		move cursor to next vertical stroke further left */
+/* right arrow		move cursor to next vertical stroke further right */
+/* down arrow		move cursor to next horizontal stroke lower down */
+/* up arrow		move cursor to next horizontal stroke higher up */
+/* Ins			flag this stroke */
+/* Del			remove flag from this stroke */
+/* End			write character level hint and go to next character */
+/* Home			return to previous character */
+/* N-+			zoom in one step (magnify) */
+/* N--			zoom out one step (demagnify) */
+/* Control left arrow	move screen image further left */
+/* Control right arrow	move screen image further right */
+/* Control down arrow	move screen image lower down */
+/* Control up arrow	move screen image higher up */
+/* Pg Dn		leave interactive mode, but still display characters */ 
+/* Pd Up		leave interactive mode, do not display characters */
+/* Control Ins		generate ghost stem, and flag both strokes */
+/* Control Del		remove both strokes of a stem if possible */
+
+/* F-1			set flags on all stroke positions */
+/* C-F-1		clear flags on all stroke positions */
+/* F-2 			show vstrokes even if italic or slanted font */
+/* C-F-2		show vstrokes only if not italic or slanted (default) */
+/* F-3 			show strokes flagged by guessing algorithm */
+/* F-4			show strokes flagged in hinting file - if supplied */
+/* F-5			insert strokes for bbox */
+/* C-F-5		do not insert strokes for bbox (default) */
+/* F-6			level almost horizontal lineto's */
+/* C-F-6		do not level almost horizontal lineto's (default) */
+/* F-7 			combine almost colinear lineto's */
+/* C-F-7		do not combine almost colinear lineto's (default) */
+/* F-8			linearize almost linear curveto's */
+/* C-F-8		do not linearize almost linear curveto's (default) */
+

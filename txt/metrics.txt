@@ -1,0 +1,501 @@
+****************************************************************************
+		COPYRIGHT (c) 1990 - 1992 Y&Y. All rights reserved.
+	Placed in the public domain in 2006 by the TeX Users Group.
+****************************************************************************
+
+	NOTICE: Please ascertain whether the outline font file that you plan
+	to work on has any restrictions on modifications, reverse enginering,
+	or conversion before using these utilities.  Typically there are no
+	restrictions on manipulations of font metric files.
+
+****************************************************************************
+
+Outline font and font metric file manipulation package:
+=======================================================
+
+The utility programs have a fairly uniform interface.  All take command line
+flags and command line arguments.  Command line flags stand on their own
+(such as `-v' for `verbose mode'), while command line arguments are followed
+by an argument (such as `-c=textext', which specifies an encoding vector
+file).  In most cases an `=' is used before the argument, but some older
+programs require a ` ' instead.  See each programs usage summary for details.
+
+Most of the utility programs can process multiple files on one invocation
+(when that makes sense).  The same command line flags and arguments are in
+effect for all files.  Wild card file names may be used (`*' and `?').
+
+The output file(s) (if any) appears in the current directory.  To reduce the
+possibility of confusion, make the current directory something other than the
+directory from which source files are read. The names of output files
+typically are the same as those of the input files, but with different
+extensions.  So PFBtoPFA takes in files with extension `PFB' and generates
+files with extension `PFA'.
+
+Watch the on-screen output from the utilities for error messages and warning
+messages.  Often the programs will attempt to continue despite apparent
+problems.  But a warning message may mean that the resulting file will not
+work as expected.  Sometimes such warning message may be buried in other
+voluminous output.  In this case it may help to redirect the output to a file
+using `>' on the command line and then read this using a text editor.
+
+Several of the programs allow specification of a file containing a specific
+font encoding vector.  Many sample encoding vector files may be found in the
+subdirectory `vec'.  Each non-comment line in such a file contains a numeric
+code followed by a character name - for example:
+
+65	A
+
+Comment lines start with `%'.  The first line of a file is a comment
+containing a short descriptive name of the encoding following the string
+`Encoding:' - for example:
+
+% Encoding: Adobe StandardEncoding
+
+This encoding name is inserted into TFM and PFM files constructed using this
+encoding vector --- as a convenience when one later wishes to determine
+exactly what encoding was used to generate a particular PFM or TFM file.
+
+Command line arguments of the utility programs:
+===============================================
+
+To see what command line flags and command line arguments each of the utility
+programs takes, invoke it with `-?' as the only argument.  For example:
+
+	afmtopfm -?
+
+Some of the older utilities give a command line summary when envoked without
+arguments.  Some of the important command line flags and arguments are
+discussed here:
+
+Generally, the command line flag `v' stands for `verbose'. 
+
+In the case of `AFMtoPFM', the command line flags `s' and `d' are use to
+suppress the default Windows use of Windows ANSI encoding.  Omit these
+two flags ONLY when you actually WANT Windows ANSI encoding.
+
+For fonts that use the `control' character range (0 through 31) add the
+command line flag `t' to both AFMtoPFM and REENCODE to get these positions
+remapped to higher up (161 through 195), where Windows applications can 
+more easily get at them  (This is how the Computer Modern fonts are set up,
+for example). 
+
+In the case of AFMtoTFM, the command line flag `a' asks the program to try
+and insert as many of the standard TeX `ligatures' (such as `---' => emdash)
+as possible.  For fixed-width fonts, use the flag `n' instead to suppress
+ligatures found in the AFM files of some fixed-width fonts.
+
+Definitions:
+============
+
+PFB		`Printer Font Binary' file.  Contains the actual outline
+		font.  Used for printing, and also for screen display 
+		using Adobe Type Manager (ATM).  This is a compact binary
+		representation of the outline font used on PCs.
+
+PFA		`Printer Font ASCII' file.  Contains the actual outline
+		font.  This is a more verbose hexadecimal representation of 
+		the outline font commonly used on Unix systems.  Also useful
+		when modifying an outline font file, since the PFB file cannot
+		be edited without disturbing binary segment length codes.
+
+MAC		Abbreviation used here to denote a MacIntosh outline font.
+		On the MacIntosh these do not have a file name extension.
+		These files are stored in the system folder and are the Mac's
+		equivalent of PFB files.  Note that these files are binary
+		and have a complex structure. When transferring to and from
+		a PC, make sure to use `MacBinary' mode.
+
+AFM		Adobe Font Metric file.  Human readable metric file from
+		which more compact binary formats can be derived.  Contains
+		basic font metric information, such as character widths and
+		kerning pairs.  Also contains ligature information, character
+		bounding boxes, composite character information, and font
+		properties.  Importantly, the encoding vector is spelled out.
+		And there is information on unencoded characters.  This is the
+		ONLY font metric format that provides complete information.
+
+PFM		MS Windows `Printer Font Metric' file.  Compact binary metric
+		file used by Windows.  Contains basic font metric information
+		such as character widths and kerning pairs.  Does not contain
+		ligature information or full encoding vector. Contains Windows
+		`Face' name of font - which is what is listed in font menus.
+
+TFM		TeX Font Metric file. Compact binary metric file used by TeX.
+		Contains basic font metric information such as character
+		widths and kerning pairs, as well as ligature information.
+		Also contains character bounding box and, in the case of math
+		fonts, additional information for constructing large
+		delimiters. Does not contain full encoding vector.
+
+SCR		Shorthand used here for MacIntosh screen fonts.  On the
+		MacIntosh a screen font is needed so that ATM can access an
+		outline font.  The screen font is installed using the 
+		Font D/A mover.  The screen font file contains the metric
+		information in its `FOND resource'.  In this respect the
+		screen font file is analogous to the PFM file on the PC.
+		Difference is that on the Mac this metric information is
+		bundled with an actual bitmapped screen font. 
+
+WARNING: MacIntosh outline font files and `screen font' files have an empty 
+	 data fork. All of the action is in the resource fork.  Hence these 
+	 files must be transferred in MacBinary form.  All will be lost if 
+	 only the data fork is copied!  
+
+List of programs and their actions:
+===================================
+
+PFBtoPFA	Make Printer Font ASCII (PFA) file from Printer Font Binary
+		(PFB) format.  The PFA file can be sent directly to the
+		printer using, for example, the DOS COPY command.  The
+		compact PFB format is the standard format on the PC. The PFA
+		format is commonly used on Unix systems.  The encoding (and
+		the fontname) can be freely edited in the PFA file since it 
+		is does not contain binary section length codes.
+
+PFAtoPFB	Make Printer Font Binary (PFB) file from Printer Font ASCII
+		(PFA) format.  The compact PFB form is used by ATM and the
+		Windows PostScript printer driver.
+
+WARNING:  Do NOT attempt to edit a PFB file directly.  It contains binary
+length codes, which will be invalid after editing.  Convert the PFB file to
+PFA form first --- edit the PFA file --- then convert back to PFB format.  
+
+MACtoPFA	Make Printer Font ASCII (PFA) file from MacIntosh outline
+		font file. The outline font file is the one in the System
+		folder, NOT the screen font in the System file (the latter is
+		what is accessed via Font/DA mover). 
+
+		It is assumed that the MacIntosh font file has
+		been transferred in MacBinary format - that is it has the 
+		128 byte file header. (It has to be in that form anyway, since
+		the data fork in an outline font is empty, so if the file is
+		transferred in another way, nothing is left).  
+
+		MACtoPFA assumes the input is in MacBinary format.  It will
+		recognize a file that just contains the resource fork itself,
+		however, and process it correctly also.		
+
+	NOTE:	MACtoPFA assumes that the POST resources are ordered in the
+		file and therefore will not work on very old copy-protected
+		outline font files.
+
+		The resulting PFA file can be converted to PFB format using
+		PFAtoPFA, for use with ATM and the Windows printer driver.
+
+	NOTE: 	in Windows, one needs a Printer Font Metric (PFM)
+		in order to access an outline font.  The PFM file is NOT
+		created by MACtoPFA (because the metric information required
+		is not in the MacIntosh outline font file).  Use AFMtoPFM to 
+		construct the PFM file if needed from the AFM file - use
+		SCRtoAFM to make the AFM file first if none is available.
+		(But watch out for difference in encoding between Mac and PC).
+
+		Some applications, such as DVIPSONE, do not need PFM files.
+
+PFBtoMAC	Make MacIntosh format outline font file from a Printer Font
+		Binary file (PFB).  If you start with a PFA file, convert it
+		first to PFB format using PFAtoPFB.
+
+	NOTE: 	on the MacIntosh, an outline font cannot be
+		accessed directly by ATM, only via a screen font (which
+		contains the metric information).  PFBtoMac does NOT
+		create the required screen fonts (because the PFB
+		file does not contain the required metric information).
+		Use AFMtoSCR to create a suitable `screen font' from an
+		AFM file.  Create an AFM file from a PFM file first if none is
+		available (But watch out for difference in encoding between
+		Mac and PC). 
+
+		It is possible to specify an icon different from the default.
+		The icon should be in the form produced by the Windows SDK
+		icon editor.  It has a 80 byte header (which is ignored by
+		PFBtoMAC)  followed by two 32 x 32 bitmaps (128 bytes each).
+		The two bitmaps are used to construct the icon and the mask.
+
+		The output is in MacBinary format, that is, it has a 128 byte
+		header containing Finder information, followed by the (empty)
+		data fork and the resource fork. Some methods for transferring
+		files to a Mac require the resource fork to be in a separate
+		file. Simply remove the first 128 bytes in this case.
+
+SCRtoAFM	Make AFM file from MacIntosh screen font file.  On the
+		MacIntosh, the font metric information is in the FOND
+		resource, which is found in the screen font file. 
+		If there are FOND resources for several different fonts in
+		one screen font file, then metric information for each of
+		these fonts will be placed in sequence in the output file.  
+		Each section is preceded by a line specifying the PostScript
+		FontName.
+		
+	NOTE: 	CharWidths sections, KernPair sections, and FontBBoxes may 
+		be intermingled, but each starts with the correct FontName.
+		Use a text editor to make separate AFM files for each font by
+		combining corresponding CharMetrics sections, KernPair
+		sections, and FontBBoxes (if present in screen font).
+
+		Extra information not recorded in the AFM file is shown on
+		screen when the `verbose' command line flag (`-v') is used
+		(Be prepared for voluminous output, which can be redirected
+		to a file using `>').
+
+		SCRtoAFM assumes the input is in MacBinary format.  It will
+		recognize a file that just contains the resource fork itself,
+		however, and process it correctly also.
+
+AFMtoSCR	Makes `fake' screen font from AFM file. This creates a
+		complete FOND resource that contains character widths,
+		kern pairs and other font metric information.  The FOND
+		resource is associated with a `fake' bitmap screen font -
+		the NFNT resource - at a very small size (4pt).  This bitmap
+		screen font is never used - rendering of all sizes will be 
+		by ATM.  The reason for creating this fake screen font is 
+		that ATM cannot locate the actual outline font without a
+		corresponding `screen font'.  The metric information in the
+		FOND resource is moved around by moving the `screen font'.
+
+		AFMtoSCR normally deals with one font at a time. 
+		Use Font/DA mover on the MacIntosh to combine several 
+		screen fonts into one file.
+
+		AFMtoSCR can however combine `regular', `italic', `bold' and
+		`bold-italic' styles of one face into one `screen font'.
+		Simply give it four AFM file arguments on the command line.
+
+		Alternatively, use `Adobe Type Reunion' to bring together
+		several different `styles' (regular, italic, bold,
+		bold-italic) of a font, so that they are not listed
+		separately in font menus. 
+
+		The output is in MacBinary format, that is, it has a 128 byte
+		header containing Finder information, followed by the (empty)
+		data fork and the resource fork. Some methods for transferring
+		files to a Mac require the resource fork to be in a separate
+		file. Simply remove the first 128 bytes in this case.
+
+AFMtoPFM	Make Windows Printer Font Metric (PFM) files from Adobe
+		font metric files (AFM). Provides for forced used of `native'
+		encoding as opposed to default Windows ANSI encoding.
+		Allows specification of arbitrary encoding vector, overriding
+		the automatically generated Windows face name, and provides
+		for specification of other font properties.
+
+PFMtoAFM	Make Adobe font metric (AFM) from Windows Printer Font Metric
+		file (PFM).  Useful for analysing existing PFM files.
+		Extra information not recorded in the AFM file is shown on
+		screen when the `verbose' command line flag (`-v') is used
+		(Be prepared for voluminous output, which can be redirected
+		to a file using `>').
+
+AFMtoTFM	Make TeX font metric file (TFM) from Adobe font metric file
+		(AFM).  Distinguished from similar programs by ability to use
+		ARBITRARY encoding of the font, not a fixed ad hoc encoding.
+		There is also explicit control over `excess' kern pairs
+		that may not fit into the TFM file format limitations.
+		The standard TeX `ligatures' (s.a. `---' => `emdash')
+		can be requested.  Finally, a special comment syntax is
+		supported in the AFM file for specification of information
+		needed in TeX math fonts (for examples, see AFM files in
+		AFM subdirectory).  This comment syntax provides for
+		specification of the font parameters as well as `ascending
+		sequences' of related characters and `extensible' characters.
+
+TFMtoAFM	Make Adobe font metric file (AFM) from TeX font metric file
+		(TFM).  Useful for seeing what happens in Computer Modern,
+		fonts for example.  Generates extra comments containing all
+		of the information in TeX math fonts that normally would
+		NOT appear in an AFM file, regarding ascending sequences of
+		related characters and extensible characters, as well as all
+		of the font parameters.  Additional information is provided
+		on screen when verbose mode is selected.  This can be
+		redirected  to file using `>' if desired.
+
+TFMtoMET	Packages TFM files into resources for use with TeXtures.
+		This can be useful when working with math fonts, since
+		EdMetrics cannot create proper TeX metric information	
+		from AFM files of math fonts. Make sure to use the `t'
+		command line parameter when creating the TFM files first.
+
+REENCODE	Allows reencoding of PFB and PFA files using arbitrary
+		encoding vector specified in encoding vector file.
+		Useful for working with Windows, which does not support 
+		on-the-fly reencoding of fonts.  Also useful to work
+		around a bug in ATM 1.1, ATM 1.15 & ATM 2.0, which enforces
+		Windows ANSI reencoding when the font used StandardEncoding.
+
+		(REENCODE can also be applied to AFM files).
+
+Notes and Comments and Some Limitations:
+========================================
+
+Outline Font Files:
+-------------------
+
+PFA and PFB formats for outline fonts contain EXACTLY the same information,
+so nothing is lost in converting back and forth between these formats.
+
+The MacIntosh outline font format contains the same font data as a PFB file,
+with some convenient extra bits of information tacked on, including a font
+family icon, version, copyright, and library strings, and a resource ID
+number.  This extra information is lost in conversion to PFA format using
+MACtoPFA.  It is possible to insert the extra information, using command
+line flags, when converting a PFB file to MacIntosh outline font format 
+with PFBtoMAC.  But it is not required for the font to work on the Mac.
+
+NOTE:  Conversion between different formats of the outline font file itself
+is safe: all shape, metric, or hinting information is retained.
+
+Font Metric Files:
+------------------
+
+On the other hand, the various font metric formats do NOT contain exactly the
+same kind of information.  Conversion from one format to another will not
+produce information corresponding to that missing in the source format, and
+conversely, some information for which there is no representation in the
+target format will have to discarded.  The information discarded can be shown
+if the `verbose flag' (`-v') is used on the command line.  (This output -
+which in some cases can be quite voluminous - can be redirected for
+convenience to a file using `>' on the command line). 
+
+WARNING: Converting from one metric file format to another and back will
+typically NOT recreate the original file exactly. However, the basic
+character width and kerning information WILL be intact.
+
+For example, both PFM and Mac screen font formats allow for the basic
+character width and kerning information, but do NOT provide for ligature
+information, which both AFM and TFM form DO encode.
+
+The AFM format and (to some extend) the Mac screen font format allow for
+specification of the encoding vector, which PFM and TFM format do NOT.  
+The PFM file has no information on character bounding boxes (needed to 
+create TFM files).  Also, the AFM format is the ONLY one that provides
+complete information on unencoded characters.  This information is lost
+COMPLETELY in all other font metric file formats.  So the AFM format must be
+considered the ultimate repository of metric info.
+
+TFM files for math fonts contain extra information linking together
+characters of similar shape, but different sizes, information on how to
+construct large delimiters out of pieces, and so on.  The utilities here
+provide an extension of the AFM Comment syntax to allow this information to
+be represented in an AFM file.
+
+An additional small problem at times is the constraint on file names in the
+PC to 8 characters plus 3 character extension (with case ignored).  This
+means that one has to dream up short names for some files that have long file
+names on the MacIntosh (and avoid conflict between files that have the same 8
+starting characters on the MacIntosh).
+
+Potential Problems with Reencoding:
+===================================
+
+When you reencode a font, keep in mind that most Adobe PostScript
+interpreters have a `feature' that requires that accents and base characters
+called for by a composite character must be in the encoding.  So for example,
+if your encoding contains the character `Edieresis', then it better also
+contain the characters `E' and `dieresis' (that is, it is not sufficient that
+these characters exist in the font - they have to actually be in the
+encoding).  Interpreters with this `feature' respond with an `invalidfont'
+error when you try and render a composite character so affected.
+
+This has some serious consequences when attempting to reencode to IBM OEM
+encoding for example, since this encoding does not contain any accents, but
+does contain accented characters.  This makes Adobe's PrestigeElite and
+LetterGothic basically useless for this purpose, even though they do contain
+all of the characters needed for IBM OEM encoding.  Use IBMExtended from
+Imprimatur Systems Inc. in Cambridge, Mass instead (IBMExtended uses
+subroutines instead of the Type 1 operator `seac' to build the accented
+characters, and so is not subject to this problem).
+
+ATM for Windows does not have this problem; instead it has an even more
+serious `feature': accents must be in specific positions that are hard-wired
+into ATM.  This can be a major source of confusion when a font is reencoded.
+Accents will be pulled out of the hard-wired positions used by ATM, rather
+than from where the accents actually occur in the chosen encoding --- with
+somewhat surprising results!
+
+Presently the only way to deal with this is to `compromise' and use the fixed
+positions demanded by ATM.  See the vector file `texannew.vec' for further
+information and a sample encoding that works with ATM for Windows.
+
+An amusing side light on this same problem is what happens in ATM 2.0 when 
+one attempts to reencode a font to IBM OEM encoding, where `ecircumflex'
+is in position 136.  Problem is, ATM 2.0 reserves 136 for `circumflex'.
+When you try to render `ecircumflex', Windows crashes, because ATM 
+overflows its stack trying to render `ecircumflex', which requires rendering
+an `e' and a `dieresis', which it thinks is in code position 136, which....
+
+What makes this whole thing even more frustrating, is that the hard wired
+encoding has changed between ATM 1.15 and ATM 2.0. The root cause was that
+MicroSoft added some characters to Windows `ANSI' when upgrading from Windows
+3.0 to Windows 3.1.  Some of these landed (by chance?) on top of positions
+that ATM had hard-wired for accents, so Adobe had to shift some of these
+hard-wired accents around.  Old work-arounds to this problem no longer work...
+
+Even more unfortunate is that fact that part of this rearrangement has moved
+two `accent' characters (`caron' and `dotlessi') to code positions 1 and 2.
+Many fonts use the character range 0 - 31 (such as all of the Computer Modern
+fonts used by TeX, all of the American Mathematical Society fonts and so on).
+
+Speaking of the `control character' code positions, another `feature' of ATM
+for Windows is that a character in the encoding at position 0 will not be
+rendered.  The reason is that ATM maps all characters that do not appear in
+the encoding to code position 0 --- and whatever ends up there last is what
+will be rendered --- in many fonts this is `.notdef'.  So short of decrypting
+a font and rearranging the CharStrings, there is no way to use character code
+position 0 in ATM for Windows!
+
+Finally, ATM for Windows has another serious `feature' relating to
+encoding: it cannot handle multiply encoded characters (characters that can
+be accessed by more than one character code).  This is disastrous, for
+example, for ISO Latin encoding where several accents are accessible in two
+positions.  What happens is that ATM associates a glyph with the FIRST
+code mentioned in the encoding vector ONLY.  To render the glyph you want,
+you have to use that character code.
+
+In addition, if you use the alternate character code, you may corrupt
+ATM and/or Windows.  One of the first symptoms of such problems is the 
+so-called `invisible ink' phenomenon, where ATM suddenly refuses to render
+anything (until it is `awakened' again by some other font choice or a change
+in the phase of the moon or whatever).  NOTE: the `invisible ink' part
+of this problem appears to have been solved in ATM 2.02 for Windows.
+
+By the way, you will be happy to know that ATM for the MacIntosh has none of
+these problems...
+
+AUXILIARY UTILITY PROGRAMS:
+===========================
+
+There are some additional programs included that may prove useful at times:
+
+MODEX		Allows setting of baud rates on serial ports to higher than
+		19,200 baud (38,400 and 57,600 baud). Overcomes DOS
+		limitation to 19,200. Use as you would use DOS MODE command.
+		Without arguments: displays present settings on COM1 & COM2.
+
+DOWNLOAD 	Can be used to download fonts, to reset the printer, and to
+		ask the printer to print a list of fonts that it knows about.
+		Expands PFB to PFA files on the way to the printer, and can
+		add code to make the font resident in the printer.
+		Use `-?' on command line to see all the options.
+
+SERIAL		Useful for sending PS files to printers over serial lines when
+		the printer does not support hardware handshaking (such as the
+		original Apple LaserWriter).  Also useful for capturing
+		information sent back by the printer over the serial line.
+		Data from printer appears on screen and in a log file.
+
+NAMECASE	Change the case of FontNames in PFB, PFA, and PFM files.
+		Useful for the BSR Computer Modern outline fonts, which
+		have the FontNames in upper case (to be compatible with the
+		MacIntosh versions, which suffer from the 5 + 3 + 3 ...
+		font-name contraction problem).
+
+MACANAL		Shows data and resource fork information in MacIntosh file.
+		Can be useful to understand what is wrong with a file that
+		is not accepted by one of the other utilities (typically
+		because something was lost in the transfer from Mac to PC).
+		May also be useful for looking at file before using ResEdit.
+
+EHANDLER.PS 	Improved version of Adobe's error handler.  Invaluable for
+		debugging problems with PostScript code.  Send to printer
+		ahead of time - it stays loaded until printer is power cycled.
+		One cannot debug PostScript code without an error handler.

@@ -1,0 +1,367 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+***********************************************************************
+        Using "PS" Type 1 fonts with DVIPS      (file: dvipsfnt.txt)
+***********************************************************************
+
+Some consider the documentation that comes with DVIPS `sparse' when it comes
+to instructions on using fonts in PS Type 1 format.  Still, people who have
+*actually read* it, claim it is quite comprehensive :-).
+
+Please consult `dvips.tex', which comes with DVIPS (and perhaps
+`dvips.doc' written by G. Sawade). Section 11. `PSNFSS and DVIPS' of
+`dvips.doc,' shows that using PS Type 1 fonts with DVIPS and LaTeX 2e
+can be a non-trivial thing.  [See http://tug.org/dvips for the latest
+manual.]
+
+* See notes at end on web resources relating to DVIPS and its documentation.
+
+You will find a discussion of font use in LaTeX 2e in Chapter 10 of the 
+`LaTeX Graphics Companion' by Michel Goossens, Sebastian Rahtz, and
+Frank Mittelbach, published by Addison-Wesley ISBN 0-201-85469-4.
+
+******************************************************************************
+
+You may find that the method discussed here is simpler --- you don't
+neccessarily need two TFM and one VF file per font.
+
+Here is what you have to do to use fonts in Adode Type 1 format with DVIPS.
+
+Short Summary:
+-------------
+
+(0) Make sure you have a recent copy of DVIPS.  Handling of Type 1 fonts
+and font encoding has changed several times over the last few years.
+
+(1) Tell DVIPS where it can find the actual PFB or PFA font files. In the
+`config.ps' file, edit the line that starts with `H' (header), and add 
+the proper path. This might be /texmf/fonts/type1 or some subdirectory
+thereof, such as /texmf/fonts/type1/mathtime.
+
+(2) Tell DVIPS how to map TFM file names into corresponding PostScript
+FontNames.  A good way to do this is to use p+ at the end of `config.ps'
+to link to any new `psfonts.map' files you want to add (e.g. psfonts.lb, 
+psfonts.mt, psfonts.ams, psfonts.em etc.).
+
+(3) If your PS Type 1 fonts are set up for a different encoding schemes 
+than that assumed by TeX (wich is true for anything other than the Computer 
+Modern fonts!), then you have to tell DVIPS to reencode the fonts.  It is 
+possible to do this in the `psfonts' map.
+
+(4) If your system needs `virtual fonts' to use PS Type 1 fonts then you 
+need the corresponding VF files. In this case you have to edit the line in
+`config.ps' that starts with V (virtual fonts) to add the proper path.  
+This might be /texmf/fonts/vf or some subdirectory thereof, such as
+/texmf/fonts/vf/mathtime.
+
+(5) Make sure that your TFM files are set up for the encoding you are using.
+(In the case of fonts supplied on diskette with TFM files, copy the TFM files
+from the appropriate sub-directory on the font diskette --- e.g. `texnansi'
+in the case of LY1 font encoding or `tex256' in the case of T1 encoding).
+The TFM files may go in some directory like /texmf/fonts/tfm or some
+subdirectory thereof, such as /texmf/fonts/tfm/mathtime.  You can tell
+DVIPS where these are, using a line in `config.ps' that starts with T (TFM).
+Just make sure TeX uses the very same TFM files or trouble may ensue.
+
+(6) Make sure that your TeX source code is set up for the same font encoding.
+For example, \usepackage[LY1]{fontenc} or \usepackage[T1]{fontenc}.
+
+Note that the LaTeX 2e PSNFSS package provides extensive support for fonts.
+This support includes package files such as `lucidabr.dtx,' `lucidabr.ins,'
+`lucidabr.yy' and `mathtime.dtx' and `mathtime.ins' This may be *all* you
+need on a TeX system with strong scalable font support.
+
+On systems using virtual fonts, you will *also* need files from another part
+of the TeX Archive hierarchy which includes VF, TFM, and other files.
+
+In these notes reference is made to various configuration files.
+Where these file are depends on your particular directory structure.
+Since there is no standardization, only general guidelines can be given.
+Often settings of environment variables (like TEXMF) give important clues.
+
+Setting up the psfonts.map file:
+--------------------------------
+
+(1) First of all, DVIPS needs to know that a font is a Type 1 font so
+it will not look for a bitmapped PK font file (or try and generate one!).
+It also needs to know the relationship between the name used for a font
+in TeX (i.e. the name of the TFM file) and the PostScript FontName.
+The mapping between these two names is given in the file `psfonts.map'
+(which may be in some directory like /usr/lib/texmf/dvips).
+This file lists TeX TFM file names and corresponding PS FontNames. e.g.:
+
+  tir  Times-Roman
+
+Fonts made for use with TeX (such as LucidaBright and MathTime) come with
+ready-made add-on files with names that typically start with `psfonts...'
+(psfonts.lb, psfonts.lbe, psfonts.mt, psfonts.cm, psfonts.ams, psfonts.ltx).
+For other fonts, file names and PS FontNames are given by the font foundry
+in its documentation for the font set.  You can also look near the beginning
+of the AFM (or PFA) file for the `FontName' entry.
+
+You can add new lines for Type 1 fonts either directly to the end of an
+existing `psfonts.map' file, or, more conveniently, in another file that
+is called in at the end of the `config.ps' file, using something like:
+
+  p +psfonts.lb
+
+You can append multiple files in this statement (use commas to separate).
+Put the `psfonts.xxx' files in the same directory as `config.ps'
+
+(2) Next --- if the font is not printer resident --- you have to ask DVIPS
+to actually include it in the PostScript file it produces.  DVIPS can handle
+font files in the compact binary PFB, as well as the `ASCII' PFA format.
+You ask DVIPS to include the font file using `<' and the file name, e.g.
+
+  tirsc  Times-RomanSC  <tirsc.pfb
+
+NOTE: Don't include fonts that are printer resident, such as Times,
+      Helvetica, Courier, Symbol, and ZapfDingbats.  You may not have the
+      corresponding PFB files - what's more: you don't need them for printing.
+
+(3) Then, if you do nothing else, DVIPS will include the font file verbatim,
+*without reencoding* it.  Which is the right thing for math/symbol/decorative 
+fonts.  It is also appropriate for the Computer Modern fonts, AMS fonts, LaTeX
+line and circle fonts in Type 1 format, since these all have their 
+own fixed, specialized, hard-wired character layout.
+
+In the case of an ordinary Type 1 *text* font, however, this means that the
+character layout will be the default Adobe StandardEncoding, which is almost
+*never* what you want, since this does not provide access to many of the
+glyphs (such as accented and composite characters and 21 other glyphs).
+
+Note that some of the `psfonts...'  files supplied with fonts commonly used
+with TeX do *not* reencode the fonts --- you will have to edit these files
+accordingly.
+
+You have to do two things to have DVIPS reencode a text font:
+(i)  ask it to include the appropriate encoding vector (in PostScript form), and
+(ii) execute a command to actually apply this encoding vector to the font. e.g.
+
+    lbr LucidaBright "TeXnANSIEncoding ReEncodeFont" <texnansi.enc <lbr.pfb
+
+which will reencode LucidaBright to TeX 'n ANSI encoding, or
+
+    putr8r Utopia-Regular "TeXBase1Encoding ReEncodeFont" <8r.enc <putr.pfb
+
+which will reencode Utopia-Regular to 8r (8 bit raw) encoding.
+
+NOTE: Omit the PFB file entry when dealing with printer resident fonts.
+
+NOTE: Do not put a space between the < and the font file name.
+
+NOTE: Make sure the last line has a line terminator at the end.
+
+IMPORTANT NOTE: do *NOT* reencode math fonts (such as fonts with names
+starting with `LucidaNewMath', the fonts MTMI, MTSY, MTEX, Adobe Math Pi
+fonts etc).  Math fonts typically have hard-wired, fixed, built-in encoding.
+Similarly, you usually do *not* want to reencode Computer Modern ,
+AMS fonts, extra LaTeX + SliTeX fonts etc.
+
+Some font sets come with several psfonts.* files, differing in file name
+extension.  For example, with MathTime one has:
+
+  psfonts.mt    assumes fonts have been downloaded to printer, no reencoding
+  psfonts.mtx   downloads fonts in PFA format, no reencoding
+  psfonts.mtz   downloads fonts in PFB format, no reencoding
+  psfonts.mty   downloads fonts in PFB format, reencodes to TeX 'n ANSI
+  psfonts.mt8   downloads fonts in PFB format, reencodes to 8r TeX Base 1
+
+If you use TeX 'n ANSI encoding, (i) use the `psfonts' file with extension
+ending in `y', (ii) use the TFM files with extension .tft (and rename to
+extension .tfm), (iii) add \input texnansi to source file for plain TeX, 
+AMS TeX, LaTeX 2.09 (iv) add \usepackage[LY1]{fontenc} for LaTeX 2e.
+
+If you use T1 encoding use the file with extension ending in `8',
+use the TFM and VF files supplied on CTAN, and use appropriate
+LaTeX 2e command to switch encoding.
+
+If you use font file in PFA form instead of PFB form just edit the files.
+
+Where to put the font files and how to tell DVIPS where they are:
+------------------------------------------------------------------
+
+Unfortunately TeX installation (except on NeXT) have a wide variety of
+directory structures, so precise path names cannot be given.
+
+Make a directory (call it `type1' say) for Type 1 font files
+in the `fonts' directory (which should be in the `texmf' directory).
+Copy all of the PFB (or PFA) files into that directory.
+
+You then need to tell DVIPS where the font are.  On Unix, at least, the file
+`texmf.cnf' ; (in the `texmf' directory) is the path configuration file.
+Check that DVIPSHEADERS in this file is set to include all directories where
+PostScript `prolog' files, encoding vector files, and Type 1 font files may
+be found.  On Unix, directories in this list are separated by colons.  E.g.
+
+DVIPSHEADERS = .:$TEXMF/dvips:$TEXMF/fonts/type1
+
+(where $TEXMF is the base of the tree, e.g. /usr/lib/texmf).
+
+You can instead add (or modify) a line in `.dvipsrc':
+
+H .:/usr/texmf/dvips:/usr/texmf/fonts/type1
+
+This may be handy if you need to override a system-wide `texmf.cnf'
+file, for example, if the font files themselves are installed in your
+own home directory or something...
+
+Choice of TeX `font names':
+---------------------------
+
+The first entry in each line of the `psfonts.map' file is the file name
+of the TFM file for that font.  The TFM file name need not have the
+same root as the file name of the actual outline font itself (or to
+equal the PostScript FontName).
+
+In fact, several naming conventions for fonts exist.  The most common are
+(i) Karl Berry names, or (ii) actual font file names.  Karl Berry has been
+trying to standardize naming of fonts and has assigned names to a large
+number of existing scalable outline fonts.  These names change --- make 
+sure to always get the latest version of his naming file.
+
+The actual font file names typically do not change, but may in some rare
+cases not be the same on different platforms (they *are* the same in the
+case of fonts created for use with TeX, such as Lucida Bright and
+Lucida New Math, as well as MathTime).
+
+Whatever naming scheme you use, make sure the name entered in `psfonts.map'
+matches the name used in TeX for that font --- that is, the name of the TFM
+file.  In some cases you may find it convenient to rename the TFM files to
+match one or the other naming convention.   Alternatively you may want to
+use a font name aliasing file `texfonts.map' supported by some TeX systems.
+
+Note that on Unix TFM file names are case sensitive.  This can lead to
+problems.  In the case of the MathTime fonts, for example, the typical
+installation leaves the TFM files all lower case, while the PostScript
+FontName is uppercase.
+
+Choice of text font encoding:
+-----------------------------
+
+Numerous encoding schemes (character layouts) exist.  Among the most commonly
+used ones are (i) Cork encoding, and (ii) TeX 'n ANSI encoding.
+
+Cork (T1) encoding provides access to accented/composite glyphs used in
+Eastern European languages.  To *fully* implement `Cork' encoding typically
+requires virtual font support --- and hence two TFM files and one VF file per
+font --- since most text fonts have a set of 58 `standard' accented/composite
+characters that do not cover Eastern European languages; only Western Europe.
+
+The support for Cork (T1) encoding in LaTeX 2e provided on CTAN is based on
+the premise that you are using DVIPS and that each Type 1 font will be first
+reencoded to a `raw' `8r' encoding (see example above).  On CTAN you will
+find TFM files set up for this encoding scheme. You can also make new TFM/VF
+files for fonts using this scheme with AFM2TFM (supplied with DVIPS) or
+`fontinst'.
+
+TeX 'n ANSI encoding instead *directly* provides access to all 228 glyphs
+found in most text fonts (plus some extra ligatures that occur in some fonts
+such as Lucida Bright).  TFM files for this encoding scheme may be supplied
+with Type 1 fonts used with TeX (typically with extension `.tft' --- rename
+to have extension `.tfm' before use, of course).  In this case there is no
+need for virtual font support.  You can also make new TFM files for this
+scheme using AFMtoTFM (but not with AFM2TFM).
+
+Whatever encoding scheme you use, make sure to add the information to
+the `psfonts.map' file as indicated above.  Remember that you need to *BOTH*
+ask DVIPS to include an actual encoding vector (using e.g. `<texnansi.enc')
+*AND* to apply that encoding (e.g. "TeXnANSIEncoding ReEncodeFont").
+
+NOTE: Simply asking DVIPS to reencode a font is *not* enough.  See below.
+
+NOTE: Encoding vector files with extension `.vec' are *not* in a format
+suitable for use with DVIPS.  DVIPS needs the encoding vector in PostScript
+form.  Such files typically have extension `.enc'
+
+See http://www.YandY.com/ly1.htm and http://www.YandY.com/usely1.htm for
+some additional information on TeX 'n ANSI encoding and using it with
+fonts from the Adobe Type Library.
+
+Consistency of text font encoding:
+----------------------------------
+
+Documentation relating to TeX is heavily oriented towards use of the CM
+fonts.  Hence issues of font naming and font encoding have not been widely
+discussed or understood.  Also, TeX itself works purely with numeric codes,
+so that encoding issues have to be dealt with by the DVI driver, not by TeX.
+
+All this complexity is typically hidden from view, because plain TeX and
+LaTeX are hard-wired for the Computer Modern fonts and the quite peculiar
+character layouts used by those fonts.  When using fonts other than CM,
+a bit of effort may be required to deal with font naming and encoding issues.
+
+The key to success is *CONSISTENCY*.  All parties must *agree* on the same
+encoding.  It is *not* sufficient to just tell DVIPS to reencode a font, *or*
+to just make a new TFM file based on some encoding vector, *or* to just use a
+TeX macro header file to switch to some encoding.
+
+ALL OF THE FOLLOWING MUST MATCH:
+
+(1) Character set used in your TeX source code file:
+
+  (1a) If you use constructions like \"a \'e \oe \ss to get at accented,
+       composite, and special characters, then this is *not* a problem.
+
+  (1b) If accented characters are instead entered directly, then the `keyboard
+       encoding' must match the rest - *or* a translation must occur on input
+       to TeX. For example, if you use a Windows editor, you can directly
+       enter accented/composite characters if you wish, but these will use
+       numeric codes according to Windows ANSI encoding.  If you use a DOS
+       editor you can also enter such characters directly, but then you will
+       be using DOS code page 850 (or whatever the local code page is).
+
+       In LaTeX 2e, you can translate character codes above 127 on input into
+       TeX macros using something like \usepackage[ansinew]{inputenc} or
+       \usepackage[dos850]{inputenc}.  Removes dependence on input encoding.
+
+       Some TeX implementation also have an `input translation' capability of
+       this sort (where a translation table is specified on the command line).
+
+(2) The TeX macros you use.  For example, for:
+        TeX 'n ANSI encoding, use \input texnansi, 
+        Windows ANSI encoding, use \input ansiacce, 
+
+    In LaTeX2e \usepackage[LY1]{fontenc} to translate to TeX 'n ANSI,
+    or \usepackage[ansinew]{texnansi} to translate to Windows ANSI,
+    or \usepackage[T1]{fontenc} to translate to Cork (output).
+
+(3) The TFM files.  This one is real nasty, since the compact binary TFM
+    files do not betray on the outside what encoding they are set up for!
+    But the TFM files for text fonts *must* be made according to the same
+    encoding.  Fonts used with TeX often are supplied with TFM files for
+    several commonly used encodings.  You can also make your own TFM files
+    using AFMtoTFM, or AFM2TFM.
+
+    In the latter case you will get *TWO* TFMs and one VF file.  The `raw'
+    TFM file will be set up for `8r' encoding, and the other one for `T1'.
+    The VF files provides the remapping between these two encoding schemes.
+
+(4) The fonts as used by the DVI driver (previewer or printer driver).
+    In the case of DVIPS you have to tell it in the `psfonts.map' file not
+    only how font file names map to PostScript FontNames and where the
+    PFB files are, but also what encoding you are assuming.  See above.
+
+    If you are using LaTeX 2e, you may want to use the facilities provided
+    by LaTeX 2e for input and output encoding.  Please refer to the LaTeX 2e
+    documentation.
+
+Virtual Font Issues:
+--------------------
+
+Fonts supplied by Y&Y for use with TeX on IBM PC do *not* require VF support.
+They come with TFM files (one per font) complete with ligatures and kerning.
+With the Y&Y TeX System, new TFM files can also be created for different
+encoding vectors by using `WriteTFM...' from the preview window (or using
+the AFMtoTFM utility directly from the command line).
+
+In the case of MathTime --- on Mac and Unix platforms *only* --- a single font
+(MTMI) does require VF support, however.  This leads to several problems, one
+of which is that the MathTime math italic TFM file is tuned to a version
+001.007 of Times-Italic , and with VF you cannot guarantee that you will link
+to the correct version.  More serious perhaps is that the binary VF file has
+embedded in it (i) the name of the Times-Italic font, and (ii) hard-wired
+encoding assumptions about where `dotlessi' is in the Times-Italic font.
+Please refer to the `readme' file that comes with the MathTime font set.
+
+*****************************************************************************

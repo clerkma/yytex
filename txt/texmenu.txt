@@ -1,0 +1,223 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+*************************************************************************
+*	DVIWindo's `TeX' pulldown menu:		(file: texmenu.txt)	*
+*************************************************************************
+
+Please consult the `DVIWindo TeX Menu' manual for all basic information.
+
+NOTE: Convenient abbreviation in TeX menu:  
+
+    The single character @ in a TeX Menu item value is now treated as an
+    abbreviation for %TEXINPUTS%#*.  So @.tex, for example, refers to a TeX
+    source file with the same name as the DVI file currently being viewed,
+    but in one of the directories on the list of directories specified by the
+    environment variable TEXINPUTS.  This shorthand makes the TeX Menu easier
+    to edit.  Typical entry:   LaTeX2e=tex.bat +latex @.tex
+
+NOTE: Transferring the `input focus' to another window:
+
+    A TeX Menu entry normally starts up a new Windows or DOS program.
+    A TeX Menu entry can instead be used to transfer control to an
+    existing Window, based on the title bar of the Window. For example:
+
+    -> Notepad|C-F2=$Window(Notepad...)
+
+    Here $Window( ) transfers input focus to a Window with a specified 
+    title bar.  Some applications have a variable title bar (that may
+    for example include the name of the open file).  The ellipses
+    (three dots) allow a match based on just the beginning of the title.
+    The -> in the above example is not required, just a convenient
+    mnemonic device to remind you that this will transfer control to
+    an existing window rather than starting up a new one.
+
+NOTE: Setting of current working directory:
+
+    When an application is called from the TeX Menu, the current working
+    directory is set either to:
+
+    (i) the directory specified in `WorkingDirectory' in the [Window] section
+        of `dviwindo.ini' (if you specified a common working directory during
+	installation), or 
+    (ii) to the directory of the file being processed.  
+
+    So, if you do not have a `WorkingDirectory' entry and you are using
+    the # syntax to search for a file, then the current directory will
+    be set to the directory in which that file was found.
+
+NOTE: Using * more than once in the replacement line:
+
+    Suppose you want to set the current directory to the one in which a
+    particular file was found, but you also want to pass the name of
+    that file *without* path or extension to a batch file.  Just use *:
+
+    MyHack=mybatch @#*.tex *
+
+    This will call `mybatch.bat' with two arguments, the second being 
+    the name of the file without path or extension.  It will also set 
+    the current directory (unless WorkingDirectory is set).
+
+APPENDIX A: Complete list of patterns interpreted in DVIWindo's `TeX' menu:
+---------------------------------------------------------------------------
+
+Call Pattern		Replaced by / Action
+------------		--------------------
+
+@			%TEXINPUTS%#*
+%<var>%			value of environment variable <var>
+*			DVI file name, sans path, sans extension
+<dirs>#<name>		full path name of first <name> found in listed <dirs>
+
+$Window(<title>)	switch focus to window with specified title bar
+$Window(<title>...)	switch focus to window with start of title bar matching
+
+$$			$
+$Counter[<n>]		TeX's counter[<n>]. counter[0] is usually page number
+$Logical		`logical' page number --- counter[0]
+$Page			`physical' page number --- sequential in DVI file.
+$Last			number of pages in DVI file
+$Comment		replace with comment passed from TeX (date/time) "..."
+$Magnification		DVI file magnification - default 1000
+$Width			page width passed by TeX
+$Height			page height + depth passed by TeX
+$Fonts			number of fonts referred to in DVI file
+$Stack			max depth of DVI stack
+$Length			length of DVI file in bytes
+$Byte			current byte position in DVI file
+$Font			last font selected in Show Font
+
+
+APPENDIX B: sample `[Applications]' section for `dviwindo.ini':
+--------------------------------------------------------------
+
+Following is a rather lenghty sample `[Applications]' section for
+`dviwindo.ini' showing lots of possibilities.
+
+; NOTE: Check that you also have CommDlg=1 in the '[Windows]' section.
+; NOTE: Add WorkingDirectory=... if DVI files should appear in common place.   
+; NOTE: Do NOT specify a `working directory' in the PIF files. 
+; NOTE: Make sure there is a blank line before '[Applications]'
+
+[Applications]
+; Call Windows Notepad with TeX file corresponding to current DVI file
+Notepad|F2=c:\windows\notepad @.tex
+; Call DOS EDIT with TeX file corresponding to current DVI file
+Edit|F3=c:\dos\edit.com @.tex
+; Call Lugaru's Epsilon with TeX file corresponding to current DVI file
+Epsilon|F4=c:\epsilon\bin\epsilon @.tex
+; Call vedit, vi, CodeWright, qedit, your favorite editor --- in similar way
+;
+; Following creates a line in menu separating Editors above from Utilities
+Separator=
+; Utility to remove inactive Windows (those without `close window on exit')
+CleanUp=c:\dviwindo\cleanup.exe
+; Utility to show percent system resources used in GDI and USER segments
+SysSeg=c:\dviwindo\sysseg.exe
+;
+; Following creates a line in menu separating Utilities above from Applications
+Separator=
+; Windows DOS box (full screen)
+DOS Full Screen=c:\windows\dosprmpt.pif
+; Windows DOS box (windowed):
+DOS Windowed=c:\windows\doswinpt.pif
+;
+; NOTE: more control available by calling DVIPSONE from `File|Print'
+DVIPSONE=dvipsone -v -d=lpt1 *.dvi
+;
+Separator=
+; Call Trigram Systems MicroSpell TeX spell checker
+Micro Spell|F11=c:\spell\ms @.tex
+; Arvind Borde & Tomas Rokicki `TeXHelp' program (DOS version from AP)
+TeX Help|F12=c:\texhelp\texhelp
+;
+; Following creates a line in menu separating Utilities from TeX calls
+Separator=
+; Following is for creating new formats using iniTeX (-i on command line)
+iniTeX=initex.bat "Format Source File|plain" "Format Menu Name|TeX"
+; Above batch file automatically created entries added below
+Separator=
+;
+TeX|F5=tex.bat +plain @.tex
+LaTeX|F6=tex.bat +lplain @.tex
+AMS TeX|F7=tex.bat +amstex @.tex
+SliTeX|F8=tex.bat +splain @.tex
+LaTeX2e|F9=tex.bat +latex2e @.tex
+
+APPENDIX C: sample batch files:
+------------------------------
+
+Here is `tex.bat':
+
+@echo off
+rem NOTE: we *don't* want a format specified in this one - let TeX use default
+c:\yandytex\yandytex -v %1 %2 %3 %4 %5 %6 %7 %8 %9
+if not errorlevel 1 goto end
+rem following trick requires DOS 5 or 6 
+set | find "windir=" > NUL
+if not errorlevel 1 pause
+:end
+
+Here is `latex.bat' (don't really need this one):
+
+@echo off
+c:\yandytex\yandytex -v +lplain %1 %2 %3 %4 %5 %6 %7 %8 %9
+if not errorlevel 1 goto end
+rem following trick requires DOS 5 or 6 
+set | find "windir=" > NUL
+if not errorlevel 1 pause
+:end
+
+Here is `initex.bat':
+
+@echo off
+rem This is 'initex.bat' conveniently called from DVIWindo 'TeX menu'
+rem
+rem Best to switch here to a temporary directory, ideally a RAM disk
+if not "%TEMP%" == "" cdd %TEMP%
+rem Note: cdd.com is a utility that switched both drive and directory
+rem
+rem Some sanity checks first!
+if exist %TEXFORMATS%\nul goto fmtexist
+echo Sorry, cannot find %TEXFORMATS% directory
+goto endpause
+:fmtexist
+if exist c:\windows\dviwindo.ini goto iniexist
+echo Sorry, cannot find c:\windows\dviwindo.ini
+goto endpause
+:iniexist
+rem
+rem deal with use of 'amstex' instead of 'amstex.ini'
+if "%1" == "amstex" call tex -i amstex.ini
+if not "%1" == "amstex" call tex -i %1
+rem
+rem don't mess with files if TeX had a cow ...
+if not errorlevel 1 goto seemsok
+echo Sorry, TeX appears to be have become unhappy --- formats will not be saved
+goto endpause
+:seemsok
+copy %1.log %TEXFORMATS%
+copy %1.fmt %TEXFORMATS%
+rem
+del %1.log
+del %1.fmt
+rem
+rem deal with 'amstex.ini' special case (want +amstex, not +amstex.ini)
+if not "%1" == "amstex.ini" goto notams
+echo %2=tex.bat +amstex @.tex>> c:\windows\dviwindo.ini
+goto end
+:notams
+rem deal with 'plain' special case (omit format, since plain is default)
+if not "%1" == "plain" goto notplain
+echo %2=tex.bat @.tex>> c:\windows\dviwindo.ini
+goto end
+:notplain
+echo %2=tex.bat +%1 @.tex>> c:\windows\dviwindo.ini
+goto end
+:endpause
+rem following trick requires DOS 5 or 6 
+set | find "windir=" > NUL
+if not errorlevel 1 pause
+rem following requires decode.exe utility
+rem decode -x
+rem if errorlevel 1 pause
+:end

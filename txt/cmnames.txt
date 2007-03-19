@@ -1,0 +1,86 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+The 75 fonts in the Computer Modern family:
+------------------------------------------
+
+(Note: only first three and last three letters of font name matter)
+
+*	after name ==> one of sixteen fonts in plain TeX
+
+cmb10	  	Bold Roman			5000761	 
+cmbsy10  	Bold Math Symbol		5000762	 
+cmbx5	*	Bold Extended Roman		5000763	 
+cmbx6  		 "      "      "		5000764	
+cmbx7	* 	 "      "      "		5000765	 
+cmbx8  		 "      "      "		5000766	
+cmbx9  		 "      "      "		5000767	
+cmbx10	* 	 "      "      "		5000768	 
+cmbx12  	 "      "      "		5000769	 
+cmbxsl10  	Bold Extended Slanted Roman	5000770	 
+cmbxti10  	Bole Extended Text Italic	5000771	 
+cmcsc10  	Caps and Small Caps		5000772	 
+cmdunh10  	Dunhill Roman (vrt str cmr10)	5000773	
+cmex10	* 	Math Extension			5000774	 
+cmff10		Funny Roman			5000775	
+cmfi10		Funny Italic			5000776	
+cmfib8		Fibonacci			5000777	
+cminch		one inch high cmssbx10		5000778	
+cmitt10  	Italic Typewriter		5000779	 
+cmmi5	*	Math Italic	  		5000780	 
+cmmi6  		  "    "			5000781	
+cmmi7	* 	  "    "			5000782	 
+cmmi8  		  "    "			5000783	
+cmmi9  		  "    "			5000784	
+cmmi10	* 	  "    "			5000785	 
+cmmi12  	  "    "			5000786	 
+cmmib10  	Bold Math Italic		5000787	 
+cmr5	*	Roman  				5000788	 
+cmr6  		   "				5000789	
+cmr7	*	   "				5000790	 
+cmr8  		   "				5000791	
+cmr9  		   "				5000792	
+cmr10	*	   "				5000793	 
+cmr12  		   "				5000794	 
+cmr17  		   "				5000795	 
+cmsl8  		Slanted Roman			5000796	
+cmsl9  		   "      "			5000797	
+cmsl10	* 	   "      "			5000798	 
+cmsl12  	   "      "			5000799	 
+cmsltt10  	Slanted Typewriter		5000800	
+cmss8  		Sans Serif			5000801	
+cmss9  		  "    "			5000802	
+cmss10  	  "    "			5000803	 
+cmss12  	  "    "			5000804	 
+cmss17  	  "    "			5000805	 
+cmssbx10  	Sans Serif Bold Extended 	5000806	 
+cmssdc10  	Sans Serif Demibold Condensed	5000807	 
+cmssi8  	Slanted Sanf Serif		5000808	
+cmssi9  	   "     "    "			5000809	
+cmssi10  	   "     "    "			5000810	 
+cmssi12  	   "     "    "			5000811	 
+cmssi17  	   "     "    "			5000812	 
+cmssq8  	Sans Serif Quotation		5000813	 
+cmssqi8  	Slanted Sans Serif Quotation	5000814	 
+cmsy5	*	Math Symbol 			5000815	 
+cmsy6  		  "    "			5000816	
+cmsy7	* 	  "    "			5000817	 
+cmsy8  		  "    "			5000818	
+cmsy9  		  "    "			5000819	
+cmsy10	* 	  "    "			5000820	 
+cmtcsc10	Typewriter Caps and Small Caps	5000821	
+cmtex8  	Typewriter - TeX extended ASCII	5000822	
+cmtex9  	    "         "     "      "	5000823	
+cmtex10  	    "         "     "      "	5000824	 
+cmti7  		Text Italic			5000825	
+cmti8  		  "    "			5000826	
+cmti9  		  "    "			5000827	
+cmti10	* 	  "    "			5000828	 
+cmti12  	  "    "			5000829	 
+cmtt8  		Typewriter			5000830	
+cmtt9  		    "				5000831	
+cmtt10	* 	    "				5000832	 
+cmtt12  	    "				5000833	
+cmu10  		Unslanted Text Italic		5000834	
+cmvtt10    	Variable Width Typerwriter  	5000835	
+
+Berthold K.P.Horn (1990 June 10)

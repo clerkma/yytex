@@ -1,0 +1,38 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+**********************************************************************
+			Y&Y TeX SYstem release 2.0 on CD-ROM:
+**********************************************************************
+
+If you have release 2.0 of the Y&Y TeX System on diskette then you may
+be interested in obtaining the brand new CD-ROM version - particularly 
+if your system is more than six month old.
+
+The CD includes:
+
+*	The latest incremental version of release 2.0 of the Y&Y TeX System;
+*	The latest LaTeX 2e (1998 Jan);
+*	About 65 Mbyte of additional `contributed' LaTeX 2e packages on CD;
+*	The latest PFE editor (0.07.002);
+*	WinEDT shareware editor (pay shareware fee if you decide to use it);
+*	The brand new XY Pic fonts in Type 1 format for use with XY Pic package;
+*	Revised CM math symbol fonts (if your system includes CM fonts);
+*	Revised LOGO fonts (for setting the words METAFONT and METAPOST);
+*	Better linkage to networked PS printers from DVIPSONE;
+*	Support for ATM Deluxe 4.0 for NT;
+*	Support for reencoding of TrueType fonts in NT;
+*	Support for rotation and scaling of typeset material on screen in NT;
+*	Ability to switch encoding directly from a DVIWindo menu;
+*	Ability to edit command line parameters for TeX and DVIPSONE in DVIWindo;
+*	Even more convenient and faster installation.
+
+The CD is available for $39 (plus shipping) to anyone with a license 
+for release 2.0.  Please supply serial number when ordering.  
+Also tell us what font sets you have.
+
+**************************************************************************
+    Y&Y, Inc., 45 Walden St., Concord, MA 01742-2513, USA 
+    (800) 742-4059 (from North America only)
+    (978) 371-3286 (voice)      (978) 371-2004 (fax)
+    sales@YandY.com             http://www.YandY.com
+**************************************************************************

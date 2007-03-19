@@ -1,0 +1,63 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===============================================
+	AMS LaTeX 1.2 and `missing' fonts:
+===============================================
+
+The `PostScript' (i.e. Type 1) version of the AMS font set is a subset of
+the 89 fonts in the bitmapped version of the AMS font set--- otherwise it
+would have been much more expensive than the 75 font CM set, given the much
+lower volume of sale (This was a decision reached jointly by BSR and Y&Y in
+consultation with AMS).  For example, only the 5, 7, and 10pt sizes of the
+Euler fonts are included---the 6, 8 and 9pt sizes are not.  This is not
+much of a handicap, since the `odd' sizes are rarely used, and are very
+similar in shape to `neighboring' existing sizes.
+
+All AMS macro packages have an option or switch that can be set to tell the
+package that one is using the `PS' version of the font set.  For AMS LaTeX
+1.2 this is the `psamsfonts' option.  See extract from `amsclass.dtx' below
+(You can also use the `noamsfonts' options if you do not have the AMS fonts).
+
+If a DVI file has been produced *without* using the `psamsfonts' option,
+it can still be processed by DVIPSONE. DVIPSONE can be asked to substitute
+appropriate fonts.  Simply add to the file `standard.sub' lines like
+
+cmex7		cmex10
+
+which tell it to use CMEX10 in place of CMEX7 (suitably scaled *and* with
+the metrics of CMEX7).
+
+Similarly, DVIWindo can be asked to substitute appropriate fonts.  Simply add
+to the file `dviwindo.fnt' lines like
+
+CMEX10=CMEX7
+
+which tells it use CMEX10 in place of CMEX7 (suitably scaled).
+
+From amsclass.dtx:
+
+% \subsection{Some font options}
+%
+%    The `noamsfonts' option means to avoid declaring math alphabets or
+%    symbol fonts for the extra math fonts in the AMSFonts set. If these
+%    fonts are declared, it means that the corresponding \fn{.tfm} files
+%    are required even for documents that do not use any symbols from
+%    those fonts. So we allow optionally to not declare them, for
+%    convenience of users who don't have those fonts on their system and
+%    don't want the hassle of getting them.
+%    \begin{macrocode}
+\def\mathfrak{needed}
+\DeclareOption{noamsfonts}{\let\mathfrak\relax}
+%    \end{macrocode}
+%    The `psamsfonts' option, passed on the amsfonts package, means that
+%    alternative \fn{.fd} files should be used that do not refer to
+%    \fn{.tfm} files for sizes 6,8,9 (which are not present in the
+%    PostScript AMS fonts set from Y\&Y/Blue Sky Research). This should
+%    also trigger the \opt{cmex10} option of \pkg{amsmath}, to avoid
+%    trying to load sizes 7--9 of \fn{cmex}.
+%    \begin{macrocode}
+\DeclareOption{psamsfonts}{%
+  \PassOptionsToPackage{psamsfonts}{amsfonts}%
+  \PassOptionsToPackage{cmex10}{amsmath}}
+%    \end{macrocode}
+%

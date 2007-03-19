@@ -1,0 +1,33 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+========================================================
+Alternate installation of ATM and fonts in Windows 95/98
+========================================================
+
+In some situations in Windows 95/98, installation of ATM with fonts
+ends without fanfare and without asking to relaunch Windows.  In this
+case ATM is *not* properly installed, and the fonts that came with it
+will not be available.
+
+You can easily check whether ATM is properly installed, since if it
+is, you can launch the ATM control panel from `Start > Programs >
+Adobe > ATM.'  When the installation fails you typically won't have
+an `Adobe' folder under `Programs'.
+
+The solution in this situation is simple:
+
+(1) Install ATM *without* fonts, then 
+(2) install the fonts from the ATM control panel.
+
+To do this, right click on the CD icon in "My Computer".
+Then select "Install ATM for Windows 95/98 without fonts"
+from the menu that pops up.  When it is done, it should
+ask you to reboot.  
+
+When Windows starts up again, start the ATM control panel from `Start
+> Programs > Adobe > ATM' (You will be asked to customize the ATM
+control panel the first time you use it).  Then select `Browse for
+Fonts' on the right hand side of the control panel and navigate to
+the CD.  Find the `psfonts' folder on the CD and open it.  Wait for
+ATM to find and list all the fonts.  Then select them all and install.
+

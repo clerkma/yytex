@@ -1,0 +1,69 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==============================================================================
+		CHANGED.EXE (file: changed.txt)  revised 1994/July/1
+==============================================================================
+
+A new PostScript file processing utility is provided with DVIPSONE 
+that has two uses: 
+
+*	Extracting pages that have changed with respect to a previous version;
+
+*	Extracting specified page ranges and reordering pages in a PS file;
+
+The utility is designed for use on output from DVIPSONE, but can also be used
+on PS files produced by programs other than DVIPSONE.  However it assumes that
+
+	(i)  the PS file is DSC (Document Structuring Convention) compliant,
+	(ii) the PS file is page independent;
+
+(i.e. no font definitions in the middle of the file).  Unfortunately quite
+a few applications to not produce clean PostScript files that satisfy both of 
+these requirements (such as most all Macintosh and Windows applications).
+
+PRINTING ONLY PAGES THAT HAVE CHANGED:
+--------------------------------------
+
+The utility `changed' can compare two PS files and copy the pages with
+differences to the output file, called `changed.ps', which is deposited in
+the current directory.  For this to be useful, you need to keep the PS files
+produced by DVIPSONE, and use the same command line flags in the two runs of
+DVIPSONE.  The command line invocation is:
+
+	changed [-v] <old-PS-File> <new-PS-File>
+
+In this mode of usage, the utility `changed' takes two command line
+arguments, the `old' PS file and the `new' PS file.  The two files are not
+treated exactly symmetrically.  The header in the output file is copied from
+the `new' PS file.  The header in the old PS file is ignored.  Pages that
+appear in the new file, but do not appear in the old file are copied to the
+output.  Pages that appear in the old file, but do not appear in the new file
+are ignored.
+
+EXTRACTING PAGES, REORDERING PAGES:
+-----------------------------------
+
+The utility `changed' can also be used to extract specified page ranges 
+from a DSC compliant PostScript file.  The pages are specified by a comma
+separated page range list.  For example:
+
+	changed  -v  -P=3-7,43-39,5,63  myfile.ps
+
+A page range of just one page is indicated by a single number (e.g. 5 above).
+`Inverted' page ranges (e.g. 43-39) yield pages in reverse order.  
+A particular page may appear more than once (e.g. page 5 above).
+
+The page numbers are physical (sequential) pages within the file (using the
+second number in %%Page: ... comment).  Use -p instead or -P to instead use
+the logical page numbers (using the first number in %%Page: ... comment).  
+As usual, there are potential problems if logical page numbers are repeated 
+in the source file.  In this case `changed' picks the first page with a given
+page number.
+
+Pages are output in the order specified in the page range list.
+Use the command line argument `r' to instead output pages in the order 
+that they appear in the source file.
+
+You can use other delimiters, such as + or :, instead of comma.  
+This is convenient when invoking `changed' using a batch file, 
+since commas break up the list into separate batch file arguments.

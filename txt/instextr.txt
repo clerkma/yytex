@@ -1,0 +1,103 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+============================================================================
+Extra installation information              (file: instextr.txt)
+============================================================================
+
+Installing fonts with release 2.2
+=================================
+
+Windows 2000 Professional (W2K) has the Type 1 rasterizer built in.
+Do not try to install ATM 4.0 in W2K.  Instead, from "My Computer"
+open the "Fonts" folder (c:\winnt\fonts) and use "File > Install Fonts".
+On the CD is a "psfonts" folder that has all the fonts in one place.
+
+Release 2.2 includes ATM 4.0 for Windows 95/98 and ATM 4.0 for NT 4.
+The fonts themselves are automatically installed when you install ATM.
+If you need to install additional fonts later, use the ATM
+control panel reached from  `Start > Programs > Adobe > ATM'
+
+Release 2.2 makes it easy to switch encoding right from the DVIWindo
+`Font' menu.  TeX metric files (TFM) for several commonly used
+encodings are already installed with the system. You do *not* need to
+reinstall the fonts if you change your mind later about text font encoding.
+
+Preserving old preferences when installing release 2.2
+=======================================================
+
+Installing release 2.2 on top of an existing release 2.1 installation will
+maintain the old preferences recorded in dviwindo.ini.  Release 2.2 installs
+into the same directory structure as release 2.1.  So the TeX System itself
+will be completely updated, yet files you may have added will be preserved. 
+
+However, If you have an old c:\yandy\tex\latex2e folder, remove it and its 
+contents. Those files are now all in a folder called c:\yandy\tex\latex.
+You may want to check dviwindo.ini for references to the old folder.
+
+If you want a `fresh' install, rename `dviwindo.ini' in the windows
+directory (c:\windows or c:\winnt) to `dviwindo.bak' before installation.
+Afterwards compare the new `dviwindo.ini' with `dviwindo.bak' to see
+whether there are any special customizations you would like to transfer.
+
+Uninstalling release 2.1
+========================
+
+You do not need to uninstall release 2.1 before installing release 2.2.
+--- and, please do *not* try to uninstall 2.1 *after* installing 2.2
+
+Uninstalling release 2.2
+========================
+
+Release 2.2 has its own `uninstall' procedure accessed via the control panel
+in Windows 95/98 and Windows NT 4.0.  From `Start' select `Settings', then
+`Control Panel.' Double click the `Add/Remove' icon.  Select the application
+you want to remove and click `Remove.'
+
+
+==========================
+Short Trouble Shooting FAQ
+==========================
+
+Complaints about incorrect TrueType font names under Windows NT:
+---------------------------------------------------------------
+
+If you do not use ATM 4.0 in Windows NT, make sure to run the
+SETUPTTF utility (c:\yandy\util subfolder) after installing fonts.  
+Add IgnoreBadInstall=1 to the [Window] section of dviwindo.ini
+
+Ligatures are lost when printing to non-PS HP printer:
+-------------------------------------------------------
+
+Some PCL printer drivers in Windows 95 and 98 have problems with reencoded 
+fonts. Check out `win95.txt' in `doc-misc' for series of recommendations.
+
+Complaints about encoding errors in CM fonts:
+---------------------------------------------
+
+Please uninstall and remove all *TrueType* versions of the CM fonts from 
+other vendors!  These fonts are incorrectly marked as `text' fonts and 
+as a result DVIWindo will try to reencode them --- which makes no sense.
+See also mknontxt.exe in c:\yandy\util for an attempt to fix these fonts.
+
+  CM `text' fonts have a peculiar character layout that matches no other
+  encoding.  They also contain fewer than the standard 228 glyphs expected 
+  in a normal text font.  In additon they are designed to be used with fixed
+  hard-wired encoding, not Windows ANSI.  This means that they must be marked
+  `pi/decorative/math/symbol', *not* `text' -- as our CM fonts in Type 1 are.
+
+Printing to networked PostScript printers:
+------------------------------------------
+
+When printing to networked PS printers have "Special > Use DLLs" and
+"Special > Passback from DVIPSONE" checked.  In this mode PostScript
+code is passed back from DVIPSONE and fed to the Windows printer driver.
+
+"Printing" to Acrobat 4.0 Distiller:
+------------------------------------
+
+If you have Acrobat 4.0 installed, then Acrobat Distiller appears as an 
+option in the "File > Print" dialog.  This will also check "Use DVIPSONE" 
+In addition you can ask Distiller to automatically call Acrobat Reader on the
+resulting PDF file. In this fashion you can "preview" using Distiller/Reader.  
+In this mode "PostScript trickery" --- and EPS files without previews --- 
+are supported since Distiller has a full featured PS interpreter.

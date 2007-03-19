@@ -1,0 +1,169 @@
+******************************************************************************
+		COPYRIGHT (c) 1992 Y&Y, Inc.  All rights reserved.
+	Placed in the public domain in 2006 by the TeX Users Group.
+******************************************************************************
+
+Putting a `space' character code 32 (and other simple encoding permutations):
+============================================================================
+
+Fonts originally designed to work with the typesetting language TeX
+do not contain an actual `space' character.  Instead, the metric
+file contains parameters that specify the size of a word space (and how
+much it can shrink and stretch).  In fact, most fonts designed for use
+with TeX have some character other than `space' in character code position
+32, which is where the `space' character would normally appear.  
+For the Computer Modern text fonts this is the character `suppress' --- 
+used only in conjunction with `l' and `L' to make the Polish characters
+`lslash' and `Lslash' (Ironically, this glyph is never used, since in the
+it is not steep enough to make an acceptable `Lslash' or `lslash').
+
+In order to make such fonts usable with applications other than TeX,
+a space character of appropriate width has been added in code
+position 160 to the Type 1 version of each of the text fonts.  
+In Windows, for example, one can access this character by holding down
+the `Alt' key and typing the digits `0' (important!), `1', `6', and
+`0' on the numeric keyboard (important!) with the `numeric lock' on
+(important!).  While this does provide access to a much needed space
+character, it is rather awkward. 
+
+NOTE: due to a new bug in ATM 2.5, this causes `invisible ink'
+
+Fonts with this features can be made much easier to use by interchanging the
+`space' character with whatever character happens to be in code position 32
+(which for Computer Modern text fonts is the rarely used character `suppress').
+
+For the Unix/NeXT version use the shell script `spacify.'
+For the IBM PC version, use the utility `spacify.exe.'  
+
+Unix/NeXT versions of the fonts:
+--------------------------------
+
+For convenience, the corresponding fonts sets are supplied with a shell
+script called `spacify' to avoid the tedium of doing this by hand.  
+See `nextfont.txt' for additional details on using this shell script.
+
+If your outlines fonts are in PFA (Printer Font ASCII) format, and you do
+not want to use the shell script `spacify', then the change is easily made
+using a text editor. Simply look for the part of the file starting with
+the line "/Encoding 256 array".  Then search for the line "dup 32
+/suppress put" and the line "dup 160 /space put".  Change the 32 into a
+160 and the 160 into a 32.
+
+For use with Display PostScript you will also need to change the AFM
+file.  Look for the line "C 32 ; WX ... ; N ... ; ..." and the line
+like "C -1 ; WX ... ; N space ; ... ".  Change the 32 to a 160 and
+the -1 to 32.
+
+IBM PC compatible versions of the fonts:
+----------------------------------------
+
+If your outlines fonts are instead in PFB (Printer Font Binary) format,
+then first convert them to PFA format (using PFBtoPFA) - then
+edit the encoding vector as indicated above - finally convert
+back to PFB form (using PFAtoPFB).  For proper operation of the fonts in
+Windows, however, it is also necessary to make sure that the character
+widths in the PFM file are correct.  This in turn can be accomplished by
+editing the AFM file as indicated above, and then running AFMtoPFM.
+
+For convenience, the IBM PC compatible utility `SPACIFY.EXE' can modify
+both PFB and PFM files simultaneously.  SPACIFY expects the original PFB
+and PFM files to be in one directory --- or for the PFM files to be
+in the PFM subdirectory of the directory containing the PFB files
+(which is the way ATM normally maintains Type 1 font files). For example:
+
+	spacify c:\psfonts\cmr10
+
+SPACIFY places the modified PFB and PFM files in the current directory.  
+It is best to make this a different directory from the source directory
+in order to reduce the chance of confusion (and to facilitate
+reinstallation using the ATM control panel).  Ideally, use an empty 
+temporary directory as the current directory.
+
+After the modified PFB and PFM files have been created, install the new
+version for use with MS Windows using the ATM control panel.
+You can also copy the PFB and PFM files to their proper destination
+(typically this would be c:\psfonts for the PFB file and c:\psfonts\pfm
+for the PFM file).  BUT: Do NOT do this while Windows is running, and make
+sure to delete ATMFONTS.QLC from your Windows directory afterwards:
+
+	copy cmr10.pfb c:\psfonts
+	copy cmr10.pfm c:\psfonts\pfm
+	del c:\psfonts\atmfonts.qlc
+
+SPACIFY allows multiple PFB files to be specified on the command line.
+Wildcards can be used to convert a whole batch of font and font metric
+files at once.  
+
+	spacify c:\psfonts\cmr*.pfb
+
+If you do not want to use the utility spacify, and your outlines fonts are
+in PFB (Printer Font Binary) format, then you may first convert them to
+PFA format (using PFBtoPFA) - edit the encoding vector as indicated
+above - finally convert back to PFB form (using PFAtoPFB).  For proper
+operation of the fonts in Windows, however, it is also necessary to make
+sure that the character widths in the PFM file are correct.  This in turn
+can be accomplished by editing the AFM file as indicated above, and then
+running AFMtoPFM.
+
+WARNING: Do not `spacify' the math fonts.  These have important `glyphs' in
+character code position 32 (such as `psi', `arrowleft', and `parenleftBigg').
+
+NOTE: ATM for Windows has a `misfeature' that prevents multiply encoding
+characters from working properly.  ATM only recognizes the first mention of
+a character name in the encoding vector.  Normally, the `space' character
+occurs only once in the encoding vector, so this is not an issue.  But if
+the `space' character appears more than once, then it can only be accessed
+using the character code on the line where `space' first appears in the
+encoding vector.  In this case, simply edit the PFA file so that the
+desired code number for `space' occurs first (If you are using PFB files,
+use PFBtoPFA to convert to PFA format, edit, then convert back to PFB 
+format using PFAtoPFB).
+
+NOTE: In some versions of ATM for Windows, such as ATM 2.02 and 2.5
+attempting to access a character through other than its first mentioned
+character code number leads to the dreaded `invisible ink' phenomenon.
+
+
+Appendix: Other Encoding Vector Permutations:
+=============================================
+
+Actually, SPACIFY can interchange any two character code positions in a
+font.  The default is to interchange the character in code position 32 with
+the character in code postion 160.  Other code values can be specified on
+the command line using the `-a' and `-b' command line arguments.
+
+SPACIFY will not modify font files that do not have characters in both
+code positions.  This happens, for example, in the Computer Modern font
+CMINCH, and in the `LOGO' fonts, where there is no `suppress' character
+(and these fonts already have a space character in code position 32).
+
+SPACIFY can be applied repeatedly to a PFB and PFM file pair to achieve
+any desired permutation of the encoding vector.  Just copy the new
+versions back on top of the old ones after each application of SPACIFY.
+If a complicate permutation of the encoding vector is desired, however,
+then it is typically easier to make up a new encoding vector and use
+REENCODE on the PFB file and AFMtoPFM to make a new PFM file.
+
+SPACIFY will not modify the kerning table in the PFM file, the assumption
+being that neither of the characters chosen appear in the kerning table.
+This is normally true for `space', but may not be a valid assumption for
+some other characters.
+
+NOTE to ATM users: ATM keeps a cache of font metric information.  The
+safest way to make the change is to first `Remove' the fonts you wish to
+modify, using the ATM control panel - then modify the font and font metric
+files using SPACIFY - finally `Add' the fonts back using the ATM control panel
+
+If you would like instead to simply overwrite the old versions of the PFB and
+PFM files, then delete the file ATMFONTS.QLC (outside Windows), which is
+where ATM keeps metric information.  ATM will rebuild this file when Windows
+is next launched  (Due to a bug in ATM, it may sometimes take TWO attempts
+to get ATMFONTS.QLC back into a stable state.)  The file ATMFONTS.QLC
+is normally in the directory that holds your PFB files.  If you cannot
+find it, look for `QLCDir=' in your ATM.INI file (which should be in your
+Windows directory).
+
+WARNING: Do NOT replace PFB or PFM files while Windows is running.  
+You will most likely crash ATM, and Windows, and DOS if you do this,
+because ATM keeps pointers in these files and will overwrite random pieces
+of the computer's memory if the information is not where it expects it!

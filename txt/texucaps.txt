@@ -1,0 +1,38 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+% Modifications to T1 font that Textures can perform
+
+% <font> [re-encoding vector] .e reencodes font
+% [re-encoding vector] may contain numbers => advance to that number
+/.e {exch dup length dict exch
+ {1 index /FID ne {3 copy put} if pop pop} forall
+ exch 1 index /Encoding get 256 array copy exch 0 exch
+ {dup type /nametype eq{3 copy put pop 1 add}{exch pop}ifelse}forall
+ pop 1 index exch /Encoding exch put /encodefont exch definefont} bd
+
+% <font> <scale> .c compresses/expands a font
+/.c {[exch 0 0 1 0 0] makefont}bd
+
+% <font> <slant> .s slants a font
+/.s {[1 0 4 -1 roll 1 0 0] makefont}bd
+
+% <font> .o turns font into outline version with 20 as strokewidth
+/.o {/old exch def old length 2 add dict /FontDef exch def
+ old {exch dup /FID ne {exch FontDef 3 1 roll put}
+ {pop pop}ifelse}forall
+ FontDef dup /PaintType 2 put /StrokeWidth 20 put
+ /testfont FontDef definefont}bd
+
+% <font> <adjustment> .t changes metrics to do `letter spacing' `tracking'
+/.t {1 index setfont 1.0 sub ( ) stringwidth pop mul exch
+ dup length 2 add dict
+ dup /Metrics 3 index /CharStrings get length dict
+ dup 4 1 roll put 3 -1 roll
+ { 1 index /FID ne { 3 index 3 1 roll put }
+ { pop pop } ifelse } forall
+ 1 index /Encoding get 0 1 255 {
+ 1 index 1 index get dup /.notdef ne {
+ exch 1 string dup 0 4 -1 roll put
+ stringwidth pop 5 index add 1000 mul 3 index 3 1 roll put }
+ { pop pop } ifelse } for pop pop exch pop
+ /trackfont exch definefont}bd

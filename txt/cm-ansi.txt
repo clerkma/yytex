@@ -1,0 +1,227 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==============================================================================
+    Modifying CM text fonts for TeX 'n ANSI encoding:	 (cm-ansi.txt)
+==============================================================================
+
+The CM text fonts are not `normal' text fonts since (i) they do not contain a
+full complements of 228 `standard' glyphs (even with the extra 58 accented
+character in the BSR CM fonts from Y&Y) and (ii) because they do not use a
+standard character layout (in fact, CM fonts use *ten* different character
+layouts!).  In addition, the CM roman text fonts include upper case upright
+Greek letters (these are used in math).  
+
+For all of these reasons they must be treated as `symbol/math/decorative'
+fonts in Windows (or on the Macintosh), as opposed to plain text fonts.
+
+This means that CM text fonts are *not* affected by the ENCODING environment
+variable used by DVIWindo and DVIPSONE.  Some users have wondered whether it
+is possible to modify the CM text fonts so that they too can be reencoded 
+`on the fly' as well.  
+
+It is possible to do this.  We do not particularly recommend this, because:
+
+While there are some advantages --- such as providing access to the
+ready-made accented characters --- there are also some drawbacks.  One is
+that the CM text fonts lack several glyphs users expect to find in text fonts
+(such as left and right braces, less, greater, backslash, underscore, bar,
+quotesingle, quotedbl, asciitilde, and asciicircumflex).  Another is that DVI
+files made for the modified CM fonts will not be portable --- other users
+using CM fonts the `normal' way cannot use DVI files made for the modified
+fonts, and vice versa.  Perhaps most seriously, you will loose the eleven
+upright upper case Greek letters since these are buried in the *text* fonts
+(but see below for a work-around).
+
+If you do use modified `CM' fonts, you should add  \input texnansi
+to your source files to let TeX know that you are using the `texnansi.vec'
+encoding vector instead of the CM text font character layout. 
+In LaTeX 2e use \usepackage[LY1]{fontenc} instead.
+
+Note that you do not want to touch the *math* fonts.  You can tell which fonts
+are math fonts since they all have names starting with CMEX, CMMI, CMSY,
+CMMIB, or CMBSY.  Math fonts all have hard-wired encoding, and special metric
+files that should *not* be altered.
+
+By the way, only DVIWindo supports `on the fly' reencoding.  If you 
+want to use your CM fonts with other Windows applications and have them
+reencoded then you may want to resort to the `encode.bat' batch file 
+(see `encoding.txt' and `morass.txt') 
+
+--------------------------------------------------------------------
+    So, if you really want to make TeX 'n ANSI encoded CM fonts:
+--------------------------------------------------------------------
+
+To make modified CM text fonts you need the original AFM files. 
+These are on diskette C of the three diskette BSR CM font set from Y&Y.  
+
+It is best to build up the new PFB and PFM files in an empty temporary
+directory.  Let us suppose that all your PFB files are in c:\psfonts,
+and all your AFM files have been copied to c:\psfonts\afm (if you use 
+other directories then substitute these below).
+
+(1)  From the DOS command line, create an empty temporary directory 
+     and make that the current directory.  For example:
+
+     mkdir c:\temporar
+     cd \temporar
+
+(2) `Standardize' the PFB files (that is, replace the encoding with
+     /Encoding StandardEncoding def) using the REENCODE utility. 
+     For example:
+
+     reencode -v c:\psfonts\cmr*.pfb
+
+     (do *not* reencode to the encoding vector you want to use later).
+     Repeat this process for the other text fonts.
+
+(3)  Make new PFM files set up for Windows ANSI encoding using the utility
+     AFMtoPFM.  For example: 
+
+     afmtopfm -v c:\psfonts\afm\cmr*.afm
+
+     (do *not* reencode to the encoding vector you want to use later).
+     Repeat this process for the other text fonts.
+
+(4)  Make new TFM files for TeX, and copy them to a directory in the
+     list of directories specified by the environment variable TEXFONTS.
+
+     afmtotfm -vadjx -c=texnansi c:\psfonts\afm\cmr*.afm
+     move cmr*.tfm c:\yandytex\tfm
+
+(5)  From ATM control panel (double click on ATM icon in the `Main'
+     program group), select the CM text fonts and click on `Remove'.
+
+(6)  From ATM control panel, click on `Add'.  Navigate to the 
+     temporary directory containing the modified PFB and PFM files.  
+     Click on `Add' again.
+
+You can check whether everything has worked as expected using `Show Fonts'
+from the `Fonts' menu in DVIWindo.  You should see the new character layout
+(as defined by the value of the ENCODING environment variable in the
+[Environment] section of `dviwindo.ini') including ready-made accented
+characters  (If you displayed Computer Modern fonts since you launched
+Windows, but before you made the change, you will have to exit and relaunch
+Windows for the changes to take effect). 
+
+The upper case upright Greek letters should have disappeared from the layout.  
+If you want to avoid losing the eleven upper case upright Greek letters in
+the CM text font, then you may want to make a modified version of
+`texnansi.vec' (let's call it `cmanansi.vec') by copying the eleven lines 
+for the upright Greek letters from `textext.vec'.  You will then have to
+move `dotaccent', `hungarumlaut', `ogonek, and `fraction' elsewhere if you
+need access to those glyph (and make a modified copy of texnansi.tex).
+
+(6) Add \input texnansi (or modified version) to your TeX source files.
+
+To be politically correct you probably should rename the fonts so there
+is no confusion with the `original' CM fonts...
+
+CM Text fonts:
+
+  cmr5.pfb
+  cmr6.pfb
+  cmr7.pfb
+  cmr8.pfb
+  cmr9.pfb
+  cmr10.pfb
+  cmr12.pfb
+  cmr17.pfb
+
+  cmti7.pfb
+  cmti8.pfb
+  cmti9.pfb
+  cmti10.pfb
+  cmti12.pfb
+
+  cmb10.pfb
+
+  cmbx5.pfb
+  cmbx6.pfb
+  cmbx7.pfb
+  cmbx8.pfb
+  cmbx9.pfb
+  cmbx10.pfb
+  cmbx12.pfb
+
+  cmbxsl10.pfb
+
+  cmbxti10.pfb
+
+  cmsl8.pfb
+  cmsl9.pfb
+  cmsl10.pfb
+  cmsl12.pfb
+
+  cmcsc10.pfb
+
+  cmss8.pfb
+  cmss9.pfb
+  cmss10.pfb
+  cmss12.pfb
+  cmss17.pfb
+
+  cmssi8.pfb
+  cmssi9.pfb
+  cmssi10.pfb
+  cmssi12.pfb
+  cmssi17.pfb
+
+  cmssbx10.pfb
+
+  cmssdc10.pfb
+
+  cmssq8.pfb
+  cmssqi8.pfb
+
+  cmtt8.pfb
+  cmtt9.pfb
+  cmtt10.pfb
+  cmtt12.pfb
+
+  cmitt10.pfb
+
+  cmsltt10.pfb
+
+  cmvtt10.pfb
+
+  cmtcsc10.pfb
+
+  cmtex8.pfb
+  cmtex9.pfb
+  cmtex10.pfb
+
+Weird Stuff:
+
+  cmdunh10.pfb
+
+  cmu10.pfb
+
+  cmff10.pfb
+
+  cmfib8.pfb
+  cmfi10.pfb
+
+  cminch.pfb
+
+CM Math Fonts:
+
+  cmex10.pfb
+
+  cmmi5.pfb
+  cmmi6.pfb
+  cmmi7.pfb
+  cmmi8.pfb
+  cmmi9.pfb
+  cmmi10.pfb
+  cmmi12.pfb
+
+  cmmib10.pfb
+
+  cmsy5.pfb
+  cmsy6.pfb
+  cmsy7.pfb
+  cmsy8.pfb
+  cmsy9.pfb
+  cmsy10.pfb
+
+  cmbsy10.pfb

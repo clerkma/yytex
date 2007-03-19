@@ -1,0 +1,236 @@
+=========================================================================
+     Font Licensing Issues for Acrobat PDF Files:	(file: acrobat.txt)
+=========================================================================
+
+	Copyright (C) 1995-1997 Y&Y, Inc. 
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+PS versus PDF:
+--------------
+
+Acrobat PDF is a more powerful, more flexible format than PostScript for
+online publishing, supporting hyper-text and other features not available in
+PS. The Acrobat Reader is available for a variety of platforms for free.
+GhostScript can now also read PDF files, and it is free and can be compiled
+for just about any platform (you do need a recent version of GhostScript,
+4.01 or later).  Many users requesting PostScript in fact already use
+GhostScript to look at PostScript files and to print PS files on non-PS
+printers.  As a result they can *also* read PDF files.  In addition there is
+the XPDF reader.
+
+
+HOW TO MAKE CONFORMING ACROBAT PDF FILES:
+-----------------------------------------
+
+Acrobat PDF files must be made in a special way to minimize the potential for
+`font leakage.'  Such PDF files are referred to here as `conforming PDF' files.
+
+(i)   Use Acrobat Distiller version 3.0 or later (Acrobat 4.0 recommended);
+(ii)  with `Make Font Subsets' or `Subset Fonts Below' checked; and
+(iii) `MaxSubsetPct' set to 100 (see below); and
+(iv)  do not use complete character showings (font tables) of PostScript fonts.
+
+
+REQUIRED MODIFICATIONS TO DISTILLER PARAMETERS (Setting MaxSubsetPct to 100):
+----------------------------------------------------------------------------
+
+When using Acrobat Distiller 3.0 or later, go to `Distiller > Job Options' 
+(or `Settings > Job Options' in 4.0) and select the `Font Embedding' tab
+(or `Fonts' tab in 4.0).   Then check `Subset Fonts Below' (`Subset All 
+Embedded Fonts Below' in 4.0) and set the percentage to 100%.  Also check 
+`Embed All Fonts' (Note that this does not apply to the `Base 13' fonts
+which are always available to the Acobrat Reader and so are never embedded).
+
+When using a Unix version of Distiller you can use the following
+on the command line:
+
+  distill -subsetfonts on -maxsubsetpct 100 -embedallfonts on file.ps
+
+When using Acrobat Distiller 2.0 or 2.1 add the following short file instead
+to Distiller's startup directory / folder (on IBM PC this would typically be
+c:\acrodist\startup):
+
+% File: safe.ps
+
+%%% Increase threshold for `Make Font Subsets'
+
+<< /SubsetFonts true /MaxSubsetPct 100 >> setdistillerparams
+
+%%% Print a text string to the Messages window in the Status dialog
+
+(**** Set up for maximizing use of Font Subsets ***) print flush
+
+%%EOF
+
+Remember that PostScript is case sensitive, so please check the exact case
+of letters in the word `/MaxSubsetPct.'  Also check that the messages marked
+with asterisks actually appears when you start Distiller.
+
+Please do *not* simply add the above code to the existing `example.ps'
+file, since `example.ps' may be replaced when you next upgrade or
+re-install Distiller.  Instead, create a new file called `safe.ps'.
+
+Also, since the Distiller reads *all* files in the `startup' directory,
+make sure your editor does not leave old backup copies of the file there!
+
+For some additional details check page 127 in `Acrobat 2.1: Your Personal
+Consultant' by Roy Christmann, Ziff-Davis Press, Emeryville, California,
+1995, ISBN 1-56276-336-9;  the Distiller on-line help file;  and page 15
+in Adobe's Technical Note 5151 ``Acrobat Distiller Parameters'' (available
+from http://www.adobe.com/supportservice/devrelations/devtechnotes.html).
+
+CHECKING THAT DISTILLER IS PRODUCING CONFORMING PDF FILES:
+----------------------------------------------------------
+
+To verify that the above modification is working:
+
+(1) In Acrobat 2.0 or 2.1, check that the asterisk-marked message
+    above appears when you start Distiller. 
+
+(2) Check that only partial fonts appear in the PDF file. Do this as follows:
+
+In Acrobat Reader 3.0 or later, go to `File > Document Info' and select 
+`Fonts' Click on `List all Fonts...'.  Check the `Font Used' column --- 
+it should say `Embedded Subset.' IMPRTANT: If this field is blank, first page 
+forward through the file to `touch' all fonts. 
+
+In Acrobat Reader 2.1 open the PDF file, pull down the `File' menu, select
+`Document Info,' then `Fonts.'  Click on `List all Fonts...'  Each line
+listed starts with the `Original Font' name.  In Acrobat 2.1, names with a
+six letter prefix followed by `+' are partial `sub fonts'.  Again, you may
+need to page through the file to touch all fonts to get complete information.
+
+Fonts that are not `subsetted' as above have either (i) been included
+verbatim (not what is desired), or are (ii) in the list of fonts wired into
+the Acrobat Reader (Times, Helvetica, Courier, and Symbol), or (iii) have not
+been included, and will be approximated in Acrobat Reader using Multiple
+Master technology - which is almost never what you want (unless these happen
+to be fonts from the Adobe Type library).
+
+To avoid approximation of fonts using Multiple Masters, force embedding of
+fonts.  In Distiller 3.0 you can use `Distiller > Job Options' and select the
+`Font Embedding' tab and check `Embed all Fonts.'
+
+In Distiller 2.1 select `Distiller > Font Embedding' and check `Embed 
+All Fonts'. In some cases you will have to add the troublesome fonts that
+persist to not be included to the `Always Embed' list.
+
+By the way, Acrobat Readers (particularly on the Mac) tend to have problems
+with PDF distilled from PS produced by certain TeX systems.  The Y&Y TeX
+System incorporates a number of work-arounds for known Acrobat Reader
+problems.  See `acrofix.txt' for additional details.
+
+Note for users of DVIPS:
+------------------------
+
+Do not let DVIPS use partial font downloading when producing a PS
+file for Distiller.  It confuses Distiller and leads to problems in 
+Acrobat Reader.  Either use -j0 on the command line, or force DVIPS 
+to leave out all fonts and have Distiller find them itself. Just add 
+the folders with fonts from the `Distiller > Font Locations' menu.
+To prevent DVIPS from including the fonts, pretend that they are
+printer resident. That is, remove the <foo.pfb parts of the lines
+in psfonts.map.
+
+SPECIFICALLY NOT ALLOWED:
+-------------------------
+
+X	Fonts licensed from Y&Y may *not* be embedded in Acrobat PDF files
+	made using the Acrobat Distiller if `Make Font Subsets' is *not*
+	checked; or if `MaxSubsetPct' is set to any value smaller than 100
+	(such as its default of 10); or if the document calls for complete
+	character sets.
+
+X	Fonts licensed from Y&Y may *not* be embedded in Acrobat PDF files
+	made using the Acrobat PDFWriter - or using Acrobat version 1.0.
+    These do not provide for font subsetting.
+
+X	PostScript files containing fonts (partial *or* complete) may not
+	be posted on the InterNet or included on CD-ROM for distribution.
+
+X	PostScript files containing complete fonts (such as those made
+	using DVIPS or Textures) may *not* be sent to other end users.
+
+X	PostScript files containing complete character showings made using
+	DVIPSONE (or any other driver) may *not* be sent to other end users.
+
+BACKGROUND:  Acrobat and `Font Leakage':
+========================================
+
+Acrobat PDF format is the highest quality platform-independent
+document-interchange format because it uses scalable outline fonts ---
+either close approximations of the original fonts using Multiple Master
+technology, or the actual fonts themselves.  Acrobat is however
+a format that presents some rather obvious `font leakage' problems, which
+--- although not as bad as with PostScript files --- are potentially serious.
+
+Plain vanilla text fonts in the Adobe library are typically *not* included in
+the PDF file.  Instead, enough information is provided in the PDF file to
+allow the Acrobat reader to create a look-alike font with the same metrics
+on the receiving end.  There clearly is no `font leakage' issue in this case.
+
+However, fonts not in the Adobe Type Library, as well as any symbol fonts, 
+decorative fonts, math fonts - in fact, any font not using `/Encoding 
+StandardEncoding def' *and* any font with a glyph complement other than the 
+`standard' Adobe set of 228 glyphs - *will* be embedded in PDF documents.  
+This means *all* fonts commonly used with TeX are embedded.
+
+While parts of the PDF file may be compressed using LZW compression and/or
+ASCII85 compression, it is easy to decompress a PDF file (Actually, one can
+extract the fonts from a PDF file more directly).  Hence `font leakage' is a
+serious concern with Acrobat PDF files.  In fact, one can extract several
+dozen useful fonts directly from the PDF files supplied by Adobe in promoting
+of Acrobat!  And many more from PDF documents on the World Wide Web ---
+including some trade-secret fonts (fonts for which end user licenses are
+not available).
+
+Acrobat version 2.0 (and later) does provide some protection: it is possible
+to ask the Distiller to use `Make Font Subsets' (a.k.a. `partial font
+downloading'), which not only reduces the file size, but makes the included
+fonts much less useful (DVIPSONE, by the way, has used `partial font
+downloading' since 1990).  This capability is not present in the Acrobat 
+PDF Writer, or in version 1.0 of Acrobat.
+
+Fonts supplied by Y&Y are particularly vulnerable to Acrobat font leakage
+problems, since most of them either use unusual encoding (e.g. math fonts),
+or contain glyphs beyond the basic 228 in standard Adobe fonts (e.g. many
+Y&Y text fonts contain the ff, ffi, ffl ligatures in addition to the usual
+fi and fl ligatures).  As a result these fonts are *always* embedded in PDF
+files rather than being approximated on the receiving end using Multiple
+Master technology.
+
+Acrobat Information from Adobe and Adobe's Font Embedding Policy:
+=================================================================
+
+The potential `font leakage' problem is a deterrent to wide-spread adoption
+of Acrobat.  While some publishers of electronic journals seem not aware
+of the potential for font license violation, this will clearly be an obstacle.
+Adobe has been working hard to prevent this from undermining the widespread
+adoption of Acrobat.  `Damage control' included a series of sometimes
+contradictory statements regarding the legality - or lack thereof - of font
+embedding in Acrobat files.
+
+Recently, Adobe was able to persuade most of the foundries from whom Adobe
+licenses typefaces to sign up on a policy to allow font embedding (with some
+language included to discourage end user font extraction from PDF files).
+
+	From Adobe's Acrobat Exchange / Acrobat Distiller 2.0 manual:
+
+	You may embed Adobe Originals and fonts owned by Linotype-Hell AG,
+	International Typeface Corporation, Agfa-Gevaert, Fundicion
+	Typografica Neufville, and Monotype Typography, Ltd. that are
+	available from the Adobe Type Library.  You may need permission
+	from the font supplier to distribute PDF files containing other
+	embedded fonts.
+
+Note also that these foundries, and Adobe, have much lower exposure to
+potential `font leakage' than most foundries, since typically fonts in
+the Adobe Type library are in fact *not* embedded in the PDF file, and 
+instead approximated on the receiving end using Multiple Master technology.
+
+Adobe has worked hard to bring `partial font downloading' (`Make Font
+Subsets') to the Acrobat version 2.0 Distiller.  PDF files containing such
+partial fonts are of much less use to a potential font thief.  A determined
+effort would have to be made in most cases to collect enough information
+to reconstruct something a useful font.  This reduces --- but does not 
+eliminate --- the potential for `font leakage.'

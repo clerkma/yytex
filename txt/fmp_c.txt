@@ -1,0 +1,55 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-------------------------------------
+NEW: third diskette added to the FMP:
+-------------------------------------
+
+On this third Font Manipulation Diskette you will find 32 bit versions
+of some of the utilities, which menas they will handle long file names
+better, and also have fewer limitations on allocations and array sizes.
+
+You will also find here the new BINtoHEX and HEXtoBIN utilities.
+
+-------------------------------------------------------------------
+New easy way to move MacBinary files from Mac to PC and vice versa:
+-------------------------------------------------------------------
+
+Transport the files in BinHeX format on a diskette or direct link
+or via email.  But wait:  you've tried that and it didn't work!
+Well that is because BinHeX conversion routines on the PC side 
+are too stupid to do it right.  This includes Eudora for Windows,
+and the public domain `binhex.exe' DOS program from the University
+of Minnesota.  These both work properly only for undifferentiated plain 
+text or binary files, not MacBinary files.  They do not recognize or
+translate the MacBinary header, treating it just as another part of
+the file.
+
+Use BINtoHEX.exe and HEXtoBIN.exe from the FMP instead.  These can
+also handle plain text or binary files, but that is not their real
+purpose in life.  They handle MacBinary files correctly --- constructing 
+the correct BinHeX header from the MacBinary header and vice versa.
+
+So after creating a MacBinary file using PFBtoMAC or AFMtoSCR, pump
+it through BINtoHEX to create an .hqx file.  Send this in email to the
+Mac, or put it on a PC diskette and read it on the Mac using Apple's
+Macintosh PC Exchange.  Then run it through BinHex 4.0 on the Mac
+(Download->Application).
+
+Conversely, run your font files through BinHex 4.0 on the Mac
+(Application->Download) and email the .hqx file created, or put
+it on a PC diskette using Apple's Macintosh PC Exchange. Then
+pass the file through HEXtoBIN on the IBM PC side to reconstruct
+a MacBinary file, ready for MACtoPFA or SCRtoAFM.
+
+--------------------------------------------------------------
+Fixing TrueType fonts incorrectly marked as being `text' fonts
+--------------------------------------------------------------
+
+`Text' fonts are fonts intended to be reencoded to platform specific
+encoding.  Math, Pi, Symbol and Decorative fonts typical should not
+be treated as `text' fonts since they are to be used with a fixed
+character layout.  Unfortunately `font monging' software mostly does
+not do well when it comes to `non text' fonts.  So there are TTF
+files floating around for non text fonts that are marked incorrectly.
+The MKNONTXT utility rewrites some of the tables in the TTF file to 
+make it appear as a non-text font to the TrueType rasterizer.

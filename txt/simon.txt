@@ -1,0 +1,220 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+============================================================================
+Some comments on:	`The Language of Science and Technology' Barry Simon
+============================================================================
+
+	Desktop Engineering, October 1996, Vol. 2, No. 2
+
+Barry Simon's review says many positive things about the Y&Y TeX System, yet
+lacks depth and does not cover many of the power features (see list at end)
+of the Y&Y TeX System.  It also includes a few inaccuracies, both about Y&Y
+TeX specificially and more generally about fonts and font use in TeX.
+
+The Y&Y TeX System:
+-------------------
+
+...
+
+While Y&Y has paid close attention to fonts and other
+technical aspects, ironically it still uses `PostScript.'
+
+	This is inverted!  `PostScript' --- or more precisely ATM 
+	compatible Adobe Type 1  --- *is* the font technology of choice.
+	Hand hinted Type 1 fonts are an expensive alternative to the 
+	cheap auto hinted TrueType fonts used by competing systems.
+
+	There are too many advantages to fonts in Type 1 format
+	to go over here, just to say that TrueType fonts (i) do not work 
+	well in Acrobat PDF documents, (ii) cannot be reencoded on the fly,
+	(iii) are not accepted by many service bureaus, and (iv) do not
+	render well on screen when compared with well hinted Type 1 fonts.  
+
+Hand-hinted fonts can look subtly better, but the people I showed couldn't
+see much difference between Y&Y hand-hinted PostScript fonts and a TrueType
+version of the same typeface that comes with PC TeX - at least not from
+a 600 dpi printer.
+
+	True!  At medium to high resolution (600 dpi or more) the
+	difference is not great (unless the underlying outlines are
+	inaccurate).  The key issue is on-screen rendering quality 
+	(i.e. at 96 or 120 dpi).  And here well hinted Type 1 fonts shine.
+	TeX documents can created entirely without need for printing if 
+	the screen preview is of high enough quality.  Lets save some trees! 
+
+	A potential confusing factor in comparing font quality is the
+	following:  If you have TrueType and Type 1 fonts with the same name 
+	installed, then you will not be able to tell the difference, since
+	Windows will arbitrarily chose one or the other (independent of 
+	which TeX system you are running).  To judge on-screen rendering
+	quality you first have to completely remove the TrueType fonts.
+
+Although Y&Y shines on the technical underpinnings, its usability
+is sometimes lacking. It desperately needs a good setup program 
+instead of forcing you to separately install multiple modules ---
+
+	True.  The older installation scheme provided more flexibility 
+	in controlling what components get installed, but based on user
+	feedback, the installation program for the new 32 bit system
+	(release 2.0) is unified and simplified (and this will be carried
+	forward into a planned 16 bit system release 1.3).
+
+The on-line help is limited compared to the printed documentation
+and isn't in Windows help format.
+
+	We consider it a *feature* that it is not in Windows help format!
+	It demonstrates the ability of Y&Y TeX itself to support hyper-text,
+	color and text search (not possible in Windows Help format). 
+
+	And yes, the on line help is less extensive than the documentation,
+	but that is simply a reflection of the fact that Y&Y documentation
+	has enormous technical depth compared to our competitors.  
+	(The Help file is not the place, for example, to discuss work-arounds
+	for bugs in EPS files made by other applications).  And
+	the Help file *does* address all issues arising when using the
+	previewer, customizing the TeX meni, and calling TeX or an editor.
+
+The program lacks PC TeX's smarts in tracking file names.
+
+	It *does* have a `Most Recently Used List' ability --- although 
+	this can be turned off.  So this must have been the result of n
+	inadvertend configuration choice (The dviwindo.ini file should have 
+	a [Documents] section listing at least one DVI file for the MRU list
+	to appear.
+
+...
+
+PC TeX:
+-------
+
+...
+
+if you compile a TeX source file called `foobar.tex,' thereby making a
+`foobar.dvi' file, when you hit the button to view the DVI file, the open
+dialog will already have `foobar.dvi' filled in.
+
+	The same is true in Y&Y TeX --- only even better!  When you first 
+	TeX a source file and then click `Preview' (from the TeX menu) it
+	will automatically open the corresponding DVI file --- no need to
+	navigate the `Open File' dialog!  See `mouse tricks' in the Help file.
+
+	What's more, once you have created a particular DVI file you can open
+	that file in the previewer and never have to go back to any `Open
+	File' dialog --- when TeX or the editor are called, the previewer will
+	pass along the correct source file name automatically.
+
+	What is more, you do not have to close the previewer while running
+	TeX (unlike PC TeX) so there is no need to ever load the DVI file
+	into the previewer again!  Which also means that your page
+	number, page magnification and view position are maintained.
+
+	It's a different way to operate --- and a lot easier. As in
+	Textures, you simply keep the preview open in one window and the
+	source code open in another (the ASCII text editor) window.
+
+Conclusion
+
+...
+
+I must confess some disappointment with these products because I feel 
+they haven't tried to deal aggressively with TeX's limitations.
+Each product suffers from a phletora of fonts requiring installation
+of from 100 to 200 separate font files.  While the fonts are scalable outline
+fonts, TeX traditionally uses separate fonts for separate point sizes.
+
+	(1) If you use either `Lucida Bright + Lucida New Math' or
+	`MathTime + Times-Roman' fonts, you do not need many fonts files
+	(16 in the case of MathTime + Times-Roman), since these font sets are
+	designed to be used with linear scaling. 
+	Only a relatively small number of font files is needed --- 
+	even though the Lucida New Math and Lucida Bright Expert font sets
+	include the most extensive collection of math glyphs of any font
+	family --- with several hundred distinct mathematical operators,
+	relations, symbols, and delimiters --- in several styles.
+
+	(2) In the case of Computer Modern, there is a typographical quality
+	reason for this phletora of fonts: optical scaling.  In traditional 
+	typography, different font sizes where *not* merely linearly scaled
+	versions of the same shape, but were adjusted to look good at their
+	particular size, taking into account the optical properties of the
+	human visual system.  This subtley has largely been lost when desktop
+	publishing came on the scene, but has been preserved in the Type 1
+	versions of the Computer Modern fonts (Optical scaling now makes a
+	comeback in some Multiple Master fonts).
+
+	(3) These days few worry about the disk space taken by a hundred
+	font files, but the clutter of the font menus *is* in fact a concern.
+	The Y&Y TeX System is one of only a half dozen applications that
+	support a new feature of ATM 4.0:  auto activation of fonts.
+	In ATM 4.0, fonts can be grouped and individual groups made `active'
+	or `inactive'.  Inactive fonts do not appear in font menus, but
+	the Y&Y TeX System can still use them.
+
+I regret there's no PC prograsm that does what Textures does on the Mac:
+incremental compile TeX source as you enter it, showing you the output, 
+in real time, in the previewer.
+
+	While the Y&Y TeX System does not have Texture's `flash mode,'
+	it comes the closest to this of all other TeX systems.
+	As explained above, the preferred mode of operation is to 
+	keep the preview open in one window, while the source code
+	appears in the editor in another window. It takes just three
+	key strokes (Ctrl-S, Alt-Tab, F5) to save the file, switch 
+	attention to the preview window and TeX the source file.
+	On a short document the edit-TeX-preview cycle takes perhaps
+	two seconds before the new typeset result replaces the old.
+
+	Compared to `flash' mode, this has the advantage that there are 
+	no `hiccups' that slow down the editor screen update while TeX is
+	stealing cycles to process the TeX source file in the background. 
+
+(For information on TeX programs and the Web, see `The Math Connection:
+Engineering and Science on the Web' Design Engineering, March/April 1996)
+
+	Given the rapid changes on the web, this is now a bit dated.
+	You may want to look at http://www.YandY.com/pdf_from.pdf
+	for a discussion of how to produce quality PDF documents using TeX.
+
+Short list of unique power features of Y&Y TeX System not mentioned:
+====================================================================
+
+(1) Provides access to *all* characters in a font (on-the-fly font reencoding)
+    (Other TeX systems cannot access fi fl dotlessi dotaccent etc.);
+  
+(2) Fast printing to PostScript devices (partial font downloading)
+    (Speeds printing by factor of four to eight on short jobs);
+
+(3) Handle arbitrarily complex TeX jobs (dynamic memory allocation)
+    (No more `TeX capacity exceeded messages);
+
+(4) Support for Acrobat PDF file creation, including hyper-text links
+    (automatic translation of hyper-text links to pdfmarks and more);
+
+(5) Support for TIFF image insertion (preferred format for images);
+
+(6) Support for WMF image insertion, and WMF previews in EPSF files;
+
+(7) Transfer of TeX typeset material on clipboard (and it's *not* a bitmap);
+
+(8) Text search in DVI file (even text with f-ligatures);
+
+(9) Make your own font `instances' (support for Multiple Master fonts);
+
+(10) Fully page-independent, resolution-independent PostScript output ---
+     ready for page imposition, color separation and direct-to-plate;
+
+(11) Inclusion of fonts called for by %%IncludeFont in inserted EPS files
+     (with other systems these are replaced with Courier);
+
+(12) Device independent graphics using standard TPIC \specials; 
+
+(13) Easy font name aliasing to deal with non-standard font naming schemes
+     (important since TeX font names are not standardized);
+
+(14) Extensive support for `foreign' language keyboards
+     (get proper hyphenation in languages with accented characters);
+
+etc. etc. --- all of which make Y&Y TeX a `must have' for publishers, 
+service bureaus, TeX consultants, as well as authors, faculty and students.
+
+(Captions on second and third figure are interchanged)

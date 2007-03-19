@@ -1,0 +1,59 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=============================================================
+Fixing complaints about missing fonts in DVIWindo in Windows NT 4.0:
+==============================================================
+
+When using fonts other than CM or AMS, with the automatic conversion
+from Type 1 to TrueType in Windows NT 4.0, DVIWindo may complain 
+about `missing' fonts.  This is the result of `mangled' names in
+the registry - which can no longer be fixed using the method that
+worked for Windows NT 3.51.
+
+Add:
+----
+
+UseGetProfileTT=0
+UseTTMapping=0
+
+to the [Window] section of dviwindo.ini in the windows directory
+(typically c:\winnt\dviwindo.ini).
+
+Run the SETUPTTF utility after installing all fonts (this is
+typically c:\yandy\util\setupttf).
+
+If the above does not entirely solve the problem, also add
+
+UseRegEnumValue=0
+
+Explanation:
+------------
+
+The above additions to dviwindo.ini tell DVIWindo not to rely on font
+information from the registry.  Instead it will read the [TTFonts] section 
+in win.ini constructed by SETUPTTF.
+
+In the case of Type 1 fonts, the registry in Windows NT 4.0 contains
+`mangled' PS FontNames, *not* Full Names as happens for TrueType fonts.
+These registry entries are therefore quite useless, except in the 
+case where the mangled FontName happens to equal the FullName (as is the 
+case with all CM, extra LaTeX + SLiTeX, and AMS fonts).
+
+Example: 
+
+File name:	lms_____.pfb  converted to  lms_____.ttf 
+PS FontName:	LucidaMath-Symbol
+PS Full Name:	Lucida Math Symbol
+Windows Face Name and style:	LucidMatSym REGULAR
+
+Mangled name in registry: LucidaMath Symbol
+
+Note that the mangled name does not match the Full Name (or the Font Name or
+the Face Name) and hence is useless for accessing the font, or mapping
+between file name and Windows Face name.
+
+Annoyingly ATM Deluxe for NT will follow the same convention!
+But at least in the case of ATM there is a way to directly extract 
+the correct information.  So this problem will not occur.
+
+

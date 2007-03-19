@@ -1,0 +1,140 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+FamilyName	Weights	AlternateName	Price	
+
+Lucida Bright	Regular, Italic, Demibold, Demibold Italic	LB
+Lucida Bright Slanted	Italic	LBSL
+Lucida Fax	Regular, Italic, Demibold, Demibold Italic	LF
+Lucida Sans	 Regular, Italic, Demibold, Demibold Italic	LS
+Lucida Sans Bold	Bold, Bold Italic	LSB
+Lucida Sans Typewriter Regular, Oblique, Bold, Bold Oblique	LST
+Lucida Calligraphic	Italic	LBC
+Lucida Handwriting	Italic	LBH
+Lucida Blackletter	Regular	LBL
+
+Lucida New Math Italic	Regular, Italic, Demibold, Demibold Italic	LBMI
+Lucida New Math AltItalic Italic, Demibold Italic	LBMO
+Lucida New Math Symbol	Regular, Demibold	LMBS
+Lucida New Math Arrows	Regular, Demibold	LBMA
+Lucida New Math Extension	Regular	LBME
+
+Lucida Bright Smallcaps	Regular, Demibold	LBRSC
+Lucida Casual	Regular, Italic	LBK
+Lucida Typewriter Regular, Italic, Bold, Bold Italic	LBT
+Lucida Sans Typewriter Narrow Regular, Bold	LSTN
+Lucida Sans School	Italic, Demibold Italic	LSC
+
+Lucida Sans Linedraw	Regular, Bold	LBLD
+
+Lucida Sans Latin 2	Regular, Italic, Demibold, Demibold Italic	LSL2
+Lucida Sans Typewriter Latin 2	Regular, Italic, Demibold, Demibold Italic	LSTL2
+
+Lucida Sans Cyrillic	Regular, Italic, Demibold, Demibold Italic	LSCY
+Lucida Sans Typewriter Cyrillic	Regular, Italic, Demibold, Demibold Italic	LSTCY
+
+Lucida Bright Latin	Regular, Italic, Demibold, Demibold Italic		LBLT
+Lucida Sans Latin	 Regular, Italic, Demibold, Demibold Italic		LSLT
+Lucida Sans Latin Typewriter Regular, Oblique, Bold, Bold Oblique	LSTLT
+
+Lucida Sans Unicode	Regular	LSUNR
+Lucida Console	Regular	LCAS
+
+MTMI	Italic, Bold Italic, Heavy Italic	MathTime Italic
+MTMU	Bold, Heavy	MathTime Upright
+MTSY	Regular, Bold, Heavy	MathTime Symbol
+MTSYN	Regular, Bold, Heavy	MathTime Symbol New
+MTEX	Regular, Bold, Heavy	MathTime Extension
+MTMS	Light, Regular	MathTime Script
+MTGU	Regular, Bold	MathTime Upright Greek
+RMTMI	Italic, Bold Italic, Heavy Italic	MathTime Italic Raw
+RMTMU	Bold, Heavy	MathTime Upright Raw
+
+CMR	5pt, 6pt, 7pt, 8pt, 9pt, 10pt, 12pt, 17pt	Computer Modern Roman
+CMSL	8pt, 9pt, 10pt, 12pt	Computer Modern Slanted
+CMCSC	8pt, 9pt, 10pt	Computer Modern Smallcaps
+CMBX	5pt, 6pt, 7pt, 8pt, 9pt, 10pt, 12pt	Computer Modern Bold Extended
+CMB	10pt	Computer Modern	Bold
+CMBXSL	10pt	Computer Modern Bold Extended Slanted
+CMBXTI	10pt	Computer Modern Bold Extended Text Italic
+CMTI	7pt, 8pt, 9pt, 10pt, 12pt	Computer Modern Text Italic
+CMTT	8pt, 9pt, 10pt, 12pt	Computer Modern Typewriter
+CMITT	10pt	Computer Modern Typewriter Italic
+CMSLTT	10pt	Computer Modern Typewriter Slanted
+CMTCSC	10pt	Computer Modern Typewriter Smallcaps
+CMVTT	10pt	Computer Modern Typewriter Variable Width
+CMTEX	8pt, 9pt, 10pt	Computer Modern TEX
+CMFIB	8pt	Computer Modern Fibonacci
+CMSS	8pt, 9pt, 10pt, 12pt, 17pt	Computer Modern Sans Serif
+CMSSI	8pt, 9pt, 10pt, 12pt, 17pt	Computer Modern Sans Serif Italic
+CMSSBX	10pt	Computer Modern Sans Serif Bold Extended
+CMSSDC	10pt	Computer Modern Sans Serif Demibold
+CMINCH	104pt	Computer Modern Inch
+CMDUNH	10pt	Computer Modern Dunhill
+CMFF	10pt	Computer Modern Funky Font
+CMFI	10pt	Computer Modern Funny Italic
+CMU	10pt	Computer Modern Upright Italic
+CMSSQ	8pt	Computer Modern Sans Serif Slides
+CMSSQI	8pt	Computer Modern Sans Serif Slides Italic
+CMMI	5pt, 6pt, 7pt, 8pt, 9pt, 10pt, 12pt	Computer Modern Math Italic
+CMMIB	5pt, 6pt, 7pt, 8pt, 9pt, 10pt	Computer Modern Math Italic Bold
+CMSY	5pt, 6pt, 7pt, 8pt, 9pt, 10pt	Computer Modern Math Symbol
+CMBSY	5pt, 6pt, 7pt, 8pt, 9pt, 10pt	Computer Modern Math Symbol Bold
+CMEX	7pt, 8pt, 9pt, 10pt	Computer Modern Math Extension
+
+MSAM	5pt, 6pt, 7pt, 8pt, 9pt, 10pt	AMS Math Symbol A
+MSBM	5pt, 6pt, 7pt, 8pt, 9pt, 10pt	AMS Math Symbol B
+EUEX	8pt, 9pt, 10pt	AMS Euler Math Extension
+EURM	5pt, 7pt, 10pt	AMS Euler Roman
+EURB	5pt, 7pt, 10pt	AMS Euler Bold
+EUSM	5pt, 7pt, 10pt	AMS Euler Script Roman
+EUSB	5pt, 7pt, 10pt	AMS Euler Script Bold
+EUFM	5pt, 7pt, 10pt	AMS Euler Fraktur Roman
+EUFB	5pt, 7pt, 10pt	AMS Euler Fraktur Bold
+WNCYR	10pt	AMS Cyrillic Regular
+WNCYI	10pt	AMS Cyrillic Italic
+WNCYB	10pt	AMS Cyrillic Bold
+WNCYSS	10pt	AMS Cyrillic Sans Serif
+WNCYSC	10pt	AMS Cyrillic Smallcaps
+
+LOGO	8pt, 9pt, 10pt	CM Logo
+LOGOD	10pt	CM Logo Demibold
+LOGOBF	10pt	CM Logo Bold
+LOGOSL	8pt, 9pt, 10pt	CM Logo Slanted
+LCMSS	8pt	SliTeX Sans Serif Regular
+LCMSSB	8pt	SliTeX Sans Serif Bold
+LCMSSI	8pt	SliTeX Sans Serif Italic
+LASY	5pt, 6pt, 7pt, 8pt, 9pt, 10pt	LaTeX Symbol Regular
+LASYB	10pt	LaTeX Symbol Bold
+LINE10	Regular, Bold	LaTeX Line Font
+LCIRCLE10	Regular, Bold	LaTeX Circle Font
+
+EMR	5pt, 6pt, 7pt, 8pt, 9pt, 10pt, 12pt, 17pt	European Modern Roman
+EMSL	8pt, 9pt, 10pt, 12pt	European Modern Slanted
+EMCSC	8pt, 9pt, 10pt	European Modern Smallcaps
+EMBX	5pt, 6pt, 7pt, 8pt, 9pt, 10pt, 12pt	European Modern Bold Extended
+EMB	10pt	European Modern	Bold
+EMBXSL	10pt	European Modern Bold Extended Slanted
+EMBXTI	10pt	European Modern Bold Extended Text Italic
+EMTI	7pt, 8pt, 9pt, 10pt, 12pt	European Modern Text Italic
+EMTT	8pt, 9pt, 10pt, 12pt	European Modern Typewriter
+EMITT	10pt	European Modern Typewriter Italic
+EMSLTT	10pt	European Modern Typewriter Slanted
+EMTCSC	10pt	European Modern Typewriter Smallcaps
+EMVTT	10pt	European Modern Typewriter Variable Width
+EMTEX	8pt, 9pt, 10pt	European Modern TEX
+EMFIB	8pt	European Modern Fibonacci
+EMSS	8pt, 9pt, 10pt, 12pt, 17pt	European Modern Sans Serif
+EMSSI	8pt, 9pt, 10pt, 12pt, 17pt	European Modern Sans Serif Italic
+EMSSBX	10pt	European Modern Sans Serif Bold Extended
+EMSSDC	10pt	European Modern Sans Serif Demibold
+EMINCH	104pt	European Modern Inch
+EMU	10pt	European Modern Upright Italic
+EMSSQ	8pt	European Modern Sans Serif Slides
+EMSSQI	8pt	European Modern Sans Serif Slides Italic
+EMMI	5pt, 6pt, 7pt, 8pt, 9pt, 10pt, 12pt	European Modern Math Italic
+EMMIB	5pt, 6pt, 7pt, 8pt, 9pt, 10pt	European Modern Math Italic Bold
+
+BBOLD	5pt, 7pt, 10pt	Alan Jeffrey Blackboard Bold
+RSFS	5pt, 7pt, 10pt	Ralph Smith Formal Script
+STMARY	5pt, 7pt, 10pt	Alan Jeffrey St. Mary Rd.
+WASY	5pt, 7pt, 10pt	Roland Waldi Symbol

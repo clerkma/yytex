@@ -1,0 +1,95 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+My notes on changes, additions, fixed in 1996:
+
+******************************************************************************
+
+Uninstall feature!
+
+DVIWindo:
+Add check box to dismiss `Find' dialog box after search started
+`Print Current Page' (like Print, but no dialog box and only current page)
+Retain `Spread Mode' magnification and position info
+Retain `Font Show' magnification and position info
+Use of ATM's own compact font info for extracting font tables (ATMREG.ATM)
+improved support for launching applications via hypertext links 
+Improved EPS passthrough when using Windows PS printer drivers
+Use more of the Common Dialog Boxes (customized for DVIWindo)
+Use of standard common dialog code for printing
+ignore \special that start with null character
+ignore \special before first page and between pages,
+option to strip path from `?' application pattern substitution
+optional reencoding to Windows ANSI (force bitmapped partial fonts)
+more system information provided
+more reliable extractions of operating system and version
+`About' box minus title, frame and OK button
+fixed PageHeight for letter (11.5" => 11") show as frame
+improvements in handling of printer drivers and printer device contexts
+option to use full 24 bit color (rather than compress and use palette)
+option to stretch gray or color dynamic range
+our own homegrown TIFF support - no more Black Ice DLL
+work arounds for problems with font support in Windows NT and Windows 95
+version info dumped in dviwindo.ini
+deal with new default directory structure
+deal with `new shell'
+option to show viewports for WMF files
+option to show command line before WinExec call (debugging)
+option to pause DVIPSONE and Y&Y TEX when called (debugging)
+option to temporarily change whether using WorkingDirectory or not
+`Show Counters' gives all of TeX's page counters, not just first
+better handling of unrecognized \specials
+more ways to get character width information (if one method fails in some OS)
+more ways to get font information (if one method fails in some OS)
+sharing font info for same font at different sizes (speed and memory use)
+character code remapping to avoid bugs in Acrobat 
+use of registry for font info in Windows 95 and Windows NT
+hour glass cursor while collecting font metrics in WriteTFM...
+more reliable way to get kern pairs
+more reliable way to tell whether font/style is `synthetic'
+Problems with copy to clipboard of WMF images `fixed'
+Reset graphics state before playing inserted WMF
+Revised compressed encoding structure for ATM
+Use private ATM library linked in rather than GetProcAddress calls
+Keep MRU list sorted on access time
+Increased limits on TIFF file row and column count and total size
+Faster reading of EPSI previews
+Support for ..\ and .\ in EPS file names
+Improved compatability between color \specials and TPIC \specials
+Added new form of \special{insertmf: <file name> 0 0 <width> <height>}
+Less strict about start of EPS code (raw EPS or with preview)
+Minor speedups, using memset, memcpy etc
+Wrapping of inserted EPS in proper DSC (%%BeginDocument/%%EndDocument)
+Forcing Windows 95 printer drivers to emit page setup code *before* any output
+
+
+DVIPSONE: 
+document level pdfmarks added: control of cropbox, keywords, title, author,
+support for duplex printing (-*r),
+landscape mode (-*O) improved,
+error output optionally to stdout not to stderr (-*8)
+default resolution for TIFF setable (-*J=)
+reliable support for binary data in EPS, 
+allow for more departures from DSC (EPS file not starting with %! e.g.)
+use level II PostScript operator setpagesize for custom page sizes,
+support for DEBUGPAUSE,
+character code remapping to avoid Acrobat PDF problems,
+ignoring \special that starts with null bye,
+ignoring \special before first page and between pages,
+immunity to junk in fonts at end of encrypted section,
+avoid reencoding non-text Multiple Master font,
+option to use upper case names in /FontName for CM, AMS etc
+support for Predictor tag in LZW compressed TIFF images,
+Use of counter[1]-counter[2] as page number in DSC,
+deal with new default directory structure
+
+
+Y&Y TeX
+
+Increased hash table (space for control sequences) from 9,600 to 32,000
+Increased max internal font number from 511 to 1023
+Increases in the few other fixed allocations also.
+Line-breaking success statistics shown in log file
+Overfull/underfull box statistics in log file
+Option to translate from ANSI to DOS code page 850 in error messages output
+Allow ~ in file name (for short versions of long names)
+Work around for MS memory allocation mis-feature

@@ -1,0 +1,191 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+****************************************************************
+
+A RECOMMENDATION FOR THE NAMING of NON-CM FONTS USED IN TeX
+
+Now that increasing use is being made of non-CM fonts in TeX, it is
+important that standards be developed for the names used to refer
+to such fonts in TeX input.  Without such a standard, TeX cannot
+locate the appropriate font metric information, and DVI processing
+programs connot locate the required font outlines or bitmaps, or
+use the correct font name to invoke the correct printer-resident fonts.
+
+This lack of codification has proved to be a major source of
+frustration when DVI files are ported from one computer system
+to another, as is common when publishing journal articles and
+books from author-supplied material.  As it stands now, each
+project to be run out requires customization, compelling
+the typesetter to set up yet another new font name translation
+table that maps names used in TeX to file names. And this usually
+requires consulting with the author to determine just what
+the font names in the manuscript mean.
+
+Perhaps more seriously, without a uniform naming convention,
+it may happen that the DVI processing program and TeX have
+conflicting notions about what fonts are being referred to--
+with disasterous consequences.  Without a naming convention
+then, DVI files are not truly "device independent" since
+they are tied to the naming convention used on a particular
+computer system.
+
+As a basis for our proposal, we quote from the "The TeXbook"
+(p.278):
+
+"The syntax for <file name> in
+
+    	\font<control sequences><equals><file name><at clause>
+
+is not standard in TeX because different operating systems
+have different conventions.
+
+You should ask your local system wizards for details on just
+how they have decided to implement filenames.
+
+However, the following principles should hold universally:
+
+A <file name> should consist of <optional spaces> followed by
+explicit character tokens (after expansion).
+
+A sequence of six or fewer ordinary letters and/or digits
+followed by a space should be a file name that works in
+essentially the same way on all installations of TeX...."
+
+Consequently:
+
+*  We recommend that where a standard naming convention for a font
+library already exists that fits into the scheme advocated in
+"The TeXbook", then that convention should be adopted for use
+with TeX and DVI converters.
+
+Presently, many of the non-CM fonts called for by users of TeX are
+PostScript outline fonts, either printer resident or in
+downloadable form.  Adobe Systems was already inspired to invent
+a naming convention for the fonts in their library for use on
+computers that cannot handle long file names.
+
+In their library, file names are assigned to fonts by (manually)
+contracting the font family name and appending standard modifiers
+for bold (b), italic (i), bold-italic (bi), light (l), oblique (o),
+narrow (n), condensed (c), and so on.  Thus information about the
+font with PostScript FontName 'Times-BoldItalic', for example, is
+stored in files with the name 'tibi'.
+
+An extension of the file name indicates what type of information
+is in the file.  Commonly used extensions are .afm (for Adobe
+font metric information), .tfm (for TeX font metric information),
+.pfm (for MicroSoft Windows printer font metric information),
+.pfb (for printer font binary), and .pfa (for printer font ASCII).
+
+Adobe's Fontdownloader limits the file name to six characters,
+which conforms exactly to the recommendation in "The TeXbook".
+It seems logical then that:
+
+*  When using Adobe PostScript outline fonts in TeX, one should
+simply follow this naming convention.
+
+(There is presently no conflict with CM font names since none of
+the fonts in the Adobe font library have names starting with the
+letters 'cm'.)
+
+One possible complication arises from the practice of remapping
+character codes in non-CM fonts to lie in positions that are used
+by TeX in some CM font.  One should be able to distinguish between
+a font that is used verbatim and one that has been remapped:
+
+*  We recommend that the suffix 'm' be appended to a fontname when
+a remapped version is intended.
+
+This is not completely unambiguous since the font can be remapped
+in different ways, but it will usually be obvious what is
+intended.  Thus a regular font would normally be remapped to the
+ordinary text (roman) encoding of TeX (as for cmr10), an italic
+font would be remapped to TeX's italic encoding (as for cmti10),
+while a symbol font would be remapped to TeX's symbol encoding
+(as in cmsy10).
+
+*  We recommend that the 'm' be used as a suffix, NOT as a prefix
+so that related fonts continue to appear together in a sorted list.
+
+(Adding the suffix to a name with six characters brings it to
+seven, but even the most limiting file systems these days allow
+up to eight characters.)
+
+It should be noted that the issue of remapping is now becoming
+less important as users are switching to TeX 3.0, which supports
+fonts with 256 character codes.  But it seems likely that
+continued used will be made of remapping for specialized purposes.
+
+*  We also recommend that no prefix (e.g. 'ps') be attached to
+fontnames since this wastes two precious characters out of the
+six (or perhaps eight) that are available on some systems.
+
+% Suggestions for how we close?
+% Any more to add?  Commented material?
+% do we want the following appendix?
+
+Addendum: names of some commonly used Adobe outline fonts
+---------------------------------------------------------
+
+ag      AvantGarde-Book
+ago     AvantGarde-BookOblique
+agd     AvantGarde-Demi
+agdo    AvantGarde-DemiOblique
+
+bkl     Bookman-Light
+bkli    Bookman-LightItalic
+bkd     Bookman-Demi
+bkdi    Bookman-DemiItalic
+
+cll     Clarendon-Light
+cl      Clarendon
+clb     Clarendon-Bold
+
+com     Courier
+coo     Courier-Oblique
+cobo    Courier-BoldOblique
+cob     Courier-Bold
+
+hv      Helvetica
+hvo     Helvetica-Oblique
+hvb     Helvetica-Bold
+hvbo    Helvetica-BoldOblique
+
+hvc     Helvetica-Condensed
+hvco    Helvetica-Condensed-Oblique
+hvcb    Helvetica-Condensed-Bold
+hvcbo   Helvetica-Condensed-BoldObl
+
+lmi     LucidaMath-Italic
+lms     LucidaMath-Symbol
+lme     LucidaMath-Extension
+
+nbr     NewBaskerville-Roman
+nbi     NewBaskerville-Italic
+nbb     NewBaskerville-Bold
+nbbi    NewBaskerville-BoldItalic
+
+ncr     NewCenturySchlbk-Roman
+nci     NewCenturySchlbk-Italic
+ncb     NewCenturySchlbk-Bold
+ncbi    NewCenturySchlbk-BoldItalic
+
+new     NeuzeitS-Book
+newh    NeuzeitS-BookHeavy
+
+por     Palatino-Roman
+poi     Palatino-Italic
+pob     Palatino-Bold
+pobi    Palatino-BoldItalic
+
+sy      Symbol
+
+tir     Times-Roman
+tii     Times-Italic
+tib     Times-Bold
+tibi    Times-BoldItalic
+
+zcmi    ZapfChancery-MediumItalic
+
+zd      ZapfDingbats
+

@@ -1,0 +1,7 @@
+YANY LaTeX 
+01234567890123456789    
+Conversion from METAFONT code to Bezier curves by Y&Y.
+Character level hinting by Blenda Horn of Y&Y.
+Adobe Type 1 encoding by Berthold K.P. Horn of Y&Y.
+This version has a minor fixup in the font level hinting code.
+

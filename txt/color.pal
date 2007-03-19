@@ -1,0 +1,22 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+0	black		0	0	0
+1	darkred		128	0	0
+2 	darkgreen	0	128 	0
+3	peagreen	128	128	0
+4	darkblue	0	0	128
+5	lavender	128	0 	128
+6	slate		0	128	128
+7	lightgray	192	192	192
+8	palegreen	192	220	192
+9	paleblue	166	202	240
+10	offwhite	255	251	240
+11	mediumgray	160	160	164
+12	darkgray	128	128	128
+13	brightred	255	0	0
+14	brightgreen	0	255	0
+15	yellow		255	255	0
+16	brightblue	0	0	255
+17	magenta		255	0	255
+18	cyan		0	255	255
+19	white		255	255	255

@@ -1,0 +1,52 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+TeX without bitmaps
+===================
+
+Switching to scalable outline fonts can bring significant advantages,
+and it is easy to do, since TeX itself only cares about font metrics ---
+not the actual shapes of glyphs.
+It is the DVI processor --- previewer or printer driver ---
+that has to deal with the fonts themselves.
+
+Why switch to scalable outline fonts?
+------------------------------------
+
+The main advantages of outline fonts derive from their resolution 
+independence: 
+
+*	The same file used for proofing can be used for final output.
+	There is no need to recreate the file when a device of different
+	resolution is used.
+
+*	It is possible to preview at an arbitrary scale --- zoom in
+	or out as desired.  One is not restricted to a few scales for
+	which bitmap fonts happen to have been generated.
+
+*	It is possible to use a font at an arbitrary scale.  A font size
+	can be chosen for example, that fits a headline exactly in the
+	space available.
+
+*	There is only one font file --- independent of how many different
+	sizes the font is used at or how many devices of different
+	resolution are to be used.
+
+Switching to scalable outline fonts opens up a large universe of fonts.
+There are 15,000 fonts in Adobe Type 1 format alone!  
+The number of fonts available in TrueType form is also growing rapidly.
+
+The savings in file space can be dramatic.  A typical set of PK files
+for the 75 Computer Modern fonts takes more than 6 Megabytes.  
+The Computer Modern fonts in Type 1 format occupy only about 2 Megabytes
+of disk space.  
+
+The savings is even more dramatic if high resolution devices are used, since
+the size of PK files grows approximately lineary with the resolution of the
+device, while one set of outline font files can be used for devices of any
+resolution.  And printers of high resolution are now becoming common place. 
+With outline fonts, there is no need to create special files for high
+resolution type setting equipment, and no need to make a decision early on
+about which particular device will be used.  The same outline font files can
+be used for previewing as are used for printing.  No need for a complex
+two-dimensional directory hierarchy of font files organized on
+design size and bitmap resolution.

@@ -1,0 +1,28 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Patterns interpreted in DVIWindo's `TeX' menu:
+
+Call Pattern		Replaced by / Action
+
+@			%TEXINPUTS%#*
+%<var>%			value of environment variable <var>
+*			DVI file name minus path minus extension
+<dirs>#<name>		full path name of first <name> found in listed dirs
+
+$Window(<title>)	switch focus to window with specified title bar
+$Window(<title>...)	switch focus to window with start of title bar matching
+
+$$			$
+$Counter[<n>]		TeX's counter[<n>]. counter[0] is usually page number
+$Page			physical page number sequential in DVI file.
+$Logical		logical page number --- counter[0]
+$Last			number of pages in DVI file
+$Comment		replace with comment passed from TeX (date/time) "..."
+$Magnification		DVI file magnification - default 1000
+$Width			page width passed by TeX
+$Height			page height + depth passed by TeX
+$Fonts			number of fonts referred to in DVI file
+$Stack			max depth of DVI stack
+$Length			length of DVI file in bytes
+$Byte			current byte position in DVI file
+$Font			last font selected in Show Font

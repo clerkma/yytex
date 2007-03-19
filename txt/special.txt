@@ -1,0 +1,158 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+To TUG DVI Driver Standards Committee:
+
+We applaud the efforts of the committee to establish standards for DVI
+processing programs.  The publication of a draft standard is a major
+milestone that will help guide the work of implementers.
+We hope that you will agree with us that a draft standard should also
+soon be published that standardizes usage of \special.
+
+This is an URGENT plea for standardization of the use of \special in
+TeX.  We recommend that while the definition of \special may be left
+open-ended for future extension, a definite form be establish for
+writing \special commands for simple figure inclusion.
+
+It is not to be expected that one could anticipate all possible
+uses for this powerful extension of the TeX language,
+nor is it likely that the community could soon agree on
+the details of how such extensions are to be implemented.
+But this should not stand in the way of satisfying what has now
+become an urgent need:  
+a standard way of using \special to include figures in text.
+
+Publishers, particularly those active in technical
+areas, are rapdily moving towards use of author-supplied 
+machine readable material, both for journal articles and books.  
+In mathematical and scientific areas, text material is often best
+communicated in the form of DVI files.  
+Figures to be inserted are most commonly given in Encapsulated
+PostScript form.
+
+A major stumbling block to completion of the transition to 
+electronic publishing is that every DVI processing program supports a
+different convention for usage of the \special command.
+This means that every job is a custom job.
+Instead of a smooth operation involving only transfer of the
+authors DVI and EPS files, serious programming effort is often
+required to deal with yet another way of using \special.
+
+Typically all that the author requires is a way of inserting an 
+EPS defined figure at a given place in a TeX document.  
+Our experience with a large number of author-supplied DVI files
+indicates that the predominant use of \special is for simple figure insertion.
+In a small number of cases the figure also needs to be scaled.  
+We have yet to see a case where a figure needs to be shifted,
+rotated, skewed or clipped. 
+More importantly, no use is ever made of the ability to insert verbatim
+PostScript commands, to call on PostScript functions native to a
+particular DVI processing program or to produce overlays.
+While these transformations represent interesting and
+powerful extensions, they apparently are not vital to the
+production of even the most sophisticated texts.
+
+When the discussion of standards for DVI drivers first started, there
+was little urgency, since the routine need for these capabilities
+had not yet arisen outside a small number of research laboratories.
+Progress in this field has been rapid, however, outpacing
+deliberations of the standards committee, with journals rapidly
+switching to machine readable material.
+Similarly, books are now routinely produced from TeX output.
+The time for publication of a simple standard for figure
+insertion in papers and books is now.
+
+We claim that:
+
+(*) A standard for use of \special in DVI files is urgently needed NOW.
+
+(*) Most user's requirements can be met by a very simple scheme.
+
+(*) Hooks can be left for more sophisticated usage of \special 
+    to be defined later, but debate over these extensions should not
+    delay announcement of a standard for simple figure insertion.
+
+(*) Dependence on internal details of a particular DVI processing
+    programs or the PostScript prolog it uses are not acceptable.
+
+(*) Exactly what standard is adopted is not as important as that 
+    SOME standard be adopted SOON.
+
+(*) If a standard cannot be soon agreed upon, it is vital that at
+    least a working draft be circulated that can be used as a model
+    by implementers. 
+
+(*) In the absence of guidance from the TUG DVI driver standards
+    committee, ad hoc de facto `standards' are emerging, since the 
+    need for a standard is extreme.  These `standards' are not
+    extensible or elegant.
+
+You can perform an invaluable service to the community by soon
+publishing a draft standard for usage of \special for simple figure
+inclusion.  
+The window of opportunity for influencing the developments in this
+area is open now, but will not remain open indefinitely.
+
+us...
+
+References:
+
+Hosek, D. (1990) ``The  `Level 0' DVI Driver Standard,''  
+Version 0.04,  revised 1990 Oct 6.
+
+Reid, T. & D. Hosek (1990) ``Report from the DVI Driver Standards Committee,''
+
+McGaffey, R.W. (1987) ``Developing TeX DVI driver standards,''
+In TUG VIII Conference Proceedings, pp. 69--70. TUG User Group.
+
+Hosek, D. (1987) ``Proposed DVI \special command standard,''
+
+Guntermann, K. & J. Schrod (1988) ``High Quality DVI drivers,''
+
+Hosek, D (1987) ``Call for standardization of DVI specials,''
+TeXMAG, Vol. 1, No. 5.
+
+Beebe, N.H.F. (1987) ``A TeX DVI driver family,''
+In TUG VIII Conference Proceedings, pp. 71--113. TUG User Group.
+
+Beebe, N.H.F. (1989) ``DVIxxx - Display TeX DVI Files on Assorted
+Output Devices,''
+
+Beebe, N.H.F. (1989) ``TeX DVI Driver Family Status,''
+Second Edition.
+
+Bechtolsheim, S. v. (1989) ``A .dvi File Processing Program,''
+TUGBoat, Vol. 10, No. 3.
+
+Roylance, G. (1987) ``Merging Illustrations and Printing on Big Paper,''
+Working Paper 299A, MIT AI Laboratory.
+
+Spivak, M. (1987) ``PTI Laser/PS Manual,'' Personal TEX Inc.
+
+Anonymous (1988) ``DVILASER/PS User Manual,'' ArborText Inc.
+
+Anonymous ``DVI2PS - convert a DVI file to PostScript,''
+Unix Programmer's Manual.
+
+% a committee will add all conceivable features, never finish designing,
+% and lead to unimplementable lists of specifications.
+% examples: Ada design, new Common Lisp report, ILLIAC IV language...
+
+% it is interesting that nothing has really happened since 1987, when
+% there was a lot of discussion of this issue...
+
+% we have waited since 1987 for even the `level 0' standard
+% the level 0 standard addresses unimportant details and outdated issues -
+% (focusing, for example, totally on issues related to bitmap fonts)
+% fiddling while Rome is burning...
+
+% there is a threat of an unsatisfactory  de facto standard emerging
+% in lieu of a well thought out standard.
+
+% no member of the committe should have a vested interest in a DVI processor,
+% otherwise the deliberations will not be unbiased.
+% there may be an effort to legislate that the special features of a
+% particular DVI processor be included in the standard.
+
+% one reason fancy features are not needed in \special is that it is
+% just as easy to just go in and modify the (human readable) EPS file
+

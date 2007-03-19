@@ -1,0 +1,88 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=======
+BibTeX:
+=======
+
+============================================================================
+
+NEW: A new version of BibTeX is now included in the Y&Y TeX System typically
+in c:\yandy\bibtex.  This version 
+
+(1) reads "environment variables" from dviwindo.ini;
+(2) deals with arbitrary line terminations;
+(3) can handle long file names;
+(4) has much larger limits on various arrays.
+
+Installation of the TeX System already adds appropriate variables
+to the [Environment] section of dviwindo.ini including
+BIBINPUTS, BSTINPUTS, and CSFINPUTS. For example:
+
+BIBINPUT=c:/yandy/texinput/bibinput;c:/yandy/bibtex/bib
+BSTINPUT=c:/yandy/texinput/bstinput;c:/yandy/bibtex/bst
+CSFINPUT=c:/yandy/texinput/csfinput;c:/yandy/bibtex/csf
+BIBTEX_CSFILE=88591lat.csf
+
+You can link BibTeX into your TeX menu like any other program
+as explained in the Y&Y TeX System manual.  Hold down the Ctrl
+key, from the "TeX Menu" select the item *before* the one where
+you want BibTeX to appear, then edit the "key" and "value" fields
+and click "Add".
+
+You can also call BinTeX from the WInEdt editor. But then
+note that sometimes WinEdt is set up to use the old
+"c:\yandy\util\bibtex.exe" instead of the new
+"c:\yandy\bibtex\bibtex.exe".  In that case, just 
+reconfigure the definitions for WinEdt's menu item for BibTeX.
+
+============================================================================
+
+OLD: An older, simpler version of BibTeX is in the `util' sub-folder of 
+the `yandy' folder, typically c:\yandy\util\bibtex.exe
+
+If you use this version, then you may find it easiest to assemble all
+needed files in one directory.  Then run BibTeX from the command
+prompt after making that directory the current directory.  That way
+you know all the files are there and that BibTeX is not grabbing old
+versions of any of the files by mistake.  You can get to the command
+prompt from "Start > Programs > Command Prompt".
+
+For serious work, you may prefer to use a more elaborate version.  On the 
+CD look in /CTAN/systems/win32/bibtex.exe for a larger version.  Copy this 
+to your util folder.  Also copy kpathsea.dll in that case (see kpathsea.pdf 
+for documentation if needed).
+
+You can control where this BibTeX looks for *.BIB and *.BST files using
+two environment variables  BIBINPUTS, BSTINPUTS.  Note that these are real 
+DOS environment variables, not entries in the [Environment] section of 
+dviwindo.ini.
+
+In Windows 95/98 add to your autoexec.bat file (in your root directory)
+lines of the form:
+
+	SET BIBINPUTS=c:\yandy\texinput\bibinput
+	SET BSTINPUTS=c:\yandy\texinput\bstinput
+
+Please substitute the correct full path to where your files actually are.
+then reboot.  
+
+In Windows NT, set environment variables from "Start > Settings > Control
+Panel > System" Click the "Advanced" tab, click on "Environment Variables".
+Click on "Add" under "Variables" (not "System Variables").  You don't need 
+to reboot in this case.
+
+Note that this BibTeX - unlike Y&Y TeX itself - does not like long file 
+names --- which is why the actual directories names given as exaples above
+are not longer than 8 characters.  The environment variables themselves,
+however, ve no such restriction and should be written as shown with the full 
+9 letters.
+
+Note that this BibTeX - unlike Y&Y TeX - assumes that your files use
+standard line terminations.  This can lead to complaints about
+`exceeding BibTeX's input buffer' if you transfer files from Mac or 
+Unix without translating the line terminations.
+
+You can also get this error message if you have unusually long biblio
+entries.  BibTeX was not designed to accept whole abstracts as entries.
+
+============================================================================

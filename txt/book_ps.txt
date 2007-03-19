@@ -1,0 +1,80 @@
+*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*
+
+ADOBE POSTSCRIPT LANGUAGE BOOKS
+
+Here is the ordering information for ADOBE's PostScript Language books.  
+These are published by Addison-Wesley (except as noted) and are listed as
+authored by  Adobe Systems Incorporated.
+
+  Red Book:   Postscript Language Reference Manual, SECOND EDITION 1990
+                  ISBN 0-201-18127-4
+                  
+  Black Book: Adobe Type 1 Font Format Specification 1990
+                  ISBN 0-201-57044-0
+
+  Blue Book:  Postscript Language Tutorial and Cookbook 1985 (dated)
+                  ISBN 0-201-10179-3            
+                  
+  Green Book: PostScript Language Program Design 1988 (dated)
+                  ISBN 0-201-14396-8            
+                  
+  Purple Book: Programming the Display PostScript System with NeXTstep 1992
+                  ISBN 0-201-58135-3            
+
+  Orange Book: Programming the Display PostScript System with X 1993
+                  ISBN 0-201-62203-3
+
+  Acrobat 2.1 --- Your Personal Consultant by Roy Christmann  1995
+		  ISBN 1-56276-336-9		(Ziff Davis Press)
+
+  Portable Document Format Reference Manual by Tim Bienz and Richard Cohen 1993
+                  ISBN 0-201-62628-4
+
+These books can be obtained from most computer book stores.
+
+*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*
+
+Out of print:
+
+  Red Book:   Postscript Language Reference Manual      
+                  ISBN 0-201-10174-2            
+  (This has been replaced by the PLRM, Second Edition; see above)
+
+*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*_*
+
+OTHER POSTSCRIPT BOOKS:
+----------------------
+
+   `PostScript by Example'  Henry McGilton & Mary Campione 1992
+   Addison-Wesley  ISBN 0-201-63228-4
+
+   `Learning PostScript - A Visual Approach' Ross Smith 1990
+   Peachpit Press  ISBN 0-938151-12-6
+ 
+   `PostScript Programmer's Reference Guide' David Holzgang 1989
+   Scott, Foresman and Company ISBN 0-673-38574-4
+
+   `Real World PostScript' Stephen F. Roth (editor)  1988 
+   Addison-Wesley ISBN 0-201-06663-7
+
+   `Inside PostScript' Frank Merritt Braswell  1989 
+   Systems of Merritt & Peachpit Press ISBN 0-938151-10-X
+
+   `Thinking in PostScript' Glenn C. Reid 1990
+   Addison-Wesley ISBN 0-201-52372-8
+
+   `Understanding PostScript Programming' 2nd edition David A. Holzgang 1988
+   SYBEX ISBN 0-89588-566-2
+
+   `Display PostScript Programming' David A. Holzgang 1990
+   Addison-Wesley ISBN 0-201-51814-7
+
+   `Encapsulated PostScript' Peter Vollenweider 1989
+   Prentice Hall ISBN 0-13-275843-1
+
+   `PostScript Screening - Adobe Accurate Screens' Peter Fink 1992
+   Adobe Press ISBN 0-672-48544-3
+
+   `The PostScript Font Handbook - a Directory of Type 1 Fonts' 1992
+   Addison-Wesley ISBN 0-201-56893-4
+  

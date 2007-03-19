@@ -1,0 +1,168 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+======================================================================
+		Windows NT 3.51 font installer bugs:
+======================================================================
+
+The automatic conversion from Type 1 to TrueType when installing fonts in
+Windows NT 3.51 has been much improved compared to that in Windows NT 3.50.
+Nevertheless, there remain some problems.
+
+The main problem is that the automatic conversion installs the font under the
+wrong name.  The converter does produce TTF and FOT files that use the
+PostScript FullName as the TrueType FullName, but then it installs the font
+under the PostScript FontName instead!  Which means that the relationship
+between font name and file name cannot be recovered by an application.  
+The information entered into the registry is wrong (unless the PS FullName
+happens to be the same as the PS FontName, which is the case with CM fonts).
+
+The fix for this problem is:
+
+(1) install the Type 1 fonts from `Fonts' in the `Control Panel' (found
+    in the `Main' program group).  Make sure to check all three boxes
+    (`Convert Type 1 Font to TrueType', `Install Type 1 Font Files for use on 
+    a PostScript Printer', and `Copy Type 1 Font Files to Windows Directory');
+    During this installation you will probably see font names *without* spaces
+    between name components, such as `LucidaBright'.  These are the *wrong*
+    names. 
+
+(2) copy the corresponding TTF and FOT files from the system directory
+    (typically c:\windows\system) to an empty temporary directory.
+    (Check the font diskette for file names of the PFB and PFM files, 
+    the converted TTF and FOT files will have the same name with different 
+    extension).
+
+(3) *remove* the fonts again using `Fonts' in `Control Panel.'  
+    Make sure to check the `Delete Font File from Disk' box. 
+
+(4) reinstall the fonts from the temporary directory using `Fonts' in the
+    Control Panel  During this `installation' you will probably see font
+    names with spaces between name components, such as `Lucida Bright'.
+    (When using the TTF / FOT files the installer picks up the correct name). 
+
+While the above sounds relatively straightforward, some mis-features of
+Windows NT can conspire to make this a somewhat frustrating process:
+
+(1) `Removing' the fonts may not in fact delete the corresponding TTF and FOT
+    files from the system directory (typically c:\windows\system).  You may
+    want to check, and delete the files manually if they are still there.
+    However, you may find that you cannot delete the TTF or FOT files from
+    the system directory --- you may get an error message that the files are
+    `in use by another process' (presumably the TrueType font rasterizer in
+    Windows NT).   This happens particularly if an attempt has already been
+    made to use the font for on screen display.
+
+*   The only way out is to reboot and then try again to delete the files. 
+
+    It is important to delete these files to avoid cluttering your disk with
+    several copies of the same font, and getting the system (or yourself)
+    confused about which version of a font is installed.
+
+(2) Windows NT does a poor job of managing TTF and FOT files.  It does not
+    delete or overwrite old versions when you install a new version of a font.
+    Instead, it adds a version number to the end of the file name.  After a
+    while you can end up with numerous copies of the same font file, and you
+    may not know which of these is actually being used (of course, this
+    wouldn't be much of a problem if you didn't always have to reinstall
+    auto-converted font, as described above).  
+
+*	The solution is to always make sure to first delete the old TTF and
+*	FOT files --- do not depend on `Delete Font File from Disk' check box.  
+
+(3) Windows NT does a poor job of managing font information in the registry.
+    You may find that the information there is not in synch with reality.
+    There may be fonts listed there for which there are no TTF or FOT files
+    (and there may be fonts `installed' for which there is no entry in the
+    registry).  The best solution is to use the registry editor to open
+
+*	HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts
+
+    then highlight fonts to be removed and press delete, then click on `Yes'.
+    Again this wouldn't be much of a problem if it wasn't for the fact that
+    you have to reinstall autoconverted fonts.  
+
+    The registry editor is regedit32.exe in the system32 directory (typically
+    c:\windows\system32).  You can set up an icon to make it convenient to
+    call the Registry Editor (Use `New' in the `File' menu of Progam Manager).
+
+------------------------------------------------------------------------------
+
+After (re-)installing the `Lucida Bright + Lucida New Math' font sets you
+should have entries of the form:
+
+	Lucida Blackletter (TrueType): REG_SZ: LBL.FOT
+	Lucida Bright (TrueType): REG_SZ: LBR.FOT
+	Lucida Bright Italic (TrueType): REG_SZ: LBI.FOT
+	Lucida Bright Demibold (TrueType): REG_SZ: LBD.FOT
+	Lucida Bright Demibold Italic (TrueType): REG_SZ: LBDI.FOT
+	Lucida Bright Oblique (TrueType): REG_SZ: LBSL.FOT
+	Lucida Calligraphic Italic (TrueType): REG_SZ: LBC.FOT
+
+(1) If you instead have file names like LBL____0.FOT, then you most likely
+    have  multiply copies of the font files, and may run into problems
+    because the wrong version is used, see above.
+
+(2) If the font names do not have spaces between name components --- 
+    e.g. `LucidaBright Oblique' instead of `Lucida Bright Oblique' --- 
+    then you have the fonts installed under the wrong name.  You need to
+    reinstall the TTF and FOT files, see above. 
+
+------------------------------------------------------------------------------
+
+------------------
+Some Other issues:
+------------------
+
+When Type 1 fonts are installed using the Windows NT font installer (instead
+of Adobe Type Manager), the PFB and PFM files end up in the system directory,
+not in the PSFONTS directory.  Set the PSFONTS environment variable in the
+[Environment] section of `dviwindo.ini' so it includes this directory
+(e.g. PSFONTS=c:\windows\system).  (You don't need to do this on a dual boot
+configuration where the fonts are already installed in the PSFONTS directory
+under ATM in Windows 3.1 or Windows 95).
+
+The Font Installer in Windows NT ignores the face name information in the
+PFM files of Type 1 fonts.  This has several consequences:
+
+(1) Face names shown in font menus are different in Windows NT from
+    what they are under Windows 3.1 and Windows 95.  For example,
+    the font with Window face name `LucidNewMathArrT' will appear as
+    `Lucida New Math Arrows' in Windows NT.  
+
+    This does not affect the Y&Y TeX System since the name by which TeX
+    refers to the font is not the Windows face name, but the font's file
+    name.
+
+(2) Font families with many styles will be installed in such a way that only
+   four of these styles are accessible.  For example, `Lucida Sans' has
+   six styles: `regular', `italic, `demibold, `demibold italic, `bold'
+   `bold italic'.  The Windows face name of the first four is `Lucida Sans'
+   while the Windows face name of the last four is `Lucida Sans Bold'.
+   Since Windows NT ignores the Windows face name, all six are merged
+   under the name `Lucida Sans'.  Consequently only four of the six styles
+   are accessible then using `bold' and `italic' style flags.
+
+   For example, if you try to select `Lucida Sans Bold' or `Lucida Sans
+   Bold Italic' in `Fonts' from the `Control panel' then nothing will be
+   displayed and you may get an error message of the form `There is a problem
+   with the font file.  Cannot display font' (And if you try to use `lsb'
+   or `lsbi' from DVIWindo you will get `Can't find font lsb' and `Can't find
+   font lsbi' 
+
+   The only work around for this problem would be to change the PostScript
+   FullName before conversion, which would make the fonts incompatible with 
+   versions used under other operating systems.
+
+The automatic conversion of Type 1 to TrueType fonts does not work properly
+with fonts that have a FontMatrix other than the standard one.  This can
+affect `narrow', `expanded' and `obliqued' styles.
+
+TrueType fonts cannot be reencoded.  As a result plain text fonts will appear
+with Windows ANSI encoding.  Use \input ansiacce in your source file
+(and use the TFM files set up for Windows ANSI --- those with extension TFA).
+
+If you must use another encoding, then `hard reencode' the Type 1 fonts
+*before* conversion to TrueType using the `encode.bat' batch file.
+
+NOTE: Adobe is working on an Adobe Type Manager for Windows NT, which will
+      take care of all of these problems and improve font rendering also.

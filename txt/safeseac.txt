@@ -1,0 +1,125 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+SAFESEAC --- make fonts that use `seac' for accented characters safe from ATM:
+==============================================================================
+
+One of three serious bugs in ATM 2.5 for Windows is that it has hard-wired
+positions for accented characters.  This is *not* a problem for *most* users
+content to work with plain vanilla text fonts, since plain text fonts are
+reencoded to Windows ANSI, and Windows ANSI has accent code assignments that
+do not conflict with the hard-wired positions imposed by ATM.  Hence 
+hard-wired accent positions in ATM are NOT a problem if:
+
+	(a) Windows ANSI encoding is used; or
+
+	(b) accented characters in a font are NOT used; or
+
+	(c) the font uses an encoding (such as `texannew.vec')
+	    crafted to use ATM specific hard-wired accent positions 
+	    (Unfortunately these positions change with ATM versions!)
+
+It is important to find a work-around for this problem, since it is 
+important to be able to use fonts that, (a) do not use Windows ANSI encoding,
+yet (b) have accented characters.  There are basically two different
+work-arounds:
+
+ATMFIX:
+-------
+
+One global solution to this problem is to run ATMFIX to reassign the
+hard-wired positions for accents in ATM (NOTE: this may not be permitted by
+your end user license agreement).  It means that encodings used for all
+fonts that do not use Windows ANSI must conform to the same new hard-wired
+accent assignment.  Also, anyone else using files calling for the fonts 
+in question on some other system better also perform the same reassignment 
+of hard-wired accent positions.  Finally, this work-around no longer works
+for ATM 2.6 (supplied with Adobe Acrobat).
+
+SAFESEAC:
+---------
+
+A better solution is to use SAFESEAC on the Type 1 fonts of interest to make
+them `safe for use with ATM for Windows'.
+
+SAFESEAC is a utility that replaces/expands the problematic Type 1 font
+operation called `seac' (StandardEncoding accented character).  SAFESEAC
+produces a Type 1 font that circumvents the problem with ATM's hard-wired
+accent positions, by NOT using `seac' to call upon base characters and
+accents when constructing an accented character.
+
+Fonts processed by SAFESEAC have an additional advantage in providing a work
+around for another bug, this one in PostScript interpreters.  Most Adobe
+PostScript Level I printers have a bug relating to accented characters: 
+they require that the base and accent characters actually appear in the
+encoding (that is, it is not sufficient that there be a CharString for them).
+While this is much less of a problem then the bug in ATM described above, 
+it still is an issue if an encoding such as IBM OEM encoding is to be used,
+since this encoding does include accented characters, yet has no space for
+the accents themselves  (Hence Adobe PrestigeElite and Adobe LetterGothic are
+not useful for the `DOS character set' even though these fixed width fonts do
+contain all of the required glyphs).
+
+One minor drawback to use of SAFESEAC is that the size of the PFB file will
+increase slightly (typically between 6% and 12%).  Another is that some
+rendering algorithms may produce minor artifacts where base character and
+`accent' overlap.  For example, ATM will show white instead of black in the
+tiny area of overlap between the `C' and the `cedilla' in `Ccedilla'.  But
+only low quality fonts construct `Ccedilla' as a composite character rather
+than as a separate outline in its own right.
+
+In some cases the hinting for an accent in a particular accented character
+may not be as good as it was in the original.  This may happen when the
+original hint replacement code in an accent has to be removed.  A warning
+message is issued when this occurs.  Note that rendering of the original
+accent characters themselves is not affected.  In any case, the effect of
+this on the accents in accented characters is normally small even on screen,
+and the effect on printed output is completely negligible.
+
+If the increase in PFB file size is a major concern, then consider using the
+`c' command line flag, which invokes an alternate method for dealing with the
+accented character problem in ATM.  This method will increase the file size
+typically only by 2% to 4%, but does not adjust the hinting of the accents.
+This is generally *not* recommended, since the effect of this will be noticable
+at low resolution on screen, particularly for some upper case accented
+characters.  The increase in PFB size is not much of a problem, by the way, 
+if partial font downloading is used, since only the characters actually used
+will be included in the file sent to the printer.
+
+Usage:
+------
+
+To use SAFESEAC, first convert the outline font PFB file to PFA form using
+PFBtoPFA.  Then give SAFESEAC the name of the PFA file to be altered.  The
+modified file is written into the current directory.  Use PFAtoPFB to convert
+the resulting PFA file back into PFB format, and install in place of the
+original one.  
+
+SAFESEAC can take wild-card arguments, so several PFA files can be modified
+at once.  Just make sure there is enough disk space for them.  NOTE: If you
+are using a sequence of utilities from the font manipulation package to
+construct or modify a font, then apply SAFESEAC last.
+
+
+Appendix: When the bug in ATM really matters:
+=============================================
+
+*	The problem with ATM described above is a serious problem when 
+*	a font with accented characters is to be used with an encoding 
+*	other than Windows ANSI. 
+
+Windows ANSI is often not a viable choice for font encoding, since it does
+not contain any ligatures (such as `fl' and `fi').  Also, there are several
+characters in typical text fonts that are not present in Windows ANSI
+encoding, including `minus', `fraction', `Lslash', `lslash', `Zcaron',
+`zcaron', and the accents `breve', `dotaccent', `hungarumlaut', `ogonek',
+and `ring'.   Some fonts also have `nbspace', `lozenge', `radical',
+`integral', `summation', `partialdiff', `infinity', `pi', `notequal',
+`approxequal', `lessequal', `greaterequal' which do not show up in Windows
+ANSI encoding.  Finally, there is a problem with Windows ANSI encoding if a
+font contains additional ligatures such as `ff', `ffi', `ffl', or special
+characters such as `dotlessj'.
+
+There are many common encoding vectors, such as ISO 8559-1, IBM OEM,
+Macintosh `standard roman encoding' that require accents in code positions
+other than those ordained by ATM!
+

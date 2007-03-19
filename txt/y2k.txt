@@ -1,0 +1,30 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===========================================================================
+Relative to the Year 2000, there are no date issues with the Y&Y TeX System.
+===========================================================================
+
+Y&Y TeX uses only standard calls to the Microsoft C++ library and WIN32 API
+to manage the dates and times for files. The operating system sets the date
+and time arithmetic values based on what the PC's realtime clock provides and
+it is the operating system and the underlying BIOS and RTC upon which Y&Y
+software depends for Year 2000 compliance (*)
+
+We do not embed or implement any algorithm of our own or any third party's 
+to compute dates in any of our products.
+
+TeX itself does not do any computation based on dates.  It simply provides
+informational access to the dates and times obtained from the underlying
+operating system.  The year is not truncated to two digits when offered to
+the user from inside TeX source code via \year, or in information output
+on screen or in the log file.
+
+This information is provided "AS IS" without warranty of any kind, either
+express or implied. 
+
+===========================================================================
+(*) Some C libraries on Unix, DOS, Windows and Macintosh will have an
+overflow problem in the year 2038 or 2040.  Unlike some other TeX systems,
+some browsers and some email programs, the Y&Y TeX System release 2.1 will 
+not crash when run on a machine with the year set to these values.
+===========================================================================

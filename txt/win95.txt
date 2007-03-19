@@ -1,0 +1,324 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=============================================================================
+Installing and running the Y&Y TeX System in Windows 95/98      (win95.txt)
+=============================================================================
+
+The Y&Y TeX System can be installed in Windows 95 simply by following the
+installation instructions.  Y&Y TeX itself runs as a console application.
+
+ATM:  The Y&Y TeX System comes with fonts in Adobe Type 1 format.  
+These fonts are installed when you install ATM 4.0.
+
+PCL: If you use PCL printers (such as HP printers in PCL mode) check section (1).
+
+TrueType: If you use TrueType fonts, make sure to check out item (T) below.
+
+ATM 4.0 Deluxe for Windows 95: DVIWindo automatically activates fonts
+installed with ATM 4.0  That is, it will properly display documents
+independent of whether the fonts called for are currently active (However,
+inactive fonts will not show up in the font list displayed by `Show Fonts'). 
+
+------------------------------------------------------------------------------
+            Known Windows 95/98 bugs and problems:
+------------------------------------------------------------------------------
+
+(0) For general bug information about Windows 95 see `programs.txt' (and
+    other *.txt files) in your Windows directory. 
+
+(1) Some Windows 95/98 PCL printer drivers (such as the ones for HP and NEC
+    printers and the ones from Microsoft) have problems, particularly when 
+    it comes to reencoded fonts.  These manifest themselves as missing
+    characters (particularly f-ligatures and en- and emdash) as well as 
+    bad spacing.  Hence, if the printer also has a PostScript mode, use 
+    the PS mode instead! 
+
+    To check for this PCL printer driver problem, bring up some Type 1 font 
+    (like Helvetica) in DVIWindo's `Show Font' from the `Font' menu.  Then 
+    select `Print View' from the `Print' menu.  Check that f-ligatures are
+    printing (top row of characters if you are using TeX 'n ANSI encoding).
+
+    If the f-ligatures do *not* print, do the following:
+ 
+    (i) If your HP printer driver supports `Enhanced PCL' in addition to
+     `Standard PCL' then try `Enhanced PCL' (Start > Settings > Printers).
+
+    (ii) Make sure you have at least ATM version 4.0.
+
+    (iii) In ATM 4.0 (Start > Programs > Adobe > ATM), select `Advanced' 
+    from the `Settings' tab, and  check `Print Fonts as Graphics'.
+
+    If this does not help, uncheck this checkbox again. Next,
+    prevent the printer driver from using `soft fonts' or doing 
+    its own rasterization.  The details will depend on the specific 
+    printer driver you are using.  First try the following:
+
+    From `Start' select `Settings' and then `Printers'.  In the
+    resulting window select the printer in question and then select 
+    from the `Printers' menu the `Properties' item.  Now step through 
+    the property sheets.
+
+    (iv) In the `Fonts' sheet, try checking `Print TrueType fonts 
+    as bitmaps.'  If this does not help, continue.
+
+    It is recommended that you use the printer driver's TrueType font 
+    option to download TrueType fonts as bitmaps.  Details for the 
+    driver's Properties dialog is presented below: 
+
+    LaserJet III - Fonts tab, TrueType fonts section: 
+    Select the "Download TrueType fonts as bitmap soft fonts" option.
+
+    LaserJet 4 - Fonts tab, TrueType fonts section: 
+    Select the "Download TrueType fonts as bitmap soft fonts" option.
+
+    LaserJet 5 - Print Quality tab, Text Mode section: 
+    Select the "TrueType as Bitmaps"  option.
+
+    (v) In `Document Properties > Advanced > Document Options' 
+    check `Print Text as Graphics'.  Your printer driver may not 
+    have such a check box (or it may have different label).
+
+    If you still have problems, we recommend trying the 
+    "Print TrueType as Graphics" option (if your driver has one). 
+
+    (vi) Or, if your printer driver does not have such a check box, 
+    check instead `Image full page as graphic' in the `Image Control' pane
+    (or something equivalent --- details depend on specific printer).
+
+    Raster vs. Vector Mode - You may get more consistent results if your
+    printer driver is set to use Raster mode for graphics. Not all
+    printer drivers have this mode.
+
+    (vii) The newest PCL drivers from HP seem to work a bit better.
+    Check the dates on your driver files.  You may want to try the new
+    HP LJ 5 drivers, even if you have a different model HP printer.
+
+    You can download the latest Microsoft PCL drivers from
+    http://support.microsoft.com/support/windows/drivers.asp
+
+    You can download the latest HP printer drivers from http://www.hp.com,
+    (more specifically http://www.hp.com/cposupport/eschome.html).
+
+    Desperate measures:  
+
+        (i)  Avoid f-ligatures by using Windows ANSI (ansinew) encoding.  
+
+        (ii) Suppress f-ligatures in TeX using -2 on the command line
+             (In DVIWindo "Preferences > Command Line > Y&Y TeX").
+
+(2) In some rare cases, ATM installation may lead to a conflict with a 
+     video driver.  If Windows 95 will not boot properly after installing
+     ATM, then boot in `safe mode' (or VGA mode), install ATM and reboot.
+     Finally, switch back to your favorite high resolution display mode.
+
+(3) In some cases, ATM will not install when a virus checker is active,
+     particularly Norton Anti-Virus.  Disable it before installation.
+
+(4) If you are using the Adobe PS printer driver, do not use the one
+    that ships with Pagemaker 6.0 - it does not work with Windows 95.
+    You can use AdobePS driver 4.1 that ships with the `Enhancement Pack'
+    or the one that comes with `ATM 4.0 Deluxe.'
+
+(5) WinFax cannot handle reencoded Type 1 fonts either.  Use the MicroSoft 
+    Windows Fax driver instead.  It works correctly.
+
+(6) In Windows 95, files with long file names on FAT file systems have
+    corrresponding abbreviated DOS names that include tilde (~, char 126).
+    For example the file c:\My_TeX_Files\book.tex  might have a DOS file name
+    like c:\mytexf~1\book.tex.  This is a problem, since TeX itself
+    interprets the command line, tilde is `active,' and is translated to
+    `space' --- thus in effect truncating the file name (this is similar to
+    the problem with backslash in file names on the TeX command line, which
+    TeX also tries to interpret).  Y&Y TeX has a built-in work-around for
+    such shortened file names.
+
+    HOWEVER: avoid names with spaces in them, since TeX parses the command
+    line and assumes that white space indicates the end of the file name.
+    If you do want to experiment despite this warning, remember to quote any
+    file name containing space characters, e.g. "c:\My Book\chapter1.tex" 
+    and remember that the quotes will be lost when you pass arguments 
+    through a batch file.
+
+(7) Trouble printing from the command prompt:  You should be able to
+    use the COPY command on a PS file to ship it to your printer. E.g.
+
+    COPY c:\yandy\dvipsone\debug\printst1.ps LPT1:
+
+     If this yields something like a `permission denied' error
+     then you will not be able to print using DVIPSONE.  This error
+     may be the result of a `print monitor' that is hogging the 
+     printer port.  Check your win.ini file for run=... entries
+     that load up `printer monitors' and remove them - restart Windows.
+
+     You may also need to go into `Start > Settings > Control Panel >
+     Printers' to select the printer in question and click on
+     `Properties' from the `Printer' menu.  Then in the `Details'
+     property sheet click on `Port Settings' and check the `Spool
+     MS-DOS print jobs' check box.
+
+     In many cases DVIWindo can figure out the mapping between 
+     `fake port names' like Ne01: or Hp01: and corresponding UNCs
+     or share names like \\Group\\hp.
+
+     If you are dealing with a network printer you may need to
+     determine its UNC or `share name'.  Ask your network system
+     administrator (sometimes this information can also be found
+     in win.ini).  
+
+     If the above fails to solve the problem, set things up to print
+     to file and then ship the PS file to the printer.  This can
+     be done using some Windows PS printer spooler program.
+     On some networks the system is already setup so that the context
+     menu you get when right-clicking on a PS file includes a 
+     `Print' option.  Otherwise you may have to download a shareware
+     print spooler.
+
+     Also, HP printer installation may install a "toolbox" that is meant to
+     ease the management of printer options.  This toolbox monitors LPT1 and 
+     caused the conflict with any console application trying to write to LPT1
+     Delete this `toolsbox' to solve the problem.
+
+     A (green) printer icon in the task bar in Windows 95 indicates that the
+     HP Toolbox is currently running.  CTR-ALT-DEL displays the programs that
+     are currently running.  Search this list for a program that begins with
+     HP (it's something like HPPROPTY).  End this task.  (The green icon  
+     disappears.) This should resolve the printing problem.  If it does, you
+     want to permanently remove this program from the system.  (This program
+     is basically a short-cut to some of HP's functions but removing it does
+     not reduce functionality.)  To remove the "toolbox", look for this
+     program in the system folder of Windows 95.  (The file name is a
+     shortened version of "HP Property".  It is an exe file.)  Delete this
+     program in the system folder and in the trash can.  That's all there is
+     to it.
+
+     Finally, check your autoexec.bat for c:\explorer.4pl\status\stat4PL
+     Comment this out (using REM at the start of the line) and reboot.
+
+-------------------------------------------------------------------
+DOS Problems in Windows 95 (`Incorrect DOS Version' error messages):
+-------------------------------------------------------------------
+
+The DOS under Windows 95 is DOS version 7.0. If you installed on top of an
+older version of DOS, and your PATH is not set up correctly, you may get
+`Incorrect DOS Version' errors (e.g. while installation Y&Y TeX).
+
+Your path should list c:\windows\command (new DOS directory) first, before
+c:\dos (your old DOS directory) otherwise XCOPY and FIND will not work.  
+In addition, the PATH can also list the old DOS directory, so that other DOS
+commands like REPLACE will work (since they may not be defined in the new
+version).  A typical PATH definition for AUTOEXEC.BAT might be:
+
+    PATH c:\windows;c:\windows\command;c:\dos;c:\utility
+
+
+-----------------------------------------------------------------------------
+        Inactive DOS boxes in Windows 95:
+-----------------------------------------------------------------------------
+
+If the DOS boxes in which YandYTeX, DVIPSONE, or AFMtoTFM are running do not
+close automatically after these programs finish, click on the title bar with
+the *right* mouse button, select `Properties,' and check `Close on Exit'.
+Then click the `Close' icon (cross in top right corner of Window).  The new
+setting will be used when the program is called again.  
+
+Note that Windows 95 no longer has a separate PIF editor.  You can create
+and/or edit a PIF file for a batch file (or DOS program) by right clicking on
+it and selecting `Properties.'
+
+******************************************************************************
+    NOTE: Read the following if you use TrueType fonts.
+******************************************************************************
+
+------------------------------------------------------------------------------
+(T) Installing and Deleting TrueType Fonts in Windows 95:
+------------------------------------------------------------------------------
+
+You can install TrueType fonts simply by dragging them to the \fonts
+subfolder of your windows folder.  To uninstall a TrueType font drag
+if from the \fonts folder to the `Recycle Bin.'  Use Windows Explorer.
+Alternatively you can also open the `fonts' subfolder in the `windows' 
+folder and select `File > Install Font',
+
+------------------------------------------------------------------------------
+    Font file name changes when TrueType fonts are `re-installed'
+------------------------------------------------------------------------------
+
+Before installing a new version of a TrueType font, make sure to *uninstall*
+and *remove* the corresponding font file (TTF).  Otherwise you may end up
+with several copies of the font file with slightly different names.  Windows
+95 automatically extends the font name with underscores and modifies the last
+letter to create a new unique font file name.
+
+For example, if you install LBMS several times without removing old copies
+you end up with: lbms.ttf, lbms___0.ttf, lbms___2.ttf, etc.  This wastes
+disk space and breaks the fixed relationship between font and font file name.
+
+DVIWindo tries to deal with this problem when searching for fonts --- as well
+as when you use WriteTFM, WriteAFM.  It always does find the correct font 
+if there is at least one underscore between the original font file name and
+the `version number' added at the end. If the original font file name is
+already 7 or 8 characters long, however, and there are several fonts with
+similar names, then this ambiguity cannot be resolved.  
+
+The best solution is to avoid having more than one font file for a given font. 
+
+---------------------------------------------------------------------------
+    Mismatch in TrueType font full name list:
+----------------------------------------------------------------------------
+
+DVIWindo will warn you if the TrueType font list enumerated by Windows does
+not match the information in the registry.  The font names alluded to are 
+supposed to be the `Full Names' of TrueType fonts.  There are three problem 
+scenarios:
+
+(1) Windows 95  Name error in TT font (Probably in Windows 95).
+        Create a `ttfonts.reg' file (see below) or use the SETUPTTF
+        utility to add [TTFonts] to WIN.INI, use setupttf -vfnm.
+
+This should not happen unless you have a font installed under the wrong name
+(or you have an older version of DVIWindo).  Check the names in the registry.
+
+(2) Windows NT  Name error in TT font (Probably auto-converted T1 font).
+        Move TTF and FOT files to empty directory,
+        `Remove' font; then `Add...' using `Fonts' in Control Panel
+
+This is typically due to a bug in the T1 to TT converter in Windows NT 3.51. 
+Fonts are initially installed under the wrong name (FontName, not FullName).
+
+(3) Windows 3.1 Name error in TT font (Windows 3.1).
+        [Fonts] section of WIN.INI inconsistent, use setupttf -vfnm
+
+This happens if WIN.INI does not list all TrueType fonts, or if the names do
+not match those supplied by Windows (This can happen, for example, if the
+names in WIN.INI are not the English names of the fonts).  Or if some
+application (such as `Equation Lite') installs fonts under the wrong name
+(such as the file name instead of the actual font name). 
+
+SOLUTION:  In each case, run the setupttf supplied in the \util subfolder.
+
+    setupttf -vfnm.
+
+NOTE:   You can turn off these warning messages by adding  IgnoreBadInstall=1
+    to the [Window] section of dviwindo.ini.
+
+Additional Notes:
+-----------------
+
+In Windows 95, information on TrueType fonts is stored in the registry.
+If you want to check the names of all installed TrueType fonts:
+
+     Launch the registration data base editor (Click on `Start', select
+    `Run,' type `regedit' and hit the Enter key).  Navigate down to:
+
+    HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Fonts
+
+    This shows the installed TrueType fonts. You can write out this branch 
+    of the registration data base into a file called `ttfonts.reg' in your
+    Windows directory by selecting `Registry|Export Registry File.'  
+    This is a plain ASCII file you can then inspect using any editor.
+    (DVIWindo can use such a file, and may in fact already have forced
+    RegEdit to write it).
+
+In Windows NT font information is stored in the registry, but fortunately
+Windows NT *also* pretends that they are listed in WIN.INI (for older
+applications).  In Windows NT the registry editor is called REGEDT32.EXE.

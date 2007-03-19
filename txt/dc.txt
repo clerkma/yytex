@@ -1,0 +1,70 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+[DC has long since been replaced by EC and Latin Modern, see
+http://tug.org/fonts.  --karl, 2006]
+
+===========
+`DC' fonts:
+===========
+
+What are DC fonts?
+------------------
+
+DC fonts are based on the character shapes in the CM fonts, but cover the
+full `Cork' or `T1' character set (256 glyphs), instead of the `TeX text' or
+`OT1' (128 glyphs) character set.  T1 is an 8-bit encoding, while OT1 is
+7-bit.  The DC fonts are said to be in their final form as of this writing
+(February 1997).  The LaTeX development team is promoting the use of DC.
+
+The motivation for development of the DC fonts was to provide readymade
+accented / composite characters for Western Europe and Eastern Europe.  While
+accented characters can be constructed by overprinting in CM fonts, that
+mechanism prevents TeX from being able to properly hyphenate words containing
+accented characters.  Consequently, the DC fonts provide advantages only if
+you use languages that use accented / composite characters.
+
+In order to make space for the added accented characters, DC text fonts do
+not contain some of the characters found in CM fonts, such as the upper case
+upright Greek characters buried in the code range 0 - 31 in CM text fonts.
+This means that the basic DC font set must be augmented with additional fonts
+called `text companion' fonts.
+
+DC fonts are invoked in LaTeX 2e when using the default CM fonts and
+switching encoding to T1 using
+
+\usepackage[T1]{fontenc}
+
+DC fonts only exist in METAFONT / PK bitmapped form.  There appear to be
+no plans to provide DC fonts in scalable outline (Type 1 or TrueType) form.
+
+How to deal with this:
+----------------------
+
+(0) If you work mostly in English, there is no advantage to using DC fonts.
+Only disadvantages, since they do not exist in scalable outline form.
+
+(1) If you do not have DC fonts and have a LaTeX 2e job calling for them, you
+can comment out the \usepackage[T1]{fontenc}.  This means the job will run
+instead with CM fonts.  Accented characters will appear correctly, but words
+containing accented characters will not be hyphenated.
+
+(2) Use fonts other than CM.  Real text fonts in Type 1 format (of which
+there are over 30,000 now) contain 228 `standard' glyphs, including 58
+accented / composite characters covering Western Europe.  You can reencode
+them to T1 layout (Cork), or better yet to LY1 (TeX 'n ANSI).  The latter has
+the advantage that you do not loose access to 38 graphical symbols found in
+most text fonts.
+
+(3) Reencode the CM text fonts from Y&Y to T1 (or whatever) encoding.  These
+have additional accented / composite character not found in the BSR CM fonts.
+The reencoded fonts do not completely cover the T1 character set, but
+typically everything you may actually care about. These reencoded fonts must
+be given new font names and new file names of course to avoid confusion with
+the original CM fonts.  Note that since you will lose the upper case upright
+Greek characters from the text fonts when reencoding, you will need to still
+use some of the original CM fonts to provide for these characters in
+mathematics. 
+
+
+
+

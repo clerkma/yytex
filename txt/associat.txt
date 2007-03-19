@@ -1,0 +1,33 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+item: Edit Registry
+  Total Keys=1
+  Key=.tex
+  New Value=TeXFile
+end
+item: Edit Registry
+  Total Keys=1
+  Key=TeXFile\shell\open\command
+  New Value=%MAINDIR%\pfe\pfe32.exe "%1"
+end
+
+
+On any folder being displayed, select `View > Options...'
+Then click on the `File Types' tab.
+Click `New Type'
+Fill in the fields.
+Description of type:		TeX Source File
+Associated extensions:		tex 
+Content Type (MIME):		x-application/tex
+Click on `New' Action.		
+	Type open
+	Action  c:\yandy\pfe\pfe32.exe "%1"
+
+Registry Editor:
+
+HKEY_CLASSES_ROOT
+
+.tex				TeXFile
+
+TeXFile\shell\open\command		c:\yandy\pfe\pfe32.exe "%1"
+

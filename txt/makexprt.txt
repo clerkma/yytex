@@ -1,0 +1,109 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===============================================================================
+Adding extra f-ligatures to a `base' font from `expert' companion makeexptr.txt
+===============================================================================
+
+Some fonts (like Lucida Bright and Lucida Sans) have all five f-ligatures
+(ff, fi, fl, ffi, ffl).  Most plain vanilla text fonts only have the two
+basic f-ligatures (fi and fl).  In some cases companion `expert' fonts do
+contain the extra f-ligatures.  This short note explains how to use utilities
+in the Font Manipulation Package (and a plain text editor) to copy these
+into the `base' font.
+
+This is a sample protocol to add `ff', `ffi', `ffl' ligatures to a `regular'
+font from a companion `expert' font.  The example here is for Adobe Garamond
+Regular.  Just substitute the file names of the regular (base) font and the
+`expert' font for `gdrg' and `gerg' respectively.
+
+We start with the outline font files and corresponding metric files:
+
+	gdrg____.pfb (Adobe Garamond Regular PFB file)
+	gdrg____.afm (Adobe Garamond Regular AFM file)
+
+	gerg____.pfb (Adobe Garamond Regular Expert PFB file)
+	gerg____.afm (Adobe Garamond Regular Expert AFM file)
+
+First we build the modified and merged outline font file (PFB) itself.
+Make a file called `ligature.chr' with three lines containing ff, ffi, ffl
+respectively (and perhaps fi and fl, since in this case the expert font seems
+to contain `fi' and `fl' ligatures which appear to be slightly different from
+the regular font - see note at end).
+
+Convert the outline font files from PFB to PFA format:
+
+	pfbtopfa gdrg
+	pfbtopfa gerg
+
+Extract subfont with just the chosen characters in it (result in subfont.pfa)
+
+	subfont -c=ligature gerg
+
+Merge regular font with subfont with glyphs to be added (result in merged.pfa).
+
+	mergepfa gdrg subfont
+
+To avoid conflict with the original Garamond, we need to change (i) the
+file name(s), (ii) the PostScript FontName, and (iii) Windows Face name.
+Edit the file `merged.pfa'.  Change `Garamond' to `GaramondX' in four
+places:  First line of the file, FontName, FullName, and FamilyName.
+
+To avoid conflict with the original Garamond in glyph caches of PS
+interpreter we need to also inactivate the UniqueID.  Comment out the
+line `/UniqueID 37598 def' (i.e. add % at the beginning of the line).
+
+Change the name of the file from merged.pfa to `gxrg____.pfa' say.
+
+Convert the resulting PFA file back to PFB format:
+
+	pfatopfb gxrg
+
+That is it for the actual outline font file (PFB) itself.  Now we have to
+make a new Windows metric file (PFM).  Start by editing the gdrg____.afm
+file.  Add lines from gerg____.afm for `ff', `ffi' and `ffl' (and perhaps
+`fi' and `fl' - see note at end).  Change the character code of these new
+lines to -1 (meaning unencoded).  Add lines just before `EndCharMetrics'
+(although it doesn't really matter).
+
+Change `Garamond' to `GaramondX' in the afm file also (in three places:
+FontName, FullName and FamilyName).
+
+Change the name of the AFM file to  `gxrg____.afm' say.
+Make a Windows metrics (PFM) file for the new font:
+
+	afmtopfm gxrg
+
+That is it for the new Windows metric file (PFM).  Install the resulting PFB
+and PFM files using ATM (`Add' in ATM control panel)
+
+Finally, make a TeX metric file for your chosen encoding. For example:
+
+	afmtotfm -vadjx -c=texnansi gxrg
+
+Copy gxrg.tfm to a directory listed in the TEXFONTS environment variable.
+
+NOTE: if you want to use the `fi' and `fl' ligatures from the expert font ---
+rather than the glyphs on the `base' font --- then you need to first remove
+the corresponding glyphs from the base font before merging. Make a `subfont'
+of the base font with those two characters removed.  To do this, set up a
+file called `noligs.chr' say, with two lines containing ~fi and ~fl, then
+
+	subfont -c=noligs gdrg
+
+You have to rename the subfont.pfa files to avoid conflict when you run
+subfont a second time.  Suppose you named the subfont of the expert font
+`subfonte.pfa' and the subfont of the regular (base) font `subfontb.pfa' 
+
+	mergepfa subfontb subfonte
+
+and proceed as before.  When editing the AFM file remember to also remove the
+original lines for `fi' and `fl' and copy the corresponging lines from the
+expert font AFM file. 
+
+NOTE: instead of adding lines for the new ligatures to the CharMetrics
+section in the AFM file, you could run PFAtoAFM on the merged PFA file.  
+This will give the correct CharMetric section, but the kern pairs will need
+to be copied over from the original AFM file (since there is no kerning
+information in the PFA file), and the lines *before* `StartCharMetrics'
+should also be copied from the original AFM file, since they may not be 
+as accurate or complete in the output from PFAtoAFM.

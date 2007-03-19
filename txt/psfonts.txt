@@ -1,0 +1,496 @@
+****************************************************************************
+	Using scalable outline fonts in TeX	(file: psfonts.txt)
+
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+****************************************************************************
+
+This is a brief discussion of non-CM fonts in TeX
+(See Appendix regarding use of the New Font Selection Scheme).
+
+What TeX needs:
+--------------
+
+TeX itself needs only TeX Font Metric (TFM) files to be able to use a font.
+TeX does not care about details of character shape --- only about such
+things as character width, height, depth, ligature and kerning information.
+It is the DVI processor (previewer or printer driver) that has to deal with
+the font itself (that is, the description of the actual character shapes).
+
+The place where TeX looks for TFM files is typically controlled by an
+environment variable such as TEXFONTS (although this is somewhat
+implementation and platform dependent).  Place new TFM files wherever TeX
+presently keeps its TFM files  (For experimentation, you may also be able to
+place new TFM files in the current directory or the directory that contains
+the TeX source file).
+
+
+Defining a font in TeX:
+-----------------------
+
+The easiest way to use a font in TeX is to first define it using \font:
+
+	\font\myfont=lfr at 12.35pt
+
+where the `at ...' specifying the size is optional (the default is to use
+the `design size' of the font --- typically 10pt --- which is recorded in
+the TFM file).
+
+Note that the `TeX font name' (the name appearing before the `=') should
+consist of letters only --- do not try to define a font with a TeX font name
+such as `cmbxsc10', for example!  With scalable fonts (such as fonts in
+Adobe Type 1 format or TrueType), one is not constrained to a set of
+predefined sizes, such as 10pt, 11pt and 12pt --- in fact, even `fractional
+sizes' are permitted, as shown in the example above.
+
+Let us call the name appearing after the `=' in the definition the `font
+file name'.  This is the name of the TFM file that TeX will look for when
+it is asked to define this font.  There will be an error message if TeX
+cannot find a TFM file with this name (the message will be something like
+`... not loadable: Metric (TFM) file not found').  (Some TeX implementations
+also support use of a `texfonts.map' file containing aliases for font name).
+
+Methods for creating appropriate TFM file for a new font will be addressed
+later.  Note for now, however, that it does NOT make sense to create a TFM
+file without knowing what encoding the DVI processor uses for the font.  
+For Computer Modern fonts the font encoding is fixed and so this issue does 
+not arise. This is an important point for other font families, since these 
+may provide for arbitrary reencoding.  That is, a TFM file is specific to a
+particular font *AND* a particular encoding.
+
+Note also that the naming of fonts is not standardized.  Font names
+will be discussed in detail later.
+
+
+Using a font in TeX:
+--------------------
+
+To switch to a particular font simply use the `TeX font name' defined above,
+as, for example, in the following:
+
+	\myfont This text will be typeset using lfr at 12.35pt
+
+If just a few words are to be set in this font, then enclose the text and
+the font switch in braces:
+
+	The words {\myfont abra cada bra} are typeset using lfr
+
+In this case, the font in use before the switch will be used again after
+the closing brace that ends the group.  This is all that is needed for
+occasional use of a new font, or where a whole document is to be set using
+a particular font.
+
+
+Replacing the basic fonts:
+--------------------------
+
+Commonly used TeX macro packages such as Plain TeX and LaTeX are set up to
+refer to Computer Modern fonts. The easiest way to change this is to make up
+TeX macro files that override definitions in these packages. Such files can
+then be \input at the start of a TeX job.
+
+The simplest way to create such a modified macro file is to edit a copy of
+`plain.tex' (for Plain TeX) or `lfonts.tex' (for LaTeX). Look for the font
+definitions (search for the string "cm".  Replace the names of Computer
+Modern fonts with the new font names.  Actually, you do not need to copy
+everything in the header files, only the font definitions.  But since it may
+at first not be obvious what can safely be deleted from the modified file,
+it may be safer to include all of it if in doubt (you may occassionally run
+into problems with macros that explicitly check whether they have already
+been defined).
+
+Another modification that has to be made to existing TeX macro files
+has to do with hard-wired assumptions about where special characters such
+as `emdash', `ae', `dotlessi', `oslash' or `germandbls' are in the encoding
+of the font.  This is discussed later.
+
+The above way of overriding wired-in font definitions is relatively
+straight-forward.  But is not particularly efficient in terms of TeX memory
+usage. The reason is that the new fonts are loaded on top of a predefined
+format that already has the Computer Modern fonts preloaded.  In some
+implementations of TeX this may mean that one will run out of memory.
+
+
+Making new formats:
+-------------------
+
+To avoid using extra TeX memory, you may wish to create a new TeX format.
+Plain TeX and LaTeX are created using iniTeX and some TeX macro files.  The
+result is dumped to create a new `format file' using the \dump macro.  The
+advantage of a TeX format is that it is faster to load a format than to read
+in and interpret the corresponding TeX macro files.
+
+So the best approach is actually to modify the macro files (`plain.tex' in the
+case of plain TEX, `lplain.tex,' `lfonts.tex' and `latex.tex' in the case of
+LaTeX) and create a new format using iniTeX.  In some implementations, TeX
+can be brought up in iniTeX form simply by specifying `-i' or `/i' on the
+command line.  The exact details of creating a new format are somewhat
+implementation dependent, so consult the manual for your TeX implementation.
+
+Creating a new format is more work than just reading in modified header
+files on top of an existing format, but gets around the problem of running
+out of font space in some implementations of TeX, and also speeds up loading.
+
+Just remember that TFM files are *frozen* into the format file.  This makes
+for faster loading, but *also* means that TeX will ignore any changes you
+make to TFM files later!  For example, if you change your mind about font
+encoding, you better remake the `format' file, since it will contain TFM's
+tuned to the old encoding.
+
+
+Switching sizes and faces:
+--------------------------
+
+The simple scheme described at the beginning for selecting a font is easy
+to use, but has the disadvantage that it does not support convenient size
+and face changing.  After selecting a particular font size (using a macro
+such as \large for example) one would like to be able to invoke a generic
+macro (such as \bf for bold face) for switching to a different face at this
+font size --- without having to mention the particular size.  That is,
+without using a specific macro such as \tenbf for bold face at 10 point.
+In some sense one wants to switch ALL faces to the new size.  (Conversely,
+after switching to a particular face, one would like to be able to invoke a
+generic size changing macro that switches this face to a different size ---
+without having to mention the particular face --- perhaps by switching ALL
+faces to the new size --- but this is not as often implemented).
+
+Many TeX macro packages have convenient size and style switching macros.
+The advantages of these macros can be obtained when using new fonts by
+modifying the header files rather than by defining new fonts using the
+simple method described at the beginning.  See the previous section for
+details.  See Appendix for information on the New Font Selection Scheme.
+
+
+Making TFM files for new fonts:
+-------------------------------
+
+Before TeX can typeset text using any font, it has to obtain metric
+information about the font, including characters widths, ligatures, and
+kerning pairs. TeX expects to find this information in a compact binary file
+called a TeX metric file (TFM). The organization of a TFM file is based on
+numeric character codes, not character names (such as 65 for the letter `A').
+
+For fonts created using METAFONT, a metric file is first produced in
+`Property List' (PL) format which can then be converted to TFM form using
+PLtoTF, a public domain utility.
+
+Fonts in Type 1 format come with verbose human readable metric files called
+Adobe Font Metrics (AFM).  TFM files can be created from these.  For this
+purpose, there are utilities with names like AFM2TFM and AFMtoTFM,
+that come with various DVI processors.  Note that these DO NOT all produce
+the same TFM files.  To be safe, use the `AFM-to-TFM' utility that came with
+the DVI processor that you are using.
+
+The reason the utilities for creating TFM files do not create the same TFM
+file is that DVI processors often reencode a font, that is, change the
+relationship between numeric character code and glyph.  And the TFM file
+*must* match the encoding used by the DVI processor.  Hence there can be no
+`generic' TFM file for a particular Type 1 font.  A TFM file has to be
+created based on a particular font *and* a particular encoding scheme.
+
+Ideally, the DVI processor allows selection of an arbitrary user specified
+encoding vector.  Correspondingly the `AFM-to-TFM' utility that comes with
+such a DVI processor must allow specification of the same encoding vector.
+
+Some Windows previewers provide for dumping metric metric information
+for any scalable font installed in Windows.  In DVIWindo, for example,
+you use `WriteTFM...' or `WriteAllTFMs...' from the `Font' menu.
+(This writes an intermediate AFM file based on information obtained
+from Windows and then invokes AFMtoTFM with the currently selected
+text font encoding).
+
+
+Mismatch in encoding between TFM and DVI-driver-processed font file:
+--------------------------------------------------------------------
+
+TeX has no conception of a `character' other than as a numeric code.
+The TFM file format makes no provision for storing the actual encoding
+vector (mapping from numeric character code to character name), so it is
+hard to tell what encoding was used to create a particular TFM file.
+Many problems in printing using non-CM fonts can be traced to mismatch in
+encoding used (a) when creating the TFM file and (b) when the DVI processor
+reencodes the font.
+
+A sure fire symptom of such a problem is that the DVI processor complains
+about a `character not found'.  Another symptom is that ligatures such as
+`fi' and `fl' do not print or that the wrong glyph shows where ligatures are
+supposed to be.  Similarly, there may be problems with special characters
+such as `endash' and `emdash'.  Or `trademark' shows up unexpectedly.
+
+There is actually an optional field in the TFM file that can be used to
+record the name of the encoding scheme, but this is not always used, and it
+is also obviously impossible to name all possible encoding schemes!
+
+Mismatch between font encoding and TeX macros:
+----------------------------------------------
+
+Another way to get into hot water is to have hard-wired assumptions about
+special character positions in TeX macros that disagree with the way the
+font is encoded.  Symptoms of this problem may include missing ligatures,
+missing special characters, missing upright upper case Greek letters and so
+on.  Note that plain TeX and LaTeX formats have hard-wired assumptions about
+what characters are in the range 0 - 31 for example.  See below.
+
+Different `Font Names':
+-----------------------
+
+A font has many different names --- depending on the context.
+For a start, TeX's \font macro sets up a relationship between two names,
+called here the `TeX font name' and the `font file name'.
+
+The `TeX font name' is the name used to refer to a font in the TeX document,
+and can be any valid TeX macro name that the user selects.
+
+The corresponding 'font file name' is the name of the TFM file for that
+font.  The actual font file is found in a directory, the location of which
+may be implementation dependent. It often is specified by an environment
+variable.  The actual TFM file typically has extension `tfm', which is
+stripped from the `font file name' used in the font definition in TeX.
+
+A Type 1 font also has a PostScript FontName, which is what is used to
+actually refer to it in the PostScript program.  (On some platforms, such
+as NeXT, the outline font file itself has to have the same name).
+
+Yet other names appear in font menus of applications.  On the Macintosh, a
+font has a `QuickDraw name' (and style). The QuickDraw name is what appears
+in font menus.  Similarly, in MS Windows, a font has a `Windows Face Name'
+(and style).  A style refers to a variation of a face, such as `regular',
+`bold', `italic', or `bolditalic'.
+
+Finally there is the file name of the actual outline font file.  This is
+usually the file name chosen by the vendor.  For the DVI driver, there must
+be a way to find the font file containing the actual character shapes based
+on the name of the TFM file, since this is how the font is referred to in
+the DVI file.  These two names may be the same, or may instead have a
+relationship fixed by a font mapping or substitution file.
+
+There are two commonly used conventions for picking TFM file names for fonts:
+
+(*) Use the name used by the vendor for the outline font itself.
+
+    This is a simple scheme that avoids confusion and reduces the need
+    for mapping between different names.  Also, the DVI processor can
+    easily find the font file itself - no need for remapping or a
+    font substitution file.  There may theoretically however be conflicts
+    between names chosen by different vendors, and the names often do not
+    carry any useful mnemonic information regarding the nature of the font.
+
+(*) Use a `standard' name for the font from a list developed by Karl Berry.
+
+    This has the advantage that the names are composed of individual letters
+    that make it possible to immediately deduce some attributes of the font.
+    It has the disadvantage that yet another mapping of names is required
+    (between  these `standard' names and the names of vendor-supplied font
+    files).  Also, only a tiny fraction of the 17,000 fonts in Type 1 format
+    have been assigned names so far.
+
+
+Hard-wired character encoding in TeX macros:
+-------------------------------------------
+
+Most TeX macro packages and TeX formats such as plain TeX and LaTeX are based
+on the assumption that Computer Modern fonts will be used. Computer Modern
+fonts use their own specific encoding vector --- well, actually CM fonts use
+a total of ten different encoding vectors.
+
+While CM fonts have the letters and digits where one might expect them to be
+--- that is, where they are in ASCII encoding --- there are many differences
+between CM text font encodings and ASCII (`suppress' instead of `space',
+`quotedblright' instead of `quotedbl', `exclamdown' instead of `less',
+`questiondown' instead of `greater', `quotedblleft' instead of `backslash',
+`dotaccent' instead of `underscore' and so on). Also CM fonts use the character
+code range 0 - 31 for a set of special characters.  For example, the
+ligatures `ff', `fi', `fl', `ffi' and `ffl' are found in this `control
+character' range (as, curiously, are upright upper case Greek letters).
+
+TeX macro packages and format such as Plain TeX and LaTeX refer to special
+characters such as `germandbls', `oslash', `ae', `oe', and so on by numeric
+code.  That is, these macro packages are `hard-wired' for Computer Modern
+font encodings.  So these special characters will *not* be accessed correctly
+unless new fonts happen to be reencoded to the same CM font encoding by the
+DVI processor.
+
+This means that it is not enough to create appropriate TFM files based on
+the specific encoding used by the DVI processor, but one needs to *also*
+replace or override these hard-wired references to special characters in
+the TeX macro files.
+
+
+Math `Fonts':
+-------------
+
+There are quite a few fonts in Type 1 format that contain mathematical
+symbols, operators, relations, and delimiters.  These can be used as above
+to provide new symbols and operators for use with TeX.  In some cases, to
+use a characters properly in math mode, one may need to use \mathchar,
+\mathchardef, \mathcode, \delimiter, or \delcode (see `plain.tex' and
+`lplain.tex' for examples).
+
+It is very difficult, however, to fully replace the basic Computer
+Modern math fonts.  The reason is that what TeX considers a `math font' is
+more than a collection of glyphs.  The TeX metric file for a math font is a
+complex program that contains information on how to construct large
+delimiters using partial characters, how delimiters of different sizes are
+chained together, how to position numerators and denominators w.r.t. the
+division line, and so on.  In addition, character widths in TeX math fonts
+are *not* the actual advance widths, italic corrections are *not* actual italic
+corrections, and kerning pairs are for accent positioning!  In short, a math
+font for TeX is a peculiar beast indeed, and *must* be designed for TeX.
+
+A math font for use with TeX not only must contain the requisite basic
+elements, sized and positioned especially w.r.t baseline, but that a
+complex TFM file be constructed.  This is not easy, even when the requisite
+information is available, and most AFM-to-TFM utilities are not up to the task.
+
+There are now a couple of alternatives to Computer Modern math fonts,
+complete with suitable TFM files.  This includes the LucidaBright +
+LucidaNewMath font set, as well as the MathTime 1.1 font set.
+
+Note that math fonts are usually designed to be used with fixed encoding.
+So do not try to `re-encode' them when you reencode the text fonts.  In
+any case most AFM-to-TFM utilities are unable to make TFMs for math fonts.
+
+Reencoding versus Permuting:
+---------------------------
+
+A font may have characters that do not appear in the encoding vector.
+One purpose of reencoding a font is to gain access to these `unencoded'
+characters.  Note that reencoding is more powerful than mere permutation of
+the encoding vector, since the latter cannot make unencoded characters
+accessible.
+
+Also note that compact binary metric representations such as TFM files
+contain NO information about unencoded characters.  Hence there is no sense
+in which one can `reencode a TFM file' --- instead, a new TFM file has to be
+made from complete metric information, such as that found in an AFM file.
+
+Since TeX and its associated machinery deals only with numeric codes,
+it is unable to reencode a font, it can at best permute the encoding.
+
+
+The ultimate repository of metric information: the AFM file:
+------------------------------------------------------------
+
+The AFM (Adobe Font Metric) file is the ultimate repository of metric
+information.  Neither TFM (TeX font metric) files, nor PFM (MS Windows font
+metric) files, nor the FOND resource in a Macintosh screen font contain the
+complete encoding vector, or information about unencoded characters.
+
+If a font is not supplied with an AFM file, then it may be possible to
+reconstruct a partial AFM file from TFM, PFM, or FOND resource files.
+Or using utilities like PFAtoAFM and PFMtoAFM  (part of the
+`Font Manipulation Package').  The `AFM' file made from the PFA file
+will not be quite incomplete, since it has no information about ligatures
+and kern pairs. The kerning information can be obtained from the PFM file.
+(On could also use a PostScript program like `getafm.ps', but this provides
+less information, since it shows metrics only for characters in the
+current encoding and no kerning information).  PFM files and FOND resources
+contain no information about ligatures, for example.
+
+Note that AFM files for Adobe's fonts may be found in sub-directories of
+/pub/adobe/AFMFiles on their anonymous FTP server `ftp.adobe.com.'
+They are also on the Adobe `Type on Call' CD-ROM (hidden files).
+
+In the case of TrueType fonts, the metric information is kept in the same
+file as the character outlines.  Special tools are required to extract
+this information in a useable form.  Such tools are now available for
+both Macintosh and MS Windows platforms.
+
+As mentioned above, this metric information is also available in Windows
+and can be dumped from DVIWindo using `WriteAFM...' and `WriteTFM...'.
+
+
+****************************************************************************
+
+A PostScript: `Post-Script Fonts':
+----------------------------------
+
+What are called `PostScript' fonts in the TeX world --- and ATM fonts in
+the DTP world --- should really be called `fonts in Adobe Type 1 format',
+or `T1 fonts' for short.  PostScript has provisions for a wide range of
+fonts  including Type 3 and Type 1 (and Type 42 and Type 5 etc).  The Type 3
+font category is very general and includes bitmap fonts, grey-level fonts and
+so on.  Type 1 fonts are much more tightly constrained, generally render very
+well, and have special purpose code that deals only with Type 1 fonts.
+
+Also, contrary to popular opinion, the character programs in Type 1 fonts are
+*not* in PostScript form, but use their own numeric encoding scheme (buried
+inside two layers of encryption).  There are instructions in Type 1 programs
+that have no equivalent PostScript expressions (such as `hsbw', `seac',
+`hstem', `dotsection', `callothersubr' etc).
+
+Many fonts in Type 1 form are ATM compatible, which is an even tighter
+constraint.  Type 1 fonts that are not ATM compatible cannot be used on some
+platforms, such as the Macintosh and in MS Windows.  ATM compatible Type 1
+fonts are the most desirable, particularly if they are fully hinted.
+
+The discussion here is not limited to T1 fonts however.  Pretty much the
+same goes for other font formats, such as TrueType, called TT for short,
+or BitStream FaceLift fonts, or whatever.
+
+
+Footnote: Encoding Vector Defined:
+---------------------------------
+
+The encoding vector is the mapping from numeric character code to glyph.
+This is usually represented by a mapping from numeric character code to
+character name.  Each font has an encoding vector, although for some fonts
+this is not explicitly represented in the font itself, but defined elsewhere
+(such as is the case for PK files).
+
+In the case of Type 1 fonts the encoding vector is explicitly represented in
+the font file itself.  DVI processors that provide for reencoding of fonts
+usually allow for specification of encoding vector in a file, either simply
+listing character names sequentially or consisting of lines with character
+code number and character name.  This encoding vector then completely
+replaces the `raw' or `native' encoding vector of the font.
+
+Note that some operating systems --- such as Macintosh and Windows ---
+enforce their own encoding on plain vanilla text fonts.
+
+Note that some font generation software totally subvert PostScript's notion
+of the encoding vector, by having a fixed assignment of `character names'.
+That is, the names are merely aliases for numbers!
+
+****************************************************************************
+	COPYRIGHT (C) 1991 - 1993 Y&Y, Inc. All rights reserved.
+****************************************************************************
+
+-----------------------------------------------------
+Appendix: plain TeX, LaTeX 2.09, LaTeX 2e and PSNFSS.
+-----------------------------------------------------
+
+Here are the options when using fonts other than Computer Modern:
+
+(1) Use the TeX macro header/style files supplied with the fonts by
+    the font vendor.
+
+    Use `mtplain.tex' or `mtlatex.tex' with the MathTime 1.1 font set.
+    Use `lcdplain.tex' or `lcdlatex.tex' with LucidaBright + LucidNewMath.
+    These style files are known to work with plain TeX and LaTeX 2.09
+    and are supported by the font vendor.  They contain many carefully tuned
+    constructs that deal properly with special aspects of particular font sets.
+
+    What about fonts from vendors that do not support TeX users?
+    Well, such vendors *also* do not supply math fonts that can be
+    used with TeX --- the reason is that a `math' font cannot be used
+    with TeX unless it has been specially designed to work with TeX.
+    Hence we are talking only about *text* fonts.  If these are to
+    be used in material that includes any amount of math, then one is
+    forced to also use (i) CM, or (ii) LB + LNM, or (iii) MathTime.
+    In which case the solution is to take the style file for those
+    font sets and modify them by replacing the names of text
+    fonts with the names of new ones being substituted.
+
+(2) Use LaTeX2e.  The appropriate style files may
+    be found in the PSNFSS package of the LaTeX2e distribution.
+
+    You will need to pick the right style file correponding to the
+    font naming conventions in your TeX system. Use \usepackage{lucidbry}
+    for actual font file names versus \usepackage{lucidbrb} for `Karl
+    Berry' font names.
+
+    You may also have to deal with font encoding issues, since the
+    default is to use OT1 (TeX text) encoding.  \input texnansi
+    if you use TeX 'n ANSI encoding, and \input ansiacce if you
+    use Windws ANSI encoding.

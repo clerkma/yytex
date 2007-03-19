@@ -1,0 +1,127 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+PFM file format:
+
+Field	Length	Contents
+
+PFMHEADER:
+
+0	2	256		Version (1 usually)
+2	4       Length		Size
+6	60	String		Copyright 
+66	2	129		Type ? (whatever that is)
+68	2	10		Points   (ignored by PostScript driver)
+70	2	300		VertRes  (300 assumed by PostScript driver)
+72	2	300		HorizRes (300 assumed by PostScript driver)
+74	2			Ascent
+76	2	0		InternalLeading (PixHeight - 1000) or 0
+78	2	0 		ExternalLeading
+80	1	0 or 1 		Italic
+81	1	0 or 1		Underline
+82	1	0 or 1		StrikeOut
+83	2	250, 400, 700	Weight (light, normal, bold)
+85	1	0, 2, 128, 255	CharSet (ANSI, Symbol, Kanji, OEM)
+86	2	0		PixWidth (0 => variable width)
+88	2			PixHeight (ignored by PostScript driver)
+				PixHeight = (yur - yll) or 1000
+90	1			Pitch and Family
+91	2			AvgWidth (in Adobe coordinates)
+93	2			MaxWidth (in Adobe coordinates)
+95	1	32		FirstChar  			=> 0
+96	1	255		LastChar
+97	1	117		DefaultChar (wired into ATM?)	=> 32
+98	1	0		BreakChar			=> 32
+99	2	0		WidthBytes	? (not for PS)
+101	4	199		Device - pointer to driver type field
+105	4	210		Face - pointer MS Windows face field
+109	4	0		BitsPointer	? (not for PS)
+113	4	0		BitsOffset	? (not for PS)
+
+No width table for scalable fonts - see ExtentTable instead...
+
+PFMEXTENSION:
+
+117	2	30	Size of PFMEXTENSION (bytes)
+119	4	147	ExtMetricsOffset - pointer to EXTTEXTMETRICS
+123	4		ExtentTable - pointer to char_width table
+127	4	0 or	OriginTable (only for screen fonts)
+131	4	0 or	PairKernTable - pointer to PairKern table
+135	4	0 or	TrackKernTable - pointer to TrackKern table
+139	4		DriverInfo - pointer to FontName(?) field
+143	4	0	Reserved
+
+EXTTEXTMETRIC:
+
+147	2	52	Size of EXTTEXTMETRIC (bytes)
+149	2	240	PointSize (in twips) (ignored by PostScript driver)
+151	2	0	Orientation (0, 1 (portrait only), 2 (landscape only)
+153	2	1000	MasterHeight (1000 assumed by PostScript driver)
+155	2	3	MinScale
+157	2	1000	MaxScale
+159	2	1000	MasterUnits (1000 assumed by PostScript driver)
+161	2		CapHeight
+163	2		Xheight
+165	2		LowerCaseAscent
+167	2		LowerCaseDescent
+169	2		Slant - italic angle * 10 (usually negative)
+171	2	-500	Superscript
+173	2	250	Subscript
+175	2	500	SuperscriptSize
+177	2	500	SubscriptSize
+179	2	100	UnderlineOffset (UnderlinePosition)
+181	2	50	UnderlineWidth (UnderlineThickness)
+183	2		UnderupperPosition
+185	2		UnderlowerPosition
+187	2		UnderupperSize
+189	2		UnderlowerSize
+191	2		StrikeOutOffset - StrikeoutPosition
+193	2		StrikeOutWidth - StrikeoutSize
+195	2	0 or	KernPairs (number of kern pairs)
+197	2 	0 or 	KernTracks (number of kern tracks)
+
+199	10	PostScript	Device (Driver Name) i.e. "PostScript"
+
+210	var			Face - (MicroSoft Windows font name)
+
+var	var			DriverInfo - FontName (PostScript font name)
+
+ExtentTable: (unscaled widths)
+
+var	2 * (end_char - begin_char + 1)	Width table
+
+PairKernTable:
+
+var 	2		number of kern pairs
+
+var	4 * kern_pairs	char_a(1), char_b(2), kern(2)
+
+
+NOTE: Kern pair table must be sorted in weird order (on second char)...
+
+NOTE: MicroSoft has superscript and subscript confused...
+
+NOTE: Use Height, OR (Ascent + External Leading) ...
+
+/* CharSet values */
+#define ANSI_CHARSET        0
+#define DEFAULT_CHARSET     1
+#define SYMBOL_CHARSET      2
+#define SHIFTJIS_CHARSET    128
+#define HANGEUL_CHARSET     129
+#define CHINESEBIG5_CHARSET 136
+#define OEM_CHARSET         255
+
+/* PitchAndFamily pitch values (low 4 bits) */
+#define DEFAULT_PITCH       0x00
+#define FIXED_PITCH         0x01
+#define VARIABLE_PITCH      0x02
+
+/* PitchAndFamily family values (high 4 bits) */
+#define FF_DONTCARE         0x00
+#define FF_ROMAN            0x10
+#define FF_SWISS            0x20
+#define FF_MODERN           0x30
+#define FF_SCRIPT           0x40
+#define FF_DECORATIVE       0x50
+

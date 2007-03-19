@@ -1,0 +1,263 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Some notes on ATM for Windows:
+==============================
+
+Yes, just like ATM 1.15, ATM 2.0 works fine if you have plain vanilla
+Adobe Type 1 fonts that use StandardEncoding, and that you don't mind
+being reencoded to Windows ANSI.  But there are serious problems if
+you do anything else.  There are additional problems if the first
+character of a font is in position 0.  Using accented characters
+is a nightmare, again UNLESS your font uses StandardEncoding, AND you
+want it reencoded to Windows ANSI.
+
+	Note that reencoding to Windows ANSI is not an option for TeX users,
+	for example, because ANSI does no have the ligatures `fi' and `fl'
+	for a start, and does not provide for the 32 characters each TeX font
+	has that are not in ANSI.
+
+Here are some bugs, in order of decreasing importance:
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ATM BUG #0:  `Invisible ink' problem
+===========
+
+Appears to have been fixed in ATM 2.02.  Hurrah!  Bravo!  Forever grateful.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ATM BUG #1:  Hard-wired accent positions
+===========
+
+(*) Accent positions are hard-wired (dotlessi is 1, caron is 2,
+circumflex is 136 etc etc) in ATM.  This is a very serious problem
+when a font is (a) NOT reencoded to Windows ANSI and (b) contains
+accented characters constructed using `seac' (StandardEncoding
+Accented Character).
+
+(*) The hard-wired positions have changed over time.  They are
+different in ATM 2.0 than the were in ATM 1.15 - killing 
+attempts at previous work-arounds. 
+
+(*) Two of the `accents' (dotlessi and caron) are in totally
+unacceptable positions.  The `control character' range 0 -- 31 is
+used by all text fonts in TeX for example.  None of these fonts use
+Windows ANSI, of course.  Having hard-wired accents on top of two
+Greek characters in these fonts is disastrous.
+
+(*) Recent changes in the hard-wired accent encoding have introduced
+an amusing `feature'.  Take, let's say Adobe's LetterGothic or PrestigeElite,
+and reencode them to IBM OEM encoding (which is a nice idea, since
+these fonts contain all the needed glyphs).  Then render using ATM.
+Well, `ecircumflex' is in position 136. So ATM goes: `hmm, lets see
+now, I have to render an `e', OK let me do that, and then I have to
+render a `circumflex', now lets see, I firmly believe `circumflex' is
+in code position 136 (After all, I know better than the encoding
+vector, and I certainly am not going to hunt around in my list of
+CharStrings to find it!),  so to render the `circumflex' I have to
+render an `e' and then a `circumflex'. Hmm... then (a bit later) ...
+ghee no stack left, what happened?  
+
+The following describes some more details:
+
+Problems with composite characters constructed using `seac' in Type 1:
+---------------------------------------------------------------------
+
+Background: What happens in PostScript printer interpreters:
+------------------------------------------------------------
+
+(*) The base and accent character have to be in StandardEncoding.
+    This is a restriction, but well documented.  Fine.
+
+(*) The base and accent characters have to be in the encoding of the
+    font, at least on most Adobe PS interpreters (such as ALW II NT).
+    Otherwise one gets an `invalidfont' error.  Inconvenient when
+    reencoding a font.  Serious problem with IBM OEM encoding since
+    there is no space left to place the accents. Most clone 
+    interpreters (such as NewGen Turbo 480) don't have this problem.
+
+ATM for PC:  Accent positions are hard-wired into tables in ATM.
+-----------
+
+(a) Certain accents MUST be in the positions occupied by them in Windows
+    ANSI reencoding.  There is a hardwired remapping of accents to these
+    position even when the PFM file claims the font is NOT ANSI.
+    (=> grave, acute, ring, cedilla, ... ).
+
+(b) Three accents and base characters MUST be in positions used for them 
+    ONLY by ATM (these are accents that do not have a position in Windows
+    ANSI).  (=> dotlessi, circumflex, tilde).
+
+(c) Other accents MUST be in positions occupied by them in StandardEncoding.
+    (these are accents that are not used to construct the 58 `standard'
+    composite charcters).  (=> breve, ogonek, macron ...).
+
+The algorithm seems to be to take the character codes used by `seac'
+and to remap some characters to their ANSI position, three characters
+to new positions defined by ATM, and leave the rest alone.  This is NOT
+documented anywhere (and definitely kludgy and subject to additional
+problems in future - see below).  
+
+(*) This makes it hard to achieve consistent results when printing
+    (since some interpreters `do the right thing' and translate the 
+    numbers  in `seac' to names in StandardEncoding and then look 
+    these up in the CharStrings dictionary).
+
+(*) This makes it hard to design font encoding that works both on the
+    PC and the MacIntosh.
+
+(*) This makes `seac' useless for constructing anything but the `standard'
+    set of 58 composite characters, and makes `seac' useless for fonts
+    that are organized differently (such as when they use with IBM OEM
+    character coding). 
+
+PLUS:
+
+(*) There are problems now with MS ANSI encoding in Windows 3.1, which
+    has characters covering some of the old non-standard positions
+    used by ATM for `dotlessi', `circumflex' and `tilde'.  This was
+    resolved by moving the accents around in the encoding.  Argh!
+    Wonder whether MS placed some new characters on top of ATM
+    hard-wired accents on purpose.  And what happens with the next
+    release of Windows?
+
+How it SHOULD work:
+===================
+
+It seems like the right thing for ALL PostScript interpreters to do
+(ATM or printer) would be to always use the numbers in seac to look up
+the character name in StandardEncoding, then find that character in
+the CharString dictionary.  This should work independent of what
+encoding is currently used for the font.  
+
+Composite characters should NOT break when the user reencodes the font!
+
+NOTE: This is an urgent plea to AT LEAST not have `dotlessi' and `caron'
+where they are now!  There are still plenty of open spaces in the range 
+128 - 159...
+
+You can judge from the length of this entry how serious a problem I
+think this is.  
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ATM BUG #2:  Inability to deal with repeated encodings
+===========
+
+Multiple character encodings and ATM for the PC:
+------------------------------------------------
+
+ATM for the PC cannot deal with characters that appear more than once in the 
+encoding vector.  The character can only be accessed using the number 
+it is associated with in the FIRST occurence in the font program file.
+
+This is a major nuisance, because, for exmaple, it makes it
+impossible to have accents in two places: (a) where the font designer
+wants it and (b) where ATM insists it should be (see above).
+
+It is also a problem with fonts that are used with character codes in
+the 0 - 31 range, but which have these repeated higher up, so that
+applications that can't generate such low codes can also use the fonts.
+
+It also makes it impossible to use ISO Latin 1 encoding, since this
+contains some accents in more than one place in the encoding.
+
+ATM for the PC should instead act like ATM for the Mac, and indeed all
+other PostScript interpreters.  That is, allow multiple occurences of a
+character name in the encoding vector.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ATM BUG #3:  character code zero used as reject basket
+==========
+
+Character code 0 and ATM for the PC:
+------------------------------------
+
+ATM has a problem rendering a character with character code zero. 
+ATM uses zero as a reject category for CharStrings that correspond to
+names that do not appear in the encoding.  Thus unless either (a) the
+CharString for the character with code 0 appears LAST in the Type 1
+program, or, (b) there are no unencoded characters, one ends up not
+seeing this character, or seeing some other (unencoded) character instead.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ATM BUG #4:  Mismatched criteria for reencoding to Windows ANSI:
+==========
+
+PSCRIPT.DRV looks in the PFM file, and if the Family and Charset are
+set suitably (to Symbol and Decorative), then it does NOT reencode
+the font to Windows ANSI, but uses the `native' encoding instead.
+Otherwise it reencodes to Windows ANSI.  
+
+ATM instead looks in the PFB file and reencodes if it finds the line
+/Encoding StandardEncoding def.
+
+This means one can get disagreements between ATM and PSCCRIPT.DRV.
+It is in fact easy to set up all four possible combinations of ATM
+reencoding, PSCRIPT.DRV not reencoding etc.  Goobye WYSWYG!
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ATM BUG #5:  Forced Italic after flushing ATMFONTS.QLC
+==========
+
+Sometimes it is neccessary to delete the `Quick Load Cache' (for
+example, if ATM gets thoroughly confused). It is then rebuilt the
+next time Windows is launched.  BUT:  something goes wrong with font
+selection afterwards.  Requesting a regular font yields an Italic
+font (not synthesized italic - an actual italic font).  One has to
+kill and relaunch Windows a second time to rest this bad state.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+ATM BUG #6: Poor maintainance of WIN.INI
+
+(*) Deleting fonts from ATM does not remove corresponding entries from win.ini
+    Loading new version of font using ATM creates duplicate win.ini entries
+    The above means that painful editing of the softfonts entries is
+    required (painful because entries are supposed to have sequential
+    numbers without any gaps).  ATM does not use gaps in the
+    softfonts sequence, or renumber the softfonts.  ATM does not
+    check for duplicat entries.
+  
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+ADDITIONAL NOTES:
+-----------------
+
+The following are bugs in ATM that I noted earlier, 
+but then found ways to work around, 
+and so have no idea whether they are still there:
+
+(*) ATM/PC requires that a /Subrs array be present, even when there
+    are no Subrs.
+
+(*) The ending of the definitions for Subrs (using ND or `noaccess def'), 
+    must be on a separate line; not tagged on to the end of the definition 
+    of the last element (or tagged on to the `/Subrs 0 array' line
+    in the case of a dummy definition).  This is contrary to the
+    definition of ATM compatiblity in chapter 10 of the Adobe Type 1
+    booklet, which claims parsing is based on tokens, and that it 
+    ignores division into lines.
+
+(*) The /Subrs array may not be LARGER than needed for number of Subrs 
+    given (but may be SMALLER).  Weird indeed!
+
+(*) The /CharString dictionary may not be smaller than the number 
+    of CharStrings given (but may be larger) --- (at least that is
+    reasonable).
+
+(*) ATM crashes when CharSet OEM is specified and FirstChar is not zero.
+    It goes off and transfers 255 character widths anyway and overruns.
+
+(*) ATM and PSCRIPT.DRV disagree on what ANSI encoding is.  ATM has
+    dotlessi, tilde, and circumflex in 157, 158, 159, where ANSIVec
+    has nothing.  Conversely, ANSIVec uses first 13 positions for
+    accents - while ATM suppresses characters 0 -31.
+
+(*) Crashes and burns if defaultchar > lastchar...
+
+    ....

@@ -1,0 +1,143 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+**** Note that TFM files depend on the encoding used by the DVI driver. 
+**** There can be no `universal' TFM file for a scalable text font. 
+**** Please read `morass.txt' for an explanation of the `encoding issue'.
+
+Two versions of the TFM files for text fonts may be supplied.
+These have the base name of the font file and: 
+
+	(i)    extension `tft' (TeX 'n ANSI);
+	(ii)   extension `tfa' (Windows ANSI);
+
+To use these TFM files, copy the appropriate version to where your TeX
+expects to see TFM files (for example, c:\yandytex\tfm), --- and rename 
+them so the `tft', or `tfa'  extension becomes `tfm'. 
+
+Note: The TFM files for math and decorative fonts come only in one form, 
+with extension `tfm', since they each use a fixed encoding scheme.
+
+Note: The TFM files for TrueType fonts come in only one form, with extension
+`tfm', since these are set up for Windows ANSI encoding.
+
+The following notes provide additional detail:
+
+TeX 'n ANSI (`tft' extension on base name of font file):
+--------------------------------------------------------
+
+The TFM directory contains a set of TFM files with names ending in `tft'.
+These are set up for use with `TeX n ANSI' encoding (texnansi.vec), which
+makes all 228 glyphs in standard text fonts accessible.  This is the
+recommended encoding for text fonts.  When using this encoding, make sure 
+to add the line
+
+	ENCODING=texnansi
+
+to the [Environment] section of your `dviwindo.ini' file (in the Windows
+directory) (and do not use TEXANSI=1).  Also add the line
+
+	\input texnansi
+
+to your TeX source code.  The file texnansi.vec defines the character layout.
+
+Windows ANSI (`tfa' extension on base name of font file):
+--------------------------------------------------------
+
+The TFM directory will also contain a set of TFM files with names ending in
+`tfa'. These are set up to use Windows ANSI encoding (ansinew.vec), which is
+the standard encoding used in Microsoft Windows.   When using this encoding,
+make sure to add the line 
+
+	TEXANSI=1 
+
+to the [Environment] section of your `dviwindo.ini' file (in the Windows
+directory) (and do not use ENCODING=...).  Also add the line
+
+	\input ansiacce 
+
+to your TeX source code. The file ansinew.vec defines the character layout.
+
+TrueType fonts:
+---------------
+
+If you are using DVIWindo, there will also be TFM files for the `standard'
+TrueType text fonts supplied with Windows 3.1.  These always use the fixed
+encoding applicable to text TrueType fonts, namely Windows ANSI.
+
+*	Add the line \input ansiacce to your TeX source file when using these.
+
+Making new TFM files for other assumed character encoding:
+----------------------------------------------------------
+
+If you wish to use an encoding other than those provided for, then simply use
+`Write TFM...' or `Write All TFMs...' from the `Font' menu of DVIWindo after
+installing the fonts using ATM.  This first creates a complete AFM file and
+then calls AFMtoTFM.  You can also use AFMtoTFM directly at a DOS prompt to
+make new TFM files appropriate for any encoding. 
+
+If you will be using Type 1 fonts both in Windows and with TeX, then we
+recommend that you use `TeX n ANSI' encoding. It makes accented characters
+accessible, yet is largely compatible with both MS Windows and ATM.  e.g.
+
+	afmtotfm -vadjx -c=texnansi c:\afm\adobe\tir
+
+(`v' => verbose mode, `adj' => add various useful pseudo ligatures, 
+`x' do not rename file even though encoding specified).
+
+AFM files (required by AFMtoTFM) should be supplied with the Type 1 fonts.
+In the case of fonts from Adobe, AFM files should *also* be available 
+by anonymous ftp from:
+
+	ftp.adobe.com on the InterNet in /pub/adobe/AFMFiles
+
+--- look for a sub-directory corresponding to the first letter in the
+PostScript FontName of the font you are looking for).  If you cannot
+use anonymous FTP, send email on InterNet containing the message `Help' to
+ps-file-server@adobe.com to get started.  
+
+NOTE:	The encoding of all metric files must agree with the encoding
+	used for the actual outline font. So make sure to generate
+	TFM files using the encoding vector to which the environment
+	variable ENCODING is set to.
+
+	The most convenient way to reencode plain text fonts is to use
+	the ENCODING environment variable in the [Environment] section
+	of `dviwindo.ini'.
+
+	If you need to reencode individual fonts *permanently*, you may
+	find that the `encode.bat' batch file provides the most convenient
+	way to ensure that PFB, PFM and TFM files are all set up with the
+	*same* encoding. 
+
+To ensure that all metric and outline font files agree as to encoding,
+`encode.bat' uses:
+
+	(1) REENCODE to reencode the PFB file;
+
+	(2) AFMtoTFM to create a suitable TFM file;
+
+	(3) AFMtoPFM to create a suitable PFM file.
+
+In each case it specifies the desired encoding vector using the `-c'
+command line argument.  With `on the fly' reencoding you normally do
+not need to use `encode.bat' (or read `encoding.txt').
+
+Required additions to your TeX source file:
+-------------------------------------------
+
+Finally, since plain TeX and LaTeX (and there relatives) have wired-in
+assumptions about Computer Modern fonts (which use `TeX text' encoding),
+you will also need to read a TeX macro header file into your TeX job:
+
+*	\input texnansi.tex			for TeX 'n ANSI encoding
+
+(Actually, `TeX n ANSI' encoding works pretty well even without texnansi.tex)
+
+*	\input ansiacce.tex			for Windows ANSI encoding
+
+Make sure to \input ansiacce *after* other TeX macro and style files. If you
+do have to read in something else after `ansiacce', and have a conflict
+because `quoteleft' and `quoteright' are `acitve', then follow the procedure
+indicated in the `anisacce.tex' to make quoteleft and quoteright `ordinary',
+then read in the other file, then make them `active' again.

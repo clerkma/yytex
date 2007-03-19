@@ -1,0 +1,214 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=====================================================================
+		Math Fonts and Windows NT 3.50
+=====================================================================
+
+These are some notes about problems with fonts that have been converted
+to TrueType format from Type 1 format for use in Windows NT 3.5.  
+Some work-arounds are suggested at the end.  
+
+*  Note that the problems discussed here have been fixed in Windows NT 3.51.
+
+So the best thing to do is to just upgrade to Windows NT 3.51!
+
+Background:
+-----------
+
+There is as yet no ATM for Windows NT, which presents a bit of a problem,
+since many specialized fonts are only available in Adobe Type 1 format.
+
+Windows NT 3.5 does provide for automatic conversion of Type 1 fonts to
+TrueType format --- as long as the originating font foundry gave their
+permission.  Overall, the conversion works smoothly, although commercial
+grade fully hinted Type 1 fonts --- such as those from Y&Y --- will render
+noticably better in their original Type 1 form using ATM in Windows 3.1
+
+Problems with Automatic Conversion:
+-----------------------------------
+
+There are generally few problems with plain vanilla, well formed text fonts
+that use Windows ANSI encoding.  However,
+
+(1) Composite characters in obliqued fonts have accents positions poorly.
+    Apparently the convertor uses the width of the base font instead of
+    the height of the accent when computing the slant correction for the
+    accent position.
+
+(2) Narrow or Extended fonts (anything with a non-standard FontMatrix)
+    may have problems.  Check using `Show Fonts' in DVIWindo.
+
+Math, Symbol, Decorative Fonts:
+-------------------------------
+
+There are some more serious problems with this automatic conversion when
+applied to `math,' `symbol,' or `decorative' fonts in Windows NT 3.5
+
+(1) Character code 0 cannot be used.  
+
+    Slightly surprisingly, TrueType as implemented in Windows NT *does* allow
+    use of the `control character' range (0 -- 31 and 127) (surprising only
+    because TT in Windows 3.1 and on the Macintosh do not).  In any case
+    this is great, since math fonts set up for TeX have glyphs in this range. 
+
+    Unfortunately, character code zero is an exception  (There is some 
+    other software, by the way, that can't handle character code zero either, 
+    most notably some versions of Adobe Acrobat and Adobe Illustrator).
+
+    Instead of the glyph in char code position 0 one gets the `undefined
+    glyph' (from char code 31, see below).  Character code 0 should be
+    usable.  All GUI calls for showing text on screen make a point of 
+    *not* treating strings as null terminated, instead explicitly requiring 
+    a specification of the length of the string so as to allow zero as a
+    valid character code.
+
+(2) Character code 173 cannot be used.
+
+    In Windows ANSI encoding, a single glyph appears in two places: 
+    the hyphen --- in both char code positions 45 and 173
+    (not at all clear why that ever become part of the standard).
+    The automatic font conversion in Windows NT apparently is designed
+    mostly for text fonts, and since it cannot deal with repeat encoding
+    (see below), it simply forces the character in 173 to be the same
+    as the one in 45.  Which is, of course, inappopriate for a font 
+    that does not use Windows ANSI encoding, since it most likely has
+    completely unrelated glyphs in 45 and 173.
+
+    This repetition in char code position 173 of the glyph in 45 should
+    *only* apply to plain vanilla text fonts, as indicated by the
+    flags in the PFM file, or by the line /Encoding StandardEncoding def
+    in the PFB file (or if the glyph names in the actual encoding match).
+
+(3) Repeated encoding is not permitted.
+
+    A glyph may appear only once in the encoding vector (except hyphen).
+    The conversion routine puts the glyph in *one* of the char codes
+    that it appears in the original encoding.
+
+    This is a serious problem since repeated encoding is used to work
+    around other mis-features of widely used software.
+
+    Since many applications cannot handle `control character' char codes
+    (0 -- 31 and 127), fonts using this range typically repeat these
+    glyph names higher up (in the 161 -- 170 and 173 -- 194 range)
+    Since 127 is also considered a `control character' it is typically
+    repeated in 195.  Finally, in some fonts 32 is repeated in 128, as well 
+    as in 196 (This is related in a contorted way to the fact that TeX fonts
+    do not normally have a `space' character - yes, please don't ask!).
+
+    When converting such a font, some glyphs end up in the 0 -- 31 range
+    and others appear in the higher range.  None appear in both places.
+    (Which of the repeated encoding char codes are used varies from glyph to
+    glyph in a manner that seems to defy analysis).
+
+Code positions with no glyph receive the glyph in 31.
+
+    Character codes which are not filled in the encoding receive
+    whatever glyph happens to be in 31.  This is not really a problem,
+    just a curiosity...
+
+Characters with negative width are not handled correctly.
+
+    A width of -56 on the Adobe 1000-per-em scale becomes 3273.
+    Well, one might say this is not too serious an issue, since Microsoft
+    printer drivers have problems even with zero width characters...
+
+Fonts Affected:
+---------------
+
+These problems of Windows NT automatic font conversion affect all of the math
+fonts in Adobe Type 1 format available from Y&Y, including the Lucida New
+Math fonts, Lucida Bright Expert math fonts, Lucida Sans Linedraw fonts,
+MathTime fonts, AMS fonts, extra LaTeX + SliTeX fonts, and Blue Sky Research
+Computer Modern fonts. 
+
+(Partial) Work Around(s):
+=========================
+
+NOTE:	These problems have been fixed in Windows NT 3.51. 
+
+There is no entirely satisfactory work-around in Windows NT 3.5, because the
+misfeatures described above overconstrain the solution (i.e. there is one
+insurmountable problem in the 0--31 range and a different insurmounatble
+problem in the 161--170 and 173--194 ranges).  But it is possible to (almost)
+get things to work right by removing the repeated encoding from the font file
+before automatic conversion.  There are two options:
+
+(1) Remove the encodings in the 0 -- 31 range --- in which case one is
+    left with the problem of losing whatever glyph was in 173 ---
+    Which is a problem, since, for example, char code 173 is `Omega' in
+    typical `math italic' fonts.  Alternatively, one could give up the
+    glyph in 45 instead --- which is `arrowhookright' in the typical
+    `math italic' font...
+
+(2) Remove the encodings in the 161 -- 170 and 173 -- 194 range --- in 
+    which case one is left with the problem of losing whatever glyph was 
+    in 0 --- which is pretty serious, since char code zero is `minus' in
+    typical `math italic' fonts...
+
+In any case, either way one can get all but one glyph to work correctly.
+
+Only the PFB file needs to be modified --- the PFM metric file can be used as
+is.  The PFB file cannot be edited directly, since it contains binary length
+fields that would need to be updated.  But it can be converted to PFA form
+for editing and the result converted back to PFB format.
+
+Details: 
+--------
+
+Copy the PFB and PFM files of the font to an empty temporary directory. 
+Convert the PFB file to PFA format (using PFBtoPFA or similar utility).
+Read the PFA file into a plain ASCII editor and look for the lines:
+
+	/Encoding 256 array
+	0 1 255 {1 index exch /.notdef put} for
+
+The detailed encoding vector comes right after these lines. Remove the
+encoding lines to be discarded.  For example, remove everything from:
+
+`dup 0 /circle put'  down to and including  `dup 31 /notexistential put'
+
+or conversely:
+
+`dup 161 /circle put'  down to and including  `dup 194 /notexistential put'
+
+NOTE: the encodings for the range 161 -- 196 are listed *before* the
+encodings for the range 0 -- 31 (this is a bug-work-around for an older
+version of ATM that could not handle repeated encoding either).
+
+NOTE: in any case, make sure to *also* remove the repetition of
+127 in code position 196, and the repetition of 32 in 128 and 195...
+
+Then convert the PFA file back into PFB format (using PFAtoPFB or similar
+utility).  Go into Windows NT `Fonts' control panel and remove the font
+in question - if it has already been installed.  Then install the modified
+version from the temporary directory.  Finally, delete the files from 
+the temporary directory.
+
+Use with DVIWindo and DVIPSONE:
+===============================
+
+DVIWindo and DVIPSONE work just fine in Windows NT.  The only disadvantage
+of running DVIWindo in Windows NT is that the Type 1 fonts have to be
+converted to TrueType form, since there is presently no ATM for Windows NT.
+
+Nothing need be done if you remove the upper range (161 -- 170 and 173 --
+194), since TeX uses the control character range in the DVI files.  
+
+If you instead remove the lower range (0 -- 31), then you need to ask
+DVIWindo to remap these characters in all TrueType fonts by adding 
+
+	TTRemap=1
+
+to the [Window] section of `dviwindo.ini'.  Alternatively you can add
+
+	Remap=2
+
+which will affect *all* scalable outline fonts installed in Windows 
+(which presently in Windows NT pretty much means just TrueType fonts :). 
+
+If DVIPSONE is working with the original PFB files nothing need be done.
+If it will be working with the *modified* PFB files then add -*R to the
+command line. This will force DVIPSONE to also remap (this invokes a bug
+work-around that is there for other software that cannot handle `control
+character' char codes).

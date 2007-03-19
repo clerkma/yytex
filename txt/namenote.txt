@@ -1,0 +1,36 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Recommendations:
+
+03d6	pi1	NOT omega1  (variant of pi, sometimes called omega pi) 
+
+2126	Ohm		avoid Omega (see 03a9 for `real' Omega)
+03a9	Omega		NOT Omega_
+
+2206	increment	avoid Delta (see 0394 for `real' Delta)
+0394	Delta		NOT Delta_
+
+Questionable - don't know whether can be resolved:
+
+00b5	mu versus micro versus mu1 (see also 03bc for `real' mu)
+This is a tough one since font may not have both mu and micro or mu1
+and don't want to lose glyph in 00b5
+
+00af	macron versus overscore  (see also 02c9 for `real' macron)
+This is a tough one since font may not have both macron and overscore...
+and don't want to lose glyph in 00af
+
+00b7	middot versus periodcentered (see also 2219 for mathdot)
+
+Other Potential Ambiguities:
+
+0110	Dslash versus Dcroat
+0111	dmacron versus dcroat
+20a4	afii08941 versus lira 
+20a7	peseta versus Pts
+
+dotaccent versus dot		in names of composites
+dblacute versus hungarumlaut	in names of composites
+cedilla versus commaaccent	in names of composites
+

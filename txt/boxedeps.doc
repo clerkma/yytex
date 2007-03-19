@@ -1,0 +1,686 @@
+
+  
+
+ **************************************************************
+
+            ********* BoxedEPSF.tex *********
+
+              by  Larry Siebenmann 1989-91
+
+         Distributed versions: Jan 1991, Feb 1991, Mar 1991
+
+ **************************************************************
+ 
+               --- THE DOCUMENTATION ---
+               
+
+ %%%  SOMMAIRE: BoxedEPSF.tex d\'efinit des
+macro-commandes
+  %%    qui permettent d'int\'egrer dans un document TeX des
+  %%    objets graphiques d\'ecrits par fichier de norme EPSF,
+  %%    tout en accordant a chacun le statut d'une bo\^ite TeX
+ayant
+  %%    les bonnes dimensions.  La (seule!) contribution unique
+  %%    de ce fichier est de faire cela d'une fa{\c}con
+universelle.
+  %%    C'est a dire de fa{\c}con \`a pouvoir commod\'ement
+  %%    servir avec tout pilote d'imprimante de norme
+  %%    PostScript --- malgr\'e l'absence d'une norme
+  %%    pour \special.
+  %%
+
+        BoxedEPSF.tex, a highly portable package for insertion of
+EPSF (Encapsulated PostScript Files) in TeX documents. It is a
+fraction of a larger less portable package for several graphics
+norms on the Mac (part of Sweet-teX) that was initially put
+together for the GUTenberg special year for graphics, 1989.  (The
+larger package remains in a more tentative form; it is described,
+in French, in Cahiers Gutenberg No. 4, 1989.)
+
+        PostScript is currently the unchallenged high performance
+standard for electronic specification of printed graphics, and TeX
+is the unchallenged high performance standard for the description
+of scientific manuscripts, minus graphics.  The convenient
+integration of PostScript graphics in TeX manuscripts is clearly
+vital to the scientific publication process. BoxedEPSF.tex is a
+link in the integration chain.
+ 
+        The main task of BoxedEPSF.tex is to make EPSF's
+(Encapsulated PostScript Files) behave for the TeX user like big
+characters or boxes. In contrast, the \special command, by which
+such integration is normally accomplished, makes EPSF's behave like
+dimensionless points. This is Knuth's recommendation, because that
+permits TeX to typeset without any knowledge of the graphics file.
+The boxlike behavior is obviously more desirable from the user's
+point of view, and in the case of the EPSF norm, it is attainable
+because TeX is clever enough to be able to read the EPSF file to
+extract the dimensions of the bounding box of the graphics object
+described; they are located in a comment line beginning "%%Bounding
+Box:" before the line beginning "%%EndComments".
+
+        There are other packages that do the same essential job,
+notably psfig of Trevor Darrell(1987), and T. Rokicki's "epsf.tex"
+for his driver "dvips", but differences remain. This one is built
+above all for portability and hence makes LOWEST-COMMON-DENOMINATOR
+requirements on the driver. It should be easy to understand to the
+point that with a bit of luck, a texpert will be able to port it to
+a new driver in a few minutes. It does provide a few useful things
+that others may not, eg. box fitting, and ready-made adaptation to
+a great many drivers.
+
+        It is well known that, in a spirit of self reliance,
+texperts tend to do adhoc programming to integrate their graphics.
+See for example N. Jungers' <EDITEX@BUCLLN11.BITNET> posting on the
+GUTenberg bulletin board dated 17 November 1990 for a good
+explanation of the principles. A bit of understanding TeX and
+PostScript programming can go a long way. If this is your
+inclination, perusal of Trevor Darrell psfig package is also highly
+recommended.
+
+        It seems to me there is room for packages which require no
+tinkering with any programming language --- whether it be for
+everyday use or for porting --- even at the cost of being much
+heavier. Most users have neither time nor taste for more
+adventurous approaches.
+ 
+         The basic requirement of BoxedEPSF.tex is a
+"dvi-to-PostScript" printer driver that for EPSF graphics
+implements in one way or another Knuth's \special protocol.
+Scaling, if implemented, is exploited. Translation (=pushing the
+graphics around) is done by TeX since some drivers do not bother to
+provide a \special command executing translations.
+
+        Until a standard for \special integration of EPSF's is well
+established, users of BoxedEPSF.tex will have to initialize the
+integration process using a driver-specific command of the form:
+\Set...EPSFSpecial. For example, \SetOzTeXESPFSpecial will
+initialize for the driver used by the public domain OzTeX on
+Macintosh computers. (See a list of current alternatives below.)
+
+       Then, the primary command
+
+        \BoxedEPSF{<filename> scaled <scale in mils>}
+
+scales by <scale in mils> the graphics object in the file
+<filename> and inserts it at the current ".dvi" insertion point as
+a TeX box of the dimensions of the bounding box scaled again by
+<scale in mils>. A tiny EPSF test file gsquare.eps given below will
+let you run trials. (Beware that in 1991 most TeX screen previewers
+are unable to let you see the graphics; but any printer of the
+PostScript norm will let you run tests.)
+
+  ---  <filename>  A file specification. This may be a simple
+filename in case the file is in the default directory for TeX. More
+generally, it can be a file pathname. Better, one can separately
+specify the directory that will be the directory in which TeX looks
+thereafter for simple EPSF file names, by typing
+
+        \SetEPSFDirectory{<directory pathname>}
+
+For example, on a Macintosh,
+\SetEPSFDirectory{HardDisk:MyArtFolder:} will direct TeX to the
+folder MyArtFolder of the volume HardDisk. And
+\SetEPSFDirectory{:YourArtFolder:} will direct TeX to the subfolder
+YourArtFolder of the directory that is the default directory for TeX.
+Similarly for unix systems. Rather naturally, one must use \\ to
+represent backslash in this context, lest TeX misunderstand. Spaces
+in filenames or directory names are strictly forbidden (already by
+TeX and drivers -- usually); this package gives a warning.
+
+  ---  scaled <scale in mils>  Optional. To conform to TeX syntax,
+and avoid decimals most of the time, the scale is specified in mils
+(=thousand'ths), rather than as a positive real number. (If you are
+a precision freak, don't hesitate to add decimal parts of a mil.).
+
+        If you specify no scale you get a default scale. This
+default scale can be changed from its initial value of 1000 (for
+the rest of the .tex file) by the command
+
+        \SetDefaultEPSFScale{<scale in mils>}
+
+	The scaling you select (however you do so) will
+always be corrected by the TeX magnification factor.  Thus if you
+select scaling by 1000 mils at \magstep1 you in reality get scaling
+to 120% on the printed paper.
+
+        There is a rather different way to specify scaling
+(championed notably by Trevor Darrell since 1987); one can force
+width or height to a specified dimension, by one (not both) of the
+commands:
+
+        \ForceWidth{<dimen>}
+        \ForceHeight{<dimen>}
+
+This must precede the figure and applies to it alone.  Any such
+command takes precedence over any scaling command that might be
+present. If you have two such commands, the last takes precidence.
+
+     As W. Neumann pointed out to me, there are some unique uses
+for this "forced" dimensioning, for example:
+
+ a)  To force neighboring figures to have the same size.
+
+ b)  To maintain the exact same vertical size for a figure through
+minor revisions after TeX pagebreaks have been fixed.
+
+Incidentally, note that \ForceWidth{0.33\hsize} is perfectly
+legitimate; similarly for all dimension specifications.
+
+        On the other hand, scaling is the only right approach if
+you have a well proportioned line diagram with included labelling
+of a known point size. You scale to make the labels of optimal
+size.
+
+
+        In actual practice (notably on Macintosh computers), the
+Bounding Box posted in the EPSF file is often not the least
+rectangle containing the ink that will print the graphic object; it
+tends to be somewhat larger. Thus tools are provided to correct the
+box to fit the object.
+
+        For diagnostic purposes, one has:
+
+        \ShowDisplacementBoxes, \HideDisplacementBoxes
+
+to show (with a black frame), respectively hide, the corrected
+scaled and positioned bounding boxes.  The physical term
+"displacement" is used to remind you that these are boxes that
+displace other boxes, like TeX character boxes (see the TeXbook
+Chap 11), or indeed any TeX box. In case you make the graphics
+neatly fit into this displacement box the term "bounding" box would
+be justified, but just as for TeX characters this is not
+necessarily so (cf. TeXbook p.63).  The alternative terminologies
+\ShowReservedBoxes, \HideReservedBoxes and \ShowFigureframes,
+\ShowFigureframes are also available. (Which should suggest that
+these commands are used a great deal!)
+
+        Before any individual \BoxedEPSF{...} command one can
+insert commands to adjust the bounding box:
+
+          \TrimBoundingBox{...}
+          \TrimTop{...}
+          \TrimLeft{...}
+          \TrimBottom{...}
+          \TrimRight{...}
+
+Each takes a dimension argument referring to the PostScript
+(artist's) coordinates; with no scaling. Their names say what they
+do; just remember that they do NOT mask off part of the object when
+the box becomes too small; thus trimming is NOT "clipping".
+
+        TeX is pretty good at shunting boxes around. But the
+command to *slide* an image around without changing its box nor
+shunting neighboring boxes is not readily accessible. So we
+provide:
+
+          \hSlide{...}
+          \vSlide{...}
+
+which respectively slide horizontally to the right and vertically
+down in dimension units of the TeX page, NOT the artist's page.
+
+        A good order of steps for implanting a graphics object is
+to scale, then trim, then slide, and then shunt using TeX tools.
+
+        By default, the box produced has a baseline (roughly!)
+through the middle like the letter "g"; it is constructed using
+TeX's \vcenter. This seems most agreeable in case of linefigures in
+text --- though, mostly, it does not matter. The height mentioned
+hitherto is the sum of the height and the depth of this box.
+
+        The two other obvious choices of baseline are also
+available:
+
+ --- \tBoxedEPSF{...} baseline at top as for washing hanging on a
+clothesline.
+
+ --- \bBoxedEPSF{...} baseline at bottom as for trucks on a highway
+
+        The default choice is
+
+ --- \cBoxedEPSF{...} baseline centered as for khebabs on a skewer.
+
+You can change the default behavior to baseline at top (for
+example) by the command
+
+         \let \BoxedEPSF=\tBoxedEPSF
+
+
+ ****** Sudden Misbehavior ******
+
+	If you have just acquired a new source of EPSF
+files and the graphics wildly misbehaves, straying more of less at
+random far from the diagnostic "figure frame", then consider the
+following possible remedies:
+
+  (a) In case your driver takes the lower left corner of the
+graphics object to be the distinguished point, then it may be
+having trouble finding that point in the bounding box comment. In
+particular the Textures driver will fail to find a bounding box
+comment if its line begins with a tab or space!  In this case you
+will have to suppress such spaces. 
+
+  (b) Change the origin in the definition of \Set...EPSFSpecial
+(for texperts only).
+
+
+ ****** Changing PostScript printer drivers ******
+
+        The obstacle to portability is a lack of standard syntax
+for the \special commands; they vary from driver to driver.  This
+is overcome by using a local standard "fake special" within
+BoxedEPSF.tex, and relating each driver to it.
+
+        This local BoxedEPSF.tex standard is a two-argument macro
+
+           \EPSFSpecial#1#2
+
+where #1 is <file spec> and #2 is <scale in mils>. A different
+definition is given for each driver. For example, for Textures, the
+user types
+
+   \SetTexturesEPSFSpecial
+
+and this package then institutes essentially the definition:
+
+  \gdef\EPSFSpecial#1#2{\relax
+    \special{postscriptfile #1 scaled #2}}%
+
+(Actually, it is not quite that simple, because we allow decimal
+scaling factors like 726.7 (mils) while Textures requires integer
+values.)
+
+      Definitions for other drivers are being added:
+
+ %%\SetTexturesEPSFSpecial  for Textures on Macintosh
+ %%\SetArborEPSFSpecial  for ArborText's DVILASER/PS
+ %%\SetOzTeXEPSFSpecial  for OzTeX on Macintosh
+ %%\SetPSprintEPSFSpecial  for PSprint under VaXVMS
+ %%\SetUnixCoopEPSFSpecial  early unix "dvi2ps" driver.
+ %%\SetRokickiEPSFSpecial  for Rokicki's "dvips" driver
+ %%\SetClarkEPSFSpecial, for James Clark's "dvitops" driver
+ %%\SetDVIPSoneEPSFSpecial, for Y&Y driver for PC's
+ %%\SetBeebeEPSFSpecial, for N. Beebe's DVIALW driver
+ 
+   etc...  on demand --- see appendix.
+
+
+ ****** Compatibility with T. Rokicki's integration package ******
+
+        For users of Rokicki's integration package epsf.tex
+attached to his portable C driver dvips, we support the following
+alternative syntax.
+
+    \EPSFbox          equivalent to \bBoxedEPSF.
+    \EPSFxsize=126pt  equivalent to \ForceWidth{126pt}
+    \EPSFysize=76pt   equivalent to \ForceHeight{76pt}
+
+This compatibility makes it straightforeward to move a manuscript
+prepared with the most basic features of epsf.tex to a TeX site
+with a driver other than dvips.
+
+
+ ****** A Problem ******
+
+The process of reading bounding boxes may prove annoyingly slow on
+smaller computers when inserts are numerous.  The larger Sweet-teX
+package offers several possible cures, for example the use of a
+graphics specification file, which can be (re)read quickly.
+
+
+ ****** Availability, and support ******
+
+This package is available from the author at the addresses below,
+and by anonymous ftp from the directory pub/osutex on
+shape.mps.ohio-state.edu.
+
+        Laurent Siebenmann
+        Mathematique, Bat. 425,
+        Univ de Paris-Sud,
+        91405-Orsay,
+        France
+
+        lcs@matups.matups.fr
+        LS@FrMaP711.bitnet
+        siebenma@FRLAL51.bitnet
+        siebenmann@LALCLS.decnet.cern.ch
+
+  Fax number: 33-1-6941-6221
+
+
+                       REFERENCES
+
+     The following may give you leads to alternative solutions.
+
+ --- PSFIG a package by Trevor Darrell (for at least two drivers)
+available by anonymous ftp from whitechapel.media.mit.edu
+(18.85.0.124) in ./psfig or linc.cis.upenn.edu (130.91.6.8) in the
+directory ./dist/psfig.
+
+ --- Merging PostScript Illustrations: Gerald Roylance 1987, 1989,
+see MIT AI Laboratory Working Paper 299a; this package supports
+dvi2ps and DVILASER/PS.
+
+ --- dvips and epsf.tex by by T. Rokicki
+<rokicki@Neon.Stanford.EDU>
+
+ --- Une meilleure integration du graphisme Macintosh, par Laurent
+Siebenmann, Cahiers GUTenberg, No. 4 (Dec 1989),  pages 29-38. [The
+native Macintosh grapics norm is called PICT.  TeX has not been
+able to read PICT resources and files, as the resources are not
+files and the files are "binary". Nevertheless, good integration
+under Textures is possible with the help of a preprocessor and the
+notion of a "graphics description file". The strong points of this
+approach are speed and compactness. Portability poses problems.]
+
+ --- Nicolas Jungers <EDITEX@BUCLLN11.BITNET> two postings in the
+GUTenberg forum <GUT@FRULM11.BITNET> 9 Nov 90 and 17 Nov 90. [A
+good "do-it-yourself" kit!]
+
+ --- Michael Ferguson <mike@inrs-telecom.uquebec.ca> espouses the
+\ForceHeight{...} approach in Cahiers GUTenberg, No. 3 (May 1989),
+and N. Beebe indicates that his macros are available for DVIALW.
+
+ 
+APPENDIX:  A FIRST QUICK TEST OF BoxedEPSF.tex
+
+        Hopefully you have found your PostScript printer driver in
+the above list of \Set...EPSFSpecial commands.  In that case, try
+the following test to check that this package is working
+
+ ------ cut here
+ %% Test.tex
+ %\magnification=1200 %% uncomment later
+ \input BoxedEPSF.tex
+ \Set...EPSFSpecial %%%% complete this line!!!!!!!!
+ \ShowDisplacementBoxes
+ \null\vfill\vfill
+ AA\BoxedEPSF{gdisk.eps  scaled 500}ZZ
+
+ \bye
+ ------ cut here
+ %!PS-Adobe-2.0 EPSF-1.2
+ %%Title: gdisk.eps
+ %%Remark: A simple test file
+ %%Remark: DELETE SPACES BEFORE ALL %% (FOR Textures)
+ %%Pages: 0
+ %%BoundingBox: 216 216 432 432
+ %%EndComments
+
+ 72 72 scale     % units are now inches instead of big points
+ newpath
+   4.5 4.5 1.5 0 360 arc
+ closepath
+ 0.9 setgray
+ fill
+ ------ cut here
+        
+        The files Test.tex and gdisk.eps should be in the
+same directory.
+
+        A grey disk should appear fitting snuggly between AA and
+ZZ.  It should be neatly bounded by a square (the displacement
+box).
+
+        Once this test is working you should be able to elaborate
+and test all features.
+
+
+
+ APPENDIX: HOW TO GET SUPPORT FOR YOUR DRIVER
+
+        To get support for your dvi to PostScript printer driver,
+please send the \special syntax required to insert a file
+myfile.eps with scaling 76 percent!
+
+         For example, the answer for the ArborText DVILASER/PS
+driver was:
+
+        \special{ps: epsfile myfile.eps 760}
+
+And that was (almost) enough to let me program
+\SetArborEPSFSpecial.
+
+        One more scrap of information is essential. Some \special's
+for EPSFs place the lower left corner of the (scaled) bounding box
+at the TeX insertion point, and others place the lower left corner
+of the artist's page at the insertion point. No other choice seems
+consistent with Knuth's recommendations in the TeXbook. Textures
+and ArborTeX belong to the first type, while OzTeX and Rokicki's
+dvips belong to the second. The first type of driver must read the
+"bounding box comment" in the EPS File header.  Please report on
+the basis of documentation and/or experimentation, which type is in
+question.  An experimental test routine is provided below.
+
+        In general, some testing and/or driver documentation may be
+needed to clear up lingering questions. For example, are decimals
+allowed in in the scaling specification?  For ArborTeX I believe
+the answer is no.
+
+        An information form is included below for those who would
+like to see BoxedEPSF.tex adapted to another driver.
+
+
+     APPENDIX: AN INFORMATION KIT FOR OTHER DRIVERS
+
+ -------------------------------cut
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ %%% spectest.tex
+ %%% Test to discover which point in
+  % the graphics page (plane) your \special
+  % command distinguishes and identifies to
+  % the TeX insertion point.
+  %
+  % --- Put the file gsquare.eps into the same folder as
+  % TeX and this testfile.  Hopefully this will make
+  % gsquare.eps accessible to the printer driver.
+  %
+  % --- Complete the \special{... gsquare.eps ...} command below
+  % as your driver documentation recommends for printing
+  % the EPSF file gsquare.eps ---  without any scaling,  or other
+  % refinement.  For example
+  % \special{ps: epsfile gsquare.eps 1000}
+  % is suitable for the ArborteX driver.
+  %
+  % --- Typeset this file
+  %
+  % --- Print the resulting .dvi file using your driver.
+  %
+  % INTERPRETATION:
+  %
+  % If the black box lies in the square, the
+  % distinguished point is the lower, left-hand corner of the
+  % PostScript bounding box.
+  %
+  % If the black box lies outside the square, the
+  % distinguished point is the lower, left-hand corner of the
+  % artist's page, i.e. the the PostScript origin.
+  %
+  % If the square is missing, your driver has probably not found
+  % the EPS file gsquare.eps, or you have formulated the \special
+  % command incorrectly.  Follow driver instructions more
+  % carefully.
+  %
+  % --- report results to Laurent Siebenmann
+  % <lcs@matups.matups.fr>
+  % on the special reply "reply.doc" form provided below.
+  %
+  %
+
+ \null
+ \vfill
+ \vskip -1 in
+ \moveright 1 in \vbox{\hrule height 1 in width 1 in}
+ \vskip 1 in
+ \special{... gsquare.eps ...}%% please carefully adjust this
+ \eject
+ \bye
+
+  %% end of spectest.tex
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ -------------------------------cut
+ %!PS-Adobe-2.0 EPSF-1.2
+ %%Title: gsquare.eps
+ %%Remark: Another simple test file
+ %%Remark: DELETE SPACES BEFORE ALL %% (FOR Textures)
+ %%Pages: 0
+ %%BoundingBox: 216 216 432 432
+ %%EndComments
+
+ 72 72 scale     % units are now inches instead of big points
+
+ newpath
+   3 3 moveto
+   3 6 lineto
+   6 6 lineto
+   6 3 lineto
+ closepath
+   0.8 setgray
+ fill
+
+ -------------------------------cut
+ %!PS-Adobe-2.0 EPSF-1.2
+ %%Title: heat.eps
+ %%Remark: Another simple test file
+ %%Remark: DELETE SPACES BEFORE ALL %% (FOR Textures)
+ %%Pages: 0
+ %%BoundingBox: 216 216 432 432
+ %%EndComments
+
+ 72 72 scale     % units are now inches instead of big points
+ newpath
+   4.5 4.5 1.5 0 360 arc
+ closepath
+ 0.9 setgray
+ fill
+
+ /Times-Italic findfont
+  .8 scalefont
+  setfont
+     3.75 4.3 moveto
+   0 setgray
+  (Heat) show
+ -------------------------------cut
+
+
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                  %%%  reply.doc  %%%
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ INFORMATION FORM for adaptation of BoxedEPSF.tex
+        to other "dvi-to-PostScript" printer drivers
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  Please provide information on in the following items:
+
+  --- Name and email address(es) of correspondent.
+
+  --- Driver information :Name, version, date, copyright, vendor,
+computer(s) served, price etc.
+
+  --- Syntax required to print the EPS File gsquare.eps scaled to
+76 percent using a command of the form \special{... gsquare.eps
+...}. Is scaling to exactly 76.33 percent available?
+
+ --- More info on \special.
+
+ --- Location of the distinguished point.  (Report result of test
+in spectest.tex above).
+
+ --- Source(s) of your EPSF files.
+
+ --- Do you progam TeX? PostScript?
+
+        A trial adaptation to your driver will be returned with
+BoxedEPSF.tex. Thank you for cooperating!
+
+        Laurent Siebenmann
+        Mathematique, Bat. 425,
+        Univ de Paris-Sud,
+        91405-Orsay,
+        France
+
+        lcs@matups.matups.fr (best for big files)
+        LS@FrMaP711.bitnet (good for big files)
+        siebenma@FRLAL51.bitnet (reliable!)
+        siebenmann@LALCLS.decnet.cern.ch (reliable!)
+
+  Fax number: 33-1-6941-6221
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ -------------------------------cut
+
+
+
+ APPENDIX.  HOW ARE THE EPS GRAPHICS FILES BEING CREATED?
+
+        While everyone admires PostScript graphics, few TeX users
+are entirely happy with their tools for producing the EPSF files.
+As soon as your integration problem has been disposed of, this one
+will be back to haunt you! Here are a few notes that may help:
+
+ a) DrawOver 1.0 copyright Michael Everest 1986, is a converter to
+EPSF from the PICT graphics norm of the Macintosh, a norm for which
+there are many excellent drawing programs such as MacDraw. DrawOver
+is distributed with Illustrator 88 on the Mac. It is aging inasmuch
+as it handles the PICTs of more recent MacDraw versions less and
+less well.
+
+ b) Illustrator 88 on the Mac by Adobe Corp is a MacDraw-like
+program that uses the EPSF norm.
+
+ c) Macintosh output to LaserWriter printers is PostScript code,
+and can be diverted into a file.  This file cannot be used as is,
+but a header file can be added which with a few other changes
+produces a (bulky) EPSF file.  See the macps converter of unix, or
+OzTeX or the $20 shareware Mac package AddLPrep copyright 1988 by
+SoftWare 101, 15151 Old Ranch road, Los Gatos CA.  The output is I
+believe equivalent at similar resolution to what the
+Macintosh-LaserWriter combination produces. However, starting from
+the same PICT file, method (a) often gives better results!
+
+ d)  fig and xfig by Micah Beck, Cornell University
+<beck@cs.cornell.edu> are MacDraw-like programs for unix and unix
+X-windows, for which a translator transfig exists to EPSF norm.
+
+ e) Naked PostScript code. PostScript is a beautiful language, and
+the three Adobe manuals are very helpful.
+
+    I am sure it would be extremely useful if readers would extend
+and improve the above list!  Here is a first response from Berthold
+K.P. Horn:
+
+(*) Aldus Freehand on the Mac is a more sophisticated tool for
+generating graphic illustrations than Adobe Illustrator.  Both are
+constrained to basically two-dimensional patterns.  Both can
+produce output in EPS form.
+
+(*) Micrografx Designer on the PC is a more sophisticated tool for
+generating graphics illustrations than Adobe Illustrator. It is the
+PC's answer to `MacEnvy', since it provides a Windows based tool
+that is about as good as any on the Mac.  Designer is also
+constrained to basically two-dimensional patterns.  It can produce
+output in EPS form.
+
+(*) There are also CAD/CAM applications that run on high end PC's,
+Sun workstations that can handle `solid modelling' of three
+dimensional objects, but they are an order of magnitude more
+expensive, so few people have access to them.
+
+(*) Illustrate on the Symbolics LispMachine was one of the first
+drawing programs and is still used quite a bit.  It can produce
+output in EPS form. Very similar features to the other 2-D
+illustration applications mentioned above.
+
+(*) Screen Dumps.  Another useful source of graphic illustrations
+are screen dumps available on LispMachine, Windows on PC, and on
+Mac in EPS form.  OF course, they are in bitmap form so very
+limited in quality and not resolution-independent, but useful for
+illustrating program operations.
+
+(*) Paint Programs.  On the Mac and the PC there are programs that
+instead of manipulating curves and areas work directly with
+bitmaps. The output can be in EPS form.  But same drawback as
+screendumps. Not used much.
+
+
+

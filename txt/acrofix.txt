@@ -1,0 +1,277 @@
+==============================================================================
+	Platform Dependent Acrobat Reader Problems	(file: acrofix.txt)
+==============================================================================
+
+	Copyright (C) 1995-1997 Y&Y, Inc.
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Acrobat PDF format for electronic document distribution is just terrific
+when it works properly, but it can be a bit of a pain when it does not...
+
+There seem to be relatively few problems when printing to a PostScript (PS)
+device from Acrobat Reader on any platform.  However, there may be problems
+in (i) on-screen viewing in some versions of the Reader on some platforms,
+and (ii) when printing to non-PS devices.  This difference between printing
+and preview should not come as too much of a surprise, since for PS output,
+something close to the original PS file can be recreated from the PDF file,
+whereas for on-screen viewing completely different machinery comes into play,
+including the operating systems graphical user interface (GUI), and, perhaps
+more importantly, Adobe Type Manager (ATM).  
+
+NOTE:	Get the latest Acrobat Reader (3.01 has fewer such problems than 3.0).
+
+Problem 1: Interference with locally installed fonts:
+=====================================================
+
+A common problem is poor rendering, or incorrect encoding (character layout)
+of fonts called for in the document that happen to be locally installed.
+
+Suggested work around:
+----------------------
+
+Deactivate fonts locally installed that happen to be called for by the
+document.  This requires ATM 4.0 (or some font utility like SuiteCase II
+or FontMinder).  This forces Acrobat to use the fonts in the PDF file.
+
+Or, turn off ATM.  This forces Acrobat to use its own built-in ATM.  
+This only works with recent versions of the Reader, which have a built-in ATM.
+This is is, however, not very convenient since a reboot is required.
+
+Problem 2: Macintosh Acrobat Reader Problems:
+=============================================
+
+The Macintosh Acrobat Reader in particular appears to have some problems 
+with files calling for many fonts, particularly if the fonts are 
+not standard text fonts.  It sometimes drop characters in some fonts.  
+Anecdotal evidence suggests that increasing the ATM cache may help.  
+Sometimes rebooting clears the cache and improves matters.  Some Macintosh
+TeX PS drivers reencode fonts without assigning a new PostScript FontName 
+to the reencoded version.  This can obviously lead to problems!
+
+Suggested work around:
+----------------------
+
+Try to limit the number of fonts used in one PostScript job.  If possible,
+use `printer resident' fonts (Times Roman, Helvetica, Courier, Symbol, and
+Zapf Dingbats).  These will not be embedded, and hence are much less likely
+to lead to problems. 
+
+PROBLEM 3a  Use of `control characters' and 3b not having `space' in 32 &
+3c: missing `minus', `leftarrow', `psi', `Gamma', `big left paren':
+====================================================================
+
+If possible, try to avoid fonts that use the `control character' code range
+(0 - 31), as well as fonts that do not have a `space' in character code 32.
+
+Some HP PCL printer drivers interpret control characters as page control
+commands rather than as specifying glyphs.  So you will get unexpected white
+space and page ejections if you use the control character range.
+
+The old Unix Acrobat 1.0 reader has problems with character codes 32 --- 
+it implicitly assumes that there is a `space' in 32.  Get the latest one.
+
+Some Acrobat Readers sporadically drop character codes 0 and 32.
+
+Suggested work around (-*R):
+---------------------------
+
+When using CM fonts, use command line flag -*R with DVIPSONE to remap the
+whole character code range 0 -- 32 and 127 to 161 -- 196.  This work-around 
+cannot, however, be used with non-CM fonts using the 0 - 32 range if they 
+already use the range 161 -- 196. So:
+
+Alternate work around (-*2) useful when not using CM fonts:
+----------------------------------------------------------
+
+Use -*2 on the DVIPSONE command line to remap 0 and 32 (to 161 and 195).
+This is normally safe, since (i) text fonts encoded to use the 161 -- 196
+range typically do not use character code 0, and (ii) TeX normally does not
+use the `space' character in text fonts.
+
+To avoid additional problems with the Acrobat Reader, the -*2 command line
+flag also remaps char code 9, 10, and 13, and hence should *only* be used
+if either (i) your fonts are set up for repeated encoding (as all CM, extra
+LaTeX, and AMS fonts are, as well the LucidaNewMath and MathTime fonts) or 
+(ii) your text font encoding does not use 0, 9, 10, or 13 (e.g. LY1).
+
+If you have a TeX system that is a few years old and you use TeX 'n ANSI
+encoding, check your encoding vector (texnansi.vec).  For this remapping to
+work properly you should have an entry for the `fl' ligature in char code 8
+(in addition to or instead of char code 13).  If you need this work around
+--- and have older versions of the TFM files for TeX 'n ANSI encoding ---
+check that they are not using 13 for the `fl' ligature.  If they do use char
+code 13, regenerate the TFM files.
+
+You can make new TFM files using the `WriteTFM...' entry from the `Fonts'
+menu in DVIWindo, or using AFMtoTFM from the DOS command line.
+Perhaps the easiest way to check whether your TFM files use char code 13
+is to explicitly switch to the font and select that character.  For example:
+
+	\font\lbr=lbr \lbr \char13 \end
+
+Your TFM files use character code 13 if you do *not* get a `missing character'
+message from TeX (with some TeX systems you have to check the log file to see
+such an error message!)  Things are OK if you *do* get the error message.
+
+PROBLEM 4: Distiller or Reader ignoring (re-)encoding of font:
+==============================================================
+
+Some older versions of the Unix Acrobat Reader have problems with font
+encoding.  In some cases they ignore the encoding in the PDF file, and
+impose ISO Latin 1 encoding.  Solution: get the latest version...
+
+Also, Distiller sometimes gets confused when a plain text font is used
+without reencoding (i.e. with Adobe StandardEncoding).  In this case it may
+generate an incorrect /Flags value in the PDF files description of the font
+depending on what glyphs are in the font.  Typically this will have the
+hexadecimal mask `4' set instead of `20' --- e.g. decimal 4 instead of 
+32, 6 instead of 34, 70 instead of 98, 262150 instead of 262178 etc).
+This applies particularly to the Unix versions of the Distiller.  
+
+Suggested work around:
+----------------------
+
+We do not recommend using Adobe StandardEncoding for this reason --- and also
+because Adobe StandardEncoding does not provide access to the 58 accented
+characters and another 21 glyphs.  Note that Adobe StandardEncoding is the
+default for output from DVIPS (unless you ask DVIPS to reencode the font).
+
+In some cases you can fix the problem by editing the PDF file and changing
+the value of the /Flags field for the offending font(s).
+
+When editing a PDF file, the object index at the end (and/or start) of the
+PDF file will be invalidated when objects are moved.  However, Acrobat Reader
+will notice this problem and automatically fix it.
+
+PROBLEM 5:  Incorrect treatment of text fonts as PI font:
+=========================================================
+
+Some text fonts that have `extra' glyphs (such as `ff' `ffi' `ffl')
+are incorrectly treated as `expert'/`math'/PI fonts by the Distiller.
+This shows up as reencoding problems, where f-ligatures and/or
+left and right single and double quotes disappear --- or are shown 
+as `grave accent' and `quotesingle'.
+
+Suggested work around:
+----------------------
+
+This type of problem can be fixed by modifying an /Encoding object with
+a /Differences vector that includes `94/circumflex.'  Replace this string 
+with the string `39/quoteright 94/circumflex 96/quoteleft'.
+
+When editing a PDF file, the object index at the end (and/or start) of the
+PDF file will be invalidated because objects are moved.  However, Acrobat
+Reader will notice this problem and automatically fix it.
+
+Another work around is to let DVIPSONE output partial fonts --- its default
+behaviour --- which is not otherwise recommended when making PDF files.  
+This way, you may not have the ff-ligatures in the partial font and hence 
+avoid this particular Distiller bug.
+
+PROBLEM 6: fonts embedded in the PS file:
+=========================================
+
+There are many factors that can influence the robustness of the PDF file:
+
+(1) Is the Distiller reading the fonts from the PS file or getting them from
+    the system that it is installed on?  Generally the Distiller seems to
+    produce better PDF files if the fonts are *not* included in the PS file
+    (although this may slow down the Distiller slightly).
+
+Suggested work around:
+---------------------
+
+(i) Use the -k command line flag with DVIPSONE to *suppress* inclusion of fonts
+in the PS output.  Make sure all fonts needed by the PS job are `visible' to
+Distiller when you run it (In `Distiller' menu set `Font Locations').
+
+(ii) If you *do* include fonts, then this may be one case where you do *not*
+want to use use partial font downloading (use -P command line flag).
+
+(iii) If you *do* use partial font downloading in the PS file (i.e. without
+the -P flag), add a unique prefix (using -F=...) to the font names.
+Otherwise you may have problems with font caches maintained by Acrobat
+reader, particularly on multi-user systems like some Unix installations.
+
+Alternate suggested work around:
+------------------------------------
+
+If you do include fonts, add a unique prefix to the FontNames using -*x. 
+
+Problem 7: Acrobat Reader used `platform fonts'
+===============================================
+
+(2) Does the Acrobat Reader use fonts embedded in the PDF file or locally
+    installed fonts?  There seem to be possibilities for problems when 
+    locally installed fonts conflict with those in the PDF file.
+    Particularly if there may be a difference in font encoding. 
+    Some Acrobat Readers still seem to have problems reencoding fonts.
+
+You can tell whether the Reader is using the embedded fonts or `platform'
+fonts by checking `Fonts' from the `Document Info' selection from the `File'
+menu.  If the `Used Font' fields says `Embedded,' then you are using the
+embedded font.  If it instead lists the name of the font then it is using the
+locally installed font.  If the field is blank, then you have not yet paged
+far enough into the PDF file to need that particular font.  (Do not be
+confused by the `Built In' notation in the `Encoding' column --- this
+refers to the font encoding only, not the font itself).
+
+Suggested work around:
+--------------------------
+
+In some cases one can avoid problems by running the Acrobat reader on 
+a system that does not have the fonts that are used in the PDF files 
+(or temporarily disabling those fonts using a `Font Manager' such as 
+SuitCase II or Font Minder).  With ATM 4.0 Deluxe, inactivate the fonts
+in question *and* turn off `Auto Activation.'
+
+Problem 8: Acrobat PDF files are not quite resolution independent:
+================================================================
+
+Note that while printed output from Acrobat Reader typically does look like
+printer output using the original PS file, the quality is not always quite
+the same.  This applies particularly to images.
+
+Also, PostScript code referring to the underlying device coordinates will be
+using the Distiller reference grid, *not* the grid of the final PostScript
+output device.  The default Distiller `device coordinate' grid has only 
+144 dpi resolution.  
+
+Consequently, the thickness of rules may be quantized *and* truncated
+downward, so narrow rules end up zero width, which means they will
+*disappear* at high resolution on an image setter.  
+
+Work-around:
+------------
+
+The latest version of DVIPSONE uses code in the preamble that detects the
+Distiller and turns off `grid fitting' code.  Make sure you use version 
+1.2.9 of DVIPSONE or later when using the Distiller on PS output (and
+make sure the preamble file DVIPREAM.ENC has the same version number).
+
+Problem 9: Distiller may not embed all fonts that need to be embedded
+=====================================================================
+
+Open the PDF file in Acrobat Reader, pull down the `File' menu, select
+`Document Info,' then `Fonts.'  Click on `List all Fonts...'  
+
+In Acrobat 2.1, each line listed starts with the `Original Font' name.  
+Names with a six letter prefix followed by `+' are partial `sub fonts'.  
+In Acrobat 3.0 such fonts are listed as `Embedded Subset'.  If this
+column is blank, first page forward through the file until you `touch'
+the font in question.
+
+Fonts without prefix or `Subset' notation have either (i) been included
+verbatim, or are (ii) in the list of 14 fonts always included with Acrobat
+(Times, Helvetica, Courier, Symbol, Zapf Dingbats), or (iii) have not been
+included and will be approximated in Acrobat Reader using Multiple Master
+technology.  That last situtation is almost never what you want! 
+
+Suggested work around:
+-------------------------
+
+To avoid approximation of fonts using generic Multiple Masters, force
+embedding of all fonts listed without a six letter prefix, by adding these
+fonts to the lists of fonts to always embed.  From the `Distiller' menu
+select `Font Embedding' and add the troublesome fonts to the `Always Embed'
+list (or just check `Embed All Fonts').

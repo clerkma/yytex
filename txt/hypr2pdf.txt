@@ -1,0 +1,158 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+====================================================================
+	Hypertext links and Acrobat PDF		(hypr2pdf.txt)
+====================================================================
+
+DVIWindo supports hypertext jumps in DVI files, and now DVIPSONE 
+converts such hypertext links to `pdfmarks' in the PostScript output.  
+These `pdfmarks' can then be used by Acrobat Distiller to create 
+hypertext links in an Acrobat PDF file.
+
+In this fashion you can debug a hyper-text document using the
+DVIWindo previewer before using the Distiller to turn it into an
+Acrobat PDF file.
+
+Hypertext links are defined in TeX source code using \special{...}.
+A higher level interface can be provided using TeX macros
+(see hypertex.tex for example).  
+
+At a high level, Sebastian Rahtz's quite elaborate `hyperref' package
+and David Carlisle's `backref' package take advantage of this
+capability when using LaTeX 2e.  Just make sure to tell them you are
+using the dvipsone driver.
+
+------------------------------------------------------------------------------
+
+If you want to do things not covered by the `hypreref' package - or
+want to use these capabilities in plain TeX or LaTeX 2.09 - then you
+need to know about the low level commands.  The format for a
+hypertext `button' is
+
+	\special{button: <width> <height> <action-1>,...,<action-n>}
+
+This defines an active rectangular area with lower left corner at TeX's
+current point, of specified width and height (in TeX's scaled points, of
+which there are 65535 per printer's point).  The active area is not
+automatically highlighted - but for debugging purposes one can outline 
+hypertext buttons in DVIWindo by checking `Show Buttons' in the `Font' menu.
+Use colored text, colored rules or text on colored rules to indicate to the 
+user where the hypertext buttons may be found.
+
+One or more `actions' must be listed.  These `actions' are taken when
+the user clicks in the active area with the left mouse button.  In the 
+simplest case, the `action' is just the name of a `mark' somewhere else
+in the same file.  But there are actually several possibilities:
+
+(1) An `action' may be just the name of a `mark' (a named destination) 
+in the same file.  Such a mark is placed using:
+
+	\special{mark: <name>}
+
+Clicking on the hypertext button in this case takes one to the named
+destination.  The cursor is positioned at the mark.  Clicking the 
+right mouse button in DVIWIndo returns one from that mark.  A stack 
+of hyper-text view points is maintained so you can right click
+more than once to go back more than one hypertext jump.
+
+(2) In some rare cases it may be more convenient to instead jump 
+to a particular page.  To set this up, use an action of the form
+
+	page: <n> or page: <l>+<o>
+
+where <n> is the `physical' page (sequential from beginning of the
+file, starting at 1) --- which often is different from the `logical'
+page number printed at the top of the page.  The second form (with two
+numbers separated by a `+') makes it more convenient to deal with 
+such offsets between physical and logical page numbers.  Here <l> is 
+the `logical' page number, and <o> an offset.  The action is to take 
+one to the `physical' page numbered <l>+<o>.
+
+(3) It is also possible to go to another file.  In this case the action 
+has the form
+
+	file: <filename>
+
+If both a mark name and a file are listed, then the jump is to a mark of 
+that name in the specified file.  This is probably the most common usage 
+of this form.  If both a page and a file are listed, then the jump is to 
+the specified physical page in the file.  If neither the name of a mark or
+the number of a page are specified, then the jump is to the first page. 
+
+(4) It is also possible to launch another application using an action of 
+the form
+
+	launch: <application> <arguments>
+
+the command line arguments to be passed to the application are optional.
+
+Multiple actions can be listed, but they *must* be listed in the order
+specified above: mark (if any) first, followed by file (if any), followed 
+by application to launch (if any).  Not all combinations make sense.
+Commas must be used to separate multiple actions.
+
+The above works in DVIWindo when previewing a DVI file.  These hypertext
+links are also translated by DVIPSONE to pdfmarks, which Acrobat Distiller
+uses in turn to create hypertext links in the Acrobat PDF file (but note 
+that Acrobat only supports single actions).  The translation is automatic, 
+but may be disabled using a command line flag.
+
+World Wide Web:
+---------------
+
+If the mark has the form of a URL it will be treated as a World
+Wide Web link in Acrobat Reader (but not in DVIWindo).  For example:
+
+	\special{button: <width> <height> http://www.YandY.com}
+
+This assumes that the Acrobat Reader has the `web plug in' that links 
+it to a web browser.  
+
+----------------------------------------------------------------------------
+
+Document Info
+-------------
+
+Note that DVIPSONE also adds DOCINFO pdfmarks which list such
+information as the name of the file and when it was created.
+This information is shown when `Doc Info' from the `File' menu
+is selected in the Acrobat Reader.
+
+There are also Acrobat specific \special's that can be used to
+control the `Document Info' in the PDF file,
+
+	\special{PDF: Keywords ... , ... , ...}
+	\special{PDF: Title .....}
+	\special{PDF: Subject ...}
+	\special{PDF: Author ...}
+
+to set the crop box (visible area),
+
+	\special{PDF: BBox <xll> <yll> <xur> <yur>}
+
+and to establish a base URL,
+
+	\special{PDF: Base ...}
+
+These are all ignored by DVIWindo (and any `normal' PostScript interpreter).
+
+Differences between hyper-text links in DVIWindo and Acrobat:
+-------------------------------------------------------------
+
+DVIWindo supports multiple `actions' on one button, Acrobat does not.
+
+Acrobat supports jumps to WWW URLs, DVIWindo does not in quite the same way.
+
+Acrobat displays document information from the `File' menu.
+This information is ignored in DVIWindo.
+
+Limitations:
+------------
+
+Platform dependencies may arise when file names are written in a
+platform specific format.  This problem may be reduced by using 
+only relative addresses (setting the base URL if needed).
+
+Platform dependencies may arise when launching applications, since
+these may have different names on different platforms, may not
+exist on some platforms, or may take different arguments.

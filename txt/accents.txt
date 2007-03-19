@@ -1,0 +1,20 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Accent		ATM	ATM	Windows	Standard PSCRIPT
+Character	1.15	2.0	ANSI	Encoding DRV
+
+acute		180	180	180	194	1	
+breve		198	198	.	198	5	
+caron		207	2	.	207	12	<===
+circumflex	159	136	.	195	2	<===
+cedilla		184	184	184	203	9	
+dieresis	168	168	168	200	7	
+dotaccent	199?	199	.	199	6	
+dotlessi	157	1	.	245	13	<===
+grave		96	96	96	193	0	
+hungarumlaut	205?	205	.	205	10	
+macron		175	175	.	197	4	
+ogonek		206	206	.	206	11	
+ring		176	176	176	202	8	
+tilde		158	152	.	196	3	<===

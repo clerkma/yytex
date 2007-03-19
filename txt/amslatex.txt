@@ -1,0 +1,136 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=======================================================================
+	Creating a TeX `format' file for AMS-LaTeX (with LaTeX 2.09)
+=======================================================================
+
+USING LaTeX 2e:
+---------------
+
+The official word is that LaTeX 2.09 is no longer supported, so you may want
+to use LaTeX 2e instead.  In LaTeX 2e, AMS-LaTeX is just another style.  
+There is no need to build a new TeX `format'. Just use
+
+	\usepackage{amsmath}
+
+(NOT: \usepackage{amstex} --- that is for backward compatability only).
+
+You need to download files from /tex-archive/macros/latex/packages/amslatex
+for this to work, since these files are not part of the `basic' LaTeX 2e
+distribution. 
+
+Support for fonts other than Computer Modern in LaTeX 2e is still somewhat
+in a state of flux.  So while AMS LaTeX 1.2 appears to work smoothly with
+Computer Modern fonts, there may still be some wrinkles to work out with
+other font set, such as MathTime or LucidaBright.  Please refer also to:
+
+`The LaTeX Companion'
+Michel Goosens, Frank Mittelbach, Alexander Samarin
+Addison-Wesley, 1994
+ISBN 0-201-54199-8
+
+See page 216 (and read chapter 8)
+
+NOTE: If you use LaTeX 2e you don't need to read the rest of this file.
+
+Reference Material for LaTeX 2.09:
+----------------------------------
+
+The following book provides information on AMS-LaTeX in general:
+
+George Graetzer,
+`Math into TeX - A simple introduction to AMS-LaTeX'
+Birkhaueser, 1993
+ISBN 0-8176-3637-4.
+ISBN 3-7643-3637-4.
+
+For installation instructions see page 8 (and read Chapter 1).
+The following book also provides some information on installing AMS-LaTeX:
+
+Norm Walsh
+`Making TeX Work'
+O'Reilly & Associates, 1994
+ISBN 1-56592-051-1.
+
+See page 79 (read Chapter 4)
+
+Background:
+----------
+
+AMS-LaTeX provides the capabilities of AMS-TeX within the context of the
+LaTeX environment.  The AMS-LaTeX macros are basically style files for LaTeX,
+however, they do require the New Font Selection Scheme (NFSS). 
+
+Support for NFSS in LaTeX 2.09 has been with-drawn :-{ -- 
+although it is not clear exactly what that means, 
+other than that bug reports will go unanswered, 
+and that it may be hard to find the source files for NFSS 
+(except perhaps on the black market :=).
+
+Working with LaTEX 2.09 and NFSS:
+---------------------------------
+
+The AMS-LaTeX distribution includes three sub-directories:
+
+	doc		AMS-LaTeX documents source files
+	fontsel		New Font Selection Scheme
+	latex		AMS LaTeX itself
+
+Copy the files in `fontsel' and `latex' into your TEXINPUTS directory.
+For example:
+
+	copy b:\fontsel\*.* c:\texinput
+	copy b:\latex\*.* c:\texinput
+
+Where we have assumed that `c:\texinput' is a directory listed in your
+TEXINPUTS environment variable.
+
+We recommend that any non-trivial ini-TeX operation be run from the DOS 
+command line instead of from DVIWindo.  That way you have better control
+of the details.  Just call Y&YTeX with -i on the command line. For example:
+
+	c:\y&ytex\y&ytex -i lplain
+
+But you need to do some other things first:
+
+*	rename `lfonts.tex' -> `olfonts.tex'
+	(This is the file for the `Old Font Selection Scheme')
+
+*	locate the new files, including `lfonts.new.'
+	(This is the file for the `New Font Selection Scheme')
+
+WARNING: Note that running ini-TeX will create a new `format' file called
+`lplain.fmt' -- which is also what your old LaTeX format file is called!
+So, to prevent your `lplain.fmt' from being overwritten, do not
+run ini-TeX in your TEXFORMATS directory.  Either: 
+
+	(i) temporarily rename your old `lplain.fmt', or 
+	(ii) run ini-TeX in a temporary directory.
+
+When you run ini-TeX as above you will get several complaints about missing
+files (if you *don't* get any complaints, then you forgot to rename
+`lfonts.tex' and you just created a format for `ordinary' LaTeX ;=).
+Rather than edit the source files to fix this, it may be more convenient
+to just tell TeX what file to use each time it complains about a missing
+file.  Use the following replacement table: 
+
+	File sought	Replacement
+
+ 	lfonts.tex	lfonts.new
+	fontdef.tex	fontdef.mac
+	preload.tex	preload.ori
+	xxxlfont.sty	basefont.tex
+
+At the end, when back at the * prompt in TeX, type \dump at TeX.
+
+The resulting format file will be called `lplain.fmt,' which, as noted above,
+is a problem since that is the name of the LaTeX format file!  To avoid
+conflict, rename the new format file `amslatex.fmt' lets say.  Then move it
+to your TEXFORMATS directory: 
+
+	rename lplain.fmt amslatex.fmt
+	move amslatex.fmt c:\y&ytex\fmt
+
+As stated above, AMS-LaTeX is in a state of flux, since it depends on NFSS,
+which is no longer supported outside of LaTeX 2e.  And in LaTeX 2e, AMS LaTeX
+is simply a style file...

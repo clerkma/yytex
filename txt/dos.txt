@@ -1,0 +1,118 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=====================================================================
+	Some DOS/Windows related issues		(file:  dos.txt)
+=====================================================================
+
+There are some DOS related issues that may come up when using DVIPSONE,
+DVIWindo, Y&YTeX.  These are not specific to this particular software, but
+are mentioned here since you may come across them, and may not be familiar
+with work-arounds for potential problems with DOS.
+
+NOTE: Many of these issues are no longer a concern in Windows 95 or Windows NT
+
+File sharing:
+-------------
+
+If you are using Windows 95, you are using VSHARE,
+
+With SHARE or VSHARE installed you will not be able to leave a file open
+in some editors.  A few editors (like MicroSoft Write) keep files open
+while you edit them in a Window.  Other editors (like NotePad) do not.
+With these editors you have to close the file before running it through TeX.
+
+Extended Memory:
+----------------
+
+Windows requires at least 4 meg of memory.  SMARTDRV or other disk cache
+can easily take another 1 or 2 meg.  It's not uncommon for the ATM cache
+to be one half to one meg.  Y&Y TeX needs 2 meg of free RAM when it starts.
+So an 8 meg machine is a minimum configuration.  You can run successfuly
+on a machine with limited extended memory if you have an adequate swap
+file set up, preferrably a permanent swap file.  `Adequate' means something
+like 10 or 20 meg (not 1 or 2 meg :-).
+
+Conventional Memory:
+--------------------
+
+While most of Y&Y TeX runs in extended memory, some part requires
+conventional memory for such things as `transfer buffers'.  Windows uses up a
+part of conventional memory.  Resident TSRs VXDs eat up more, particularly
+such things as network drivers.  Make sure to load DOS high, and use the
+upper memory blocks as much as possible.  
+
+Use the DOS utility MEM to check out memory usage.  You want to have as much
+as possible of the 640k conventional memory free as possible.
+
+`System Resource':
+------------------
+
+Windows 3.1 manages various types of resources (windows, pens, bitmaps, icons)
+using two 64 kbyte segments called GDI and USER.  If these start to get
+heavily used (over 50%) Windows will start to act erratically.  
+Windows 95 still has such limitations, but they are now on subsets of
+resources, so it is very unlikely you will run into them.
+
+Windows INI files:
+------------------
+
+`Profile files' like WIN.INI, ATM.INI and DVIWINDO.INI must be less than 64 k
+bytes in length.  If they get close to that length or longer, they are
+quietly corrupted, with potentially disastrous results.  WIN.INI can get very
+long if you have (i) lots of fonts installed and (ii) have these fonts
+installed on more than one printer/port.  You can check your WIN.INI for
+multiple sections with `softfonts=...' entries.  If WIN.INI gets close to 64
+k byte you may have to clean up WIN.INI, uninstall some fonts, or remove one
+of the printer/port entries.
+
+Maximum number of files open:
+Limitations on the size of the environment:
+-------------------------------------------
+
+If you define many new environment variables, you may run up 
+against the DOS environment size limitation.  You can increase
+the environment size by adding a line like
+
+	SHELL=C:\DOS\COMMAND.COM C:\DOS\ /E:2048 /p
+
+to your CONFIG.SYS file, where the number after /E: specifies the number of
+bytes to be set aside for environment variables.  
+
+You should, however, avoid making the environment size much larger than
+really needed, since the environment is copied into the 64k data segment of
+each DOS programs that you run - and some of these may not have much space
+left in that data segment as it is.
+
+Limitation on the length of command lines:
+------------------------------------------
+
+DOS has a limit of 127 characters on a command line.  This can be a problem
+if you are trying to pass many parameters to DVIPSONE, for example.  In the
+case of DVIPSONE, you may want to set up commonly used command line
+parameters in the file DVIPSONE.CMD.  Then only parameters that have not
+already been specified in this file need be mentioned on the command line.
+DVIPSONE also can read `indirect command files' (a.k.a. `response files').  
+A file name preceded by `@' is taken to be the name of a file with command 
+line flags and command line parameter.
+
+The limitation on line length applies to your AUTOEXEC.BAT file also.  
+The most serious consequence of this is that your PATH variable may not be as
+long as you would like it to be.  There is no error message, the part that
+does not fit is simply snipped off.  So you may think that a given directory
+is on your PATH when in fact it is not.  In AUTOEXEC.BAT, use the PATH=...
+form rather than SET PATH=... to squezze out a few more characters.  
+
+You can check your environment variable settings by typing
+
+	SET
+
+at the DOS command prompt.  
+
+If you have DOS 6.0 you may use the SET command also in CONFIG.SYS - not just
+AUTOEXEC.BAT - and there is no limit on line length for lines in CONFIG.SYS.
+You cannot use the PATH=... form here though, you must instead use SET PATH=...
+
+In Windows NT there is no system wide autoexec.bat and config.sys.
+Instead the files autoexec.nt and config.nt are used when launching
+a console application or DOS program, unless a PIF file explicitly
+specifies other files.
