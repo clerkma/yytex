@@ -1,0 +1,35 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-----------------
+Uninstalling ATM:
+-----------------
+
+This is described in the ATM manual.  Details differ depending on version
+of ATM and version of Windows and directories chosen for installation.
+
+First try locating an uninstall icon for ATM via 
+`Start > Programs > Adobe Type Manager'  
+
+If there is no such icon, try 
+`Start > Settings > Control Panel > Add/Remove Programs'
+Select `Adobe Type Manager' and click `Add/Remove'
+
+If there is no listing for ATM, continue in brute force mode:
+
+In the ATM control panel turn ATM off. Reboot.
+
+Then, in the [boot] section of system.ini, change
+
+	system.drv=atmsys.drv
+	atm.system.drv=system.drv
+
+to	system.drv=system.drv.	Reboot.  
+
+Then you can flush atm.ini and atmreg.atm in your
+windows diretory, as well as atm32.dll in your
+systems directory.  You can also flush atmfm.exe 
+from your fonts directory (typically c:\psfonts).
+The Type 1 fonts are typically in c:\psfonts - 
+if you don't plan to use them you can delete those as well.
+
+

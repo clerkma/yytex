@@ -1,0 +1,74 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===================================================================
+Having DVIPSONE automatically include fonts called for in EPS files
+===================================================================
+
+EPS files may include fonts, or may instead only include DSC (Document
+Structuring Comments) requesting fonts.  Adobe Illustrator is one
+program that uses DSC comments rather than actually including the fonts
+required in the EPS files. These comments are aimed at a mystical
+`spooling' program.  No spooling program gets into the act when
+DVIPSONE creates a PS file, so DVIPSONE has to try and accomodate these
+font requests itself (most DVI->PS processors do not do this, by the way).
+
+The DSC comments of interest are of the form 
+
+	%%IncludeResource: font ...  or the older style 
+	%%IncludeFont: ... 
+
+There are also 
+
+	%%DocumentNeededResource: font ... or the older style
+	%%DocumentNeededFonts: ... 
+
+comments, but these are merely advisory and do not indicate where to
+include the fonts (see Appendix G of the PS Reference Manual 2nd edition).
+
+The name mentioned in DSC comment is the PS FontName (e.g. Times-Bold), 
+*not* the name of the corresponding PFB file (e.g. tir_____.pfb).
+
+Somehow DVIPSONE has to map from the PS FontName to the file name:
+
+(1) DVIPSONE first looks in the font substitution file for entries tagged
+*epsf* or *reside*.  The standard substitution file is `standard.sub.' 
+A different substitution file can be specified on the command line.
+Substitution files are found where the environment variable SUBPATH points
+to, typically c:\yandy\dvipsone\sub.
+
+(2) If DVIPSONE can find the ATMREG.ATM file (typically in the windows
+directory), it uses the information in this compact binary file to relate PS
+Fontname to the file name of the PFB file.  ATMREG.ATM is maintained by ATM
+4.0 or higher, so is not available when using ATM 3.0, or in NT without ATM.
+
+(3) If DVIPSONE can find an ATM.INI file it uses the information there.  The
+ATM.INI file relates Windows Face Name and style (e.g. Times, BOLD) to the
+file name.  Note that the Windows Face Name is often not the same as the PS
+FontName (even taking into account the decoration with a style).  The 
+ATM.INI file is maintained by ATM 3.0 and is not used in Windows NT.
+
+To have DVIPSONE reliably obey DSC font inclusion request one
+can add entries to the substitution file tagged *epsf* or
+*reside* in the form
+
+	lbr		LucidaBright			*epsf*
+or
+	tir		Times-Roman				*force* *reside*
+
+Since the font substitution file is also used by DVIPSONE for other
+purposes you may prefer instead to create an ATMFONTS.MAP file.
+
+(4) An ATMFONTS.MAP file should be put where DVIPSONE looks for PFB font
+files (typically c:\psfonts or c:\winnt\fonts).  The ATMFONTS.MAP file
+contains `key=value' entries, where the `key' is the PS FontName and the
+`value' is the PFB file name. For example:
+
+	TektonMM=c:\psfonts\zjrg____.pfb
+
+Printer resident fonts should not be included in the PS file, even when the
+EPS files calls for them using DSC comments.  DVIPSONE consults
+`standard.sub' (or another substitution file you ask for using command line
+flags).  to determine what fonts are printer resident.  The default
+substitution file lists the four styles each of Times, Helvetica, and
+Courier.  You can add to this list if the EPS files calls for other fonts
+that are resident in your printer.

@@ -1,0 +1,28 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Why LY1?
+
+(1) Access all the characters in typical PST1 text font using a 
+    single font encoding (including dagger, daggerdbl, and
+    paragraph --- used in footnote markers --- copyright, register,
+    trademark etc.)
+
+(2) No slots wasted on characters that are typically not found in 
+    PST1 text fonts (e.g. Eng, Tcedilla, Dcroat, Lcaron
+
+(3) Enables hyphenation in TeX when using accented characters.
+
+(4) Support under plain TeX, LaTeX 2.09 and LaTeX 2e --- not just LaTeX 2e.
+
+(5) Almost transparent support for the old OT1 encoding.
+
+(6) No need for VF -- see (1) and (2).
+
+(7) No need for `text companion' (TS1) encoding -- see (1) and (2).
+
+(8) A *single* TFM file instead of four TFMs plus two VF files.
+
+(9) No struggles with tools like fontinst, VPtoVF, VFtoVP etc.
+
+
+

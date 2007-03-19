@@ -1,0 +1,56 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+UNEXPECTED INVALIDRESTORE ERRORS:
+--------------------------------
+
+There is apparently a bug in the PostScript interpreter on some printers 
+(such as the Apple LaserWriter IINT) that leads to unexpected
+INVALIDRESTORE errors. 
+
+The official definition of an INVALIDRESTORE error is:
+
+	`An improper restore has been attempted.  One or more of the operand,
+	dictionary or execution stacks contains composite objects whose
+	values were created more recently than the save whose context is
+	being restored.  Since restore would destroy these values, while
+	stacks are unaffected by restore, the outcome would be undefined and
+	so the restore operation cannot be allowed.'
+
+Instead of checking for when an object was created, however, the
+faulty interpreters apparently check for when the object was placed
+on the stack. 
+
+Thus the following leads to an unexpected INVALIDRESTORE error:
+
+	1 array save exch /temporary exch def temporary exch restore
+
+The array was created before the save and so its presence on the
+stack should not lead to an INVALIDRESTORE error.  The error is
+trigged by storing the array in `temporary' and then placing it back
+on the stack.
+
+The problem goes away if one replaces the sequence 
+`/temporary exch def temporary' with `exch exch'.
+That is, moving composite objects around on the stack does not
+trigger the error. 
+
+The problem also occurs if one replaces `1 array' with `1 string',
+`/name', or `save', that is, for any composite object.
+
+The above is not merely of academic interest, since it makes it hard
+to present an included EPSF file with a (more or less) empty stack -
+something that has recently been recommended by Adobe.  The problem
+occurs if one executes a save, then stores the operand stack in an
+array before inserting the EPSF file.  If one then loads the array back on
+the stack and executes a restore one will receive an unexpected
+INVALIDRESTORE error - if there was a composite object on the stack.
+Since the PS file including another PS file may itself be included in yet
+another PS file, it is not possible to control exactly what is on the
+stack.  So banning composite objects from the stack is not a solution.
+
+Ironically, this is one bug that seems to occurs on printers with Adobe
+interpreters, but is not found on clones (such as the NewGen).
+
+Any comments?  Any hints on work arounds for providing an included
+EPSF file with a (at least more or less) empty stack?

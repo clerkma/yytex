@@ -1,0 +1,395 @@
+========================================================================
+	Y&Y TeX System Version 1.2    (file: releas12.txt)
+	Placed in the public domain in 2006 by the TeX Users Group.
+========================================================================
+
+What is New?
+------------
+
+*	Full on-the-fly font reencoding in DVIWindo!
+
+	And they said it couldn't be done...
+
+	This means it is no longer neccessary to permanently reencode PFB 
+	and PFM font files. Fonts can now be installed using ATM *without*
+	modifications (i.e. without using the `encode.bat' batch file).  
+
+	Text fonts can be installed and used with other Windows applications
+	using the normal Windows ANSI encoding, yet appear in DVIWindo with 
+	a user-selected encoding that is more suited for use with TeX!
+
+*	AFM files complete with proper character bounding boxes can be
+	generated directly from DVIWindo -- including unencoded characters!
+
+	As a result it now makes sense to call AFMtoTFM directly from
+	DVIWindo's `Font' menu  (It is no longer necessary to call AFMtoTFM
+	separately from the DOS command line after editing a partial AFM file).
+
+	In addition you can now step through all installed fonts and make
+	TFM files for the ones you select (or all `new' fonts).
+
+*	See Appendix for additional new features.
+
+*	See Appendix for additional news at Y&Y.
+
+Unique Capability:
+-----------------
+
+******************************************************************************
+*                                                                            *
+*    The new Y&Y TeX system is the *only* TeX implementation that provides   *
+*    for arbitrary text font encoding while supporting ATM for preview.      *
+*    This includes the ability to make unencoded characters accessible!      *
+*                                                                            *
+******************************************************************************
+
+Of course, Y&Y TeX system *always* supported completely arbitrary font
+encoding (and was the only implementation supporting ATM to do so).  
+But in the past it was necessary to use the `encode.bat' batch file to
+permanently modify the fonts PFB and PFM files.  Now fonts can be installed
+unmodified with ATM, yet be used in TeX with arbitrary user selected encoding.
+
+No other IBM PC/Windows or Macintosh TeX implementation provides for
+*arbitrary* encoding.  Other TeX implementations support (in increasing
+order of usefulness):
+
+	(i)  `TeX text' (7 bit codes, as used in Computer Modern CMR10);  or
+
+	(ii)  Their own proprietary, undocumented permutation of the platform
+	      default encoding (e.g. a permutations of Windows ANSI); or
+
+	(iii) Arbitrary permutations of the platform default encoding.
+	      This is a form of `reencoding' that cannot make unencoded
+              glyphs accessible (e.g. allowing only for permutations of
+	      Macintosh standard roman encoding).
+
+Note that at best these schemes can rearrange a platform specific encoding,
+that is, move glyphs around in the character layout -- they cannot make
+unencoded characters accessible, which is the whole point of reencoding!
+
+Platform-specific encoding schemes do not provide access to the usual
+complement of glyphs found in text fonts.  For example Windows ANSI lacks 15
+of the `standard' 228 glyphs (including fi, fl, dotaccent, ring, and
+dotlessi), Macintosh standard roman encoding is short by 21 glyphs, ISO Latin
+1 lacks 29 glyphs (at least).  And none provide for all five f-ligatures.
+
+Of course, TeX systems that do *not* use ATM can easily provide for arbitary
+reencoding, *provided* output is sent only to PostScript devices.  It is
+trivial to implement reencoding in PostScript, but then the choice of output
+device is very limited and the rendering quality of ATM is not available.
+And converting PostScript Type 1 fonts to PK bitmapped format in order to
+preview DVI files is a distinct step backward!
+
+Components Supplied:
+--------------------
+
+Enclosed please find new versions of
+
+	DVIPSONE.exe, DVIWindo.exe, AFMtoTFM.exe, YandYTeX.exe
+
+(being the essential parts of version 1.2  of the Y&Y TeX System)
+as well as auxiliary files like: texnansi.vec and texnansi.tex
+
+The ENCODING environment variable:
+----------------------------------
+
+On-the-fly reencoding in DVIWindo and DVIPSONE is controlled by an
+`environment variable' called ENCODING.  For example, adding the line
+
+	ENCODING=texnansi
+
+to the [Environment] section of `dviwindo.ini' requests both DVIWindo and
+DVIPSONE to reencode plain text fonts using the encoding vector
+`texnansi.vec'  (Previously, DVIPSONE could be asked to reencode plain text
+fonts to Windows ANSI encoding using TEXANSI=1 --- as far as DVIPSONE is
+concerned the ENCODING environment variable simply generalizes that idea).
+
+Note that `WriteAFM...' and `WriteTFM...' in DVIWindo's `Font' menu use 
+the *current* value of ENCODING when writing out metric files.  So if 
+you change your mind about what encoding to use, change the value of
+ENCODING, then relaunch DVIWindo and call `WriteTFM...' for all of 
+the text fonts you use.  
+
+If you use a large number of text fonts then you may wish instead to do all
+of them at once using the `Write All TFMs...' capability in the `Font' menu.
+
+If you have just installed some new fonts using ATM, then use 
+`Write All TFMs...' with the `New Fonts Only' check box checked.
+
+If you have the AFM files then you can also process them from the DOS command
+line using `wild cards' in the file specification for AFMtoTFM.  For example:
+
+	AFMtoTFM -vadjx -c=texnansi *.afm
+	COPY *.tfm c:\yandytex\tfm
+
+What encoding vector to use?
+----------------------------
+
+You can use any encoding vector you like, including, of course 
+
+	(i)   `textext' (Computer Modern's roman text - a.k.a. `OT1');
+	(ii)  `tex256'  (Cork encoding - a.k.a `T1' encoding in LaTeX 2e); 
+	(iii) `ansinew' (Windows ANSI);
+	(iv)  `mac'     (Macintosh standard roman encoding);
+	(v)   `texmac'  (Textures 1.6 and later, permutation of the above);
+	(vi)  `standard'(Adobe StandardEncoding);
+	(vii) `isolati1'(ISO Latin 1 i.e. ISO 8859-1)
+
+Note that the new reencoding method in DVIWindo is so flexible you can use
+*Macintosh* standard roman encoding on an *IBM PC compatible* and hence
+even view and print DVI files made by Textures!
+
+We recommend the `texnansi' encoding vector, which is similar to:
+
+	(i)   the encoding used in CM fonts in the 32 - 127 char code range;
+	(ii)  Windows ANSI encoding in the 128 - 255 char code range;
+	(iii) provides for *all* 228 glyphs in `standard' Adobe text fonts;
+	(iv)  includes all five f-ligatures as well as dotlessi and dotlessj.
+
+Note that most accented characters appear in `texnansi.vec' in the same
+positions they occupy in ISO Latin 1 (ISO 8859-1) and in `Cork' encoding.
+
+The `texnansi' encoding vector has been designed to pretty much work with the
+assumptions that are hard-wired into plain TeX and LaTeX (namely that you are
+using a character layout like that found in the Computer Modern text fonts).
+However, to get the full benefit of this encoding vector you will want to
+also add the line
+
+	\input texnansi 
+
+to your TeX (or LaTeX) source file.  This deals with some rarely used
+accents (dotaccent, hungarumlaut, and ogonek).  It also defines lowercase
+and uppercase codes for the 58 `standard' accented characters and the
+special characters (s.a. AE, OE, Oslash, Lslash, Aring, Eth, Thorn etc),
+which is important when building hyphenation tables for languages that use
+accented characters.
+
+If you decide to `cook your own' encoding vector, you may want to take
+`texnansi.tex' as a template.  Just remember that both plain TeX and LaTeX
+have hard-wired assumptions about where all accents and special characters
+are.  If you move these, you'll need to redefine the appropriate control
+sequences.  On the other hand, you have complete freedom in placing glyphs
+that are normally only accessed via `pseudo ligatures' (endash, emdash,
+quotedblleft, quotedblright, exclamdown, questiondown, quotedblbase,
+guillemotleft, guillemotright, the f-ligatures etc.).
+
+Pseudo Ligatures for `standard' accented characters:
+----------------------------------------------------
+
+The source file `texnansi.tex' also provides linkage to pseudo-ligatures in
+the TFM files for the `standard' accented characters.  AFMtoTFM can set up
+TFM files in such a way that e.g. `dieresis' followed by `a' is replaced with
+`adieresis' --- and code in `texnansi.tex' defines \" to be `dieresis'!
+
+To use this capability, you need to stick to the syntax
+
+	\"a and \c c
+
+and avoid the redundant braces in the more verbose version \"{a} and \c{c}.
+
+Using the actual pre-built accented characters makes it possible to build
+hyphenation tables that allow TeX to hyphenate words containing accented
+characters --- which avoids the problem with TeX's usual mechanism for 
+building accented characters, which introduces explicit kerning.
+
+AFMtoTFM inserts the pseudo-ligatures when invoked with the command line
+argument `j' --- which is always included when AFMtoTFM is called from 
+DVIWindo's `Font' menu.  
+
+Preparing new TFM files for all installed fonts:
+------------------------------------------------
+
+When you decide what encoding you want to use, set up the ENCODING 
+env var in the [Environment] section of your `dviwindo.ini' file. E.g.
+
+	ENCODING=texnansi
+
+You also have to make new TFM files for TeX, since the font encoding is
+frozen in the TFM file.  The most convenient way to do this is to select
+`Make All TFMs...' from the `Font' menu in DVIWindo.  
+
+A dialog box pops up that allows you to select which fonts you want to
+process.  You can select to process either Type 1 or TrueType fonts.
+You can select to process either plain text or symbol/decorative/math
+fonts.  You can select to process only `new' fonts (fonts for which you
+do not yet have a TFM file).  One convenient way to make new TFM files
+for a set of fonts that you have already used is to delete the corresponding
+TFM files and the check the `new fonts only' box.
+
+A dialog box is presented for each font that meets the selection criteria
+that you specified.  This dialog box shows the Windows Face Name of the font,
+the `style' (regular, bold, italic, or bold italic), the file name of the
+font, and what encoding vector will be used.  You can elect at that point to
+`Skip' a particular font (or to `Cancel' the whole process).
+
+You may wish to make a note of the file names corresponding to the face
+names, since it is the *file name* that will be used to refer to the font
+in TeX (that is, the name of the resulting TFM file).
+
+Note that TrueType fonts cannot be reencoded.  They are used with the default
+Windows ANSI encoding.  Also, note that while AFMtoTFM *can* make TFM files
+for math fonts, it needs a lot of additional information which is not present
+in the font itself.  Always use the TFM files supplied with math fonts.
+
+Finally, remember that TFM files are frozen into TeX `format' files.  So if
+you made a format file that includes fonts that you have reencoded, you will
+need to remake this format after creating new TFM files.
+
+****************************************************************************
+*	We would like to thank our many friends and beta tester who have   *
+*	contributed many valuable ideas, reported many `mis-features'      *
+*	and suggested many new capabilities!                               *
+****************************************************************************
+
+Appendix:   Other New Features
+------------------------------
+
+*	WriteTFM... in DVIWindo's font menu does what WriteAFM... does,
+	and then also calls AFMtoTFM on the resulting AFM file.  The TFM 
+	file is written into the first directory on the list of directories
+	specified in the TEXFONTS env var.
+
+	WriteAFM... and WriteTFM... no longer ask for the font encoding.  
+	If it is a plain text font, then it will be reencoded to the 
+	encoding specified in ENCODING --- unless the `Encoded' check 
+	box is unchecked, in which case Windows ANSI will be used. 
+	Symbol/Decorative fonts will use their `native' encoding.
+
+*	DVIPSONE and DVIWindow now attempt to verify font encoding and
+	complain if the encoding assumed when TeX was run does not match
+	the encoding in force when DVIPSONE or DVIWindo is running.  
+
+	To override this, use -*E on the command line in DVIPSONE, and in
+	DVIWindo uncheck `Check Encoding' in `Preferences.  For this to
+	work well, your encoding vector names should be unique in the first
+	six characters, and include only alphanumerics (and -, &, and _).
+
+	In rare cases you may get spurious warnings about mismatching
+	encoding when a font you call for is not installed.  In this case
+	Windows substitutes some other font, which may be encoded differently.
+
+*	Both DVIWindo and DVIPSONE now support Multiple Master Fonts.
+	ATM 3.0 provides for creation of Multiple Master Font instances.
+	Use `WriteTFM...' (or `WriteAFM...' followed by AFMtoTFM) to create
+	metric files for TeX.  You can print to PostScript as well as non-PS
+	printers from DVIWindo using Multiple Master Fonts.  For PS printers,
+	the PostScript stub file (PSS) is downloaded as well as the base font.
+
+	DVIPSONE also downloads Multiple Master fonts.  If the DVI file
+	calls  for a Multiple Master instance, then DVIPSONE will expand the
+	PSS stub. It will also load the corresponding Multiple Master base
+	font.  The base font is, of course, included only once, even if
+	several different instances of the font are referred to.
+
+*	DVIWindo now supports placable Windows MetaFile images, as well as
+	clipboard files that contain a placable WMF image.  The syntax for
+	this is similar to that for inserting TIFF images:
+
+	\special{insertmf: <WMF file> [<x-scale> [<y-scale>]]}
+
+	The lower left-hand corner of the image is placed at TeX's current
+	point. The image is shown full size if the scale factors are omitted.
+	Clipboard files containing a placable Windows MetaFile version
+	of the image data are supported (Note that clipboard images produced 
+	by Alt-Print-Screen, for example, do *not* contain a MetaFile image,
+	only a bitmap).  Note however that DVIPSONE *cannot* support Windows
+	MetaFile images.
+
+*	Hypertext buttons can now be used to launch arbitrary DOS or Windows
+	applications.  The syntax is
+
+	\special{button: <width> <height> launch: <command line>}
+
+	The definition of <width> and <height> are as for ordinary 
+	hyper-text buttons. The specified command line is passed to 
+	`WinExec' when the user clicks on the button.  DVIWindo does 
+	not wait for the called application to terminate. 
+
+*	Hypertext buttons can now be used to link to other DVI files.
+	The syntax is:
+
+	\special{button: <width> <height> file: <DVI file>}
+
+	The definition of <width> and <height> are as for ordinary 
+	hyper-text buttons. The specified file is opened at the beginning.
+
+*	Search in DVI files now supports f-ligatures.  That is, you can, for
+	example, search for `farflung' and expect to find occurences of that
+	word even though there are no separate `f' and `l' characters in the
+	DVI file.
+
+*	Problems with application called from (i) the `TeX Menu,' by 
+	(ii) hypertext `launch,' or (iii) when calling DVIPSONE from `Print,'
+	can now be debugged more easily.  DVIWindo will show the exact
+	command line it will pass to `WinExec' in a dialog box if DVIWindo 
+	is called with -d (for `debug') on the command line.  To set this up,
+	select the DVIWindo icon, type `Alt-Enter' and add -d to the end of
+	the `Command Line'.  Remove this again after completing the debugging
+	process (you may also get other debugging output that you are not
+	interested in...).
+
+*	New \specials:
+
+	ALTERNATE SUPPORT FOR COLOR:
+
+\special{color cmyk <c> <m> <y> <k>}	% setcmykcolor, numbers between 0 and 1
+\special{color rgb  <r> <b> <g>}	% setrgbcolor, numbers between 0 and 1
+\special{color gray <g>}		% setgray, number between 0 and 1
+
+\special{color push}			% push current color state on stack
+\special{color pop}			% pop color state from stack
+
+	Note that there is no colon after the identifier `color,' and
+	that the values range between 0 and 1 (not 0 and 255).
+	More than one color command may appear in one \special,	e.g. 
+	\special{color push rgb 0 1 1}
+
+	These \specials act independently of the old \special{textcolor: ...}, 
+	\special{rulecolor: ...}, \special{figurecolor: ...}.
+	Do not mix the old and the new types of color calls in any one DVI
+	file. Also, do not mix rgb and cmyk color calls.  If you are wondering
+	which to use, note that for color separation work, cmyk is generally
+	preferred over rgb. Also, note that, of course, on screen color will
+	only be an approximation of the printed color.
+
+	PREVIEW-ONLY RULES AND TEXT:
+
+\special{viewrule: <width> <height>}	% show rule in DVIWindo preview only
+\special{viewtext: <text string>}	% show text in DVIWindo preview only
+
+	(Note that these \specials take a colon after the identifier).
+	These last two are ignored by DVIPSONE, only show in preview, and 
+	not in printing.  As with all \specials, these two do not affect 
+	TeX's current point. These \specials may be useful to mark postions
+	and items in preview while proofing. 
+
+	You can also control whether `viewrule' and `viewtext' \specials 
+	are shown in DVIWindo using `View Hidden' in the `Font' menu.
+
+*	If preferences get hopelessly confused, you can reset them using
+	`Factory Defaults' from the `File' menu.  This may be useful, e.g.
+	when things don't show on screen because magnification or some other
+	setting puts the view port off in hyper space.  Note that `Save
+	Preferences' is *unchecked* after resetting to `Factory Defaults'
+	to prevent overwriting your old preferences. You must explicitly re-
+	check `Save Preferences' in the `Preferences' menu if you want to
+	save the new settings upon exit. 
+
+*	You can get some information on how heavily the system is loaded
+	from `System Info' in the `Font' menu.  In our experience, Windows
+	will not run reliably if more than 50% or so of GDI or USER resources
+	are used.  Also, you will not be able to launch YandYTeX.exe if
+	there is less than about 2 meg of free extended RAM available.
+
+*	You now only get a warning about bad or missing EPS, TIFF, or WMF
+	files, the first time DVIWindo tries to read one while a given page 
+	is being viewed.  This prevents `dialog box loops' that can be hard to
+	break out of (where after clicking `OK' or `Cancel' the dialog box is
+	removed which causes DVIWindo to try and repaint the screen, etc).
+
+*	Support for automatic sub-directory search:  In a list of
+	directories, such as TEXINPUTS, PSPATH etc. a backslash at the end of
+	a directory indicates that all first-level sub-directories of that
+	directory are to be included as well.  Two backslashes include
+	sub-directories recursively.  Use this feature with some care, since
+	searching many directories takes time.

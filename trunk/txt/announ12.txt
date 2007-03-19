@@ -1,0 +1,96 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=========================================================================
+		Upgrade for Y&Y TeX System now available:
+=========================================================================
+
+Upgrade to release 1.2 of the Y&Y TeX System (from release 1.1).  What's new?
+
+	And they said it couldn't be done:  
+
+		Full on-the-fly font reencoding in Windows!
+
+Make unencoded glyphs accessible --- even design your own character layout.
+You can now easily access all 228 glyphs in typical text fonts, even the 
+15 not in Windows ANSI encoding (such as fi, fl, dotlessi, dotaccent, ring,
+caron etc)!  All without making permanent modifications to your font files.
+Just install your Type 1 fonts straight off the font diskette using ATM.
+
+	Don't have AFM (Adobe Font Metric) files for your fonts?  
+	No problem:  the previewer can now create AFM files complete with 
+	accurate character bounding boxes - even for unencoded characters!
+
+You can make TFM files for all installed fonts straight from the previewer.
+So should you desire, it is easy to change text font encoding: 
+simply change the ENCODING environment variable and create new TFM files.
+
+We have even designed a new encoding vector (TeX n ANSI) that best exploits
+the new capabilities --- making it easy to use plain TeX, AMS TeX,
+LaTeX 2.09 and LaTeX 2e with the same text font encoding scheme.
+
+You can use accented characters directly in your source file, or link to them
+automatically using pseudo ligatures.  Either way, using the pre-built
+accented characters makes it possible to properly hyphenate words containing
+accents.  Y&Y TeX provides extensive support for `foreign' keyboard and code
+pages using command line configurable input translation tables.
+
+The previewer and printer driver now verify font encoding wired into a TFM
+file.  You get a warning if the DVI file was made using TFM files set up for
+a different text font encoding than the one currently selected (mismatches
+in TFM file encoding can lead to insiduous bugs when printing).
+
+Multiple Master fonts can now be used in TeX.  Both previewer and printer
+driver provide support for Multiple Master font instances (Note: You need 
+ATM 3.0 or later to create new Multiple Master font instances).
+
+The previewer now supports placeable Windows MetaFile (WMF) images as well
+as TIFF images and EPS files with preview.
+
+Hyper-text `buttons' can now be used not only to link to `markers' 
+in a DVI file, but to launch other DOS or Windows applications.  
+Such `buttons' can also now be used to link to other DVI files. 
+
+The search capability in DVI files works even when words contain
+fi and fl ligatures.
+
+Previewer and printer driver now support a second scheme for both rgb and
+cmyk color.   This provides compatibility with other implementations.
+
+The previewer now supports `hidden' rules and text that only show up in
+preview.  Useful for marking important dimensions --- or making annotations
+in your document --- without danger of the marks ever appearing in print.
+Particularly nice if done in color.
+
+Menu items allow you to `Revert to Factory Defaults', `Show System Info' etc.
+
+Many other exiting new features and improvements.  Also:
+
+*  TeX formats and style files for the latest patch level of LaTeX 2e included.
+
+*  Help file for previewer using hypertext linkages included.
+
+And remember:
+
+******************************************************************************
+*    The new Y&Y TeX system is the *only* TeX implementation that provides   *
+*    for arbitrary text font encoding while supporting ATM for preview.      *
+*    This includes the ability to make unencoded characters accessible!      *
+******************************************************************************
+
+The upgrade is free if you purchased the Y&Y TeX System after 1995/Jan/31.
+
+The upgrade from 1.1 is $58 (plus shipping) until 1995/July/31.
+
+The upgrade from 1.0 or earlier is $98 (plus shipping) until 1995/July/31.
+
+Other News:  
+-----------
+
+The new Lucida Bright Expert font set complements the basic Lucida Bright +
+Lucida New Math font set.  It adds small caps, bold math, upright regular
+and bold math, seriffed typewriter fonts, non-connecting `handwriting' fonts
+and more.  The sixteen new fonts in this set combine with the twenty-five in
+the basic set to create a true `super family'.
+
+	The `Notices of the American Mathematical Society' are now typeset
+	using Lucida Bright + Lucida New Math along with Lucida Bright Expert.

@@ -1,0 +1,85 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+*****************************************************************************
+	News from Y&Y, Inc.	1996 Aug 14	(news.txt)
+*****************************************************************************
+
+
+(1) New `delta' in CM (and AMS) math italic fonts
+
+Together with Blue Sky Research we have redone the CM math fonts with 
+Donald Knuth's redesigned Greek `delta' in the math italic fonts.
+This affects 7 fonts in the main CM font set and 3 fonts in the AMS font sets.
+
+1a	No change in charge for the end user license.  However:
+
+1b	To `upgrade' existing CM font set, the charge is $25 + shipping.
+1c	To `upgrade' existing AMS font set, the charge is $15 + shipping.
+1d	To `upgrade' both CM and AMS font set, the charge is $35 + shipping.
+
+
+(2) `extra AMS fonts'
+
+We have added a third diskette to AMS font set for IBM PC and Unix.
+This contains an additional 16 `in between' sizes (6pt, 8pt, 9pt) for 
+the CM bold math fonts and the AMS math symbol fonts 
+(beyond the 35 fonts in the original AMS font set in Type 1 format).
+This is to distinguish our offering from others, such as the font
+set offered by Blue Sky Research which contains the basic 35 fonts.
+
+2a	No change in what we charge for the end user license.  However:
+
+2b	If someone with AMS font set wants this add-on, charge $50 + shipping.
+
+
+(3) The MathTime Plus font set is ready - but *only* for IBM PC so far -
+    and only support for plain TeX and AMS TeX. Twelve fonts altogether.
+    This adds bold math support, upright Greek letters and a Script face.
+
+3a	MathTime Plus end user license: $175 
+	(No discount for people who have MathTime 1.1, since few would 
+	buy MathTime Plus without already having MathTime 1.1)
+
+3b	The MathTime Complete set is MathTime 1.1 + MathTime Plus.
+	MathTime Complete end user license: $225
+
+3c	Y&Y MathTime Plus TeX System: $395 educational $425 non-educational.
+
+
+(4) We have added seriffed fonts to the `Lucida Sans Typewriter' font set and
+    renamed it `Lucida Fixed Width'.  It used to contain only sans serif fonts
+    (Lucida Sans Typewriter, Lucida Sans Typewriter Narrow, Lucida Linedraw).
+    We have added to this Lucida Typewriter, Lucida Typewriter Narrow,
+    for a total of 16 fonts.   
+
+    This is partly in response to Adobe now offering two new font sets:
+    Lucida Sans Typewriter (406) and Lucida Typewriter (407).
+
+4a	We charge the same for this new enlarged font set.
+
+4b	If someone with `Lucida Sans Typewriter' want it: charge $35 + shipping
+
+
+(5) We are sending out beta test copies of WIN32 version of DVIWindo.
+    All but TIFF image inclusion seems to work.  TIFF image support is 
+    the second to last piece missing for release 2.0 of Y&Y TeX System 
+    (also need new installation script).
+
+    Note that it will *only* work in Windows 95 and Windows NT.
+    We'll keep on offering release 1.2 for Windows 3.1 users
+    (but will relabel it 1.3 after 2.0 comes out).
+
+5a	We plan to keep the same prices for new release.
+
+5b	Haven't decided on upgrade price yet.
+
+
+(6) We are adding additional composite characters to CM text fonts 
+    (from 58 => 97).  This covers many Eastern European characters in
+    addition to the Western European accented/composite characters.
+
+    We expect to provide the ability to reencode these to `DC font' layout
+    (T1 or Cork encoding).  We won't be able to cover all glyphs in Cork, 
+    but enough to satisfy most users.
+
+    But this is obviously low priority work...

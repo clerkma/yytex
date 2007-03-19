@@ -1,0 +1,107 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Characters in ISO Latin 1 (ISO 8859-1) missing from TeX text:
+============================================================
+
+53 composite/accented characters + 42 others
+
+45 	minus
+60	less
+61	equal
+62	greater
+92	backslash
+172	logicalnot
+177	plusminus
+181	mu
+183	periodcentered	
+215	multiply
+247	divide
+95	underscore
+123	braceleft
+125	braceright
+178	twosuperior
+185	onesuperior
+179	threesuperior
+188	onequarter
+189	onehalf
+190	threequarters
+158	ogonek
+176	degree
+162	cent
+163	sterling
+164	currency
+165	yen
+167	section
+182	paragraph
+169	copyright
+174	registered
+170	ordfeminine
+186	ordmasculine
+171	guillemotleft
+187	guillemotright
+94	asciicircum
+126	asciitilde
+124	bar
+166	brokenbar
+208	Eth
+240	eth
+222	Thorn
+254	thorn
+
+192	Agrave
+193	Aacute
+194	Acircumflex
+195	Atilde
+196	Adieresis
+197	Aring
+199	Ccedilla
+200	Egrave
+201	Eacute
+202	Ecircumflex
+203	Edieresis
+204	Igrave
+205	Iacute
+206	Icircumflex
+207	Idieresis
+209	Ntilde
+210	Ograve
+211	Oacute
+212	Ocircumflex
+213	Otilde
+214	Odieresis
+217	Ugrave
+218	Uacute
+219	Ucircumflex
+220	Udieresis
+221	Yacute
+
+224	agrave
+225	aacute
+226	acircumflex
+227	atilde
+228	adieresis
+229	aring
+231	ccedilla
+232	egrave
+233	eacute
+234	ecircumflex
+235	edieresis
+236	igrave
+237	iacute
+238	icircumflex
+239	idieresis
+241	ntilde
+242	ograve
+243	oacute
+244	ocircumflex
+245	otilde
+246	odieresis
+249	ugrave
+250	uacute
+251	ucircumflex
+252	udieresis
+253	yacute
+255	ydieresis
+
+`florin', `perthousand', `guilsingleft', and `guilsingright' `lslash'
+`Lslash' are NOT in ISO Latin 1...

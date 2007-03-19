@@ -1,0 +1,80 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Font Manipulation Package:
+=========================
+
+The package of IBM PC compatible utilities for conversion between different
+outline font file formats (Type 1) and between font metric formats includes: 
+
+*	MACtoPFA --- Mac T1 outline font format ==> PC T1 font file format.
+
+*	PFBtoMAC --- PC T1 font file format ==> Mac T1 font format.
+
+*	PFBtoPFA --- Printer Font Binary (PC) ==> Printer Font ASCII (Unix).
+
+*	PFAtoPFB --- Printer Font ASCII (Unix) ==> Printer Font Binary (PC).
+
+*	AFMtoSCR --- Adobe Font Metrics ==> Mac screen font (FOND Res).
+
+*	SCRtoAFM --- Mac screen font file ==> Adobe Font Metrics.
+
+*	AFMtoPFM --- Adobe Font Metrics ==> MS Windows Font Metrics.
+
+*	PFMtoAFM --- MS Windows Font Metrics ==> Adobe Font Metrics.
+
+*	AFMtoTFM --- Adobe Font Metrics ==> {\TeX} Font Metrics.
+
+*	TFMtoAFM --- {\TeX} Font Metrics ==> Adobe Font Metrics.
+
+*	TFMtoMET --- {\TeX} Font Metrics ==> TeXtures Metric format.
+
+*	METtoTFM --- TeXtures Metric format ==> {\TeX} Font Metrics.
+
+* 	ReEncode --- Renencode PFB, PFA and AFM files.
+
+*	PFAtoAFM --- extract AFM file from outline font file.
+
+*	ReNameCH --- Rename characters in outline font file.
+
+*	SideBear --- Extract, modify character sidebearings & advance widths.
+
+* 	Composit --- Extract, modify & add composite characters to a font.
+
+*	SubFont  --- Extract sub font containing only specified character set.
+
+*	MergePFA --- Make new font by combining characters from two fonts.
+
+*	TransFrm --- Simple geometric transformations of characters.
+
+*	SafeSEAC --- make fonts with accented characters safe for ATM.
+
+Conversions between different formats of Type 1 fonts do _not_ disturb the
+hinting (unlike some other commercially available font manipulation software).
+
+Note that the different font metric formats do not contain {\it exactly} the
+same information.  In particular, PFM and TFM format do not contain an
+explicit encoding vector (mapping of character codes to character names).
+For this reason the user may specify an encoding when using PFMtoAFM or
+TFMtoAFM.  For the user's convenience, all commonly used encoding vector
+files are supplied  (including, of course, MS Windows ANSI, MacIntosh, IBM PC
+OEM, Zapf Dingbats, ISO Latin~1, Adobe StandardEncoding, Adobe Symbol, Ventura
+encoding, and ten different encodings used by {\TeX}'s Computer Modern fonts).
+
+An extended comment syntax for AFM files provides for specification of the
+information normally found in TFM files for which there is no predefined AFM
+file syntax (allowing construction of TFM's for math fonts).  This can be
+used to specify space width and glue, word space, and - most importantly -
+the extra dimensions and size linkages in math fonts.  Sample AFMs for several
+Computer Modern fonts containing these extra comments are included. 
+
+The operation of the utilities is controlled by command line flags and
+command line arguments. Each program shows a usage summary when invoked
+without file arguments.  
+
+*	Several additional utilities - not described here - are also included:
+	DOWNLOAD, SERIAL, MODEX, NAMECASE, SPACIFY, and EXCHANGE.
+
+Some sample batch files calling for the utilities are included.  
+One processes the old MathTime fonts (version 1.0) from TeXplorators and
+converts them to ATM compatible Adobe Type 1 format.  Another creates a
+`faux' smallcaps font.

@@ -1,0 +1,46 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+From ATM.INI in Windows directory
+
+[Settings]
+ACPBase=C:\WINDOWS.000\ATMREG.ATM
+
+List of directories with PFM, PFB, and TTF files at byte 36
+
+8	or 213 to terminate list
+0
+nlen	2 byte length of directory entry
+next	4 byte offset from start of file to next directory entry
+char	directory name \ terminated
+
+List of installable/installed fonts
+
+; first 16 bytes
+flags	BC (188) for bold	or 90 (144) regular
+bold	1 (regular) or 2 (bold)
+italic	0 (regular) or 1 (bold)
+0
+mmflag	1 (single master) 2 (multiple master) 0 (TTF)
+0	1 (TTF)
+8	or 10 (MM) or 0 (TTF)
+0
+nPFM_Dir	(or TTF Dir) index into file directories 
+0
+nPFB_Dir	index into file directories
+0
+0	or 1 (MM)
+0
+0
+0
+Windows Face Name
+0
+0
+0
+PS FontName
+0
+PFM file name
+0
+PFB file name
+0
+
+or for TTF: Windows_Face_Name 0 Style_Name 0 Full_TT_Name 0 PS_Name

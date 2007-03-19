@@ -1,0 +1,272 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=======================================================
+    Installing "PS" Type 1 fonts for use with  MikTeX:
+=======================================================
+
+(0) Here we assume that you want to make the additions in a "localtexmf"
+    tree rather than in "texmf" itself.  If you want to do it the other 
+    way, just replace "localtexmf" in what follows with "texmf".
+
+(1) Create a new directory for the actual font files so DVIPS can 
+    find them. e.g.
+
+    C:\localtexmf\fonts\type1\yandy
+
+   It may be convenient to create sub-directores for different font 
+   families (although this is not required), e.g.
+
+    C:\localtexmf\fonts\type1\yandy\mathtime    MathTime 1.1
+    C:\localtexmf\fonts\type1\yandy\mathplus    MathTime Plus
+    C:\localtexmf\fonts\type1\yandy\lucidabr    LucidaBright + LucidaNewMath
+    C:\localtexmf\fonts\type1\yandy\lucidexp    LucidaBright Expert
+    C:\localtexmf\fonts\type1\yandy\em          European Modern
+
+    Copy all of the PFB files from the font CD to the appropriate
+    directory. The PFB files are at the top level in the font directory
+    on the CD (e.g. mathtime, mathplus, lucidabr, lucidexp, or em).
+
+   NOTE: you do not need the PFM files that are also at the top level.
+   These are for installation of the fonts with Adobe Type Manager (ATM).
+
+(2) Create a new directory for TFM files for the new fonts, e.g.
+
+    c:\localtexmf\fonts\tfm\yandy
+
+    Again, for convenience, you may wish to create sub-directories for 
+    the font families you have, e.g.
+
+    c:\localtexmf\fonts\tfm\yandy\mathtime
+    c:\localtexmf\fonts\tfm\yandy\mathplus
+    c:\localtexmf\fonts\tfm\yandy\lucidabr
+    c:\localtexmf\fonts\tfm\yandy\lucidexp
+    c:\localtexmf\fonts\tfm\yandy\em
+
+(2a) There is only one TFM file for every *math* fonts, since math fonts
+    have fixed encoding (character layout).  Copy the TFM files for the 
+    math fonts to the above directory.  These TFM files are at the top level
+    in the TFM sub-directory on the CD. In the case of Lucida fonts, the
+    math font file names all start with "lbm".  In the case of MathTime
+    the math font file names all start with "mt".  In the case of
+    European Modern the math font file names all start with "emm"
+
+(2b) For the *text* fonts, pick the TFM files set up for the encoding you
+    have chosen.  These will be in sub-directories of the TFM directory
+    on the CD with names like
+
+    texnansi    (for TeX 'n ANSI encoding, LY1) <=== recommended
+    tex256      (for Cork encoding, T1)
+    ansinew     (for Windows ANSI encoding)
+    standard    (for Adobe Standard Encoding)
+
+    NOTE: Most font families do not have all four of these sub-directories.
+
+    On older font diskettes, the TFM files for different encodings
+    were distinguished using different extensions, .tft for TeX 'n ANSI,
+    .tfa for Windows ANSI, and .tfs for Adobe StandardEncoding.
+    In this case, copy the appropriate files, and then rename them to 
+    have extension .tfm
+
+(3) Select the font name mapping file for DVIPS (from directory
+    PSFONTS).  These files all have names starting with "psfonts" and
+    extensions that indicate (i) the font set and (ii) the text font 
+    encoding, e.g.
+
+    psfonts.mty     for MathTime + Times Roman using LY1 encoding.
+    psfonts.mt8     for MathTime + Times Roman using 8r encoding.
+    psfonts.mtz     for MathTime Plus (math fonts only).
+    psfonts.lby     for LucidaBright + LucidaNewMath fonts using LY1
+    psfonts.lb8     for LucidaBright + LucidaNewMath fonts using 8r encoding
+    psfonts.ley     for LucidaBright Expert fonts using LY1
+    psfonts.le8     for LucidaBright Expert fonts using 8r encoding
+    psfonts.emy     for European Modern using LY1 encoding.
+    psfonts.emt     for European Modern using T1/Cork encoding.
+
+    NOTE: Each font set only comes with the files appropriate for that font set.
+
+(3a) Copy the appropriate file to the directory
+
+    c:\localtexmf\dvips\psnfss\
+
+(3b) Also copy the file that defines the encoding vector to the same
+    directory (this file is referred to in the psfonts.* file):
+
+    texnansi.enc        For TeX 'n ANSI (LY1)
+    8r.enc              8r (raw encoding base for Cork/T1)
+    tex256.enc          direct encoding vector for Cork/T1
+    ansinew.enc         For Windows ANSI
+    standard.enc        For Adobe StandardEncoding
+
+    These files will be in the ENC sub-directory on the font CD
+
+    NOTE: Not all of these files may be present in a particular font set
+
+(3c) Then add a line to the end of the DVIPS configuration file
+
+    c:\localtexmf\dvips\config\local\config.ps
+
+    that points to the font mapping file, e.g.:
+
+    p+ psfonts.lby          or
+    p+ psfonts.ley          or
+    p+ psfonts.mty          or
+    p+ psfonts.mtz          or
+    p+ psfonts.emy
+
+    Add as many lines as needed for the font sets you have, but
+	do not refer to two conflicting files (such as psfonts.lbx and
+	psfonts.lbz). 
+
+	It may be necessary to also add these lines to the file
+    \texmf\miktex\config\miktex.map (?)
+
+
+(4) You may want to establish a separate directory for the new style
+    files and font definition files under c:\localtexmf\tex\latex, e.g.
+
+    c:\localtexmf\tex\latex\yandy
+
+    Copy the style files (*.sty), font definition files (*.fd) etc. 
+    from the CD (in directory PSNFSS or LaTeX2e) to this directory. 
+
+    WARNING: You may already have copies of these files in 
+	\texmf\tex\latex\psnfss.   HOWEVER: these may be the WRONG files.  
+    So you may want to overwrite them with the files from the PSNFSS
+	directory on the CD. 
+
+    NOTE: To create lucidabr.sty, run TeX on lucidabr.yy NOT on lucidabr.ins
+    The lucidabr.sty file created by running TeX on lucidabr.ins will not work.
+
+(5) Also copy the AFM (human readable metrics) files.  Again, you may 
+    want to create a new directory for them, e.g.
+
+    C:\localtexmf\fonts\afm\yandy
+
+    These files are in the AFM sub-directory. PS2PK uses these AFM files
+	(It may be necessary to tell PS2PK about the encoding you are using,
+	or to reencode the AFM files).
+
+    Ignore the INF files, these can be used by Adobe Type Manager.
+
+
+(N) What about virtual fonts?   There aren't any!   No need.
+    If this seems disconcerting, create a directory called e.g.
+
+    C:\localtexmf\fonts\vf\yandy
+
+    And if you have the MathTime font set you can even copy the file
+    mtmi.vf (and mtmib.vf, mtmih.vf, mtmub.vf and mtmuh.vf if you also
+    have MathTime Plus) to this directory (although this is not needed)
+    from the VF sub-directory on the font CD.
+
+--
+
+And that is pretty much it as far as installation is concerned!
+
+===============================
+	Using the fonts in LaTeX 2e
+===============================
+
+For MathTime, use mathtime.sty (math fonts) and times.sty (text fonts).  
+If you do not have mathtime.sty run TeX on mathtime.ins to unpack 
+mathtime.dtx and  mtfonts.fdd  into mathtime.sty and a bunch of font
+definition files (*.fd).  If you do not have times.sty, run TeX on
+psfonts.ins in your LaTeX 2e PSNFSS directory.
+
+Check out mtoption.txt for MathTime package usage.
+
+\usepackage[LY1]{fontenc}           % specify text font encoding
+\usepackage[LY1,mtbold]{mathtime}   % switch math fonts
+\usepackage{times}                  % switch text fonts (redundant)
+
+For LucidaBright use lucidabr.sty.  This is created by running TeX on
+lucidabr.yy to unpack lucidabr.dtx into lucidabr.sty and a bunch of font
+definition files (*.fd).  Do NOT run TeX on lucidabr.ins.
+
+Check out lboption.txt for LucidaBright package useage. 
+
+\usepackage[LY1]{fontenc}   % specify text font encoding
+\usepackage[LY1]{lucidabr}  % switch text and math fonts
+
+For European Modern use the em.sty file provided
+
+\usepackage[LY1]{em}
+
+===================================================================
+Using the fonts with plain TeX and miscellaneous other information:
+===================================================================
+
+If you want to use the fonts with plain TeX also, then create a 
+new directory for the corresponding TeX source files e.g.
+
+    C:\localtexmf\tex\yandy
+
+Copy files like mtplain.tex,  mtplainx.tex, mtplus.tex, mtmacs.tex,
+lcdplain.tex, lb-plain.tex, texnansi.tex, ansiacce.tex, stanacce.tex, 
+dcaccent.tex etc. to this  directory.  These files can be found in 
+the TEX (or PLAIN) sub-directory on the font CD.
+
+You can also find in this directory on the CD (or a separate LaTeX209 
+sub-directory) support files for LaTeX 2.09 but it is no longer 
+considered politically correct to use LaTeX 2.09 :-!
+
+NOTE: compatability mode in LaTeX 2e will *not* work for LaTeX 2.09 
+jobs that use fonts other than CM - so if you are forced to run a
+legacy LaTeX 2.09 job that uses other than the CM fonts, then you 
+do need to use a *real* LaTeX 2.09.
+
+--
+
+If for some reason you need to convert font files from PFB to PFA format
+or vice versa, look in the PROG sub-directory on the CD for pfbtopfa.exe
+and pfatopfb.exe
+
+--
+
+On some font CDs, additional helpful information is available in plain 
+text  files in the TXT sub-directory.
+
+--
+
+Encoding vector information may be found in the VEC sub-directory
+
+===============================
+Text fonts to go with MathTime:
+===============================
+
+If you have the IBM PC/Windows version of the font set on CD, then
+you also have Adobe Type Manager (ATM).  This comes with a set of
+fonts called the "Base 13" font set.  Each of the faces Times-Roman, 
+Helvetica, and Courier come in four styles: regular, italic, bold, 
+and bold italic. Symbol is the 13th font.
+
+You can use these fonts as well, by copying the PFB files to a new 
+directory called say
+
+    C:\localtexmf\fonts\type1\base13
+
+These fonts (and ATM) are, of course, copyright Adobe Systems, Inc.
+
+=============================
+Previewing with Type 1 fonts:
+=============================
+
+Many DVI previewers do not support Type 1 fonts directly.  Some 
+link to GhostScript to do the rasterizing, or to some X-Window
+"font server".  But more commonly free previewers only work with 
+PK bitmapped fonts.
+
+(1) Use the PS2PK utility to create suitable PK files from the Type 1 font files.
+
+(2) An alternative is to run the DVI file through DVIPS and then use GhostView.
+
+(3) Another alternative is to distill the PS file made by DVIPS using
+    Acrobat Distiller (or GhostScript), and then view the resulting PDF 
+	file in Acorbat Reader (*) or GhostView.
+
+(4) Yet another alternative is to use pdfTeX and then preview in Acrobat
+    Reader (*) or GhostView.
+
+(*) The free Acrobat Reader is available from http://www.Adobe.com/readstep.html
+
+

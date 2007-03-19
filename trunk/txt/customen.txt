@@ -1,0 +1,47 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==================================================================
+Setting up your own custom encoding for text fonts (customen.txt)
+==================================================================
+
+Y&Y TeX System is the only TeX system providing full flexibility in font
+encoding.  It has ready made support files for several common encoding
+schemes as shown in `Fonts > Encoding'.  If none of these happen to suit
+your needs, you can set up your own custom encoding. Here is how:
+
+(1) Pick one of the .vec files supplied in c:\yandy\fonts\encoding,
+    or create a new one modelled on one of these sample files.
+    Let's say, e.g., that you want to use texmac.vec (Textures encoding).
+
+(2) Add a new environment variable called CUSTOM to the [Environment]
+    section of dviwindo.ini.  Set it to the name of the new vector, e.g.
+	
+	CUSTOM=texmac
+
+    You should now see a new item listed in `Fonts > Encoding'.  
+    It should read `CUSTOM texmac' --- but it will be greyed out
+	until you tell the system where the corresponding TFM files live.
+
+(3) Set up a new `encoding specific' version of TEXFONTS.  For example,
+
+	TEXMAC=C:\YANDY\FONTS\TFM\CUSTOM\TFM;C:\YANDY\FONTS\TFM\NONTEXT\;
+			C:\YANDY\FONTS\TFM\CUSTOM\  (all on one line of course)
+
+    This refers to directories for new TFM files for this encoding.
+    This addition will enable the above `Fonts > Encoding' menu item.
+
+    You will now be able to view font layout using `Fonts > ShowFont'
+	And you will be able to view DVI files created using that encoding.
+
+(4) If you also want to create new DVI files with this encoding, then 
+    you will need TFM files for TeX to use.  Create TFM files for the 
+    fonts you want to use from DVIWindo's `WriteTFM...' menu selection.  
+    These will automatically be set up for the currently selected 
+    encoding and placed in the first directpory listed in the 
+	environment variable set up in step (3) above.
+
+    You will also need to tell TeX about the layout since it otherwise
+	assumes the default OT1 (TeX text) encoding.  In plain TeX and
+    LaTeX 2.09, look at lcdplain.tex and mtplain.tex for sample files.
+    In LaTeX 2e, look at the PSNFSS package --- the `times', `mathtimes'
+	and `lucidabr' packages in particular.

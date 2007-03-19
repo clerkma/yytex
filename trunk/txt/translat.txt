@@ -1,0 +1,32 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+TRANSLAT is a utility for converting a text file from one encoding 
+to another.
+
+Usage: E:\TRANSLAT.EXE <in-vector> <out-vector> [<in-filename>]
+
+e.g.	translat  ibmoem  ansinew  mysource.tex
+
+will convert `mysource.tex' from IBMOEM encoding (DOS code page 437)
+to Windows ANSI (output in `mysource.tra').  Useful when a DOS text 
+editor is used to create a file which is to be used in Windows.
+
+When not given a file argument, TRANSLAT shows the translation table 
+that it builds. 
+
+This table may be used with Y&YTeX as an xchr[] array (use -x= on
+the command line).  Remember that the xchr[] array is used for
+*output* from TeX (translation from internal so-called `ASCII' to
+output to user in error messages and such).  The array used for
+*input* is xord[] which is constructed by TeX by inverting the
+mapping in xchr[].  Hence, if your source code was created using
+IBMOEM (DOS code page 437) and you want the DVI files to use
+Windows ANSI for text fonts, then create a xchr[] table as follows:
+
+	translat ansinew ibmoem > dostoans.map
+
+and then use -x=dostoans on the Y&YTeX command line.  Note that you 
+first want to build TeX formats *without* this, since source files
+for most common formats (plain TeX, LateX, AMSTeX, SliTEX etc) are set
+up for ordinary TeX text encoding.  Use the `-x=dostoans' only when
+processing your own source file.

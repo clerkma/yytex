@@ -1,0 +1,217 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+7.5	63			HelveticaNeue-Light	
+8.5	68			GaramondThree		
+5.5	72	 		LucidaMath-Extension	
+7.5	73			Goudy			
+9.5	78			NeuzeitS-Book		
+5.5	80			Optima			
+7.5	81			Glypha			
+10.5	85			Clarendon-Light		
+10.5	85			ItcEras-Medium		
+7.5	85			NewBaskerville-Italic	
+7.5	85			NewBaskerville-Roman	
+11.5	88			TimesTen-Roman
+11.5	90			StempelGaramond-Roman	
+6.5	90			StoneInformal		
+6.5	96			Lucida			
+14.5	118			Clarendon		
+7.5	131			NewBaskerville-Bold	
+7.5	131			NewBaskerville-BoldItalic	
+18.5	144			NeuzeitS-BookHeavy	
+19.5	157			HelveticaNeue-Bold	
+20.5	166			Clarendon-Bold		
+21.5	170			HelveticaNeue-Heavy	
+24.5	198			HelveticaNeue-Black	
+
+5.5	72 		LucidaMath-Extension	
+5.5	80		Optima			
+6.5	90		StoneInformal		
+6.5	96		Lucida			
+7.5	131		NewBaskerville-Bold	
+7.5	131		NewBaskerville-BoldItalic	
+7.5	63		HelveticaNeue-Light	
+7.5	73		Goudy			
+7.5	81		Glypha			
+7.5	85		NewBaskerville-Italic	
+7.5	85		NewBaskerville-Roman	
+8.5	68		GaramondThree		
+9.5	78		NeuzeitS-Book		
+10.5	85		Clarendon-Light		
+10.5	85		ItcEras-Medium		
+11.5	88		TimesTen-Roman
+11.5	90		StempelGaramond-Roman	
+14.5	118		Clarendon		
+18.5	144		NeuzeitS-BookHeavy	
+19.5	157		HelveticaNeue-Bold	
+20.5	166		Clarendon-Bold		
+21.5	170		HelveticaNeue-Heavy	
+24.5	198		HelveticaNeue-Black	
+
+Clarendon		14.5	118
+Clarendon-Bold		20.5	166
+Clarendon-Light		10.5	85
+GaramondThree		8.5	68
+Glypha			7.5	81
+Goudy			7.5	73
+HelveticaNeue-Black	24.5	198
+HelveticaNeue-Bold	19.5	157
+HelveticaNeue-Heavy	21.5	170
+HelveticaNeue-Light	7.5	63
+ItcEras-Medium		10.5	85
+Lucida			6.5	96
+LucidaMath-Extension	5.5	72 
+NeuzeitS-Book		9.5	78
+NeuzeitS-BookHeavy	18.5	144
+NewBaskerville-Bold	7.5	131
+NewBaskerville-BoldItalic	7.5	131
+NewBaskerville-Italic	7.5	85
+NewBaskerville-Roman	7.5	85
+Optima			5.5	80
+StempelGaramond-Roman	11.5	90
+StoneInformal		6.5	90
+TimesTen-Roman		11.5	88
+
+%!PS-AdobeFont-1.0: Clarendon-Bold 001.000
+/Erode{
+20.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+166 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: Clarendon-Light 001.000
+/Erode{
+10.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+85 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: Clarendon 001.000
+/Erode{
+14.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+118 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: Glypha 001.002
+/Erode{
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+81 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: NewBaskerville-BoldItalic 001.002
+/Erode{
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+131 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: NewBaskerville-Bold
+/Erode {
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+131 0 dtransform dup mul exch dup mul add 
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: NewBaskerville-Italic 001.002
+/Erode{
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+85 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: NewBaskerville-Roman
+/Erode {
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+85 0 dtransform dup mul exch dup mul add 
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: NeuzeitS-BookHeavy 001.001
+/Erode{
+18.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+144 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: NeuzeitS-Book 001.001
+/Erode{
+9.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+78 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: GaramondThree 001.000
+/Erode{
+8.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+68 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: Glypha 001.002
+/Erode{
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+81 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: Goudy
+/Erode {
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+73 0 dtransform dup mul exch dup mul add 
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: ItcEras-Medium 001.000
+/Erode{
+10.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+85 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: Lucida 001.000
+/Erode{
+6.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+96 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: Optima
+/Erode{
+5.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+80 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: LucidaMath-Extension 001.000
+/Erode{
+5.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+72 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: TimesTen-Roman 001.000
+/Erode{
+11.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+88 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: StoneInformal 001.000
+/Erode{
+6.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+90 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: StempelGaramond-Roman 001.000
+/Erode{
+11.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+90 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: HelveticaNeue-Black 001.000
+/Erode{
+24.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+198 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: HelveticaNeue-Bold 001.100
+/Erode{
+19.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+157 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: HelveticaNeue-Heavy 001.000
+/Erode{
+21.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+170 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}def
+
+%!PS-AdobeFont-1.0: HelveticaNeue-Light 001.000
+/Erode{
+7.5 dup 3 -1 roll 0.1 mul exch 0.5 sub mul cvi sub dup mul
+63 0 dtransform dup mul exch dup mul add
+le{pop pop 1.0 1.0}{pop pop 0.0 1.5}ifelse}de

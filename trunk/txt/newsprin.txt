@@ -1,0 +1,79 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Some `Misfeatures' of NeWSPrint interpretation of Type 1 font code:
+===================================================================
+
+(1) `vstem3' and `hstem3' character level hints with mismatch in outer 
+    stem widths crash the interpreter.
+
+    NeWSPrint is the only PS interpreter that checks for equality of 
+    outer stems in `hstem3' and `vstem3' hints.
+    While the Type 1 spec states that the outer stems should be equal,
+    some software creates fonts that do not enforce this condition.
+    Such fonts run on all other interpreters.  Unequal outer stem widths
+    provide no obstacle to rendering, and unequal stems can easily arise
+    due to quantization errors when converting between different
+    coordinate systems (such as from Ikarus M to Adobe Type 1).
+    And changing the hint stem widths so the outer stems match only
+    makes sense if the underlying outline is also changed.
+    So outlines would have to be distorted to satisfy this condition.
+
+(2) Coordinates large than 2000 in magnitude in CharString programs 
+    crash the interpreter.
+
+    NeWSPrint is the only PS interpreter that is perturbed by large
+    coordinates.  While the Type 1 spec states that coordinates should
+    be smaller than 2000, no other interpreter has such a low limit.
+    Almost all can handle coordinates up to 16383 (and none has ever
+    complained about coordinates smaller than 4096).  For some math fonts
+    containing large delimiters, it is very useful to be able to have
+    coordinates in the range 2000 to 4000. Rescaling the font to use
+    smaller coordinates reduces accuracy, increases quantization error.
+
+    Maybe one doesn't want to worry about small font foundries and
+    vendors like Bigelow & Holmes, Y&Y, and Blue Sky Research (all of
+    which have fonts that use coordinates larger than 2000), but note
+    that Adobe uses large coordinates also in some of their own math
+    and symbol fonts.    LucidaMath-Extension, for example, has a
+    FontBBox [0 -2741 1398 849]...
+
+(3) Some PS procedures defined in encrypted code seem to get lost.
+
+    When entering `eexec' encrypted code, the interpreter is supposed to do
+    an implicit `begin' on `systemdict' with an implicit `end' to remove
+    `systemdict' from the dictionary stack at the end of the encrypted code.
+    If the encrypted code defines a procedure in another dictionary,
+    that procedure should be accessible after leaving the encrypted
+    section.  Encrypted code is not just for definitions of Type 1
+    font programs.  Also, one would expect that what is placed on the stack
+    before entering the encrypted section is available while in the
+    encrypted section.
+
+    For example, in the following, `makechar' is not defined in
+    `myfont' after exiting the encrypted section:
+
+    32 dict
+    currentfile eexec
+
+	dup begin
+	/makechar { ... } def
+	end
+
+   512 zeros cleartomark
+   /FontName /myfont def
+   FontName end exch definefont pop
+
+   (The above is code that defines a Type 3 bitmap font)
+
+   On the other hand, in the following, `foo' is defined in `mydict':
+
+   /mydict 32 dict def
+
+   currentfile eexec
+
+	mydict begin
+	/foo {(This is a test) show} def
+	end
+
+   512 zeros cleartomark
+

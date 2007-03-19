@@ -1,0 +1,66 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+[There are what amount to Type 1 versions of the EC fonts these days,
+although the Latin Modern font collection is more recent.  See
+http://tug.org/fonts. ---karl, 2006.]
+
+=========
+EC fonts:
+=========
+
+If you decide to run LaTeX 2e on ltxcheck.tex after installing a new version
+of LaTeX 2e, you may get some political propaganda from the LaTeX team that
+looks something like this:
+
+	Checking T1 encoded Computer Modern (ec) fonts... 
+
+	!Font \test=ecrm1000 not loadable: Metric (TFM) file not found.
+	<to be read again>
+		\relax
+	l.581 \checkfont{ecrm1000}
+
+and so on.  Ignore this.  You don't have - and don't need - the EC fonts.
+
+The EC fonts were derived from the CM fonts by extending the character set
+from 128 to 256.  The main purpose of this was to include accented characters
+for Eastern Europe and Western Europe (Latin 2 and Latin 1).  This makes it
+possible to have proper hyphenation in languages that use accented
+characters.  There have been other minor improvements such as better kerning
+pairs in some cases.  The set of available faces has been vastly increased,
+in part by adding obscure combinations of italic / bold / slanted / smallcaps
+/ extended styles.  Note that you *still* need the CM fonts for math.  The EC
+fonts are an *addition*, not a replacement, for CM.
+
+The EC fonts are not available in scalable form.  They probably
+never will be, because there are 565 fonts with about 113,000 glyphs
+(323 EC fonts with 256 each, plus 237 TC fonts with 128 each)
+compared to 75 fonts with about 9,600 glyphs for CM!
+
+By the way, just to store the TFM files for EC can be a big burden.  
+There are 565 of them and on a large disk with a FAT cluster size 
+of 32k these metric files alone eat up 18.5 megabytes!
+
+====================================================
+An alternative: the EM fonts in Adobe Type 1 format:
+====================================================
+
+The EM font set is based on the CM font set, but adds about 100 ready-made
+accented characters and other `missing' glyphs to the text fonts thus making
+them suitable for TeX work in languages that use accented characters. 
+
+The EM text fonts are set up as ordinary text fonts, unlike the CM text
+fonts which have to be treated as pi/math/decorative non-text fonts.
+This means that the EM fonts can also be used easily with applications
+other than TeX such as Microsoft Word (R).
+
+The EM font set consists of 57 EM text fonts and 13 EM math fonts.  Also
+included in the EM font set are 16 CM math fonts.  No CM fonts beyond these
+are needed.  Support for the EM font set is available under plain TeX, 
+LaTeX 2.09, as well as LaTeX 2e.
+
+With the EM font set you maintain the `CM look', yet can hyphenate text
+properly in languages that use accented characters - all this with 
+fonts in commercial grade Adobe Type 1 format.
+
+
+

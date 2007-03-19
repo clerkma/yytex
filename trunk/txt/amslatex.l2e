@@ -1,0 +1,120 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=======================================================
+	LB+LNM & LBE / LaTeX 2e / AMS LaTeX 1.2
+=======================================================
+
+If you are using LucidaBright + LucidaNewMath and LucidaBright-Expert
+with PSNFSS in LaTeX 2e with AMS LaTeX 1.2, then make sure you have
+the modified `lucida.dtx' + `lucida.ins' from us, rather than the older
+versions now on PSNFSS directory on CTAN.  Please send email if you do
+not have these modified `pre-beta' test versions of the June release.
+
+Also make sure you have the latest version of the AMS TeX package from CTAN.
+
+Also, you may find the following interchanges on comp.text.tex useful:
+
+****************************************************************************
+
+From: ahmed@ovrut.hep.upenn.edu (Ahmed Hindawi)
+Newsgroups: comp.text.tex
+Date: 28 Mar 1995 01:46:49 GMT
+Organization: University of Pennsylvania
+NNTP-Posting-Host: ts8-35.upenn.edu
+Mime-Version: 1.0
+X-Newsreader: WinVN 0.93.11
+
+In article <MJD.95Mar27112003@sol08.ams.org>, mjd@sol08.ams.org says...
+
+> Try using the `noamsfonts' option that is described in the amsart
+> documentation (file instr-l.tex in subdir amslatex/classes of the
+> amslatex distribution).
+
+> Michael Downes
+> Technical Support
+> Electronic Products and Services
+> American Mathematical Society
+> tech-support@math.ams.org
+> 800-321-4267 extension 4080 (or 401-455-4080)
+
+
+I am using latex2e with amsart. I tried noamsfonts option, \Bbb and
+\mathbb are not defined. 
+
+--Ahmed
+
+P.S. I am using the dec 94 release of latex2e + amslatex 1.2 beta 2 +
+psamsfonts option since the .df files I generated happened to be the
+one correspondes to psamsfonts.
+
+****************************************************************************
+
+From: ahmed@ovrut.hep.upenn.edu (Ahmed Hindawi)
+Newsgroups: comp.text.tex
+Date: 31 Mar 1995 03:44:23 GMT
+Organization: University of Pennsylvania
+NNTP-Posting-Host: ts5-18.upenn.edu
+Mime-Version: 1.0
+X-Newsreader: WinVN 0.93.11
+
+In article <3l7pq9$jlh@netnews.upenn.edu>, ahmed@ovrut.hep.upenn.edu says...
+
+Here is the solution to this problem if any one is interested:
+
+--------------------
+
+Subject: Re: Your message of Mon, 27 Mar 1995 21:06:24 -0500
+References: <9503280206.AA30412@ovrut.hep.upenn.edu>
+
+> Thanks for your e-mail. It is true I tried:
+
+\documentclass{amsart}
+\usepackage{lucidbry}
+\begin{document}
+$$ \Bbb{R} \mathbb{R} $$
+\end{document}
+
+> All works with Lucida but the last line. I do not get bb font.
+
+> [...]
+
+Well, you're right.
+I've looked up the code in lucbr.sty
+and there \Bbb is (re-)defined only if amsmath (more exactly
+amsfonts) is not used. :-(
+You can resolve this by defining
+  \let\mathbb\bbold
+Then you will get the LucidaFonts even for the last line.
+
+Michael                                    
+
+--------------------
+
+It works, thanks a lot.
+
+--Ahmed
+
+****************************************************************************
+
+From: tim@maths.tcd.ie (Timothy Murphy)
+Newsgroups: comp.text.tex
+Subject: Re: Latest AMS-LaTeX for LaTeX2e?
+Date: 3 Apr 1995 03:54:25 +0100
+Organization: Dept. of Maths, Trinity College, Dublin, Ireland.
+NNTP-Posting-Host: bell.maths.tcd.ie
+
+murray@math.umass.edu (Murray Eisenberg) writes:
+
+> Is the latest *reasonably bug-free* version of the amstex.sty option
+> for LaTeX2e on CTAN, or only at the American Math Society server?
+
+I think the name has been changed from amstex.sty to amsmath.sty .
+It is in .../latex/packages/amslatex at the CTANs.
+
+-- 
+Timothy Murphy  
+e-mail: tim@maths.tcd.ie
+tel: +353-1-2842366
+s-mail: School of Mathematics, Trinity College, Dublin 2, Ireland
+
+****************************************************************************

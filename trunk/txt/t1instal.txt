@@ -1,0 +1,140 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==========================================================================
+Fix for problems with auto converted T1 fonts in Windows NT	(t1instal.txt)
+==========================================================================
+
+NOTE: You can ignore this if you are using ATM 4.0 for Windows NT!
+
+NOTE: In the case of CM and AMS fonts, this problem in NT has little effect.
+
+The automatic conversion of Type 1 to TrueType in Windows NT is very handy,
+but has several bugs (which we have reported to Microsoft).  For example, in
+Windows NT 4.0, when you double click on an auto converted non-text font you
+always get a display of the Wingdings font, not the font you selected.  Also,
+fonts are installed under a mangled PS FontName instead of something useful
+like the PS FullName.  Fortunately, these problems do not prevent one from
+using converted fonts with TeX.
+
+However, now that DVIWindo can reencode TrueType fonts on the fly, new
+problems have surfaced with the automatic conversion, such as not converting
+f-ligatures correctly (in real - i.e. non-CM - text fonts).  DVIWindo can use
+f-ligatures in the fonts that come with Windows NT (like Arial, Courier New,
+and Times New Roman), but f-ligatures are lost in auto-converted fonts.  
+In addition, some less frequently used characters (such as hungarumlaut,
+fraction, Zcaron, zcaron, Omega, Delta) are also dropped.  What is more,
+fixed-width non-text fonts (such as CMTT* and CMTEX*) appear as text fonts
+after conversion, and hence reencoded to Windows ANSI - with bad results!
+
+Note that these problems mostly do NOT affect CM, extra LaTeX + SliTeX or AMS
+fonts (except for the problem with fixed width fonts like CMTT* and CMTEX*).
+
+Microsoft appears not to be planning further revisions or bug fixes in
+T1INSTAL.DLL (and in any case we can't wait - even if they did plan on it).
+So we have modified T1INSTAL.DLL ourselves.  If you install the modified
+version, the above mentioned problems (and some others) will go away.
+
+==================================================
+Installing the new T1 => TT font for converter NT 
+==================================================
+
+(0) If you have Windows NT 4.0, check that the T1INSTAL.DLL in your
+    c:\winnt\system32 folder is 117,520 bytes, dated 8-09-96.  
+    If you have Windows NT 3.51, check that T1INSTAL.DLL in your
+    c:\windows\system32 directory is 115,008 bytes, dated 5-26-95.
+    If it is not, you have a different build of NT and this fix may 
+    not work correctly.  If in doubt, run `showtabl.exe' - if it complains
+    about bad pointers, then the fix we supply may not work on your system.
+    You can try it, but make sure to keep a backup copy of your T1INSTAL.DLL.
+    (Contact Y&Y in that case with details on build and service pack 
+    number and info on your version of T1INSTAL.DLL).
+
+(1) Make an `Emergency Repair Disk' (or update your current one).  We see no
+    reason why you would need this, but it is always a good idea to have one.
+    To do this, from `Help' select `Topics' and find `Emergency Repair Disk'
+
+(2) If you have not yet installed Type 1 fonts skip this step.
+    Create a new temporary folder to hold PFB/PFM files.  Call it 
+    `myfonts' say.  You can create this on the desktop by right clicking 
+    with the mouse and selecting `New'.  Putting uninstalled PFB and PFM 
+    font files here rather than in the recycle bin will save you later 
+    having to dig up the original font diskettes.
+
+(3) If you have not yet installed Type 1 fonts skip this step.
+    Uninstall all of your auto-converted fonts.  The easiest way in
+    Windows NT 4.0 is to open Windows Explorer (from `Start > Programs') and
+    navigate to c:\winnt\fonts.  You may want to select `List' or `Details'
+    from the `View' menu to see both font names and file names listed.
+    Drag the auto converted TT font files that you installed (and only
+    those!) to the recycle bin.  You can tell which are auto-converted
+    fonts since each TTF file will have companion PFB and PFM files with the
+    same name.  Drag the corresponding PFB/PFM files to your temporary folder. 
+
+    Do *not* simply delete font files from the fonts folder - if you do,
+    orphaned entries in the registry will plague you later.  Also, in some 
+    cases you may have to drag the files several times to uninstall them.
+    If, after several tries, the font file is still in the font folder,
+    reboot, the system may have it locked because it is `in use'.
+    You may also get messages about not being able to find files.
+    This can happen because the list of fonts shown in this folder 
+    is based on what is in the registry and not the actual font files
+    in the folder - and the registry can get `out of synch' with the folder.
+
+    Just ignore these messages and keeping dragging font files that you
+    installed out of the font folder.  Do not remove the TrueType fonts that
+    came with Windows NT, such as Arial, Courier New, Times New Roman etc.
+    However, you may have corresponding Type 1 fonts also installed.  These
+    have names Helvetica, Courier, and Times Roman.  Uninstall these.
+
+(3) Rename c:\winnt\system32\t1instal.dll 
+    (or c:\windows\system32\t1instal.dll) t1instal.bak
+    (If you experience problems with the modified DLL later, you can
+    delete the modified one, rename t1instal.org again, and reboot).
+
+(4) Copy the modified t1instal.dll into c:\winnt\system32 or 
+    c:\windows\system32.  Use t1instal.dll from the winnt400 folder
+    for Windows NT 4.0; use the one from the winnt351 folder for
+    Windows NT 3.51.
+
+(5) IMPORTANT: reboot.
+
+(6) If you have previously installed fonts, reinstall them --- and auto
+    convert --- the Type1 fonts.  Otherwise install the fonts direct from
+    the original diskette (or temporary directory in the case of MathTime).
+    In Windows NT 4.0 drag the PFM (not PFB) files from the temporary folder
+    into the fonts folder.  Make sure to check all three check boxes in the
+    dialog box that comes up.  The installer will automatically convert the
+    PFB file with the same name as the PFM file you dragged.
+
+(7) To check the result:  Open DVIWindo and select one of your fonts from
+    `Fonts > Show Font'  If you are using TeX 'n ANSI encoding you should
+    see fi and fl ligatures in the first row of characters.
+
+===========================================
+Some of the problems fixed in T1INSTAL.DLL:
+===========================================
+
+fi and fl ligatures where mapped to to the wrong place.
+
+ff, ffi, ffl ligatures where dropped (if the font has them).
+
+Zcaron and zcaron were dropped, even though in `standard' set of 228 glyphs
+
+dotlessj dropped - now mapped (note: this is not standard)
+
+hungarumlaut dropped because of spelling error (hungerumlaut)
+
+various other typos traglf -> triaglf and aroowleft -> arrowleft
+
+fraction was mapped to the wrong place
+
+Omega was dropped because referred to as ohm - changed to Greek Omega
+
+Delta treated as math increment - instead of Greek Delta
+
+Fixed width non-text fonts (such as math or CMTT* and CMTEX*) lost the
+`decorative/pi' label and so where treated as *text* fonts and remapped to
+ANSI (To be precise: family FF-DECORATIVE was turned into FF_DONTCARE).
+
+P.S. You can use showtabl.exe to check out the tables in both
+the original and the modified T1INSTAL.DLL.

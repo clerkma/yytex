@@ -1,0 +1,334 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+`Mis-Features' of ATM for Windows, Using TrueType fonts and Windows 3.1,
+Bug in Windows PostScript Driver, and so on...	(this is `atmtwo.txt')
+========================================================================
+
+*	Basic information may be found in the ATM manual and the
+*	`readme.txt' file on the ATM diskette.
+
+ATM 2.5 and later prints faster to HP printers, does a much better job of
+maintaining ATM.INI and WIN.INI, and allows installation of fonts without
+need to restart Windows, and has significantly fewer serious bugs.  
+
+ATM 2.6 is a complete rewrite and has *very* few bugs.
+
+*	We recommend NOT using version older than ATM 2.5 and 
+	strongly recommend ATM 2.6 (see `atmone.txt' for details).
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+TECHNIQUES FOR FIXING BROKEN ATM SETUPS:
+=========================================
+
+If you have the latest ATM, then the most aggressive method is also the
+mostly likely to work without a hitch:
+
+(1) Complete Purge:  Turn off ATM using ATM control panel. Exit Windows.
+    Delete ATM.INI.  Launch Windows (ATM will be off). Install the latest
+    version of ATM (preferably 2.6).  It will pick up all of the PFM files
+    from the PFM subdirectory of your PSFONTS directory and `install' the
+    corresponding fonts automatically.  This may take a little while, but
+    reconstructs ATM.INI in a consistent state  (If things should not work
+    right away, exit Windows again and launch it one more time).
+
+If you have any suspect fonts  --- such as public domain ones of dubious
+quality, you may want to remove these first to prevent crashing ATM.
+
+Of course, all customizations you (or some program) have made to ATM are lost
+if you do this.  Hence you may want to keep a back-up copy of the old ATM.INI
+and then compare with the new one just to see whether there is anything in
+the `[Settings]' section worth keeping --- such as the `FontCache' size,
+`ScreenAdjust=Off', and `BitmapFonts=Off' (Make changes to ATM.INI only from
+*outside* Windows).  Usually you do *not* want to copy over other sections
+such as `[Aliases]' or `[Synonyms]', since these are the very sections likely
+to get tied in knots and responsible for problems with ATM in the first place!
+
+A less aggressive technique that you can try to cure a broken ATM setup or
+`invisible ink' (see below) is to only delete ATM's font metric cache file,
+ATMFONTS.QLC (more information on ATMFONTS.QLC is given below):
+
+(2) Delete ATMFONTS.QLC
+-----------------------
+
+NOTE: ATM reconstructs the `quick start font cache' (ATMFONTS.QLC) when
+      Windows its launched and this file is missing.  In recent versions of
+      ATM it sometimes takes TWO attempts for this work correctly.  Hence
+      after deleting ATMFONTS.QLC, launch Windows, exit Windows and launch
+      Windows again. (You may get `italic' instead of `roman' first time).
+
+NOTE: ATM does NOT notice when you change ATM.INI, any PFB file, or any
+      PFM file.  It will NOT automatically reconstruct ATMFONTS.QLC.
+      And *very* bad things can happen if ATMFONTS.QLC is `out of sync' 
+      with what is in the PFM and PFB files or in ATM.INI.
+
+*     So use ATM to `Remove' and `Add' fonts whenever possible.
+
+*     And after ANY other change, make sure to delete ATMFONTS.QLC.  <====
+
+NOTE: Never change ATM.INI or any PFB or PFM file while in Windows. Changes
+      to PFB or PFM files can cause ATM to overwrite random parts of memory.
+
+*     Make changes only when OUTSIDE Windows                     <=========
+
+NOTE: PSCRIPT.DRV has similar caches with extension `.fsf' (one per port)
+      in the Windows directory to speed up opening a printing device context. 
+      But PSCRIPT.DRV seems to be better at maintaining this cache.
+
+NOTE: PSCRIPT.DRV usually DOES notice when you fiddle with the files and
+      automatically updates the *.fsf files when next called to print.
+      If it doesn't, and gets confused, then delete all of these files.
+
+If problems persist when switching to a new version of ATM, or after
+making some changes, then perform a systemic `purge':
+
+(3) Systemic Purge:
+-------------------
+
+(a) Use the ATM control panel to `Remove' all fonts.
+    (NOTE: the actual PFB and PFM files are NOT deleted when you do this,
+    instead, font information is removed from ATM.INI and WIN.INI);
+
+(b) Exit Windows;
+
+(c) Delete ATMFONTS.QLC (see above);
+
+(d) Relaunch Windows (possibly twice - if you get only italic fonts);
+
+(e) Now use the ATM control panel to `Add' all fonts again.  Normally,
+    you do not need to go back to the original font diskettes for this.
+    Simply select the PFM subdirectory of PSFONTS and highlight all fonts.
+
+If you have many fonts, this may take a few minutes.
+
+This cures most problems with corrupted font metric caches, 
+and problems with inconsistencies between ATM and PSCRIPT.DRV. 
+
+(4) Manual Systemic Purge:
+-------------------------
+
+Things can get so screwed up that you can't even run the ATM control
+panel. In that case make backup copies of ATM.INI & WIN.INI.  Then:
+
+(a) Exit Windows;
+
+(b) Delete ATMFONTS.QLC;
+
+(c) Edit ATM.INI:  remove all font entries in the [Fonts] section;
+
+(d) Edit WIN.INI:  remove all `softfont' entries, including the
+    first line that says how many `softfonts' there are.
+    Note that there is one `softfont' section for every printer/port
+    combination that is `installed' in Windows, so you may have
+    to do this for each such softfonts section;
+
+(e) Launch Windows.
+
+(f) Reinstall the fonts using ATM control panel as above.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+INVISIBLE INK:
+==============
+
+(*) In ATM 2.5 and earlier there are bugs that causes rendering to
+    intermittently be disabled (the `invisible ink' phenomenon). This is a
+    function of the number and type of fonts you use (and the phase of the
+    moon!).  If you experience the `invisible ink' phenomenon, it is best to
+    switch to the latest version of ATM (at least 2.5).  It has less
+    invisible ink.  And ATM 2.6 appears to have solved this problem.
+
+INVISIBLE INK:  What is it?  ATM 1.0 and ATM 1.15 crashed and burned when
+they ran into a bug.  Windows might be crashed in the process, or even
+DOS.  Newer versions of ATM instead `catch' General Protection Faults
+and the like, and only abandon the current rendering command.  Which is
+much more pleasant, but not nearly as good as it would have been had the
+bugs that cause this been fixed!  The result is that some strings being
+displayed on screen seem to `disappear'.  Often display up to a character
+that offends ATM is OK, but characters after this point are invisible.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+If you are plagued by the `invisible ink' phenomenon, note that the following:
+
+(*) PLEASE UPGRADE TO AT LEAST ATM 2.6!
+
+(*) There are quite a few `bad fonts' out there (mostly public domain).
+    Some of these may be legitimate Type 1 font programs yet not work with
+    ATM, since there are MANY `unwrittent rules'.  Such fonts can lead to 
+    `invisible ink' or ATM crashes.  Annoyingly, problems may occur when
+    you use some OTHER font - so it is hard to trace which font is at fault.
+    Fonts from reputable foundries do not have these problems.
+
+(*) Another inducing factor of the `invisible ink' problem is the use of
+    inconsistent PFM and PFB files. 
+
+    There is a problem for example if the PFM file states that character
+    codes run from 32 - 255, when the PFB file actually has some character in
+    the encoding in the range 0 - 31. 
+
+(*) Finally, inconsistencies between the PFM and PFB files for a font and
+    what ATM has stored away in its cache (ATMFONTS.QLC - see next) can
+    lead to invisible ink (or worse!).
+
+The ATM font metric cache ATMFONTS.QLC:
+=======================================
+
+(*) Editing ATM.INI by hand can lead to crashes or `invisible ink' -
+    instead, use the ATM control panel to remove and install fonts.  
+    Or, if you do edit ATM.INI by hand, do so only OUTSIDE Windows, 
+    and then make sure to delete the file ATMFONTS.QLC.  Also, update
+    corresponding softfont entries in WIN.INI. 
+
+ATMFONTS.QLC is a cache of information from PFM (and PFB) files. It
+greatly speeds up launching Windows, since ATM does not have to read
+all PFM and PFN files.  BUT: really bad things happen when ATMFONTS.QLC
+gets corrupted in any way, or becomes inconsistent with the actual
+PFB and PFM files or with ATM.INI.
+
+ATMFONTS.QLC is usually in the same directory as the PFB files.  If you 
+can't find it, you may have an old version of ATM. Look for `QLCDir=' 
+in the `[Settings]' section of ATM.INI.   And ATM.INI can be found in
+the Windows directory.
+
+(*) Replacing PFB and PFM files with new versions is dangerous.  
+    Never do this from a DOS box in Windows.  Always exit Windows first.
+    AND remember to delete ATMFONTS.QLC after you do.  
+
+*   It is usually safer to use ATM to `Remove' and then `Add' the fonts.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+Windows 3.1 & TrueType Fonts:
+=============================
+
+Windows 3.1 supports TrueType fonts.  So does DVIWindo.  You can use 
+TrueType fonts in your TeX document if you use DVIWindo for previewing 
+and printing (DVIPSONE does not support TrueType fonts).
+
+DVIWindo now has an `AFMWrite...' selection in the `Special' menu.  This can
+be used to write out an AFM  for an installed TrueType font.  
+Use the AFM files to make TFM files for use in TeX.
+Sample TFM files for the `standard' TrueType fonts are also included.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+Printing in truly bizarre fonts   ATM <== versus ==> PSCRIPT.DRV
+================================================================
+
+For printers other than PostScript printers, ATM does the rendering
+both on screen and for printing.  Hence the chance of a major disagreement
+between on screen display and printer result is slim.
+
+However, ATM does NOT get into the act when you are printing to a
+PostScript printer; the Windows printer driver does all the work.  
+So it is --- unfortunately --- possible to get inconsistensies between 
+screen display and printed output, since one is handled *entirely* by ATM,
+and the other *entirely* by PSCRIPT.DRV.
+
+For example, there will be a major problem if you edit ATM.INI and
+change the `Face Name' of some font (the name that appears in font menus). 
+Text using this font will display just fine on screen, but will be
+printed using something inappropriate like LucidaBlackletter!  
+The reason is that DVIWindo looks in ATM.INI to figure out what Face
+Name to use to request a particular font.  The name in ATM.INI is the
+Face Name that ATM recognizes.  The PostScript printer driver, on the
+other hand, looks in the PFM metric files.
+
+ATM extracts the face name from the PFM file, but only once - when the
+font is first installed. It then inserts the face name into ATM.INI.
+After that it relies on the name recorded there.  The Windows
+PostScript driver (PSCRPT.DRV), on the other hand, extracts the face
+name from the PFM file each time it opens a printer device context 
+(It does not read ATM.INI, of course).  If you change the name recorded in
+ATM.INI, ATM will still be able to find the font, but the Windows
+PostScript driver (PSCRPT.DRV) will NOT.  (And Window's algorithm for
+substituting the `nearest' font invariably comes up with a font that
+no human would ever consider `near' to the desired font in any way!)
+
+The solution is to always use the ATM control panel to `Remove' the font
+and then to `Add' it back again.  Remove duplicate softfont entries
+from WIN.INI created by this process.  Avoid hand editing ATM.INI.
+See the method for `systemic purge' described above.
+
+Printing in Courier after first page (false low printer memory condition):
+=========================================================================
+
+All output will be printed in Courier if you call for a font that is not
+printer resident, and that is not shipped down with the PostScript file.
+
+But sometimes, the first page prints fine, while the rest print in Courier.
+This is due to a bug in the Windows PostScript printer driver that
+surfaces when the driver thinks the printer has very little virtual memory.  
+In an attempt to conserve memory, it uses `save' and `restore' in a
+way that flushes font information at the end of each page.
+Specifically, it inserts the line: 
+
+	SVDoc restore /SVDoc save def
+
+at the head of every page. So the first page prints fine, while
+later pages are missing fonts and print using the default font, which
+is Courier.
+
+Windows thinks your printer has no memory:
+------------------------------------------
+
+The problem arises when the printer really does have very little memory, or,
+more commonly, when printer installation confuses Windows about what printer
+is being used.  The generic `PostScript Printer' for example, is taken to be
+the lowest common denominator, something like `Apple LaserWriter Plus', which
+has only about 168kb of available VM!  Instead, `install' the printer you are
+actually using - or if there is no entry for that printer - select something
+like `Apple LaserWriter II NT', which has 400k to 600k of available VM. And
+if your printer has more, change the amount of VM that Windows things is there.
+
+NOTE: do NOT select the generic PostScript Printer (Apple LaserWriter Plus).
+      The printer driver will assume your printer has very little memory
+      and create problems as the result of its buggy attempt at dealing with
+      that. 
+
+NOTE: To change, or check on, VM allocation assumed by the printer driver,
+      open Windows Control Panel, Double click on `Printers'. Select the
+      printer in question, choose `Setup...', choose `Options...', 
+      and choose `Advanced...'. If VM is set too low, increase it. 
+
+If your printer really DOES have very little memory, check `Clear Memory per
+Page'.  This will wrap each page in a save/restore pair as described above,
+but will also force fonts to be downloaded for every page.  This will lead to
+huge PostScript files, but will circumvent the problem described. 
+
+While you are at it, you may want to uncheck `Print PostScript Error'
+(download `ehandler.ps' instead ahead of time).  And uncheck `Compress
+BitMaps' (compression decreases file transmission time, but slows
+down most printers a LOT if you are printing large bitmap images).
+
+*	A Windows PostScript printer driver is available from Adobe 
+	(for around $25) that has fewer bugs than the MS Postscript printer
+	driver. 
+
+NOTE:	The Adobe Windows PostScript driver version 2.1 for Windows 3.1 
+	does not have this problem.  You may wish to contact Adobe at 
+	1-800-833-6687 (US only) or 408-986-6555.
+
+****************************************************************************
+
+HARD-WIRED ACCENT POSITIONS IN ATM:
+==================================
+
+One major bug in ATM that has not been fixed in ATM 2.5 or even ATM 2.6
+is that ATM has its own idea of where accents should be.  This is only a
+problem if:
+
+(a) You use text fonts with something other then default Windows ANSI encoding;
+
+(b) You use ready-made accented characters in the font (rather than
+    explicitly overprinting base and accent character);
+
+(c) The font uses the Type 1 operator SEAC (as almost all text fonts do
+    for the 58 `standard' accented characters);
+
+SAFESEAC `immunize' your PFB files from this ATM bug.
+
+See SAFESEAC.TXT for additional details.  
+

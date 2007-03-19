@@ -1,0 +1,102 @@
+    This file placed in the public domain in 2006 by the TeX Users Group.
+
+===========================================================================
+	Just Five of the Unique Features of the Y&Y TeX System:
+===========================================================================
+
+(1) Access *all* characters in a font (On-the-fly font reencoding):
+
+The previewer (DVIWindo) is the only one supporting arbitrary user specified
+font encoding (character layout) --- including the ability to make
+`unencoded' characters accessible --- such as `fi', `fl', `dotlessi',
+`dotaccent', and `ring' in Microsoft Windows (how do you show a derivative
+without `dotaccent,' or quaternions without `ring'?).  Even `ff', `ffi',
+`ffl', and `dotlessj' can be accessed if the font has those glyphs.
+
+(2) Fast PostScript printing (Partial Font Downloading - pioneered in 1990!):
+
+The PS printer driver (DVIPSONE) uses `partial font downloading', which can
+reduce PostScript file size by a factor of 4 to 8 on small jobs.  This
+greatly speeds up printing, and also reduces the chance of running out of
+printer memory --- a serious concern since TeX likes to use lots of fonts.  
+
+Partial font downloading makes PostScript printing a joy instead of a pain!
+
+(3) Handle arbitrarily complex TeX jobs (Dynamic Memory Allocation):
+
+Y&Y TeX is the only TeX on IBM PC that uses dynamic memory allocation.
+It starts small and mean --- like a `small TeX' --- yet can handle jobs
+bigger those that any `big TeX' with fixed allocations can handle.  And 
+Y&Y TeX does *not* just grow main memory, but most types of TeX memory.
+
+Also, Y&Y TeX is one of the very few providing for more than 256 internal 
+font numbers.  Important when doing complex books like `The LaTeX Companion.'
+
+(4) Quality font rendering (Commercial grade hand-hinted Adobe Type 1 fonts):
+
+We only use high quality `PostScript' fonts.  In fact, we were involved in
+the development of all of the Type 1 fonts specially made for use with TeX.
+This includes Computer Modern, AMS, extra LaTeX + SliTeX, Lucida Bright,
+Lucida New Math, and MathTime.  Outstanding rendering even at low resolution.
+No problems with service bureaus that reject jobs calling for TrueType fonts.
+
+We now also include ATM 4.0 for Windows 95 and ATM 4.0 for Windows NT!
+
+(5) Make your own font `instances' (Support for Multiple Master Fonts):
+
+Y&Y provides the only TeX system that supports this exiting new font
+technology.  Multiple Master (MM) fonts are supported transparently to the
+user --- including `on the fly' reencoding and even `partial font downloading'.
+Metric files for MM fonts can be created right from the previewer.
+And these metric files are complete with information for unencoded
+characters, and have accurate character bounding boxes.
+
+*	Y&Y TeX System --- the TeX system to use!
+
+And there are literally dozens of other `power features' --- such as:
+	Support for TIFF image insertion (as well as BMP format);
+
+	On-screen previews of EPS files with headers (EPSF/TIFF/WMF or EPSI);
+
+	Transfer of typeset material on clipboard (and it's *not* a bitmap);
+
+	Hypertext links (jump to marks, other DVI files, even launch apps);
+
+	Automatic conversion of hypertext links to Acrobat pdfmarks;
+
+	On screen rotation and scaling of text and figures in Windows NT;
+
+	Accurate font metric files constructed straight from the previewer;
+
+	Text search in DVI file (even text with f-ligatures);
+
+	Inclusion of fonts called for by %%IncludeFont in inserted EPS files;
+
+	Device independent graphics using standard TPIC \specials; 
+
+	Extensive support for `foreign' language keyboards;
+
+	Ability to integrate any editor, not just the `built in' editor;
+
+	Extended color support for text, rules, `monochrome' images; 
+
+	Hyphenation pattern memory for as many languages as you want;
+
+	Fully page-independent, resolution-independent PostScript output;
+
+	PS ready for page imposition, color separation and direct-to-plate;
+
+	Fully user customizable `TeX Menu' to call any DOS or Windows app;
+
+	Full featured Windows editor included (no file size limit);
+
+	Color coding of fonts (for debugging font switching macros);
+
+	Easy font name aliasing to deal with non-standard font naming schemes;
+
+	Path cache speeds directory search in LaTeX 2e (which opens files twice);
+
+	Support for many contributed packages like psfrag, hyperref, xy-pic.
+
+etc. --- all of which make Y&Y TeX a `must have' for publishers, service
+bureaus, TeX consultants, authors, researchers, faculty and students.

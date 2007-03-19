@@ -1,0 +1,150 @@
+This file placed in the public domain in 2006 by the TeX Users Group.
+
+============================================================
+	Coordinate Transformation \specials:	(ctm.txt)
+============================================================
+
+Release 2.0  of the Y&Y TeX System supports device independent rotation,
+scaling, and more general linear transformations via \special.  This works 
+for PostScript output from DVIPSONE. In Windows NT, it *also* works for 
+on-screen display in DVIWindo, *and* for non PostScript printing.
+
+The low-level syntax is:
+
+	\special{CTM: <command1> <command2> ...}
+
+(CTM stands for `current transformation matrix' as in PostScript terminology).
+
+Basic CTM commands:
+-------------------
+
+Commands consist of an operation followed by arguments if required.
+
+Operation	Arguments	Meaning
+-------		--------	-------
+
+rotate		theta		rotate anti-clockwise by theta
+				(rotation is about the current point).
+
+scale		sx sy		scale by sx in x and sy in y
+				(scaling is w.r.t to the current point).
+
+translate	dx dy		translate dx in x direction and dy in y.
+				
+concat      m11 m12 m21 m22	leftmultiply CTM by matrix whose rows are:
+				|m11 m12 0| |m21 m22 0| |0 0 1|		
+				
+The last form provides for arbitrary affine transformations
+including combinations of skewing, scaling, rotation, and reflection.
+
+The above four operations all have an `asterisk version' which inverts 
+the sense of the operation. So for example
+
+	rotate* <theta> is the same as rotate -<theta>,
+
+	scale* <sx> <sy> is the same as scale 1/<sx> 1/<sy>, etc.
+
+Note that concat* will produce an error message if the 2 X 2 matrix to 
+be inverted is singular.
+
+All of the above commands except `translate' preserve the current point
+on the page, in the sense that TeX's current point mapped through the
+new, modified CTM ends up at the same place on the page as TeX's
+current point mapped through the old CTM.
+
+push		none		store current CTM on stack.
+
+pop		none		restore CTM from stack.
+
+popall		none		restore CTM to default CTM, and empty stack.
+
+The current point is, of course, not changed by `push.'  The current
+point on the page *is* however changed by `pop'.  It is changed to
+where TeX's current point maps to through the restored CTM.  This is
+the logical thing to do since then the current point on the page is
+*always* the one obtained by mapping TeX's current point through the
+current CTM.
+
+	(There is also a pop* that does *not* change the current point on 
+	the page, but its use is discouraged since it leads to a confusing
+	inconsistency, where the current point on the page is *not* the 
+	one obtained by mapping TeX's current point through the current 
+	transformation matrix.  For a better way to achieve effects for
+	which this might be used, see below).
+
+The CTM stack is empty at the start of the page.
+Error messages are emitted if there are `pop's unmatched by prior `push'es.
+The stack should be empty at the end of the page in order to preserve 
+page independence.  Error messages are emitted if this is not the case.
+
+Note that more than one command may be listed in one \special.  This
+is convenient for combining `push' with a transformation changing
+operation, or when calling for more than one `pop' in one \special.
+
+Undoing Coordinate Transformation Changes:
+-----------------------------------------
+
+Note that there are two ways to `undo' an operation: (i) by popping
+the CTM stack to a previously pushed CTM or (ii) by using the `asterisk'
+version of a command to undo the transformation.  In the latter case
+the current point on the page is *not* affected (this is not an inconsistency
+since the current CTM is not the original one - differing in the
+translation portion of the matrix).  Here is an example:
+
+	This is on the level
+	\special{CTM: push rotate 30}%
+	then at 30 degrees
+	\special{CTM: pop}%
+	and then level again, after a jump on the page.
+
+In the above, the `and then level again' appear at the same
+vertical position as the `This is on the level'.
+
+	This is on the level
+	\special{CTM: push rotate 30}%
+	then at 30 degrees
+	\special{CTM: rotate* 30}%
+	and then level again, without a jump on the page.
+	\special{CTM: pop}%
+
+In the above, the `and then level again' appear higher
+than the `This is on the level' --- it just continues from 
+where the `then at 30 degrees' left off.  See the difference?
+
+Backward compatability:
+----------------------
+
+For backward comptability, certain raw PostScript \specials are
+automatically translated to the equivalent `CTM' \specials.
+
+A constructions emitted by the LaTeX 2e graphics package like
+
+	ps: gsave currentpoint currentpoint translate 
+	<theta> rotate 
+	neg exch neg exch translate
+
+is treated as if it was \special{CTM: push rotate <theta>}, while
+
+	ps: currentpoint grestore moveto
+
+is treated as \special{CTM: pop}.  Similarly
+
+	ps: currentpoint currentpoint translate 
+	<sx> <sy> scale
+	neg exch neg exch translate
+
+is treated as if it was \special{CTM: scale <sx> <sy>}, while 
+
+	ps: currentpoint currentpoint translate 
+	1 <sx> div 1 <sy> div scale
+	neg exch neg exch translate
+
+is treated as if it was \special{CTM: scale* <sx> <sy>}.
+
+This means that the current `dvipsone' option for the graphics package
+will produce code that will not only work correctly in DVIPSONE as before,
+but now also (in Windows NT) will be interpreted correctly by DVIWindo
+(in release 2.0 of the Y&Y TeX System) for on screen viewing and printing 
+to non PS devices.
+
+=============================================================================

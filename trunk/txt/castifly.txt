@@ -1,0 +1,430 @@
+******************************************************************************
+*	Reprinted from ``Bitmap-free TeX'', a review by John L. Casti,       *
+*	`Notices of the American Mathematical Society,'  Vol. 40,  No. 5,    *
+*	May/June 1993,  by permission of the  American Mathematical Society  *
+*	and the author.							     *
+******************************************************************************
+
+			Bitmap-free TeX
+
+		         John L. Casti		(* see footnote 1)
+
+Devotees of DOS and OS/2 notwithstanding, it's becoming ever more 
+clear that the marketing muscle of Microsoft is turning Windows 
+into the graphical-user interface (GUI) of the foreseeable future.  
+Trying  to ignore this development is like trying to ignore a 
+{\it Tyrannosaurus rex.}  And, in fact, even in the cloistered world 
+of \TeX\ aficionados this message seems to finally be getting through. 
+
+{\it DVIWindo\/} is a Windows-based screen previewer for viewing \TeX\
+DVI files created by any standard implementation of \TeX. The program
+uses outline font rendering technology, suitable for on-screen display in
+Windows 3.x running in either standard or enhanced mode. As a result,
+the program must be run on a machine having at least an Intel 80286
+processor. {\it DVIWindo,} together with its companion Postscript
+printer driver discussed below, is marketed by Y\&Y, Inc., 106 Indian
+Hill, Carlisle, MA 01741.  Since both of these programs call for fonts 
+used in the \TeX\ DVI file to be available in outline form, let me 
+preface this review with a few words about font formats.
+
+Consider the character lowercase ``a'' in a particular typeface like
+Computer Modern Roman ({\tt cmr}) at a particular point size, say 10pt.
+To print or see this character in a \TeX\ document, there must be a
+file for the font {\tt cmr10} that contains this character. There are
+two completely different philosophies as to how to create this font
+file: {\it bitmap\/} and {\it outline\/} format. 
+
+Typical \TeX\ installations keep the font files as bitmaps. 
+In this format, the character ``a'' is represented by a rectangular grid 
+in which the appropriate cells are either ``on'' (black) or ``off''
+(white). Thus, each character in the font is stored as a grid (raster)
+of this type, with the entire collection of characters forming the font
+file ({\tt cmr10} in this case).  The size (i.e., resolution) of the
+grid is chosen to be compatible with the output device, typically
+300~or 600~dots per inch (dpi) for home laser printers and 118 dpi for 
+screen previewing. It's clear from even this cursory description that if 
+you want to have lots of typefaces at many different point sizes, you're
+going to have to have a lot of these individual rasters stored
+somewhere on your system. Moreover, if you want to do funny things with
+the characters like rotate them, fill them in with a pattern other than
+pure black or place shadows behind them, then you must create a
+completely new raster for each special effect. In essence, changing a
+character this way effectively creates an entirely new character
+insofar as bitmap representations are concerned.  Outline fonts do away
+with all these storage and character manipulation difficulties.
+
+The philosophy behind outline fonts is to represent each character in a
+given typeface by a mathematical formula. This formula expresses the
+outline of the character. Thus, for example, there is one and only one
+formula for lowercase ``a'' in the typeface {\tt cmr,} and similarly
+for each character in any other typeface. So if you want that character
+at 10pt, 12pt, or 11.723pt, you just apply the appropriate scale
+factor to the standard formula for the character. In short, you can
+scale and rotate a character simply by manipulating its mathematical
+representation.  Moreover, the other effects noted above can also be
+easily implemented by using the same formula. So, in summary, by
+moving to outline fonts you not only save on computer storage, but you
+gain enormous flexibility in the types of effects you can introduce
+into your \TeX\ document.  Now back to {\it DVIWindo.}
+
+The {\it DVIWindo\/} package provides the \TeX\ user with what can only
+be described as the ``Cadillac'' of screen previewers.  In fact, this
+previewer has so many nice features that it's almost worth installing
+Windows to use it---even if you have no other need for this kind of
+GUI\null.  For reference, the figure below shows a typical page of math
+as it might be previewed on your screen in {\it DVIWindo.}  In addition
+to the features one has come to expect from any decent \TeX\
+previewer---zooming in and out, string search capability, page
+skipping, two-up viewing and page borders---here we find a plethora of
+additional features found in few, if any, of the other previewers I've
+examined.  Let me list just a few of these additional features:
+
+	.... inserted figure shows DVIWindo screen dump ....
+       .... with various pull down menus and dialog boxes ...
+
+$\bullet$ {\it Storage requirements:} To give some idea of the storage
+requirements involved with bitmap versus outline fonts, a typical \TeX\
+installation requires between 10 and 20 million bytes of hard disk space to
+store all the Computer Modern fonts in bitmap format at various sizes and
+resolutions. By way of comparison, the complete set of 75~Computer
+Modern fonts in the industry standard Adobe Type~1 format occupy only 
+around 2~million bytes; this comparison can only get worse as 600 dpi
+printers and higher resolution screen drivers become more readily available.
+
+$\bullet$ {\it Graphics insertions:} One of the biggest drawbacks to
+\TeX\ is the clumsy manner by which graphics files are inserted into
+documents by the \TeX\ {\tt \char'134 special} command. This unhappy
+situation is further compounded by the fact that there is no standard
+way of doing this. As a result, most device drivers have their own
+characteristic way of using the {\tt \char'134 special} command to
+insert graphics files. {\it DVIWindo\/} allows the user to employ any
+of the {\bf ten} most popular of these insertion routines for including
+Postscript graphics files. Moreover, if the graphic includes a
+low-resolution TIFF header file, {\it DVIWindo\/} will display this
+graphic in the preview, allowing the user to see how the actual figure
+will appear when printed at higher resolution. 
+
+$\bullet$ {\it Text shaping:}  Sometimes it's useful to be able to see
+how the text is layed out on the page without wanting to see each
+individual character.  This is often the case when, for example, you
+want to balance out the length of text on two pages that are to be
+viewed side-by-side or when you just want to quickly check for orphans
+and widows (single-lines appearing at the top or bottom of a page).
+{\it DVIWindo\/} allows the option of doing this, which as a by-product
+greatly reduces the amount of time needed for Windows to compose the page. 
+
+$\bullet$ {\it Font information:} Suppose you're debugging a file and
+want to know what font \TeX\ thinks you're using. With {\it DVIWindo\/}
+it's a snap to get such information. Just call up the Font Information
+window and click on the character in question. You can also go the
+other way around: click on a particular font in the Font Information
+window, and the program will immediately highlight every character on
+the page that's typeset in that font.  This capability is especially
+useful when a document uses lots of fonts at similar point sizes, and
+you want to make sure that \TeX\ is using exactly the right font at the
+right place, at the right size.
+
+$\bullet$ {\it Color-coded rules and fonts:} If you're previewing on a
+color monitor, {\it DVIWindo\/} supports some pretty special 
+{\tt \char'134 special} commands of its own.  These allow you to add color 
+to a document's fonts and rules.  This added capability can come in handy if,
+for instance, the document is something like a technical manual that's
+only intended to be viewed on screen.  Of course, the utility of
+color-coding elements in this way may be of great value if you happen
+to have a color Postscript printer sitting around the office.  
+In either case, {\it DVIWindo\/} is the only \TeX\ screen driver I know 
+about that allows you to liven-up your file with splashes of color.
+
+$\bullet$ {\it Ruler:} Sometimes it's desirable to be able to measure on
+the screen exactly how much space is needed to move some block of text
+or a figure in order to get it placed ``just right''. {\it DVIWindo\/}
+includes a very convenient scheme for making precise measurements of
+horizontal and vertical spacing on the screen, a features that other
+previewers have implemented, but not with the high-resolution scale
+available with {\it DVIWindo}.
+
+$\bullet$ {\it Windows Clipboard:} As Windows becomes more and more a
+{\it de facto\/} standard, an ever-increasing number of users will make
+use of other Windows document-processing programs. {\it DVIWindo\/} allows 
+you to select particular portions of a given \TeX\ page and copy it to the
+Windows Clipboard, where it can then be imported ``as is'' into
+programs like Microsoft {\it Word.}  One way to use this capability, 
+for example, would be to create the textual material of your document 
+in {\it Word,} then use the unparalleled mathematical typesetting
+capability of \TeX\ to typeset equations or other mathematical objects.
+These equations could then be previewed in {\it DVIWindo,} from which
+the Clipboard capability could be used to transfer them into the
+target document.
+
+$\bullet$ {\it Changes in the \TeX\ source file:} {\it DVIWindo\/}
+notices when a DVI file changes and redisplays it. This feature allows
+you to edit the \TeX\ source file in one window, while showing the typeset 
+page in another. With this capability, the much-ballyhooed, but vastly
+overrated, WYSIWYG (``what you see is what you get'') features of
+competing programs disappears like a trickle of water in the desert.
+Besides, no serious \TeX'er needs WYSIWYG anyway.  WYSIWYG is for wimps!
+
+OK, I think you get the idea. I'm a fan of {\it DVIWindo\/} and I think 
+you will be too, once you try it. But for the sake of completeness there
+is one minor annoyances that should be pointed out:
+
+The principle nuisance feature of {\it DVIWindo\/} is the lack of any
+on-screen Help. While the manual is excellent and the number of
+commands pretty small, it's still awkward to have to thumb through
+the manual when you forget the exact combination of keystrokes and
+mouse clicks needed to execute a seldom-used command. Besides, online
+Help is almost {\it de rigueur\/} in genuine Windows applications 
+nowadays, in any case.
+
+This is really a complaint of little consequence when measured
+against the many sterling features of {\it DVIWindo}.  So I won't
+belabor it.  Let me now move on to consideration of the printer driver
+{\it DVIPSONE,} which in many ways is the direct complement of the
+screen previewer. 
+
+{\smc Printing in Style}
+
+Screen previewing is one thing; printing is something else again. 
+And the fact is that about 99.44\% of all \TeX\ jobs are ultimately 
+destined to be presented in hardcopy. So whether you're creating a 
+short letter or a multi-volume technical treatise, it all boils down 
+to how fast you can get a nice-looking hardcopy out of your printer.
+This is where {\it DVIPSONE\/} comes into play. 
+
+{\it DVIPSONE\/} is a DOS-based printer driver that produces
+resolution-independent, page-independent Postscript output from \TeX\
+DVI files. Like {\it DVIWindo,} this printer driver is also designed to
+use any outline font that can be rendered in Adobe Type~1 format,
+although in a pinch the program also admits the possibility of using
+bitmapped fonts too. {\it DVIPSONE\/} realizes the dream of real
+device independence: the {\it same\/} file used for proofing on a
+low-resolution laser printer can be sent to a high-resolution
+photo-typesetter. That very {\it same\/} file can also be used for 
+on-screen previewing (with {\it DVIWindo\/}) at arbitrary magnification. 
+
+Another feature of major importance built-in to {\it DVIPSONE\/} is
+`partial font downloading'. In documents calling for many fonts, this
+can reduce the size of the Postscript file by a factor of between 4 and 8.
+Thus, the time needed to copy the file to the printer is greatly
+reduced, as is the likelihood of running out of virtual memory space on
+printers with small memories. 
+
+As with {\it DVIWindo}, {\it DVIPSONE\/} also supports the ten most 
+popular schemes for inclusion of Postscript graphics via the \TeX\ 
+{\tt \char'134 special} command. 
+
+A somewhat more technical, yet still extremely important, feature of
+{\it DVIPSONE\/} is that there is no approximation of coordinates.
+Consequently, positioning of characters and rules will be as accurate
+as the output devices allow.
+
+There are other attractive advantages to using {\it DVIPSONE\/} as a
+printer driver too, including the fact that the program gets all of its
+font metric information directly from the outline font itself.  
+This means that the program has no need at all for the \TeX\ TFM files. 
+A  seemingly minor point, right? Yes, but it can quickly become a major
+advantage if, for example, there is a mismatch between the TFM file
+used at an author's home base for creating a DVI file and the TFM file
+used by the DVI printer driver at a service bureau that's processing
+the file on a high-resolution imagesetter.  Such mismatches cannot occur
+with the output produced by {\it DVIPSONE.} 
+
+I should add in closing this discussion of the printer driver that 
+{\it DVIPSONE\/} can be used in conjunction with {\it DVIWindo\/} to print
+directly from the previewed file in Windows.  This procedure allows the
+user to bypass the notoriously slow and inefficient Windows Postscript
+printer driver, wheeling in the vastly superior routines built-in to
+{\it DVIPSONE.}   The speedup in printing by using {\it DVIPSONE\/}
+instead of the generic Windows driver is truly astonishing.  It's just 
+a pity that {\it DVIPSONE\/} can't be used for printing other types of
+files from Windows, as well. 
+
+To summarize, if you're using Type~1 outline fonts and \TeX, then 
+{\it DVIPSONE\/} is the printer driver of choice---independently of
+whether or not you're also using {\it DVIWindo\/} as a previewer. 
+It's quite simply the most efficient, flexible and sophisticated printer
+driver available for creating Postscript output from \TeX\ DVI files. 
+
+Since both {\it DVIWindo\/} and {\it DVIPSONE\/} are designed to be
+used with outline fonts, let me close this review as it began with a
+short consideration of an alternative to the standard Computer Modern
+fonts normally used for \TeX\ documents. 
+
+{\smc Fonts, Fonts and More Fonts}
+
+Probably \TeX's biggest advantage over other typesetting
+software is its ability to set technical material, especially
+mathematics. This poses a real dilemma for users who want to make use
+of typefaces other than the \TeX\ default standard, Computer Modern. 
+The problem is that the fonts used for text and those used for 
+mathematical material have to ``fit together'' somehow in an
+aesthetically pleasing way. Recognizing this fact, the designers of
+Computer Modern created two completely separate classes of
+complementary fonts---one for text, the other for math. 
+Unfortunately (for \TeX\ users), until recently no other typeface 
+was available in fonts that could serve this dual purpose. 
+But the times they are a changin'. 
+
+In recent years publishers have become increasingly reluctant to use
+Computer Modern, since this typeface has become almost a clich\'e in
+books typeset using \TeX. Moreover, many users have also become
+dissatisfied with the rather spindly-looking appearance of the Computer
+Modern font, longing for a decent alternative.  Responding to this
+demand, the firm of Bigelow and Holmes undertook the task of designing
+an entirely new typeface for \TeX\ users.  The end result are the 
+Lucida Bright and Lucida New Math families of Type~1 outline fonts.
+Taken together, these families contain almost all the character in 
+all the commonly-used Computer Modern fonts---along with several new
+characters not available in the CM~family. 
+
+The text fonts in the Lucida Bright family are already being used to
+set {\it Scientific American\/} magazine, so the reader may already be
+familiar with them without knowing it.  But to see the difference
+explicitly, here are two passages of text and mathematics done in
+Computer Modern and in Lucida Bright and Lucida New Math. Here is 
+the Computer Modern version:  
+
+	... comparison omitted ...
+
+Now here's the same passge using Lucida Bright:
+
+	... comparison omitted ...
+
+See the difference? 
+
+The Lucida Bright passage is somewhat ``heavier'' than Computer Modern, 
+which prevents it from looking so spidery on high-resolution
+photo-typesetters.  Moreover, the large x-height and low contrast between
+vertical and horizontal stems ensures that Lucida Bright fonts also render
+well at low resolution.  These fonts are also available in fully-hinted,
+Type~1 outline format from Y\&Y, Inc.
+
+There is a second alternative to Computer Modern as well.  This is a
+version of the TeX math fonts done in Times Roman by TeXplorators, Inc.
+1572 West Gray, #377, Houston, TX (* see footnote 2).  The \MathTime\
+outline fonts offer Times Roman versions of the TeX math italic, symbol,
+and math extension fonts that can be combined with the standard Adobe
+Type 1 Times Roman fonts that come ``hardwired'' into just about every
+PostScript printer.  For the sake of comparison here is the test passage
+in Times Roman: 
+
+	... comparison omitted ...
+
+Again the difference with Computer Modern is striking.  
+
+While a choice of typeface is a pretty subjective thing, the Times Roman
+version would definitely get my vote for typesetting a math book or long
+paper.  In fact, I recently saw phototypesetter proofs of a topology book
+the Texplorator people are producing, which showed that at high resolution
+these fonts look every bit as good as the best mathematical typesetters
+anywhere in the world can produce.
+
+But as always in life, there's good news and bad.  The good news about
+the \MathTime\ fonts is that there is a very well written, informative 
+42-page manual to tell you how to install and use these fonts in TeX 
+documents.  The bad news is that it takes a 42 page manual to give you
+all the necessary information.  This could be more than a bit of a bother
+for many users, especially those not pretty familiar with the intricacies
+of TeX computer installation.  Let me add here, though, that Y\&Y also
+offers a `Font Manipulation Package' containing a {\it very convenient\/}
+batch file enabling users of MathTime fonts to convert them to true ATM
+compatible Adobe Type 1 format.  Believe me when I say that these utility 
+programs take most of the pain out of using these fonts (* see footnote 3).
+
+A good part of the difficulties in setting up and using the MathTime
+fonts can be attributed to the twin facts that the TeXplorator fonts
+are not Adobe Type Manager compatible (* see footnote 3) which makes them
+awkward to use with some applications like Windows, and that unlike
+the Lucida Bright font set, they are not a {\it complete\/} replacement
+for Computer Modern.  By this I mean that in order to have a complete and
+total set of Times Roman fonts to replace Computer Modern, you have to
+buy some special font sets from Adobe Systems, then put them together
+with the text fonts in your printer and the math fonts from TeXplorators
+(* see footnote 4).  So the overall installation is complicated and the
+expense nontrivial.  But if it's elegance and aesthetically pleasing
+results you're after, it's hard to beat the old reliable Times Roman
+typeface, and TeXplorators have finally made it available to the
+mathematically-inclined TeX user.
+
+{\smc The Bottom Line}
+
+By way of summary, it's useful to compare the two \TeX\ driver packages
+discussed here with another \TeX\ package using outline fonts.  
+This is the program called {\it Vector \TeX,} which was reviewed 
+in these pages a couple of years ago~[1]. This package is the product of
+MicroPress, Inc. 68-30 Harrow Street, Forest Hills, NY 11375.
+On the one hand, {\it Vector \TeX\/} is a complete outline font
+implementation of \TeX, containing not only output drivers for screen and
+printer, but also a \TeX\ typesetting program.  On the downside, however, is
+the fact that {\it Vector \TeX\/} uses a highly nonstandard format for
+storing the outline fonts.  As a result, users cannot use the industry
+standard Adobe Type~1 fonts with {\it Vector \TeX.}  Nor can the 
+{\it Vector \TeX\/} fonts be used in any other program.  
+Just recently a Windows version of Vector TeX was released together
+with a very useful combination manual and introduction to TeX [2]
+written by the Developer of {\it Vector \TeX}, Michael Vulis.  For
+those readers wondering what {\it Vector \TeX} is all about, let me add
+that this volume comes complete with a DOS diskette containing a
+fully-functional demonstration version of the program.  Unfortunately,
+the due date for this review prevented an exploration of the capabilities 
+and inadequacies of this implementation, but preliminary indications 
+suggest it will prove to be a worthy successor to its DOS-based cousin.
+
+By way of contrast, {\it DVIWindo\/} and {\it DVIPSONE\/} are not
+implementations of \TeX, at all (although complete TeX packages
+containing {\it DVIWindo\/} and {\it DVIPSONE} are also available), 
+but merely the ``backends'' needed to translate the \TeX\ formatter
+output into human-readable form.  Thus, they can be used with any \TeX\
+installation that produces standard DVI files. Moreover, they are fully
+compatible with any Type~1 font that the user cares to employ in his or
+her document, giving access to the literally thousands of typefaces
+available from either the Adobe or the True Type typeface libraries. 
+Of course, this flexibility comes with the caveats noted above regarding
+the mixing of textual and mathematical material in one document.
+For this, only the Lucida Bright and Times Romane fonts offer a genuine
+alternative to Computer Modern. I might note also that there is no Lucida
+alternative to Computer Modern with the {\it Vector \TeX\/} implementation. 
+
+So what does it all add up to?  Basically, the message is quite clear:
+If you have an existing bitmap-based implementation of \TeX\ and want
+to get into the 20th century, a call to Y\&Y for a copy of 
+{\it DVIWindo\/} and {\it DVIPSONE\/} or to MicroPress for a copy of Vector
+TeX should be a high priority item on your calendar.  And mutatis mutandis
+for Texplorator's MathTime, if your needs extend to alternatives to
+the Computer Modern typefaces.  All three firms are to be congratulated
+on their efforts to bring TeX one step closer to the desktop publication
+of high-quality, professional-looking mathematical documents.
+
+{\it References}
+
+[1] Casti, J. ``V\TeX\ Typesetting Package,'' {\it Notices of the
+American Mathematical Society,} 38 (February~1991), No.~2, 105--109.
+
+[2] Vulis, M., {\it Modern TeX and its Applications}, CRC Press, Inc.
+Boca Raton, FL, 1993
+
+(* footnote 1) Professor John L. Casti is a researcher at the Santa Fe
+	       Institute in Santa Fe, New Mexico, and a professor at the
+	       Institute of Econometrics, Operations Research, and System
+	       Theory at the Technical University of Vienna.  
+	       He is the author of many books on mathematics, including 
+	       {\it Alternative Realities\/}, published by Wiley in 1989. 
+
+**** footnotes added by Y&Y in view of changes since time of the review *****
+
+(* footnote 2) MathTime is now available in fully hinted ATM compatible
+               Type 1 format from Y\&Y for Macintosh, IBM PC, and Unix/NEXT.
+
+(* footnote 3) The `Font Manipulation Package' is only needed for the old
+               version of \MathTime.  The new \MathTime\ 1.1, hinted by Y\&Y,
+	       is already in ATM compatible Adobe Type 1 format.
+
+(* footnote 4) The IBM PC compatible version of the \MathTime\ 1.1 font set
+	       from Y\&Y {\it includes\/} a set of text fonts, as well as
+	       TeX macro files to make it easy to switch to \MathTime.
+
+(* footnote 5) DVIWindo and DVIPSONE are part of the Y&Y TeX package, which 
+	       also includes the new Y&YTeX, first `dynamic' TeX for IBM PC.
+
+(* footnote 6) Y&Y, Inc. has moved to 45 Walden St., Concord, MA 01742-2505.
+	       (978) 371-3286 (voice)  (978) 371-2004 (fax)

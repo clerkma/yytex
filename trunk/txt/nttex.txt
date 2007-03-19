@@ -1,0 +1,138 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=======================================================================
+		Using Y&Y TeX System with Windows NT
+=======================================================================
+
+When using the Y&Y TeX System with Windows NT, one needs to be aware of
+some difference between Windows 3.1 and Windows NT.  If you have just
+received your Y&Y TeX System then most of the problems described below will
+already have been taken care of, except for font installation issues.
+For details on problems with the automatic conversion from Type 1 to TrueType
+in Windows NT, please refer to `ntfonts.txt.'
+
+
+(1a) Avoiding `&' in file and directory names:
+
+Windows NT (as some other operating systems like OS/2 and some DOS clones)
+uses `&' on the command line as a separator between two commands.  This makes
+it awkward to use executables named `y&ytex.exe' and directories like
+`c:\y&ytex', environment variables named `y&ytex' (and TeX formats like
+`&plain').  On the command line you *can* quote the & by preceding it with ^
+(e.g.  c:\y^&ytex\y^&ytex.exe) but this can get awkward, and also works only
+from the command line, not in a batch file.
+
+	Henceforth the file and directory names `y&ytex' will be replaced
+	with the names `yandytex.exe' and `c:\yandytex' respectively.
+
+To make this change you will need to move the contents of the `y&ytex'
+directory to a new directory called `yandytex'.  You also need to
+change entries in `dviwindo.ini' that refer to `y&ytex'.  Change the name
+of `y&ytex.exe' to `yandytex.exe.' And if you have batch files that have
+hard-wired references to `y&ytex' these need to be changed as well (check
+c:\bat\tex.bat, latex.bat, latex2e.bat and initex.bat)
+
+
+(1b) Allowing `+' instead of `&' when specifying `format' for TeX.
+
+TeX is told what `format' file to use on the command line using the `&'
+For example: 	tex &lplain ...
+
+will load up the LaTeX 2.09 `format' (that is, the file `lplain.fmt'), If no
+format is specified, then TeX looks for the default format file `plain.fmt'.
+
+When you call TeX in Windows NT from the command line you need to quote
+the & by preceding it with ^ (e.g. tex ^&lplain) but this can get awkward.
+It also does not work when a batch file is called from the `TeX Menu'.
+
+	Y&Y TeX will accept + as an alternative to & on the command line.
+
+If you are running under Windows NT, then look through the [Applications]
+section of your `dviwindo.ini' file (in your Windows directory) and replace
+occurences of &plain with +plain, &lplain with +lplain, &latex with +latex etc.
+
+
+(2a) Windows NT can convert Type 1 fonts to TrueType form.
+
+Use ATM 4.0 for NT if possible.  It is also possible - but not recommended -
+to use the automatic conversion to TrueType format built into NT.
+You can install Type 1 fonts from `Fonts' in the `Control Panel' (in the 
+`Main'  program group) and have them automatically converted to TrueType 
+form (provided the font vendor permits this).
+
+When you do this, elect to have the Type 1 fonts made available to the
+PostScript printer driver (so the converted TrueType versions will be used
+*only* for on screen display, and the original Type 1 fonts will be used for
+printing on PS printers).  We recommend checking all three check boxes in the
+dialog box.
+
+The automatic conversion is on the whole somewhat better than that provided
+by commonly available font tools.  However, for commercial grade, hand hinted
+Type 1 fonts --- such as fonts from Y&Y --- there will be a noticable loss in
+rendering quality, since the original hinting is lost.  For less well made
+fonts the converted version may well render as well as the original (because
+the `auto hints' in the Type 1 version are likely to be not much better than
+the `auto hints' in the converted TrueType version).
+
+Math fonts present problems in Windows NT 3.5, because of misfeatures of the
+conversion process.  Most notably problems with math fonts in Windows 3.5
+occur because of (i) repeated encoding, (ii) problems with character code 0,
+and (iii) with character code 173.
+
+*	These mis-features have been fixed in Windows NT 3.51 --- so please
+	get Windows NT 3.51!
+
+
+(2b) TrueType fonts can be reencoded in NT
+
+Text fonts do not present any additional problems.  The ENCODING
+environment variable controlling `on the fly' reencoding effects.
+
+It is possible to permanently reencode Type 1 text fonts *before* conversion
+using the `encode.bat' batch file (which calls upon the utilities REENCODE,
+AFMtoPFM, AFMtoPFM, and SAFESEAC).  The process is described in
+`encoding.txt' --- we recommend TeX `n ANSI encoding if you decide do this.
+
+
+(2c) Converted Type 1 Fonts installed under the WRONG NAME!
+
+Please refer to `ntfonts.txt' for full details on this problem with T1INSTALL.
+
+
+(3) Font File Name changes when fonts are `re-installed'
+
+Before installing a new version of a TrueType font, make sure to remove
+the old one --- including the corresponding font files.  Otherwise you
+may end up with several copies of the font files with slightly different
+names.  Windows NT automatically extends the font name with underscores
+and modifies the last letter to create a new unique font file name.
+
+For example, if you install LBMS several times without removing old
+copies you may end up with: lbms.fot, lbms___0.fot, lbms___2.fot, etc.
+This breaks the assumed fixed relationship between font and font file name.
+
+DVIWindo tries to deal with this problem when searching for fonts, as well
+as when you use WriteTFM, WriteAFM.  It always finds the correct font if
+there is at least one underscore between the original font file name and the
+`version number' added at the end. If the original font file name is
+already 7 or 8 characters long, this algorithm may fail.  The best solution
+is to avoid having more than one font file for a given font (this also saves
+disk space!).
+
+(4) Long file names --- tex.pool, lcircle10.tfm, lcirclew10.tfm
+
+In DOS, long file names are automatically truncated to 8+3 characters.
+This does not happen in Windows NT, even when the file system is FAT.
+Consequently files called for in TeX with long names will not be found
+under the DOS shortened names.
+
+On a Windows NT installation with a file system that supports long file
+names, you may want to  rename `tex.poo' => `tex.pool', rename `lcircle1.tfm'
+=> `lcircle10.tfm' and rename `lcirclew.tfm' => `lcirclew10.tfm' (`tex.poo'
+should be in the TEXFORMATS directory, typically c:\yandytex\fmt, while the
+other files should be in one of the TEXFONTS directories, typically
+c:\yandytex\tfm).   There is another alternative, however:
+
+	On a Windows NT installation with a FAT file system (such as a dual
+	boot configuration), use the new  -8  command line flag, which forces
+	Y&Y TeX to truncated file names to the DOS 8+3 convention).

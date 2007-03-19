@@ -1,0 +1,54 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-----------------------------------------------------------
+Useful Windows and command prompt `tricks'  (wintrick.txt):
+-----------------------------------------------------------
+
+Q: I can't seem to find files with extension .ini or .exe when browsing.
+
+A: By default, Windows Explorer does not show extensions on some file names
+(like .exe, .bat, .ini, .dll), which can be a source of great confusion.
+
+Double click `My Computer'  Select `View > Folder Options'  Select 
+the `View' tab.  Uncheck `Hide file extensions for known file types'
+under `Files and Folders'.
+
+Q: I don't seem to have t1instal.dll (or other file) on my NT machine.
+
+A: Explorer may be hiding files from you.  Particularly if you are
+not logged in as the `Administrator'.
+
+Double click `My Computer' Select `View > Folder Options' Select the `View'
+tab.  Open `Hidden Files' and make sure that `Show all files' is selected.  
+
+Q: I need to run a utility (like SETUPTTF or ATMREGAN) but I don't know 
+where it is (and I have misplaced my manual).  How do I find the file?
+
+A: see answer to next question.
+
+Q: Sometimes TeX (or I) get(s) confused because several versions of a
+file may exist on my machine.  How can I find them all?
+
+A: In Windows Explorer select `Tools > Find > Files or Folders'.
+Make sure to check `Include subfolders'.
+
+Alternatively, you can drop into a command prompt and use the DIR
+command with the /s (recurse subfolders) flag.
+
+Q: How do I upgrade all copies of a particular file found on my machine?
+
+A: You can drop into a command prompt and use the REPLACE command
+with the /u (update) /p (prompt) and /s (recurse subfolders) flags.
+Be careful with files that have commonly used names (like README.TXT)!
+Always use the /p flag so you can control which files are actually
+get to be replaced.
+
+Q: What is the easiest way to install TrueType fonts in NT
+(and Type 1 fonts when not using ATM 4.0 for NT)?
+
+A: There are several ways, but probably the easiest is the following:
+Drag the .ttf (in the case of TrueType) or .pfm (in the case of
+Type 1) to the `fonts' folder (in your windows folder).  You can use
+Windows Explorer to open the `fonts' folder and the folder from where
+you are installing the fonts.  Or start from `My Computer' and click
+on the relevant drive icons.

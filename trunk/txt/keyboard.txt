@@ -1,0 +1,201 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+============================================================================
+	Working with different keyboards	 (file: keyboard.txt)
+============================================================================
+
+Described here are strategies for dealing with differences between 
+keyboard mapping and font encoding.  Which method is best depends on:
+	(i)   what type of editor you use, 
+	(ii)  how the fonts are set up, and 
+	(iii) whether the fonts contain ready-made accented characters or not.  
+
+INTRODUCTION:
+-------------
+
+Suppose you are using an editor to enter or modify a TeX source file.  When
+you press a key on the keyboard, a character code number may be entered into
+your TeX source file.  What code number you get when a particular key is
+pressed depends on the encoding used by the software (i.e. operating system
++ editor) reading the signals from the keyboard.  Several commonly used
+encoding vectors are spelled out in detail in `encoding vector files'
+(*.vec) in the c:\yandy\fonts\encoding directory.  Most of these encoding schemes 
+agree on the upper and lower case letters and the digits, but little else.
+
+Keyboard remapping is typically *not* an issue if you use a language that
+does not depend on accented or composite characters.  
+
+*****************************************************************************
+*	Readers using TeX only for English text can stop reading right here!    *
+*****************************************************************************
+
+You can, of course, use {\TeX}'s normal \accent mechanism for accented
+characters (e.g.  \"a => adieresis).  This can become extremely tedious when
+you are working in a language that uses accented characters heavily.  
+In this case it is usually easier to just enter the accented characters
+directly from the keyboard.  Accented characters and special characters
+are typically represented by character codes in the 128 -- 255 range, but, 
+which code is used for a particular character depends on the keyboard mapping.
+
+If you are using a Windows editor, you typically will have the keyboard
+mapped to produce character codes corresponding to `Windows ANSI' encoding
+(refer to `ansinew.vec').  Conversely, if you are using a DOS editor, you
+will typically get character codes corresponding to a particular `DOS code
+page'.  In English speaking countries this usually is DOS code page 437
+(refer to `dos437.vec'), while in many countries with writing that can be
+represented using the `Latin 1' character set this will instead be DOS code
+page 850 (refer to `dos850.vec').  You can control which DOS code page is
+loaded from the DOS command line using the MODE command - refer to DOS manual.
+
+The keyboard mapping may or may not be the same as the mapping used on the
+output side for your fonts.  If you are using text fonts installed `out of
+the box' using Adobe Type Manager (ATM), for example, then they are
+typically set up for Windows ANSI.  If you are instead using such fonts
+straight from DOS, they may instead be set up for `Adobe StandardEncoding'
+(refer to `standard.vec').  For details on font encoding issues please see
+`morass.txt' and `encoding.txt' (in the \yandy\doc-misc directory).
+
+The Y&Y TeX System provides several ways of dealing with differences between 
+keyboard encoding and font encoding.  There are a three cases to consider.
+
+Summary:
+
+If you are using normal text fonts (*) and a Windows editor, jump to `Case 1'
+
+If you are using normal text fonts (*) and a DOS editor, jump to `Case 2'
+
+If you are using Computer Modern fonts, jump to `Case 3a' or 'Case 3b'
+
+(*) Note that CM fonts are not "normal text fonts," because:
+	(i)  they use their own fixed unique encoding (TeX text), and 
+	(ii) they do not have any ready-made accented characters.
+
+CASE 1:	Keyboard mapping matches font encoding:
+-----------------------------------------------
+
+	This is the situation when you are using real text fonts (not CM) and
+	TeX 'n ANSI (LY1) encoding, or Windows ANSI, or ISO Latin 1, and a 
+	Windows editor for your TeX source files.
+
+This is the easiest of all, since (virtually) nothing needs to be done!  No
+remapping of character codes is required.  This is what happens if you use a
+Windows editor to create your source files, and if you also install the fonts
+without any reencoding, in which case they will be set up for Windows ANSI.
+(You may need to \input ansiacce in your source file to compensate for plain
+TeX and LaTeX's hardwired assumptions about accents and special characters).
+
+The same considerations apply if you use instead the recommended `TeX n ANSI'
+(texnansi.vec) encoding for your text fonts, since this has the accented
+characters in exactly the same places as Windows ANSI.
+
+In LaTeX 2e you may want to add:
+
+	\usepackag[ansinew]{inputenc}
+	\usepackage[LY1]{fontenc}
+
+This does not apply to Computer Modern fonts, since these are not
+"normal text fonts", as noted above.  If you like the "CM look" and want
+real text fonts, consider the European Modern (EM) fonts from Y&Y.
+
+CASE 2: Keyboard mapping different, accented characters available:
+-----------------------------------------------------------------
+
+	This is the situation when, for example, you are using real text fonts 
+	(not CM), and a DOS text editor.
+
+If the keyboard mapping is different from the font encoding, but
+the font does contain `ready-made' (pre-built) accented characters then
+you can use TeX's `xchr[]' character code permuting table.  This is a
+table giving the mapping from TeX's internal character codes to those
+used in the source document. The *inverse* of this table (called xord[])
+is used to translate input.  Such a table is held in a plain ASCII file 
+and can be specified on the Y&YTeX command line using 
+
+	-x=<mapping-file>
+
+A typical example would be a case where a DOS editor is used to create the
+source files, while the fonts are set up for Windows ANSI.  In this case,
+the internal representation should match Windows ANSI, and the xchr[]
+table should give the mapping *from* Windows ANSI *to* the DOS code page 
+in use.  TeX then performs the inverse mapping on input.  Sample files
+are provided in the Y&YTeX directory.  The file `dos437wn.map' is 
+appropriate when DOS code page 437 (English) is in use by the editor, while
+`dos850wn.map' is appropriate when DOS code page 850 (Latin 1) is used.
+
+The utility `translate' can be used to create additional tables.  The two
+files mentioned above where made using 
+
+	translate ansinew dos437
+and
+	translate ansinew dos850
+
+and redirection the on-screen output to file (using > on the command line).
+Some editing may be required to fine-tune tables created in this fashion.
+
+Note the apparent inverse order of the arguments.  This is because the xchr[]
+array translates from internal representation *to* the keyboard mapping.
+For another discussion of this scheme please refer to the Y&YTeX manual.
+
+In LaTeX 2e you can use instead the "inputenc" package, e.g.
+
+	\usepackage[cp850]{inputenc}
+
+CASE 3a: Keyboard mapping different, accented characters *not* available:
+------------------------------------------------------------------------
+
+	This is the situation when you are using the CM fonts but need to use
+	accented characters in your text.
+
+A different strategy is required when merely permuting the numbers from 
+0 -- 255 will not do the job, as happens when the fonts lack ready-made
+accented and composite characters.  All commercial grade fonts do contain
+at least the `standard' 58 accented characters.   However,  Computer Modern
+font set do not (when used without reencoding). 
+
+For dealing with accented characters that appear in the input, but
+that do not occur in the fonts, Y&YTeX provides a `keyboard
+replacement' table mechanism.  This allows one to automatically
+expand accented character codes in the input file into TeX commands
+for accented characters.  So, for example, character code 132 may
+become \"a, and 128 may be replaced with \c C.
+
+Keyboard character code replacement can be requested from the command line
+using 
+
+	-k=<key-file>
+
+Look at the file `dos850.key' for an example set up for DOS code page 850
+(`dos437.key' set up for DOS code page 437 and `dos1252.key' set up for DOS
+code page 1252 a.k.a. Windows ANSI).  Each line in this file contains the
+character code number and the replacement string, separated by white space.
+Use "..." to quote the replacement text if it contains white space (useful
+for "\c C" and "\c c" for example).
+
+Normally the replacement string would consist of plain ASCII characters 
+(char codes 32 -- 126).
+
+CASE 3b: Keyboard mapping different, accented characters *not* available:
+-------------------------------------------------------------------------
+
+Another way to deal with this case is to have TeX itself to the remapping.
+This can be accomplished by making the characters `active.'  Simply
+\input meta_437 (for DOS code page 437) or \input meta_850 (for DOS code
+page 850).  This capibility is similar to that provided by Textures
+`option_key' TeX source file.  This approach may have some drawbacks
+in that it makes many characters `active'.
+
+With LaTeX 2e --- for Windows ANSI encoding --- you can also use 
+
+	\usepackage[ansinew]{inputenc}
+
+Avoiding hexadecimal notation in output from TeX:
+-------------------------------------------------
+
+When TeX outputs information on screen or in the log file, it uses hexadecimal
+notation (e.g. ^^cf) for character codes above 126 and below 32.  This can
+make it hard to read text containing accented/composite characters.
+Use the -w command line flag to instead have these characters printed `as is.'
+This by itself works well if your source file was made using a DOS editor.
+If your source file was made using a Windows editor, then use in addition
+the command line flag -j to translate from Windows ANSI to DOS code page 850.

@@ -1,0 +1,86 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-----------------------------------------------------------------------
+Q/A on PostScript Preview, the Y&Y TeX System, and migrating from Unix:
+-----------------------------------------------------------------------
+
+> Q1.	Does the Y&Y TeX System include a PS or EPS previewer?  
+>	For example, if I include EPS figures, can I view them 
+>	as a part of the DVI preview?  
+
+In the Windows world, EPS files have previews.  The previewer in the Y&Y TeX
+system shows all such previews in EPS files.  There is no need for a separate
+PostScript interpreter.  Just about all Windows applications that can export
+EPS will include previews (unless you explicitly turn previews off). This is
+because otherwise such applications are not usable with MS Word, Quark,
+Pagemaker, Adobe Illustrator and other Windows applications, and hence
+could not be effectively sold in the Windows market.
+
+The Y&Y TeX System supports all preview formats, including the platform
+independent TIFF format, which is the most common.  We also support the
+Windows specific WMF preview, produced by a small number of Windows programs,
+as well as the EPSI format used by some Unix programs.
+
+A note: Many people migrating from Unix turn off previews in Windows graphics
+applications that produce EPSF Files because their older TeX system could not
+handle the binary headers in EPSF files with previews. Then, of course, only
+a bounding box will be shown in the previewer.  The LaTeX 2e graphics package
+has no trouble with previews, and trivial changes to epsf.tex and psfig.sty
+corrects those older macro packages as well (details supplied with the system).
+
+If you do have hand generated EPS without preview you can add a preview using
+a flexible commercial PS interpreter like Transverter Pro from TechPool
+Software, or the public domain Ghostview (which is available for Windows).
+
+Also note that in some cases EPS is not the ideal format.  For example,
+images (rectangular arrays of pixels of grey level or color) are much
+more compactly represented in TIFF form than EPS.  The Y&Y TeX system
+supports TIFF format for printing and for on screen viewing.  People
+migrating from Unix are not that familiar with the powerful TIFF image
+format since TeX systems on Unix do not support it.
+
+Finally, images in Windows Meta File (WMF) format can also be inserted,
+printed and previewed.  While windows specific, these are sometimes a good
+alternative to EPS or TIFF for graphics since they are compact, yet can be 
+of high fidelity.
+
+> Q2:	How about the PostScript file produced by the Y&Y TeX System PS
+>	printer driver, can that be viewed using one of your packages?  
+>	That is, do you have something that is the equivalent of 
+>	Ghostview for unix machines? 
+
+You don't need a PS previewer to look at output from the printer driver since
+you can see the file in the previewer, complete with previews of inserted
+graphics in EPS, TIFF or WMF format. In Unix many people instead use a
+PostScript-specific two-stage process, because previewer on Unix do not
+support previews in EPS files.  
+
+The Y&Y TeX System is - as far possible device independent - and does away
+with the need for a PS interpreter.  For example, it can print to any Windows
+supported printer driver, not just PostScript printers.  Also, for example,
+the support for TPIC \special (used by the LaTeX eepic package) is device
+independent, not tied to a PostScript implementation.
+
+> Q3.	Do you support macros such as psfrag?  psfrag allows one
+>	to use latex commands in an EPS file, so that equations can
+>	be displayed in the included EPS files.
+
+Yes, the current version of psfrag is compatibly with our system.  However,
+we don't consider this a great way of adding text to figures.  Since our
+fonts are in industry standard ATM compatible Adobe Type 1 format (known as
+`PostScript' fonts in the Unix world) you can use them in any drawing program
+in Windows.  These applications are typically more powerful than the drawing
+tools that exist in the TeX world.
+
+Note also that you can export typeset material from the Y&Y TeX System by
+copying it to the clipboard and then pasting it into the graphics application
+--- without loss of quality (i.e. it is not a bitmap that is transferred).
+This is a very convenient way to add mathematical labels to graphics.
+
+> Q4. What package would you recommend that would generate reliable EPS
+>	files for inclusion in LaTex files?  That is, do you have any
+>	recommendations for something that would be equivalent to XFIG?
+
+There are many powerful drawing packages available in Windows, including
+Corel Draw, Adobe Illustrator and Micrografx Designer.  For simple graphs
+lower end shareware and freeware tools can be used.

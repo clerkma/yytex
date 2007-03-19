@@ -1,0 +1,53 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+More problems with `invisible ink' and with repeat encodings:
+=============================================================
+
+ATM for Windows cannot handle multiple encodings, that is, one
+character name listed under two or more character codes in the
+encoding vector (Which is something that works just fine in ATM for
+Macintosh, as well as all PS interpreters, and all PS clones).
+
+One aspect of this problem is that a character can only be referenced
+using the first mentioned character code in the encoding vector.
+Which is a major problem with some fonts, and requires reorganizing
+the listing of the encoding vector in the font, as well as rewriting Windows
+software to carefully remap character codes to the ones that
+ATM happens to like.
+
+But there is a second problem.  If you use one of the character codes
+other than the first one, you get `invisible ink'.  The rest of the
+text string is blanked out from there on.  That is, this character
+code is NOT even linked to /.notdef, which is what one might hope for.
+
+For example, suppose the encoding vector contains the following:
+
+.
+.
+dup 195 /space put
+.
+.
+dup 32 /space put
+.
+.
+
+Then you can get a `space' when you use character code 195, and you
+don't get a space when you use the space bar.  Bad enough. But worse,
+typing `abcdef<space>ghijkl' yields only `abcdef' on screen!
+
+So why use repeated encoding in the first place?
+================================================
+
+Most MS Windows (and Macintosh) applications cannot handle character
+codes in the `control character' range 0 -- 31. And many existing
+fonts have characters in that range. 
+
+To make these fonts useable with MS Windows (and Macintosh)
+applications, without disrupting their current users, one can add
+repeated encodings, for the `control characters'.  This is, for
+example, used with Adobe Lucida Math fonts.  
+
+For use with TeX, these fonts need to have characters in the control
+character range.  But these cannot be accessed from most other
+applications.  So the control character range is remapped to 161 -
+170 and 172 - 195.

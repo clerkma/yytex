@@ -1,0 +1,109 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+		Installing the Y&Y  Complete TeX System from diskette
+		=====================================================
+
+It is assumed here that your diskette drive is `a:' and the hard disk is `c:'
+Substitute appropriate drive letters for `a:' and `c:'
+
+(1)	If you are using Windows 95, install ATM 3.02.  Insert the ATM diskette.
+	Then, from the `Start' button, select `Run,' and enter 
+
+		a:install
+
+	Refer to `Installing ATM' in the ATM manual if there are problems.
+	NOTE: do not install ATM 3.02 in NT -- use ATM 4.0 for NT if available.
+
+(2)	Install the Fonts.  In Windows 95 use ATM to install the fonts (see *).
+	In Windows NT, use the `Fonts' icon in the control panel (see **).
+	Details differ slightly depending on which font set you are using:
+
+    (2a)  `Computer Modern' fonts:  install straight off the diskettes.
+	  The 75 CM fonts come on three diskettes. The 40 most used fonts
+	  are on diskette A.  The remaining 35 fonts are on diskette B.  
+	  NOTE: diskette C contains *only* utilities and ASCII text files.
+	  Repeat for the `extra LaTeX + SliTeX' font diskette.
+
+    (2b)  `Lucida Bright + Lucida New Math' font set: install straight off
+	  diskette A.  Repeat for `Lucida Bright Expert' font set.
+	  You need *not* use the `install.bat' batch file on the diskette.
+	  NOTE:  The TFM files are already in c:\yandy\fonts\tfm-lb.
+	  NOTE:  The TeX source files are already in c:\yandy\texinput
+	  (See LB + LNM manual for additional details if neeeded).
+
+    (2c)  `MathTime + Times' fonts:  Create a temporary directory.
+	  Do *NOT* install the math fonts *DIRECTLY* from the diskette.
+	  In Windows NT, copy fonts off the ATM diskette to c:\psfonts.
+	  In the temporary directory run the `prepare' batch file:
+
+		a:prepare  a:
+
+	  Then install fonts MTSY, MTEX and MTMI from the temporary directory.
+	  If you have MathTime Plus, repeat with the MathTime Plus diskette.
+	  You need *not* use the `texttune.bat' batch file on the diskette.
+	  NOTE:  The TFM files are already in c:\yandy\fonts\tfm-ps.
+	  NOTE:  The TeX source files are already in c:\yandy\texinput
+	  (See MathTime manual for additional details if needed).
+
+(*)  Installing fonts using ATM:  Launch the ATM control panel.  ATM 3.02
+     can be found in the `Main' program group (reached from `Start' button
+     by selecting `Programs').  ATM 4.0 makes its own `Adobe' program group.
+     Once in ATM, click `Add' and select the directory and/or drive with the
+     fonts (drives listed last in ATM 3.02).  The ATM control panel will show 
+     fonts available for installation.  Select them all and click `Add'.
+
+(**) Installing fonts in Windows NT.  In NT 4.0 just drag the *.pfm files 
+     to the \fonts folder.
+
+(3)	Install the Y&Y TeX System itself.  Insert Y&Y TeX System diskette 1.
+	In Windows 95 and NT 4.0: from `Start' button select `Run,' enter 
+
+		a:setup
+
+	For LaTeX 2.09 and/or LaTeX 2e support you will be prompted to insert 
+	the first of the `LaTeX Support' diskettes and continue	installation.
+	You can also install LaTeX Support separately later if you wish.
+
+	Using the fonts in Adobe Type 1 format (`PostScript' fonts) with TeX:
+	=====================================================================
+
+If you are using the Y&Y `CM' TeX system then there is no need to change
+anything in your TeX source file.  Simply use `plain TeX' or `LaTeX' from 
+the `TeX Menu' in DVIWindo.  This will invoke the ready-made TeX `formats' 
+set up for CM fonts (copied from the Y&Y TeX System diskettes).
+
+The easiest way to use either MathTime or LucidaBright is to simply read in
+the appropriate TeX macro header file in your TEX source file to switch fonts.
+
+For example, for `LucidaBright + LucidaNewMath' fonts add one of the lines:
+
+	\input lcdplain		% for plain TeX
+or	\input lcdlatex		% for LaTeX 2.09
+or	\usepackage{lucidbry}	% for LaTeX 2e
+
+(If you use Lucida Expert with LaTeX 2.09, then use \input lcdltexp).
+Similarly, for `MathTime + Times + Helvetica + Courier' fonts, add one of:
+
+	\input mtplain		% for plain TeX
+or	\input mtlatex		% for LaTeX 2.09
+or	\usepackage[LY1,mtbold]{mathtime}	% for LaTeX 2e
+
+(If you use MathTime Plus with plain TeX or AMS TeX use \input mtplainx).
+And just comment out this line to switch back to CM when you wish.
+
+IMPORTANT: If text fonts are set up for something other than `TeX text' 
+encoding (used by CM fonts), then also add one of the lines before the 
+above.  For plain TeX and LaTeX 2.09 use:
+
+	\input texnansi		% TeX 'n ANSI encoding
+or	\input ansiacce		% MS Windows ANSI encoding
+
+For LaTeX 2e use instead:
+
+	\usepackage[LY1]{fontenc} % TeX 'n ANSI (LY1)
+or	\usepackage[ansinew]{texnansi} % Windows ANSI
+
+Use this with all fonts other than CM fonts.  Note that the installation
+default is TeX 'n ANSI encoding, which provides access to all 228 glyphs.
+
+See /texinput/hello_LB.tex, hello_MT.tex, hello_EM.tex for sample useage.

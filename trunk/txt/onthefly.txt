@@ -1,0 +1,208 @@
+******************************************************************************
+	Using `on the fly' font encoding	(file: onthefly.txt)
+	Placed in the public domain in 2006 by the TeX Users Group.
+******************************************************************************
+
+Y&Y TeX System is the *only* TeX implementation (on any platform)
+supporting the superb rasterizing capabilities of ATM while allowing
+completely *arbitrary* user selected font encoding (character layout).  
+
+If you wish to read some background information on font encoding (character
+layout) please refer to `morass.txt', `encoding.txt', and `psfonts.txt' 
+(but ignore references to `encode.bat' and utilities like `reencode.exe').
+
+If you installed Y&Y TeX System 1.2, then the ENCODING environment variable
+has already been set up for you.  Otherwise:
+
+(1)	Pick an encoding vector to use for all of your text fonts.  
+	We recommend `texnansi' (TeX 'n ANSI), since it provides access 
+	to all 228 glyphs found in most plain vanilla text fonts.
+
+	Other vectors used by some include `ansinew' (Windows 3.1 ANSI)
+	and `standard' (Adobe StandardEncoding).  You may also wish to
+	consider `tex256' (`Cork' encoding a.k.a. T1) or even `textext' 
+	(the limited old `TeX text' encoding of CM, a.k.a. OT1), or
+	the proposed new `8-bit base' encoding `8r'.
+
+	You can even design your own: use the file `texnansi.vec' as a guide.
+
+(2)	Unless you have chosen `ansinew' (Windows ANSI) encoding, add a
+	line to the [Environment] section of your `dviwindo.ini' file like
+
+		ENCODING=texnansi
+
+	(or whatever). (Ignore any `Encoding=...' line in the [Window] section)
+	Remove any lines of the form `TEXANSI=1' in the [Environment] section.
+
+	Conversely, if you have decided to use `ansinew' (Windows ANSI), 
+	then instead add the line `TEXANSI=1' to the [Environment] section 
+	of `dviwindo.ini'.  And remove any line of the form `ENCODING=...'
+
+	Install text fonts straight off the diskette using ATM.
+
+(3)	Launch DVIWindo.  Select `Show Font' from the `Font' menu.  Select
+	one of the text fonts.  If you have the original PFB and PFM files
+	installed (that is, if you previously used Windows ANSI encoding),
+	then text fonts will appear with the new encoding you selected.
+
+	Fonts that have previously been explicitly reencoded will instead
+	appear with their own hard-wired encoding.  If you want to also
+	reencode these to use the new character layout, then first `Remove'
+	the fonts using ATM, then `Add' the fonts from the original diskettes
+	using ATM.  If you cannot find the original fonts files, refer to the
+	Appendix for a work-around.  
+
+(4a)	For TeX you also need TFM files.  TFM files are encoding sensitive.
+	Font sets designed for use with TeX, such as LucidaBright and
+	MathTime already come with ready made TFM files for some commonly
+	used encodings. Typically three versions are provided for text fonts:
+
+		`*.tft'		`TeX n ANSI' encoding
+		`*.tfa'		Windows ANSI encoding
+
+	(older versions of the font sets may have other ready-made TFMs).
+	Simply copy the appropriate files and rename the extension, e.g.
+
+		copy a:\tfm\*.tft c:\yandytex\tfm\*.tfm /b
+
+	Note that math fonts have fixed encoding.  Copy these directly, e.g.
+
+		copy a:\tfm\*.tfm c:\yandytex\tfm 
+
+	You need to make new TFM files if you use fonts for which no TFM files
+	are supplied, or if you use an encoding vector other than ones listed.
+
+(4b)	You can make TFM files directly from DVIWindo.  Either select the
+	fonts individually in `Write TFM...' or do all of the text fonts in
+	Type 1 format using `Write All TFMs...'
+
+	First make sure that the TEXFONTS environment variable in the
+	[Environment] section of `dviwindo.ini' is set up to point to where
+	TFM files are to be stored (e.g. c:\yandytex\tfm).  DVIWindo drops
+	new TFM files in the first directory in the list in TEXFONTS.  
+
+	Make sure that the VECPATH environment variable is set up to point
+	to where encoding vector files may be found (e.g. c:\dvipsone). 
+
+	Make sure that DVIWindo will be able to find AFMtoTFM.exe
+	(that is, in the DVIWindo directory, or where VECPATH points).
+
+	If you use `Write All TFMs...' then please wait for the AFMtoTFM 
+	icon to go away each time before going on to the next font.
+
+(5)	Plain TeX and LaTeX are hard-wired for the Computer Modern fonts.
+	This includes complete reliance on the peculiar font encoding used
+	by Computer Modern fonts.  If you use some other encoding you will
+	need to override builtin assumptions about where special characters
+	(s.a. `ae', `oe', `oslash', `germandbls') are and where accents 
+	(s.a. `acute', `grave', `tilde', `circumflex', `ring') are.
+	You do not need to do anything about glyphs that are only accessed
+	in TeX using pseudo-ligatures (s.a. `endash', `emdash',  `fi', `fl'
+	`quotedblleft' and `quotedblright').  For commonly used encodings,
+	ready-made TeX macro source files exist for this purpose, e.g.
+
+		\input texnansi		% for TeX `n ANSI encoding
+		\input ansiacce		% for Windows ANSI encoding
+
+	In LaTeX 2.09, such a \input statement should come before the
+	\begin{document}.  In LaTeX 2e it comes after \begin{document}.
+Appendix A: Which fonts to create TFM files for:
+--------------------------------------------------
+
+	It may not be obvious for which fonts files you need to make TFM files.
+	The file `ATM.INI' (in your Windows directory) has a complete list of
+	installed fonts, and lines in the [Fonts] section list both the
+	Windows Face Name (e.g. Times) and the font file name (e.g. tir).
+	The Windows Face Name is the name used in font menus, while the font
+	file name is the name by which the font may be referred to in TeX.
+	(i.e. the name of the TFM file).  
+
+	If you don't know which lines in ATM.INI are relevant, then look on
+	the font diskette to see what PFB files may be found there.  Also,
+	the documentation that comes with a font set usually lists the fonts.
+	Check out installed fonts using `Show Fonts' from the `Font' menu.
+
+	Note that a file `texfonts.map' in your TEXFONTS directory (typically
+	c:\yandytex\tfm) can provide an aliasing mechanism for font names. 
+	If you prefer to use `Karl Berry' names, for example, then simply
+	change the name of `texfonts.kb' to `texfonts.map' and use that.
+	Or, if you have DVI files made for Textures, then instead rename
+	`texfonts.bsr' and use that (and add UseTTFINI=0 to [Environment]).
+
+Appendix B: Using AFMtoTFM to make new TFM files:
+-------------------------------------------------
+
+	It is typically easiest to use `Write TFM...' or `Write All TFM's...'
+	from DVIWindo to make TFM files for text fonts.  In some cases you
+	may wish to use AFMtoTFM directly to gain control over some details. 
+
+	You can use AFMtoTFM from the DOS command line to make new TFM
+	files if you have AFM files.  For text fonts use the command line
+	flags -vadjx to set up appropriate ligatures and pseudo ligatures:
+
+		afmotfm -vadjx -c=texnansi c:\afm\*.afm
+		copy *.tfm c:\yandytex\tfm
+
+	Make sure you *only* do this for text fonts.  Math fonts have
+	hard-wired fixed encoding and come with ready-made TFM files.
+
+	If you do not have the original AFM files, make new ones using
+	`Write AFM...' from the DVIWindo `Font' menu.  The AFM files produced
+	this way are complete with proper character bounding boxes *and* 
+	information on unencoded characters (unlike incomplete AFM files made
+	using PFMtoAFM or TFMtoAFM).  Use this technique *only* for text fonts.
+
+Appendix C: What to do if you previously reencoded the text fonts:
+----------------------------------------------------------------
+
+(1)	If you previously used all your text fonts with Windows ANSI
+	encoding, then you have the original PFB and PFM files installed on
+	your hard disk, and need not make any changes to them.
+	You can tell whether you used Windows ANSI encoding by checking
+	whether you have the line TEXANSI=1 in the [Environment] section of
+	your `dviwindo.ini' file.  Remove this if you wish other encoding.
+
+(2)	If you previously reencoded your text fonts using the `encode.bat'
+	batch file, or `texttune.bat', or directly using the REENCODE and
+	AFMtoPFM utilities, then reinstall the text fonts directly from
+	the original diskettes using ATM.  
+
+	You can check what encoding your PFB and PFM files were set up for
+	using the DECODE utility.  Also, you can read the PFB file into some
+	text editors (although it is in part binary).  If near the beginning
+	you find `/Encoding StandardEncoding def' then the fonts have *not*
+	been reencoded and would thus appear in Windows ANSI form in Windows.
+	If instead you find /Encoding 256 array ...' followed by a lot of
+	character names, then the fonts have indeed been reencoded (or they
+	are math/symbol/decorative fonts).
+
+(3)	If you have reencoded your text fonts, but no longer can locate the
+	original PFB and PFM files, then you need to `revert' the PFB files
+	to StandardEncoding and create new PFM files set up for Windows ANSI.
+
+	If you cannot locate the original AFM files, then make sure to
+	*first* use DVIWindo's `Write AFM...' to write out proper AFM files
+	for the fonts in question.  
+
+	Exit Windows.  Create an empty temporary directory and make that the
+	current directory.  Use the REENCODE utility without any command line
+	arguments on all of the PFB files of the text fonts in question.
+	Note that REENCODE can handle wild-card arguments. For example:
+
+		REENCODE -v c:\psfonts\ti*.pfb
+
+	This will restore the `/Encoding StandardEncoding def' line.
+	Note that the current directory should *not* be the directory 
+	from which the PFB files are read by REENCODE.
+
+	Now create new PFM files using AFMtoPFM on the AFM files, e.g.
+
+		AFMtoPFM -vx -c=ansinew c:\psfonts\afm\ti*.afm
+
+	Note that the encoding vector specified here should be `ansinew',
+	*NOT* the new encoding vector you wish to use.  That is because 
+	the fonts will be installed as ordinary text fonts in Windows.
+
+	Now launch Windows. Just to be safe, first `Remove' the old versions
+	of the fonts using Adobe Type Manager.  Then `Add' the fonts from the
+	temporary directory using ATM.

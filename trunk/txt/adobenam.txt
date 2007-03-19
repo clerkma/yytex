@@ -1,0 +1,98 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Adobe Font Filename Format on the PC
+------------------------------------
+
+Format for outline fonts:
+
+ttsss.xxx
+
+tt	typeface abbreviation
+sss	typeface style code
+
+xxx	file name extension
+
+Underscores are used to extend the filename to eight characters.
+
+TypeFace Style Codes (sss):
+--------------------------
+
+BL	Black
+BLI	BlackItalic
+BLO	BlackOblique
+
+B	Bold
+BI	BoldItalic
+BO	BoldOblique
+BSL	BolsSlanted
+
+W	Book
+WI	BookItalic
+WO	BookOblique
+
+K	Compressed
+
+C	Condensed
+CB	CondensedBold
+CBO	CondensedBoldOblique
+CEB	CondensedExtraBold
+CL	CondensedLight
+CLO	CondensedLightOblique
+CO	CondensedOblique
+
+D	Demi
+DI	DemiItalic
+DO	DemiOblique
+
+EB	ExtraBold
+EBO	ExtraBoldOblique
+
+EK	ExtraCompressed
+
+H	Heavy
+HI	HeavyItalic
+HO	HeavyOblique
+
+I	Italic
+
+KB	KursivBold
+KX	KursivRegular
+
+L	Light
+LI	LightItalic
+LO	LightOblique
+
+M	Medium
+
+N	Narrow
+NB	Narrow-Bold
+NBO	Narrow-BoldOblique
+NO	Narrow-Oblique
+
+O	Oblique
+
+PS	Poster
+
+RG	Regular
+
+R	Roman
+
+S	SemiBold
+SB	SemiBold
+SBI	SemiBoldItalic
+
+SL	Slanted
+
+T	Thin
+TI	ThinItalic
+
+U	Ultra
+UK	UltraCompressed
+UL	UltraLight
+ULI	UltraLightItalic
+
+
+The above can't be the whole long range truth, since two characters for
+typeface only gives 26 * 26 = 676 and the Adobe Type 1 library already
+contains about 770/3.8 = 200 items!

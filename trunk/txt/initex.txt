@@ -1,0 +1,285 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+----------------------------------------------------------------
+		New formats, ini-TeX, and hyphenation (initex.txt)
+----------------------------------------------------------------
+
+Basic information about creating new format files is in the Y&Y TeX Manual at:
+
+	"Making new TeX formats --- running ini-TeX"
+
+A `format' is a memory state of TeX recorded in a compact binary file.  The
+term is also used to refer to the TeX source files that are read in order to
+create that memory state.  Plain TeX, AMS TeX, LaTeX 2.09 and LaTeX 2e are
+standard TeX formats supplied with the Y&Y TeX System.  Some users find it
+convenient to create additional formats using their own source files.
+
+One of the reasons for creating and using new format files is that it takes
+less time for TeX to read the compact binary memory dump than to reinterprete
+the plain ASCII source files that define a particular format.  While this
+will always be true, it has become much less important as machines have
+become faster.  Creating a new format file was clearly a good idea when it
+saved 30 seconds per TeX run, but is no longer so obviously worthwhile when
+is takes just a second to read and interprete the corresponding source files.  
+
+In one situation, however, new format files are needed: when hyphenation
+patterns for languages other than English are to be used.  This is because
+TeX cannot load new hyphenation patterns at run time and because the default
+format files have the US English hyphenation patterns wired in.
+
+*	However, for those not enthralled with the idea of creating format 
+*	files, please skip ahead to the section entitled:
+*	"How to operate without creating new formats files"
+
+Using ini-TeX:
+--------------
+
+You create a format file using ini-TeX.  Ini-TeX is a special form of TeX
+that has the ability dump a format file, and to construct special data
+structures used in the internal represenation of hyphenation patterns.  
+In the case of the Y&Y TeX System, there is actually no separate ini-TeX.
+You just use -i on the command line with Y&Y TeX.  Note that ini-TeX
+requires more memory than TeX ordinarily does.  This is mostly for extra 
+temporary data structures used to construct the compact hyphenation "trie".
+
+You can create simple formats directly from the DVIWindo `TeX menu'.
+If you run ini-TeX from the `TeX Menu' then you may need to
+temporarily uncheck the `Working Directory' item in the `Font' menu
+(if you use a common working directory).
+
+However, we recommend that you create new formats from the command
+prompt (Start > Programs > Command Prompt), because you have more
+control over command line options and source files.  Create a temporary 
+directory to work in, and make that the current directory. E.g.
+
+	cd \
+	mkdir initemp
+	cd initemp
+
+TeX will dump the new format file and the corresponding log file into the
+current directory. You can also place needed source files into this directory
+before running ini-TeX.  This make it less likely that old (or modified)
+versions of the required files will be picked up by mistake.  If the source
+file for the format is elsewhere, give the full path on the ini-TeX command
+line (but make sure that any files called by that one are also accessible).
+
+Alternatively you can set up the TEXINPUTS environment variable in
+dviwindo.ini to include the directories with the source files.
+
+IMPORTANT NOTE: when you use ini-TeX there is (normally) no preloaded format,
+so that the `format specific' environment variables (such as LATEX or LPLAIN)
+will *not* be referred to.  This means the TEXINPUTS environment variable itself
+controls where TeX looks for files.  Add the directories with the required
+source files to the semicolon-separated list in TEXINPUTS.  (To save typing,
+remember you can use \ at the end of a directory path to indicate subdirectory
+search and \\ to indicate recursive subdirectory search).
+
+You can run ini-TeX from the command prompt using for example:
+
+	c:\yandy\yandytex\tex -i plain.tex
+
+IMPORTANT NOTE: After running ini-TeX on the source file defining the format,
+you may need to type \dump, to actually dump out the format when you get back 
+to the ** prompt in TeX.
+
+Some format's source files (such as AMS TeX) already include the \dump control
+sequence so you don't need to use it explicitly, while some (like plain TeX)
+require you to type \dump.
+
+After the ini-TeX run you will have a .fmt file which is the binary memory
+dump of the new format.  Move this to where your format files are.  The
+TEXFORMATS environment variable tells TeX where this is (typically
+c:\yandy\formats).  For example:
+
+	xcopy plain.* c:\yandy\formats
+
+Also move the corresponding .log file to the same place for future reference.  
+You may want to consult the log file to check that everything went well.
+At this point you can delete all the files in the temporary directory. E.g.
+
+	del c:\initemp\*.*
+	rmdir c:\initemp
+
+Using the new format file:
+--------------------------
+
+You can start TeX with a format file called say myformat.fmt preloaded by
+mentioning that name on the command line: 
+
+	tex &myformat ...  
+
+You can't use this form in Windows NT, however, since the ampersand (&) has
+special significance on the command line. For this reason, Y&Y TeX also
+allows the alternate form: 
+
+	tex +myformat ...  
+
+To run LaTeX 2e on the file mysource.tex, for example, use the command 
+
+	c:\yandy\yandytex\tex +latex mysource.tex 
+
+To make it convenient to use a new format, add a new entry to the TeX menu
+(unless you are just replacing an existing format with a new version).
+The easiest way to do this is to pick the format on the menu just before
+where you want the new format to appear.  Hold down the control key and click
+on the existing TeX menu entry.  Edit the `Menu Item Name' (key) and
+`Application Call Pattern' (value) fields, then Click `Add'.  
+(Alternatively you can add a line directly to the [Applications] section of
+the dviwindo.ini file in your Windows directory.)
+
+To a limited degree, you can build up a format incrementally, by adding
+additional source files.  You can do this by running ini-TeX on the new
+source file, while specifying an existing format using & or +.  There are
+limitations to this approach since TeX cannot reclaim storage used for
+hyphenation patterns.  In fact, TeX normally won't let you load new
+hyphenation patterns on top of ones already compiled into a format. 
+With Y&Y TeX, use the command line flag -p to reset hyphenation patterns 
+in preparation for loading new ones.
+
+Files needed for plain TeX, AMS TeX, LaTeX 2.09 and LaTeX 2e:
+-------------------------------------------------------------
+
+Ini-TeX needs a file called tex.pool (in c:\yandy\yandytex\fmt).  
+It should normally be able to find this without your help using the
+environment variable TEXPOOL.
+
+plain TeX:	plain.tex and hyphen.tex (in c:\yandy\tex\base)
+
+			tex -i plain	(type \dump at * prompt)
+
+AMS TeX:	amstex.ini and amstex.tex (in c:\yandy\tex\base\amstex)
+		plain.tex and hyphen.tex  (in c:\yandy\tex\base)
+
+			tex -i amstex.ini
+
+LaTeX 2.09:	lplain.tex, lfonts.tex, latex.tex (in c:\yandy\tex\base\latex209)
+		lhyphen.tex and hyphen.tex
+
+			tex -i lplain	(type \dump at * prompt)
+
+LaTeX 2e:	latex.ltx	 (in c:\yandy\tex\latex\base)
+		texsys.cfg, fonttext.ltx, fontmath.ltx, preload.ltx,
+		hyphen.ltx, ltpatch.ltx,
+		t1enc.def, ot1enc.def, omlenc.def, omsenc.def
+		t1cmr.fd, ot1cmr.fd, ot1cmtt.fd, etc.
+
+		tex -i latex.ltx
+
+If you do not have the file latex.ltx (for example if you just downloaded
+a new packed distribution of LaTeX 2e), then you first need to `unpack' using 
+
+		tex unpack.ins.
+
+on the contents of c:\yandy\tex\latex\base
+
+Adding hyphenation patterns:
+----------------------------
+
+To load hyphenation patterns for several languages, you set \language to a
+different number before each pattern is loaded.  You can do this explicitly
+using numbers (0, 1, etc.), or by allocating new numbers to mnemonic 
+control sequences (like \usenglish, \ukenglish, \german, \french etc.) 
+with the \newlanguage primitive.  See below.
+
+The babel package has a convenient systematic interface for this. It uses
+files called hyphen.cfg and language.dat. You may need to make a copy of
+the hyphen.tex file used for US English hyphenation patterns with a new name
+of ushyph.tex, since a new file called hyphen.tex will be replacing it.  
+
+(You can copy hyphen.tex to the directory in which you are running
+ini-TeX, of modify the one at c:\yandy\tex\base --- note that since
+ini-TeX does not load any format file, "format specific" environment
+variables do not apply, so that the TEXINPUTS environment variable
+controls where ini-TeX looks for files.)
+
+For additional information on babel:  c:\yandy\tex\latex\required\babel\install.txt
+
+You can find hyphenation patterns for many languages in the 
+`CTAN\language\hyphenation' folder on the CD-ROM.
+The most up to date version of these may also be found on CTAN in
+/tex-archive/language/hyphenation.  CTAN is ctan.tug.org, ftp.dante.de,
+ftp.tex.ac.uk and mirrors (see ctan.txt for more).
+
+Using hyphenation patterns for several languages:
+-------------------------------------------------
+
+Place the following file in the directory where you are running ini-TeX.
+Call this file hyphen.tex (see comments for justification).  Modify to 
+suite your own language requirements (keeping in mind that adding hyphenation
+patterns you won't use will bloat the format file and slow loading a bit).
+
+% This is a replacement for hyphen.tex when running ini-TeX for plain TeX
+%
+% Note: it is not "politically correct" to call this file hyphen.tex, since 
+% one should not modify one of the files of the TeX system without changing 
+% its name.  But there really is no choice, since one has to either:
+%
+% (1) call this file hyphen.tex thus displacing Knuth's original hyphen.tex, or
+% (2) call this file hyphen.cfg say and change plain.tex to call hyphen.cfg
+%     instead of hyphen.tex - thus displacing the original plain.tex!
+
+\newlanguage\usenglish \language\usenglish
+\input g:/language/hyphenation/ushyph.tex
+
+\newlanguage\ukenglish \language\ukenglish
+\input g:/language/hyphenation/ukhyphen.tex
+
+\newlanguage\german \language\german
+\input g:/language/hyphenation/ghyph31.tex
+
+\newlanguage\french \language\french
+\input g:/language/hyphenation/frhyph.tex
+
+\newlanguage\dutch \language\dutch
+\input g:/language/hyphenation/nehyph2.tex
+
+\newlanguage\spanish \language\spanish
+\input g:/language/hyphenation/eshyph.tex
+
+% (of course you would pick the languages that *you* want to use)
+%
+% After dumping the format (using \dump if needed) you will be able to switch
+% languages using the predefined names above, such as \language\french,  etc.
+%
+%EOF
+
+Running out of space.
+---------------------
+
+Loading hyphenation patterns for many languages can substantially
+increase the format file size.  This may slow loading of TeX a bit.
+Perhaps more importantly:
+
+If you load hyphenation patterns for many languages you may run out
+of hyphenation pattern space in ini-TeX.  In this case simply use the
+command line argument -h=... with ini-TeX to increase the initial allocation.
+
+If you load hyphenation exceptions for many languages you may run out
+of hyphenation exception space in ini-TeX.  In this case simply use the 
+command line argument -e=... with ini-TeX to increase the initial allocation.
+
+Type tex -? to see other command line options accepted by Y&Y TeX.
+
+How to operate *without* creating new formats files:
+---------------------------------------------------
+
+Since TeX (and computers) are now so fast, the cost of loading the source
+files for a format are no longer all that significant.  This makes it
+reasonable to operate without format files, by reading the files that define
+the format into TeX before your source file.  In this case you do need to
+run ini-TeX (which takes a bit more memory). For example, suppose you want to
+run LaTeX 2e with a different set of hyphenation patterns than those built
+into the existing latex.fmt file.  Then add the following to the start of 
+your source file:
+
+\let\dump\par				% disable command to dump out format file
+\input latex.ltx			% read file defining LaTeX 2e
+
+\newlanguage\german			% allocate number to new language
+\language\german			% switch to that language
+\input g:/language/hyphenation/ghyph31.tex	% read hyphenation patterns
+
+....						% your LaTeX source code goes here
+
+This will run a bit slower than if you had dumped out a new format file,
+but is more flexible.

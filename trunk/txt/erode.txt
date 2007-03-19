@@ -1,0 +1,65 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Erode:
+
+Erode is called exactly once when a character is rendered (it is, of
+course, not called when the character is already in the cache).
+
+On the stack at the time of the call are three numbers, uo, vo, and s
+say (typically uo = 1.0, vo = 1.0 and s = 10.0).
+Erode returns two numbers on the stack, u and v say,
+(normally either u = 1.0 and v = 1.0 or u = 0.0 and v = 1.5).
+If there is not definition for Erode, the numbers on the stack before
+the call are used, that is, in effect u = uo and v = vo.
+
+The two paramaters u and v control erosion in character rendering.
+Setting both of these parameters to zero suppresses erosion and leads
+to rendering like that found in Type 3 fonts (that is there is an
+average ``dot-growth'' of 1/2 pixel all the way around).
+``Normal'' erosion is attained by setting both parameters to one.
+
+The first parameter, u, controls the erosion of horizontal, vertical and
+inclined parts of the outline.
+The second parameter, v, controls additional erosion of slanted parts of
+the outline only.
+When u is zero, vertical and horizontal stems are not eroded,
+independent of the value of v. 
+Negative values for u and v cause the outline to grow rather than to
+shrink.
+
+Erode decides what values to return based on a calculation
+involving the device pixel size.
+If the number of device pixels corresponding to a given character space
+interval is above some threshold, then u = 1.0 and v = 1.0 is returned
+(This is the normal mode, where all part of the character are eroded
+more or less equally).
+If the number of device pixels is below the threshold, 
+then u = 0.0 and v = 1.5 are returned
+(This means that horizontal and vertical stems are not eroded).
+
+% reduction of overshoot phenomena at small point sizes ?
+
+Erode itself contains two (integer) parameters, n and m say.
+The decision is based on whether
+
+	( (n + 1/2) - [(s/10) * n] )^2  <  d(m)^2
+
+where [x] denotes the integer part of x, while d(m) is the distance
+in device pixels corresponding to the character space distance m.
+Note that the left hand side equals a quarter, independent of n,
+when s = 10 (as it typically is).
+
+Thus a character will be rendered normally when m maps into more than
+1/4 device pixel.  When m maps to a smaller number of device pixels,
+erosion is curtailed somewhat.
+
+Typical values for m range from 60 to 200, with smaller numbers used
+for light faces and larger ones for heavy faces.
+
+Typical values for n range from 5 to 24.  Again with some tendency
+for heavier faces to have larger values.  
+As noted above, however, when s = 10, the decision is independent of n.
+
+On the Apple LaserWrite, a font has to be printed at some
+ridiculously small size (like 1pt or 2pt) for anything but the normal
+erosion to kick in.

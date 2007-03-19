@@ -1,0 +1,298 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+============================================================================
+	Setting up for Karl Berry names and T1 encoding	(ltx2efnt.txt}
+============================================================================
+
+NOTE: you can ignore the following if you use only Computer Modern (CM)
+      fonts, since CM fonts have fixed font names, and also have their own
+      fixed encoding (i.e. they are not treated as normal text fonts).
+
+Summary:
+
+Some users of LaTeX 2e - particularly those using DVIPS on Unix - use Karl
+Berry names to refer to fonts - as opposed to the actual font file names -
+and use T1 (Cork) encoding (character layout) - as opposed to an encoding
+like TeX 'n ANSI that provides access to all glyphs in a text font.
+
+If you interchange documents with such people you may find it convenient
+to set up your system to do the same.  This is quite easy:
+
+(1) Look at the file `texfonts.map' in your TEXFONTS directory (typically
+    c:\yandytex\tfm) and verify that it aliases Karl Berry names to the
+    real names.  If it does not, find the file `texfonts.kb' on the Y&Y TeX
+    diskette and replace your old `texfonts.map' file with this one.
+
+(2) Look at the ENCODING=... line in the [Window] section of dviwindo.ini
+    (in the Windows directory).  Change it to read ENCODING=tex256
+    (this will reencode all text fonts using tex256.vec encoding vector).
+
+(3) Make sure the TFM files for text fonts are set up for T1 (Cork) encoding.
+    The TFM files are in the TEXFONTS directory (typically c:\yandytex\tfm).
+    Run the DECODE utility on them to see what encoding they are set up for.
+    If they are not made for T1 (tex256.vec) encoding, make new ones using
+    `WriteTFM...' or `WriteAllTFMs...' from the `Fonts' menu in DVIWindo.
+
+If your colleagues prefer to use OT1 (but heavens only knows why :) 
+then just use instead ENCODING=textext and change the `8t' suffix in 
+texfonts.map to `7t'.
+
+LaTeX 2e font naming and font encoding issues:
+----------------------------------------------
+
+Font Names:
+
+It is possible to use a variety of names for fonts in TeX, including the
+actual font file names.  This is the easiest and most reliable approach,
+since the font file names never change.  
+
+However, when interchanging documents with people on other platforms,
+particularly platforms that have no system level support for scalable fonts
+(e.g. Unix, other than on the NeXT) one may be forced to deal with
+arbitrarily assigned names.  
+
+The Y&Y TeX system by default uses the actual font file names.  However,
+aliases for the actual font names can be set up in the `texfonts.map' 
+file in the TEXFONTS directory (where TFM files are kept).
+This aliasing file is accessed by (i) Y&YTeX itself, (ii) the DVIWindo
+previewer, and (iii) the special DVIPSONE PS printer driver.
+
+Several sample files are provided with names of the form `texfonts.*'
+The file `texfonts.bsr,' for example, sets up aliases for the font names 
+used with Textures.  The file `texfonts.kb' sets up aliases for Karl
+Berry font names.  To use Karl Berry names, delete the default 
+`texfonts.map' file and rename the file `texfonts.kb' to take its place.
+
+Font Encoding:
+
+Text fonts may be encoded in a variety of ways.  Operating systems like
+Macintosh, Windows and OS/2 have default encoding schemes for text fonts.
+Systems that do not have support for scalable fonts obviously do not.  
+
+The LaTeX development has been trying to arrange for some standardization,
+particulary on Unix where there are no system level standards for encoding.
+LaTeX 2e provides support for just two encoding schemes:
+
+OT1	TeX text (see textext.vec).  The encoding used by CM text fonts.
+
+T1	Cork encoding (see tex256.vec).  New encoding covering Eastern Europe.
+
+The Y&Y TeX system can be set up to use any encoding for text fonts. 
+An encoding that provides access to all 228 glyphs in text fonts is
+
+TeX 'n ANSI	(see texnansi.vec) 
+
+It is quite easy to set up the system to use any encoding vector. Simply add 
+
+ENCODING=texnansi
+
+or whatever encoding vector you chose - to the [Window] section of
+`dviwindo.ini' and create TFM files for the fonts you use from `WriteTFM...'
+or `WriteAllTFMs...' from the `Fonts' menu in DVIWindo.  Fonts sets designed
+for use with TeX typically come with ready-made TFM files for some commonly
+used encoding schemes like TeX 'n ANSI.
+
+PostScript trickery and fake fonts:
+-----------------------------------
+
+In a world that only supports PostScript, many tricks can be used to construct
+figures, and to make modified versions of fonts.  But these methods are not
+device independent and cannot be used for on screen display or with non-PS
+printers (except via PS rasterizers such as Transverter Pro or GhostScript).
+
+It is best to use device independent methods if possible, since this 
+will facilitate on-screen preview and printing to non-PS devices. 
+
+Figure rotation and positioning, for example, can be achieved via raw
+PostScript inclusions, but it is better to use the printer drivers
+\special{...} syntax for figure inclusion to take care of this if possible.
+
+Timothy Van Zandt's PSTricks package has many powerful features, but does
+depend totally on PostScript, of course.  You may find that using TPIC
+\special{...}s allows you to draw simple graphs and figures in a device
+independent way.  Such TPIC code can be hand generated or produced by a
+package such as `eepic.sty'.  If you do use PSTricks, make sure to use the
+short prolog files needed to customize it to the DVIPSONE environment. 
+
+DVIPS can be asked (in psfonts.map) to make up narrow versions of
+fonts, oblique versions and fake smallcaps.  These transformations
+are restricted to PostScript and hence not device independent.
+One can achieve similar effects with DVIPSONE by including such code
+in PostScript header files (see narrow.ps and smallcaps.ps for examples).
+But again, the effect is restricted to PS output devices.
+
+By the way, a true smallcaps font cannot be produced by algorithmic
+transformation.  It is best to get the real thing.  The Times-Roman
+family, for example, has a companion `Times Roman Smallcaps and Old 
+Style Figures' font family which is professionally designed.
+
+Similary, an `obliqued' font made by algorithmic skewing is not an 
+italic font, and a `narrowed' font made by algortihmic compression 
+of one axis is not a `condensed' font.  If possible, get the real thing!
+
+Document interchange details:
+-----------------------------
+
+The following describes issues that arise when interchanging TeX documents
+with people on other platforms, particularly Unix systems running DVIPS.
+
+Just for example, lets say you are using Helvetica with T1 encoding.
+
+How things work with DVIPS/AFM2TFM:
+----------------------------------
+
+On Unix with DVIPS/AFM2TFM (assuming you use T1 encoding) you will have 
+(i) a TFM file called phvr8t.tfm (possibly other suffix), 
+(ii) a VF file called phvr8t.vf, (possibly other suffix), and 
+(iii) another TFM file called phvr8r.tfm (or something like that, 
+the details - such as base file names and suffices - vary with time).
+
+If you want to include the font in the final PS file (* see notes further
+down) you also will have to have the actual font in PFA or PFB format - this
+may be called hv.pfb, hv______.pfb, or Helvetica.pfb, or something else,
+depending on how you installed the font, and whether the operating system
+provides scalable font support.  In this font file it will say that the
+PostScript /FontName is `Helvetica'.
+
+Then, in config.ps you tell DVIPS about various psfonts.* files such as
+psfonts.phv.  In psfonts.phv you give DVIPS the relationship between TFM
+file name, PS FontName.  You also have to tell it how to reencode the font,
+and what the font file it should include.  Something like:
+
+phvr8r Helvetica <8r.enc "TeXBase1Encoding ReencodeFont" <8r.enc <Helvetica.pfa
+
+The TFM and VF files can be made
+(i) using AFM2TFM based on the fonts AFM file, or
+(ii) or PLtoTF, VPLtoVF etc (which may be called from `fontinst'), or 
+(iii) the TFM and VF files may also be from CTAN -
+if you are using some of the standard fonts in a standard way.
+
+The TeX source code (*.fd) refers to the T1 encoded Helvetica font 
+by the name phvr8t (or whatever the suffix is these days).
+
+For the `standard' text fonts the above files have been made up and
+placed on CTAN in the forest of files rooted in fonts/psfonts.
+For other fonts you have to work a little harder to create them...
+
+How to do the equivalent thing with Y&Y TeX System:
+--------------------------------------------------
+
+Just install the fonts using ATM control panel.  Then tell the system 
+you are using T1 encoding:
+
+	ENCODING=tex256
+
+in the [Environment] section of dviwindo.ini (If you use OT1 encoding set
+ENCODING=textext, and for TeX 'n ANSI it would be ENCODING=texnansi).
+
+You can refer to the font using the font file name which is `hv'.  
+Or, you can instead refer to it via the Karl Berry name `phvr8t' - just 
+as above - if you have texfonts.map set up to alias font names this way 
+(of course, you may need to add the `suffix de jour' :=)
+
+There is a *single* TFM file called hv.tfm, which can be made by;
+(1) using `WriteTFM...' in DVIWindo (after setting ENCODING=... as above), or
+(2) running AFMtoTFM on the hv.afm file for Helvetica (with command line arg
+-c=tex256 to tell it what encoding you want), or (3) use the ready-made
+TFM files that come with MathTime fonts, or the Y&Y TeX System.
+
+And that's it:  
+Your preview will appear with the right font, reencoded as desired.  
+Your print-out will appear with the right font, reencoded as desired.
+
+If you set things up this way, you should be able to transparently view/print
+files (as well as run TeX on source files) made in the Unix DVIPS/AFM2TFM
+world.  Of course you then have to compromise and live with T1 - or OT1 -
+encoding since that is all that LaTeX 2e fully supports (you may prefer to
+use TeX 'n ANSI - or at least 8r encoding - see below).
+
+Some Notes:
+-----------
+
+With Helvetica, of course, you wouldn't want to actually download the font
+file, so the <Helvetica.pfa part of the psfonts.map line would be dropped.
+Correspondingly with the Y&Y TeX System, DVIPSONE would not download
+hv______.pfb since it is listed in standard.sub as a printer-resident font.
+
+Choice of encoding:
+-------------------
+
+OT1 encoding (textext.vec) is what many CM text fonts use.  It is seriously
+short of glyphs, only using some 92 out of the 228 found in most text fonts
+(and in turn having slots for upright upper case Greek, for example, which no
+roman text font other than CM has).
+
+T1 encoding (tex256.vec) is better, but still not ideal because it misses 
+38 of the 228 `standard' glyphs.  In turn, it has slots reserved for Eastern
+European accented/composite characters --- which most people don't use.
+
+8r encoding (8r.enc) is better, being close to TeX 'n ANSI, but is not
+officially supported as an encoding to use in TeX (only as `raw'
+encoding base for VFs for T1 and OT1).  But see 8r.sty for details.
+
+TeX 'n ANSI provides access to all 228 glyphs found in text fonts
+(plus ff, ffi, ffl, dotlessj - if the font has them). The simplest
+way to take care of the TeX end of things is to add 
+
+	\usepackage[LY1]{fontenc}
+
+to the source file (Which can be commented out or changed to
+\usepackage[T1]{fontc} when somebody runs the file on a system that 
+uses a different encoding).
+
+PS Trickery and avoiding including derived fonts in PS output file:
+-------------------------------------------------------------------
+
+If you want to use `PS Trickery' to make fake narrow, and fake smallcaps and
+obliqued fonts, you can use PS files (see narrow.ps and smallcap.ps) included
+in the PS file as headers/prologs by using -w=...  on the DVIPSONE command
+line or via \special{header=...}
+
+If you want to *also* preview with those `fake' fonts you can use the 
+`Font Manipulation Package' to create proper ATM compatible Adobe Type 1
+fonts that can be used with any Windows program (for simple changes like
+slanting or narrowing you can actually do this without the full FMP, just 
+the utilities that already come with the Y&Y TeX System).  
+
+You can *still* use `PS Trickery' when outputing PS (avoiding inclusion of
+the real thing) by telling DVIPSONE that those fonts are printer resident 
+(and also including the PS trickery files as `PS headers' - as above).
+
+Amazing complexity:
+-------------------
+
+You can see the complexity of the DVIPS/AFM2TFM VF approach on CTAN in, for
+example, fonts/psfonts/adobe/helvetic/...
+
+There are - for just four styles each of Helvetica, Helvetica-Narrow and
+Helvetica-Condensed:
+
+(*) 13 AFM files
+
+(*) 54 TFM files
+
+(*) 40 VF files
+
+(*) 5 FD files
+
+This is pretty amazing for styles of just three related font families!
+
+In contrast, 4 styles of each of Helvetica, Helvetica-Narrow,
+Helvetica-Condensed take just
+
+(*) 24 TFM files and two FD file (one for each encoding).
+
+with the Y&Y TeX system.  There is just one TFM file per font per encoding.
+
+PostScript:
+-----------
+
+And all this agony because TeX has no notion of font encoding.
+Now most programs don't make it easy to change encoding, but
+at least they start off with a useable encoding (such as 
+Macintosh standard roman or Windows ANSI) - rather than the mish-mash
+of twelve different bizarre encodings used in CM.  Of course,
+historically we can see where that mess came from, but it is
+now hard to deal with and has caused enless pain and agony...
+   
+****************************************************************************

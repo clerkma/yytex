@@ -1,0 +1,39 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Note on scaling of the Computer Modern outline fonts:
+----------------------------------------------------
+
+These font metric files are based in the information produced by
+MetaFont and hence are in dimensionless units, as they should be.
+When a font is to be used at a particular point size, it has to be
+scaled appropriately, as usual.  
+
+A potential problem arises because TeX, and most software working
+with DVI files produced by TeX, assumes that a point is a "printer's
+unit", that is, 1/72.27 of an inch, while PostScript assumes that a
+point is a "big point", that is 1/72 of an inch.
+
+As a result, if one wishes to obtain output using outline fonts that
+is EXACTLY the same size as output produced using bitmap versions of
+the CM fonts, one needs to be sure to specify the correct point size.
+Thus, for example, one should use something like
+
+	/cmr10 findfont 10 72 mul 72.27 div scalefont setfont
+
+to obtain a true 10 point (printer's units) outline font. (Check
+first, however, that your DVI-to-PS converter isn't already rescaling).
+
+In any case, the effect of rescaling on the character outlines
+themselves will be quite negligible, the ONLY noticable effect being
+on character widths, and hence line lengths.
+
+The difference is only 0.375 % and so not noticable in most cases.
+It can in fact be totally ignored when a DVI-to-PS converter is used
+that uses absolute positioning commands within a line rather than
+relative moves (such as Nelson Beebe's DVIALW converter).
+
+(The alternative of scaling all of the font metric information by
+multiplying by 72/72.27 was thought to be too  ad hoc  to be
+considered seriously).
+
+Berthold K. P. Horn (1990 June 10)

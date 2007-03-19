@@ -1,0 +1,330 @@
+Copyright 1993 Y&Y Inc.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Some Notes on Printing in DVIWindo:
+===================================
+
+This file gives:
+
+(A) Comparison of printing direct from DVIWindo versus calling DVIPSONE.
+
+(B) Details for Setting up the printer in Windows 3.1
+
+(C) Some Trouble Shooting Information when printing from DVIWindo.
+ 
+
+(A) Comparison of printing direct from DVIWindo versus calling DVIPSONE:
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+*  DVIWindo can print the current page in the current screen mapping mode
+   (`Print View').  This allows printing of enlarged and shifted views 
+   of a page.
+
+*  DVIWindo can also print the character set of a selected font shown on
+   screen using the current screen mapping mode (again, using `Print View').
+
+*  Finally, DVIWindo can print the whole document currently being viewed, 
+   or selected pages thereof (`Print...').
+
+When printing the whole document (or selected pages), DVIWindo can either
+use the Windows printer drivers, or call upon DVIPSONE --- if DVIPSONE is
+available, and if the printer is a PostScript printer.
+
+Linking to DVIPSONE from DVIWindo:
+----------------------------------
+
+A check button in the page selection dialog box makes it possible to choose
+DVIPSONE for printing from DVIWindo.  This check box appears only if DVIWindo
+can find DVIPSONE.  DVIPSONE.EXE should be somewhere on the DOS search PATH.
+A PIF file for DVIPSONE called DVIPSONE.PIF may be placed either in the
+Windows directory or somewhere on the DOS search PATH.
+
+You can use the PIF editor to create the PIF file. The `Program Filename'
+should specify the DVIPSONE executable file (e.g. c:\dvipsone\dvipsone.exe).
+Any command line arguments specified are ignored (since suitable command 
+line arguments are passed from DVIWindo).
+
+The `Display Usage' field in the PIF file can be set up for running
+`Windowed' rather than `Full Screen' (assuming that that is possible in the
+current Windows configuration).  
+
+Also, one may choose to check the `Close Window on Exit' box.  The advantage
+of doing this is that there are then no inactive Windows left around after
+printing.  The disadvantage is that error messages from DVIPSONE, if any,
+disappear as soon as DVIPSONE exits.  It is perhaps best to initially
+not close the window on exit (and to manually close the resulting
+inactive windows).  Once the linkage from DVIWindo to DVIPSONE has been
+checked out, one can modify the PIF file to `Close Window on Exit'.
+
+It is possible to cancel printing from DVIPSONE by typing control-C
+while the DVIPSONE windows is selected (although this may not properly
+terminate the printing job on the printer --- unlike the proper behavior
+exhibited when DVIPSONE runs directly in DOS).
+
+In the page selecting dialog box is a check box labelled `Run Minimized'.
+If this is checked, DVIPSONE is run as an icon, which reduces the clutter on
+the desktop, but also means that one won't see any error messages from
+DVIPSONE. It may also slow down printing considerably.  When running
+minimized, it probably makes sense to also check `Close Window on Exit'.
+
+It is possible to do other things in Windows while DVIPSONE is running,
+although speeed will be impacted (as happens when the Windows print spooler
+is running).  But avoid running DVIWindo since it refers to the same DVI file.
+
+Differences between printing using DVIWindo and using DVIPSONE:
+---------------------------------------------------------------
+
+The two ways of printing from DVIWindo use very different code and so,
+not surprisingly, have quite different properties and limitations.  
+DVIPSONE is specialized to produce very efficient PostScript code, while
+Windows allows printing to any device for which a printer driver is available.
+
+*  DVIPSONE produces PostScript files that are much smaller than those
+   produced by the Windows PostScript driver (by a factor of four to six 
+   in extreme cases).
+
+*  DVIPSONE produces PostScript files must faster than does the Windows
+   PostScript driver. 
+
+*  DVIPSONE produces PostScript files that print much faster than those
+   produced by the Windows PostScript driver.
+
+*  DVIPSONE uses sophisticated font management techniques, such as
+   partial font downloading, to conserve printer memory --- the
+   Windows PostScript driver downloads complete fonts. 
+
+TeX jobs typically calls for many fonts and may cause the printer to run
+out of virtual memory (VM) when printing using the Windows printer driver.
+The symptom is that after a lot of activity on the printer, no output is
+produced.  Download the error handler (ehandler.ps) ahead of time to check
+whether this is what is in fact happening.
+
+*  DVIPSONE produces resolution-independent output.  The output produced
+   by the Windows printer driver is tuned for the selected printer.
+
+*  DVIPSONE produces code that observes page independence - pages can
+   be randomly permuted and removed from the PostScript file without
+   breaking the code.  
+
+Page imposition software and software for printing `n-up' on a page,
+can use much simpler techniques when PostScript files use proper Document
+Structuring Conventions and observe page independence.
+
+*  DVIPSONE takes more care in character and rule placement than does the
+   Windows printer driver.
+
+*  DVIPSONE supports on-the-fly font reencoding (but not when invoked from
+   DVIWindo).  DVIWindo requires actual reencoding of the outline font files.
+
+On the other hand:
+
+*  Both DVIWindo and DVIPSONE support text color, rule color, and monochrome
+   image color specials.
+
+*  Both DVIWindo and DVIPSONE support specials for insertion of TIFF files.
+
+But perhaps the main advantage of printing directly from DVIWindo is that:
+
+*  DVIWindo uses the Windows printer drivers and so is not limited to 
+   PostScript output devices.
+
+
+(B) Details for Setting up printers in Windows 3.1:
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+
+Fast Printing Direct to Port:
+----------------------------
+
+This option works in most cases, and speeds up printing.
+To select this option, launch the control panel and select `Printers'.
+At this point you can select `Use Print Manager'.  
+Select `Connect' and then check `Fast printing direct to port'.
+
+Baud rate on serial lines:
+--------------------------
+
+In Windows 3.1, the baud rate on serial lines can be set higher than 19,200
+baud.  If your printer is on a serial line, this can make a big difference in
+speed.  On most systems 38,400 baud is safe.  In many cases a printer can even
+be run at 57,600 baud (such high speed may lead to occassional I/O errors on
+some printers, however).  A third party utility was needed in Windows 3.0 to
+achieve the same effect.
+
+To change the baud rate, launch the control panel and select `Printers'.
+Select `Connect' and then `Settings'.
+The displayed choice of baud rates stops at 19200 baud,
+but you can type in any number you want.  
+Many printers support 38,400 or even 57,600 baud.  
+
+IMPORTANT: before changing the baud rate in Windows, change it on the
+printer. This usually can be done from the front panel or by downloading 
+a short  PostScript program that has calls to some PostScript function like
+`setsccbatch'.  Details are printer specific - see the manual for your
+particular PostScript printer. 
+
+Printing PostScript Error Information:
+--------------------------------------
+
+To have Windows download a simple error handler with each job, launch the
+control panel and select `Printers'. Now select `Setup', followed by
+`Options', followed by `Advanced', finally check `Print PostScript Error
+Information'.  We actually recommend that you leave this UNCHECKED and
+instead download `ehandler.ps' ahead of time.  The Windows supplied error
+handler provides very little information, and it overrides other error
+handler downloaded ahead of time.
+
+Compressing Bitmaps in PostScript printing jobs:
+-----------------------------------------------
+
+The following is only an issue if you have bitmaps in your print job 
+(such as inserted TIFF files) as opposed to just plain text.
+
+The Windows PostScript driver in Windows 3.1 has the ability to use a simple
+run-length coding scheme to reduce the output file size and hence reduce
+transmission time over a slow serial link.  It does however take the
+PostScript interpreter a long time to undo the compression, particularly if
+the printer does not use a high speed processor.  So we recommend that you
+NOT use this feature.  The default in Windows 3.1 is for compression to be ON.
+
+To have the PostScript printer driver NOT use compression, launch the control
+panel and select `Printers'. Now select `Setup', followed by `Options',
+followed by `Advanced', finally uncheck `Compress Bitmaps'.
+We recommend that you leave this UNCHECKED and instead make sure you use the
+highest possible baud rate, or, better yet, a parallel port if possible.
+
+
+(C) Some Trouble Shooting Information when printing from DVIWindo:
+=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Screen display OK, but printing in the wrong font:
+---------------------------------------------------
+
+If the first and subsequent pages come out in the wrong font (typically
+Courier), then the fonts are not being downloaded properly. This may be
+because the fonts have not been installed using ATM, or more likely, because
+the PostScript printer driver doesn't know they are there.  This can happen
+if you install the  printer driver AFTER loading the fonts using ATM.
+In this case, remove the fonts again using the ATM control panel and install
+once more.  Check that the fonts are listed in the appropriate section of
+WIN.INI for the printer of interest (lines starting with `softfont...').
+
+If the first page prints correctly, but subsequent pages use the wrong font
+(typically Courier), then your printer driver thinks there is not enough
+virtual memory in the printer.  The PostScript printer driver then tries to
+compensate by wrapping each page in a save restore pair, which does not work,
+since output from the Windows printder driver is NOT page-independent.  Fonts
+defined on one page will not be available on another if this scheme is used.
+You can check `Download fonts each page' in this, but this will slow printing
+down considerably.  It is usually better to try and increase the amount of
+virtual memory the driver thinks your printer has.
+
+Screen display OK, but some characters do not print correctly:
+--------------------------------------------------------------
+
+On screen display is handled completely by ATM, as is printing to
+non-PostScript printers.  In this case it is basically impossible for
+different font or different font metric information to be used for
+printing than for on-screen display.
+
+In the case of PostScript printers, printing is instead handled by the
+Windows PostScript printer driver, PSCRIPT.DRV.  Both ATM and PSCRIPT.DRV
+refer to the font metric file (PFM), as well as the font's actual outline
+file (PFB). But they interpret them in different ways.  This can result in
+printed results that differ from on-screen display.  The most common problem
+in this regard is usually that ATM and PSCRIPT.DRV use different criteria for
+when a font is to be reencoded to Windows ANSI, as explained elsewhere.
+
+Usually the printed result is OK, but on-screen display is not.  But it can
+also happen the other way around.  A problem occurs when the Windows
+PostScript driver (PSCRIPT.DRV) uses font metric information that is not the
+same as what ATM is using.
+
+The Windows PostScript printer driver bases its selection of a font metric
+file and an outline font to download on the Windows Face Name (not the
+PostScript FontName, or the font's file name).  This can lead to hidden
+problems, since the listing in WIN.INI does not contain any reference to the
+Windows Face Name (unlike ATM.INI, which is organized around Windows
+FaceNames).
+
+The Windows PostScript printer driver obtains the Windows Face Name and the
+PostScript FontName for a particular font file (PFB) from the Windows metric
+file (PFM).  In addition, PSCRIPT.DRV already has wired in a large number of
+PFM files for some commonly used fonts including:
+
+	AvantGarde, Arial, Arial-Narrow, Bookman, Courier, Garamond,
+	Helvetica, Helvetica-Condensed, Helvetica-Black, Helvetica-Light,
+	Helvetica-Narrow, Korinna, Korinna-Kursiv, LubalinGraph,
+	NewCenturySchlbk, Times New RomanPS, Optima, Palatino, Souvenir,
+	Symbol, Times, Times Roman, ZapfChancery, ZapfCalligraphic,
+	ZapfDingbats...
+
+Aslo, recent versions of PSCRIPT.DRV keep a cache of font metric information to
+speed up opening a `printer device context.'  This is a file with a name equal
+to the port to which it applies, with an underscore prefixed.  The file
+extension is `fsf'.  So for example, if there is a PostScript printer on
+LPT1:, there would be a file called `_lpt1.fsf' in the Windows directory.
+
+Here are some ways to run into trouble:
+
+(1) Two fonts with the same Windows FaceName. 
+---------------------------------------------
+
+If two `fonts' have the same Windows Face Name, tehn PSCRIPT.DRV typically
+uses the first one in its softfonts list.  Any others are ignored.  There is
+no warning.  ATM will instead be using the most reecently installed one.
+Older versions are ignored by ATM.
+
+The best way to diagnose this type of problem is to check in ATM.INI what
+association between Windows Face name and font file name is used by ATM.
+Then check in the appropiate `fsf' file to see what PSCRIPT.DRV is using.
+(This file is binary, but Windows Face names and font file names are in ASCII).
+
+ATM keeps information (in ATM.INI) organized on Windows Face Name, so it
+cannot have a listing for two different font files that happen to use the
+same Windows Face Name. PSCRIPT.DRV  instead keeps information organized on
+font file name (in softfonts sections of WIN.INI), so it can very well list
+two fonts with the same Face Name (but a different file name).
+
+How can one have two fonts with the same Face Name?
+---------------------------------------------------
+
+(A) When a font is reencoded using REENCODE, AFMtoPFM, and AFMtoTFM, the new
+font file names normally have an `x' added.  These should be installed only
+after the original version of the font has been removed.  If this is not
+done, then new softfont entries may be added to the end of the listing of
+fonts in WIN.INI. ATM will use the new version, but PSCRIPT.DRV may very well
+use the old one, since it most likely appears earlier in the list.  
+
+Solution:
+---------
+
+(i) Always remove the original fonts before installing the modified version
+(using `Remove' in the ATM control panel); or
+
+(ii) Use the same file name (that is, without the added `x') for the modified
+version (This prevents listing of both versions in WIN.INI); or
+
+(iii) Use a different Windows Face Name for the new version (either using
+the `w' command line flag in AFMtoPFM or using `Comment MS-WindowsName' in
+the AFM file for the new version).  This way both the original and the
+modified version of the font are available.
+
+Othe potential sources of problems:
+-----------------------------------
+
+(B) Some font vendors supply `clones' of commonly used fonts. To save money
+on trademark royalty charges, they will use different PostScript FontNames.
+But they may use the same Windows Face Name in order to let the user know
+what this font is a clone of.  This can lead to disaster, particularly if the
+file names differ.  The reason is that when such `clone' fonts are installed,
+ATM will use the newly installed `clone' version, but PSCRIPT.DRV will most
+likely use the original if installed. 
+
+(C) There may be times when there is a conflict between a newly installed
+font with a Face Name equal to that of one of the fonts for which PSCRIPT.DRV
+has wired-in PFM files. Normally this should not be a problem, since
+PSCRIPT.DRV is supposed to refer to outside PFM files first, only resorting
+to its built-in PFM files if it can't find what it needs elsewhere.
+
+For additional trouble shooting information see `atmtwo.txt'

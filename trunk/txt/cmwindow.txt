@@ -1,0 +1,132 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Using CM outline fonts with Windows 3.0 applications
+----------------------------------------------------
+
+These versions of the CM Type 1 outline fonts have been massaged to
+work around various bugs in ATM for the PC.  To use them:
+
+ (1) First Install ATM (if you have not already done so):
+     Insert ATM diskette in drive A
+     Launch Windows 3.0
+     In `Program Manager' menu, select `run'
+     Type in `a:install'
+     Follow installation instructions
+ (2) Exit from Windows 3.0 (changes to ATM only become effective upon restart)
+ (3) You may have to install the fonts that came with ATM (if not done above):
+     Launch Windows 3.0
+     Double click on ATM icon (large red lower case `a')
+     Click on `Add'
+     select drive/directory [-a-] and then select directory `psfonts'
+     select all 11 fonts (drag down from first while pushing mouse button).
+     Click on `Add'
+
+ (4) To install desired CM fonts, restart Windows 
+     Double click on ATM icon
+     Click on `Add'
+     Place one of the two diskettes with CM .pfb & .pfm files in drive A:
+     Select drive/directpry [-a-] in file menu
+     Pick the fonts you wish to install (use control click to get several).
+     Click on `Add'
+     Exit from Windows 3.0 (changes to ATM only become effective upon restart)
+
+(ATM copies the selected .pfb files to c:\psfonts and the corresponding .pfm
+files to c:\psfonts\pfm, and adds appropriate softfont entries to win.ini).
+
+The fonts you have added will now show up in application's font
+selection menus. (In some applications you may need to invoke
+`printer setup' to alert the application to the existence of new fonts)
+ATM will provide screen rendering of these fonts - no screen fonts needed.
+
+Now for printing with these fonts:
+
+`Manual' versus `Automatic' downloading.
+---------------------------------------
+
+You can either `manually' download the fonts to the printer - making
+them resident in the printer's virtual memory until it is rebooted -
+or have them downloaded `automatically' with the file to be printed.
+If you only do what was listed above, then Windows applications will
+assume you have `manually' downloaded the fonts to the printer.
+
+I think there are only a few situations in which `manual', permanent
+downloading makes sense - although MicroSoft says the opposite,
+recommending `manual' downloading - this may be because `automatic'
+downloading does not work properly yet in Windows 3.0.  Fortunately
+these bugs too can be worked around as shown below.
+
+`Manual' downloading:  
+
+Copy the file `download.exe' (from the (A) disk with .PFB & .PFM
+files) to some hard disk location on your path.  Type `download -?'
+to see what arguments `download' takes.  Then use it to load font
+files (in .pfb) form to the printer's virtual memory (VM).  Normally
+you would just type
+
+	download -p <pfb-file-1> <pfb-file-2> ...
+	
+The downloaded fonts act just like ordinary printer resident fonts
+until the printer is rebooted.
+
+`Automatic' downloading: 
+
+Due to a bug in the Windows PostScript printer driver, binary font
+files (.pfb) are not expanded into the ASCII form (.pfa) required by the
+printer.  But you can use .pfa files directly (although this is a nuisance,
+since these are twice as large as .pfb files, and also redundant
+since you already have the corresponding .pfb files).  First,
+copy the desired .pfa files from the diskettes containing the .pfa
+files to some (arbitrary) directory on hard disk. 
+
+All that is needed in addition is that you modify the `softfont'
+entries in win.in that were created by ATM for the new fonts you have
+installed.  Add a comma to the end of each line, followed by the
+pathname of the .pfa file - after the pathname for the .pfm file.
+
+For example, change this:
+
+softfont37=c:\psfonts\pfm\cmbx10.pfm
+softfont38=c:\psfonts\pfm\cmr10.pfm
+softfont39=c:\psfonts\pfm\cmti10.pfm
+
+to that
+
+softfont37=c:\psfonts\pfm\cmbx10.pfm,c:\cmbkph\cmbx10.pfa
+softfont38=c:\psfonts\pfm\cmr10.pfm,c:\cmbkph\cmr10.pfa
+softfont39=c:\psfonts\pfm\cmti10.pfm,c:\cmbkph\cmti10.pfa
+
+Note that this is different from what the Windows manual says.
+Note also that there should be no space anywhere in the line.
+Note further that the `softfonts' may appear in several places in the
+win.ini file (since you may have several `printers' installed).
+Make the above changes in all places.
+See `win.ini' sample file (on diskette (A) with .pfb and .pfm files).
+
+Now Windows applications will use the .pfm files for font metric
+information, ATM will use the .pfb files for font rendering on
+screen, and the PostScript printer driver will package the .pfa files
+with the output going to the printer (or file).
+
+If everything prints in Courier font instead of CM, then you have
+neither manually nor automatically downloaded the fonts.  Possibly
+there is then some error in the win.ini file
+
+Hopefully one day MicroSoft will fix the PostScript driver so it unpacks
+.pfb files into .pfa files...
+
+Interaction with DVIPSONE:
+-------------------------
+
+If you are using DVIPSONE, you probably already have the CM Type 1
+fonts installed in some directory other than c:\psfonts, like perhaps
+c:\cm.  ATM wants the .pfb files to live in c:\psfonts.
+
+To avoid duplication, place all of the .pfb files into c:\psfonts.
+If you have a recent version of DVIPSONE, it's built in searchpath
+for font files is already `c:\cm;c:\psfonts'.  If not, use a command
+line argument to tell it where the fonts are, or set the environmnet
+variable PSFONTS to the appropriate directory.
+
+(If you have a recent version of DVIPSONE, the command line argument
+and the environment variable can be searchpaths rather than just a single
+pathnames). 

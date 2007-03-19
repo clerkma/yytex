@@ -1,0 +1,55 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Making Oblique font:
+====================
+
+Make plain version of underlying font.
+
+Copy start of underlying font up to encrypted code. BUT...
+
+	Change FontName, Full Name, UniqueID, ItalicAngle, FontMatrix
+
+Copy initial part of encrypted code. BUT...
+
+	Change UniqueID
+
+Copy Subrs !
+
+After last Subr and `|' line and `|-' line:
+
+% Hard part: need to know how long the inserted font is in bytes
+% Maybe splice out, encrypt and subtract 4 bytes?
+% Or cound PFA file bytes, subtract `newlines' divide by two
+% and add text before starting at `11 dict begin' 
+% but subtract `currentfile eexec' line
+% Gets read in 512 byte chunks. Following is 53 * 512 + 248 = 27384
+% replace UniqueID and the two numbers
+
+end noaccess put
+FontDirectory /Helvetica known{
+/Helvetica findfont dup /UniqueID known {dup /UniqueID get 28352 eq exch /FontType get 1 eq and}{pop false}ifelse {
+save userdict/fbufstr 512 string put
+53{currentfile fbufstr readstring{pop}{clear currentfile
+closefile/fontdownload/unexpectedEOF/.error cvx exec}ifelse}repeat
+currentfile 248 string readstring{pop}{clear currentfile
+closefile/fontdownload/unexpectedEOF/.error cvx exec}ifelse
+restore}if}if
+
+Then the base font starting at `11 dict begin ...'
+
+Except, after `currentdict end' OMIT `currentfile eexec'
+And the codeis not double encrypted.
+
+End with:
+
+dup/FontName get exch definefont pop
+dup/CharStrings /Helvetica findfont/CharStrings get put
+dup/FontName get exch definefont pop
+mark currentfile closefile
+
+instead of just
+
+dup/FontName get exch definefont pop
+mark currentfile closefile
+
+follow with zeros and `cleartomark' as usual.

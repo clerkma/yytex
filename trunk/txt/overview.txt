@@ -1,0 +1,99 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+==========================
+Where to find information:              (overview.txt)
+==========================
+
+All basic information                   Y&Y TeX System Manual
+
+Detailed Technical Information          Y&Y TeX System Technical Addendum
+
+`Foreign' language keyboard support     \yandy\yandytex\keyboard\keyboard.txt
+
+Command line details                    \yandy\doc-misc\commflag.txt
+
+DVIPSONE late breaking news             \yandy\dvipsone\doc\news.txt
+DVIWindo late breaking news             \yandy\dviwindo\doc\news.txt
+
+WinEdt editor details                   \yandy\winedt\WinEdt.txt
+
+PFE editor details                      \yandy\pfe\readme.txt
+
+Linking from DVIWindo back to editor    \yandy\doc-misc\editlink.txt
+
+Acrobat PDF font licensing information  \yandy\doc-misc\acrobat.txt
+
+Work-arounds for bugs in Acrobat        \yandy\doc-misc\acrofix.txt
+
+CTAN host FTP addresses, URLs           \yandy\doc-misc\ctan.txt
+
+Rotation and scaling \specials          \yandy\doc-misc\ctm.txt
+
+EC font discussion                      \yandy\doc-misc\ec.txt
+
+Hyper-text support and Acrobat PDF      \yandy\doc-misc\hypr2pdf.txt
+
+Where to find packages in chapter 10    \yandy\doc-misc\la2ech10.txt
+
+Long file name issues                   \yandy\doc-misc\longname.txt
+
+Using Multiple Master fonts             \yandy\doc-misc\masters.txt
+
+Network printing issues                 \yandy\doc-misc\netprint.txt
+
+Bugs in Windows NT relating to fonts    \yandy\doc-misc\ntfonts.txt
+
+Bugs in Windows 95, PCL printers driver \yandy\doc-misc\win95.txt
+
+======================
+Additional Information
+======================
+
+Switching fonts in LaTeX 2e, samples            hello_*.tex in `texinput'
+
+List of LaTeX 2e style files on CTAN (RF)       \yandy\doc-misc\companio.cta
+
+Discussion of Donald Story's DVI_HELP           \yandy\dviwindo\doc\dvi_help.txt
+
+How to show font tables (FB)                    \yandy\texinput\bpifont.tex
+
+Sample use of `emlines' \specials               \yandy\texinput\emlines.tex
+
+Sample use of `hyper-text' \specials            \yandy\texinput\hyper.tex
+
+Sample use of TIFF image insertion              \yandy\texinput\showtiff.tex
+
+Sample use of TPIC \specials                    \yandy\texinput\tpictest.tex
+
+Sample DVI file showing TrueType fonts          \yandy\dviwindo\truetype.dvi
+
+Sample font name aliasing files                 \yandy\fonts\tfm\texfonts.*
+
+Encoding vector files                           \yandy\fonts\encoding\*.vec
+
+Prolog files for PS Tricks                      \yandy\ps\*.pro
+
+Downloadable PostScript error handler           \yandy\ps\ehandler.ps
+
+epsf.tex modified to handle previews            \yandy\texinput\epsfsafe.tex
+
+plain.tex with fewer math font families         \yandy\tex\base\plainmin.tex
+
+Explanation of LaTeX 2e NFSS scheme (TM)        \yandy\texinput\simple-n.tex
+
+Figure insertion in LaTeX 2e.                   epslatex.pdf in \ctan\info on CD
+
+LaTeX 2e documentation                          source2e.pdf in \ctan\info on CD
+
+More LaTeX 2e documentation (PDF)               *.pdf in \ctan\latex\doc\ on CD
+
+More LaTeX 2e documentation (HTML)              \yandy\TeX\latex\doc\html\index.html
+
+BibTeX, MakeIndex, DVICOPY, etc.                in \yandy\util
+
+Stopping missing font complaints in NT          \yandy\doc-misc\ntbugfix.txt
+
+Fix for T1INSTAL.DLL in NT                      in \t1instal\winnt400
+
+Fixing bugs in auto installation in NT          \yandy\doc-misc\t1instal.txt

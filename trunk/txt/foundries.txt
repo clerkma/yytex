@@ -1,0 +1,46 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+These are good font sources:
+
+Adobe:    http://www.adobe.com/type/browser/main.html
+          http://www.adobe.com  
+Monotype: http://www3.digitalriver.com/type/index.html
+          http://www.monotype.com 
+LinoType: http://www.fonts.de/fonts/ehtml/3533C409/fontstore.htm
+          http://www.linotypelibrary.com
+ITC:      http://www.itcfonts.com/itc/fonts/index.html
+          http://www.itcfonts.com
+URW:      http://www.urwpp.de/cgi-bin1/dalcgi/english/Kliste.htd
+          http://www.urwpp.de/home_e.htm  
+Agfa:     http://www.agfahome.com/agfatype/pstype/main.html
+          http://www.agfahome.com/agfatype
+          http://www.agfadirect.com
+FontShop: http://www.fontshop.de/fontshop/fontshop.html 
+          http://www.fontshop.de
+Bitstream http://www3.digitalriver.com/bit/index.html
+          http://www.bitstream.com
+Emigre:   https://sales.emigre.com/order.html
+          http://www.emigre.com/
+LetraSet: http://www.letraset.com/itc/fonts/index.html
+          http://www.letraset.com/
+Y&Y:      http://www.YandY.com/products.htm#fonts
+Berthold  http://www.bertholdtypes.com/
+Fontfont  http://www.fontfont.de/
+Fonthaus  http://www.fonthaus.com/
+Tiro      http://www.tiro.com/
+P22:      http://www.p22.com/index.html
+Coniglio: http://www.conigliotype.com/
+3 island: http://www.3ip.com/3ip.html
+Vintage:  http://www.vintagetype.com/
+Hoefler:  http://www.typography.com/
+
+Font Bureau     http://www.fontbureau.com
+Phil's Fonts    http://www.philsfonts.com/
+Treacyfaces     http://www.treacyfaces.com/
+Scriptorium     http://www.ragnarokpress.com/scriptorium
+EyeWire			http://www.eyewire.com/type/
+
+For more see:   http://www.microsoft.com/typography/links/default.asp
+and		http://www.truetype.demon.co.uk/links2.htm
+and		http://www.dpto.com.br/alltype/sites.h
+and		http://www.rzg.mpg.de/rzg/text/comp.fonts/cf_116.htmtm

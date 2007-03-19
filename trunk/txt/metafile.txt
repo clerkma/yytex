@@ -1,0 +1,166 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Review, playing MetaFiles into `ordinary' device contexts:
+----------------------------------------------------------
+
+Let's call the application inserting the metafile the `caller.'
+And the metafile being played the `callee.'
+
+The `caller' should use SetViewPortExt and SetViewPortOrg
+(and should *not* use SetWindowExt and SetWindowOrg)
+
+The `callee' should start with SetWindowExt and SetWindowOrg
+(and should *not* use SetViewPortExt and SetViewPortOrg)
+
+Typically the caller will wrap the metafile in a
+SaveDC/RestoreDC pair to avoid unwanted changes to the coordinate
+system when the caller continues painting after playing the metafile.
+
+Coordinate Transformation:
+
+The mapping of the corners of the Window (logical coordinates)
+--- defined in the MetaFile ---
+to the corners of the ViewPort (in device coordinates)
+--- defined by the caller ---
+completely specify the coordinate transformation.
+
+Note that proper scaling is only possible when using MM_ANISOTROPIC mapping
+mode.  In fact, the above Window and Viewport setting calls are ignored in
+other mapping modes.
+
+Bounding box versus the Window:
+------------------------------
+
+Note that the `Window' defined in the metafile by SetWindowExt 
+and SetWindowOrg (and the `Viewport' defined by the caller using
+SetViewportExt and SetViewportOrg) need *not* be the same as the bounding 
+box of the image.  The *relative* size and position of Window
+and Viewport is important only in defining the coordinate transformations.  
+That is, corners of the window are mapped onto corners of the viewport, 
+but parts of the image being painted can be outside this rectangle
+(conversly, the actual image may very well be smaller than this rectangle).  
+
+This means the rectangle defined by the bounding box recorded in the 
+placable metafile header need *not* equal that defined by
+SetWindowExt and SetWindowOrg in the metafile itself.  In simple cases
+the two may be the same, but in many metafiles they are not.
+
+Misuse of SetWindowExt and SetWindowOrg SetViewPortExt and SetViewPortOrg:
+--------------------------------------------------------------------------
+
+What happens when the  `caller' mistakenly uses SetWindowExt and SetWindowOrg? 
+Typically not much, since the command records from the MetaFile almost right
+away overwrite the values set for the Window in this fashion.
+(A small subtely here is that some MetaFiles don't bother with 
+SetWindowOrg, which they assume to be set to 0,0).
+
+What happens when the metafile mistakenly uses SetViewPortExt and
+SetViewPortOrg?  This is more serious, since it happens *after* the
+caller has already used these calls with the correct parameters.  
+In particular, the resulting metafile then cannot be scaled and 
+position properly, because it has frozen-in numbers (device coordinates) 
+for these calls that do *not* change with the viewport position and
+scale chosen by the caller.
+
+Also note that within the metafile, RestoreDC is restricted to having a
+second argument of -1, which means pop the latest saved DC.  It is not
+possible to pop back to a specified level obtained earlier via SavedDC
+(since values returned by functions like SaveDC are not meaningful in 
+a metafile context).
+
+Placable MetaFiles:
+-------------------
+
+`Raw' MetaFiles are not really useful because dimensional and positioning
+information is lacking.  Need `placable' MetaFile with extra 22 byte header. 
+Which means Windows function GetMetaFile basically useless.
+Need to allocate memory, read file into memory and use SetMetaFileBits instead.
+
+Windows metafile previews in EPS images:
+----------------------------------------
+
+In order to conveniently place EPS images in Windows applications, one wants
+to see a representation of the image on screen.  Windows does not include
+a PostScript interpreter.  For this reason most Windows applications
+producing EPS files can add previews either in TIFF or Windows Metafile form.
+WMF previews are `raw', that is, not placable.  The caller gets the
+information needed for proper positioning in this case from the
+bounding box specified in the PostScript part of the EPS file.
+
+Now for the interesting part: Playing MetaFiles into MetaFile contexts:
+-----------------------------------------------------------------------
+
+Let's call the MetaFile being created the `output MetaFile' and the
+MetaFile being played into this context the `input MetaFile'.
+The output metafile created here will --- when finally used -- 
+be played into some ViewPort.  Let's call this the `final viewport.'
+
+Right away we note a problem:
+we can't use SetViewportExt SetViewPortOrg in a Metafile context
+since we don't have device coordinates.
+Those will only be known when the output metafile is later
+played into the final viewport.
+In fact, we can't get device coordinates use LPtoDP in Metafile context ---
+we must work with logical coordinates only.
+
+So what is to be done in place of SetViewportExt and SetViewPortOrg ---
+which the caller would issue before inserting the `input metafile'?
+Somehow we have to achieve positioning and scaling by using relative -
+not absolute - coordinate system manipulation.
+
+ScaleViewportExt takes care of one aspect of the problem:
+It can be used to make the current viewport (when finally playing the 
+output metafile) be an appropriate part of the overall `final viewport.'
+
+This leaves the issue of positioning this viewport within the overall
+`final viewport'.  Note that we *cannot* use SetViewPortOrg or
+OffsetViewportOrg, since we do not know the final device coordinates.
+And again, such calls would produce frozen-in numbers in the metafile 
+that would prevent it from being properly positioned and scaled.
+
+Somwehow the Window origin needs to be adjusted based on scaling of 
+viewport and of origin of viewport playing into.
+
+Also, even if we figure out the proper window origin, we
+can't use SetWindowOrg to reliably achieve the positioning,
+since many WMF files contain SetWindowOrg
+which will override any positioning we may do before.
+
+One way around this is to change `SetWindowOrg' calls in the metafile
+to `OffsetWindowOrg.'  That way changes we make to the Window origin
+before playing the metafile will not be lost.
+But this means we must EnumMetaFile instead of just simply using PlayMetaFile.
+
+Now we can use SetWindowOrg or OffsetWindoOrg to adjust for top left
+corner of Window playing into.  
+But we need to know Window extent to get the scaling right.
+
+It is tempting to use the top left corner of the bounding box specified
+in the placable metafile for this.  But as noted above, we can't trust 
+this to be the same as the Window defined in the metafile!  Consequently
+we can't compute the proper offset before playing the metafile, we
+have to wait until we see the SetWindowExt call in the metafile
+while enumerating records from the metafile.
+
+When placing a WMF preview that comes with an EPS file a similar issue
+arises.  We do not know the Window position and size in advance and have to
+wait until we see the SetWindowExt in the metafile before issuing the
+appropriate OffsetWindowOrg.
+
+Note that there is no such problem with issuing ScaleViewPort before???
+
+Metafile with more than one SetWindowExt or SetWindowOrg call:
+---------------------------------------------------------------
+
+If the metafile contains more than one SetWindowExt call, we have to be
+careful not to perform the above relative positioning via
+OffsetWindowOrg more than once.  This can get complicated!
+
+When meeting the second (or later) SetWindowExt call, 
+one first has to undo the scaling and positioning that was done
+when the previous SetWindowExt metafile record was seen.  
+You can remember the arguments used then and undo the call.
+But it may be easier to just restore the device context in force at that time.
+Of course, this means that one has to save the device context before
+making the initial adjustment...
+

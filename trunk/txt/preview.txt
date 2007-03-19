@@ -1,0 +1,42 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===========================================================
+EPSF file Preview issues		(file: preview.txt)
+===========================================================
+
+Q: Can DVIWindo show preview of EPS files?
+
+A: Yes and No.  
+
+If the EPS file *has* a preview it will be shown by DVIWindo.
+Most Windows programs make EPS files with preview in TIFF form.
+A few Windows programs make EPS files with preview in WMF form.
+Some Unix programs make EPS files with preview in EPSI form.
+DVIWindo supports all three preview formats!
+
+In most Windows programs you can turn off the generation of previews.
+Obviously you don't want to do this if you want to see the previews in 
+DVIWindo (or if you plan to print to a non-PS printer).
+
+DVIWindo cannot show `previews' of raw PostScript files since neither
+DVIWindo not Windows itself has a full PostScript interpreter.
+
+You can add a preview to a raw EPS file that does not have a preview using
+Transverter Pro (from Insight Systems) or the public domain GhostScript.
+
+Q: Can DVIWindo print EPS files to non-PostScript devices?
+
+A: Yes and No.
+
+Non-PS devices obviously cannot interpret the PostScript code in EPS files.
+However, DVIWindo will print the preview when printing on a non-PS device.
+
+If you have a choice in preview format consider the following:
+
+For images (rectangular raster of grey-levels or color) TIFF is the 
+best format. 
+
+For graphics (curves, vectors, graphs), WMF is the best format,
+since it is not rasterized and hence resolution independent.
+
+Of course, the application creating the EPS files may not offer a choice.

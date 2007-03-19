@@ -1,0 +1,55 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+LATE BREAKING NEWS (file: news.txt last updated 99/Nov/1):
+
+(1) Windows 2000 Professional (W2K) now supported.
+
+	Add IgnoreBadInstall=1 to [Window] section of dviwindo.ini
+	if you have Chinese/Japanese/Korean (CJK) font support installed.
+
+(2) You can now link back from DVIWindo to the editor.
+
+    Double click on text in the preview.   See editlink.txt for details
+
+(3) ATM 4.0 for 95/98 and ATM 4.0 for NT included with Y&Y TeX Systems
+
+    Easy, high quality support for Type 1 fonts in both 95/98 and NT.
+
+(4) Y&Y TeX System now can reencode TrueType text fonts in Windows NT!
+
+    You are no longer constrained to use Windows ANSI encoding for text in NT.
+    Did you know that Arial, Times New Roman etc. have fi and fl ligatures?
+
+(5) Y&Y TeX System now can reencode Type 1 text fonts with ATM for Windows NT! 
+
+    We have `adjusted' the Y&Y System TeX to make proper use of ATM 4.0 for NT.  
+    It  will properly reencode Type 1 fonts. (Ignore the benign error log
+    in dviwindo.ini about not being able to connect to ATM).
+
+(6) Rotated and scaled material is shown on screen in Windows NT.
+
+    A new set of device independent \specials are supported by the 
+    Y&Y TeX System for rotating, scaling and arbitrary linear transformation
+    of text, rules, TPIC \special graphics, and TIFF images
+    (see ctm.txt).  You'll be able to see landscape tables on screen!
+
+    In addition, a selected number of PostScript \specials used
+    in the past for rotation and scaling (such as those emitted 
+    by the LateX 2e graphics package) are `mapped' to the new
+    method and hence will work without changes to the source file.
+
+(7) The PostScript printer driver now can compress TIFF images in PS output.
+
+    The Y&Y TeX System supports TIFF image insertion.  For images
+    (rectangular arrays of color or gray values) --- as opposed to 
+    other kinds of graphics like line drawings --- TIFF is the preferred
+    format (much more compact than EPS e.g.).   Y&Y TeX already supported
+    most compression methods provided for by the TIFF spec on *input*.
+    Now - if you have a PS level 2 printer - you can also have compression
+    of PostScript output using the -*L command line flag with DVIPSONE.
+    This can dramatically reduce PS file size if you have large images.
+
+    If you have a PS level 2 printer, add the -*L command line option 
+    using `Preferences > Command Line > DVIPSONE' in DVIWindo.
+
+(8) BMP images are supported just like TIFF using \special{insertimage: ...}

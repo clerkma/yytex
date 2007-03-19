@@ -1,0 +1,5 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+ftp://ftp.adobe.com/pub/adobe/type/win/all/afmfiles/
+
+http://www.adobe.com/prodindex/printerdrivers/main.html

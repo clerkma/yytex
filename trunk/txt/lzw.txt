@@ -1,0 +1,50 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Basic LZW encoding algorithm
+
+Clear Table
+Set Length <= 9
+Clear Code
+Clear String (string buffer)
+Clear Test (test string buffer)
+Clear Byte (byte buffer)
+Write Clear 
+For each byte in input stream {
+	read value into Byte
+	concatenate String + Byte => Test
+	If content of Test in table {
+		append Byte to String
+		set Code to value for that String
+	}
+	else {
+		write Code for String (*)
+		add new table entry for Test (**)
+		make String be single character Byte
+	}
+}
+write Code for String
+write EOI code
+
+(*) Whenever the LZW code value would exceed the current code length, 
+    the code length is increased by one. 
+
+(**) When table becomes full (> 4095):
+	write Code for String
+	Clear Table
+	Set Length <= 9
+	Clear Code
+	Clear String (string buffer)
+	Clear Test (test string buffer)
+	Clear Byte (byte buffer)
+	Write Clear 
+
+Initial table: 
+	0 - 255 are single bytes of corresponding value
+	256	Clear
+	257	EOI
+	
+First available Code is 258.
+
+Maximum Code value is 4095.
+
+Codes are never shorter than 9 bits or longer than 12.

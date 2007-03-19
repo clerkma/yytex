@@ -1,0 +1,61 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=====================================
+	Textures and Y&Y TeX:
+=====================================
+
+Textures on the Macintosh and Y&Y TeX System in Windows are similar.
+For example, both use dynamic memory allocation in their TeX implementation.
+Both are top-end, `power' applications for their respective platforms.
+
+In addition, Y&Y TeX System makes it easy to use Textures files --- 
+despite the lack of standardization in the TeX world of (i) font names, 
+(ii) font encoding, (iii) use of \special for figure inclusion, color, etc.
+This is because of Y&Y TeX System's unique flexibility.  For example,
+Y&Y TeX System is the only TeX system on any platform that provides for 
+`on the fly' font reencoding.  So it can even use Macintosh standard
+roman character layout in Windows (if one wanted to do that)! 
+
+Like Textures, one works with two Windows open in Y&Y TeX, one showing
+the typeset result, the other the source file being edited.  After making
+a change, three keystrokes refresh the display of the typeset results.
+The underlying TeX and LaTeX are of course the same, so most everything
+works "out of the box" without any customization.  But in addition:
+
+* The DVIWindo previewer can read Textures files directly (Textures files
+  contain the DVI file component in the resource fork).  
+
+* DVIPSONE can also directly use Adobe Type 1 fonts in Macintosh format 
+  (provided they are moved to the IBM PC in MacBinary format).
+
+* Font Names.  Textures has its own unique convention for naming fonts
+  other than Computer Modern.  It does not use the font file name, the
+  PostScript FontName, or the QuickDraw font menu name.  A font naming 
+  aliasing file can be set up so that Y&Y TeX System will work with files 
+  using Textures font naming convention (use the file `texfonts.bsr' 
+  supplied with Y&Y TeX and rename it `texfonts.map').
+
+* Font encoding (character layout).  Textures has its own unique character
+  layout for fonts other than Computer Modern fonts.  As default, it uses a
+  version of Macintosh standard roman encoding that has been modified to better
+  suit plain TeX and LaTeX.  The Y&Y TeX System can be asked to use the same
+  encoding by means of its `on the fly' reencoding.  Simply set the ENCODING
+  environment variable to `texmac' (the `texmac' encoding vector is provided).
+
+* Use of \special for figure inclusion, color etc.  The screen viewer
+  and printer drivers in Y&Y TeX System support the syntax invented for 
+  literally one dozen other drivers, including Textures.  So figure inclusion
+  using \special{illustration ...}, for example, will work as expected.  
+  And so will Textures unique way of specifying colors.
+
+In summary, in Windows, the closest thing to Textures is the Y&Y TeX System.
+It is easy to migrate from Textures to Y&Y TeX System, and it is easy to
+live in a mixed environment of Macintoshes and IBM PCs.
+
+In addition, Y&Y TeX System has many `power features' not found in
+other TeX systems --- including Textures --- such as fast PostScript
+printing using `partial font downloading' on PostScript printers
+(which also greatly reduces the change of running out of memory on
+the printer), and access to *all* characters in a font using `on the
+fly' font encoding (which also makes it easy to use completely
+arbitrary user designed character layout).  

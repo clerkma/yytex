@@ -1,0 +1,42 @@
+    This file placed in the public domain in 2006 by the TeX Users Group.
+
+		======================================
+		The new EM (European Modern) font set:
+		======================================
+
+Do you like the Computer Modern typeface style, yet
+
+    (1) need accented characters for proper hyphenation in TeX; and
+    (2) need fonts in Adobe Type 1 format (a.k.a. `PostScript' fonts)?
+or, (3) need to use fonts with non-TeX applications?
+
+Then the new EM font set is for you.  The EM fonts are `commercial
+grade' hand-hinted ATM-compatible fonts in Adobe Type 1 format.  The EM
+font set consists of 57 EM text fonts, 13 EM math fonts, and 16 Computer
+Modern math fonts.  The EM font set is self-contained and does not need
+additional fonts from the CM family. There is nothing else like it!
+
+The EM font set is based on the CM font set, but has many more glyphs.
+Each text fonts has 97 ready-made accented characters covering many
+European countries.  The fonts have also been augmented with additional
+characters to bring them closer to being `normal' text fonts.  In fact,
+the main text fonts (roman, italic, bold extended, typewriter) each have
+255 glyphs.
+
+There are EM equivalents for all of the standard CM text fonts.  These
+have related names, making it easy to convert from CM to EM.  EM has the
+same `optical scaling' as CM (i.e. different design sizes are treated as
+separate fonts - yet each is scalable).
+
+The EM font is also for people using applications other than TeX, since
+the EM text fonts are set up as normal text fonts (including a `space'
+character!), hence have a familiar layout, unlike the CM text fonts with
+their own unusual non-ASCII layout.  The EM text fonts do not suffer
+from the sparse glyph coverage of the CM text fonts.  The EM text fonts
+will also be reencoded to platform-specific text font encoding on
+whatever platform they are installed, and are subject to `on the fly'
+reencoding in the Y&Y TeX System - unlike the CM fonts, which, because
+of their fixed hard-wired encoding, cannot be treated as real `text' fonts.
+
+Support for the EM fonts is available for plain TeX (and its
+derivatives), LaTeX 2.09, as well as LaTeX 2e.

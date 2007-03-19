@@ -1,0 +1,118 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==============================================================================
+		Which Font Set to Use with Y&Y TeX?		(choices.txt)
+==============================================================================
+
+The Y&Y TeX System makes it possible to use any of over 20,000 text fonts 
+now available in Adobe Type 1 (a.k.a `PostScript') format, as well as several
+thousand in TrueType format.  
+
+However, there are not many math fonts, and TeX itself makes *very* special
+demands on math fonts, so presently there are only three coherent font sets
+that include math fonts usable with TeX.
+
+[This is no longer true, of course.  See http://tug.org/fonts. --karl, 2006]
+
+Which to choose? 
+
+
+(1) Computer Modern.
+--------------------
+
+The Computer Modern (CM) font set was designed by Donald E. Knuth, and used
+in his `TeX book.'  This is a large font set (75 `fonts' - about 30 distinct
+faces) with wide coverage.  CM is unique in providing for `optical scaling'
+--- each face is represented by several font files for different design
+sizes (as opposed to a single set of shapes that are linearly scaled). 
+
+Advantage: (i) Portability of TeX DVI files.  Many TeX systems are restricted
+to using CM, and many users on systems that are not so restricted still use
+CM.  So at the moment this may be the best choice if portability of documents
+is paramount, particularly if you plan to exchange DVI files instead of TeX
+source files.
+
+Disadvantages: (i) Overuse.  Some publishers and authors are getting tired of
+CM since it has been used so much in technical books and papers.  (ii) Also,
+CM is rather thin and spindly, something that may not be apparent on a `write
+black' laser printer at 300 dpi, but becomes obvious on a high resolution
+image setter, and even more so on a `direct to plate' systems.
+
+Note: The Y&Y CM TeX System also includes the `extra LaTeX + SliTeX' fonts.
+If you use the LaTeX `picture environment' to draw simple figures then you
+will need the `line' and `circle' fonts that are in this `add on' font set.
+
+Note: The Y&Y CM TeX package also includes the AMS (American Mathematical
+Society) fonts in Adobe Type 1 format.
+
+(TM) TeX is a trademark of the American Mathematical Society
+
+
+(2) Lucida Bright + Lucida New Math
+-----------------------------------
+
+Lucida (R) Bright + Lucida New Math (LB+LNM) is a coordinated font set
+designed for use with TeX.  The text fonts in this set are used in the
+Scientific American (USA edition), and also now in the `Notices of the AMS'
+(American Mathematical Society).  
+
+Advantages: It doesn't look like CM!  (i) Lucida Bright is a bit `heavier'
+than CM, which makes it look `darker' on the page, and not `spindly' on image
+setters. (ii) Lucida Bright has a larger x-height, which makes it somewhat
+easier to read than more compact faces.  (iii) The Lucida New Math fonts are
+designed to work well with the text faces, forming a `super family' of fonts.
+
+Disadvantages: It doesn't look like CM!  (i) When used at the same point
+size, Lucida Bright tends to eat up a few more pages than CM, since on
+average the characters are wider.  The plain TeX and LaTeX 2.09 `style files'
+are set up to partially compensate for this by using the fonts at a somewhat
+reduced point size (9.5 instead of 10pt).  (ii) Different sizes of the same
+face are obtained by linear scaling.  This can make subscripts and
+subsubscripts appear too small if the traditional 10pt, 7pt, 5pt scale of CM
+is used (which is appropriate for `optically scaled' faces).  Again, the
+`style files' are set up to compensate for this using less aggressive scaling
+for subscripts and subsubscripts. 
+
+Note: The Y&Y LB+LNM TeX System also includes the Lucida Bright Expert font
+set.  This complements the basic LB+LNM fonts with smallcaps, bold math,
+seriffed typewiter fonts, and more.  Together with the LB+LNM font set,
+there are 40 distinct faces (compared to about 30 in CM).
+
+(R) Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+
+(3a) MathTime + Times, Helvetica, and Courier
+--------------------------------------------
+
+Times-Roman has been heavily used in mathematical monographs (other than
+those using CM anyway!).  MathTime provides complementary math fonts that
+work with TeX.
+
+Advantages: (i) Times-Roman is compact.  A publisher can reduce the page
+count by 5% - 10% using Times compared to other faces.  (ii) Times,
+Helvetica, and Courier are resident on most PostScript (PS) devices and 
+so need not be included in a PS file, reducing the size of the PS file 
+(only the math fonts themselves need be included).
+
+Disadvantages: This is a small font set.  (i) It lacks bold math fonts
+(although you can use bold upright variable names, of course), (ii) It 
+lacks smallcaps; (iii) there is no Calligraphic face.  
+
+Noter: If you add MathTime Plus (see below) you get bold math, upright
+Greek and a Script face.
+
+Note: Matched smallcaps fonts are available from Adobe in the `Times
+Smallcaps and Old Style Figures' package.
+
+Note: Additional math alphabets (blackboard bold, Fraktur, and Script)
+are available from Adobe in the `Math Pi' font set.  The style files
+supplied with MathTime include convenient links to Adobe Math Pi.
+
+(TM) MathTime is a trademark of Publish or Perish, Inc.
+
+(3b) MathTime + MathTime Plus + Times, Helvetica, and Courier
+-------------------------------------------------------------
+
+This is the same as the above with the addition of MathTime Plus,
+a set of twelve fonts that complement MathTime 1.1, with bold
+(and `heavy') math fonts, upright Greek, and the brand new MathScript.

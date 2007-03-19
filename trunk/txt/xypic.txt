@@ -1,0 +1,46 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-------
+XY Pic							(xypic.txt)
+-------
+
+XYPIC is a package for drawing certain kinds of diagrams in TeX.
+To draw lines of various lengths and orientations it can use:
+	(i)   special 'XY' fonts; or 
+	(ii)  raw PostScript (for DVIPS); or
+	(iii) TPIC \specials.  
+
+The special fonts used by XY Pic are now available in Adobe Type 1 format
+(folder xy_fonts on the Y&Y TeX System CD-ROM).  You can also use TPIC
+\specials --- which are supported by DVIWindo and DVIPSONE (as well as DVIPS).
+
+(*)  Use the `dvips' and `tpics' option with the XYPIC package.
+
+This forces it to use TPIC \specials do draw lines instead of using 
+special XYPIC fonts, or raw PostScript (Note: the `tpic' option is
+ignored unless you also specify the `dvips' option).
+
+---------------------------------------------------------------------------
+
+When using fonts other than Computer Modern conflicts can arise
+because XYPIC redefines the `quoteleft' character. So:
+
+(*)  If you use \input ansiacce (or \input accents), you need to
+     redefine `quoteleft' after loading the XYPIC package.
+
+The XYPIC package makes ` (quoteleft) active --- as does `ansiacce.tex'
+This can cause a conflict.  To avoid this, make `quoteleft' an ordinary
+character before loading XYPIC and make it active again afterwards.
+
+Also, XYPIC redefines `quoteleft'.  This has to be undone.  Here is what
+needs to be done if you use \input ansiacce:
+
+\catcode39=12
+\catcode96=12 
+
+\usepackage{xy}
+
+\catcode`\'=\active \chardef'=146  
+\catcode`\`=\active \chardef`=145
+
+----------------------------------------------------------------------------

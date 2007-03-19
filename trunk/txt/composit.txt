@@ -1,0 +1,68 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Problems with `Synthetic' Fonts and Printer Resident Fonts:
+---------------------------------------------------------
+
+`Synthetic' Type 1 fonts carry within their encrypted part another 
+Type 1 font, which is used as a base for constructing the new font.  
+There are some problems with such fonts when used on some PostScript
+printers that have the base font already built in.
+
+`Synthetic' fonts are typically used for Oblique or Narrow versions
+of a font. They ASCII poart starts the same way other T1 fonts do.
+The encrypted part also starts as usual with font level hints and Subrs.
+The Subrs are for hints and hint replacement, and are identical to the
+Subrs in the base font, which comes next.
+
+After the Subrs, instead of the CharStrings, appears the base font,
+wrapped in code that checks whether it is already defined. 
+The cocoon is discarded if the base font is already defined. 
+
+The base font and its wrapper is followed by code which basically
+just copies the CharStrings from the base font into the new font.
+That ends the encrypted section, which in turn is followed by the
+usual eight lines 64 zeros and cleartomark. (In other words you can't
+tell from the outside that a font is `synthetic'.) 
+
+Why go to all this trouble?  Rather than say just copying the base
+font and changing the FontName, UniqueID, FontMatrix and ItalicAngle.
+I guess the reason must be virtual memory usage, since there is a
+savings when the CharStrings are shared with the base font - if the
+base font already exists.  (So why aren't the Subrs also shared?)
+
+This all works fine, UNLESS the base font is a printer resident font.
+On some PostScript printers (haven't checked too many) the CharString
+dictionary for resident fonts contains keys (which are character
+names) and NUMBERS (not strings). (The characters - oops, the glyphs
+- appear to be ordered alphabetically and numbered sequentially,
+starting at 1 and ending at 228 for the typical Adobe text fonts).  
+The number is an index into CharOffsets, a string that contains offsets
+(2 bytes per entry) into CharData, another string which appears to
+contain the actual CharString programs.
+
+Perhaps using a number instead of the CharString itself here is a
+clever hack to make it harder to pry into the character outline program -
+Or it has some advantage in terms of coding or memory usage or
+whatever.  In any case, you can guess what happens if you copy such a
+CharString dictionary into the new font:  No characters will be
+rendered since a number appears where a string is supposed to be.
+So downloading a `synthetic' font to such a printer that has the base font
+wired in does not work. 
+
+If you download say Helvetica-Oblique, and the printer contains code
+for Helvetica already, then your Helevtica-Oblique will not work.
+Curiously, on some printers Courier-Oblique works, even though it is
+based on Courier in the same way.  The reason is that the built in
+Courier often has a different version number (002.003) and UniqueID
+(27077) than the Courier distributed with ATM (version number 002.004
+and UniqueID 36347).  And so the code checking for the base font
+rejects it as a potential substitute.
+
+Of course, printers typically have Courier-Oblique, Helvetica-Oblique
+and Helvetica-Narrow etc wired on, so one can just use those directly. 
+The lesson is, don't download `synthetic' fonts that are based on fonts
+that are printer resident.
+
+(Maybe someone would care to explain why the CharStrings dictionary
+entries contain numbers in the case of  resident fonts on some
+PostScript printers?) 

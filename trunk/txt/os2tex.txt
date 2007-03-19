@@ -1,0 +1,56 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+-----------------------------------------------------------------------------
+	Running the Y&Y TeX System runs in OS 2/2.1		(o2stex.txt)
+-----------------------------------------------------------------------------
+
+(1) OS/2 assigns some meaning to & on the command line.  So it is best to
+    avoid file names and directory names like `y&ytex.'  The standard
+    installation uses instead `yandytex.'  For the same reason, the default
+    entries in the `TeX' menu use + instead of & to designate a format
+    for TeX to load (e.g. tex +lplain ... instead of tex &lplain ...)
+
+    If you are moving from an older Windows 3.1 installation, first
+    rename `y&ytex.exe' to `yandytex.exe', create a `yandytex' directory 
+    and copy everything from the `y&ytex' directory.  Then update the
+    `dviwindo.ini' file by replacing all references to `y&ytex' with
+    `yandytex,' and all references to &lplain and &latex with +lplain
+    and +latex respectively.  
+
+    Also check batch files `tex.bat', `latex.bat' and `initex.bat'
+
+
+(2) By default, OS/2 limits DOS Boxes to 2 MB of virtual memory.  
+    This is often not enough for Y&Y TeX, particularly if you use
+    many fonts, have a complex document, or are running ini-TeX. 
+    To increase this limit, you need to: 
+    
+    (a)	Click the right mouse button on the DOS window icon to bring 
+        up the menu.
+
+    (b) Choose the Open Settings selection.
+
+    (c)	Click on the Session page button.
+
+    (d)	Click on the DOS Settings button.
+
+    (e)	Click on DPMI_MEMORY_LIMIT to change the setting.
+
+
+(3) DVIWindo needs at least version 2.6 of ATM (preferably 3.0).  DVIWindo
+    checks when it starts what version of ATM is running, and complains if
+    it is less than 2.6.  Unfortunately, the version number of ATM is
+    mis-reported in OS 2, so this sanity check does not work in OS 2.  
+    If you are installing a new Y&Y TeX System make sure to install the ATM
+    included with that.  If you are installing an upgrade check the version
+    and if necessary upgrade to the latest version of ATM (we can provide a
+    free upgrade from ATM 2.5 to ATM 2.6). 
+
+
+(4) OS 2 uses a different font metric file format (OFM) than that used by
+    Windows (PFM).  If your version of ATM is unable to properly install
+    fonts directly from the diskette (which have PFB and PFM files), then
+    copy all PFB files on the diskette to a temporary directory, add all of
+    the AFM and INF files (found in the AFM directory on the diskette).  
+    Then install the fonts from that temporary directory  (NOTE: This should
+    not normally be neccessary). 

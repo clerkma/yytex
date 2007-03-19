@@ -1,0 +1,298 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+================================================================
+      Using The Y&Y TeX System in Network Environments
+================================================================
+
+All components of the Y&Y TeX System should function properly in a
+network environment if set up correctly. These notes describe some of
+the considerations involved. We focus on Novell networks, which
+constitute the bulk of the installations in use today. Many of the
+considerations described, however, should apply equally well to other
+network environments.
+
+Many of the network installation decisions that arise with regard
+to the Y&Y TeX System depend on two factors: (1) how Windows and
+other system-level software (including fonts) are configured in
+your network environment, and (2) how applications (including
+Y&Y's software) are set up to run in that environment.
+
+
+                Windows and Other System Software
+
+A networked Windows environment can have one of three
+configurations:
+
+ *  Windows is installed on each workstation precisely as it
+    would be if that workstation were running stand-alone. That
+    is, all Windows executables, drivers, dynamic link libraries
+    (DLLs), etc reside under c:\windows and c:\windows\system (or
+    an equivalent directory structure), and all Windows
+    customization files (win.ini, system.ini, program group
+    files, etc) reside in c:\windows.
+
+ *  The Windows executables, drivers, etc reside in a shared
+    directory on a network drive, but each user's Windows
+    customization files reside under c:\windows or another
+    directory on the workstation.
+
+ *  The Windows executables, drivers, etc reside in a shared
+    network directory, and each user's Windows customization
+    files reside in a network directory private to that user.
+
+The first approach is usually the most efficient with regard to
+file-server disk storage requirements and network traffic.
+However, it requires dedicating a significant amount of
+workstation disk space to Windows files, and it can present
+problems with regard to centralized workstation administration.
+In addition, if *applications* reside on the file server anyway,
+some of the network-traffic efficiency gained by keeping the
+Windows executables local is lost. (The applications' executable
+code actually runs on the workstation, and thus must be
+downloaded to that machine when first invoked.)
+
+The second approach allows easier centralized updating of the
+Windows core files, and it requires less dedicated workstation
+disk space than the first. It also permits the use of network-
+based security: only users with the appropriate network rights
+can run Windows. However, centralized administration of the local
+customization files can still be a problem.
+
+The third approach requires the least amount of local disk space
+and has most of the other advantages of the second with regard to
+security and administration. However, this method gives rise to
+the greatest amount of network traffic---sometimes a problem in
+environments with large numbers of users.
+
+A further consideration is what type of Windows swap file (if
+any) the user has, and where that file resides. A permanent swap
+file *must* reside on the user's local hard disk, in an
+uncompressed volume. A temporary swap file can reside either on
+the local hard disk or on a network drive; if the latter, its
+size must be controlled via the MaxPagingFileSize entry in the
+user's system.ini file. The standard recommendation is to place
+each user's swap file on the user's local hard drive---no matter
+which of the three Windows installation configurations you
+choose.
+
+A final consideration with special implications for Y&Y's
+software centers on where certain system software---specifically,
+fonts---is installed in the network environment.
+
+Windows' *system* fonts---ie, its required screen fonts, and the
+TrueType fonts that are part of its basic installation (Ariel,
+WingDings, etc)---reside by default in the \windows\system
+directory. As noted above, that directory can in turn reside
+either locally or on a network drive, depending on the type of
+Windows installation chosen.
+
+However, any *add-in* Type 1 (PostScript) fonts can reside either
+locally or on a network drive---and their location does not
+depend on the type of Windows installation in use.
+
+Typically, these fonts are managed via the Adobe Type Manager
+(ATM) Control Panel. (Certain third-party font managers, such as
+Ares Software's Fontminder, are often used to replace the
+functions of that Control Panel---but *not* the underlying ATM
+driver. Except for consideration of the actual ATM Control Panel
+executable, the following discussion applies even if the ATM
+Control Panel is not the primary Type 1 font manager in use.)
+
+The ATM Control Panel executable, the ATM driver and the ATM DLLs
+all reside under \windows and \windows\system---wherever those
+directories are located (local or network drive). When
+"installing" Type 1 fonts via the ATM Control Panel, however,
+users can "point to" fonts installed on a network drive, and (at
+least in ATM version 3.0 and above) can add those fonts to their
+systems *without* actually copying the fonts'.pfb and .pfm files
+to the "target" directories designated in the Control Panel.
+
+The act of "installing" fonts in this manner alters the atm.ini
+file, which also resides under \windows---again, wherever that
+directory is located (local or network drive).
+
+If the system administrator has decided that add-in Type 1 fonts
+should reside on a network drive rather than on each user's
+workstation (a good decision, in our opinion), the administrator
+will want to make sure that two conditions are met, for
+efficiency's sake:
+
+ *  The path to the fonts' network location should be as short as
+    possible---a provision that keeps the atm.ini file as small
+    as possible. To achieve this condition, the .pfm files can be
+    placed in the same network directory as the .pfb files, and
+    that directory can then be mapped to a logical drive. In the
+    Novell environment, for example, the directory could be
+              SYS1:OBJ/FNT/TYPE1/ADOBE
+    or whatever other structure the administration considerations
+    dictate to be necessary. This directory would then be
+    assigned to a "fake root" via the MAP ROOT command; for
+    example:
+              MAP ROOT J:=SYS1:OBJ/FNT/TYPE1/ADOBE
+    As far as the users are then concerned, all Type 1 fonts
+    reside in j:\ and are "installed" from that "drive," via the
+    ATM Control Panel; all paths recorded in atm.ini appear in
+    the form j:\...
+
+ *  The users should be granted read-only access to the network
+    font directory, via the appropriate security commands. Under
+    Novell 3.x, the appropriate group rights are Read and File
+    Scan (RF).
+
+
+                      Applications Software
+
+Applications in a networked environment, like Windows itself, can
+reside in a shared network directory, locally on the user's
+workstation, or in a combination of the two locations. The
+configuration chosen depends on many of the same considerations
+governing a networked Windows installation---available disk
+storage, network traffic, centralized administration
+requirements, etc. Furthermore, if conditions warrant, all
+applications need not be treated identically---some may reside
+locally while others are network resident.
+
+One potential setup (certainly not the only one or even the most
+efficient in all circumstances) makes all applications network
+resident. It relies on a directory structure such as
+               SYS1:OBJ/APPS
+with directories d1, d2,..., dn under APPS for each network-
+resident application. Users are granted Read and File Scan rights
+to SYS1:OBJ/APPS (and thus to all directories under it), and a
+"fake root" is assigned as follows:
+               MAP ROOT K:=SYS1:OBJ/APPS
+From the user's point of view, the applications then reside in
+k:\d1, k:\d2, ... k:\dn.
+
+For this scheme to work, each application set up in this manner
+must be able to point to an installer-specifiable location for
+its .ini file and any other user-customizable data. That is, it
+must be "smart" enough *not* to look for its .ini file only in
+the same directory as its shared executable files. Fortunately,
+most of today's applications meet this requirement.
+
+
+                Specifics for the Y&Y TeX System
+
+Based on the foregoing discussion, you can see that Y&Y's
+software should operate without problems in a networked
+environment, whether it is installed "stand-alone" on each user's
+workstation or "centrally" in a shared directory. Following are
+some factors to consider when installing the software in the
+latter manner.
+
+Probably the most efficient way to achieve a shared-directory
+network installation starts with the system administrator
+performing the install on his/her machine, having first acquired
+the same logical drive mappings as the users will have. That is,
+during this installation the only difference between the
+administrator and a typical user should be that the adminstrator
+has Write access to the directories on the network drive where
+the applications are to be installed.
+
+Assume, for example, that drive j:\ is mapped (via MAP ROOT) to
+SYS1:OBJ/FNT/TYPE1/ADOBE and drive k:\ to SYS1:OBJ/APPS. The
+system manager, following the standard Y&Y installation process,
+would install Y&Y TeX to k:\yandytex, DVIPSONE to k:\dvipsone,
+DVIWindo to k:\dviwindo, etc. The installation would create a
+dviwindo.ini file and a Y&Y program group (yy.grp) in the
+administrator's \windows directory (wherever that directory
+resides), and would alter his/her Program Manager file
+(progman.ini), also resident in \windows.
+
+At this point, variations in customization requirements grow too
+numerous to permit a great deal of general discussion. However,
+the basic procedures for finishing the installation would include
+the following steps:
+
+ 1.  Manually edit dviwindo.ini, double-checking that all
+     variables in the [Environment] section refer to the network
+     drives and paths that each user will actually see. For
+     example, TEXFONTS (the location of TeX's font metric files)
+     would probably point to k:\yandytex\tfm and k:\dviwindo\tfm,
+     PSFONTS (the location of the Type 1 fonts) to j:\, and so
+     on.
+
+ 2.  Give special consideration to the dviwindo.ini entry for
+     TEXINPUTS (location of TeX source files). Will each user be
+     creating his/her TeX source files in a private network
+     directory? If so, that directory should have a logical map
+     of its own, and that map should then appear on the TEXINPUTS
+     line. One approach would be to create a directory named TEX
+     for each user, under the user's home directory on the
+     network (SYS1:USR/%LOGIN_NAME, for example), and then ensure
+     that each user maps to his/her home directory as follows
+     (usually during login):
+               MAP ROOT G:=SYS1/USR/%LOGIN_NAME
+     The variable TEXINPUTS can then point to G:\TEX for each
+     user. A similar consideration might apply to PSPATH, the
+     variable for the location of graphics source files.
+
+ 3.  Move a copy of dviwindo.ini to each user's \windows
+     directory (local or network resident, depending on the type
+     of Windows installation).
+
+ 4.  Move the Y&Y program-group file (yy.grp) to a shared network
+     directory to which all users have read-only access (for
+     example, SYS1:OBJ/PUBUTILS). Flag this file Shareable Read
+     Only (important!), then instruct the users how to either add
+     this group to their desktops, or to click-drag-copy its
+     icons into one of their existing program groups. Note:
+     Copying the new version of progman.ini to each user's
+     \windows directory would also work, *provided* all users
+     have the same display type and exactly the same desktop as
+     the system manager---a highly unlikely possibility!
+
+ 5.  Make sure that the batch files installed for the various
+     programs (tex.bat, dvipsone.bat, initex.bat, etc) reflect
+     the appropriate paths for the executables involved, and move
+     these batch files to a network directory to which all users
+     have read-only access (for example, SYS1:OBJ\PUBUTILS). This
+     directory should be one of the network directories in each
+     user's "search path" (the "extended" path through which the
+     workstation can search for executables and batch files).
+
+ 6.  Copy the Type 1 fonts for the installation (.pfb and .pfm
+     files) to j:\ and instruct the users how to "install" them
+     via the ATM Control Panel without actually copying them to
+     their workstations.
+
+ 7.  Carefully instruct the users on any additional customization
+     required. For example, in addition to placing TeX source
+     files in a private network directory, will some users also
+     create such files in directories on their local hard drives?
+     If so, they should be told how to add the paths to those
+     directories to the TEXINPUTS entry of the dviwindo.ini file.
+
+Two final notes:
+
+ *  In some Novell setups, a DOS SET command executed upon login
+    directs the user's workstation to subsequently look to a
+    network directory (rather than to the workstation) for the
+    copy of command.com to be used when spawning copies of the
+    DOS environment. (This is a relic of the days when diskless
+    workstations were in wide use and required network-resident
+    DOS to operate properly.) So far as we know, shelling to DOS
+    in this manner should have no adverse effect when users
+    invoke Y&Y TeX and/or DVIPSONE from the DVIWindo "TeX
+    Menu"---after all, a DOS box is a DOS box! However, if
+    problems arise when running either of these two programs and
+    if everything else looks OK, try altering the network setup
+    so that command.com is invoked from the same directory from
+    which the workstation boots (usually c:\ or c:\dos).
+
+ *  In most Novell setups, users execute some form of the CAPTURE
+    command, which intercepts printing output intended for, say,
+    LPT1: and redirects it to a Novell print queue instead. This
+    operation should be transparent both to DVIWindo and to
+    DVIPSONE---if they are configured to print to LPT1: and if
+    LPT1: is getting captured to a queue, nothing in the setup of
+    either program should require changing. There is one
+    potential exception to this statement, though: Novell has a
+    somewhat elaborate mechanism for querying whether specific
+    fonts are printer-resident. If the fonts you use sometimes
+    don't seem to make it to the printer, consider configuring
+    DVIPSONE to always force downloading of all fonts. Network
+    overhead will not appreciably increase by your doing so.
+
+See netprint.txt for information specific to network printing issues.

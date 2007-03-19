@@ -1,0 +1,49 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===========================================
+Font installation in Windows NT without ATM		(ntinstal.txt)
+===========================================
+
+You can use Type 1 fonts in Windows NT 4.0 with ATM 4.0 for NT, or by 
+using the built-in automatic conversion to TrueType.  Unfortunately, 
+this font conversion has a number of misfeatures.  This primarily affect 
+fonts other than Computer Modern, the extra LaTeX + SliTeX and AMS fonts. 
+
+******	We recommend you use ATM 4.0 for NT ******
+
+If you do decide _not_ to use ATM 4.0 for NT, then read on.  If you use 
+fonts other than CM and AMS now, or plan to later, do the following:
+
+(1) Install the modified T1INSTALL.DLL
+
+The T1INSTALL font converter in NT has a number of bugs that affect fonts
+when they are reencoded by DVIWindo. To fix this, first replace T1INSTALL.DLL
+in the `system32' subfolder of the windows folder --- typically
+c:\winnt\system32 in Windows NT 4.0.
+
+Before installing any fonts, rename the old T1INSTAL.DLL - T1INSTAL.ORG say,
+and then copy T1INSTALL.DLL from \t1instal\winnt400 on the CD to the
+`system32' subfolder of the windows folder.
+
+(2) Installing the fonts using the automatic conversion to TrueType
+
+In NT 4.0, open the `fonts' subfolder of the `windows' folder using Explorer,
+then drag the PFM (not PFB) files from the CD to the fonts folder.
+(In the case of MathTime on diskette, install fonts only after running the 
+prepare.bat batch file in a temporary directory --- then install from that 
+directory.)
+
+Make sure all three check boxes are checked in the dialog box that is
+presented.  The PFB files coresponding to the PFM files are automatically
+converted to TrueType form.  In NT 3.51, double click on the `fonts' icon 
+in the control panel and use `Install Fonts' from the `File' menu. 
+
+(3) Providing proper font names.
+
+If you are using fonts other than CM and AMS you need to run the SETUPTTF.EXE
+utility from the `util' subfolder of your `yandy' folder.  This makes it
+possible to access the fonts despite the fact that they are registered under
+the wrong name by the font installer.  Always run SETUPTTF.EXE after you
+install new fonts using the automatic font conversion.
+
+See also `ntfonts.txt' in the `doc-misc' subfolder of your `yandy' folder.

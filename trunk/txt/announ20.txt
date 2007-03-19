@@ -1,0 +1,40 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==================================
+Release 2.0 of the Y&Y TeX System:
+==================================
+
+This is the long awaited `32 bit only' version of the Y&Y TeX System:
+
+*	Full support for long file names.
+
+*	New unified installation program.
+
+*	`Windows 95' look with new shell (in Windows 95 and Windows NT 4.0)
+
+*	Automatic translation of hyper-text links to pdfmarks in Adobe Acrobat
+	--- including buttons to launch programs, and links to URL's on WWW.
+
+*	Auto activation of fonts when using ATM 4.0 in Windows 95 ---
+	reduce clutter in font menus, while accessing *all* fonts.
+
+*	Device independent support for rotation and scaling in Windows NT ---
+	show landscape tables on screen and when printing to non-PS devices.
+
+*	On the fly reencoding for TrueType and Type 1 fonts under Windows NT!
+
+*	Compression of TIFF images in PS output (requires PS level 2 printer)
+
+*	`Most Recently Used' file list in previewer
+
+*	TeX 3.14159 (the latest)
+
+*	TeX loads even faster because it no longer needs a DOS extender
+
+*	Fewer limitations on TIFF image size, buffer space, line lengths, etc.
+
+*	Numerous other improvements and new features.
+
+*	Revised manuals. 
+
+*	ATM 3.02 included.

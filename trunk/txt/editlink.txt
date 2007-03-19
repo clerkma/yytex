@@ -1,0 +1,95 @@
+=========================================================================
+    Linking from DVIWindo back to the editor     (file: editlink.txt)
+=========================================================================
+
+Editors that provide DDE support (such as WinEDT, PFE, UltraEdit and Epsilon)
+can be controlled using an `inverse search' mechanism from the DVIWindo
+preview back to the TeX source file.  Once set up, you can double click on 
+text in the preview and have the editor show the corresponding source file 
+with the cursor positioned appropriately.
+
+(1) For LaTeX 2e, add \usepackage[active]{srcltx}.
+    For plain TeX, add \input srctex.sty instead.
+
+(2) Add a suitable definition for the environment variable `EditorDDE' 
+    (see list below).  You can do this from DVIWindo using 
+    `Preferences > Environment' (or by editing dviwindo.ini).
+
+(3) Make sure that the environment variable TEXEDIT is set up correctly
+    (see list below) --- this is needed to launch the editor in the 
+    situation where it is *not* already running.
+
+The `EditorDDE' line contains a set of semicolon separated items.  The first
+two are the DDE `Application' and `Topic.' These are followed by one or more
+command strings for the DDE server (All but the last are executed
+synchronously. The last (or only) command string is executed asynchronously).
+
+In these strings, %s is replaced with the source file name and %d is replaced
+with the line number (Similarly, %l and %a are replaced by the log file name
+and the auxiliary file name).  Since `;' is a string separator in this
+context, you need to use `%;' to get a semicolon.
+
+*	Installation of Y&Y TeX System sets up EditorDDE and TEXEDIT for WinEdt.
+
+Examples:
+
+(1) WinEDT (Aleksander Simonic) http://www.winedt.com
+
+EditorDDE=WinEdt;DDEServer;[Open('%s')%;SelLine(%d,8);SetFocus('')]
+TEXEDIT="c:\Program Files\WinEdt\WinEdt.exe" [Open('%s');SelLine(%d,8)] 
+
+(2) PFE32 (Alan Philips)        http://www.lancs.ac.uk/people/cpaap/pfe/
+
+EditorDDE=PFE32;Editor;[FileOpen(%s)];[EditGotoLine(%d,0)];[ComeToForeground()]
+TEXEDIT=c:\yandy\pfe\pfe32.exe /g %d %s
+
+(3) UltraEdit (IDM)             http://www.idmcomp.com/
+
+EditorDDE=UltraEdit;System;[open("%s"/%d)]
+TEXEDIT="c:\Program Files\ultraedt\uedit32.exe" %s/%d
+
+(4) Epsilon (Lugaru)            http://www.lugaru.com/
+
+EditorDDE=Epsilon;Open;+%d %s
+TEXEDIT="c:\Program Files\eps90\bin\e32.exe" +%d %s
+
+
+NOTES:
+======
+
+You must use the srcltx.sty or srctex.sty files to place the markers
+needed in the DVI file.  Otherwise nothing happens when you double click.
+
+If you \input subsiduary files in your main TeX file you need to
+use a modified version of \input (namely \Input) so that the actual
+source file name is recorded in the DVI file.  When doing this,
+use the full name of the file with extension (e.g. .tex).
+See srcltx.sty or srctex.tex for additional details if needed.
+
+You must click on text.  Clicking on a blank area (or a rule) will not work. 
+
+Since TeX processes input a paragraph at a time, and since it is not
+safe to insert \special{...} in just any old place, the editor's
+cursor may, in some cases be positioned a few lines before or after 
+the expected place in the source file.
+
+The editor has to know the directory in which the source file resides.
+If you are *not* using a common Working Directory, then this will be
+the same place as the DVI file.  DVIWindo can then supply a full path
+to the editor for opening the file.  When using a common Working
+Directory, you may need to set the editor's default path to be where
+the TeX source files are located.
+
+Do not double click on headers or footers.  Since these are processed
+`asynchronously' there is no place in the source file that corresponds
+to them.  Since headers and footers are processed and output by TeX 
+when it has started to read material for the next page, the position
+indicated in the source may be somewhere on the following page.
+
+DVIWindo also supports `forward search' by setting up a DDE server
+that the editor can communicate with.  WinEdt can take advantage of 
+this.
+
+=============================================================================
+Y&Y, Inc. USA  (978) 371-3286  mailto:support@YandY.com  http://www.YandY.com
+=============================================================================

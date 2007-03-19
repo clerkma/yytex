@@ -1,0 +1,138 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+========================================
+New items in "SPECIAL" menu in DVIWindo:
+========================================
+
+"Keep Console Open" (0)             Normally the Console Window closes after
+                                    DVIPSONE or AFMtoTFM are done --- unless
+                                    there was an error.  Checking this menu
+                                    item keeps the window around for your
+                                    perusal. No need to clear it before
+                                    starting next task. 
+
+"DVIPSONE Pass Back" (0)            Ask DVIPSONE.DLL to pass PostScript back
+                                    to DVIWindo, rather then sending to
+                                    output file or port directly.  DVIWindo
+                                    then passes if back to the Windows
+                                    printer driver using PASSBACK Escapes.
+
+"Force PassBack" (0)                Normally when printing to file,
+                                    DVIPSONE.DLL writes to the file directly.
+                                    Checking this menu item forces it to pass
+                                    back PS even when printing to file.
+                                    Useful for debugging misfeatures of
+                                    Windows printer drivers (except, they
+                                    don't always send to file the same code
+                                    they would send to a printer!).
+
+"Force Postscript_Passthrough" (0)  Use POSTSCRIPT_PASSBACK even for printer
+                                    drivers that are suspected to only
+                                    support PASSBACK (Distiller works
+                                    correctly and is special-cased to use
+                                    POSTSCRIPT_PASSBACK).
+
+"Don't ask file name" (0)           When printing to file, make up output
+                                    file name based on source file name,
+                                    but with extension "ps," rather than
+                                    ask user for file name and path.
+                                    Output files goes to same place the 
+                                    DVI file came from (hence if Working
+                                    Directory is set, the PS file appears
+                                    there, and if it is not set the PS file
+                                    appears where the source file came from.
+
+"Use Open/Close Channel" (0)        An alternative to STARTDOC / ENDDOC
+                                    Supposed to avoid including headers and
+                                    trailers, but acts virtually the same as
+                                    STARTDOC / ENDDOC.
+
+You'll want to check the "DVIPSONE Pass Back" menu item
+You may want to check the "Keep Console Open" menu item
+When printing to file you may want to check "Don't ask File Name"
+
+But First Add
+
+AFMtoTFMDLL=1
+DVIPSONEDLL=1
+
+to the [Window] section of dviwindo.ini
+
+
+==============
+Other changes:
+==============
+
+The print dialog uses a new heuristic to guess whether a printer supports PS,
+and checks "Use DVIPSONE" if so (it always did this, it just didn't work
+anymore in WIN32...).  One can override this by clicking the check box. 
+A USEDVIPSONE=... variable in the [Window] section of dviwindo.ini also
+overrides this heuristic.  If such a variable exists, selecting a printer on
+one of the ports listed in a semicolon-separated list of ports will cause the
+checkbox to be checked.  Properties of the printer driver are ignored.
+
+========================
+Things that do not work:
+========================
+
+The old method for checking whether a driver supports PostScript using 
+the GETTECHNOLOGY Escape does not work (the GETTECHNOLOGY Escape is not
+implemented).
+
+The old method for suppressing PSCRIPT header and trailer insertion
+using EPSPRINTING Escape does not work (the EPSPRINTING Escape is
+not implemented, neither is ENCAPSULATED_POSTSCRIPT).
+
+The new method for avoiding header and trailer inclusion using OPENCHANNEL /
+CLOSECHANNEL (instead of STARTDOC / ENDDOC) does not work (these new escapes
+*are* implemented, just don't do what they say).  The only difference is that
+line terminations are munged.
+
+Using PASSTHROUGH Escapes makes the printer driver insert undesireable
+header and trailer.  
+
+Using POSTSCRIPT_PASSTHROUGH Escapes avoids insertion og headers and trailers
+on drivers that implement it.  However, it does not work with PSCRIPT-based
+printer drivers such as those for HP since it causes output to be truncated
+(buffer is not flushed at end) and driver forgets to tell the spooler
+that the job is done.  This can leave the printer in a bad state that
+requires power cycling.  This Escape does work with Distiller though - and 
+does prevent inclusion of PSCRIPT header and trailer.
+
+POSTSCRIPT_IDENTIFY (a way to tell the driver whether the job
+is GDI- or PS-centric) is not implemented.
+
+POSTSCRIPT_INJECTION (another way to pass through PS code) is not
+implemented. 
+
+==============
+DECISION TREE:
+==============
+
+
+if bUseDVIPSONE ?       FALSE   DVIWindo prints using GDI to windows drivers   
+
+    else
+
+if bUseDVIPSONEDLL ?    FALSE   call DVIPSONE.EXE via WinExe
+
+    else
+
+if bCallBack ?          FALSE   call DVIPSONE.DLL, but let it send output to port 
+
+    else                            
+
+                                call DVIPSONE.DLL and pass PS back to DVIWindo
+                                DVIWINDO sends it back to the printer driver.
+                                
+NOTE:   "Print to File" checked normally implies bCallBack = FALSE
+
+NOTE:   "Print to File" checked normally implies user will be asked
+        for file name to send output to.  DVIWindo itself will
+        ask if bUSEDVIPSONE is true, otherwise Windows will ask when
+        STARTDOC Escape is sent.
+
+NOTE:   To have Distiller show the PDF file after it is done, check
+        "View PDF when using Distiller Printer" in "File > Preferences"
+        of Distiller.
+

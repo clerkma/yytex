@@ -1,0 +1,66 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+This document contains some instructions on how to properly install
+WinEdt as an editor for use with Y&Y TeX.
+
+WinEdt (shareware) is a powerful TeX oriented editor with syntax
+highlighting, built-in spell checker and more. You should read the
+file "winedt.txt" for more information on WinEdt and its features.
+
+
+If you want to try WinEdt please move the files "winedt.zip" and
+"YandY.zip" to your base Y&Y TeX directory (c:\YandY). The file
+"winedt.zip" contains all the files needed to install WinEdt on
+your system. The file is compressed with the standard "pkware".
+Unpack this file with preserved directory hierarchy (eg. "pkunzip
+-d winedt.zip"). The file YandY.zip contains a configuration
+specific to Y&Y TeX. You should unpack this file (eg. "pkunzip -d
+YandY.zip") replacing some of the existing files in the default
+installation. This allows you to call TeX, LaTeX, BibTeX, DVIPS and
+DVIWindo from within WinEdt. You can also quickly compile and
+preview selected text from within WinEdt.
+
+To call WinEdt from within DVIWindo you should add this line
+
+  WinEdt|F11=C:\yandy\winedt\winedt.exe @.tex
+
+to DVIWINDO_INI (TeX Menu). If you also want WinEdt to respond to
+edit command when TeX encounters errors you should modify the
+definition of TEXEDIT in DVIWINO_INI to:
+
+  TEXEDIT=C:\yandy\winedt\winedt.exe  %s -G(1,%d,0) -S(7,+1,0)
+
+If you installed Y&Y TeX to a directory different from "c:\YandY"
+you'll have to modify the path specifications in the following
+files:
+
+  ...\winedt\edt\bin\*.bat
+  ...\winedt\edt\compile\compile.bat
+
+
+Many dictionaries for WinEdt's spell checker have been contributed
+by WinEdt's users and are available on CTAN:
+
+  ftp.dante.de  (Germany)      /tex-archive
+  ftp.tex.ac.uk (England)      /tex-archive
+
+     tex-archive/systems/win32/winedt/dict
+
+
+WinEdt's Y&Y settings contain a definition of Ghost View which is a
+freeware (available on CTAN) for previewing postscript files. You
+can remove the definition of this Menu Item from WinEdt's Menu and
+Tool Bar or else download GSView from CTAN.
+
+
+Please note that WinEdt is extremely configurable and you can
+change the entire contents of its menu, shortcut keys, tool bar
+etc... WinEdt's help contains more information on how to do this.
+
+
+Finally, WinEdt is shareware. Should you decide to use the program
+after the trial period of 31 days you'll have to register your copy
+of the program. Registration carries a fee of US $40. The file
+"winedt.txt" contains more information on the registration
+procedure.

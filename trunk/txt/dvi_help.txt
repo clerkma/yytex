@@ -1,0 +1,38 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+=========================================
+Dr. Donald P. Story's DVIWindo Help File:
+=========================================
+
+Dr. Donald P. Story of the University of Akron in Akron, Ohio, has kindly
+provided us with a handy help file for DVIWindo, exploiting DVIWindo's own
+hyper-text capability.  To use it, simple open `dvi_help.dvi' in DVIWindo.
+
+Words in green are hyper-text buttons.  Clicking on a `button' leads you to
+the corresponding `mark,' where a more detailed explanation of that item may
+be found. To return to where you came from, use the right mouse button.  The
+hyper-text facility has a push-down stack for jumps and you can return from
+several levels down using the right mouse button.  If you get lost, just
+press the `Home' key to return to the `home page.'
+
+You may want to adjust the page position and scale so that text is
+conveniently positioned on the screen before you start.  Then select 
+`Store New Page Scale' to make the change permanent.
+
+It is convenient to add a `TeX Menu' item that links to the help file.  Add 
+a line like the following to the [Applications] section of dviwindo.ini.
+
+	Help|F1=dviwindo c:\dviwindo\dvi_help
+
+It may also be convenient to create an icon for the DVIWindo help file.  
+First click on your `Y & Y' program group to select it.  Then pick `New' 
+from  Progam Manager's `File' menu.  Select `Program Item'.  For 
+`Description,' fill in `DVIWindo Help'.  For `Command Line,' enter 
+
+	`c:\dviwindo\dviwindo.exe c:\dviwindo\dvi_help.dvi'
+
+(You may have to adjust the directories for your particular installation).
+
+The DVIWindo help file has been set up to use the TrueType fonts that come
+with Windows 3.1 (Arial, Courier New, Times New Roman, Symbol).  So you must
+have TrueType fonts enabled for this to work properly.

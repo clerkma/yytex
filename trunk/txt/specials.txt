@@ -1,0 +1,68 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Short summary of \special{...} code supported by DVIPSONE:
+==========================================================
+
+EPS figure insertion \special{...}:
+-----------------------------------
+
+There is no standardization for EPS figure inclusion, so we support the
+twelve most commonly used schemes for EPS figure inclusion:
+
+DVIPS(a)	ps:: [begin] startTexFig plotfile [end] endTexFig doclip rotate
+		overlay epsfile include literal doclip
+DVIPS(b)	PSfile llx lly urx ury rwi rhe clip
+Textures	illustration scaled postscript rawpostscript 
+		postscriptfile rawpostscriptfile
+DVI2PS (SvB)	ps: psfiginit literal startTexFig include endTexFig
+DVI2PS (AL)	pstext startTexFig psfile endTexFig doclip
+DVI2PS (MS)	psfile hscale vscale hoffset voffset hsize vsize rotation clip
+DVIPSADOBE	ditto
+DVIALW		language PostScript PS include overlay literal
+DVITOPS		dvitops eps import x y prolog landscape inline
+DVITPS		Include1 Include0 Literal
+PCTeX		epsfile
+DVILASER	ps: epsfile
+OzTeX		uses no special key, just EPS file name, ugh!
+SW		ditto
+PSPRINT		ditto
+
+TIFF and WMF images:
+--------------------
+
+TIFF images	insertimage, tiff
+WMF images	insertmf
+BMP images	insertimage
+
+PS passthrough:	
+---------------
+
+PostScript	verbatim ps: ps:: " !
+PS headers	header headertext
+DSC headers	DSCheader DSCtext
+
+Other:
+------
+
+color		color push rgb cmyk gray pop
+color		color textcolor rulecolor figurecolor (backward compatability)
+background	color of page background
+landscape	landscape mode
+CTM		coordinate transformations (rotate, scale, translate, concat)
+emlines		em linewidth message
+TPIC		pn pa da dt sp spsld ar ia sh cl gr fp ip wh bk tx
+hyper-text	mark button launch: file: page:	(auto translated to pdfmark)
+PDF		Keywords, Creator, Author, Title, Subject, cropbox (for Acrobat DOCINFO)
+PDF		BBox, base, PageMode (for Acrobat DOCVIEW)
+comment		ignored
+
+header=		name of PS file to include as prolog (may be repeated)	
+headertext=	verbatim PS code to include as prolog (may be repeated) 
+DSChdeader=	file with DSC comments to insert
+DSCtext=	verbatim DSC comments to insert
+papersize=	specify paper size
+DVIPSONE=	command line arguments for DVIPSONE
+DVIWindo=	commands for DVIWindo, ignored by DVIPSONE
+
+ifview		Only in DVIWindo

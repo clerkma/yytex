@@ -1,0 +1,56 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===================================================================
+		Fonts called for in EPS files (epsfonts.txt)
+===================================================================
+
+EPS files may include fonts, or may instead use DSC (Document
+Structuring Comments) to request fonts.  Adobe Illustrator, for
+example, uses DSC comments rather than actually including fonts in
+the EPS files. These DSC comments are aimed at a mystical `spooling'
+program.  No spooling program gets into the act when DVIPSONE creates
+a PS file, so DVIPSONE has to try and accomodate these font requests
+itself (most DVI->PS processors do not do this, by the way).
+
+The DSC comments of interest are of the form 
+
+	%%IncludeResource: font ...  or the older style 
+	%%IncludeFont: ... 
+
+There are also 
+
+	%%DocumentNeededResource: font ... or the older style
+	%%DocumentNeededFonts: ... 
+
+comments, but these are merely informationoal and do not indicate
+where to include the fonts (see Appendix G of the PostScript
+Reference Manual, 2nd edition).
+
+The font name mentioned in DSC comment is the PS FontName (e.g.
+Times-Bold), *not* the name of the corresponding PFB file (e.g.
+tir_____.pfb).  Somehow DVIPSONE has to map from the PS FontName 
+to the file name.
+
+If DVIPSONE can find an ATM.INI file it tries to use the information
+there.  The ATM.INI file relates Windows Face Name and style (e.g.
+Times, BOLD) to the file name.  The Windows Face Name is often not
+the same as the PS FontName (even taking into account the style
+decoration).  What's more, in Windows NT, the fonts may be used
+without ATM or with ATM Deluxe 4.0 for NT, which does not use an
+ATM.INI file.
+
+To have DVIPSONE obey DSC font inclusion request reliably, one should
+create a ATMFONTS.MAP file and put it where DVIPSONE is looking for
+PFB font files (typically c:\psfonts or c:\winnt\fonts).  The
+ATMFONTS.MAP file contains `key=value' entries, where the `key' is
+the PS FontName and the `value' is the PFB file name. For example:
+
+	TektonMM=c:\psfonts\zjrg____.pfb
+
+Printer resident fonts should not be included - even when the EPS file
+calls for them using DSC comments.  DVIPSONE consults `standard.sub'
+(or another substitution file you ask for using command line flags).
+to determine what fonts are printer resident.  The default substitution
+file lists the four styles each of Times, Helvetica, and Courier.
+You can add to this list if the EPS files calls for other printer
+resident fonts and you don't want these included.

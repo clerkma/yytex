@@ -1,0 +1,33 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+===================
+New bugs in ATM 3.0
+===================
+
+ATM 3.0 is fuzzy about the line termination after the `eexec' 
+------------------------------------------------------------
+
+currentdict end
+currentfile eexec
+
+It will not tolerate anything but a single character line termination
+here (`linefeed' + `return' is not permitted).
+
+ATM 3.0 is fuzzy about the transition from Subrs to CharStrings
+---------------------------------------------------------------
+
+not acceptable	acceptable	acceptable	acceptable
+
+dup n m RD	dup n m RD	dup n m -|	dup n m RD
+
+..last Subr..	..last Subr..	..last Subr..	..last Subr..
+
+NP		NP		|		NP
+readonly def	ND		|-		noaccess def
+2 index /CharS	2 index /CharSt	2 index /CharSt	2 index /CharSt
+
+*	|- is acceptable even if |- has been defined as `readonly def'
+
+*	ND is acceptable even if ND has not been defined
+
+*	but readonly def is not

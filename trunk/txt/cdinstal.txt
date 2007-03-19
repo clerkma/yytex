@@ -1,0 +1,110 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+========================================================================
+          Installing the Y&Y TeX System 2.2 from CD-ROM:
+========================================================================
+
+Insert the CD in your CD reader.  You should see this file in NotePad
+if you have Auto-Insert-Notification turned on (otherwise double click
+on the CD icon).  Next, right click on the CD icon in `My Computer.'
+
+NOTE: If you do NOT get a menu listing installation steps, see (*).
+
+(1) Select `Install Fonts in Windows 2000 or XP' -or-
+           `Install ATM 4.0 for Windows 95/98 and all fonts' - or -
+           `Install ATM 4.0 for Windows NT 4 and all fonts'
+
+* IMPORTANT: Windows 2000 and XP have Type 1 font support built in, 
+* so do NOT try to install ATM 4.0 in Windows 2000 or XP!
+* If you do like the ATM interface, download the free ATM 4.1
+
+  ATM, if previously installed, can be used to install fonts:
+  use `Start > Programs > Adobe > ATM'
+  then install the fonts from the `PSFONTS' folder on the CD.
+  For convenience, this folder has all fonts gathered in one place.
+  Individual font set folders on the CD are:
+
+    Y&Y CM Complete System:             CM, AMS, LatxFont, and TeXPi
+    Y&Y MathTime Complete System:       MathTime and MathPlus 
+    Y&Y Lucida Bright Complete System:  Lucidabr and Lucidexp
+    Y&Y EM System:                      EM and TeXPi.
+
+(2) Select `Install Y&Y TeX System 2.2'  After installing the TeX System
+    itself, the installer continues on to install LaTeX and its packages.
+
+NOTE: The above installs plain TeX, AMS TeX, LaTeX 2e, and optionally 2.09.
+You can also install LaTeX and/or extra LaTeX packages later by selecting
+    `Install LaTeX 2.09 and/or LaTeX 2e SEPARATELY'
+Additional LaTeX 2e packages are on the CD in \ctan\latex\contrib\supported
+These take an additional 200 Mb to 300Mb, You are asked at the end
+of LaTeX installation whether you would like these installed as well.
+Detailed documentation in \ctan\info on the CD and \ctan\macros\latex\doc.
+
+(3) READY, GO!   Tutorial, Sample Files and Extra Documentation:
+
+  Try the simple exercise in the Y&Y TeX System Manual, section 2.5, pg 8
+  Then check out the `Hello World' sample files in \yandy\texinput.
+  Pick the one designed for the fonts you have installed: hello_CM for CM, 
+  hello_MT for MathTime, hello_LB for LucidaBright, and hello_EM for EM. 
+  Miscellaneous additional documentation may be found in \yandy\misc-doc.
+
+Technical Support:                      support@YandY.com
+Downloadable Support Files: http://www.YandY.com/support.htm
+
+(C) Adobe Type Manager (ATM) is copyright Adobe Systems, Inc.
+(R) Adobe Type Manager and ATM are registered trademarks of Adobe Systems, Inc.
+
+=====================================================================
+(*) FALLBACK:  *ONLY* if the right-click pop-up menu does *NOT* appear
+=====================================================================
+
+(See reverse side for normal installation instructions using pop-up menu)
+
+IMPORTANT: Do NOT install ATM 4.0 in Windows 2000 or XP.
+In Windows 95/98/SE/ME/NT, first, install Adobe Type Manager 4.0 (ATM).
+
+ Install ATM 4.0 --- unless you already have ATM 4.0.  Double click on
+ `My Computer', then your CD ROM drive. Double click the `ATM' folder.
+ In Windows 95/98, double click `Win95', then double click `install.exe'.
+ In Windows NT 4, double click `NT4', then double click `setup.exe' 
+ The ATM installer will also install the latest versions of the `Base 13' 
+ fonts (Times, Helvetica, Courier, and Symbol) from Adobe, *and* the fonts
+ that come with your TeX System.  
+
+ To install ATM alone -- without the fonts -- go into `Win95_NoFonts'
+ instead of `Win95', or `NT4_NoFonts' instead of `NT4'. In that case 
+ you will need to install the fonts separately.  To do this, launch the 
+ ATM control panel from `Start > Programs > Adobe > ATM.'  Click `Add.'  
+ Then, in the right hand panel, navigate to a font folder on the CD.
+ Select all fonts in that folder (Ctrl-A) and click `Add.'  Depending on 
+ which TeX System you have, the fonts will be in the following folders:
+
+    Y&Y CM Complete System:             CM, AMS, LatxFont, TeXPi 
+    Y&Y MathTime Complete System:       MathTime and MathPlus 
+    Y&Y Lucida Bright Complete System:  Lucidabr and Lucidexp, or
+    Y&Y EM System:                      EM and TeXPi.
+
+SECOND, install the Y&Y TeX System:
+
+  From `My Computer' open the CD ROM (if it isn't already open).  Double click
+  the `setup' icon on the CD ROM.  Follow the dialog boxes.  If you choose
+  `Express' installation you will not be asked a lot of questions.  If you want
+  more detailed control, select `Custom'.  If you don't know the answer to some
+  question, select the default.  This will yield a useable installation that
+  can later be fine-tuned - if needed - by editing the `dviwindo.ini' file.
+
+FINALLY, install LaTeX Support:
+
+  At the end of the TeX System installation you can continue on to the `LaTeX
+  Support' installation.  Alternatively, you can exit and do this later by
+  double clicking the `setup1' (note the digit `1') on the CD ROM.  Additional
+  LaTeX 2e packages may be found on the CD in \ctan\latex\contrib\supported\.
+  Detailed documentation in \ctan\info on the CD and \ctan\macros\latex\doc.
+  
+READY, GO!   Tutorial, Sample Files and Extra Documentation:
+
+  Try the simple exercise in the Y&Y TeX System Manual, section 2.5, pg. 8
+  Then check out the `Hello World' sample files in \yandy\texinput.
+  Pick the one designed for the fonts you have installed: hello_CM for CM, 
+  hello_MT for MathTime, hello_LB for LucidaBright, and hello_EM for EM. 
+  Miscellaneous additional documentation may be found in \yandy\misc-doc.

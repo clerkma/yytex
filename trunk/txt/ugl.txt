@@ -1,0 +1,540 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+The UGL indexes are based upon Unicode values. In addition, the description of each character or glyph is the ISO name whenever possible. Font files for Microsoft platfoms must use Unicode indicies (given here as hexadecimal values).
+The PostScript names are given where they are known or defined. PostScript names for otherwise unknown characters should be based on their Unicode index. For example, the box drawing light character should be called `2500'. The only characters that are not presently assigned PostScript names are the forms characters from Unicode index 2500 thru 256c. Note that Adobe uses GCID's for unassigned PostScript names.
+
+
+Unicode Index	IBM GCID	PostScript Name	Descriptive Name 
+
+ASCII			
+
+0020	SP010000	space	space
+0021	SP020000	exclam	exclamation mark
+0022	SP040000	quotedbl	quotation mark
+0023	SM010000	numbersign	number sign
+0024	SC030000	dollar	dollar sign
+0025	SM020000	percent	percent sign
+0026	SM030000	ampersand	ampersand
+0027	SP050000	quotesingle	apostrophe
+0028	SP060000	parenleft	left parenthesis 
+0029	SP070000	parenright	right parenthesis
+002a	SM040000	asterisk	asterisk
+002b	SA010000	plus	plus sign
+002c	SP080000	comma	comma
+002d	SP100000	hyphen	hyphen-minus
+002e	SP110000	period	period
+002f	SP120000	slash	slash
+
+
+			
+0030	ND100000	zero	digit zero
+0031	ND010000	one	digit one
+0032	ND020000	two	digit two
+0033	ND030000	three	digit three
+0034	ND040000	four	digit four
+0035	ND050000	five	digit five
+0036	ND060000	six	digit six
+0037	ND070000	seven	digit seven
+0038	ND080000	eight	digit eight
+0039	ND090000	nine	digit nine
+003a	SP130000	colon	colon
+003b	SP140000	semicolon	semicolon
+003c	SA030000	less	less-than sign
+003d	SA040000	equal	equals sign
+003e	SA050000	greater	greater-than sign
+003f	SP150000	question	question mark
+
+
+			
+0040	SM050000	at	commercial at
+0041	LA020000	A	latin capital letter a
+0042	LB020000	B	latin capital letter b
+0043	LC020000	C	latin capital letter c
+0044	LD020000	D	latin capital letter d
+0045	LE020000	E	latin capital letter e
+0046	LF020000	F	latin capital letter f
+0047	LG020000	G	latin capital letter g
+0048	LH020000	H	latin capital letter h
+0049	LI020000	I	latin capital letter i
+004a	LJ020000	J	latin capital letter j
+004b	LK020000	K	latin capital letter k
+004c	LL020000	L	latin capital letter l
+004d	LM020000	M	latin capital letter m
+004e	LN020000	N	latin capital letter n
+004f	LO020000	O	latin capital letter o
+
+
+			
+0050	LP020000	P	latin capital letter p
+0051	LQ020000	Q	latin capital letter q
+0052	LR020000	R	latin capital letter r
+0053	LS020000	S	latin capital letter s
+0054	LT020000	T	latin capital letter t
+0055	LU020000	U	latin capital letter u
+0056	LV020000	V	latin capital letter v
+0057	LW020000	W	latin capital letter w
+0058	LX020000	X	latin capital letter x
+0059	LY020000	Y	latin capital letter y
+005a	LZ020000	Z	latin capital letter z
+005b	SM060000	bracketleft	left square bracket
+005c	SM070000	backslash	backslash
+005d	SM080000	bracketright  	right square bracket
+005e	SD150000	asciicircum	circumflex accent
+005f	SP090000	underscore	underline
+
+
+			
+0060	SD130000	grave	grave accent
+0061	LA010000	a	latin small letter a
+0062	LB010000	b	latin small letter b
+0063	LC010000	c	latin small letter c
+0064	LD010000	d	latin small letter d
+0065	LE010000	e	latin small letter e
+0066	LF010000	f	latin small letter f
+0067	LG010000	g	latin small letter g
+0068	LH010000	h	latin small letter h
+0069	LI010000	i	latin small letter i
+006a	LJ010000	j	latin small letter j
+006b	LK010000	k	latin small letter k
+006c	LL010000	l	latin small letter l
+006d	LM010000	m	latin small letter m
+006e	LN010000	n	latin small letter n
+006f	LO010000	o	latin small letter o
+
+
+0070	LP010000	p	latin small letter p
+0071	LQ010000	q	latin small letter q
+0072	LR010000	r	latin small letter r
+0073	LS010000	s	latin small letter s
+0074	LT010000	t	latin small letter t
+0075	LU010000	u	latin small letter u
+0076	LV010000	v	latin small letter v
+0077	LW010000	w	latin small letter w
+0078	LX010000	x	latin small letter x
+0079	LY010000	y	latin small letter y
+007a	LZ010000	z	latin small letter z
+007b	SM110000	braceleft	left curly bracket
+007c	SM130000	bar	vertical line
+007d	SM140000	braceright	right curly bracket
+007e	SD190000	asciitilde	tilde
+
+Latin-1, also corresponding to ISO 8859-1 or "ANSI"			
+
+00a0	SP300000	nbspace	no-break space
+00a1	SP030000	exclamdown	inverted exclamation mark
+00a2	SC040000	cent	cent sign
+00a3	SC020000	sterling	pound sign
+00a4	SC010000	currency	currency sign
+00a5	SC050000	yen	yen sign
+00a6	SM650000	brokenbar	broken bar
+00a7	SM240000	section	section sign
+00a8	SD170000	dieresis	diaeresis
+00a9	SM520000	copyright	copyright sign
+00aa	SM210000	ordfeminine	feminine ordinal indicator
+00ab	SP170000	guillemotleft	left guillemet
+00ac	SM660000	logicalnot	not sign
+00ad	SP320000	sfthyphen	soft hyphen
+00ae	SM530000	registered	registered trade mark sign
+00af	SM150000	overstore	macron, overline
+
+
+			
+00b0	SM190000	degree	degree sign
+00b1	SA020000	plusminus	plus-minus sign
+00b2	ND021000	twosuperior	superscript two
+00b3	ND031000	threesuperior	superscript three
+00b4	SD110000	acute	acute accent
+00b5	SM170000	mu	micro sign
+00b6	SM250000	paragraph	paragraph sign
+00b7	SD630000	middot	middle dot, kana conjoctive
+00b8	SD410000	cedilla	cedilla
+00b9	ND011000	onesuperior	superscript one
+00ba	SM200000	ordmasculine	masculine ordinal indicator
+00bb	SP180000	guillemotright	right guillemet
+00bc	NF040000	onequarter	vulgar fraction one quarter
+00bd	NF010000	onehalf	vulgar fraction one half
+00be	NF050000	threequarters	vulgar fraction three quarters
+00bf	SP160000	questiondown	inverted question mark
+
+
+			
+00c0	LA140000	Agrave	latin capital letter a with grave accent
+00c1	LA120000	Aacute	latin capital letter a with acute accent
+00c2	LA160000	Acircumflex	latin capital letter a with circumflex accent
+00c3	LA200000	Atilde	latin capital letter a with tilde
+00c4	LA180000	Adieresis	latin capital letter a with diaeresis
+00c5	LA280000	Aring	latin capital letter a with ring above
+00c6	LA520000	AE	latin capital letter a with e
+00c7	LC420000	Ccedilla	latin capital letter c with cedilla
+00c8	LE140000	Egrave	latin capital letter e with grave accent
+00c9	LE120000	Eacute	latin capital letter e with acute accent
+00ca	LE160000	Ecircumflex	latin capital letter e with circumflex accent
+00cb	LE180000	Edieresis	latin capital letter e with diaeresis
+00cc	LI140000	Igrave	latin capital letter i with grave accent
+00cd	LI120000	Iacute	latin capital letter i with acute accent
+00ce	LI160000	Icircumflex	latin capital letter i with circumflex accent
+00cf	LI180000	Idieresis	latin capital letter i with diaeresis
+			
+00d0	LD6200001	Eth	latin capital letter eth
+00d1	LN200000	Ntilde	latin capital letter n with tilde
+00d2	LO140000	Ograve	latin capital letter o with grave accent
+00d3	LO120000	Oacute	latin capital letter o with acute accent
+00d4	LO160000	Ocircumflex	latin capital letter o with circumflex accent
+00d5	LO200000	Otilde	latin capital letter o with tilde
+00d6	LO180000	Odieresis	latin capital letter o with diaeresis
+00d7	SA070000	multiply	multiplication sign
+00d8	LO620000	Oslash	latin capital letter o with oblique stroke
+00d9	LU140000	Ugrave	latin capital letter u with grave accent
+00da	LU120000	Uacute	latin capital letter u with acute accent
+00db	LU160000	Ucircumflex	latin capital letter u with circumflex accent
+00dc	LU180000	Udieresis	latin capital letter u with diaeresis
+00dd	LY120000	Yacute	latin capital letter y with acute accent
+00de	LT640000	Thorn	latin capital letter thorn
+00df	LS610000	germandbls	latin small letter sharp s
+			
+00e0	LA130000	agrave	latin small letter a with grave accent
+00e1	LA110000	aacute	latin small letter a with acute accent
+00e2	LA150000	acircumflex	latin small letter a with circumflex accent
+00e3	LA190000	atilde	latin small letter a with tilde
+00e4	LA170000	adieresis	latin small letter a with diaeresis
+00e5	LA270000	aring	latin small letter a with ring above
+00e6	LA510000	ae	latin small letter a with e
+00e7	LC410000	ccedilla	latin small letter c with cedilla
+00e8	LE130000	egrave	latin small letter e with grave accent
+00e9	LE110000	eacute	latin small letter e with acute accent
+00ea	LE150000	ecircumflex	latin small letter e with circumflex accent
+00eb	LE170000	edieresis	latin small letter e with diaeresis
+00ec	LI130000	igrave	latin small letter i with grave accent
+00ed	LI110000	iacute	latin small letter i with acute accent
+00ee	LI150000	icircumflex	latin small letter i with circumflex accent
+00ef	LI170000	idieresis	latin small letter i with diaeresis
+
+
+			
+			
+00f0	LD630000	eth	latin small letter eth
+00f1	LN190000	ntilde	latin small letter n with tilde
+00f2	LO130000	ograve	latin small letter o with grave accent
+00f3	LO110000	oacute	latin small letter o with acute accent
+00f4	LO150000	ocircumflex	latin small letter o with circumflex accent
+00f5	LO190000	otilde	latin small letter o with tilde
+00f6	LO170000	odieresis	latin small letter o with diaeresis
+00f7	SA060000	divide	division sign
+00f8	LO610000	oslash	latin small letter o with oblique stroke
+00f9	LU130000	ugrave	latin small letter u with grave accent
+00fa	LU110000	uacute	latin small letter u with acute accent
+00fb	LU150000	ucircumflex	latin small letter u with circumflex accent
+00fc	LU170000	udieresis	latin small letter u with diaeresis
+00fd	LY110000	yacute	latin small letter y with acute accent
+00fe	LT630000	thorn	latin small letter thorn
+00ff	LY170000	ydieresis	latin small letter y with diaeresis
+
+European			
+
+0102	LA240000	Abreve	latin capital letter a with breve
+0103	LA230000	abreve	latin small letter a with breve
+0104	LA440000	Aogonek	latin capital letter a with ogonek
+0105	LA430000	aogonek	latin small letter a with ogonek
+0106	LC120000	Cacute	latin capital letter c with acute accent
+0107	LC110000	cacute	latin small letter c with acute accent
+010c	LC220000	Ccaron	latin capital letter c with hacek
+010d	LC210000	ccaron	latin small letter c with hacek
+010e	LD220000	Dcaron	latin capital letter d with hacek
+010f	LD210000	dcaron	latin small letter d with hacek
+			
+0110	LD6200002	Dslash	latin capital letter d with stroke
+0111	LD610000	dmacron3	latin small letter d with stroke
+0118	LE440000	Eogonek	latin capital letter e with ogonek
+0119	LE430000	eogonek	latin small letter e ogenek
+011a	LE220000	Ecaron	latin capital letter e with hacek
+011b	LE210000	ecaron	latin small letter e with hacek
+011e	LG240000	Gbreve	latin capital letter g with breve
+011f	LG230000	gbreve	latin small letter g with breve
+			
+0130	LI300000	Idot	latin capital letter i with dot above
+0131	LI610000	dotlessi	latin small letter i without dot above
+0139	LL120000	Lacute	latin capital letter l with acute accent
+013a	LL110000	lacute	latin small letter l with acute accent
+013d	LL220000	Lcaron	latin capital letter l with hacek
+013e	LL210000	lcaron	latin small letter l with hacek
+013f	LL640000	Ldot	latin capital letter l with middle dot
+
+
+			
+0140	LL630000	ldot	latin small letter l with middle dot
+0141	LL620000	Lslash	latin capital letter l with stroke
+0142	LL610000	lslash	latin small letter l with stroke
+0143	LN120000	Nacute	latin capital letter n with acute accent
+0144	LN110000	nacute	latin small letter n with acute accent
+0147	LN220000	Ncaron	latin capital letter n with hacek
+0148	LN210000	ncaron	latin small letter n with hacek
+ 			
+0150	LO260000	Odblacute	latin capital letter o with double acute accent
+0151	LO250000	odblacute	latin small letter o with double acute accent
+0152	LO520000	OE	latin capital ligature o with e
+0153	LO510000	oe	latin small ligature o with e
+0154	LR120000	Racute	latin capital letter r with acute accent
+0155	LR110000	racute	latin small letter r with acute accent
+0158	LR220000	Rcaron	latin capital letter r with hacek
+0159	LR210000	rcaron	latin small letter r with hacek
+015a	LS120000	Sacute	latin capital letter s with acute accent
+015b	LS110000	sacute	latin small letter s with acute accent
+015e	LS420000	Scedilla	latin capital letter s with cedilla
+015f	LS410000	scedilla	latin small letter s with cedilla
+			
+0160	LS220000	Scaron	latin capital letter s with hacek
+0161	LS210000	scaron	latin small letter s with hacek
+0162	LT420000	Tcedilla	latin capital letter t with cedilla
+0163	LT410000	tcedilla	latin small letter t with cedilla
+0164	LT220000	Tcaron	latin capital letter t with hacek
+0165	LT210000	tcaron	latin small letter t with hacek
+016e	LU280000	Uring	latin capital letter u with ring above
+016f	LU270000	uring	latin small letter u with ring above
+			
+0170	LU260000	Udblqcute	latin capital letter u with double acute accent
+0171	LU250000	udblacute	latin small letter u with double acute accent
+0178	LY180000	Ydieresis	latin capital letter y with diaeresis
+0179	LZ120000	Zacute	latin capital letter z with acute accent
+017a	LZ110000	zacute	latin small letter z with acute accent
+017b	LZ300000	Zdot	latin capital letter z with dot above
+017c	LZ290000	zdot	latin small letter z with dot above
+017d	LZ220000	Zcaron	latin capital letter z with hacek
+017e	LZ210000	zcaron	latin small letter z with hacek
+
+
+Extended Latin			
+
+0192	SC070000	florin	latin small letter script f,florin sign
+
+Modifier Letters (spacing)			
+
+02dd	SD250000	hungarumlaut	modifier letter double prime
+02c7	SD210000	caron	modifier letter hacek
+02c9	SD310000	macron	modifier letter macron
+02d8	SD230000	breve	breve
+02d9	SD290000	dotaccent	dot above
+02da	SD270000	ring	ring above
+02db	SD430000	ogonek	ogonek
+02c6	SD150100	circumflex	nonspacing circumflex accent
+02dc	SD190100	tilde	nonspacing tilde 
+
+Greek			
+
+0393	GG020000	Gamma	greek capital letter gamma
+0398	GT620000	Theta	greek capital letter theta
+03a6	GF020000	Phi	greek capital letter phi
+03b1	GA010000	alpha	greek small letter alpha
+03b4	GD010000	delta	greek small letter delta
+03b5	GE010000	epsilon	greek small letter epsilon
+03c0	GP010000	pi	greek small letter pi
+03c3	GS010000	sigma	greek small letter sigma
+03c4	GT010000	tau	greek small letter tau
+03c6	GF010000	phi	greek small letter phi
+
+General Punctuation			
+
+2013	SS680000	endash	endash
+2014	SM900000	emdash	emdash
+2017	SM100000	underscoredbl	double underline
+2018	SP190000	quoteleft	left single quotation mark
+2019	SP200000	quoteright	right single quotation mark
+201a	SP260000	quotesinglbase	single low quotation mark
+201c	SP210000	quotedblleft	left double quotation mark
+201d	SP220000	quotedblright	right double quotation mark
+201e	SP230000	quotedblbase	double low quotation mark
+2020	SM340000	dagger	dagger
+2021	SM350000	daggerdbl	doubledagger
+2022	SM570000	bullet	bullet
+2026	SV520000	ellipsis	horizontal ellipsis
+2030	SM560000	perthousand	permille sign
+2039	SP270000	guilsinglleft	left single guillemet
+203a	SP280000	guilsinglright	right single guillemet
+203c	SP330000	exclamdbl	double exclamation marks
+
+
+Superscripts and Subscripts			
+
+207f	LN011000	nsuperior	superscript latin letter small n
+
+Currency			
+
+20a3	undef	franc	french franc
+20a7	SC060000	peseta	peseta sign
+
+Letterlike Symbols			
+
+2122	SM540000	trademark	trademark ligature
+
+Arrows			
+
+2190	SM300000	arrowleft	leftward arrow
+2191	SM320000	arrowup	upward arrow
+2192	SM310000	arrowright	rightward arrow
+2193	SM330000	arrowdown	downward arrow
+2194	SM780000	arrowboth	left and right pointing arrow
+2195	SM760000	arrowupdn	up and down pointing arrow
+21a8	SM770000	arrowupdnbse	up and down pointing arrow with base
+
+ Mathematical Operators			
+
+2126	GO320000	ohm	greek capital letter omega
+2202	SA490000	partialdiff	partial differential sign
+2206	undef	Delta	increment
+220f	SA810000	product	repeated product
+2211	GS020000	summation4	greeek capital letter sigma
+2212	SA000000	minus	minus
+2215	SP120001	fraction	division slash
+2219	SA790000	periodcentered	middle dot
+221a	SA800000	radical	radical sign
+221e	SA450000	infinity	infinity sign
+221f	SA420000	orthogonal	right angle sign
+2229	SA380000	intersection	intersection
+222b	SA510000	integral	integral sign
+2248	SA700000	approxequal	almost equals
+2260	SA540000	notequal	not equal to
+2261	SA480000	equivalence	is identical to
+2264	SA520000	lessequal	less than or equal to
+2265	SA530000	greaterequal	greater than or equal to
+
+Miscellaneous Technical			
+
+2302	SM790000	house	small house
+2310	SM680000	revlogicalnot	reversed not sign
+2320	SS260000	integraltp	mathematical integral sign top half
+2321	SS270000	integralbt	mathematical integral sign bottom half
+
+
+Forms			
+
+2500	SF100000	use the	box drawings light horizontal
+2502	SF110000	unicode ID	box drawings light vertical
+250c	SF010000	for all items	box drawings light down and right
+		in this column	
+2510	SF030000		box drawings light down and left
+2514	SF020000		box drawings light up and right
+2518	SF040000		box drawings light up and left
+251c	SF080000		box drawings light vertical and right
+			
+2524	SF090000		box drawings light vertical and left
+252c	SF060000		box drawings light down and horizontal
+			
+2534	SF070000		box drawings light up and horizontal
+253c	SF050000		box drawings light vertical and horizontal
+			
+2550	SF430000		box drawings double horizontal
+2551	SF240000		box drawings double vertical
+2552	SF510000		box drawings down single and right double
+2553	SF520000		box drawings down double and right single
+2554	SF390000		box drawings double down and right
+2555	SF220000		box drawings down single and left double
+2556	SF210000		box drawings down double and left single
+2557	SF250000		box drawings double down and left
+2558	SF500000		box drawings up single and right double
+2559	SF490000		box drawings up double and right single
+255a	SF380000		box drawings double up and right
+255b	SF280000		box drawings up single and left double
+255c	SF270000		box drawings up double and left single
+255d	SF260000		box drawings double up and left
+255e	SF360000		box drawings vertical single and right double
+255f	SF370000		box drawings vertical double and right single
+2560	SF420000		box drawings double vertical and right
+2561	SF190000		box drawings vertical single and left double
+2562	SF200000		box drawings vertical double and left single
+2563	SF230000		box drawings double vertical and left
+2564	SF470000		box drawings down single and horizontal double
+2565	SF480000		box drawings down double and horizontal single
+2566	SF410000		box drawings double down and horizontal
+2567	SF450000		box drawings up single and horizontal double
+2568	SF460000		box drawings up double and horizontal single
+2569	SF400000		box drawings double up and horizontal
+256a	SF540000		box drawings vertical single and horizontal double
+256b	SF530000		box drawings vertical double and horizontal single
+256c	SF440000		box drawings double vertical and horizontal
+
+
+Bars			
+
+2580	SF600000	upblock	upper half block
+2584	SF570000	dnblock	lower half block
+2588	SF610000	block	full block
+258c	SF580000	lfblock	left half block
+2590	SF590000	rtblock	right half block
+2591	SF140000	ltshade	light shade
+2592	SF150000	shade	medium shade
+2593	SF160000	dkshade	dark shade
+
+Geometric Shapes			
+
+25a0	SM470000	filledbox	full square
+25ac	SM700000	filledrect	full rectangle
+25b2	SM600000	triagup	full upward pointing triangle
+25ba	SM590000	triagrt	full rightward pointer
+25bc	SV040000	triagdn	full downward pointing triangle
+25c4	SM630000	triaglf	full leftward pointer
+25ca	SA660000	lozenge	lozenge
+25cb	SM750000	circle	circle
+25d8	SM570001	invbullet	inverse circle bullet
+25d9	SM750002	invcircle	inverse circle
+
+Dingbats			
+
+263a	SS000000	smileface	smiling face white
+263b	SS010000	invsmileface	reverse image smiling face
+263c	SM690000	sun	radiant sun
+2640	SM290000	female	female sign
+2642	SM280000	male	male sign
+2660	SS050000	spade	spade symbol
+2663	SS040000	club	club symbol
+2665	SS020000	heart	heart symbol
+2666	SS030000	diamond	diamond symbol
+266a	SM930000	musicalnote	musicnote
+266b	SM910000	musicalnotedbl	two musical notes
+
+The following characters/glyphs are not part of the new UGL character set but must be located in the font files for usage by Apple character sets.
+
+
+Unicode Index	IBM GCID	PostScript Name	Descriptive Name 
+f000	undef	apple	apple logo (as the non-existing character glyph)
+f001	LF530000	fi	latin small ligature fi
+f002	LF550000	fl	latin small ligature fl
+
+Important notes:
+It is required that fonts for Microsoft platforms have an entry for each of these new UGL indexes. However as TrueType font files use an internal mapping table to access their private UGL indexes, it is feasible to map similar looking characters or glyphs to single internal glyph (e.g. latin capital letter eth and latin capital letter d with stroke).
+The CharToIndexMap table used for this list of characters will be implemented with the format 4 as referenced earlier in this document (see Chapter 4).
+Note that space (0020) and no-break space (00a0) should be mapped to a glyph with no contours and a positive advance width; this advance width should be the same.
+Lining numbers (0030 through 0039; i.e. the digits 0 - 9) should be monospaced. Old style figures need not be monospaced.
+White space should be evenly distributed between the left and right side bearings of glyphs. Extra space should be placed on the right if grid-fitting results in an odd number of pixels.
+For further recommendations pertaining to the Apple character set, please see Appendix C.
+
+
+1	Same GCID as character at position 0110.
+2	Same GCID as character at position 00d0.
+3	While it would be preferrable to use the name "dslash" for this character, "dmacron" is used to match the Macintosh.
+4	While this is really the "Sigma" character, "summation" is used in order to match the Macintosh.
+
+ 
+*******************************************************************************
+
+  
+Support of Macintosh Character set
+To support the basic Macintosh Character set additional characters are needed. These will not be available to non-Apple systems or application modules; they will be located in the font file to allow the sharing of the same font file between Apple and Microsoft platforms. This requires adding the following characters/glyphs:
+  
+Apple Index	IBM GCID	Description
+
+173	SA540000	not equal to
+182	SA490000	partial differential sign
+184	SA810000	repeated product
+186	SA510000	integral sign
+198		increment
+215		lozenge
+218	SP120001	division slash
+	SA100000	minus (Postscript name: minus)
+		french franc (Postscript name:franc)
+240		apple logo
+222	LF530000	latin small ligature fi
+223	LF550000	latin small ligature fl
+
+Note 1: The two last glyphs are rendering form only. There is no provision to make them available as characters to the applications. Processing of ligatures is the domain of future extensions to the GDI text drawing functions.
+Note 2: With the exception of the three last characters all characters/glyphs enumerated above are a part of Unicode.  Apple character index 240 (apple logo) will not appear in Microsoft's fonts (as Apple will not grant permission for Microsoft to ship fonts with Apple's trademark); the apple logo should be mapped to the non-existing character glyph.
+
+ 

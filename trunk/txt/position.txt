@@ -1,0 +1,70 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+`Accurate Position' Mode:
+==========================
+
+When rendering characters on any device of finite resolution, some
+compromises are neccessary.  There have been various ways to control
+the trade-off in some operating systems and some applications.
+
+The width of a character when mapped to the finite raster will typically not
+be an integral number of pixels.  The rasterized version of the characters,
+however, will be an integral number of pixels wide.
+
+Consequently, when a number of rasterized characters are placed next to one
+another, the total number of pixels covered is typically not the rounded
+value of the sum of the true widths of the characters.  At some point it
+becomes neccessary to remove the accumulated error - that is, the difference
+between the rounded sum of the widths and the sum of the rounded widths.  
+It is convenient to do this between words, where there is some white space
+that can be shrunk or stretched as needed.  
+
+Most of the time this works out quite well, since errors in different
+characters are random and positive errors tend to cancel with negative
+errors.  Problems occur when either (a) a single letter is repeated several
+times or when (b) a fixed width font is used. In these situations there is no
+opportunity for small errors of opposite sign to more or less cancel each
+other - instead they relentlessly add up.  Then, at certain resolutions,
+there may not be enough white space to absorb the error between words and
+letters may collide (or large gaps form, although these tend to be less
+objectionable).
+
+The alternative is to position each character separately by rounding the
+accumulated sum of true character widths. While this avoids the problem
+described above, it does not lead to as pleasing results on normal text,
+since there will be adjustements between adjacent characters by one pixel
+that do not occur in the other scheme. Also, this scheme is inherently slower.
+
+The tradeoff is perhaps illustrated best by a simple example.
+Suppose we repeat one character many times, a period say.
+The simple scheme used the same number of pixels for every `.'
+and so may have a substantial error in position at the right end:
+
+`.   .   .   .   .   .   .   .   .   .   .   .'
+^					  ^	correct overall width
+
+The scheme were every character is positioned individually, will not
+have such an accumulated error, but will lead to irregular spacing
+between dots, since it has to adjust the position every so often to
+remove the accumulating error:
+
+`.   .  .   .  .   .  .   .  .   .   .   .'
+^					  ^	correct overall width
+
+In DVIWindo you now have a choice between the two schemes using the
+`Accurate Position' menu item in the `Fonts' pull-down menu:
+
+(*)	`Accurate Position' checked:
+	In this mode each character is placed individually on the page.
+	Positional offsets cannot accumulate.  Output is slowed.
+
+(*)	`Accurate Position' unchecked:
+	Sequences of characters are placed on the page as a group.
+	Positional offsets will accumulate.  Offsets are absorbed
+	between words (and where there is explicit kerning within a word).
+
+(*)	In ATM.INI, look for [Mono], list any fixed width fonts you have.
+
+NOTE:   The setting of this flag is ignored for output to printers.
+	Positioning of characters in printed output is dealt with differently.

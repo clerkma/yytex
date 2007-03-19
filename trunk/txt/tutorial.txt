@@ -1,0 +1,68 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Tutorial
+
+If you did not already do so during installation, this may be 
+a good time to create a directory for {\TeX} source file
+such as the one to be typed in this exercise.
+You can create a new directory using the Windows File Manager.  
+
+While you can ask {\TeX} to process files from anywhere in your system,
+it is easier for {\TeX} to find files in this directory if it is on the list
+of directories specified by the €TEXINPUTS€ environment variable.
+Let's suppose you chose to call the directory €c:\texinput€.
+Double click on the DVIWINDO.INI icon.  
+This launches NotePad and reads €dviwindo.ini€ 
+from the Windows directory.  
+Look for a line starting €TEXINPUTS=€ in the €[Environment]€ section.
+Add a semicolon (;) at the end of the list of directories,
+and add the full path of the new directory.
+
+Launch DVIWindo by double-clicking on the DVIWindo icon.
+Select `TeX\vbar PFE Editor' to call the editor.  
+You will be presented with a File Open dialog box.
+Enter an exclamation mark (!) for `File Name' --- 
+this tells the system that you do not wish to open an existing file.
+Click `OK.'  The PFE editor comes up.
+If it covers the full screen, change it to windowed mode by
+clicking on the double arrow icon in the top right corner.
+Select `File\vbar New.'  A window labelled `Untitled1' appears.
+
+You may want to resize the overall PFE editor 
+window to cover less of the screen 
+(drag the right and bottom edges closer to the edges 
+of the `Untitled1' window).
+Then click on the window labelled `Untitled1' and type
+something like `€Hello World!€,' 
+followed by `€\end€'.
+Select `File\vbar Save.'  
+You will be presented with a `File Save' dialog box.
+Navigate to the directory you wish to use for {\TeX} input files,
+enter `hello.tex' for the File Name, and click `OK'.
+
+Now that the file has been saved, 
+click on DVIWindo's window. % to give it the input focus.
+Select `TeX\vbar plain TeX'.
+Use the File Open dialog box that appears to
+select the file that you have just saved.
+Y\&Y TeX will run in a Window that disappears when it finishes,
+Now select `TeX\vbar Preview' to see the typeset result.
+(If you don't see it right away, try `File\vbar Default Scale').
+
+At this point click on the PFE window to get its attention again,
+and add €$z=\sqrt{x^2+y^2}$€
+before €\end€.
+This time just type C-S to save the modified file.
+Then click on DVIWindo's window again, and this time use the F5
+function key to call plain {\TeX}.
+The preview will be automatically refreshed
+when {\TeX} has finished converting €hello.tex€ to €hello.dvi€.
+
+You will notice how once you get going, there is less
+need to interact with File Open dialog boxes.
+Most things in the editor can be accomplished using the tool bar
+instead of using the pull down menus.
+And judicious use of `hot keys' in €DVIWindo€ greatly speeds 
+the edit-{\TeX}-preview cycle.
+
+

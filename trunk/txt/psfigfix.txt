@@ -1,0 +1,167 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+Modification for file reading code in PSFIG.TEX:
+================================================
+
+DVIWindo can show previews of EPSF files with TIFF preview images, and
+DVIPSONE can print files calling for EPSF files with preview images.
+Unfortunately, figure insertion macros for use in {\TeX}, such as
+PSFIG.TEX, do not like to read files with binary headers.
+
+The modification to the file reading code in the figure insertion macro
+package (shown at the end) attempts to get around this problem.  The only
+change needed are the two lines following the comment lines starting with
+`%-%' There are many dialects of PSFIG.TEX, each tuned to a different
+DVI-to-PS converter, but most share the same code for reading the bounding
+box.  The file reading code in some other macro packages such as as
+EPSF.TEX can be modified in a similar way.  See `epsfsafe.tex' for example.
+
+It is not guaranteed that the modification will work in all situations, since
+the file reading part of TeX is somewhat implementation and version
+dependent.  The modification to PSFIG.TEX shown here does work on several
+implementations we have tried, so it has a good chance of working for you.
+Possible problems may arise with `meta' characters (codes 128--255) --
+although this is unlikely.  If there are such problems, it may be necessary
+to also change the \catcodes of some of the offending characters
+(probably to \catcode=9 -- `ignore').
+
+One short-coming of this modification -- for which there is no work-around --
+is that a binary file may contain a long stretch of bytes without a `return'
+character.  Since most TeX implementations in C simply use the built-in
+`fgets' function, there may be overflow of the input buffer, with an
+appropriately worded message (`Unable to read entire line').  No clever
+tricks with \catcodes can get around this, however, the input
+buffer is typically three thousand bytes long and so should not present a
+problem with most files, particularly if the PostScript section precedes the
+TIFF preview.  For such files one only has to survive 30 bytes of binary
+header information...
+
+Get the latest and greatest version of Trevor Darrell's PSFIG by
+anonymous FTP from: `whitechapel.media.mit.edu'
+
+Extract of file reading code from PSFIG.TEX (version 1.9).
+Note lines following comment lines starting with `%-%':
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% file reading stuff from epsf.tex
+%   EPSF.TEX macro file:
+%   Written by Tomas Rokicki of Radical Eye Software, 29 Mar 1989.
+%   Revised by Don Knuth, 3 Jan 1990.
+%   Revised by Tomas Rokicki to accept bounding boxes with no
+%      space after the colon, 18 Jul 1990.
+%   Portions modified/removed for use in PSFIG package by
+%      J. Daniel Smith, 9 October 1990.
+%
+\newread\ps@stream
+\newif\ifnot@eof       % continue looking for the bounding box?
+\newif\if@noisy        % report what you're making?
+\newif\if@atend        % %%BoundingBox: has (at end) specification
+\newif\if@psfile       % does this look like a PostScript file?
+%
+% PostScript files should start with `%!' (not if they are EPSF ...)
+%
+{\catcode`\%=12\global\gdef\epsf@start{%!}}
+\def\epsf@PS{PS}
+%
+\def\epsf@getbb#1{%
+%
+%   The first thing we need to do is to open the
+%   PostScript file, if possible.
+%
+\openin\ps@stream=#1
+\ifeof\ps@stream\ps@typeout{Error, File #1 not found}\else
+%
+%   Okay, we got it. Now we'll scan lines until we find one that doesn't
+%   start with %. We're looking for the bounding box comment.
+%   NOTE: Somewhat misleading, the header comments end at %%EndComments.
+%
+% The following has been modified to try and ignore binary stuff
+% that occurs at the beginning of an EPSF file with TIFF preview
+% It also no longer complains if the file does not start with %!
+%
+   {\not@eoftrue \chardef\other=12
+    \def\do##1{\catcode`##1=\other}\dospecials \catcode`\ =10
+%-% Neuter some more nasty characters
+    \catcode`\^^L=9 \catcode`\^^?=9
+%-% Comment out next line if you actually want that `Not PS file' error message
+    \@psfiletrue
+    \loop
+       \if@psfile
+	  \read\ps@stream to \epsf@fileline
+       \else{
+	  \obeyspaces
+          \read\ps@stream to \epsf@tmp\global\let\epsf@fileline\epsf@tmp}
+       \fi
+       \ifeof\ps@stream\not@eoffalse\else
+%
+%   Check the first line for `%!'.  Issue a warning message if its not
+%   there, since the file might not be a PostScript file.
+%
+       \if@psfile\else
+       \expandafter\epsf@test\epsf@fileline:. \\%
+       \fi
+%
+%   We check to see if the first character is a % sign;
+%   if so, we look further and stop only if the line begins with
+%   `%%BoundingBox:' and the `(atend)' specification was not found.
+%   That is, the only way to stop is when the end of file is reached,
+%   or a `%%BoundingBox: llx lly urx ury' line is found.
+%
+          \expandafter\epsf@aux\epsf@fileline:. \\%
+       \fi
+   \ifnot@eof\repeat
+   }\closein\ps@stream\fi}%
+%
+% This tests if the file we are reading looks like a PostScript file.
+%
+\long\def\epsf@test#1#2#3:#4\\{\def\epsf@testit{#1#2}
+			\ifx\epsf@testit\epsf@start\else
+\ps@typeout{Warning! File does not start with `\epsf@start'.  It may not be a PostScript file.}
+			\fi
+			\@psfiletrue} % don't test after 1st line
+%
+%   We still need to define the tricky \epsf@aux macro. This requires
+%   a couple of magic constants for comparison purposes.
+%
+{\catcode`\%=12\global\let\epsf@percent=%\global\def\epsf@bblit{%BoundingBox}}
+%
+%
+%   So we're ready to check for `%BoundingBox:' and to grab the
+%   values if they are found.  We continue searching if `(at end)'
+%   was found after the `%BoundingBox:'.
+%
+\long\def\epsf@aux#1#2:#3\\{\ifx#1\epsf@percent
+   \def\epsf@testit{#2}\ifx\epsf@testit\epsf@bblit
+	\@atendfalse
+        \epsf@atend #3 . \\%
+	\if@atend	
+	   \if@verbose{
+		\ps@typeout{psfig: found `(atend)'; continuing search}
+	   }\fi
+        \else
+        \epsf@grab #3 . . . \\%
+        \not@eoffalse
+        \global\no@bbfalse
+        \fi
+   \fi\fi}%
+%
+%   Here we grab the values and stuff them in the appropriate definitions.
+%
+\def\epsf@grab #1 #2 #3 #4 #5\\{%
+   \global\def\epsf@llx{#1}\ifx\epsf@llx\empty
+      \epsf@grab #2 #3 #4 #5 .\\\else
+   \global\def\epsf@lly{#2}%
+   \global\def\epsf@urx{#3}\global\def\epsf@ury{#4}\fi}%
+%
+% Determine if the stuff following the %%BoundingBox is `(atend)'
+% J. Daniel Smith.  Copied from \epsf@grab above.
+%
+\def\epsf@atendlit{(atend)}
+\def\epsf@atend #1 #2 #3\\{%
+   \def\epsf@tmp{#1}\ifx\epsf@tmp\empty
+      \epsf@atend #2 #3 .\\\else
+   \ifx\epsf@tmp\epsf@atendlit\@atendtrue\fi\fi}
+
+
+% End of file reading stuff from epsf.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

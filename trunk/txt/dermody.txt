@@ -1,0 +1,69 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+---------------------------------------------------
+Using different directories for the editor and TeX:
+---------------------------------------------------
+
+Note that you can keep two windows open:
+
+	(1) your editor with the source file, and 
+	(2) DVIWindo showing the DVI file.
+
+These can be `connected' to different directories.  
+You can always force selection of the appropriate directory by 
+holding down the `Shift' key before selecting the editor
+or TeX from the `TeX Menu'.  You will be presented with
+a `File Open' dialog that allows you to choose any directory
+you want before calling the editor and before calling TeX.
+
+The editor then stays connected to the appropriate file
+until you kill it.  Similarly, DVIWindo will pass the 
+appropriate file name to TeX until you exit DVIWindo.
+
+Most people find the `two window mode' the most efficient way
+to operate, particularly if there is enough screen resolution
+so you do not have to operate either DVIWindo or the editor 
+full screen.  Then you can just click on one or the other window
+to get the attention of the editor or DVIWindo as needed.
+
+---------------------
+Helpful Windows Notes:
+---------------------
+
+To switch between full screen and windowed mode, type `Alt' `Enter'
+
+To switch between different windows, type `Alt' `Tab' 
+(repeat if needed while holding down `Alt' key).
+
+To change the size of a DOS window, change the font.  To select the font in a
+DOS window, click on the system icon (top left corner of window) and select
+`Fonts...'. Make sure to check the `Save Settings on Exit' box so this font
+selection `sticks' for next time.
+
+To control how a DOS session appears in Windows (for example, whether
+your XYWrite editor comes up in full screen or windowed mode) use
+the PIF Editor (in the Windows `Main' program group) to create a PIF
+(Program Information File) for it.  This PIF file will then control
+how Windows deals with that application in future.
+
+Debugging calls from DVIWindo to DVIPSONE, editors, TeX etc
+-----------------------------------------------------------
+
+You can get detailed information on exactly what command line DVIWindo
+has constructed when calling DVIPSONE, or for items from the TeX Menu by
+adding -d on the dviwindo.exe command line.  
+
+To do this, click (once) on the DVIWindo icon to select it. Then type `Alt'
+`Enter'.   Add a space followed by -d to the end of the Command Line.
+
+You'll want to remove this later when you don't need the debugging 
+information anymore.
+
+Paper size info for DVIPSONE:
+-----------------------------
+
+When DVIWindo calls DVIPSONE from the Print dialog, it passes paper size
+information as set in `Preferences|Page Size' to DVIPSONE (using the -l=...
+command line argument).  To achieve the same effect from a TeX Menu
+entry for DVIPSONE, add the -l=... to the corresponding TeX Menu item
+(between the `dvipsone.exe' or `dvipsone.bat' and the *.dvi or @.dvi).

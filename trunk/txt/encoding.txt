@@ -1,0 +1,1084 @@
+*******************************************************************************
+		COPYRIGHT (C) 1991--1996 Y&Y, Inc. All rights reserved.
+                Placed in the public domain in 2006 by the TeX Users Group.
+*******************************************************************************
+
+===============================================================================
+ENCODE & DECODE utilities   ===>  `hard font encoding'  (file: encoding.txt)
+===============================================================================
+
+*******************************************************************************
+*									      *
+* 	If you are using release 1.2 of Y&Y TeX or later, you can use	      *
+*	`on the fly' reencoding of text fonts by setting the `environment     *
+*	variable' ENCODING in the [Environment] section of `dviwindo.ini'     *
+*									      *
+*	In this case you do *not* need the `encode.bat' batch file, or the    *
+*	other utilities described here!					      *
+*									      *
+*	However, `on the fly' reencoding applies to text fonts, and all	      *
+*	text fonts are reencoding in the same way.  If you need to reencode   *
+*	non-text fonts, or you want to reencode different text fonts in	      *
+*	different ways, then read on and use the `encode.bat' batch file.     *
+*									      *
+*******************************************************************************
+
+The following invocation of the `encode.bat' batch file
+
+    ENCODE  textext  c:\afm  c:\psfonts  c:\tex\tfm  c:\windows  W  tir
+
+shows how easy it is to use a font in Adobe Type 1 format with *arbitrary*
+user-selected encoding --- with ATM for Windows as well as in DOS!
+
+This single batch file call will reencode the regular style of Times-Roman
+(tir) to `TeX text' encoding (as used by Computer Modern text fonts).  
+It  reencodes the PFB (outline font) file, creates a new PFM (Windows font
+metric) file, and a new TFM (TeX font metric file) --- all guaranteed to
+have the SAME encoding, for (i) on-screen display, for (ii) printing, and
+(iii) as far as TeX is concerned.
+
+NOTE:	`Uninstall' the fonts from ATM control panel *before* running 
+	`encode.bat' and reinstall from the current directory *afterwards*.
+
+NOTE:	If you are using text fonts with DVIPSONE and DVIWindo, then you 
+	typically do not need ENCODE.BAT, since DVIPSONE and DVIWindo provide
+	for `on-the-fly' reencoding.  Set the ENCODING environment variable.
+
+NOTE:	If you are using text fonts only with Windows applications and are
+	satisfied with Windows ANSI encoding, then you also don't need
+	ENCODE, since ATM and the PostScript printer driver reencode plain
+	text fonts to Windows ANSI encoding automatically.
+
+NOTE:	If you are satisfied with Windows ANSI encoding, but also wish to
+	use DVIPSONE, then just set the environment variable TEXANSI to 1 
+	to reencode all text fonts to Windows ANSI.
+
+(0) CONTENTS:	This document describes:
+========================================
+
+(A)	ENCODE.BAT, and how to use it to re-encode outline font files
+	and corresponding font metric files to use any specified encoding;
+
+(B)	DECODE.EXE, and how to use it to verify that all files corresponding 
+	to a given font were made using the same encoding;
+
+(C)	Trouble shooting information, along with descriptions of some bugs 
+	in ATM, Windows, PostScript printer drivers and PS interpreters.
+
+(D)	Background information on different font file formats, and font 
+	metric formats and how encoding affects each (Appendix A);
+
+(E)	Gory details on how to directly call the utilities used by the
+	ENCODE batch file (Appendix B).  This section is `R' rated...
+	
+*	Usually all that is needed is to use the ENCODING environment variable.
+*	If more is needed, let ENCODE.BAT do all the work.
+
+The discussion of ENCODE and DECODE assumes some familiarity with outline
+font file terminology.  For useful background information on this, please
+refer to Appendix A of this file (encoding.txt).  You may also wish to
+consult the file `morass.txt', and perhaps `psfonts.txt'. 
+
+
+(1) The ENCODE batch file:
+==========================
+
+The batch file ENCODE greatly simplifies the permament or `hard' re-encoding of
+outline font files and their associated metric files.  ENCODE makes it easy to
+ensure that the outline font file and its associated metric files are *all*
+made using exactly the *same* encoding vector.  ENCODE in turn calls upon the
+utilities REENCODE, AFMtoPFM, AFMtoTFM, PFAtoPFB, PFBtoPFA, SAFESEAC and DECODE
+to create new PFB, PFM, and TFM files from existing PFB and AFM files.  Simply
+specify which font you want modified, and what encoding vector you want to use.
+
+NOTE:	ENCODE assumes that you have already `installed' the font in 
+	question (perhaps with an encoding that you now do NOT wish to use).
+	That is, ATM has been used to `Add' the font, and there are already
+	PFB, PFM  (and perhaps TFM files) for the font in the appropriate
+	directories.  
+
+NOTE:	Curiously, before using ENCODE, you have to `uninstall' the fonts
+	using the ATM control panel (but do *not* delete the font files).
+
+*	Do not hestitate to install fonts `out of the box' with arbitrary
+*	encoding --- ENCODE can adjust their encoding for you later!
+
+****************************************************************************
+
+	WARNING: Always keep a copy of the original font metric files 
+	(PFM & TFM) and the font outline files (PFB) in a safe place 
+	before making reencoded versions using the utilities supplied.
+
+****************************************************************************
+
+Usage:	
+
+   ENCODE <vector> <afm-dir> <pfb-dir> <tfm-dir> <win-dir> [W | N] <font-1> ...
+
+<vector> is the name of the encoding vector file 
+	 This may be a fully qualified file name, or instead refer to a
+	 vector file in the current directory, or a vector file in the 
+	 directory pointed to by the environment variable VECPATH.
+
+<afm-dir> specifies the directory with the file <font>.AFM,
+
+<pfb-dir> specifies the directory with the file <font>.PFB,
+
+<tfm-dir> specifies the directory with the file <font>.TFM, 
+	  (use N here for non-TeX use, i.e. when TFM files are not needed).
+
+<win-dir> specifies the Windows directory --- where ATM.INI may be found.
+
+W	requests that the modified TFM files overwrite the originals
+N	requests that all modified files appear only in the current directory
+
+<font-1> is the name of the font, without extension, and *without* trailing 
+	underscores (if any).  E.g. for font file `tir_____.pfb' use `tir'.
+
+IMPORTANT: before using ENCODE, `uninstall' the fonts in question from the 
+	   ATM control panel (but do not delete them from disk).
+
+IMPORTANT: after using ENCODE, reinstall the fonts from the current
+	   directory using the ATM control panel.
+
+More than one font can be specified.  In fact, it is usually best to
+reencoded all four styles of a face (regular, bold, italic, bold italic).
+
+DOS has a limit on the length of the command line.  If the command line
+threatens to get too long, work on one font at a time, or first copy the AFM
+files to the current directory, so as to shorten the command line.
+
+The PFM files are assumed to be in the PFM subdirectory of the PFB
+directory --- or the PFB directory itself, if there is no PFM subdirectory.
+
+If N is specified instead of the TFM file directory, then ENCODE does not try
+to create a new TFM file.  This is useful if you do not use TeX.
+
+ENCODE needs to know where the Windows directory is so it can find ATM.INI.
+
+Fonts from Adobe have file names that end in underscores.  Do *not* 
+include these trailing underscores in the font file name for `encode'.
+
+Example of use:
+
+	ENCODE  textext  c:\afm  c:\psfonts  c:\tex\tfm  c:\windows  N tir
+
+This will create a reencoded PFB outline font file from `c:\psfonts\tir.pfb'
+(or `c:\psfonts\tir_____.pfb') using the encoding vector file `textext.vec'
+
+Note: IBM PC font files for Adobe's `Times-Roman' have name `tir_____'
+
+Note: DVIPSONE comes with vector files for various commonly used encodings.
+
+The file `textext.vec' is an encoding vector file for `TeX text' encoding
+that should be in the current directory, or the directory specified by the
+enironment variable VECPATH (supplied with DVIPSONE and DVIWindo).
+
+Encode will also create a `tir.tfm' TeX metric file (TFM) from the AFM
+file `c:\afm\tir.afm' (or `c:\afm\tir_____.afm'), and a Windows font
+metric file (PFM)  file`tir.pfm' (or `tir_____.pfm') from this AFM file. 
+
+The modified/new PFB, PFM, and TFM files all appear in the current directory.
+Copies of these TFM files will *also* overwrite the original files if `W' is
+used instead of `N'. 
+
+Always first try a run of ENCODE with the `N' to make sure everything works.
+Look for screen output labeled `ERROR' or `WARNING'.  Most warnings can be
+ignored.  Finally, run ENCODE with the `W' to actually replace TFM files.
+
+IMPORTANT: Before running the ENCODE.BAT batch file, uninstall the fonts
+	   in question using the ATM control panel (but do not delet files).
+
+IMPORTANT: After running the ENCODE.BAT batch file, install the modified 
+	   fonts from the current directory using the ATM control panel.
+
+(*) The ENCODE batch file tries to include as many of the `standard' TeX
+    pseudo ligatures in the TFM file as possible, unless the font is fixed
+    pitch, in which case even real ligatures in the AFM file are suppressed.
+    (Additional useful pseudo ligatures may also be generated).
+
+(*) The ENCODE batch file will add control character reencoding, if there
+    are encoded characters in the control character positions (0 - 31)
+    and if the remapped positions (161 - 196) are not already occupied.
+    (It is then possible to access characters in the range 0 -- 9 via 
+    161 -- 170  and characters in the range 10 -- 31 via 173 -- 194.)
+
+(*) The ENCODE batch file sets up the PFM and PFB files so that ATM (which
+    takes its cue from the PFB file) and PSCRIPT.DRV (which takes its cue from
+    the PFM file) agree on whether the font is to be reencoded to Windows ANSI.
+
+(*) If if deems it prudent, then the ENCODE batch file will `immunize' the PFB
+    file (by using SAFESEAC) to make it safe from ATM for Windows, which has
+    a bug relating to accented characters when a font does not use Windows
+    ANSI encoding.  The PFB file is not changed if the file has already been
+    `immunized',  or uses an encoding known to be safe (e.g. an encoding that
+    does not contain any accented characters). 
+
+(*) The ENCODE batch file will extend the Windows Face Name of a font with
+    a trailing `X' (unless it already ends with an `X'. This has to be done
+    to avoid a bug in the Windows PostScript driver, which has hard-wired PFM
+    files for 83 fonts (without the `X' it may ignore the changes you made).
+    This change in Windows Face Name also requires an adjustment to ATM.INI. 
+
+(*) The ENCODE utility will try and ascertain the Windows Face Name for the
+    font from an existing PFM file.  If it cannot find one, it will create
+    a suitable Face Name from the font's PostScript FontName by dropping
+    style modifiers (`Italic', `Bold' etc)
+
+NOTE: The ENCODE batch file may use a significant amount of temporary file
+space.  Make sure that the `TEMP' environment variable points to a directory
+that has at least several hundred kilobytes of space (ideally a RAM disk).
+
+
+(2) Trouble Shooting --- Metric caches, Glyph caches, and TeX format files:
+===========================================================================
+
+Symptoms of encoding problems:
+------------------------------
+
+You most likely have an encoding problem when ligatures (fi, fl etc.) don't
+show up at all, or show incorrectly (for example, you get the registered
+trademark symbol), when special characters (like endash and emdash) don't
+show correctly, when instead of `quoteleft' you get the `grave' accent,
+instead of `quoteright' you get `quotesingle' (`straight quote'), when
+`hat' and `tilde' accents in math show up too large and too low, when
+characters mysteriously disappear, when accents don't show up, or when 
+onscreen display doesn't match what is printed.  
+
+Encoding problems usually result from mismatches in the encoding assumed
+when making the PFB files, when making the PFM file, when making the TFM
+file, and when making the TeX macro headers that are being used.
+
+Actually one of the best early cues of encoding problems is the TeX complaint:
+
+	Missing character: There is no ... in font ...!
+
+Unfortunately this *very* important error message *only* shows up in the
+log file in most implementations of TeX --- and then without any indication
+of where the error occured!  If you are using Y&YTeX you will be notified on
+screen and in the log  file of any `missing characters' and given the context.
+
+Another common sign of encoding problems is that { and } and underscore don't
+come out right.  Such problems result from of the fact that the Computer
+Modern fonts do not follow the ASCII layout even in the restricted 32 - 127
+range (instead of `{' in 123, TeX text encoding has `endash', instead of `}' 
+in 125, there is `hungarumlaut', instead of `underscore' in 95 it
+has`dotaccent' etc).
+
+For a painful illustration of what can happen, see Paul W. Abrahams 
+`TeX for the Impatient' (Addison-Wesley ISBN 0-201-51375-7). In that case,
+the TFM files were apparently set up for Adobe Standard Encoding, but the
+fonts themselves were set up for `TeX text' encoding.  See `Erratum' in back
+of the book for additional details.  DVI-to-PS printer drivers that refer
+to TFM metric files are particularly troublesome in this regard.  DVIPSONE
+does *not* refer to font metric files, always obtaining all its information
+from the font itself.
+
+Trouble Shooting:
+-----------------
+
+If encoding on screen using ATM, or when printing from Windows is not as
+expected, then the problem may be with metric caches that ATM and Windows keep.
+
+Often you can correct such problems by deleting the file ATMFONTS.QLC
+(typically in c:\psfonts) and relaunching Windows.
+
+ATM normally keeps ATMFONTS.QLC in the same directory as the PFB files 
+(look in ATM.INI in the Windows directory for `QLCDir=c:\psfonts').
+
+ATMFONTS.QLC is rebuilt the next time Windows is launched (which may take 
+a while if you have a few hundred fonts).  In some rare cases --- particularly
+with older versions of ATM --- you may find that you have to exit Windows and
+relaunch a SECOND time before everything works properly (some regular 
+fonts may be shown italic the first time!).
+
+If you cannot find ATMFONTS.QLC, then you may have an older version of 
+ATM --- in that case, get the most recent version (at least 3.0)!  
+It is well worth it, since it has fewer bugs and better human engineering.
+
+(2.2) The Windows PostScript printer driver also caches font metric information
+      It uses files with extension `.fsf' in the Windows directory.   
+
+PSCRIPT.DRV is smart enough (most of the time) to realize that you have made
+some change, and then goes ahead and rebuilds these files (which may take a
+while if you have a few hundred fonts) the next time you try to print.
+
+If you get inappropriate font selection when printing after making a 
+change, exist Windows, relaunch and try again.  If the problem persists 
+(while on-screen display is OK) then go ahead and delete the *.fsf files.  
+You can check whether the  *.FSF files have been rebuilt by PSCRIPT.DRV 
+since you last modified a font by looking at the file creation time.
+
+If you have no files with extension `.fsf' then you have an old version of
+the PS printer driver.  Get the latest version (at least 3.56) from
+MicroSoft.  It is somewhat faster and has fewer bugs.  The new version is
+also included in the Windows 3.11 upgrade, the Windows for WorkGroups system,
+and the second MicroSoft TrueType font pack (not the original one).
+
+(2.3) Your printer may keep a cache of glyphs that it has already rendered
+      (to implement `across job' font caching).  This cache is supposed to be
+      organized on character name, not numeric code, so everything *should*
+      work fine without flushing this cache.  This does not work correctly on
+      some PostScript `clones'.  If you have any doubts, then power cycle the
+      printer before printing using the reencoded font.  
+
+(2.4) Different styles of a font should all be reencoded together:
+
+      When changing the encoding of a font, it is best to change ALL styles
+      of the font (regular, italic, bold, and bold italic) at the same time
+      --- using the same encoding, of course.  This prevents problems with
+      `font harmonizing' software --- and with ATM itself.  
+
+If you change the regular style of a family, but do not change the rest, there
+will be `orphaned styles' that can lead to peculiar results.  For example, 
+if you use ENCODE on the regular style of `Times' (file `tir'), then the
+modified font will have Windows Face Name `TimesX'.  The other three styles
+will still be there under the Face Name `Times'.  Selecting the regular style
+of `Times', however, will yield an italic font, since there is no regular
+style with that Windows Face Name anymore, only italic, bold and bold italic.
+
+(2.5) Adobe's `Windows 3.0 Font Downloader':
+
+Try not to use this dinosaur!  The same goes for Adobe's PCSEND and PSDOWN.
+Aside from being slow and user-unfriendly some of the Adobe downloaders will
+only work with fonts that have names that are padded out to 8 characters with
+underscores (and that do not have more than five or six characters in their
+file names).  If you do *have* to download fonts, use DOWNLOAD supplied with
+DVIPSONE and DVIWindo. 
+
+(2.6) WARNING: ready-made `format' files:
+
+A TeX format file is a dump of the state of TeX after reading some TeX
+macro header files.  Typically the TeX processor itself is supplied with
+at least a ready-made format file for the default `plain TeX' and also for
+`LaTeX' (ans sometimes SliTeX and AMSTeX as well).  Reading in such a format
+file is faster than interpreting the corresponding TeX macro header files. 
+
+Unfortunately, the state of TeX saved in a format file *also* includes any
+TFM files loaded at the time it is dumped.  TeX will *ignore* new versions of
+TFM files if it already has copies of TFM files for the fonts in question in
+a format file.  As a result, format files are encoding dependent and you will
+have to remake formats when you change the encoding of any fonts used in that
+format.  This doesn't normally apply to formats using only Computer Modern
+(such as the usual plain TeX and LateX formats), of course, since the encoding
+of Computer Modern fonts is supposed to be fixed.
+
+(3) The DECODE utility:
+=======================
+
+DECODE is a utility designed to make it easy to verify that an outline font
+and its associated metric files were all made using the same encoding.
+This is not a trivial task, since each file format lacks some important
+piece of information.  PFM and TFM metric files made using AFMtoPFM and 
+AFMtoTFM do, however, carry some hidden information that gives the name of the
+encoding vector, or a short description.  To show this information, use DECODE.
+For example:
+
+	DECODE  c:\psfonts\pfm\tir.pfm
+
+	DECODE  c:\texas\tfm\tir.tfm
+
+DECODE accepts wildcard file specifications, so you can ask for information
+about several font metric files at once.  You may be able to gain some
+additional insight using the `-v' (verbose) command line flag, e.g. 
+
+	DECODE  -v  c:\psfonts\pfm\*.pfm
+
+(on the other hand, the added verbosity may obscure important info).
+
+The above will not produce useful information if the metric file does not
+contain the extra `hidden' fields.  
+
+If you have both the original AFM metric file, and a bunch of encoding vector
+files, then more definitive results may be ontained by using a command line
+of the form:
+
+	DECODE  -a=c:\afm\tir.afm  c:\texas\tfm\tir.tfm  c:\vec\*.vec
+
+This will cause DECODE to try and reencode the information in the AFM file
+using each of the encoding vectors in turn, until it matches the information
+in the specified TFM or PFM file (DECODE may get confused by some fixed 
+width fonts, since permutations of the encoding vector do NOT change the 
+font metrics).
+
+If an AFM file is specified, then it doesn't make much sense to use 
+wild cards for the metric file name---but wild cards can come in handy
+for the encoding vector files, as shown in the example above.
+
+(*) DECODE complains if the encoding is `Windows ANSI', yet the `symbol' or
+    `decorative' flags are set.  Conversely, DECODE complains if the encoding 
+    is not `Windows ANSI' and the `symbol' and `decorative' flags are not set.
+    (Both of these combinations are inconsistent and lead to problems).
+
+(*) DECODE will also check whether the encoding in the PFM or TFM metric file
+    happens to match that in the AFM file;
+
+(*) DECODE also checks whether reencoding of control characters is being used.
+    That is, where 0 - 9 is remapped to 161 - 170 and 10 - 31 to 173 - 194.
+
+The PFB outline font file itself has the encoding vector spelled out detail,
+but instead of a listing of the encoding vector, one typically wants to know
+which encoding vector file this matches.  DECODE can be used to discover this:
+
+	DECODE  -a=c:\afm\tir.afm  c:\psfonts\tir.pfb  c:\vec\*.vec
+
+DECODE will also check whether the encoding in the PFB outline font file
+happens to match that in the AFM file, and whether reencoding of control
+characters is being used.
+
+NOTE:	PFB and PFM file should either both show reencoding of the control
+	characters, or neither one should (and the TFM file should never).
+
+*	DECODE makes it possible to verify that PFB, PFM, and TFM files
+*	were all made using the same encoding vector.
+
+(DECODE also has some alternate uses not described here, such as figuring
+out whether one is running in a DOS box in Windows, and modifying ATM.INI).
+
+*******************************************************************************
+    Y&Y, Inc., 45 Walden St., Concord, MA 01742-2513, USA 
+    (800) 742-4059 (from North America only)
+    (978) 371-3286 (voice)      (978) 371-2004 (fax)
+    sales@YandY.com             http://www.YandY.com
+*******************************************************************************
+APPENDIX A: Background Information: 
+====================================
+
+(A.1) Operating Systems and Applications:
+=========================================
+
+Many operating systems (MS Windows and Macintosh, for example) enforce
+a fixed encoding scheme on the user (`MS Windows ANSI' or `Macintosh
+standard roman encoding', for example).  In addition, many applications
+(Ventura Publisher and Framemaker, for example) impose their own unique
+font encoding scheme.  This can be a serious handicap.  
+
+We believe that the user should be able to freely choose ANY encoding that
+suits the purposes at hand.  Unfortunately most system software 
+(MS Windows, the Macintosh OS, and Adobe Type Manager on both PC and Mac) 
+actually goes out of their way to make it next to impossible to circumvent 
+their fixed encoding schemes.
+
+While we have always provided tools for reencoding fonts, these have sometimes
+been tricky to use, particularly given several serious bugs in operating system
+software.  For example, ATM for Windows cannot handle accents in positions
+other than those hard-wired into the current version ATM.  And the Windows
+PostScript printer driver ignores any user supplied metrics information for 83
+`standard' fonts, since it has metric information for these fonts wired in!
+
+The new batch file ENCODE, and the utility DECODE, greatly simplify the
+reencoding process, and provide `work arounds' for these operating system
+bugs.  In most cases one can just let ENCODE do all the work, and avoid
+working with the underlying font encoding utilities directly!
+
+And, if you have Y&Y TeX release 1.2 or later you can typically avoid all of
+these headaches using the `on the fly' encoding.  Just set the ENCODING
+environment variable in the [Environment] section of dviwindo.ini.
+
+
+(A.2)  Font file types and file extensions:
+===========================================
+
+Since several files are associated with each font, it is important to
+be able to tell them apart:
+
+PFB  The outline font itself (in Adobe Type 1 form) has extension PFB ---
+     which is short for `Printer Font Binary'.  This file contains the
+     actual outline programs that draw the glyphs.
+
+PFA  On some systems (such as Unix or NeXT), the more verbose `Printer
+     Font ASCII' form is used instead of PFB --- this has extension PFA.
+
+AFM  The (human-readable) `Adobe Font Metric' file has extension AFM.
+     This has information on character widths, kerning pairs, ligatures,
+     and default font encoding.  It does *not* contain character shapes.
+
+PFM  The (binary) Windows `Printer Font Metric' file has extension PFM.
+
+TFM  The (binary) `TeX Font Metric' file has extension TFM. 
+
+The outline font formats, PFB and PFA, contain exactly the same information
+--- one in a compact binary form, the other in verbose hexadecimal.
+
+
+(A.3) The AFM files as the ultimate repository of font metric information:
+========================================================================
+
+Unfortunately, the three types of font metric files do NOT contain exactly
+the same kind of information.  For example, neither PFM nor TFM files
+contain the full encoding vector (see below), and PFM files do not contain
+ligature information.  Also, neither PFM nor TFM files have ANY information
+on unencoded characters (see below).  It is therefore best to view the
+human-readable AFM file as the base form from which the binary metric files
+can be derived.  Utilities are supplied with DVIWindo and DVIPSONE (and
+in the `Font Manipulation Package') for doing this.
+
+Fonts from major vendors are usually supplied with AFM files.  AFM files 
+for fonts from Adobe can also be obtained direct via anoynmous FTP 
+on the InterNet from directory `pub/Adobe/AFMFiles' at `ftp.adobe.com.'
+
+Since only AFM files contain complete information, it is best to obtain 
+AFM files from the font vendor.  AFM files constructed from PFM files using
+PFMtoAFM, from TFM files using TFMtoAFM, or from MacIntosh screen fonts
+using SCRtoAFM, are NOT complete, and may also require some hand editing.
+In particular: 
+
+(*) An AFM file constructed using TFMtoAFM will need a touch up since the 
+    TFM file does not include either the PostScript Fontname or the 
+    MS-Windows Face Name of the font.
+
+(*) An AFM file constructed using PFMtoAFM will normally not contain 
+    metric information for the ligatures `fl' and `fi', since PFM files 
+    are constructed based on Windows `ANSI' encoding, and Windows `ANSI' 
+    encoding does not contain these glyphs.  
+
+(*) Also, an AFM file constructed using PFMtoAFM does not contain accurate
+    character bounding boxes, which may be needed to construct accurate
+    TFM files (use PFAtoAFM if you have the `Font Manipulaton Package').
+
+AFM files constructed by DVIWindo release 1.2 or later do have accurate
+character bounding boxes and kern tables for fonts in Adobe Type 1 format. 
+So these do provide a viable alternative to getting the original AFM files.
+
+
+(A.4) Encoding vector and reencoding defined:
+=============================================
+
+The encoding of a font is the mapping from numerical character codes (0 - 255)
+to glyphs, typically specified by giving character names.  The complete 
+mapping from character codes to character names is called the encoding vector.
+
+A text file contains *only* numeric codes.  An *assumed* encoding vector 
+relates these numbers to corresponding characters.
+
+Unencoded characters are characters in an outline font that are not 
+directly accessible, because they do not appear in the encoding vector.
+One motivation for reencoding is to make unencoded characters accessible.
+
+Form of encoding vector:
+------------------------
+
+Every Adobe Type 1 font has the encoding vector explicitly listed near 
+the beginning of the font file (PFA or PFB format), following 
+`/Encoding 256 array def',  using lines of the form:
+
+		dup <code> /<name> put
+for example
+		dup 32 /space put
+
+Actually, most plain vanilla text fonts use Adobe StandardEncoding, in 
+which case the single line `/Encoding StandardEncoding def' appears instead
+(to see exactly what StandardEncoding is, look in `standard.vec').
+
+Also, fonts produced by Fontographer are non-standard in that they
+list four entries per line, and the character names are quite meaningless
+(they are merely aliases for the numbers from 0 through 255).
+
+
+(A.5) Encoding in various types of font metric files:
+===================================================
+
+The Adobe Font Metric (AFM) file contains the encoding explicitly.
+In the AFM file, following the line containing the word `StartCharMetrics', 
+are lines of the form
+
+C <code> ; WX <width> ; N <name> ; B <xll> <yll> <xur> <yur> ;
+
+Note that most fonts contain many unencoded characters.  The unencoded
+characters are listed in the corresponding AFM file, with character code -1.
+These do not appear in the fonts encoding.  The font needs to be reencoded to
+make these accessible.  The names of the unencoded characters cannot be
+ascertained from the outline font itself (without decrypting it and listing
+the CharStrings dictionary). 
+
+Unfortunately, TeX font metric (TFM) files do not contain the encoding
+(which is one thing that helps make them so compact).  While there is an
+optional field that can be used to note the NAME of an encoding, there is no
+space for a full encoding vector.  TFM files produced by AFMtoTFM, do
+contain either the standard TeX name for an encoding (e.g. TeX text)
+or the name of the encoding vector file (in the situation when it is not one
+of the `standard' encoding vectors defined for Computer Modern fonts).
+
+Windows printer font metric (PFM) files also do not contain the encoding.
+PFM files produced by AFMtoPFM contain either the standard TeX name for an
+encoding (e.g. TeX text) or the name of the encoding vector file (when it is
+not one of the `standard' encoding vectors defined for Computer Modern
+fonts).  In either case, the name follows the string "Encoding: ".  
+This is useful when one needs to check that corresponding TFM and PFM files
+were made using the same encoding vector.
+
+NOTE: While TFM and PFM files are binary, they can be read into a text
+      editor in order to look for the encoding names mentioned above, 
+      since these at least are in plain ASCII.
+
+(A.6) Reencoding a font:
+=======================
+
+Definition:
+-----------
+
+Reencoding is the rearrangement of characters in a font, that is,
+a change in the mapping from code number (0 - 255) to glyph.  
+Note that it is NOT simply a permutation of the numbers from 0 - 255.
+
+Definition:
+-----------
+
+A font's `native' (or `raw') encoding is that found in the outline font file
+itself (and should be the same as that found in the corresponding AFM file).
+
+Reasons for reencoding:
+----------------------
+
+While the codes of alphabetic characters and numerals are pretty much
+standardized, this is not the case for other characters.  There are
+innumerable `standard' encodings, including ASCII, ISO Latin 1, ISO Latin 2, 
+Adobe StandardEncoding, Macintosh `standard roman encoding', Windows ANSI, 
+`TeX text', `TeX type' and so on.  It is therefore often necessary to
+rearrange the characters in a font, that is, to change the mapping from 
+code number to glyph.
+
+Actually, one of the main reason for reencoding used to be that some
+applications had restrictions on the size of the character set (such as old
+versions of TeX, which worked only with 7-bit characters).  Also, as
+mentioned above, a font may contain characters that do not appear in its
+native encoding.  To access these, the font needs to be reencoded.
+
+(A.7) Using reencoded fonts with DVIPSONE:
+==========================================
+
+If you use DVIPSONE then the whole reencoding business is very simple, since
+DVIPSONE is unique in supporting `on the fly' reencoding (for both downloaded
+and printer resident fonts).  
+
+If all your text fonts are to be reencoded to some specified encoding vector,
+simply set the ENCODING environment variable in dviwindo.ini.  You do not need
+to use the batch file ENCODE and nothing has to be done to the actual outline
+font file (PFB) itself!  
+
+If you need something more complicated create an entry in the font substitution
+table specifying the encoding vector following the string `*remap*'.  e.g.
+
+	tirx 	tir	*remap*		textext
+
+states that the font referred to as `tirx' in TeX, is actually the font
+`tir' (i.e. the PFB file is `tir.pfb') remapped to use `TeX text' encoding.
+
+The encoding vector file (with extension `vec') referred to has a very
+simple format.  Each line contains the code number and the character name.
+For example:
+
+	65	A
+
+An encoding vector file may also contain blank lines and comments (lines
+starting with `%') for convenience.  Also, the first line should give a 
+short name for the encoding. For example:
+
+	% Encoding: TeX text
+
+IMPORTANT (why the words `almost all that has to be done' appear above):
+------------------------------------------------------------------------
+
+To produce appropriate DVI files using TeX, a TFM file must be used based on
+the same encoding as that specified in the font substitution file.
+Otherwise, character widths, kerning and ligature information will be
+associated with the wrong glyphs.  Use AFMtoTFM to create the appropriate 
+TFM file from the Adobe Font Metric (AFM) file.  For example:
+
+	AFMTOTFM -vadj -c=textext tir.afm
+
+Remember to specify the SAME encoding vector as that indicated in the font
+substitution file.   And that is all there is to it as far as DVIPSONE goes!
+
+
+(A.8) Using reencoded fonts with DVIWindo:
+==========================================
+
+If you use DVIWindo then the whole reencoding business is very simple, since
+DVIWindo is unique in supporting `on the fly' reencoding (for both downloaded
+and printer resident fonts).  
+
+If all your text fonts are to be reencoded to some specified encoding vector,
+simply set the ENCODING environment variable in dviwindo.ini.  You do not need
+to use the batch file ENCODE and nothing has to be done to the actual outline
+font file (PFB) itself!  
+
+If you need something more complicated then you do need to `hard reencode'
+your fonts using the encode.bat batch file.
+
+First of all note that Windows only provides for two ways to use a font:
+
+	(*) reencoded to Windows ANSI character encoding (the default), or
+
+	(*) with the font's native encoding.
+
+Which of the two encoding schemes is used by the PostScript printer driver
+depends on how the printer font metric (PFM) file is set up.  One can force
+use of native encoding by setting the `Family' field to `Decorative' using the
+command line flag `d' when using the utility AFMtoPFM  (You should also set
+the `CharSet' field to `Symbol' in this case using the command line flag `s').
+
+IMPORTANT NOTE: ATM has a different criterion.  It assumes Windows ANSI
+reencoding if the file contains the line `/Encoding StandardEncoding def'
+(somewhat bizarre!).  So to have ATM use `native' encoding, one must avoid
+this line in the PFB file.  This may appear to be a problem if one happened
+to actually want to use StandardEncoding.  There is a way around this using
+REENCODE to `standardize' the PFB file by using the command line argument
+`-c=standard' - see below.
+
+Some TeX users do not like to use the Windows default ANSI reencoding, since
+some characters such as `dotlessi' are not accessible in Windows ANSI.
+Conversely, in countries with languages that use diacritic marks, TeX users
+do not like to use StandardEncoding, since the accented/composite characters
+are then not accessible.  
+
+(A.9) Keeping things synchronized:
+==================================
+
+If you do `hard reencode' fonts, then the most important thing to keep in mind
+is to that the following must all be made using the SAME encoding vector:
+
+	(*) The TeX font metric (TFM) file.
+	(*) The Windows printer font metric (PFM) file.
+	(*) The outline font itself (PFB or PFA file).
+
+This can be done by specifying the SAME encoding vector with each of the
+following utilities:
+
+	(*) AFMtoTFM used to create the TFM file.
+	(*) AFMtoPFM used to create the PFM file.
+	(*) REENCODE applied to reencode the PFB or PFA file.
+
+Generally, the best approach is to just use the batch file ENCODE!
+
+NOTE: in addition, commonly used formats such as plain TeX and LaTeX have
+hard-wired assumptions about encoding, based on the encodings used by
+Computer Modern text fonts.  If the encoding you use does not match `TeX
+text' in the critical areas (mostly the special characters and ligatures in
+the 0 -- 31 range) you also need to \input a TeX macro header file that
+undoes these hard-wired assumptions.  Use `stanacce.tex' for Adobe Standard
+Encoding, and `ansiacce.tex' for Windows ANSI encoding.
+
+APPENDIX B:
+=========
+
+In this Appendix you can find some additional detailed information regarding
+font encoding issues, and information on how use the font encoding utilities
+that are called by the batch file ENCODE.
+
+You can use the REENCODE utility to reencode a PFB file, the AFMtoPFM utility
+to create a new PFM file, and the AFMtoTFM utility to create a new TFM file.
+
+(*)	Generally it is much more convenient to let ENCODE do all the work.
+
+Consider this whole appendix preceded by a `dangerous bend' sign!
+
+****************************************************************************
+
+	WARNING: Keep a copy of the original font metric files (PFM)
+	and the font outline files (PFB) in a safe place before making
+	new versions using the utilities supplied with DVIWindo.
+
+****************************************************************************
+
+(B.1) Labor savings:
+==================== 
+
+The outline font file (PFB or PFA) itself does not have to be reencoded when:
+
+(a) The font already has the desired encoding (other than StandardEncoding), 
+
+	or
+
+(b) The font uses StandardEncoding, and Windows ANSI is to be used.
+    In this case set the environment variable TEXANSI to 1 (or use 
+    the `-X' command line flag) to ask DVIPSONE to also reencode all 
+    fonts using StandardEncoding to Windows ANSI. 
+
+(B.2) Standardizing a font:
+===========================
+
+If the font uses StandardEncoding and one wishes to actually use that
+encoding in Windows with Adobe Type Manager (ATM), then the font has to be
+`standardized'.  This is a little trick that REENCODE can perform, whereby
+Adobe's Standard Encoding is spelled out line by line to fool ATM into
+thinking that StandardEncoding is in fact NOT being used.  WITHOUT this
+ploy, current versions of ATM forces reencoding to Windows ANSI.  To
+`standardize' a font use `standard' as the name of the encoding vector file:
+
+	reencode -v -c=standard tir.pfb
+
+(B.3) Problems reencoding one of the 35 standard printer resident fonts:
+========================================================================
+
+To permanently reencode a font, first `Remove' it using `ATM Control Panel' 
+in the `Main' group.  Then use the utility REENCODE to make a new
+PFB (outline font) file, and AFMtoPFM to make a new PFM (metric) file,
+making sure to use `s' and `d' command line arguments.
+For use with TeX, also make a new TFM (TeX metric) file using AFMtoTFM.  
+Then install the new PFB and PFM file using `Add' in the `ATM Control Panel' 
+in the `Main' group.  This will do the trick for ATM.  It also works
+in most cases for the Windows PostScript printer driver PSCRIPT.
+
+But this does not always work for fonts for which PSCRIPT has hard-wired
+information.  The Windows PostScript printer driver contains (inside of itself)
+PFM files for a number of fonts (currently 83), including the usual 35
+printer-resident fonts.  It may ignore what you do to these fonts,
+because it `knows' they are printer resident!  Changing the font file name
+does not help, nor does changing the PostScript FontName, because PSCRIPT
+recognizes a font based on the Windows Face Name.  The Windows Face Name is
+the name shown in font menus, and is also the name listed first on the line
+for a particular font in ATM.INI.
+
+The solution to this problem then is to use the command line argument `X'
+which will append an `X' to the Face Name (unless it already ends in X).
+Or use the `w' command line argument to specify the Windows Face Name
+(and specify the desired encoding using the command line argument `c'):
+
+	afmtopfm -vsdX -c=myencode ncr.afm
+or
+	afmtopfm -vsd -c=myencode -w=NewCenturySchlbkX ncr.afm
+
+You may wish to choose a Windows Face Name that is like the original
+Windows Face Name, except that there is an `X' tagged on at the end 
+to indicate that the font is reencoded.  This will prevent PSCRIPT
+from recognizing the font and then ignoring the changes you made.
+
+(Note: when the encoding is `ansinew', then the `X' command line flag
+causes *removal* of a trailing X on the Windows Face name, if any).
+
+(B.4) Lots of examples: How to make up new TFM, PFM and PFB files:
+==================================================================
+
+Again: in order to keep TFM, PFM, and PFB files `synchronized', simply 
+use the same encoding vector when invoking AFMtoTFM, AFMtoPFM, and 
+REENCODE (see also notes after the examples).   
+
+*	The easiest way to do this is to use the `encode.bat' batch file.
+
+Here we show instead how to do it the painful `manual' way...
+
+(A) The following shows how to reencode a font to use `TeX text' encoding
+    (the encoding that is used in Computer Modern cmr*, cmbx*, cmsl* etc):
+
+	AFMtoTFM -vadj -c=textext c:\afm\tir.afm
+	AFMtoPFM -vsdt -c=textext c:\afm\tir.afm
+	REENCODE -vt   -c=textext c:\psfonts\tir.pfb
+
+(B) The following is appropriate when using a font's native encoding 
+    (assuming that the font does NOT use StandardEncoding).
+	
+	AFMtoTFM -va  -c=none c:\afm\lbme.afm
+	AFMtoPFM -vsd -c=none c:\afm\lbme.afm
+
+    (Specifying `none' here means:  use the encoding in the AFM file).
+
+    If the font's native encoding IS StandardEncoding, then you ALSO 
+    have to do the following:
+
+    	REENCODE -v -c=standard c:\psfonts\tir.pfb
+
+(C) To use a font reencoded to Windows ANSI (the Windows default):
+
+	AFMtoTFM -vadj -c=ansinew c:\afm\tir.afm
+	AFMtoPFM -v    -c=ansinew c:\afm\tir.afm
+
+   (For use with Windows 3.0 you may want to use `ansi' instead of `ansinew').
+   In this case there is no need to do anything to the outline font file 
+   (PFB) itself --- it is automatically reencoded by ATM to Windows ANSI,
+   provided it has the the StandardEncoding line described above.  If it
+   does not presently use StandardEncoding, then do the following:
+
+   	REENCODE -v c:\afm\tir.pfb
+
+(D) The following shows how to reencode a font to use StandardEncoding: 
+
+	AFMtoTFM -vadj -c=standard c:\afm\tir.afm
+	AFMtoPFM -vsd  -c=standard c:\afm\tir.afm
+	REENCODE -v    -c=standard c:\psfonts\tir.pfb
+
+     NOTE: that the outline font itself MUST be reencoded (`standardized')
+     even if its native encoding happens to be StandardEncoding already 
+     (see explanation above).
+
+
+(B.5) Additional Notes:
+=======================
+
+(*) The resulting TFM, PFM, and reencoded PFB files appear in the current
+    directory.  This is where all the utilities drop their output. 
+    The files have to be moved to their proper destination from there.
+    This last step has been omitted in the examples.  
+
+(*) It has also been assumed above that the appropriate encoding vector 
+    files (textext.vec, ansi.vec, standard.vec, texansi.vec) have been
+    set up in the same directory that the utility programs are invoked from.
+    Encoding vector files may be found in the `vec' subdirectory of the 
+    DVIWindo and DVIPSONE distribution diskette.
+
+(*) The utilities add an `x' to a font file name when it is reencoded.  
+    This is to help reduce confusion (although the `x' doesn't tell one 
+    WHICH encoding was used).  You may want to SUPPRESS the addition of the
+    `x' using the command line flag `x'.
+
+(*) Some software has problems accessing characters in the code range 
+    0 - 31, as well as code 127 (for example, ATM usually is unable to render
+    a character with code zero).  AFMtoPFM and REENCODE respond to the command
+    line flag `t' by adding duplicate encodings in positions 161 - 196.
+    REENCODE places this ahead of the `normal' encoding in the PFB file
+    in order to get around a bug in ATM (namely, ATM can access 
+    characters only via the first mentioned encoding in the encoding vector).
+    If you use the command line flag `t', use it with BOTH AFMtoPFM and
+    REENCODE.  By the way, DVIWindo automatically uses the higher encoding if
+    the PFM files has the same character widths there as in the lower range.
+
+(*) Fonts from Adobe use short filenames that are padded out to 8 characters
+    using the underscore `_' character.  One of the Adobe font downloaders
+    (PCSEND or PSDOWN) will not `recognize' a PFB file that does not follow
+    this convention.  No other software seems to care, as long as the same
+    name is used consistently for the outline font file itself and the 
+    corresponding metric files.  For convenience, DVIPSONE and DVIWindo allow
+    use of a name without the underscores in TeX (so the TFM file name need
+    not contain the underscores).  If a font file is not found by DVIPSONE or
+    DVIWindo, then they extend the name with underscores and try again.    
+
+(*) Finally, note that it is not easy to use two versions of a font encoded
+    differently in Windows (while this is not a problem with DVIPSONE).  
+    It is not sufficient to have different file names for the two versions.  
+    The reason is that ATM lists fonts based on their MS Windows face name
+    in ATM.INI.  At a minimum, the fonts need different Windows face names.
+
+If you want to try and use two differently encoded versions of a font,
+explicitly specify different MS Windows fontnames when invoking AFMtoPFM
+using the command line argument `w'. It can get confusing though to have two
+different sets of metric files for the `same' font, particularly since the
+PFM & TFM files do not contain the full encoding vector.  So this procedure
+cannot be recommended. 
+
+(B.6) Installation of Modified Fonts using ATM:
+===============================================
+
+First make sure that there are no copies of the `old' versions of the PFB
+and PFM files in the same directory as the reencoded versions (otherwise ATM
+may pick up those rather than the new versions).
+
+Launch Windows, and double click on the ATM icon.  If an old version of the
+font is already installed, then first remove it by selecting the font
+and clicking `Remove'.  Then select `Add' and click on the directory in which
+the modified PFB and PFM files are located.  Select the new font to be
+installed.  If you have an older version of ATM, exit Windows (the changes
+will take effect next time Windows is launched).
+
+Also, if a font is already installed, but changes are made to the PFM and/or
+PFB files, then it may be more convenient to simply replace the PFM and
+PFB files - instead of using ATM to `Remove' and `Add' the files.  
+
+*	In this case, however, it is MANDATORY that the file
+*	c:\psfonts\atmfonts.qlc which is where ATM caches some information
+*	from PFM and PFB files) be deleted (use resetatm.bat).  
+
+Just replacing the PFB and PFM files (and deleting ATM's cache file) is
+convenient and avoids problems with duplicate `softfont' entries in WIN.INI
+resulting from the fact that older versions of ATM (a) do not remove entries
+from WIN.INI, and (b) do not notice when an entry already exists in WIN.INI
+for a font.
+
+*	WARNING: you can crash ATM and/or Windows and/or DOS (or worse)
+*	if you replace PFB or PFM files from within Windows.
+
+The latest Windows PostScript driver also keeps a cache of metric
+information.  It uses files with extension `fsf' in the Windows 
+directory for this.  There will be one such file per port.  
+Fortunately, PSCRIPT is smart enough to notice when PFB or PFM files are
+replaced.  It reconstructs the metric cache files when next asked to print -
+which may take a while, but prevents all sorts of unpleasant problems!
+
+If you are using Adobe's Windows PostScript printer driver you may need to
+delete it's metric cache.  This is a file in the Windows directory with
+extension `ebf'.
+
+Finally, you may experience some problems with this approach if you are 
+using FontMinder (which still has quite a number of bugs).
+
+So, overall, it's probably not worth the trouble to use this shortcut.
+Consider using ATM to `Remove' the font and then use ATM to`Add' it again.
+
+(B.7) Command line arguments of the utility programs:
+=====================================================
+
+To see what command line flags and command line arguments each of the
+utility programs (AFMtoTFM, AFMtoPFM, and REENCODE) take, invoke them
+with `-?' as the only argument.  For example:
+
+	afmtopfm -?
+
+The most important command line flags and arguments are discussed here:
+
+Generally, the command line flag `v' stands for `verbose'. 
+
+In the case of AFMtoTFM, the command line flag `a' asks the program to try
+and insert as many of the standard TeX `ligatures' (such as `---' => emdash)
+as possible.  Additional pseudo ligatures (such as `<<' => `guilemotleft')
+may be requested using the command line flag `d'.  Finally, pseudo ligatures
+for the 58 `standard' accented characters may be requested using the command
+line flag `j' (which only really makes sense if the encoding vector includes
+the accented characters). 
+
+For fixed-width fonts, use the flag `n' instead to suppress (inappropriate)
+ligatures found in the AFM files of some fixed-width fonts.
+
+In the case of `AFMtoPFM', the command line flags `s' and `d' are use to
+suppress the default Windows use of Windows ANSI encoding.  Omit these
+ONLY when you actually WANT Windows ANSI encoding!  Always include them 
+for ANY other encoding.
+
+For fonts that use the `control' character range (0 through 31) add the
+command line flag `t' to both AFMtoPFM and REENCODE to get these positions
+remapped to higher up (161 through 194) where Windows applications can get
+at them  (This is how the Computer Modern fonts are set up, for example).
+
+NOTE:  do not use the command line flag `t' with an encoding vector that
+already has characters assigned to the ranges 161 - 170 or 173 - 194
+(such as `texnansi').  The result would be assignment of two different 
+character names to the same slot in the encoding vector - and only the 
+second one would be effective (In any case the utilities complain if you 
+try this). 
+
+
+(B.8) Modifying PFB files:
+============================
+
+Sometimes it is convenient to edit the outline font file itself.  This is
+another way of modifying the encoding, the font matrix, and the actual
+PostScript FontName.  But:
+
+*	Don't try to edit a PFB file directly, even with an editor that can
+*	handle 8-bit character codes.  The reason is that the PFB file has
+*	embedded binary length codes, which will be in error if there are any
+*	changes in the lengths of any of the sections of the file.  
+
+Instead, convert from PFB to PFA format using PFBtoPFA, then edited the PFA
+file and convert back to PFB format, using PFAtoPFB.  The PFA file is in
+plain ASCII (including a huge ssection all in hexadecimal) and can be
+safely read into a `text only' mode editor.
+
+(B.9) Using non-CM fonts in TeX:
+==================================
+
+Everything is now ready for use of the modified fonts in TeX.  In the
+simplest case, one might just have the following near the beginning of 
+the TeX source file:
+
+	\font\timesten=ttr at 10pt
+
+and then where the font is to be use:
+
+	{\timesten This text will appear in TimesTen-Roman}
+
+Typically such font definition and font switching will be
+incorporated into more elaborate TeX macros, perhaps set up 
+to simplify font size switching and font style switching also.  
+Look in the `plain.tex' macro file, or `lfonts.tex', for 
+elaborate examples of this. 
+
+See also the files `morass.txt' and  `psfonts.txt' for additional information.

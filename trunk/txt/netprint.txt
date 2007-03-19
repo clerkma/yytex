@@ -1,0 +1,162 @@
+=============================================================================
+Printing to networked PS printers from DVIWindo using DVIPSONE (netprint.txt)
+=============================================================================
+
+	Copyright (C) 1998, 1999 Y&Y, Inc.
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+In most cases you can print to networked PS printers just by selecting 
+them from DVIWindo's Print dialog, and checking the `Use DVIPSONE'
+check box.
+
+Sometimes, however, there may be problems getting the correct port
+designation or UNC.  And in some cases spooling from the command prompt 
+may be disabled.  
+
+Finding the UNC (or "share name"):
+----------------------------------
+
+If you experience problems, first establish what port the printer is on 
+(e.g. Ne01:) and what the UNC or `share name' of the printer is 
+(something of the form \\servername\printername).  You can check this in 
+`Start > Settings > Printers.'  Right click on the printer icon in
+question and select `Properties.'  Select the `Ports' tab and then the
+`Sharing' tab.  In some cases you may need to ask your network 
+administrator for help in establishing the correct UNC or `share name'.  
+
+Make sure you can print to the device from DVIWindo *without* checking the
+`Use DVIPSONE' check box (In this mode you won't get the advantages of the
+special PostScript handling of DVIPSONE, of course).
+
+Printing from the command prompt:
+---------------------------------
+
+Next check that you can print using the COPY command from a command
+prompt.  For example:
+
+	COPY /B c:\yandy\ps\test.ps LPT1:
+
+Replace the LPT1: with your port designation (e.g. Ne01:), or with
+the UNC or `share name' of the printer. If the UNC includes white 
+space  you will have to quote it.  For example:
+
+	COPY /B c:\yandy\ps\test.ps "\\W90NTSERVER\S2313_HP 4/4M Plus PS"
+
+If neither of these methods (using the port name or using the UNC) works,
+then you may have spooling from the command prompt disabled.  Check in
+`Start > Settings > Printers' and double click on the printer in question.
+Check its settings.  Make sure `Spool DOS print jobs' is checked. 
+
+Capturing a printer port:
+-------------------------
+
+You may need to `capture' a printer port as follows (particularly 
+if the printer is driven directly via TCP/IP over the ethernet):
+
+	NET USE LPTn: \\servername\printername
+	COPY /B c:\yandy\ps\test.ps LPTn:
+	NET USE LPTn /DELETE
+
+Where LPTn: is an LPT port that does not already have a real 
+physical printer on it (e.g. LPT2: if LPT1: exists).
+
+You can add /persistent:yes to the end of the "net use"
+line to make the connection permanent (i.e. survive re-boot).
+
+You could put this command sequence in a batch file
+for convenience. In that case replace c:\yandy\ps\test.ps 
+with %1 so it will pick up the PS file name passed as an argument.
+
+Alternatively, you can add the "NET USE" command to your
+AUTOEXEC.BAT file and have the printer remain "captured"
+until you shut the machine down (do not use the /DELETE version 
+of the command in that case).
+
+Once this works, you can use DVIPSONE directly, either by
+"installing" the printer on the new port from the control panel,
+so that you can select that port in the print dialog, or by 
+forcing DVIPSONE to always use a specific port.  To do the 
+latter, go to DVIWindo, select `Preferences > Command Line >
+DVIPSONE' and type -d=LPT2 into the field.  This will then
+overrid any other port information supplied to DVIPSONE by
+DVIWindo.
+
+Windows PS spooling programs:
+-----------------------------
+
+Another approach is to have DVIPSONE create a PS file and then
+use a spooling program.  There are two lpr utilities available
+for win95/win98/NT:
+
+Windows lpr spooler (Shareware):
+http://ich210.ich.kfa-juelich.de/wlprspl/index.htm
+Although mainly used as spooler, it is also capable of printing 
+PS files on demand.
+
+ACITSLPR spooler (free for private or academic use):
+http://shadowland.hf.utexas.edu/acitslpr.htm
+(address may change to  http://shadowland.cc.utexas.edu/acitslpr.htm)
+When using this spooler, you have to use third party software
+to print a file to ACITS' printer port, such as: 
+- Ghostview (free) http://www.cs.wisc.edu/~ghost/gsview/new27.html
+  configured to print to a PS printer
+- PrintFile (free) http://hem1.passagen.se/ptlerup/prfile.html
+
+========================================================================
+
+TROUBLESHOOTING AIDS:
+
+(1a) You can see what command line arguments are being passed to 
+DVIPSONE, YandYTeX, and AFMtoTFM from DVIWindo by checking
+`Fonts > Show WinExe'.  
+
+(1b) In addition you can cause the programs called in this fashion to pause 
+when it starts and before it exits by checking `Fonts > Pause WinExe' 
+in DVIWindo.
+
+(2) To see what information Windows is providing DVIWindo when you print 
+from DVIWindo, check for `LastPrinter=...' in the [Window] section of
+dviwindo.ini.  For example:
+
+	LastPrinter=\\W90NTSERVER\S2313_HP 4/4M Plus PS,winspool,Ne04:
+
+This is a comma separated list of `device', `driver', and `output port'
+
+(3) Normally DVIWindo will pass the `output port' to DVIPSONE using -d=...
+
+However, in the case of a network port of the form Nexx: DVIWindo will
+instead pass the UNC or `share name' (i.e. the `device' field above) instead
+of the `output port' field in the above to DVIPSONE.  You can disable this
+using UseShareName=0 in the [Window] section of dviwindo.ini
+
+(4) You can also substitute for the port using an entry in the
+[Window] section of dviwindo.  For example, the entry
+
+	Ne04:=\\W90NTSERVER\S2313_HP 4/4M Plus PS
+
+will force DVIWindo to pass along the UNC you specify instead of the port
+Ne04: (which, in the example above, happens in any case, unless you have
+UseShareName=0).
+
+(5) You can also override any automatically generated port using an
+explicit command line argument when calling DVIPSONE from DVIWindo.
+Additional command line arguments for YandYTeX, DVIPSONE, and AFMtoTFM
+can be controlled from DVIWindo's `Preferences > Command Line'.
+If you add -d=LPT1: say, or
+
+	-d="\\W90NTSERVER\S2313_HP 4/4M Plus PS"
+
+then these arguments will be added to the command line. These new arguments
+you supply will override arguments put in automatically by DVIWindo, since
+the arguments you add appear *after* those generated automatically by DVIWindo.
+
+Remember that you must quote arguments that contain white space.
+
+(6) Sometimes you can get additional information by checking on printer
+settings using MS Word (or other DTP application):
+
+When you open the Print dialog in Word, look for `Name,' `Type' and `Where'
+(these correspond to `device,' `driver,' and `output port').  You may be 
+able to get additional information by clicking on `Properties'.
+
+===========================================================================

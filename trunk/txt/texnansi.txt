@@ -1,0 +1,143 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Design principles of `texnansi.vec':
+
+*	Make all 228 glyphs in typical plain vanilla text fonts accessible.
+	(Avoid need for second copy of font with different encoding)
+
+*	Provide access to `extra' f-ligatures (ff, ffi, ffl) and dotlessj
+	if the font has these.
+
+*	Make 58 accented / composite `standard' characters directly accessible 
+	(so don't have to use TeX's \accent mechanism - improved hyphenation)
+
+*	Follow ISO Latin 1 in 160 - 255 range --- which matches Windows ANSI.
+	(And matches Cork T1 encoding for accented characters in 192 - 255)
+
+*	Fill in from Windows ANSI in 128 -- 159 range 
+	(which means one can use a Windows editor for the source file)
+
+*	Have special characters where plain TeX (OT1) has them hard-wired.
+	(ae, oe, oslash, AE, OE, Oslash, germandbls)
+
+*	Have accents (grave, acute, caron, breve. macron, ring, cedilla,
+	circumflex, tilde, dieresis) mostly where plain TeX (OT1) has them
+	hard-wired.
+
+*	Follow `TeX typewriter' in 32 -- 127 as much as reasonable
+	(so verbatim environment works as expected)
+
+*	Fortunately, glyphs accessed only via ligature mechanism in TFM can
+        be anywhere: ff/fi/fl/ffi/ffl
+	exclamdown/questiondown, quotedblleft/quotedblright, endash/emdash
+
+*	Avoid character codes 0, 9, 10, 13, and perhaps 127, since much brain
+	dead software has trouble with those.
+
+We use `control characters' (0 -- 31 and 127), since we need space for more
+than 224 slots, and since we want to match some aspects of `TeX typewriter'.
+
+Overall layout:
+
+0		Avoid since some buggy software uses null-terminated string ops
+
+4 -- 8		`fraction', `dotaccent', `hungarumlaut', `ogonek', `fl'
+
+9		Avoid (tab - which is treated as white space by some software)
+
+10		Avoid - some applications have hard-wired for `newline'
+
+11 -- 12	ff, fi could actually be anywhere (accessed via ligs)
+
+13		Avoid - some applications have hard-wired for `return'
+
+14 -- 15	ffi, ffl could actually be anywhere (accessed via ligs)
+
+16 -- 17	dotlessi/dotlessj	\i, \j
+
+18 -- 24	grave/acute/caron/breve/macron/ring/cedilla accents.
+		Some accents occur again higher up:
+		(96), 180, *, *, 175, *, 184 
+
+25 -- 31	germandbls/ae/oe/oslash/AE/OE/Oslash.
+		All special characters occur again higher up:
+		223, 230, 156, 248, 198, 140, 216
+
+32		space.  Any sane font should have this!  And have it here!
+
+% NO:	34		quotedblright (148)	keep: quotedbl
+
+39		quoteright (146)		*not* quotesingle
+
+% NO:	60		exclamdown (161)	keep: less
+
+% NO:	62		questiondown (191)	keep: greater
+
+NOTE: exclamdown and questiondown can go anywhere (via pseudo ligature)
+
+% NO:	92		quotedblleft (147)	keep: backslash
+
+NOTE: quotedblleft and quotedblright can go anywhere (via pseudo ligature)
+
+94		circumflex (136)		*not* asciicircum
+
+% NO: 95		dotaccent (*)		keep: underscore
+
+96		quoteleft (145)			*not* grave accent
+
+% NO: 123		endash	(150)		keep: braceleft
+% NO: 124		emdash  (151)		keep: bar
+
+NOTE: endash/emdash can go anywhere (via pseudo ligature)
+
+% NO: 125		hungarumlaut (*)	keep: braceright
+
+126		tilde (152)			*not* asciitilde
+127		dieresis (168)			but use the one in 168 instead
+
+So we have displaced 5 characters (out of 12 possibles) from Windows ANSI: 
+
+	quotesingle (39), asciicircum (94), asciitilde (126),
+	underscore (95), grave (96).
+
+but not:	quotedbl (34), less (60), greater (62), 
+but not:	backslash (92), bar (124), braceleft (123), braceright (125)
+
+The five above then need to be patched in higher up.
+
+Conversely, we have moved down from Windows ANSI accents and special chars:
+
+	grave (96), acute (180), macron (175), cedilla (184),
+	circumflex (136), tilde (152), dieresis (168),
+	quoteleft (145), quoteright (146), 
+	germandbls (223), ae (230), oe (156), oslash (248), 
+	AE (198), OE (140), Oslash (216).
+
+but not:	quotedblleft (147), quotedblright (148), 
+but not:	exclamdown (161), questiondown (191)
+but not:	endash (150), emdash (151), 
+
+(This opens up some slots higher up that could be filled with other things).
+
+There are eight gaps in Windows ANSI: 128, 129, 141, 142, 143, 144, 157, 158,
+we need four for characters displaced from lower down:
+
+	quotesingle (39), asciicircum (94), asciitilde (126), grave (96), 
+
+Actually, we can omit grave, because it appears at 18 now.
+
+Finally, fill in the gaps, and adding minus, Lslash, lslash, Zcaron, zcaron
+
+128	Lslash
+129	quotesingle
+
+141	Zcaron
+142	asciicircum
+143	minus
+144	lslash
+
+157	zcaron
+158	asciitilde
+
+The rest (160 and above) is ISO Latin 1 / Windows ANSI

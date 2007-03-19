@@ -1,0 +1,241 @@
+	Placed in the public domain in 2006 by the TeX Users Group.
+
+==============================================================================
+    Y&Y TeX System  --- Customization, Environment Variables (envvars.txt)
+==============================================================================
+
+------------------------------------------------------------------------
+(0) Sequence of installation, Customization and `Environment Variables':
+------------------------------------------------------------------------
+
+The installation instructions recommend that DVIWindo be installed *last*,
+after Y&YTeX, DVIPSONE, the PFE editor, and ATM (and Lugaru's Epsilon,
+Trigram's MicroSpell, Borde's TeXHelp etc. if you have those).  That way 
+the installation procedure can do the best job of setting up the 
+`environment variables' and the `TeX Menu.'   
+
+If you *did* install in a different order, then you can run DVIWindo's
+installation procedure again at the very end.  Just this time *uncheck*
+all the check boxes selecting various file groups to install.  You will 
+then be presented with the option to reset the `environment variables'.  
+You will also be given the opportunity to reinstall the `TeX Menu'. 
+
+Listed here are the `environment variables' used by Y&YTeX, DVIWindo and
+DVIPSONE.  They are used to specify where various types of files may be found.
+
+*	These `environment variables' are set up by DVIWindo's installation.
+*	Typically you do not need to change them. This note is in case you do.
+
+The `environment variables' are stored in the `[Environment]' section of the
+`dviwindo.ini' file (which is in your Windows directory).  If you need to
+change some environment variable, simply edit this file.  You do not need 
+to exit Windows or reboot when you make a change.  Y&YTeX, DVIWindo and
+DVIPSONE will pick up the new values the next time they are called.
+
+NOTE:	Old versions of Y&YTeX, DVIWindo and DVIPSONE refer to DOS environment
+	variables (which had to be set up in the `autoexec.bat' file).  Now,
+	they *only* refer to DOS environment if variables are *not* set up in
+	`dviwindo.ini'.  Changes to a DOS environment variable have no effect
+	if the variable is also defined in the [Environment] section.
+
+*	You can obtain the old behavior by setting USEDVIWINDOINI=0.
+
+---------------
+(1)	Y&YTeX.
+---------------
+
+Most of Y&YTeX's options are controlled directly from the command line.
+Invoke Y&YTeX with -? on the command line to receive a command line usage
+summary.  For additional details, see the list of command line flags and
+arguments in Section 5 in the Y&YTeX manual and in the `readme' file. 
+
+Y&YTeX also refers to environment variables.  The only really important one is:
+
+TEXINPUTS    Where TeX source files may be found.  DVIWindo's installation
+	     procedure sets this to a semicolon-separated list of directories
+	     with TeX source files, e.g. TEXINPUTS=c:\tex;c:\letters;c:\books
+	     The installation program asks for the directories on this list.
+
+The following is needed *only* if you want to be able to call your editor
+when TeX finds an error - by typing `e' (It's usually more convenient to just
+keep your editor in one Window and to switch back to it when an error occurs).
+The installation procedure sets this up if it recognizes the editor you use.
+
+TEXEDIT	     A command line string that may contain: %d (replaced with 
+	     line number),  %s (replaced with TeX source file name), and 
+	     %l (replaced with TeX log file name).  See the `readme.txt' 
+	     file for complete details, e.g. TEXEDIT=epsilon %s +%d
+
+The following optional environment variables are *only* needed if files 
+do not end up in the places that the installation batch file chooses:
+
+TEXFONTS	Where TeX TFM metric files may be found.
+		Not needed if all TFM files are in default TFM sub-directory. 
+
+TEXFORMATS	Where TeX `format' files may be found.  
+		Not needed if FMT files are in default FMT sub-directory.
+
+TEXPOOL		Where TeX's string pool files may be found.  
+		Not needed if string pool file is in the FMT sub-directory.
+
+When used in DOS, TeX will write its output file in the current directory.
+If you want to redirect DVI files, then set the environment variables TEXDVI
+(You can redirect LOG file and AUX file output using TEXLOG and TEXAUX resp.).
+
+When called from DVIWindo, TeX writes its output files either (i) in the
+directory of the TeX source file, or (ii) in a common working directory that
+you select.  Add a definition for `WorkingDirectory' to the [Window] section
+of dviwindo.ini to use a common working directory for all DVI files.
+
+For advanced users:
+-------------------
+
+Sometimes it is convenient to have a different set of directories listed
+for TEXINPUTS when a specific TeX `format' is used.  If Y&YTeX finds an
+environment variable with a name equal to that of the selected format,
+it uses the value of that variable rather than that of TEXINPUTS.
+So you can, for example, have environment variables named LPLAIN and
+LATEX which list the directories with style files for LaTEX 2.09 (lplain.fmt)
+and LaTeX 2e (latex.fmt) respectively  (Note that both have to *also* list 
+the directories with your own TeX source files, as in TEXINPUTS).
+
+Sometimes it is convenient to change `environment variables' when 
+working on different book projects.  This may be done conveniently 
+using a batch file.  In this case, do *not* list the environment variable
+in the [Environment] section of `dviwindo.ini', so that instead the 
+corresponding DOS environment variable may be used.
+
+For additional details see section 3 of the Y&YTeX manual. 
+
+----------------
+(2)	DVIPSONE
+----------------
+
+Most of DVIPSONE's options are controlled directly from the command line.
+Invoke DVIPSONE with -? on the command line to receive a usage summary.  
+For a complete list see sections 6 and 7 of DVIPSONE's `readme.txt' file.  
+
+Note that DVIPSONE also accepts indirect command line files (using @).  
+This can be handy when the command line gets too long, or when the same
+command line flags and arguments are used repeatedly.
+
+DVIPSONE also looks for a file called DVIPSONE.CMD in its directory.  
+This provides yet another way to provide command line arguments --- 
+particularly useful when DVIPSONE is called from DVIWindo.  
+
+DVIPSONE also refers to environment variables.  The only important one is:
+
+PSFONTS   Where PS Type 1 outline font files (PFB files) may be found.
+	  Set to a semicolon-separated list of directories. The installation
+	  procedure normally figures out where PFB font files are kept.
+
+The following is needed if you are inserting EPS files, TIFF images or
+Windows MetaFile (WMF) images, *and* if you do not use fully qualified 
+path names when calling for these files:
+
+PSPATH	  Semicolon-separated list of directories in which inserted EPS
+	  files, PS headers, TIFF files and WMF files are searched for. 
+	  The installation program asks for the directories in this list.
+	  Leave if blank if you do not use inserted EPS or TIFF figures.
+
+If you are reencoding text fonts on the fly then the environment variable
+ENCODING should be set to the name of the encoding vector you want to use:
+
+ENCODING=texnansi
+
+If you are reencoding text fonts to Windows ANSI, then the environment
+variable TEXANSI should be set to 1 instead (do *not* set ENCODING here):
+
+TEXANSI=1
+
+This is what you should do if you use plain text fonts with Windows ANSI
+encoding in DVIWindo and other Windows applications.  Note that DVIWindo's
+installation procedure normally sets up ENCODING and/or TEXANSI.
+
+The following optional environment variables are *only* needed if files 
+are not located in the standard places:
+
+VECPATH		Where encoding vector files may be found.
+		The default is the DVIPSONE directory (or VEC subdirectory).
+
+SUBPATH		Where font substitution files may be found.
+		The default is the DVIPSONE directory (or SUB subdirectory).
+
+PREPATH		Where DVIPSONE (and PKtoPS) preamble files may be found. 
+		The default is the DVIPSONE directory.
+
+For additional information refer to section 7 of DVIPSONE's `readme.txt' file.
+
+-----------------------
+(3) Adobe Type Manager:
+-----------------------
+
+If you are installing a new Y&YTeX system, then you have received version 3.01
+of ATM.  You must install this version of ATM, even if you already have an
+older version of ATM (such as ATM 2.51 say).  The reason is that ATM 3.0 is a
+completely new program that has two fewer serious bugs than ATM 2.5.
+
+If you are installing the Y&Y MathTime TeX system, then use the *boxed* 
+(retail) ATM rather than the envelope (bundled) version.  This version of ATM
+includes the real Times, Helvetica, and Courier font families.
+
+To avoid conflicts with previous versions of ATM, turn ATM off first.
+If there are problems after installation, make a backup copy of the 
+ATM.INI file in your Windows directory and *delete* the old ATM.INI
+before re-installing the new ATM.  In some cases it will be sufficient
+to delete the old [Aliases] and [Synonyms] sections in ATM.INI
+
+------------
+(4) DVIWindo:
+------------
+
+The installation procedure for DVIWindo sets up an initial `dviwindo.ini'
+file (in the Windows directory), which contains:
+
+	(i)   default preferences		[Window]	section
+	(ii)  environment variables		[Environment]	section
+	(iii) the `TeX Menu'			[Applications]	section
+
+DVIWindo refers to only a few optional environment variables, which are
+shared with DVIPSONE and Y&YTeX:
+
+VECPATH		Place where encoding vector files may be found
+		(Needed only for `WriteAFM...' etc in `Fonts' menu).
+
+DVIPSONE adds the `Use DVIPSONE' checkbox to the Print Dialog only if it 
+can find DVIPSONE.  DVIWindo looks for DVIPSONE along the PATH, and in the
+standard places.  When this fails it tries to find DVIPSONE in the directory
+specified in VECPATH. So if the check box is missing, set VECPATH.
+
+PSPATH		Semicolon-separated list of directories in which inserted
+		EPS files, PS headers, TIFF and WMF files are searched for.
+
+TEXDVI		Set only if you want Y&YTeX to redirect DVI file output.  
+		If defined, DVIWindo looks for DVI files to `Preview'
+		in this directory rather than the `TeX Menu' default.
+
+You don't normally need to edit `dviwindo.ini', since the preferences can 
+be set from DVIWindo's `Preference' menu.  Should `dviwindo.ini' ever get
+hopelessly corrupted, make a backup copy and delete the [Window] section.
+DVIWindo will build a new one the next time it is launched.  But it will 
+*not* rebuild the [Environment] and [Applications] section.  You can do a
+DVIWindo installation to rebuild these parts --- just uncheck the three
+check boxes for loading the files for DVIWindo in the setup program.
+
+The DVIWindo `readme.txt' file gives a complete list of what can appear in
+the [Window] section of the `dviwindo.ini' file.  For example,
+`WorkingDirectory' is set up during installation if you indicate that you 
+use a common working directory for DVI files. 
+
+Details of what appears in the [Applications] section - which is basically
+the `TeX Menu' - may be found in the DVIWindo file `texmenu.txt'. 
+
+
+-------------------------------
+(5) Problems, Trouble Shooting:
+-------------------------------
+
+There are several `*.txt' files that address specific issues and suggest
+trouble-shooting approaches.  For Y&YTeX, DVIWindo and DVIPSONE, start with
+the corresponding `readme.txt' file, which contains *pointers* to these 
+other resources.  Also look in `news.txt' for late-breaking news, if any.
