@@ -1,0 +1,52 @@
+% Simple header file to add cropmarks to TeX job (using DVIPSONE)
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Usage:  \special{header=cropmarks.ps}
+
+dvidict begin			% put it in DVIPSONE dictionary
+
+/cropmarks{save			% protect the rest of the world
+/inch{72 mul} def
+%
+/left 1 inch def		% xll
+/bottom 1 inch def		% yll
+/right 8.5 1 sub inch def	% xur
+/top 11 1 sub inch def		% yur
+%
+/length 0.5 inch def		% length of lines
+/width 0.5 def			% line width in points
+%
+width setlinewidth
+%
+newpath
+left length sub bottom moveto
+left bottom lineto
+left bottom length sub lineto
+%
+right length add bottom moveto
+right bottom lineto
+right bottom length sub lineto
+%
+right length add top moveto
+right top lineto
+right top length add lineto
+%
+left length sub top moveto
+left top lineto
+left top length add lineto
+stroke
+%
+restore					% match the `save'
+} def
+
+% cropmarks showpage			% test it
+
+/bphook {cropmarks} def			% do beginning of every page
+
+end					% match the `dvidict begin'
+
+% See also Victor Eijkhout's `cropmark' style for a TeX solution on CTAN.
+% It does its tricks by redefining TeX' \shipout routine.
+
+%%EOF

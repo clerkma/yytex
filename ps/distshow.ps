@@ -1,0 +1,30 @@
+%!
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+/Helvetica findfont 10 scalefont setfont
+
+/inch{72 mul}def
+
+/margin 0.5 inch def
+
+/top 11 0.5 sub inch def
+
+/leading 12 def
+
+/nl{currentpoint exch pop margin exch leading sub moveto}def
+
+margin top moveto
+
+/str 128 string def
+
+currentdistillerparams
+
+{ % key value
+exch str cvs show (\t) show
+str cvs show nl
+} forall
+
+showpage
+
+%%EOF

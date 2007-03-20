@@ -1,0 +1,20 @@
+%!PS-Adobe
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% test whether we have PostScript level2.
+
+/Helvetica findfont 20 scalefont setfont
+
+100 100 moveto
+
+/Level2 /languagelevel where {pop languagelevel 2 ge}{false}ifelse def
+
+Level2 
+{(This appears to be a PS level 2 device)}
+{(This appears to be a PS level 1 device)}
+ifelse
+
+show
+showpage
+%%EOF
+

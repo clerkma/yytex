@@ -1,0 +1,201 @@
+%!
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% get top-level dir info for some font
+% get FontInfo dir info for some font
+
+% /testfontname /Times-Roman def
+% /testfontname /Courier-Oblique def
+/testfontname /CGOmega def
+
+/testfont testfontname findfont def
+
+/inch{72 mul}def
+
+/left 0.5 inch def
+/right 7 inch def
+/top 10 inch def
+/bottom 0.5 inch def
+/column 1.3 inch def % /column 1.5 inch def
+
+/ptsize 9 def % /ptsize 10 def
+/leading ptsize 1.2 mul def
+
+/Helvetica findfont ptsize scalefont setfont
+
+/str 512 string def % scratch string
+
+/nl{	% advance to new line, possibly new column
+0 leading neg rmoveto
+currentpoint exch pop bottom lt
+{/left left column add def left top moveto}if
+}def
+
+/showtoplevel{
+nl gsave testfontname str cvs show 
+( ) show testfont length str cvs show
+grestore nl nl
+testfont	% items in font dictionary
+{	% key value
+gsave
+exch
+dup /CharData eq {str cvs show}
+{
+dup /Private eq {str cvs show}
+{str cvs show ( ) show str cvs show}
+ifelse
+}
+ifelse
+grestore nl
+}forall
+} def
+
+/showinfo{
+nl gsave (FontInfo) show 
+( ) show testfont /FontInfo get length str cvs show
+grestore nl nl
+testfont /FontInfo get
+{	% key value
+gsave
+exch str cvs show ( ) show str cvs show
+grestore nl
+}forall
+} def
+
+/showencoding{
+nl gsave (Encoding) show 
+( ) show testfont /Encoding get length str cvs show
+grestore nl nl
+/k 0 def
+testfont /Encoding get
+{	% key value
+gsave
+k str cvs show ( ) show str cvs show
+/k k 1 add def
+grestore nl
+}forall
+} def
+
+% length and forall and get give invalid access on Private Dictionary
+
+/showprivate{
+nl gsave (Private) show 
+( ) show testfont /Private get 
+length str cvs show
+grestore nl nl
+testfont /Private get
+{	% key value
+gsave
+exch
+dup /Subrs eq {str cvs show}
+{str cvs show ( ) show str cvs show}
+ifelse
+grestore nl
+}forall
+} def
+
+/showcharstrings{
+nl gsave (CharStrings) show 
+( ) show testfont /CharStrings get length str cvs show
+grestore nl nl
+/k 0 def	% arbitrary count in CharString dictionary only
+testfont /CharStrings get
+{	% key value
+gsave
+pop % exch
+k str cvs show ( ) show str cvs show
+grestore nl
+/k k 1 add def
+}forall
+} def
+
+/shownum{
+str cvs show ( ) show 
+}def
+
+/ln{
+currentpoint exch right gt 
+{left exch leading sub moveto}
+{pop}ifelse
+}def
+
+/nw{
+currentpoint leading sub exch pop left exch moveto
+}def
+
+/distance{ x0 y0 x1 y1 
+/yy1 exch def /xx1 exch def
+/yy0 exch def /xx0 exch def
+xx1 xx0 sub dup mul
+yy1 yy0 sub dup mul
+add sqrt
+}def
+
+/M{
+2 copy /yold exch def /xold exch def
+ln exch shownum shownum (M ) show nw 
+}def
+
+/L{
+2 copy /yold exch def /xold exch def
+ln exch shownum shownum (L ) show nw 
+}def
+
+/C{
+6 copy 
+/y3 exch def /x3 exch def /y2 exch def /x2 exch def /y1 exch def /x1 exch def 
+/x0 xold def /y0 yold def
+2 copy /yold exch def /xold exch def
+ln 
+6 -1 roll shownum
+5 -1 roll shownum
+4 -1 roll shownum
+3 -1 roll shownum
+2 -1 roll shownum
+1 -1 roll shownum
+(C ) show 
+(\() show x0 y0 x1 y1 distance shownum
+x2 y2 x3 y3 distance shownum
+(\)) show
+nw 
+}def
+
+/H{
+ln (H) show nw 
+}def
+
+/showletter{
+gsave
+% testfont 1000 scalefont setfont
+% testfont 1200 scalefont setfont
+testfont 2048 scalefont setfont
+% testfont 1200 72 div scalefont setfont
+newpath 0 0 moveto 
+% (O) true charpath
+(o) true charpath
+/Helvetica findfont ptsize scalefont setfont
+left top  moveto
+{M}{L}{C}{H}pathforall
+grestore
+}def
+
+%%EndProlog
+
+left top moveto
+
+% showtoplevel
+% showinfo
+% % showencoding
+% % showcharstrings
+% % showprivate
+
+% testfont /Private get /password get str cvs show
+% testfont /Private get /Subrs get str cvs show
+
+showletter
+
+showpage
+
+%%EOF
+

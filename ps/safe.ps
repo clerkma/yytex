@@ -1,0 +1,17 @@
+% File: safe.ps
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+%%% Turn off `Make Font Subsets':
+
+% << /SubsetFonts false /MaxSubsetPct 0 >> setdistillerparams
+
+% (**** Set up for minimizing use of Font Subsets ***) print flush
+
+%%% Increase threshold for `Make Font Subsets':
+
+<< /SubsetFonts true /MaxSubsetPct 99 >> setdistillerparams
+
+(**** Set up for maximizing use of Font Subsets ***) print flush
+
+%%EOF

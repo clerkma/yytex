@@ -1,0 +1,64 @@
+%!PS-Adobe
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% MakeTransformed creates a font that has a different FontMatrix
+% Can be used to define condensed, expanded, obliqued, skewed fonts
+
+/MakeTransformed {  % BaseFontName NewFontName TransformMatrix
+	3 2 roll findfont dup length dict begin 
+	{ 1 index /FID ne {def} {pop pop} ifelse } forall 
+	FontMatrix matrix concatmatrix /FontMatrix exch def
+	/FontName exch def
+	FontName currentdict end definefont pop
+} bind def
+
+%%%%%%%%%%%%%%%%%%%%% Example use showing how to make CourierNarrow
+
+/Courier		% FontName of original font
+/CourierNarrow		% FontName to use for derived font
+[0.8 0 0 1 0 0]		% Transformation matrix used to derive font
+MakeTransformed
+
+/Courier-Oblique	% FontName of original font
+/CourierNarrow-Oblique	% FontName to use for derived font
+[0.8 0 0 1 0 0]		% Transformation matrix used to derive font
+MakeTransformed
+
+%%%%%%%%%%%%%%%%%%%%%%%%% Test resulting fonts 
+
+/CourierNarrow findfont 20 scalefont setfont
+
+100 100 moveto (CourierNarrow) show
+
+100 150 moveto (012345678901234567890123456789) show
+
+100 200 moveto (AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA) show
+
+/Courier findfont 20 scalefont setfont
+
+100 250 moveto (Courier) show
+
+100 300 moveto (012345678901234567890123456789) show
+
+100 350 moveto (AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA) show
+
+/CourierNarrow-Oblique findfont 20 scalefont setfont
+
+100 400 moveto (CourierNarrow-Oblique) show
+
+100 450 moveto (012345678901234567890123456789) show
+
+100 500 moveto (AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA) show
+
+/Courier-Oblique findfont 20 scalefont setfont
+
+100 550 moveto (Courier-Oblique) show
+
+100 600 moveto (012345678901234567890123456789) show
+
+100 650 moveto (AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA) show
+
+showpage
+%%EOF
+

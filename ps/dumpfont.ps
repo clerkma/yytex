@@ -1,0 +1,73 @@
+%!PS
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% /LucidaBright findfont /fontdict exch def
+
+/Times-Roman findfont /fontdict exch def
+
+/str 64 string def
+
+/inch{72 mul}def
+
+/left 1 inch def
+
+/top 11 0.5 sub inch def
+
+/bottom 0.8 inch def
+
+/column 1.75 inch def
+
+/leading 11 def
+
+/arrayeq{
+16 dict begin
+/arrayb exch def /arraya exch def 
+/nb arrayb length def /na arraya length def 
+na nb eq {
+true
+0 1 na 1 sub
+{/k exch def
+arraya k get arrayb k get ne {pop false exit}if } for
+}
+{false} ifelse
+exch pop exch pop
+end
+}def
+
+left top moveto
+
+/nl{currentpoint exch pop leading sub 
+dup bottom lt {top /left left column add def}if
+left exch moveto}def
+
+/Helvetica findfont 9 scalefont setfont
+
+/k 0 def
+
+fontdict begin Encoding end
+
+{k str cvs show ( ) show
+/k k 1 add def
+str cvs show nl}forall
+
+1 inch 0.3 inch moveto
+
+fontdict begin Encoding end StandardEncoding eq
+{(Encoding object equals StandardEncoding object)}
+{(Encoding object does NOT equal StandardEncoding object)}
+ifelse
+show
+
+1 inch 0 rmoveto
+
+fontdict begin Encoding end StandardEncoding arrayeq
+{(Encoding equals StandardEncoding)}
+{(Encoding does NOT equal StandardEncoding)}
+ifelse
+show
+
+showpage
+
+%%EOF
+

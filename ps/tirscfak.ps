@@ -1,0 +1,116 @@
+%PS-Adobe
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Making a fake Times-Roman smallcaps font
+% Name of font created is Times-FakeSC
+% Based on Times-Roman
+
+/mystrbuf 1 string def	% needed later to make one character string
+
+% Make first copy of Times-Roman font (for small A-Z)
+% /TimesSmall findfont dup length 3 add dict /newdict exch def 
+/Times-Roman findfont dup length 3 add dict /newdict exch def 
+{1 index /FID ne {newdict 3 1 roll put} {pop pop} ifelse} forall 
+
+% /TimesSmall findfont newdict begin 
+/Times-Roman findfont newdict begin 
+% set up encoding for this copy
+/Encoding 256 array def
+0 1 255 {Encoding exch /.notdef put} for
+Encoding
+dup  97/A put dup  98/B put dup  99/C put dup 100/D put
+dup 101/E put dup 102/F put dup 103/G put dup 104/H put
+dup 105/I put dup 106/J put dup 107/K put dup 108/L put
+dup 109/M put dup 110/N put dup 111/O put dup 112/P put
+dup 113/Q put dup 114/R put dup 115/S put dup 116/T put
+dup 117/U put dup 118/V put dup 119/W put dup 120/X put
+dup 121/Y put dup 122/Z put 
+pop
+% change metrics
+% /Metrics 51 dict def
+% Metrics begin
+% /A [48 730] def /B [68 680] def /C [62 690] def /D [68 800] def 
+% /E [68 720] def /F [78 632] def /G [71 806] def /H [68 777] def
+% /I [63 415] def /J [88 518] def /K [68 785] def /L [48 690] def
+% /M [48 905] def /N [48 751] def /O [122 792] def /P [88 631] def
+% /Q [130 848] def /R [68 701] def /S [68 536] def /T [82 540] def
+% /U [86 710] def /V [104 611] def /W [96 861] def /X [48 760] def
+% /Y [79 557] def /Z [68 694] def /a [14 500] def /b [24 500] def
+% /c [32 444] def /d [16 500] def /e [32 444] def /f [72 536] def
+% /g [30 520] def /h [24 557] def /i [42 308] def /j [40 430] def
+% /k [16 464] def /l [20 278] def /m [12 781] def /n [12 545] def
+% /o [26 500] def /p [40 616] def /q [20 500] def /r [24 389] def
+% /s [16 389] def /t [36 278] def /u [40 553] def /x [0 500] def
+% /y [40 500] def /z [16 447] def /dotlessi [42 308] def 
+% end
+end
+
+% Font derived from TimesSmall
+/TimesSmall-Aux newdict definefont 
+
+% Make second Copy of Times-Roman (for all chars except a-z)
+% /TimesBig findfont dup length 6 add dict /foodict exch def 
+/Times-Roman findfont dup length 6 add dict /foodict exch def 
+{1 index /FID ne {foodict 3 1 roll put} {pop pop} ifelse} forall 
+
+foodict begin 
+% TBIG is main font at 1000 pt
+% /TBIG /TimesBig findfont 1000 scalefont def
+/TBIG /Times-Roman findfont 1000 scalefont def
+% TSMAL is subsiduary font at 735 pt say
+% /TSML /TimesSmall-Aux findfont 735 scalefont def
+/TSML /TimesSmall-Aux findfont [845 0 0 735 0 0] makefont def
+
+%% NOTE: if you want anisotropic scaling use makefont above
+
+% Now construct Type 3 font using the above two fonts
+/FontName (Times-FakeSC) def 
+/FontType 3 def
+/Metrics 256 dict def 
+CharStrings {pop 100 Metrics 3 1 roll put} forall
+/CharStrings 258 dict def 
+/BuildChar {exch begin Encoding 1 index get
+	CharStrings exch get cvx exec end} def 
+/CharsFromBIG {mystrbuf exch 0 exch put TBIG setfont mystrbuf stringwidth
+	setcharwidth 0 0 moveto mystrbuf show} def 
+/CharsFromSML {mystrbuf exch 0 exch put TSML setfont mystrbuf stringwidth
+	setcharwidth 0 0 moveto mystrbuf show} def 
+% First put in procedure for FromBIG for all characters
+CharStrings begin Encoding {/CharsFromBIG load def} forall end 
+% Then override the procedures with FromSML for a-z
+[/a /b /c /d /e /f /g /h /i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z] 
+{CharStrings exch /CharsFromSML load put} forall end 
+/Times-FakeSC foodict definefont pop 
+
+% /reencsmalldict 12 dict def
+% /ReEncodeSmall {reencsmalldict begin /newcodesandnames exch def 
+% 	/newfontname exch def 
+% 	/basefontname exch def 
+% 	/basefontdict basefontname findfont def
+% 	/newfont basefontdict maxlength dict def 
+% 	/basefontdict basefontname findfont def 
+% 	/newfont basefontdict maxlength dict def 
+% 	basefontdict {exch dup /FID ne {dup /Encoding eq {exch dup length
+% 	array copy newfont 3 1 roll put} {exch newfont 3 1 roll put} ifelse}
+% 	{pop pop} ifelse} forall newfont 
+% 	/FontName newfontname put newcodesandnames aload pop newcodesandnames
+% 	length 2 idiv {newfont /Encoding get 3 1 roll put} repeat newfontname
+% 	newfont definefont pop end} def 
+% /scandvec [123 /dotlessi] def 
+% /Times-FakeSC /Times-FakeSC scandvec ReEncodeSmall
+
+%%%%%%%%%%%%%%%%%%%%%%%%% test code %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+/Times-FakeSC findfont 20 scalefont setfont
+
+100 100 moveto (Times-FakeSC) show
+
+100 200 moveto (A world full of TRA's or is it tra's) show
+
+100 300 moveto (AAAAAAAAAAAAAAAAAAAAAAAAAAAAA) show
+
+100 400 moveto (aaaaaaaaaaaaaaaaaaaaaaaaaaaaa) show
+
+showpage
+
