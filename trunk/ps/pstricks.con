@@ -1,0 +1,23 @@
+%% BEGIN: pstricks.con
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%%
+%% Configuration file for PSTricks v0.93a, 93/03/12.
+%% For use with DVIPSONE.  (As modified by Hilmar Schlegel)
+%% Experimental version 1 : 94-03-29
+%% Experimental version 2 : 96-10-05 (DVI compatible with DVIPS)
+%% Experimental version 3 : 97-04-14
+%% NOTE: you may need to use -*H command line flag with DVIPSONE
+\def\pstdriver{DVIPSONE}
+\def\pstunit{1bp}%
+{\catcode`\"=12\gdef\pstverb#1{\special{" #1}}}
+% \def\pstVerb#1{\special{ps:: #1}}
+\def\pstVerb#1{\special{ps: #1}}
+% \def\pstverbscale{1 dviscl div dup neg scale}
+\def\pstverbscale{ }
+% \def\pstrotate{CP CP translate 3 -1 roll neg rotate \tx@NET}
+\def\pstrotate{CP CP translate 3 -1 roll rotate \tx@NET}
+\def\pstheader#1{\special{header=#1}}
+%%\pstcustomize
+\endinput
+%% END: pstricks.con

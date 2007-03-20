@@ -1,0 +1,19 @@
+%!PS-Adobe-2.0
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% This is the file invert.ps
+% used for printing negative, inverted
+% One way to use it is to simply add the following line
+%	\special{header=invert.ps}
+% anywhere in your (La-)TeX source file.
+
+/bphook{
+	gsave 0 setgray
+	0 0 moveto 612 0 lineto 612 792 lineto 0 792 lineto closepath 
+	fill grestore			% paint background black
+	{1 exch sub}settransfer		% white on black
+	612 0 translate -1 1 scale	% flip horizontally
+%	0 792 translate 1 -1 scale	% flip vertically
+}def
+%%EOF

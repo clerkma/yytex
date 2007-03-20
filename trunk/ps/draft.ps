@@ -1,0 +1,23 @@
+%!PS-Adobe-2.0
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% This is the file draft.ps
+% used for adding a `water mark' DRAFT behind every page
+% One way to use it is to simply add the following line
+%	\special{header=draft.ps}
+% anywhere in your (La-)TeX source file.
+% another is to call it from the DVIPSONE command line.
+
+% Note: you may want to investigate the draftcopy package.
+
+/bphook{
+	gsave 
+	0.9 setgray
+	/Helvetica findfont 200 scalefont setfont
+	225 75 moveto 
+	60 rotate
+	(DRAFT) show 
+	grestore
+}def
+%%EOF

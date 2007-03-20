@@ -1,0 +1,99 @@
+%PS-Adobe
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% MakeSmallCaps makes fake smallcaps font - call MakeSmallCaps with 
+% (1) base font name (2) new font name (3) matrix to scale smallcaps
+
+/MakeSmallCaps {	% OldFontName NewFontName SmallMatrix
+/SmallMatrix exch def /NewFontName exch def /OldFontName exch def
+
+/mystrbuf 1 string def	% needed later to make one character strings
+
+% Make copy of OldFont as base to build NewFont on - add extra space
+OldFontName findfont dup length 7 add dict /newdict exch def 
+{1 index /FID ne {newdict 3 1 roll put} {pop pop} ifelse} forall 
+
+newdict begin 
+% BigFont is main font at 1000 pt
+/BigFont OldFontName findfont 1000 scalefont def
+% SmallFont is subsiduary font at e.g. 845 pt (horizontal) x 735 pt (vertical)
+/SmallFont OldFontName findfont 
+[ SmallMatrix {1000 mul} forall ]	% scale to 1000 pt
+makefont def % Use makefont to allow for anisotropic scaling if desired
+
+% Now construct new Type 3 font using the above two fonts
+/FontName NewFontName dup length string cvs def 
+/FontType 3 def
+% Note: inherits /FontBBox, /FontMatrix, /Encoding from underlying base font
+/UniqueID 0 def % defeat across job font caching
+CharStrings length dict /CharProcs exch def
+% Following is for PS level II `glyphshow' operator
+/BuildGlyph {exch begin CharProcs exch get cvx exec end} def 
+% Following is for PS level I `show' and related operators
+/BuildChar {exch begin Encoding 1 index get
+	CharProcs exch get cvx exec end} def 
+/CharsFromBIG {mystrbuf exch 0 exch put BigFont setfont mystrbuf stringwidth
+	setcharwidth 0 0 moveto mystrbuf show} def 
+/CharsFromSML {32 sub mystrbuf exch 0 exch put SmallFont setfont mystrbuf stringwidth
+	setcharwidth 0 0 moveto mystrbuf show} def 
+% First put in procedure for CharsFromBIG for all glyphs
+CharProcs begin Encoding {/CharsFromBIG load def} forall end 
+% Then for glyphs a-z override the procedures with CharsFromSML 
+97 1 122 {mystrbuf exch 0 exch put mystrbuf cvn
+	CharProcs exch /CharsFromSML load put} for
+end 
+NewFontName newdict definefont pop 
+} def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Example use:
+
+% Making a fake Times-Roman smallcaps font
+% Name of font created is Times-RomanFakeSC - based on Times-Roman
+
+/Times-Roman
+/Times-RomanFakeSC
+[0.845 0 0 0.735 0 0]
+MakeSmallCaps
+
+% Making a fake Times-Italic smallcaps font
+% Name of font created is Times-ItalicFakeSC - based on Times-Italic
+
+/Times-Italic
+/Times-ItalicFakeSC
+[0.845 0 0 0.735 0 0]
+MakeSmallCaps
+
+%%%%%%%%%%%%%%%%%%%%% Test fonts created:
+
+/Times-RomanFakeSC findfont 20 scalefont setfont
+
+100 100 moveto (Times-RomanFakeSC) show
+
+100 150 moveto (A world full of TRA's or is it tra's) show
+
+100 200 moveto (AAAAAAAAAAAAAAAAAAAAAAAAAAAAA) show
+
+100 250 moveto (aaaaaaaaaaaaaaaaaaaaaaaaaaaaa) show
+
+100 300 moveto (ABCDEFGHIJKLMNOPQRSTUVWXYZ) show
+
+100 350 moveto (abcdefghijklmnopqrstuvwxyz) show
+
+/Times-ItalicFakeSC findfont 20 scalefont setfont
+
+100 400 moveto (Times-ItalicFakeSC) show
+
+100 450 moveto (A world full of TRA's or is it tra's) show
+
+100 500 moveto (AAAAAAAAAAAAAAAAAAAAAAAAAAAAA) show
+
+100 550 moveto (aaaaaaaaaaaaaaaaaaaaaaaaaaaaa) show
+
+100 600 moveto (ABCDEFGHIJKLMNOPQRSTUVWXYZ) show
+
+100 650 moveto (abcdefghijklmnopqrstuvwxyz) show
+
+showpage
+%%EOF
+

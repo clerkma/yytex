@@ -1,0 +1,215 @@
+%!
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% (The provenance of this file is unclear, but my recollection is that
+% it has existed for a very long time, and was always intended to be
+% freely used. --karl@tug.org)
+
+% This PostScript programs gets Adobe Font Metric file from PostScript device.
+
+% NOTE: Modify the following line to make this work for the font of interest:
+
+/testfont /AdobeSansMM_1_0_0_0
+
+% /testfont /Times-Roman def
+% /testfont /LTibetan def
+% /testfont /CMCSC9 def
+% /testfont /MSBM7 def
+% /testfont /WNCYSS10 def
+% /testfont /Crillee def
+% /testfont /LucidaBrightSlanted def
+% /testfont /BukvarnayaVP-Bold def
+% /testfont /LucidaHandwriting def
+% /testfont /LucidaNewMath-Alternate def
+% /testfont /LucidaSans-TypewriterBoldOblique def
+% /testfont /ArialMT-BoldItalic def
+
+% NOTE: This is set up to send result back over serial link.
+
+% The format is based only on looking at other AFM files, 
+% and not from any definition of an AFM file, so could be wrong.  
+% It suits the needs of aftopl and afm2tfm, however.
+%
+% 31 Oct 91	J. Daniel Smith		dsmith@mailhost.aa.cad.slb.com
+%	 added a bit of error checking to work with certain type-1 fonts
+%
+
+% Uncomment all lines beginning %-% if you want the results printed, instead
+% of being transmitted back to the host
+
+% The following is set to the size that everything should be calculated at.
+
+/FontSize 1000 def
+
+/nstr 8 string def
+/wstr 16 string def
+/char 1 string def
+/tempstr 256 string def
+
+/bdef { bind def } def
+
+%-%/TFont /Times-Roman findfont 10 scalefont def
+%-%/prdict 5 dict def
+%-%prdict begin
+%-%    /lmargin 36 def
+%-%    /top 10.5 72 mul def % /top 11 72 mul def
+%-%    /bottom 48 def
+%-%    /line top def
+%-%    /vs 12 def
+%-%end
+%-%/print { TFont setfont show } bdef
+%-%/= {
+%-%    prdict begin
+%-%        tempstr cvs print
+%-%        line vs sub
+%-%          dup bottom le
+%-%            { pop showpage top }
+%-%          if
+%-%          /line exch def
+%-%        lmargin line moveto
+%-%    end
+%-%} bdef
+
+/np { newpath 0 0 moveto } bdef
+/charpth {
+    {charpath} stopped
+    {$error /newerror false put 0 0 moveto} if
+} def
+/getbbox {
+  gsave
+    np
+    XFont setfont
+    false charpth flattenpath pathbbox
+  grestore
+} def
+
+/prany {
+    dup currentdict exch known {
+        dup (isFixedPitch) eq {
+            (IsFixedPitch) print
+        }
+        {
+            dup (version) eq {
+                (Version) print
+            }
+            {
+                dup print
+            } ifelse
+        } ifelse
+        ( ) print
+        cvn load =
+    }
+    { pop } ifelse
+} def
+
+/pri {
+    dup print ( ) print
+    cvn load round cvi wstr cvs =
+} def
+
+/prarr {
+    dup print ( ) print
+    cvn load {
+        tempstr cvs print ( ) print
+    } forall
+    () =
+} def
+
+/strngwdth {
+    {stringwidth} stopped
+    {$error /newerror false put 0 0} if
+} def
+
+
+/prtwidth {
+    char 0 3 -1 roll put
+    XFont setfont
+    char 
+    strngwdth
+    pop round cvi wstr cvs
+} bdef
+
+/prtkern {
+    [ exch getbbox ] {
+        round cvi wstr cvs print ( ) print
+    } forall
+} bdef
+
+/PrintDitEntry {
+    (C ) print charnum nstr cvs print
+    ( ; WX ) print charnum prtwidth print
+    ( ; N ) print charname tempstr cvs print
+    ( ; B ) print char prtkern
+    charname /f eq {
+        XFont /CharStrings get
+        dup /fi known {
+            (; L i fi ) print
+        } if
+        /fl known {
+            (; L l fl ) print
+        } if
+    } if
+    (;) =
+} bdef
+
+/PrintCharMetrics {
+    /charnum exch def
+     /charname XFont /Encoding get charnum get def
+
+    % look up ditroff name using PostScript name
+    charname /.notdef ne charname /notdef ne and { PrintDitEntry } if 
+} bdef
+
+/getafm {
+    /name exch def
+    /XFont name findfont FontSize scalefont def
+    /XFontInfo XFont /FontInfo get def
+
+    % print font width table header
+%-%    prdict begin
+%-%      /line top def
+%-%      lmargin top moveto
+%-%    end
+    (StartFontMetrics 1.0) =
+    (Comment Produced by getafm.ps) =
+    XFont begin (FontName) prany end
+    XFontInfo begin
+      (FullName) prany
+      (FamilyName) prany
+      (Weight) prany
+      (ItalicAngle) prany
+      (isFixedPitch) prany
+      (UnderlinePosition) prany
+      (UnderlineThickness) prany
+      (version) prany
+      (Notice) prany
+    end
+    XFont begin (FontBBox) prarr end
+    (H) getbbox /CapHeight exch def pop pop pop
+%   (T) getbbox /CapHeight exch def pop pop pop
+    (CapHeight) pri
+    (x) getbbox /XHeight exch def pop pop pop
+    (XHeight) pri
+    (p) getbbox pop pop /Descender exch def pop
+    (Descender) pri
+    (d) getbbox /Ascender exch def pop pop pop
+    (Ascender) pri
+    (StartCharMetrics) =
+
+    0 1 255 {
+        PrintCharMetrics flush
+    } for
+
+    (EndCharMetrics) =
+    (EndFontMetrics) =
+%-%     showpage
+} bdef
+
+% Sample uses of getafm:
+%    /Times-Roman getafm
+%    /Palatino-Roman getafm
+%    /NewCenturySchlbk-Roman getafm
+%    /AvantGarde-Book getafm
+%    /Bookman-Demi getafm
+
+testfont getafm

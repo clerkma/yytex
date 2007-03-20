@@ -1,0 +1,168 @@
+%!PS-Adobe
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% This is code to pass information from inside a save...restore context
+% to the outside using the `worm hole' of a string
+% Useful in PS level 1 devices which don't have global VM
+% encodestr takes the stack and writes it into the string in an encoded form
+% decodestr takes the string and decodes it back onto the stack
+% only simple data types are implemented
+
+/gstr 1024 string def		% global worm hole
+
+/tstr 64 string def		% temporary string used in /encodestr
+
+/xdef{exch def}bind def
+
+% takes what is on stack and packs into string gstr
+
+/encodestrn{count encodestr} bind def
+
+/encodestr{
+16 dict begin			% place for local procedures
+/integertype {			% integer
+gstr minx 0 put			% record object type
+/minx minx 1 add def		% step over type code
+tstr cvs /sstr xdef		% convert object to string
+/nlen sstr length def		% get length of resulting string
+gstr minx nlen put		% record the length (< 256)
+/minx minx 1 add def		% step over length code
+gstr minx sstr putinterval	% copy the string into global string
+/minx minx nlen add def		% step over the recorded string
+} def
+
+/realtype {			% real
+gstr minx 1 put			% record object type
+/minx minx 1 add def		% step over type code
+tstr cvs /sstr xdef		% convert object to string
+/nlen sstr length def		% get length of resulting string
+gstr minx nlen put		% record the length (< 256)
+/minx minx 1 add def		% step over length code
+gstr minx sstr putinterval	% copy the string into global string
+/minx minx nlen add def		% step over the recorded string
+} def
+
+/booleantype {			% boolean
+gstr minx 2 put			% record object type
+/minx minx 1 add def		% step over type code
+gstr minx 1 put			% record the length
+/minx minx 1 add def		% step over length code
+{1}{0}ifelse cvi		% compute integer from logic value
+gstr minx 3 -1 roll put		% record the integer
+/minx minx 1 add def		% step over the recorded value
+} def
+
+/stringtype {			% string
+gstr minx 3 put			% record object type
+/minx minx 1 add def		% step over object type code
+dup length /nlen xdef
+gstr minx nlen put		% record the length (< 256)
+/minx minx 1 add def		% step over length code
+gstr minx 3 -1 roll putinterval	% splice in the string
+/minx minx nlen add def
+} def
+
+/nametype {
+gstr minx 4 put
+/minx minx 1 add def
+tstr cvs /sstr xdef
+/nlen sstr length def
+gstr minx nlen put		% record the length (< 256)
+/minx minx 1 add def		% step over length code
+gstr minx tstr putinterval
+/minx minx nlen add def
+} def
+
+% count				
+/nitem xdef			% how many items to take off stack
+nitem array astore /tarray xdef	% store in array
+gstr 0 nitem put		% record number of items 
+/minx 1 def			% initialize pointer into global string
+
+tarray {			% step through items in array
+dup type exec
+} forall
+
+end % local dictionary created at start
+} bind def
+
+/decodestr{		% takes string gstr and unpacks it onto stack
+16 dict begin
+/nitem gstr 0 get def	% number of items packed into string
+/minx 1 def
+nitem {
+/ktype gstr minx get def % get data type of next item
+/minx minx 1 add def
+/nlen gstr minx get def	% get length of next item
+/minx minx 1 add def
+/substr gstr minx nlen getinterval def	% get next substring
+ktype 0 eq {		% integer
+substr cvi
+} if
+ktype 1 eq {		% real
+substr cvr
+} if
+ktype 2 eq {		% boolean
+substr 0 get 1 eq		% 1 is true, 0 is false
+} if
+ktype 3 eq {		% string
+substr 
+} if
+ktype 4 eq {		% name
+substr cvn
+} if
+/minx minx nlen add def
+} repeat		% step through items
+end % of local dictionary defined
+}bind def
+
+/dumpstr {		% dump out string on stack
+16 dict begin
+/nstr gstr strlen def
+gstr 0 nstr getinterval
+{} forall 
+end
+}bind def
+
+/strlen {		% get length of encoded string on stack
+16 dict begin
+/str xdef
+str 0 get /nitem xdef
+/minx 1 def
+nitem {
+/minx minx 1 add def	% step over length code
+/nlen str minx get def
+/minx minx 1 add def	% step over type code
+/minx minx nlen add def	% step over object
+} repeat
+minx			% drop it on stack
+end
+} bind def
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% ( 1 2 3 4 5 ) 
+% dup 0 0 put
+% {} forall crash
+
+% 1 2 3 4 
+
+% 1 2 1.2 1.3 2.1234 3.141592653 69
+
+% (A) (BC) (DEF) (GHIJ) (s p a c e)
+
+% true false true false true true
+
+1 3.5 true (A STRING) -0.3 -25 false (NOT)
+
+count encodestr 
+
+% dumpstr crash
+
+decodestr
+
+crash
+
+%%EOF
+

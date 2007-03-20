@@ -1,0 +1,21 @@
+% Change Serial Communications Port Speed And Options
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% First check whether there is any change (to avoid rewrite)
+/baud 19200 def /options 4 def
+% /baud 38400 def /options 4 def
+% /baud 57600 def /options 4 def
+% NOTE: make sure to also copy this info into place before setsccbatch!
+statusdict begin 25 sccbatch end
+exch baud eq exch options eq and  
+{/Helvetica-Bold findfont 14 scalefont setfont
+2 72 mul 11 2 sub 72 mul moveto
+(Already set to ) show baud =string cvs show ( baud and ) show options
+=string cvs show ( options) show showpage stop} if
+serverdict begin 0 exitserver
+statusdict begin 25 19200 4 setsccbatch % end 
+% statusdict begin 25 38400 4 setsccbatch % end 
+% statusdict begin 25 57600 4 setsccbatch % end 
+% don't need end to match serverdict begin, since exitserver does restore
+

@@ -1,0 +1,33 @@
+%!PS-Adobe-2.0
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+/Helvetica findfont 10 scalefont setfont
+/str 64 string def
+/inch {72 mul} def
+/margin 0.5 inch def /column 1.2 inch def
+/top 11 inch margin sub def /leading 12 def
+/x margin def /y top def
+/nl {/y y leading sub def
+y margin lt {/y top def /x x column add def} if
+x y moveto} def
+x y moveto
+ISOLatin1Encoding {str cvs show nl}forall
+showpage
+
+/Helvetica findfont dup length dict begin
+{1 index /FID ne {def}{pop pop} ifelse} forall
+/Encoding ISOLatin1Encoding def currentdict end
+/Helvetica-ISOLatin1 exch definefont pop
+/x 100 def /y 700 def /leading 20 def
+/nl {/y y leading sub def x y moveto} def
+x y moveto
+/Helvetica-ISOLatin1 findfont 12 scalefont setfont
+(asciicircum: ^ versus circumflex accent: \223 (as in \364)) show nl
+(asciitilde: ~ versus tilde accent: \224 (as in \361)) show nl
+(WWW URL shown properly: http://www.foo.net/~bar/) show nl
+(WWW URL shown improperly: http://www.foo.net/\224bar/) show nl
+(How to quote the & for NT: tex ^&latex, not tex \223&latex) show nl
+showpage
+%%EOF
+

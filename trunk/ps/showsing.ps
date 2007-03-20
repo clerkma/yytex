@@ -1,0 +1,163 @@
+%!PS-Adobe
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+%%BeginProlog
+
+/inch {72 mul} def
+
+/mm {25.4 div 72 mul} def
+
+% /baseline 3 inch def
+% /baseline 6 inch def
+/baseline 2 inch def	% bottom y offset
+
+% /baseline 9.5 inch def
+
+% /margin 2 inch def
+% /margin 1 inch def
+% /margin 4 inch def
+/margin 1 inch def	% left x offset
+% /margin 0 inch def
+% /margin -1 inch def
+
+% /emsize 5 inch def
+% /emsize 6.5 inch def
+% /emsize 150 mm def
+% /emsize 100 mm def
+% /emsize 125 mm def
+/emsize 200 mm def	% size on page of 1000 units
+
+% /overshoot 200 def
+% /overshoot 100 def
+
+% /xll -100 def
+% /xll -1000 def
+/xll -200 def	% left edge of graph paper
+% /xur 1200 def
+/xur 800 def	% right edge of graph paper
+% /xur 600 def
+% /xur 1400 def
+% /yll -400 def
+% /yll -1000 def
+/yll -200 def	% bottom edge of graph paper
+% /yll -1000 def
+% /yll -1400 def
+% /yur 1100 def
+% /yur 1200 def
+/yur 800 def	% top edge of graph paper
+% /yur 200 def
+
+/setuppage{
+2 setlinewidth
+margin baseline translate
+emsize 1000 div dup scale
+} def
+
+/showquad{
+gsave
+% overshoot neg 0 moveto 1000 overshoot add 0 lineto stroke
+xll 0 moveto xur 0 lineto stroke
+% 0 overshoot neg moveto 0 1000 overshoot add lineto stroke
+0 yll moveto 0 yur lineto stroke
+% overshoot neg 1000 moveto 1000 overshoot add 1000 lineto stroke
+xll 1000 moveto xur 1000 lineto stroke
+% 1000 overshoot neg moveto 1000 1000 overshoot add lineto stroke
+1000 yll moveto 1000 yur lineto stroke
+grestore
+}def
+
+/showgrid{
+gsave
+currentlinewidth 2 div setlinewidth
+% -100 100 1100 {dup overshoot neg moveto 1000 overshoot add lineto stroke}for 
+xll 100 xur {dup yll moveto yur lineto stroke}for 
+% -100 100 1100 {dup overshoot neg exch moveto 1000 overshoot add exch lineto stroke}for
+yll 100 yur {dup xll exch moveto xur exch lineto stroke}for
+grestore
+}def
+
+/showfine{
+gsave
+currentlinewidth 4 div setlinewidth
+% [10] 0 setdash
+% [5] 0 setdash
+% -100 10 1100 {dup overshoot neg moveto 1000 overshoot add lineto stroke}for
+xll 10 xur {dup yll moveto yur lineto stroke}for
+% -100 10 1100 {dup overshoot neg exch moveto 1000 overshoot add exch lineto stroke}for
+yll 10 yur {dup xll exch moveto xur exch lineto stroke}for
+grestore
+}def
+
+/showwidth{
+% dup overshoot neg moveto 
+dup yll moveto 
+% 1000 overshoot add lineto 
+yur lineto 
+stroke
+} def
+
+/showsing{
+setuppage
+gsave
+dup stringwidth pop 
+/width exch def 
+width showwidth
+0 0 moveto 
+% show
+false charpath stroke
+showquad
+showgrid
+showfine
+grestore
+showpage
+} def
+
+%%EndProlog
+
+% /Times-Roman findfont 1000 scalefont setfont
+% /HPBATS findfont 1000 scalefont setfont
+% /KEYS10 findfont 1000 scalefont setfont
+% /HPlogo findfont 1000 scalefont setfont
+% /HPPI30 findfont 1000 scalefont setfont
+% /HB findfont 1000 scalefont setfont
+% /DM10A findfont 1000 scalefont setfont
+% /CENLI findfont 1000 scalefont setfont
+% /MANUAL findfont 1000 scalefont setfont
+/MTSYB findfont 1000 scalefont setfont
+% (E) showsing
+% (I) showsing
+% (Y) showsing
+% (\004) showsing
+% (\005) showsing
+% (\006) showsing
+% (\007) showsing
+% (\010) showsing
+% (\011) showsing
+% (\012) showsing
+% (\013) showsing
+% (\014) showsing
+% (A) showsing
+% (B) showsing
+% (C) showsing
+% (D) showsing
+% (E) showsing
+% (F) showsing
+% (G) showsing
+% (H) showsing
+% (I) showsing
+% (J) showsing
+% (K) showsing
+% (L) showsing
+% (M) showsing
+% (N) showsing
+% (O) showsing
+% (P) showsing
+% (z) showsing
+% (\000) showsing
+(a) showsing
+(b) showsing
+(c) showsing
+(d) showsing
+%%EOF
+

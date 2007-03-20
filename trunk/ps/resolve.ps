@@ -1,0 +1,30 @@
+%%PS-Adobe
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% show resolution of PS device
+
+/showresolution{
+/Helvetica findfont 12 scalefont setfont
+72 dup dtransform
+6 string cvs exch 6 string cvs 
+100 100 moveto show ( dpi X ) show show ( dpi) show
+} def
+
+showresolution
+
+/ispdf{
+72 dup dtransform
+neg 144 eq exch 144 eq and
+} def
+
+ispdf 
+{(Appear to be in Acrobat)}
+{(Appear NOT to be in Acrobat)}
+ifelse
+
+100 200 moveto show
+
+showpage
+%%EOF
+
