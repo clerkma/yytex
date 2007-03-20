@@ -1,0 +1,61 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\catcode138=11\catcode154=11	% Scaron, scaron
+\lccode138=154\lccode154=154
+\uccode138=138\uccode154=138
+\catcode159=11\catcode255=11	% Ydieresis, ydieresis
+\lccode159=255\lccode255=255
+\uccode159=159\uccode255=159
+
+\bgroup
+\newcount\n\newcount\m\n=224\m=192
+\loop\ifnum\n<255
+\global\catcode\n=11\global\catcode\m=11
+\global\lccode\n=\n\global\lccode\m=\n
+\global\uccode\m=\m\global\uccode\n=\m
+\advance\n by1\advance\m by1\repeat
+\egroup
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\lccode138=154		% Scaron
+\lccode159=255		% Ydieresis
+
+\lccode192=224		% Agrave
+\lccode193=225		% Aacute
+\lccode194=226		% Acircumflex
+\lccode195=227		% Atilde
+\lccode196=228		% Adieresis
+\lccode197=229		% Aring
+\lccode198=230		% AE
+\lccode199=231		% Ccedilla
+\lccode200=232		% Egrave
+\lccode201=233		% Eacute
+\lccode202=234		% Ecircumflex
+\lccode203=235		% Edieresis
+\lccode204=236		% Igrave
+\lccode205=237		% Iacute
+\lccode206=238		% Icircumflex
+\lccode207=239		% Idieresis
+\lccode208=240		% Eth
+\lccode209=241		% Ntilde
+\lccode210=242		% Ograve
+\lccode211=243		% Oacute
+\lccode212=244		% Ocircumflex
+\lccode213=245		% Otilde
+\lccode214=246		% Odieresis
+% \lccode215=247	% multiply/divide
+\lccode216=248		% Oslash
+\lccode217=249		% Ugrave
+\lccode218=250		% Uacute
+\lccode219=251		% Ucircumflex
+\lccode220=252		% Udieresis
+\lccode221=253		% Yacute
+\lccode222=254		% Thorn
+% \lccode223=255	% germandbls/ydieresis
+
+\newcount\n
+\newcount\m
+\n=224\m=192
+\loop\ifnum\n<255\lccode\n=\n\lccode\m=\n\advance\n by1\advance\m by1\repeat

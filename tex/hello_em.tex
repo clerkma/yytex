@@ -1,0 +1,69 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% hello_EM.tex --- LaTeX 2e sample for European Modern
+
+\documentclass{article}
+
+% \usepackage[LY1]{fontenc}	% select text font encoding
+% \usepackage{em}		% switch text and math fonts
+
+\usepackage[LY1]{em}		% equivalent to the above two
+
+\begin{document}
+
+\hrule \vskip 2mm
+
+``Hello World!'' --- $\alpha = \Gamma -\sqrt{x^2+y^2}$.
+
+\vskip 2mm
+
+{\bf Bold}. {\it Italic}. {\tt Fixed width}. {\sf Sans Serif}.
+
+\vskip 2mm
+
+,,German`` ``English'' << French >>  >>Swedish<<
+
+\vskip 2mm
+
+The difficult first flight afflicts the efflux differently.
+
+\vskip 2mm
+
+na\"\i ve; belov\`ed; prot\'eg\'e; r\^ole co\"ordinator; souffl\'es, 
+
+\vskip 2mm
+
+cr\^epes, and p\^at\'es; \AE sop's \OE uvres, \AA ngstrom, Stra\ss e.
+
+\vskip 2mm \hrule \vskip 2mm
+
+\noindent
+{\bf Note:} make sure you have `Font $>$ Encoding' in DVIWindo set to 
+TeX 'n ANSI (LY1).
+
+\vskip 2mm
+
+EM fonts are based on CM, but include ready-made accented characters.
+This makes it possible to set up \TeX\ to hyphenate words that contain
+accented characters.
+
+Unlike CM, EM is not restricted to fixed text font encoding layout.
+You can use EM with any encoding you like, although most people
+use it with TeX 'n ANSI (LY1) encoding, Textures (LM1) encoding,
+or Cork (T1) encoding.
+
+{\bf Note:} if you want to use Cork/T1 encoding use 
+\verb+\usepackage[T1]{fontenc}+
+%
+However, you may find LY1 more useful than T1 since it provides access 
+to 38 more useful glyphs, obviating the need for `text companion' fonts.
+
+You can use standard hyphenation tables set up for T1 also with LY1
+since the alphabetic characters, accented characters and special
+characters are in the same place.
+
+\vskip 2mm \hrule
+
+\end{document}
+

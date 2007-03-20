@@ -1,0 +1,328 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+%	Copyright (C) 1991, 1992 Y&Y, Inc. 
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+%	AMSSYMLB.TEX	Version 1.2	1994 May 1
+
+%  This file contains definitions for math symbols and operators 
+%  --- normally found in the fonts MSAM* and MSBM* ---
+%  using LucidaNewMath fonts from Y&Y in Adobe Type 1 format.
+
+%  It is assumed here that `lcdplain.tex' or `lcdlatex.tex' have been loaded
+%  --- while `amstex.tex' and `amssym.def' are not required ---
+%  this defines things like \arfam which are needed here.
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% We make @ signs act like letters, temporarily, to avoid conflict
+% between user names and internal control sequences of plain format.
+
+\chardef\atcode=\catcode`\@	% save catcode of at sign
+\catcode`\@=11			% make at a letter
+
+% Protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"	% save catcode of quotedbl
+\catcode`\"=12			% make quotedbl what it should be
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+%  Definitions followed by question marks represent less than ideal matches.
+
+% MSAM* equivalents
+
+\mathchardef\boxdot="22ED
+\mathchardef\boxplus="22EA
+\mathchardef\boxtimes="22EC
+\mathchardef\square="0\thearfam 02
+\mathchardef\blacksquare="0\thearfam 03
+% \mathchardef\circle="0\thearfam 00
+% \mathchardef\blackcircle="0\thearfam 01
+\mathchardef\centerdot="2\thearfam E1
+\mathchardef\lozenge="0\thearfam 08
+\mathchardef\blacklozenge="0\thearfam 09
+\mathchardef\circlearrowright="3\thearfam 8C
+\mathchardef\circlearrowleft="3\thearfam 8B
+\mathchardef\rightleftharpoons="3\thearfam 7A
+\mathchardef\leftrightharpoons="3\thearfam 79
+\mathchardef\boxminus="22EB
+\mathchardef\Vdash="32F0
+\mathchardef\Vvdash="31D3
+\mathchardef\vDash="32EE
+\mathchardef\twoheadrightarrow="3\thearfam 25
+\mathchardef\twoheadleftarrow="3\thearfam 23
+\mathchardef\leftleftarrows="3\thearfam 71
+\mathchardef\rightrightarrows="3\thearfam 73
+\mathchardef\upuparrows="3\thearfam 72
+\mathchardef\downdownarrows="3\thearfam 74
+\mathchardef\upharpoonright="3\thearfam 75
+\mathchardef\downharpoonright="3\thearfam 77
+\mathchardef\upharpoonleft="3\thearfam 76
+\mathchardef\downharpoonleft="3\thearfam 78
+\mathchardef\rightarrowtail="3\thearfam 29
+\mathchardef\leftarrowtail="3\thearfam 28
+\mathchardef\leftrightarrows="3\thearfam 6E
+\mathchardef\rightleftarrows="3\thearfam 6D
+\mathchardef\Lsh="3\thearfam 7B
+\mathchardef\Rsh="3\thearfam 7D
+\mathchardef\rightsquigarrow="3\thearfam 8E
+\mathchardef\leftsquigarrow="3\thearfam 8D
+\mathchardef\leftrightsquigarrow="3\thearfam 91
+\mathchardef\looparrowleft="3\thearfam 3F
+\mathchardef\looparrowright="3\thearfam 40
+\mathchardef\circeq="32D0
+\mathchardef\succsim="32E1
+\mathchardef\gtrsim="32DD
+\mathchardef\gtrapprox="31DB
+\mathchardef\multimap="31C7
+\mathchardef\image="31C6
+\mathchardef\original="31C5
+\mathchardef\therefore="3290
+\mathchardef\because="3291
+\mathchardef\doteqdot="32CA
+\mathchardef\triangleq="32D5
+\mathchardef\precsim="32E0
+\mathchardef\lesssim="32DC
+\mathchardef\lessapprox="31DA
+\mathchardef\eqslantless="31E2
+\mathchardef\eqslantgtr="31E3
+\mathchardef\curlyeqprec="31E6
+\mathchardef\curlyeqsucc="31E7
+\mathchardef\preccurlyeq="31E4
+\mathchardef\leqq="32DA
+\mathchardef\leqslant="31E0
+\mathchardef\lessgtr="32DE
+\mathchardef\backprime="01C8
+\mathchardef\axisshort="0\thearfam 39
+\mathchardef\risingdotseq="32CC
+\mathchardef\fallingdotseq="32CB
+\mathchardef\succcurlyeq="31E5
+\mathchardef\geqq="32DB
+\mathchardef\geqslant="31E1
+\mathchardef\gtrless="32DF
+\mathchardef\sqsubset="32E4
+\mathchardef\sqsupset="32E5
+\mathchardef\vartriangleright="312E
+\mathchardef\vartriangleleft="312F
+\mathchardef\trianglerighteq="32F5
+\mathchardef\trianglelefteq="32F4
+\mathchardef\bigstar="0\thearfam AB
+\mathchardef\between="31F2
+\mathchardef\blacktriangledown="0\thearfam 07
+\mathchardef\blacktriangleright="31F1
+\mathchardef\blacktriangleleft="31F0
+\mathchardef\arrowaxisright"0\thearfam 37
+\mathchardef\arrowaxisleft"0\thearfam 36
+\mathchardef\vartriangle="3\thearfam 04
+\mathchardef\blacktriangle="0\thearfam 05
+\mathchardef\triangledown="0\thearfam 06
+\mathchardef\eqcirc="32CF
+\mathchardef\lesseqgtr="31E8
+\mathchardef\gtreqless="31E9
+\mathchardef\lesseqqgtr="31EA
+\mathchardef\gtreqqless="31EB
+\mathchardef\Rrightarrow="3\thearfam 6C
+\mathchardef\Lleftarrow="3\thearfam 6A
+\mathchardef\veebar="21D2
+\mathchardef\barwedge="22F6
+\mathchardef\angle="028B
+\mathchardef\measuredangle="028C
+\mathchardef\sphericalangle="028D
+\mathchardef\varpropto="322F % ?
+\mathchardef\smallsmile="315E % ? 
+\mathchardef\smallfrown="315F % ?	
+\mathchardef\Subset="32F8
+\mathchardef\Supset="32F9
+\mathchardef\Cup="22FA
+\mathchardef\Cap="22FB
+\mathchardef\curlywedge="2284
+\mathchardef\curlyvee="2285
+\mathchardef\leftthreetimes="21D0
+\mathchardef\rightthreetimes="21D1
+\mathchardef\subseteqq="31EE
+\mathchardef\supseteqq="31EF
+\mathchardef\bumpeq="32C8
+\mathchardef\Bumpeq="32C7
+\mathchardef\lll="31DE
+\mathchardef\ggg="31DF
+\mathchardef\circledS="01CA
+\mathchardef\pitchfork="31F3
+\mathchardef\dotplus="2289
+\mathchardef\backsim="31F8
+\mathchardef\backsimeq="31F9
+\mathchardef\complement="0194
+\mathchardef\intercal="21D9
+\mathchardef\circledcirc="22E6
+\mathchardef\circledast="22E7
+\mathchardef\circleddash="21CC
+
+% NOTE: \circle commented out because it conflicts with LaTeX picture environ
+
+% MSBM* equivalents
+
+\mathchardef\lvertneqq="3\thearfam DE
+\mathchardef\gvertneqq="3\thearfam DF
+\mathchardef\nleq="3\thearfam 9C
+\mathchardef\ngeq="3\thearfam 9D
+\mathchardef\nless="3\thearfam 9A
+\mathchardef\ngtr="3\thearfam 9B
+\mathchardef\nprec="3\thearfam E5
+\mathchardef\nsucc="3\thearfam E6
+\mathchardef\lneqq="3\thearfam DC
+\mathchardef\gneqq="3\thearfam DD
+\mathchardef\nleqslant="3\thearfam D6
+\mathchardef\ngeqslant="3\thearfam D7
+\mathchardef\lneq="3\thearfam DA
+\mathchardef\gneq="3\thearfam DB
+\mathchardef\npreceq="3\thearfam E7
+\mathchardef\nsucceq="3\thearfam E8
+\mathchardef\precnsim="3\thearfam EB
+\mathchardef\succnsim="3\thearfam EC
+\mathchardef\lnsim="3\thearfam E0
+\mathchardef\gnsim="3\thearfam E2
+\mathchardef\nleqq="3\thearfam D8
+\mathchardef\ngeqq="3\thearfam D9
+\mathchardef\precneqq="3\thearfam E9
+\mathchardef\succneqq="3\thearfam EA
+\mathchardef\precnapprox="3\thearfam ED
+\mathchardef\succnapprox="3\thearfam EE
+\mathchardef\lnapprox="3\thearfam E3
+\mathchardef\gnapprox="3\thearfam E4
+\mathchardef\nsim="3\thearfam 96
+\mathchardef\ncong="3\thearfam 99
+\mathchardef\diagup="3\thearfam 0B
+\mathchardef\diagdown="3\thearfam 0C
+\mathchardef\varsubsetneq="3\thearfam D0
+\mathchardef\varsupsetneq="3\thearfam D1
+\mathchardef\nsubseteqq="3\thearfam CA
+\mathchardef\nsupseteqq="3\thearfam CB
+\mathchardef\subsetneqq="3\thearfam CE
+\mathchardef\supsetneqq="3\thearfam CF
+\mathchardef\varsubsetneqq="3\thearfam D2
+\mathchardef\varsupsetneqq="3\thearfam D3
+\mathchardef\subsetneq="3\thearfam CC
+\mathchardef\supsetneq="3\thearfam CD
+\mathchardef\nsubseteq="3\thearfam C8
+\mathchardef\nsupseteq="3\thearfam C9
+\mathchardef\nparallel="3\thearfam F7
+\mathchardef\nmid="3\thearfam F6
+\mathchardef\nshortmid="3\thearfam F4
+\mathchardef\nshortparallel="3\thearfam F5
+\mathchardef\nvdash="3\thearfam F8
+\mathchardef\nVdash="3\thearfam FA
+\mathchardef\nvDash="3\thearfam F9
+\mathchardef\nVDash="3\thearfam FB
+\mathchardef\ntrianglerighteq="3\thearfam F2
+\mathchardef\ntrianglelefteq="3\thearfam F1
+\mathchardef\ntriangleleft="3\thearfam EF
+\mathchardef\ntriangleright="3\thearfam F0
+\mathchardef\nleftarrow="3\thearfam 32
+\mathchardef\nrightarrow="3\thearfam 33
+\mathchardef\nLeftarrow="3\thearfam 66
+\mathchardef\nRightarrow="3\thearfam 68
+\mathchardef\nLeftrightarrow="3\thearfam 67
+\mathchardef\nleftrightarrow="3\thearfam 34
+\mathchardef\divideontimes="21F7
+% \mathchardef\varnothing="023B
+\mathchardef\varnothing="019C
+\mathchardef\nexists="0\thearfam 20
+\mathchardef\Finv="0190
+\mathchardef\Game="0191
+\mathchardef\mho="0192
+\mathchardef\simeq="3227	% was 329A
+\mathchardef\eqsim="3299
+\mathchardef\beth="0195
+\mathchardef\gimel="0196
+\mathchardef\daleth="0197
+\mathchardef\lessdot="31DC
+\mathchardef\gtrdot="31DD
+\mathchardef\ltimes="21CE
+\mathchardef\rtimes="21CF
+\mathchardef\shortmid="31F4
+\mathchardef\shortparallel="31F5
+\mathchardef\smallsetminus="21D8 % ?
+\mathchardef\thicksim="3218 % ?
+\mathchardef\thickapprox="3219 % ?	
+\mathchardef\approxeq="329D
+\mathchardef\succapprox="31ED
+\mathchardef\precapprox="31EC
+\mathchardef\curvearrowleft="3\thearfam 87
+\mathchardef\curvearrowright="3\thearfam 88
+\mathchardef\digamma="0146 % ?
+\mathchardef\varkappa="019B
+\mathchardef\Bbbk="0\thearfam 6B
+\mathchardef\hslash="019D
+\mathchardef\hbar="0\thearfam 1B
+\mathchardef\backepsilon="31FB % ?
+
+\mathchardef\dashrightarrow"0\thearfam 3A
+\mathchardef\dashleftarrow"0\thearfam 38
+\mathchardef\dashuparrow"0\thearfam 39
+\mathchardef\dashdownarrow"0\thearfam 3B
+
+\def\ulcorner{\delimiter"4\thearfam 5B\thearfam 5B }
+\def\urcorner{\delimiter"5\thearfam 5C\thearfam 5C }
+\def\llcorner{\delimiter"4\thearfam 5D\thearfam 5D }
+\def\lrcorner{\delimiter"5\thearfam 5E\thearfam 5E }
+
+% NOTE: AMSLaTeX style defines \text slightly differently
+
+% Following only to define \mathhexbox for \checkmark, \circledR, \maltese
+
+\def\RIfM@{\relax\ifmmode}
+\def\DN@{\def\next@}
+\def\eat@#1{}
+\newif\iffirstchoice@
+\firstchoice@true
+\def\text@#1{\mathchoice
+ {\hbox{\everymath{\displaystyle}\def\textfonti{\the\textfont\@ne}%
+  \def\textfontii{\the\textfont\tw@}\textdef@@ T#1}}
+ {\hbox{\firstchoice@false
+  \everymath{\textstyle}\def\textfonti{\the\textfont\@ne}%
+  \def\textfontii{\the\textfont\tw@}\textdef@@ T#1}}
+ {\hbox{\firstchoice@false
+  \everymath{\scriptstyle}\def\textfonti{\the\scriptfont\@ne}%
+  \def\textfontii{\the\scriptfont\tw@}\textdef@@ S\rm#1}}
+ {\hbox{\firstchoice@false
+  \everymath{\scriptscriptstyle}\def\textfonti
+  {\the\scriptscriptfont\@ne}%
+  \def\textfontii{\the\scriptscriptfont\tw@}\textdef@@ s\rm#1}}}
+\def\textdef@@#1{\textdef@#1\rm\textdef@#1\bf\textdef@#1\sl\textdef@#1\it}
+\def\text@@#1{\leavevmode\hbox{#1}}
+\def\rmfam{0}
+\def\textdef@#1#2{%
+ \DN@{\csname\expandafter\eat@\string#2fam\endcsname}%
+ \if S#1\edef#2{\the\scriptfont\next@\relax}%
+ \else\if s#1\edef#2{\the\scriptscriptfont\next@\relax}%
+ \else\edef#2{\the\textfont\next@\relax}\fi\fi}
+\def\text{\RIfM@\expandafter\text@\else\expandafter\text@@\fi}
+\def\mathhexbox@#1#2#3{\text{$\m@th\mathchar"#1#2#3$}}
+
+\def\checkmark{{\mathhexbox@\thearfam AC }}
+\def\circledR{{\mathhexbox@1C9 }}
+\def\maltese{{\mathhexbox@1CB }}
+
+% Make even wider sizes of widehat and wide tilde available
+% NOTE: Don't need this anymore, since wider sizes already linked in
+
+% \def\wdz@{\wd\z@}
+% \def\setboxz@h{\setbox\z@\hbox}
+% \def\widehat#1{\setboxz@h{$\m@th#1$}\ifdim\wdz@>\tw@ em\mathaccent"03C5{#1}\else
+%   \mathaccent"0362{#1}\fi}
+% \def\widetilde#1{\setboxz@h{$\m@th#1$}\ifdim\wdz@>\tw@ em\mathaccent"03C7{#1}\else 
+%   \mathaccent"0365{#1}\fi}
+
+% Black-board bold (open face) characters
+
+\def\nonmatherr@#1{\errmessage{\string#1\space allowed only in math mode}}
+\def\Bbb{\relax\ifmmode\expandafter\Bbb@\else
+ \expandafter\nonmatherr@\expandafter\Bbb\fi}
+\def\Bbb@#1{{\Bbb@@{#1}}}
+\def\Bbb@@#1{\fam\arfam\relax#1}
+
+\catcode`\"=\dblcode		% restore catcode of quotedbl
+
+\catcode`\@=\atcode		% restore catcode of at sign
+
+\endinput

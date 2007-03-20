@@ -1,0 +1,22 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Test of named colors in LaTeX 2e color package
+
+\documentclass{article}
+
+\usepackage[dvipsone,dvipsnames,usenames]{color}
+
+\begin{document}
+
+\noindent 
+This is in black.
+{\color[named]{WildStrawberry} This is in Wild Strawberry.}
+{\color{RoyalBlue} This is in RoyalBlue.}
+This is in black.
+
+On screen, text colors are not dithered, and hence reduced to a
+rather small palette.  But they will print with a wider range
+on a color device.
+
+\end{document}

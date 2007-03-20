@@ -1,0 +1,187 @@
+% HYPERTXT.MAC
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%
+% Macros for hypertext links.
+%
+% Macros are for DVIWindo release 1.2.8 and above
+% Written by: Neil A. Weiss
+% Date: 09/10/95
+% Revision history 
+%   12/17/95: Added \leavevmode to beginning of \textlink and \buttonlink.
+%   12/18/95: Changed \buttonprint and \buttonlink macro (see these macros).
+
+% THIS IS SOME PRELIMINARY WORK FOR USING HYPERTEXT WITH DVIWINDO.
+% SEE ALSO THE DOCUMENTS c:/dviwindo/txt/hyper.txt
+%   AND c:/dviwindo/txt/hyper2.txt.
+% FOR EXAMPLES, SEE THE FILE c:/macros/hypertxt/hypertxt.tex.
+
+% NB: BE SURE THAT Color Fonts IS UNCHECKED IN DVIWindo's Font MENU.
+
+
+% MISCELLANY
+
+% Useful items, not required.
+\chardef\\`\\
+\def\filename#1{{\tt #1}} 
+
+% Set mark for target text.
+\def\setmark#1{\special{mark: "#1"}\ignorespaces}
+
+% Items used to get expansion of actions.
+\def\aster{*}
+\newif\iffirst  \firsttrue
+\def\file{file:} \def\launch{launch:}
+
+% Width and height of sensitive area for link.
+\newdimen\width \newdimen\height
+
+% Defines \test to be the first word in the expansion of \one
+\def\gettest{\edef\args{\one\space}\expandafter\maketest\args*}
+\def\maketest#1 #2*{\def\test{#1}}
+
+% Defines \actions to be the actions to be taken (expanded), separated by
+% commas. Also puts quotes around the mark, if present.
+\def\expandit#1{\def\one{#1}%
+  \ifx\one\aster\global\firsttrue\let\next\relax
+  \else
+  \gettest
+    \ifx\test\file\else\ifx\test\launch\else\edef\one{"\one"}\fi\fi
+    \iffirst\global\firstfalse\edef\actions{\one}\else
+    \edef\actions{\actions, \one}\fi
+  \let\next\expandit\fi\next}
+
+
+% MACROS FOR SETTING TEXT LINKS
+
+% Color for link text.
+\def\setlinkcolor #1 #2 #3.{\def\red{#1}\def\blue{#2}\def\green{#3}}
+
+\setlinkcolor 0 128 0.       % CHANGE AS DESIRED. SEE THE DVIWindo MANUAL.
+
+\def\beginlinkcolor{\special{textcolor: \red\space\blue\space\green}%
+  \special{rulecolor: \red\space\blue\space\green}}                    
+
+\def\endlinkcolor{\special{textcolor: 0 0 0}\special{rulecolor: 0 0 0}}
+
+% Macro for setting link text.
+\def\printit{\beginlinkcolor $\underline{\box0}$\endlinkcolor}
+
+% Macro for specifying text links.
+\def\textlink#1#2{\leavevmode
+	\setbox0\hbox{#1}\width\wd0\height\ht0\expandit#2*%
+  \special{button: \number\width\space \number\height\space \actions}\printit}
+
+% The parameters for \textlink are:
+%   #1---the text for the link, enclosed in braces.
+%   #2---the actions to be taken, delimited by braces and all enclosed
+%        in braces.
+
+\let\link\textlink           % FOR OLD EXAMPLE FILES
+
+
+% MACROS FOR SETTING BUTTON LINKS
+
+\newdimen\depth
+
+% Button parameters.
+\newdimen\topbuttonmargin
+\newdimen\bottombuttonmargin
+\newdimen\sidebuttonmargin
+
+\topbuttonmargin6pt          % CHANGE AS DESIRED
+\bottombuttonmargin6pt       % CHANGE AS DESIRED
+\sidebuttonmargin3pt         % CHANGE AS DESIRED
+
+\newdimen\borderrulewidth
+
+\borderrulewidth1pt          % CHANGE AS DESIRED
+
+% Height and depth control within buttons.
+\def\vertdimens{\vrule width0pt height\height depth\depth}
+
+% Color for buttons.
+\def\setbuttoncolor #1 #2 #3.{%
+  \def\buttonred{#1}\def\buttonblue{#2}\def\buttongreen{#3}}
+
+\setbuttoncolor 192 192 192. % CHANGE AS DESIRED
+
+\def\beginbuttoncolor{%
+  \special{rulecolor: \buttonred\space\buttonblue\space\buttongreen}}
+
+\def\endbuttoncolor{\special{rulecolor: 0 0 0}}
+
+% Color for light rule within buttons.
+\def\setlightrulecolor #1 #2 #3.{%
+  \def\lightrulered{#1}\def\lightruleblue{#2}\def\lightrulegreen{#3}}
+
+\setlightrulecolor 96 96 96. % CHANGE AS DESIRED
+
+\def\beginlightrulecolor{%
+  \special{rulecolor: \lightrulered\space\lightruleblue\space\lightrulegreen}}
+
+\let\endlightrulecolor\endbuttoncolor
+
+\def\lightrule#1{{\beginlightrulecolor #1\endlightrulecolor}}
+
+% Macros for setting buttons.
+\def\boxit#1{\vcenter{\let\bwd\borderrulewidth
+  \hbox{\vrule width\bwd\vbox{\hrule height\bwd
+  \hbox{#1}\lightrule{\hrule height1.5\bwd}\hrule height\bwd}%
+  \vrule width\bwd}}}
+
+% \def\buttonprintit{\beginbuttoncolor
+%   \rlap{\kern1.5\borderrulewidth\advance\width by.5\borderrulewidth
+%   \advance\height by-.7\borderrulewidth\advance\depth by\borderrulewidth
+%   \vrule width\width height\height depth\depth}\endbuttoncolor
+%   \hbox{$\boxit{\vertdimens\box0\lightrule{\vrule width1.5\bwd}}$}}
+
+\def\buttonprintit{\beginbuttoncolor
+  \hbox{$\vcenter{\rlap{\kern1.5\borderrulewidth
+  \advance\width by.5\borderrulewidth
+  \advance\height by-.5\borderrulewidth
+  \advance\depth by\borderrulewidth
+  \vrule width\width height\height depth\depth}}$}\endbuttoncolor
+  \hbox{$\boxit{\vertdimens\box0\lightrule{\vrule width1.5\bwd}}$}}
+
+% Macro for specifying button links.
+% \def\buttonlink#1#2{\leavevmode
+%   \setbox0\hbox{\hskip\sidebuttonmargin#1\hskip\sidebuttonmargin}%
+%   \width\wd0\height\ht0\depth\dp0%
+%   \advance\height by\topbuttonmargin \advance\depth\bottombuttonmargin
+%   \expandit #2*%\leavevmode
+%   {\advance\width by2\borderrulewidth
+%   \special{button: \number\width\space \number\height\space \actions}}%
+%   \buttonprintit}
+
+\def\buttonlink#1#2{\leavevmode
+  \setbox0\hbox{\hskip\sidebuttonmargin#1\hskip\sidebuttonmargin}%
+  \width\wd0\height\ht0\depth0pt
+  \advance\height by\topbuttonmargin \advance\depth\bottombuttonmargin
+  \expandit #2*%
+  {\advance\width by3.5\borderrulewidth	\advance\height by\borderrulewidth
+  \special{button: \number\width\space \number\height\space \actions}}%
+  \buttonprintit}
+
+% The parameters for \buttonlink are:
+%   #1---the text for the button, enclosed in braces.
+%   #2---the actions to be taken, delimited by braces and all enclosed
+%        in braces.
+
+
+% COLOR FOR EMPHASIS
+
+% Macro for setting emphasis color.
+\def\setemphcolor #1 #2 #3.{%
+	\def\emphred{#1}\def\emphblue{#2}\def\emphgreen{#3}}
+
+% Procedure for setting emphasis color.
+\setemphcolor 128 0 0.       % CHANGE AS DESIRED.
+
+% Macros for beginning and ending emphasis color.
+\def\beginemphcolor{\special{textcolor: \emphred\space\emphblue\space\emphgreen}%
+  \special{rulecolor: \emphred\space\emphblue\space\emphgreen}}
+\let\endemphcolor\endlinkcolor
+
+% Macro for setting text using the emphasis color.
+\def\emphcolor#1{\beginemphcolor#1\endemphcolor}

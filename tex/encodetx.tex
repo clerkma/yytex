@@ -1,0 +1,200 @@
+% ENCODETX.TEX (1995 June 1)
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%
+% NOTE: This particular file has been customized for TeX n ANSI encoding
+% NOTE: If your text fonts use TeX 'n ANSI, then \input texnansi.tex as well.
+%
+% This is `encode.tex', were you customize `mtmacs.tex' to the character
+% encoding used by your DVI driver for the Times text fonts when used in math.
+%
+% NOTE: this ONLY changes the behavior of text fonts when called for in MATH.
+% It does not deal with the character encoding of text fonts used outside math.
+%
+% Uncomment the lines that apply to the character encoding you use, or
+% add new lines if the encoding you use is not one of the examples given.
+% Character codes may be given in decimal, or hex using ", or octal using '
+%
+% You will typically also need to do something about encoding of text fonts,
+% since plain TeX and LaTeX have the CM `TeX text' encoding hard-wired in.
+%
+% Examples are given at the end of different encodings (mostly commented out)
+%
+% *************************************************************************
+
+\expandafter\edef\csname qqcode\string @\endcsname{\the\catcode`\"}
+\expandafter\edef\csname atcode\string @\endcsname{\the\catcode`\@}
+
+\catcode`\@=11
+\catcode`\"=12
+
+\def\eat@#1{}
+
+\def\hexnumber@#1{\ifcase#10\or 1\or 2\or 3\or 4\or 5\or 6\or 7\or 8\or
+ 9\or A\or B\or C\or D\or E\or F\fi}
+
+\def\encode#1#2{\count@#2\relax
+ \ifnum\count@<\sixt@@n
+ \expandafter\edef
+  \csname\expandafter\eat@\string#1@HX\endcsname{0\hexnumber@\count@}%
+ \else
+  {\count\z@\count@\divide\count\z@\sixt@@n
+  \edef\next@{\hexnumber@{\count\z@}}%
+  \multiply\count\z@\sixt@@n\advance\count@-\count\z@
+  \expandafter\xdef
+   \csname\expandafter\eat@\string#1@HX\endcsname{\next@\hexnumber@\count@}}%
+  \fi}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Default wired in to mtmacs.tex -- mix of TeX text and Adobe StandardEncoding 
+% (which presently is the default for AFM2TFM --- except for dotaccent).
+
+% accents (Tex text encoding)
+
+%\encode\bar{'26}	% macron
+%\encode\grave{"12}	% grave
+%\encode\acute{"13}	% acute
+%\encode\check{"14}	% caron
+%\encode\breve{"15}	% breve
+%\encode\hat{"5E}	% circumflex
+%\encode\dot{"5F}	% dotaccent (?) TeX text encoding
+%\encode\dot{"C7}	% dotaccent (?) Adobe Standard Encoding
+%\encode\tilde{"7E}	% tilde
+%\encode\ddot{"7F}	% dieresis
+
+% special characters (not found in `TeX text', so use Adobe StandardEncoding)
+
+%\encode\dag{"B2}	% dagger
+%\encode\ddag{"B3}	% daggerdbl
+%\encode\S{"A7}		% section
+%\encode\P{"B6}		% paragraph
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The following is for Adobe StandardEncoding (also \input stanacce.tex)
+
+% accents (Adobe Standard Encoding)
+
+%\encode\bar{197}	% macron
+%\encode\grave{193}	% grave
+%\encode\acute{194}	% acute
+%\encode\check{207}	% caron
+%\encode\breve{198}	% breve
+%\encode\hat{195}	% circumflex
+%\encode\dot{199}	% dotaccent
+%\encode\tilde{196}	% tilde
+%\encode\ddot{200}	% dieresis
+
+% special characters (Adobe StandardEncoding)
+
+%\encode\dag{178}	% dagger
+%\encode\ddag{179}	% daggerdbl
+%\encode\S{167}		% section
+%\encode\P{182}		% paragraph
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The following is for Windows ANSI (also \input ansiacce.tex)
+
+% accents (Windows ANSI)
+
+%\encode\bar{175}	% macron
+%\encode\grave{96}	% grave
+%\encode\acute{180}	% acute
+%\encode\check{141}	% caron NOT in Windows ANSI!
+%\encode\breve{198}	% breve NOT in Windows ANSI!
+%\encode\hat{136}	% circumflex (changed position in Windows 3.1)
+%\encode\dot{183}	% dotaccent (actually periodcentered)
+%\encode\tilde{152}	% tilde (changed position in Windows 3.1)
+%\encode\ddot{168}	% dieresis
+
+% special characters (Windows ANSI)
+
+%\encode\dag{134}	% dagger (new in Windows 3.1)
+%\encode\ddag{135}	% daggerdbl (new in Windows 3.1)
+%\encode\S{167}		% section (as in StandardEncoding)
+%\encode\P{182}		% paragraph (as in StandardEncoding)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The following is for TeX n ANSI (also \input texnansi.tex)
+
+% accents (TeX n ANSI) --- mostly where plain TeX expects them anyway
+
+\encode\bar{22}		% macron
+\encode\grave{18}	% grave
+\encode\acute{19}	% acute
+\encode\check{20}	% caron
+\encode\breve{21}	% breve
+\encode\hat{94}		% circumflex
+\encode\dot{5}		% dotaccent
+\encode\tilde{126}	% tilde
+\encode\ddot{127}	% dieresis
+
+% special characters (Windows ANSI)
+
+\encode\dag{134}	% dagger (new in Windows 3.1)
+\encode\ddag{135}	% daggerdbl (new in Windows 3.1)
+\encode\S{167}		% section (as in StandardEncoding)
+\encode\P{182}		% paragraph (as in StandardEncoding)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% The following is for `DC' encoding (Cork Ireland TUG meeting 1990)
+
+% accents				% (also \input dcaccent.tex)
+
+%\encode\bar{9}		% macron
+%\encode\grave{0}	% grave
+%\encode\acute{1}	% acute
+%\encode\check{7}	% caron
+%\encode\breve{8}	% breve
+%\encode\hat{2}		% circumflex
+%\encode\dot{10}	% dotaccent
+%\encode\tilde{3}	% tilde
+%\encode\ddot{4}	% dieresis
+
+% special characters (mostly not found in DC encoding)
+
+%\encode\dag{178}	% dagger (not in DC encoding!)
+%\encode\ddag{179}	% daggerdbl (not in DC encoding!)
+%\encode\S{159}		% section (?)
+%\encode\P{182}		% paragraph (not in DC encoding!)
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Following is for Macintosh `standard roman encoding' (\input macaccen.tex)
+
+% accents (Textures `Mac' encoding keeps these doubly encoded)
+
+%\encode\bar{9}		% macron	(Textures Mac)
+%\encode\bar{248}	% macron	(Macintosh)
+%\encode\grave{0}	% grave		(Textures Mac)
+%\encode\grave{96}	% grave		(Macintosh)
+%\encode\acute{1}	% acute		(Textures Mac)
+%\encode\acute{171}	% acute		(Macintosh)
+%\encode\check{7}	% caron		(Textures Mac)
+%\encode\check{255}	% caron		(Macintosh)
+%\encode\breve{8}	% breve		(Textures Mac)
+%\encode\breve{249}	% breve		(Macintosh)
+%\encode\hat{2}		% circumflex	(Textures Mac)
+%\encode\hat{246}	% circumflex	(Macintosh)
+%\encode\dot{10}	% dotaccent	(Textures Mac)
+%\encode\dot{250}	% dotaccent	(Macintosh)
+%\encode\tilde{3}	% tilde		(Textures Mac)
+%\encode\tilde{247}	% tilde		(Macintosh)
+%\encode\ddot{4}	% dieresis	(Textures Mac)
+%\encode\ddot{172}	% dieresis	(Macintosh)
+
+% special characters
+
+%\encode\dag{160}	% dagger
+%\encode\ddag{224}	% daggerdbl
+%\encode\S{164}		% section
+%\encode\P{166}		% paragraph
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\catcode`\"=\qqcode@
+\catcode`\@=\atcode@

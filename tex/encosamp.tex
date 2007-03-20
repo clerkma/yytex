@@ -1,0 +1,71 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\font\tir=tir at 10pt
+
+\input texnansi
+
+\tir
+
+\noindent
+{\bf It is important to be able to access all characters in a text font}
+
+\vskip .1in
+
+\noindent
+This file assumes: 
+(i) You have the Times-Roman font (Type 1 format of course) installed;
+(ii) Type 1 fonts are enabled (i.e. ATM installed and running);
+(ii) Your DVIWindo is set up to reencode text fonts to TeX 'n ANSi encoding,
+That is, you have a line of the form ENCODING=texnansi in the [Environment]
+section of dviwindo.ini (in the Windows directory).
+
+Ligatures: fi fl ff ffi ffl.  
+No other {\TeX} system in Windows can show {\it any\/} of the f-ligatures 
+in an ordinary text font like Times-Roman.
+On the Macintosh, Textures can show the fi and fl ligatures but {\it not\/}
+the ff, ffi, and ffl ligatures.
+
+Newton's notation for derivatives needs `dotaccent' in the text font
+($\dot{x}$).
+No other {\TeX} system in Windows can show this accent!  
+Hence you have to use Leibnitz notation for derivatives.
+
+For composite characters based on the letter `i'
+you need to have `dotlessi' if you want other than the
+basic ones: \`\i \'\i \~\i \"\i \~\i.
+So you can't make \v\i \r\i \H\i \u\i in those system!
+
+Actually, in all other {\TeX} systems for Windows you can't
+get at the accents 
+`caron' (\char20), `ring' (\char23), `hungarumlaut' (\char6), 
+`breve' (\char21), `ogonek' (\char7) , `dotaccent' (\char5)
+anyway.
+
+Other {\TeX} systems for Windows can't access ready-made composites
+`Lslash' (\char128), `lslash' (\char144), `Zcaron' (\char141),
+`zcaron' (\char157).
+
+Other {\TeX} systems for Windows can't access some other glyphs
+in text fonts like `minus' (\char143) and `fraction' (\char9).
+
+% Some (15) other glyphs one might have wanted to see here: 
+% Zcaron, zcaron, Lslash, lslash
+% dotlessi, caron, ring, dotaccent, hungarumlaut, breve, ogonek 
+% fi, fl, fraction, minus.
+
+In addition Textures cannot access 
+`Zcaron' (\char141), `zcaron' (\char157),
+`Yacute' (\char221), `yacute' (\char253),
+`Scaron' (\char138), `scaron' (\char154),
+`Eth' (\char208), `eth' (\char240),
+`Thorn' (\char222), `thorn' (\char254),
+`multiply' (\char215), `brokenbar' (\char166),
+`onequarter' (\char188), `onehalf' (\char189), `threequarters' (\char190), 
+`onesuperior' (\char185), `twosuperior' (\char178), `threesuperior' (\char179)
+
+% Some (21) other glyphs one might have wanted to see here: 
+% Zcaron, zcaron, Lslash, lslash, Yacute, yacute, Scaron, scaron
+% Eth, eth, Thorn, thorn, minus, multiply, brokenbar
+% onequarter, onehalf, threequarters, onesuperior, twosuperior, threesuperior
+
+\end

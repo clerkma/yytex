@@ -1,0 +1,548 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+%       Copyright (C) 1992 -- 1998 Y&Y, Inc. 
+%       Copyright 2007 TeX Users Group.
+%       You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+% ============================================================================
+% Code to allow plain TeX and LaTeX 2.09 to fully exploit `Cork (T1)' encoding
+%       (for `tex256.vec' a.k.a. `T1')  VERSION 3.1 (1998 June 6)
+% ============================================================================
+
+%%  04 Jun 98   modified to run with tub58pl1.tex and tubcover.tex  (mb)
+
+% \input dcaccent in TeX source when using fonts with `Cork (T1)' encoding.
+
+% Rencoding a font to `Cork' (a.k.a. `T1') encoding provides access to 
+% many characters not found in `TeX text' (OT1) encoding (although it
+% also loses access to many characters found in standard text fonts).
+
+% `plain' TeX - and `lplain' TeX - have accents hard-wired to certain codes.
+% When a font is encoded differently, compound characters and accents move.
+% This file deals with this for Cork (T1) encoding.
+
+% NOTE:  Default is to use the ready-made accented/composite characters
+% that occur in text fonts directly, using the macros defined below.
+% To instead build them by overprinting, use \buildcomposites.
+% To instead link to them via pseudo ligatures, use \usecomposites.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% You can use this file with ordinary text fonts in Type 1 format
+% (which normally have 58 ready-made accented characters), or with
+% fonts that cover the full Cork set of accented/composite characters.
+% Uncomment the following if you are using fonts with a complete Cork set -
+% leave it commented out if you use `standard' text fonts:
+
+% \let\ecfonts\relax
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% First, protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"    % save catcode of quotedbl
+\catcode`\"=12                  % make quotedbl `other'
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% NOTE: plain TeX (and LaTeX) has the accent character positions hardwired to:
+
+% 16 for `dotlessi',       17 for `dotlessj',   18 for `grave', 
+% 19 for `acute',          20 for `caron',      21 for `breve', 
+% 22 for `macron',         23 for `ring',       24 for `cedilla',
+% 25 for `germandbls',     26 for `ae',         27 for `oe',
+% 28 for `oslash',         29 for `AE',         30 for 'OE',    
+% 31 for `Oslash',         94 for `circumflex', 95 for `dotaccent',
+% 125 for `hungarumlaut',  126 for `tilde',     127 for `dieresis',
+% The *real* troublesome ones are `dotaccent' and `hungarumlaut'
+% (see page 356 of the TeX book for additional information)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% The following sample redefinitions are for `Cork' encoding:
+
+% Tell TeX where various special characters are:
+
+\def\ae{^^e6}   % ae (230)
+\def\oe{^^f7}   % oe (247)
+\def\o{^^f8}    % oslash (248)
+\def\AE{^^c6}   % AE (198)
+\def\OE{^^d7}   % OE (215)
+\def\O{^^d8}    % Oslash (216)
+\def\i{^^19}    % dotlessi (25)
+\def\ss{^^ff}   % germandbls (255)
+
+% Following are constructed from pieces in CM, but exist in Type 1 text fonts
+
+\def\aa{^^e5} \def\AA{^^c5}             % aring (229), Aring (197)
+% \def\cc{^^e7} \def\CC{^^c7}           % ccedilla (231), Ccedilla (199)
+
+% NOTE: \cc may conflict with `carbon copy' in letter.sty ...
+
+\def\l{^^aa} \def\L{^^8a}               % lslash (170), Lslash (138)
+
+\def\pounds{^^bf}       % sterling (191)
+
+% NOTE: copyright, registered, trademark, and paragraph do not exist in Cork! 
+% NOTE: dagger, daggerdbl do not exist in Cork!
+
+\def\S{^^9f}            % section (159)
+
+% Cork also has the Icelandic characters:
+
+\def\th{^^fe} \def\TH{^^de}             % thorn (254), Thorn (222)
+\def\dh{^^f0} \def\DH{^^d0}             % eth (240), Eth (208)
+
+% Make it more convenient to use { } _ | \ glyphs direct from text font ?
+
+% \chardef\{=`\{ \chardef\}=`\} \chardef\_=`\_
+% \chardef\|=`\| \chardef\backslash=`\\
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Following set up for the 58 accented characters/composites in text fonts:
+
+% aacute, acircumflex, adieresis, agrave, aring, atilde, ccedilla,
+% eacute, ecircumflex, edieresis, egrave, iacute, icircumflex,
+% idieresis, igrave, ntilde, oacute, ocircumflex, odieresis, ograve, otilde,
+% scaron, uacute, ucircumflex, udieresis, ugrave, yacute, ydieresis, zcaron,
+% Aacute, Acircumflex, Adieresis, Agrave, Aring, Atilde, Ccedilla,
+% Eacute, Ecircumflex, Edieresis, Egrave, Iacute, Icircumflex,
+% Idieresis, Igrave, Ntilde, Oacute, Ocircumflex, Odieresis, Ograve, Otilde,
+% Scaron, Uacute, Ucircumflex, Udieresis, Ugrave, Yacute, Ydieresis, Zcaron,
+
+% The following can use ready-made accented characters for everything,
+% or just the 58 that occur in normal text fonts depending on 
+% whether \let\ecfonts\relax has been set above or not.
+% This affects those characters between 128 and 159 that use the accents:
+% acute, breve, caron, cedilla, dotaccent, ogonek, ring, hungarumlaut
+
+\def\`#1{% grave
+\if#1a^^e0\else%        \char224 
+\if#1e^^e8\else%        \char232 
+\if#1i^^ec\else%        \char236 
+\if#1o^^f2\else%        \char242 
+\if#1u^^f9\else%        \char249 
+\if#1A^^c0\else%        \char192 
+\if#1E^^c8\else%        \char200 
+\if#1I^^cc\else%        \char204 
+\if#1O^^d2\else%        \char210 
+\if#1U^^d9\else%        \char217 
+% \if#1{\i}^^ec\else%   \char236 
+\if#1\i^^ec\else%       \char236 
+{\accent0 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\^#1{% circumflex
+\if#1a^^e2\else%        \char226 
+\if#1e^^ea\else%        \char234 
+\if#1i^^ee\else%        \char238 
+\if#1o^^f4\else%        \char244 
+\if#1u^^fb\else%        \char251 
+\if#1A^^c2\else%        \char194 
+\if#1E^^ca\else%        \char202 
+\if#1I^^ce\else%        \char206 
+\if#1O^^d4\else%        \char212 
+\if#1U^^db\else%        \char219 
+% \if#1{\i}^^ee\else%   \char238 
+\if#1\i^^ee\else%       \char238 
+{\accent2 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\~#1{% tilde
+\if#1a^^e3\else%        \char227 
+\if#1n^^f1\else%        \char241 
+\if#1o^^f5\else%        \char245 
+\if#1A^^c3\else%        \char195 
+\if#1N^^d1\else%        \char209 
+\if#1O^^d5\else%        \char213 
+{\accent3 #1}%
+\fi\fi\fi\fi\fi\fi}
+
+\def\"#1{% dieresis
+\if#1a^^e4\else%        \char228 
+\if#1e^^eb\else%        \char235 
+\if#1i^^ef\else%        \char239 
+\if#1o^^f6\else%        \char246 
+\if#1u^^fc\else%        \char252 
+\if#1y^^ff\else%        \char255 
+\if#1A^^c4\else%        \char196 
+\if#1E^^cb\else%        \char203 
+\if#1I^^cf\else%        \char207 
+\if#1O^^d6\else%        \char214 
+\if#1U^^dc\else%        \char220 
+\if#1Y^^9f\else%        \char159 
+% \if#1{\i}^^ef\else%   \char239 
+\if#1\i^^ef\else%       \char239 
+{\accent4 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\ifx\ecfonts\relax%
+% if we have cacute, lacute, nacute, sacute, zacute also
+\def\'#1{% acute
+\if#1a^^e1\else%        \char225 
+\if#1c^^a2\else%        \char162
+\if#1e^^e9\else%        \char233
+\if#1i^^ed\else%        \char237
+\if#1l^^a8\else%        \char168
+\if#1n^^ab\else%        \char171
+\if#1o^^f3\else%        \char243 
+\if#1s^^b1\else%        \char177
+\if#1u^^fa\else%        \char250 
+\if#1y^^fd\else%        \char253 
+\if#1z^^b9\else%        \char185
+\if#1A^^c1\else%        \char193 
+\if#1C^^82\else%        \char130 
+\if#1E^^c9\else%        \char201 
+\if#1I^^cd\else%        \char205 
+\if#1L^^88\else%        \char136
+\if#1N^^8b\else%        \char139
+\if#1O^^d3\else%        \char211 
+\if#1S^^91\else%        \char145
+\if#1U^^da\else%        \char218 
+\if#1Y^^dd\else%        \char221 
+\if#1Z^^99\else%        \char153
+% \if#1{\i}^^ed\else%   \char237 
+\if#1\i^^ed\else%       \char237 
+{\accent1 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+\else % if we only have aacute, eacute, iacute, uacute, yacute
+\def\'#1{% acute
+\if#1a^^e1\else%        \char225 
+\if#1e^^e9\else%        \char233
+\if#1i^^ed\else%        \char237
+\if#1o^^f3\else%        \char243 
+\if#1u^^fa\else%        \char250 
+\if#1y^^fd\else%        \char253 
+\if#1A^^c1\else%        \char193 
+\if#1E^^c9\else%        \char201 
+\if#1I^^cd\else%        \char205 
+\if#1O^^d3\else%        \char211 
+\if#1U^^da\else%        \char218 
+\if#1Y^^dd\else%        \char221 
+% \if#1{\i}^^ed\else%   \char237 
+\if#1\i^^ed\else%       \char237 
+{\accent1 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+\fi
+
+\ifx\ecfonts\relax%
+% if we have ccaron, dcaron, ecaron, lcaron, ncaron, rcaron as well
+\def\v #1{% caron
+\if#1c^^a3\else%        \char163
+\if#1d^^a4\else%        \char164
+\if#1e^^a5\else%        \char165
+\if#1l^^a9\else%        \char169
+\if#1n^^ac\else%        \char172
+\if#1r^^b0\else%        \char176
+\if#1s^^b2\else%        \char178 
+\if#1z^^ba\else%        \char186
+\if#1C^^83\else%        \char131
+\if#1D^^84\else%        \char132
+\if#1E^^85\else%        \char133
+\if#1L^^89\else%        \char137
+\if#1N^^8b\else%        \char139
+\if#1R^^8f\else%        \char143
+\if#1S^^92\else%        \char146 
+\if#1Z^^97\else%        \char151 
+{\accent7 #1}%
+\fi\fi\fi\fi
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+\else % if we only have scaron, zcaron, Scaron, Zcaron
+\def\v #1{% caron
+\if#1s^^b2\else%        \char178 
+\if#1z^^ba\else%        \char186
+\if#1S^^92\else%        \char146 
+\if#1Z^^97\else%        \char151 
+{\accent7 #1}%
+\fi\fi\fi\fi}
+\fi
+
+\ifx\ecfonts\relax%
+% if uring, Uring are available (as well as aring, Aring):
+\def\r #1{% ring
+\if#1a^^e5\else%        \char229 
+\if#1A^^c5\else%        \char197 
+\if#1u^^b7\else%        \char183
+\if#1U^^97\else%        \char151 
+{\accent6 #1}%
+\fi\fi\fi\fi}
+\else % if we only have aring and Aring:
+\def\r #1{% ring
+\if#1a^^e5\else%        \char229 
+\if#1A^^c5\else%        \char197 
+{\accent6 #1}%
+\fi\fi}
+\fi
+
+\ifx\ecfonts\relax%
+% if we have scedilla, tcedilla, Scedilla, Tcedilla as well 
+\def\c #1{% cedilla
+\if#1c^^e7\else%        \char231 
+\if#1s^^b3\else%        \char179
+\if#1t^^b5\else%        \char181 
+\if#1C^^c7\else%        \char199 
+\if#1S^^93\else%        \char147 
+\if#1T^^95\else%        \char149
+{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent11 #1
+  \else{\ooalign{\hidewidth\char11\hidewidth\crcr\unhbox0}}\fi}%
+\fi\fi\fi\fi\fi\fi}
+\else % if we only have ccedilla and Ccedilla
+\def\c #1{% cedilla
+\if#1c^^e7\else%        \char231 
+\if#1C^^c7\else%        \char199 
+{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent11 #1
+  \else{\ooalign{\hidewidth\char11\hidewidth\crcr\unhbox0}}\fi}%
+\fi\fi}
+\fi
+
+\ifx\ecfonts\relax%
+% if ohungarumlaut, uhungarumlaut, Ohungarumlaut, Uhungarumlaut available 
+\def\H #1{% hungarumlaut
+\if#1\o^^ae\else%       \char174
+\if#1\u^^b6\else%       \char182
+\if#1\O^^8e\else%       \char142
+\if#1\U^^96\else%       \char150
+{\accent5 #1}}%
+\fi\fi\fi\fi}
+\else % if we do not have any hungarumlaut accented chars
+\def\H #1{{\accent5 #1}}%
+\fi
+
+\ifx\ecfonts\relax%
+% if abreve, gbreve, Abreve, Gbreve available 
+\def\u #1{% breve
+\if#1a^^a0\else%        \char160
+\if#1g^^a7\else%        \char167
+\if#1A^^80\else%        \char128
+\if#1G^^87\else%        \char135
+{\accent8 #1}%
+\fi\fi\fi\fi}
+\else % if we do not have the breve accented chars
+\def\u #1{{\accent8 #1}}%
+\fi
+
+\ifx\ecfonts\relax%
+% if we have aogonek, eogonek, Aogonek, Eogonek
+\def\k #1{% ogonek
+\if#1a^^a1\else%        \char161
+\if#1e^^a6\else%        \char166
+\if#1A^^81\else%        \char129
+\if#1E^^86\else%        \char134
+\setbox0\hbox{#1}\ifdim\ht0=1ex\accent12 #1
+  \else{\ooalign{\hidewidth\char12\hidewidth\crcr\unhbox0}}\fi}%
+\fi\fi\fi\fi}
+\else % ogonek (using ogonek at 12)
+\def\k #1{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent12 #1
+  \else{\ooalign{\hidewidth\char12\hidewidth\crcr\unhbox0}}\fi}%
+\fi
+
+% AMS TeX handles dotaccent and macron differently...
+% Could do the whole thing with \D in that case ...
+
+\ifx\amstexloaded@\relax%
+\else
+\ifx\ecfonts\relax%
+% if we have zdotaccent, Idotaccent and Zdotaccent
+\def\.#1{% dotaccent
+\if#1\i^^69\else%       \char105
+\if#1z^^bb\else%        \char187
+\if#1I^^9d\else%        \char157
+\if#1Z^^9b\else%        \char155
+{\accent10 #1}%
+\fi\fi\fi\fi}
+\else   % if we do not have dotaccent accented chars
+\def\.#1{{\accent10 #1}}        % dotaccent     % not in 95
+\fi
+\fi
+
+% There are no macron accented characters in Cork (T1) encoding
+
+\ifx\amstexloaded@\relax%
+\else
+\def\= #1{{\accent9 #1}}\fi     % macron
+%\fi % ?
+
+% dotaccent and macron have to be treated differently in AMS TeX
+
+\ifx\amstexloaded@\relax%
+\def\D#1{{\accent10 #1}}        % dotaccent     % not in 95
+\def\B#1{{\accent9 #1}}         % macron
+\let\graveaccent\`
+\let\acuteaccent\'
+\let\tildeaccent\~
+\let\hataccent\^
+\let\underscore\_
+\fi
+
+% underline (using macron at 9)
+\def\b#1{\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char9}\vss}\hidewidth}}%
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% For backward compatability, provide for use of font with TeX's \accent:
+% (It is however generally better to use ready-made accented characters, since
+% \accent creates explicit kerning, which breaks the hyphenation machinery)
+% NOTE: Use \buildcomposites only if you want to force accented/composite
+% characters to be constructed by `overprinting' base and accent.
+
+\def\buildcomposites{%
+\def\`##1{{\accent0 ##1}}%      grave
+\def\'##1{{\accent1 ##1}}%      acute
+\def\v##1{{\accent7 ##1}}%      caron
+\def\u##1{{\accent8 ##1}}%      breve
+\def\=##1{{\accent9 ##1}}%      macron
+\def\^##1{{\accent2 ##1}}%      circumflex
+\def\.##1{{\accent10 ##1}}%     dotaccent
+\def\H##1{{\accent5 ##1}}%      hungarumlaut
+\def\~##1{{\accent3 ##1}}%      tilde
+\def\"##1{{\accent4 ##1}}%      dieresis
+% underline and cedilla accents (macron at 9, cedilla at 11)
+\def\b##1{\oalign{##1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char9}\vss}\hidewidth}}%
+\def\c##1{\setbox0\hbox{##1}\ifdim\ht0=1ex\accent11 ##1
+  \else{\ooalign{\hidewidth\char11\hidewidth\crcr\unhbox0}}\fi}%
+}
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% USING READY-MADE ACCENTED CHARACTERS:
+% We can also use pre-built accented character using pseudo ligatures ---
+% provided the TFM files for the text fonts have them wired in.
+% The following assumes that the TFM files have the required pseudo-ligatures.
+% Use -vadj on the command line with AFMtoTFM to set up these pseudo-ligatures.
+% This only works for the 58 ready-made accented/composite characters.
+
+\def\usecomposites{%
+\chardef\`=0    % grave
+\chardef\'=1    % acute
+\chardef\^=2    % circumflex
+\chardef\~=3    % tilde
+\chardef\"=4    % dieresis
+\chardef\v=7    % caron
+\chardef\c=11   % cedilla
+\chardef\==9    % macron % no macron accented chars in standard fonts
+\def\aa{\char6 a} \def\AA{\char6 A} % aring and Aring
+% underline and cedilla accents (macron at 9, cedilla at 11)
+\def\b#1{\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char9}\vss}\hidewidth}}
+\def\c#1{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent11 #1%
+  \else{\ooalign{\hidewidth\char11\hidewidth\crcr\unhbox0}}\fi}
+}
+
+%% NOTE: To use the above scheme, use \'a, NOT \'{a}, and \c c, NOT \c{c}.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% \buildcomposites      % build composites by overprinting base and accent
+% \usecomposites        % use 58 ready-made composites via pseudo ligatures
+
+% Default is to use ready-made composites, and build others by overprinting.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Changes required in math maros when roman font is reencoded to `DC Cork'.
+% (An alternative is to draw the accents from the math fonts if they have them)
+
+\def\usetextaccents{
+\def\acute{\mathaccent"7001 }   %  1 acute
+\def\grave{\mathaccent"7000 }   %  0 grave
+\def\ddot{\mathaccent"7004 }    %  4 dieresis
+\def\tilde{\mathaccent"7003 }   %  3 tilde
+\def\bar{\mathaccent"7009 }     %  9 macron
+\def\breve{\mathaccent"7008 }   %  8 breve
+\def\check{\mathaccent"7007 }   %  7 caron
+\def\hat{\mathaccent"7002 }     %  2 circumflex
+\def\dot{\mathaccent"700A }     % 10 dotaccent
+}
+
+% Do not redefine accents in math mode when using MathTime,
+% since MathTime uses accents in the math fonts - not those in the text font
+% In LaTeX 2e check whether mathtime package has been loaded,
+% otherwise check whether \MTMI is defined
+
+\ifx\@ifpackageloaded\undefined\ifx\MTMI\undefined\usetextaccents\fi
+\else\@ifpackageloaded{mathtime}{}{\usetextaccents}\fi
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% NOTE: `DC Cork' has additional *caron, *ring, *cedilla accented chars
+
+% NOTE: `DC Cork' has accented characters using `hungarumlaut', `dotaccent',
+
+% NOTE: `DC Cork' has composite characters using `breve', `ogonek'
+
+% Remaining four `composites': aring, Aring, ccedilla, Ccedilla defined above.
+
+% Also: percentextender (zeroinferior), eng, Eng, ij, IJ, dcroat (dbar)
+
+% Also: hanging hyphen (sfthyphen) and cwm (nobreakzerospace) SS (Germandbls)
+
+% **************************************************************************
+
+% If you want to use < for `guilsinglleft' and > for `guilsinglright'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=14
+% \catcode`\>=\active \chardef>=15
+
+% If you use < for `exclamdown', > for `questiondown', and | for `emdash'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=189
+% \catcode`\>=\active \chardef>=190
+% \catcode`\|=\active \chardef|=22
+
+% \chardef\lq=96 \chardef\rq=39
+
+% Note that \lq and \rq also provide access to ` and '
+
+\catcode`\"=\dblcode            % restore original catcode of quotedbl
+
+% If you use " for quotedblright then uncomment the following:
+
+% \catcode`\"=\active \chardef"=148
+
+% For proper hyphenation of words with accented characters we need to let
+% TeX know how to translate words with accented characters to lower case.
+% Hence define \lccode so that one can use them in \hyphenation{...}
+% Just for fun, we also define \uccode, and set the \catcode to letter...
+
+% Mostly in Cork, accented characters (and a few special characters)
+% occur in upper case form in the range 128 - 159, which is offset
+% by 32 from the corresponding lower case forms in the range 160 - 191
+
+% exception: 157 Idotaccent     189 exclamdown
+% exception: 158 dmacron        190 questiondown
+% exception: 159 section        191 sterling
+
+\bgroup
+\newcount\n\newcount\m\n=160\m=128
+\loop\ifnum\n<191
+\global\catcode\n=11\global\catcode\m=11
+\global\lccode\n=\n\global\lccode\m=\n
+\global\uccode\m=\m\global\uccode\n=\m
+\advance\n by1\advance\m by1\repeat
+\egroup
+
+% Mostly in Cork, accented characters (and a few special characters)
+% occur in upper case form in the range 192 - 223, which is offset
+% by 32 from the corresponding lower case forms in the range 224 - 255.
+
+\bgroup
+\newcount\n\newcount\m\n=224\m=192
+\loop\ifnum\n<256
+\global\catcode\n=11\global\catcode\m=11
+\global\lccode\n=\n\global\lccode\m=\n
+\global\uccode\m=\m\global\uccode\n=\m
+\advance\n by1\advance\m by1\repeat
+\egroup
+
+\endinput
+
+% **************************************************************************
+
+% NOTE: definitions have embedded numbers that depend on the chosen encoding
+% These will need to be changed if you use an encoding other than `DC Cork'

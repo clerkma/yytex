@@ -1,0 +1,73 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% hello_CM.tex --- LaTeX 2e sample for Computer Modern
+
+\documentclass{article}
+
+% \usepackage{type1cm}	% see notes at end on Type1CM package
+
+\begin{document}
+
+\hrule \vskip 2mm
+
+``Hello World!'' --- $\alpha = \Gamma -\sqrt{x^2+y^2}$.
+
+\vskip 2mm
+
+{\bf Bold}. {\it Italic}. {\tt Fixed width}. {\sf Sans Serif}.
+
+% \vskip 2mm
+
+% ,,German`` ``English'' << French >>  >>Swedish<<  (not available in CM)
+
+\vskip 2mm
+
+The difficult first flight afflicts the efflux differently.
+
+\vskip 2mm
+
+na\"\i ve; belov\`ed; prot\'eg\'e; r\^ole co\"ordinator; souffl\'es, 
+
+\vskip 2mm
+
+cr\^epes, and p\^at\'es; \AE sop's \OE uvres, \AA ngstrom, Stra\ss e.
+
+\vskip 2mm \hrule \vskip 2mm
+
+\noindent
+As far as \TeX\ is concerned, CM fonts in ATM compatible Adobe Type~1 format
+(`PostScipt' or `ATM' fonts ) are the same as CM fonts in bitmapped PK font
+format, since \TeX\ itself only cares about TFM meric files.  Consequently,
+there are no changes needed in your \TeX\ source file when you use them.
+
+The Type~1 versions of the CM fonts do have the ability to easily scale
+(in addition to providing different fonts for different design sizes).
+This means you can use `in-between' sizes like CMR17 at 15pt.  David
+Carlisle's Type1CM package takes advantage of this. It may be found at:
+
+\vskip 2mm
+
+{\sf /tex-archive/macros/latex/contrib/supported/type1cm} on CTAN.
+
+\vskip 2mm
+
+\noindent Read `type1cm.txt' in that directory for details.
+
+CM `text' fonts have fixed encoding (character layout) called 
+`TeX text' or OT1.  \LaTeX\ 2e uses OT1 encoding unless you tell it otherwise.
+
+NOTE: the setting of `Font $>$ Encoding' in DVIWindo does not affect CM fonts 
+since CM `text' fonts have to be treated as pi/symbol/decorative/math fonts
+in order to prevent reencoding to platform specific layout (Macintosh
+standard roman or Windows ANSI).
+
+If you need hyphenation in languages using accented and special characters
+consider the European Modern font set which has ready-made accented chars.
+The basic characters in European Modern are the same as those in CM.
+\LaTeX\ 2e support for EM fonts may be found in the `em' package.
+
+\vskip 2mm \hrule
+
+\end{document}
+

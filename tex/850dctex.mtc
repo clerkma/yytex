@@ -1,0 +1,79 @@
+%
+% 850DCTEX.TCP
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%
+^^80 ^^c7
+^^81 ^^fc
+^^82 ^^e9
+^^83 ^^e2
+^^84 ^^e4
+^^85 ^^e0
+^^86 ^^e5
+^^87 ^^e7
+^^88 ^^ea
+^^89 ^^eb
+^^8a ^^e8
+^^8b ^^ef
+^^8c ^^ee
+^^8d ^^ec
+^^8e ^^c4
+^^8f ^^c5
+^^90 ^^c9
+^^91 ^^e6
+^^92 ^^c6
+^^93 ^^f4
+^^94 ^^f6
+^^95 ^^f2
+^^96 ^^fb
+^^97 ^^f9
+^^98 ^^b8
+^^99 ^^d6
+^^9a ^^dc
+^^9b -> \o{}
+^^9c -> \pounds{}
+^^9d -> \O{}
+^^a0 ^^e1
+^^a1 ^^ed
+^^a2 ^^f3
+^^a3 ^^fa
+^^a4 ^^f1
+^^a5 ^^d1
+^^a6 -> \b a
+^^a7 -> \b o
+^^a8 ^^be   % ?`
+^^ad ^^bd   % !`
+^^ae ^^13   % $\scriptstyle\ll$
+^^af ^^14   % $\scriptstyle\gg$
+^^b5 ^^c1
+^^b6 ^^c2
+^^b7 ^^c0
+^^b8 -> \copyright{}
+^^bd -> \leavevmode\hbox{\rm\rlap/c}
+^^c6 ^^e3
+^^c7 ^^d3
+^^d0 ^^f0   % eth
+^^d1 ^^d0   % Eth
+^^d2 ^^ca
+^^d3 ^^cb
+^^d4 ^^c8
+^^d5 -> \i{}
+^^d6 ^^cd
+^^d7 ^^ce
+^^d8 ^^cf
+^^de ^^cc
+^^e0 ^^d3   % \'O
+^^e1 ^^ff   % \ss{}
+^^e2 ^^d4
+^^e3 ^^d2
+^^e4 ^^f5
+^^e5 ^^d5
+^^e7 ^^fe   % thorn
+^^e8 ^^de   % Thorn
+^^e9 ^^da
+^^ea ^^db
+^^eb ^^d9
+^^ec ^^fd
+^^ed ^^dd   % \'Y
+^^f4 -> \P{}
+^^f5 ^^9f   % \S{}

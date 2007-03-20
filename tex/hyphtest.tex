@@ -1,0 +1,64 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\nopagenumbers
+
+\input lcdplain
+
+\input ansiacce
+
+% \hsize=2in
+% \hsize=2.7in
+% \hsize=2.85in
+% \hsize=4.5in
+\hsize=4.4in
+
+% \lccode161=161
+% \uccode161=161
+% \catcode161=11
+
+\catcode138=11\catcode154=11	% Scaron, scaron
+\lccode138=154\lccode154=154
+\uccode138=138\uccode154=138
+\catcode159=11\catcode255=11	% Ydieresis, ydieresis
+\lccode159=255\lccode255=255
+\uccode159=159\uccode255=159
+
+\bgroup
+\newcount\n\newcount\m\n=224\m=192
+\loop\ifnum\n<255
+\global\catcode\n=11\global\catcode\m=11
+\global\lccode\n=\n\global\lccode\m=\n
+\global\uccode\m=\m\global\uccode\n=\m
+\advance\n by1\advance\m by1\repeat
+\egroup
+
+% \hyphenation{horse¡-ucky}
+% \hyphenation{horse-\char154 ucky}
+\hyphenation{horse-\char241 ucky}
+% \hyphenation{horse-^^9A ucky} % no
+
+\noindent
+horse\-sucky horse\-sucky horse\-sucky horse\-sucky horse\-sucky horse\-sucky 
+horse\-sucky horse\-sucky horse\-sucky horse\-sucky horse\-sucky horse\-sucky 
+
+\vskip .05in
+
+\noindent
+% horse\char154 ucky horse\char154 ucky horse\char154 ucky horse\char154 ucky
+% horse\char154 ucky horse\char154 ucky horse\char154 ucky horse\char154 ucky
+% horse\char241 ucky horse\char241 ucky horse\char241 ucky horse\char241 ucky
+% horse\char241 ucky horse\char241 ucky horse\char241 ucky horse\char241 ucky
+horse\char209 ucky horse\char209 ucky horse\char209 ucky horse\char209 ucky
+horse\char209 ucky horse\char209 ucky horse\char209 ucky horse\char209 ucky
+horse\char209 ucky horse\char209 ucky horse\char209 ucky horse\char209 ucky
+
+\vskip .05in
+
+\noindent
+% horsešucky horsešucky horsešucky horsešucky horsešucky horsešucky 
+% horsešucky horsešucky horsešucky horsešucky horsešucky horsešucky 
+horseñucky horseñucky horseñucky horseñucky horseñucky horseñucky 
+horseñucky horseñucky horseñucky horseñucky horseñucky horseñucky 
+
+
+\end

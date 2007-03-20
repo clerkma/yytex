@@ -1,0 +1,77 @@
+% This is `literal.tex' 
+
+% It provides for literals between *'s  *This is literal text*
+% and displayed literals between **'s  (somewhat like $$...$$).
+% It makes * active to achieve this.
+% There is a way to `unquote' in the middle of quoted material.
+
+\catcode`\@=11
+
+\catcode`\*=\active
+
+\def\ast{\string*}
+
+\def*{\begingroup\litcodes@\futurelet\next\star@}
+
+\def\litcodes@{\catcode`\\=12 \catcode`\"=0 
+ \catcode`\{=12 \catcode`\}=12
+ \catcode`\$=12 \catcode`\&=12 
+ \catcode`\#=12 
+ \catcode`\^=12 \catcode`\_=12
+ \catcode`\@=12 \catcode`\~=12 
+ \catcode`\;=12 \catcode`\:=12 \catcode`\!=12 \catcode`\?=12
+ \catcode`\%=12 
+ \catcode`\`=\active\obeyspaces\defspace@}
+
+\def\star@{\ifx\next*\expandafter\star@@\else\expandafter\star@@@\fi}
+
+%%% Code for *...*
+
+\def\star@@@{\leavevmode\litdefs@\tt\hyphenchar\tt=-1 \star@@@@}%
+
+\def\star@@@@#1*{#1\endgroup}
+
+\def\litdefs@{\def\0{}\def\1{\char42 }\def\"{\char34 }\def\ {\char32 }}
+
+%%% Code for ** ... **
+
+\def\newstar@{\def**{\egroup\endgroup
+ \nointerlineskip\nobreak\vskip-\parskip\vskip-\baselineskip
+$$\abovedisplayskip\z@\abovedisplayshortskip\z@\belowdisplayskip\bigskipamount
+ \belowdisplayshortskip\bigskipamount$$}}
+
+
+\def\star@@*{\ifhmode
+$$\abovedisplayskip=\bigskipamount
+ \abovedisplayshortskip=\bigskipamount
+ \belowdisplayskip=0pt \belowdisplayshortskip=0pt
+ \postdisplaypenalty=10000
+ $$\vskip-\baselineskip\else\bigskip\fi
+ \litlines@=0
+ \newstar@
+ \def\displaybreak{\egroup\break\litlines@\z@\Lit@}%
+ \def\allowdisplaybreak{\egroup\allowbreak\litlines@\z@\Lit@}%
+ \def\allowdisplaybreaks{\egroup\allowbreak
+  \interlitpenalty@\z@\litlines@\z@\Lit@}%
+ \tt\catcode`\^^I=\active\letTAB@\obeylines\letM@\Lit@}
+
+\litindent=30pt
+
+\def\restorelitindent{\litindent=30pt\relax}
+
+\def\Lit@{\setbox\litbox@\hbox\bgroup\advance\baselineskip
+ 0pt plus.1pt\relax\litdefs@\hskip\litindent}
+
+
+\def\boxstar@{\def**{\egroup\egroup\endgroup}}
+
+\def\Litbox#1=**{\begingroup
+ \aftergroup\setbox\aftergroup#1\aftergroup\box\aftergroup\Litbox@
+ \boxstar@
+ \def\allowdisplaybreak{\egroup\allowbreak\litlines@=0 \Lit@}%
+ \def\allowdisplaybreaks{\egroup\allowbreak
+  \interlitpenalty@\z@\litlines@\z@\Lit@}%
+ \tt\litcodes@\catcode`\^^I=\active\letTAB@\obeylines\letM@%
+ \global\setbox\Litbox@=\vbox\bgroup\litindent\z@\litlines@\z@\Lit@}
+
+\catcode`\@=\active

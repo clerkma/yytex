@@ -1,0 +1,71 @@
+%% This is the file `S1enc.def'
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%%
+%% This is for fonts set up with Adobe Standard Encoding
+%% (this is the default font encoding for text fonts in Type 1 format).
+%%
+\ProvidesFile{S1enc.def}[1994/09/01]
+\DeclareFontEncoding{S1}{}{}
+\DeclareTextAccent{\`}{S1}{193}
+\DeclareTextAccent{\'}{S1}{194}
+\DeclareTextAccent{\^}{S1}{195}
+\DeclareTextAccent{\~}{S1}{196}
+\DeclareTextAccent{\"}{S1}{200}
+\DeclareTextAccent{\H}{S1}{205}
+\DeclareTextAccent{\r}{S1}{202}
+\DeclareTextAccent{\v}{S1}{207}
+\DeclareTextAccent{\u}{S1}{198}
+\DeclareTextAccent{\=}{S1}{197}
+\DeclareTextAccent{\.}{S1}{199}
+\DeclareTextCommand{\b}{S1}[1]
+   {\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char197}\vss}\hidewidth}}
+\DeclareTextCommand{\c}{S1}[1]
+   {\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent203 #1%
+     \else{\ooalign{\hidewidth\char203\hidewidth
+        \crcr\unhbox\z@}}\fi}
+\DeclareTextCommand{\d}{S1}[1]
+   {\oalign{#1\crcr\hidewidth.\hidewidth}}
+\DeclareTextCommand{\k}{S1}[1]
+   {\oalign{#1\crcr\char206\hidewidth}}
+% \DeclareTextSymbol{\AA}{S1}{65}	% no Aring in ASE
+\DeclareTextSymbol{\AE}{S1}{225}
+\DeclareTextSymbol{\L}{S1}{232}
+\DeclareTextSymbol{\O}{S1}{233}
+\DeclareTextSymbol{\OE}{S1}{234}
+\DeclareTextSymbol{\S}{S1}{167}
+\DeclareTextSymbol{\P}{S1}{182}
+\DeclareTextSymbol{\dag}{S1}{178}
+\DeclareTextSymbol{\ddag}{S1}{179}
+\DeclareTextSymbol{\SS}{S1}{251}	% no Germandbls in ASE
+\DeclareTextSymbol{\_}{S1}{95}
+% \DeclareTextSymbol{\aa}{S1}{97}	% no aring in ASE
+\DeclareTextSymbol{\ae}{S1}{241}
+\DeclareTextSymbol{\guillemotleft}{S1}{171}
+\DeclareTextSymbol{\guillemotright}{S1}{187}
+\DeclareTextSymbol{\guilsinglleft}{S1}{172}
+\DeclareTextSymbol{\guilsinglright}{S1}{173}
+\DeclareTextSymbol{\i}{S1}{245}
+% \DeclareTextSymbol{\j}{S1}{106}	% no dotlessj in ASE
+\DeclareTextSymbol{\l}{S1}{248}
+\DeclareTextSymbol{\o}{S1}{249}
+\DeclareTextSymbol{\oe}{S1}{250}
+\DeclareTextSymbol{\pounds}{S1}{163}
+\DeclareTextSymbol{\quotedblbase}{S1}{185}
+\DeclareTextSymbol{\quotesinglbase}{S1}{184}
+\DeclareTextSymbol{\ss}{S1}{251}
+\DeclareTextSymbol{\$}{S1}{`\$}
+% \DeclareTextSymbol{\TH}{S1}{222}	% no Thorn in ASE
+% \DeclareTextSymbol{\th}{S1}{254}	% no thorn in ASE
+% \DeclareTextSymbol{\DH}{S1}{208}	% no Eth in ASE
+% \DeclareTextSymbol{\dh}{S1}{240}	% no eth in ASE
+\DeclareTextCommand{\{}{S1}
+   {\ifmmode\lbrace\else\char`\{\fi}
+\DeclareTextCommand{\}}{S1}
+   {\ifmmode\rbrace\else\char`\}\fi}
+\DeclareTextComposite{\.}{S1}{i}{`\i}	% ha ha
+% \DeclareTextComposite{\.}{S1}{I}{157}	% no Idot in ASE
+\endinput
+%% 
+%% End of file `S1enc.def'.

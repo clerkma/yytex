@@ -1,0 +1,328 @@
+% -*- Mode: TeX -*-
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Merging PostScript Illustrations
+
+% These TeX macros enable easy insertion of PostScript
+% illustrations into documents produced by TeX and LaTeX.
+% The illustrations are automatically sized when the
+% PostScript file has a
+%    BoundingBox: llx lly urx ury
+% line in it.  The units of measurement for lower-left-x (llx),
+% lower-left-y (lly), upper-right-x (urx), and
+% upper-right-y (ury) are 1/72 of an inch (a PostScript unit).
+
+% Source locations at the MIT AI Laboratory
+%   Canonical Source
+%     Trix      /homes/glr/tex/psadobe/psadobe.tex
+
+% References
+%   Adobe Systems, Inc
+%     PostScript Language Reference Manual
+%     Addison-Wesley, 1986
+%     Appendix C, pages 279-286
+%   DVILASER/PS User Manual
+%     ArborText, Inc, 1987
+
+% Copyright Gerald Roylance 1987, 1989
+%   This file may be copied or distributed as long as this
+%   copyright notice is not removed.
+
+% PostScript is a trademark of Adobe Systems Incorporated.
+
+% Bugs and Fixes
+%   bulletproof reading the postscript file [GLR, 11/89]
+%     reads only the headercomments, demands %! and %%
+%   add ArborText support [GLR, 3/89]
+%   clear out some junk [GLR, 3/89]
+%   convert \mag to a float at runtime [Rich, 12/87]
+%   removed spurious cr's in psadobeextract, -bb, -header [Rich, 11/87]
+%   make psfile switch to horizontal mode 
+%     now LaTeX \leavevmode isn't needed [GLR, 11/87]
+%   changed \errmessage to \message for file not found
+%     in \psadobeheader [Rich, 12/87]
+%   added \psadobepercent [Rich, 12/87]
+%   added \xpsadobe and \xpsadobepercent [Rich, 2/22]
+
+
+% Usage
+
+% To load the macros, use
+%       \input{psadobe}
+% The macros are read from TeX's default input area.
+
+% To insert an illustration, use
+%       \psadobe{filename.ps}
+% The expression is treated exactly like a character.
+% You will probably want to center it or use other positioning
+% commands.  The illustration is also magnified by the \mag
+% parameter.  If you don't want this magnification, then
+% use
+%       \psadobenomag{filename.ps}
+
+% The filename may present some difficulty because
+% both TeX and the dvi converter use the filename.
+% You may have to provide a fully qualified filename.
+
+% The illustrations to be inserted with autosizing must use
+% the Adobe PostScript File Structuring Conventions (PFSC).
+% These macros do automatic sizing of the inserted illustation
+% by reading the PFSC header comment of the PostScript file.
+% The Lisp Machine program Illustrate produces the correct format.
+% Most MacIntosh programs do not provide a tight bounding box.
+
+% In order to insert a PostScript file, the .dvi to PostScript
+% converter must implement \special{PSFILE...} or use ArborText's
+% \special{ps:...} commands.  The MIT AI Lab uses the Unix program
+% dvi2ps (available from ???) and a Lisp Machine dvi converter
+% (available from the Symbolics LispMachine Users' Group).
+
+% If your converter cannot understand a set of special commands,
+% then after loading psadobe turn off the appropriate set of specials:
+%       \dvitopsfalse
+%       \ArborTextfalse
+
+% For further information, see MIT AI Laboratory Working Paper 299a.
+
+
+% Subroutines
+
+\newif\ifdvitops   \dvitopstrue		% include PSFILE specials
+\newif\ifArborText \ArborTexttrue	% include ArborText specials
+
+% The fundamental insertion macro.  This inserts a PostScript file
+% putting the origin at (x,y) and building a TeX box whose
+% size is (w,h).  Nothing fancy is done.  x,y,w,h are TeX dimensions.
+% The magnification m is a string that should be something like 1.40.
+%
+% psfile(x,y,w,h,m,filename)
+%
+\newbox\psvoid
+%
+\def\psfile#1#2#3#4#5#6{%
+  \unhbox\psvoid%	switch to horizontal mode (just like a letter would)
+  \hbox to #3{%		make a box w wide
+     \kern-#1%		offset the illustration's x-pos
+     \vbox to #4{%	make a box h tall
+        \vfil%		push the special down to the bottom
+        \kern#2%	offset by the illustration's y-pos
+        \ifdvitops\special{psfile=#6 hscale=#5 vscale=#5}\fi%
+	\ifArborText%
+	   \special{ps::[asis,begin]
+		0 SPB
+		/PSFileCheckPoint save def
+		/showpage  {} def
+		/erasepage {} def
+		/copypage  {} def
+		/letter    {} def
+		/note      {} def
+		/legal     {} def
+		/ledger    {} def
+		/11x17     {} def
+		/a3        {} def
+		/a4        {} def
+		Xpos Ypos translate
+		#5 dup scale
+		/xdefaultmatrix matrix currentmatrix def
+		/defaultmatrix {xdefaultmatrix exch copy} def
+		/initmatrix    {xdefaultmatrix setmatrix} def
+		/initgraphics
+		  {initmatrix newpath initclip
+		   1 setlinewidth 0 setlinecap 0 setlinejoin
+		   [] 0 setdash 0 setgray 10 setmiterlimit} def
+		}%
+	   \special{ps: plotfile #6 asis}%
+	   \special{ps::[asis,end]
+		PSFileCheckPoint restore
+		0 SPE }%
+	   \fi%
+        \kern-#2}%	unoffset y
+     \kern#1\hfil%	unoffset x and push the special left
+     }}
+
+% Convert an integer to a floating point string.
+% This gross hack works if \mag < 10000
+%
+\newcount\float \float=\mag \advance\float by 10000
+\def\floater#1#2#3#4#5{#2.#3#4#5}
+
+
+% Parse a PostScript Header
+
+% The header looks like
+%
+%    %!PS-Adobe-1.0
+%    %%Creator: Illustrate Version 11.0
+%    %%CreationDate: 6/23/87 17:35:01
+%    %%Pages: 1
+%    %%BoundingBox: 466.12912 718.63934 612.0283 792.0283
+%    %%EndComments
+%
+% *** Should complain if #2 is (atend)
+
+% Dimensions of the illustration
+\newdimen\psadobex
+\newdimen\psadobey
+\newdimen\psadobew
+\newdimen\psadobeh
+
+\newif\ifpsadobeflag
+
+\newread\psadobefile
+
+% set the default values for the bounding box
+% either
+%   \psadobesetdefault{72}{72}{72}{72}{}
+%   \psadobesetdefault{72}{72}{72}{72}{true}
+%
+\def\psadobesetdefault#1#2#3#4#5{%
+  \global\psadobex= #1 #5bp%		set the default sizes to 72 points
+  \global\psadobey= #2 #5bp%
+  \global\psadobew= #3 #5bp%
+  \global\psadobeh= #4 #5bp}
+
+% psadobeextract(junk llx lly urx ury true)
+
+% PostScript and TeX share the same comment character, and now TeX must
+% look for that comment character in a PostScript file.  So turn % into
+% regular character.  Unfortunately, that gives us trouble with line
+% breaks -- we can no longer put % at the end of a line.
+% One fix, due to Chuck Rich, just cleverly (and unreadably) puts the
+% line breaks where they are ignored.
+% Another fix temporarily redefines ~ as a comment character.
+
+\catcode`\%=12
+\catcode`\~=14
+
+~ psadobeextract expects to be called with the box size and
+~ some trailing garbage left over from reading the line.
+~ \psadobeextract %%BoundingBox: llx lly urx ury %%BoundingBox:\heaven{true}
+
+\def\psadobeextract#1 #2 #3 #4 #5%%BoundingBox:\heaven#6{~
+  \global\psadobex= #2 #6bp~
+  \global\psadobey= #3 #6bp~
+  \global\psadobew= #4 #6bp~
+  \global\advance\psadobew by -\psadobex~
+  \global\psadobeh= #5 #6bp~
+  \global\advance\psadobeh by -\psadobey}
+
+\def\psadobebb#1%%BoundingBox:#2\EOL#3{~
+  \ifx#2\heaven~			if second arg is the token \heaven
+    \else~				otherwise
+      \psadobeflagfalse~		 stop looking
+      \psadobeextract#2{#3}~		 extract the bounding box
+      \closein\psadobefile~		 and close the file
+    \fi}
+
+~ psadobeheader takes 2 arguments.  The first is either {} or {true};
+~ {} means use normal (with magnification) sizes and {true} means
+~ use actual sizes (no magnifcation).  The second argument is the name
+~ of the PostScript file.
+~
+\def\psadobeheader#1#2{~
+  \openin\psadobefile=#2~		open the PostScript file
+  \relax~
+  \ifeof\psadobefile~			check if the file is there
+    \message{psadobe did not find PostScript file #2}~
+   \else~
+    \begingroup~			save the character definitions
+       \def\psadobeendcom{%%EndComments}~
+       \def\psadobefirst ##1%!##2\EOL{~	make sure line starts with %!
+         \ifx##2\heaven~
+	   \psadobeflagfalse~		set the exit flag
+           \message{psadobe: file #2 does not start with a %! comment.
+	            Please add PostScript header comments to the file.}~
+	   \else\fi}~
+       \def\psadoberest ##1%%##2\EOL{~	make sure line starts with %%
+         \ifx##2\heaven~
+	   \psadobeflagfalse~		set the exit flag
+	   \else\fi}~
+       \catcode`\^^M=10~		make sure CR is a space (obeylines)
+       \catcode`\%=12~			turn off % comments (12 = other)
+       ~				... should turn off other characters
+       \psadobeflagtrue~		loop until this psadobeflag is false
+       \read\psadobefile to \line~	read the first line
+       ~				check first line starts with %!
+       \expandafter\psadobefirst\line %!\heaven\EOL~
+       \loop~				read each header line
+         \ifeof\psadobefile~		if end of file
+	   \psadobeflagfalse~		  set the exit flag
+	   \message{psadobe hit EOF looking for BoundingBox in #2.
+	            Please put a BoundingBox comment in the header.}~
+          \else~
+           \read\psadobefile to \line~	read a line from the ps file
+	   ~				check the line starts with %%
+           \expandafter\psadoberest\line %%\heaven\EOL~
+	   \ifx\line\psadobeendcom~	if the line is %%EndComments
+	     \psadobeflagfalse~		  then the header has ended
+	    \else\fi~
+           \ifpsadobeflag~		if it's a good header comment, test for BBox
+             \expandafter\psadobebb\line %%BoundingBox:\heaven\EOL{#1}~
+            \else~			otherwise we didn't find a BBox
+             \message{psadobe did not find a BoundingBox comment in #2.
+	              Please put one in.}~
+            \fi~
+          \fi~
+         \ifpsadobeflag\repeat~
+       \endgroup\fi}
+
+\catcode`\%=14
+\catcode`\~=13
+
+% Normal comments are back on now.
+
+
+% Automatic Sizing of a PostScript File
+
+% These are the advertised calls.
+%   Everything else may change.
+
+% Insert a Postscript file with scaling by \mag
+%
+\def\psadobe#1{\xpsadobe{#1}{#1}}
+
+% Following auxiliary definition allows a different pathname syntax
+% to be used on Tex'ing machine versus dvi->ps machine.
+% [Float mag has to be done here because of expansion problems -- CR]
+%
+\def\xpsadobe#1#2{%
+  \psadobesetdefault{72}{72}{72}{72}{}%	set the default sizes to 72 points
+  \psadobeheader{}{#1}%			parse the header comments
+  {\float=\mag \advance\float by 10000%
+   \psfile{\psadobex}{\psadobey}{\psadobew}%
+         {\psadobeh}{\expandafter\floater\the\float}{#2}}}
+
+% Insert a PostScript file without scaling by \mag
+%   read header using true dimensions
+%   insert the file with a magnification of 1
+\def\psadobenomag#1{%
+  \psadobesetdefault{72}{72}{72}{72}{true}%  set the default sizes to 72 points
+  \psadobeheader{true}{#1}%		parse the header comments
+  \psfile{\psadobex}{\psadobey}{\psadobew}{\psadobeh}{1.000}{#1}}
+
+% Insert a PostScript file, scaling by current value of \mag and a given percent
+% N.B. The first argument is the *percent* scaling (i.e. 100 is normal size).
+%
+% psadobepercent( percent, file )
+
+\def\psadobepercent#1#2{\xpsadobepercent{#1}{#2}{#2}}
+
+% Similarly to \xpsadobe
+
+\def\xpsadobepercent#1#2#3{%
+  \psadobesetdefault{72}{72}{72}{72}{}%  set the default sizes to 72 points
+  \psadobeheader{}{#2}%			parse the header comments
+  \global\divide\psadobex by 100\global\multiply\psadobex by #1%
+  \global\divide\psadobey by 100\global\multiply\psadobey by #1%
+  \global\divide\psadobew by 100\global\multiply\psadobew by #1%
+  \global\divide\psadobeh by 100\global\multiply\psadobeh by #1%
+  {\float=\mag \multiply\float by #1\divide\float by 100%
+	\advance\float by 10000%
+	  \psfile{\psadobex}{\psadobey}{\psadobew}%
+	       {\psadobeh}{\expandafter\floater\the\float}{#3}}}
+
+\ArborTextfalse % avoid those nasty PSLASER type special commands!
+
+\endinput
+

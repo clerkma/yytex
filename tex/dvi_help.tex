@@ -1,0 +1,1460 @@
+% plain TeX Document dvi_help.tex
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% DVIWindo release 1.2
+
+% This is the Times/Courier/Symbol version using Windows TrueType fonts
+
+% Copyright 1994 Dr. Donald P. Story,
+% Department of Mathematical Sciences,
+% The University of Akron,
+% Akron, OH  44325
+% phone:  (216)972-7514
+% e-mail: dpstory@uakron.edu
+
+\magnification=1200
+
+% following three needed for that stupid LaTeX logo...
+
+\font\sevenrm=times at 7bp
+\font\sevenbf=timesbd at 7bp
+\font\sevensl=timesi at 7bp
+
+% \input lcdplain
+% \input mtplain
+\input dvi_help.sty
+
+% \def\LaTeX{La\TeX}			% original definition
+
+% \def\LaTeX{%
+%   \setbox0\hbox{T}%
+%   \dimen0=\ht0
+%   L\kern-.3em%
+%   \setbox2\hbox{%
+%      \expandafter$\expandafter\fam\the\fam\scriptstyle A$}%   
+%   \advance\dimen0-\ht2
+%   \raise\dimen0\box2
+%   \kern-.15em%
+%   \TeX
+%   \null}
+
+\def\LaTeX{%
+  \setbox0\hbox{T}%
+  \dimen0=\ht0
+  L\kern-.3em%
+  \setbox2\hbox{%
+  \sevenrm A}%
+  \advance\dimen0-\ht2
+  \raise\dimen0\box2
+  \kern-.15em%
+  \TeX
+  \null}
+
+\def\LaTeXbf{%
+  \setbox0\hbox{T}%
+  \dimen0=\ht0
+  L\kern-.25em%
+  \setbox2\hbox{%
+  \sevenbf A}%
+  \advance\dimen0-\ht2
+  \raise\dimen0\box2
+  \kern-.13em%
+  \TeX
+  \null}
+
+\def\LaTeXsl{
+  {\sl
+  \setbox0\hbox{T}%
+  \dimen0=\ht0
+  L\kern-.2em%
+  \setbox2\hbox{%
+  \sevensl A}%
+  \advance\dimen0-\ht2
+  \raise\dimen0\box2
+  \kern-.1em%
+  \TeX
+  \null}}
+
+\def\Y&Y{Y\kern-.2em{\sevenrm \&}\kern-.2emY}
+
+% \input ansiacce % makes ^ and ~ also problematic...
+
+% `quoteright' has moved from 39 to 146 make space for `quotesingle' in ANSI:
+
+\catcode`\'=\active \chardef'=146
+
+% `quoteleft' has moved from 96 to 145 make space for `grave' in ANSI:
+
+\catcode`\`=\active \chardef`=145
+
+\overfullrule=1pt	% limit ugliness somewhat...
+
+% This has been tweaked to only use: 
+
+% Times New Roman=times
+% Times New Roman Italic=timesi
+% Times New Roman Bold=timesbd
+% Courier New=cour
+% Symbol=symbol
+% Arial=arial
+
+\font\times=times at 10bp
+\font\timesi=timesi at 10bp
+\font\timesbd=timesbd at 10bp
+\font\cour=cour at 10bp
+\font\sy=symbol at 10bp
+
+\def\rm{\times}
+\def\it{\timesi}
+\def\bf{\timesbd}
+\def\tt{\cour}
+
+\rm
+
+\def\AmSTeX{{\it AMS}-\TeX} % no calligraphic letters available
+
+\let\sl=\it	% avoid slanted Times
+
+% \font\Chapterfont=cmr17
+% \font\Chapterfont=lbr at 15pt
+% \font\Chapterfont=tir at 17pt
+% \font\Chapterfont=times at 17pt
+\font\Chapterfont=arial at 17bp
+
+% Follow appropriate for Computer Modern and maybe Lucida Bright:
+
+% \def\asterisk{$\ast$}
+% \def\plus{$+$}
+% \def\minus{$-$}
+% \def\bullit{$\bullet$}
+% \def\ellipses{$\ldots$}
+% \def\copyrght{$\copyright$}
+
+% Follow appropriate for Times/Courier and maybe Lucida Bright:
+
+\def\minus{{\sy\char45}}
+% \def\asterisk{{\sy\char42}}
+% \def\plus{{\sy\char43}}
+% \def\bullit{{\sy\char183}}
+% \def\ellipses{{\sy\char188}}
+% \def\copyrght{{\sy\char211}}
+\def\asterisk{\char42}
+\def\plus{\char43}
+\def\bullit{\char149}
+\def\ellipses{\char133}
+\def\copyrght{\char169} 
+
+\hsize=5truein \vsize=8.8truein \hoffset=.75truein
+
+\title{HomePage}DVIWindo Help File.
+
+\hb{DVIWindo}, a product of \hb{{\Y&Y}, Inc.}, is a Windows-based
+application for viewing \ref{DVI}{DVIfile}-files on IBM-PC compatible
+computers.
+   \bigskip
+
+\List{ {The Menu System}{Menu} \\
+       {Mouse Tools/Tricks}{MouseTools} \\
+       {A Short Tour of DVIWindo}{Tour} \\
+       {Getting Around}{Around} \\
+       {Glossary of Terms}{Glossary} \\
+       {Index of Basic Functions}{Index} \\}
+
+\medskip
+
+Words in {\it green\/} are hypertext buttons --- click on them with
+the left mouse button to jump to an explanation.  Use the right mouse button
+to return from a 
+% hypertext 
+jump  (Make sure you have turned off
+\ref{Color Fonts}{ColorFonts}\ in the \hb{Fonts}\ menu).
+	\medskip
+You can also use
+\ref{Search}{Search}\ and \ref {Search Again}{Sagain}\ 
+in this file.
+	\medskip
+Should you get lost, press the `\hb{Home}' key to return to this menu.
+	\medskip
+To exit, press the `\hb{Esc}' key.  If you called up this help file
+from DVIWindo's \TeX~Menu, you will then return to 
+that copy of 
+DVIWindo.
+	\bigskip
+
+\def\nl{\hfill\break}
+
+Copyright \copyrght\ 1994 Dr.\ Donald P.\ Story,
+    \medskip
+Department of Mathematical Sciences \nl
+The University of Akron \nl
+Akron, OH  44325 \nl
+
+% phone:  (216)972-7514
+% e-mail: dpstory@uakron.edu
+
+\newpage
+
+\title{Menu}The Menu System.
+
+\List{ {^File}{File}\\
+       {P^references}{Preferences}\\
+       {^Previous!}{Previous}\\
+       {^Next!}{Next}\\
+       {^UnMagnify!}{UnMagnify}\\
+       {^Magnify!}{Magnify}\\
+       {F^onts}{Fonts}\\
+       {^TeX}{TeXMenu}\\}
+       
+\newpage
+
+\title{File}The File Menu.
+
+\List{ {^Open\ellipses}{Open}               &\key{Ins}\\
+       {^Close}{Close}                     &\key{Del}\\
+       {^Print}{Print}                     &\key{Ctrl-P}\\
+       {Prin^t View}{PrintV}               &\key{Ctrl-T}\\
+       {Pr^inter Setup\ellipses}{PrtSetup}  &\key{Ctrl-I}\\
+       {Se^lect Page\ellipses}{SelPage}     &\key{Num \asterisk}\\
+       {Sea^rch\ellipses}{Search}           &\key{Ctrl-R}\\
+       {^Search Again}{SAgain}             &\key{Ctrl-S}\\
+       {^Zoom in\ellipses}{Zoom}            &\key{Ctrl-Z}\\
+       {Restore ^View}{RestoreV}           &\key{Ctrl-V}\\
+%      {^Copy to Clipboard}{CopyClip}      &\key{Ctrl-C}\\
+       {Copy to Clipboard}{CopyClip}      &\key{Ctrl-C}\\
+       {Store ^New Page Scale}{StoreScale} &\key{Ctrl-Q}\\
+       {^Default Scale}{Default}           &\key{Ctrl-D}\\
+       {^Factory Defaults}{Factory}        &\\ % bkph
+       {Pa^ge Top}{pTop}                   &\key{Ctrl-N}\\
+       {Page ^Bottom}{pBottom}             &\key{Ctrl-B}\\
+       {^About DVIWindo\copyrght\ellipses}{AboutDVI}&\\
+       {E^xit}{Exit}                       &\key{Esc}\\}
+
+\newpage
+
+\title{Preferences}The Preferences Menu.
+
+\List{ {P^age Size\ellipses}{PageSize}	      &\\
+       {^Ruler Units\ellipses}{RuleUnits}     &\\
+       {Ruler Dimensions ^True}{RuleDim}      &\\
+       {Spr^ead}{Spread}		      &\key{Ctrl-E}\\
+       {^Use count0}{count}		      &\key{Ctrl-U}\\
+       {^Landscape}{Landscape}		      &\key{Ctrl-L}\\
+       {Reset Scale Each ^File}{ResetFile}    &\\
+       {Reset Scale Each ^Page}{ResetPage}    &\\
+%       {Draw ^Page Border}{DrawBorder}	      &\\
+       {Draw Page ^Border}{DrawBorder}	      &\\
+       {Draw Text ^Outline}{TextOutline}      &\\
+%       {Ignore ^All Specials}{IgnSpec}	      &\\
+       {^Ignore All Specials}{IgnSpec}	      &\\
+       {Show Pre^views}{ShowPrev}	      &\\
+       {Pa^ss Through EPS}{PassEPS}	      &\\
+       {Complain Missing Fonts}{CompFonts}    &\\
+       {Complain Bad Encoding}{CompEncoding}  &\\ % new bkph
+       {Complain Missing Files}{CompFiles}    &\\
+       {Complain Bad Specials}{CompSpec}      &\\
+%       {^Save Preferences}{SavePref}	      &\\
+       {Save Settings on E^xit}{SavePref}     &\\
+       {Save Settings No^w}{SaveNow}	      &\\} % new bkph
+      
+\newpage
+
+\title{Fonts}The Fonts Menu.
+
+\List{ {D^VI File Fonts}{DVIFonts}        &\key{Ctrl-K}\\
+       {DVI File Inf^o}{DVIFileInfo}      &\key{Ctrl-O}\\
+       {^Color Fonts}{ColorFonts}         &\key{Ctrl-X}\\
+       {^Grey Text}{GreyText}             &\key{Ctrl-G}\\
+       {Text \plus\ Gre^y}{TextGrey}         &\key{Ctrl-Y}\\
+       {Show ^Buttons}{ShowButtons}       &\\
+       {F^ill Rules}{FillRules} 	  &\key{Ctrl-J}\\
+       {Favor ^Positions}{FavPos}         &\\
+       {Show ^Font\ellipses}{ShowFonts}    &\key{Ctrl-F}\\
+       {Show ^Widths\ellipses}{ShowWidths} &\\
+       {Write ^AFM\ellipses}{WriteAFM}     &\\
+       {Write ^TFM\ellipses}{WriteTFM}     &\key{Ctrl-M}\\ % new bkph
+       {Write All TFMs\ellipses}{WriteAllTFMs}     &\\ % new bkph
+       {View ^Hidden}{ViewHidden} 	  &\\       % new bkph
+       {^System Info}{SystemInfo} 	  &\\}       % new bkph
+\newpage
+
+\title{TeXMenu}The \TeX~Menu.
+
+The \hb{\TeX{}}\ menu is a user {\it customizable\/} pulldown menu. 
+The only hard-wired entry is the first one, the \hb{Preview}.	If
+no \ref{DVI}{DVIfile}-file is open for viewing, you can % quickly 
+load the file {\it last viewed} by clicking on the \hb{Preview}\ item
+under the \hb{\TeX{}}\ menu.  The default accelerator key for
+\hb{Preview}\ is `\key{Ctrl-F1}', though this can be changed by editing
+the \key{dviwindo.ini}\ file.  To change the accelerator key, open the
+file \key{dviwindo.ini}\ using an editor such as `NotePad'.  Under the
+section labeled `[Window]', add the line `PreviewHotKey=\key{F1}'.
+This will change the preview hot key to \key{F1}, for example.
+   \bigskip
+When \hb{DVIWindo}\ is installed, several other items may  be added to
+the \hb{\TeX{}}\ menu for `\TeX{}ing' documents: \ref{ini\TeX}{iniTeX},
+\ref{\TeX}{TeX}, \ref{\LaTeX}{LaTeX}, and \ref{\AmSTeX}{AmSTeX}.  
+Also included are some utilities: \ref{CleanUp}{CleanUp}\ and
+\ref{SysSeg}{SysSeg}.
+   \bigskip
+In order 
+to add or delete a menu item (or add/delete a separator rule),
+open the \hb{\TeX{}}\ menu, hold down the `\key{Ctrl}' key and click on 
+any 
+menu item listed, except \hb{Preview}.  The `Edit Menu Item' dialog box
+will appear; it will already be filled in by the menu item you clicked. 
+To enter a new item, fill in `Menu Item Name (key):', and  `Application
+Call Pattern (value):', then click either {\bf Add}, to add the item
+({\it after\/} the chosen item), or {\bf Replace}, to replace the old item.
+   \bigskip
+There are also the buttons: {\bf Delete}, to delete the the current
+item; {\bf Delete Next}, to delete the next menu item listed; {\bf
+Separator}, to create a separator bar; and {\bf Cancel}, to exit with
+making any changes.
+   \bigskip
+To see the format of the call patterns, look first at existing entries.
+
+\newpage
+
+\title{Pagination}The Previous!/Next!~Menus.
+
+\altsec{Previous}The Previous!~Menu.
+
+Click the \hb{Previous!}\ menu item with the left mouse button to move
+to the next page.  The \hb{Previous!}\ can also be executed by pressing
+the `\key{PgUp}' key, or the `\key{Backspace}' key.  For a more extensive
+discussion on pagination, see 
+\hb{Moving Between}\ \ref{Consecutive}{Paginate}\ \hb{Pages}.
+   \bigskip
+
+\altsec{Next}The Next!~Menu.
+  
+Click the \hb{Next!}\ menu item with the left-mouse to move to the
+previous page.  The \hb{Next!}\ can also be executed by pressing
+the `\key{PgDn}' key, or the `\key{Spacebar}'.  For a more extensive
+discussion on pagination, 
+see \hb{Moving Between}\ \ref{Consecutive}{Paginate}\ \hb{Pages}.
+   \bigskip
+
+\newpage   
+
+\title{magnification}The UnMagnify!/Magnify! Menus.
+
+\altsec{UnMagnify}The UnMagnify!~Menu.
+
+Click the \hb{UnMagnify!}\ menu item with the left mouse button to
+unmagnify the screen by a small amount.  This same function can be
+accomplished by pressing the `\minus' key on the numeric key pad.  To decrease
+magnification by greater increments, click \hb{UnMagnify!}\ using the
+left mouse button while pressing, at the same time, the \key{Shift} key.
+Do a \ref{Restore View}{RestoreV}\ to return to the original magnification.
+   \medskip
+See also \ref{Restore View}{RestoreV}.
+   \bigskip
+
+\altsec{Magnify}The Magnify!~Menu.
+
+Click the \hb{Magnify!}\ menu item with the left mouse button to magnify
+the screen by a small amount.  This same function can be accomplished by
+pressing the `\plus' key on the numeric pad.  To increase magnification by
+greater increments, click \hb{Magnify!}\ using the left mouse button
+while pressing, at the same time, the \key{Shift} key. \ref{Restore
+View}{RestoreV}\ may be used to return to the original magnification.
+    \medskip
+See also \ref{Zoom in}{Zoom}.
+
+\newpage
+
+\section{Open}{File}File/Open\ellipses. Key: Ins.
+
+To view a DVI file, select \hb{Open\ellipses}\ from \hb{DVIWindo}'s 
+\hb{File}\ menu. A file selection menu pops up listing files,
+directories and drives.  To move downward in the directory structure,
+click on one of the listed directories; move upwards by clicking on
+`[..]'.  A file name can also be entered directly.  If the file name
+contains `wildcard' characters (`\asterisk' or `?'), then a list of
+files matching the wildcard specification is shown. Click {\bf OK} when
+the desired file as been selected.
+   \bigskip
+
+\section{Close}{File}File/Close. Key: Del.
+
+When you are finished viewing the current DVI file, choose \hb{Close}\ from
+the \hb{File}\ menu.  The viewing screen will `blank out'.  At this point
+you can either \ref{Open}{Open}\ another file, or \ref{Exit}{Exit}\
+\hb{DVIWindo}.
+   \bigskip
+
+\newpage
+   
+\section{Print}{File}File/Print. Key: Ctrl-P.
+
+The purpose of this menu item is to print all or a portion of the
+current document.   The default printer will be used unless another
+printer has been previously selected using
+\ref{Printer Setup\ellipses}{PrtSetup}.
+   \bigskip
+
+The dialog box that appears when \hb{Print\ellipses}\ is selected makes it
+possible to request \ref{DVIPSONE}{DVIPSONE}\ -- if installed -- be called
+to do the printing.  Simply check the `{\bf Use DVIPSONE}' box.  Within this
+dialog box, you can also choose a range of pages to be printed; there are
+check boxes for printing in reverse order, printing odd pages only, or
+printing even pages (reverse order).  The number of copies may also be
+specified. 
+   \bigskip
+
+\section{PrintV}{File}File/Print View. Key: Ctrl-T.
+
+To print the page currently being viewed, select \hb{Print View}\ from
+the \hb{File}\ menu.  To set the printer see \ref{Printer
+Setup\ellipses}{PrtSetup}.  Note that the page will be printed using the
+current \hb{mapping mode}.  This is useful, for example, for seeing part
+of a page magnified.  To have the full page properly positioned on the
+paper instead, select \ref{Default Scale}{Default}\ from the 
+\hb{File}\ menu before selecting \hb{Print View}.
+
+\newpage
+   
+\section{PrtSetup}{File}File/Printer Setup. Key: Ctrl-I.
+
+In order to choose another printer (and configure it as desired), select
+\hb{PrtSetup\ellipses}\ from the \hb{File}\ menu.  If the correct printer
+has already been selected, click {\bf Cancel}. The \hb{Printer Setup}\ 
+menu is a standard Windows menu; for more information on setting up your
+printer, see the help file in the 
+\launch{Print Manager}{winhelp.exe printman.hlp}.
+   \bigskip
+
+\section{SelPage}{File}File/Select Page\ellipses. Key: `\asterisk' on NumPad.
+
+To move to an arbitrary page, use \hb{Select Page\ellipses}\ from the
+\hb{File}\ menu.  The \hb{Select Page\ellipses}\ may be selected two other
+ways: (1) By pressing `\asterisk' on the number key pad, following by the
+number of the desired page; or (2)  Entering a numerical value followed by
+`\key{Enter}'; however, if the value is entered on the number key pad, the
+number lock must be on.
+
+\newpage
+
+\section{Search}{File}File/Search. Key: Ctrl-R.
+
+In order to make a text string search, use \hb{Search\ellipses}\ from the
+\hb{File}\ menu.  Specify a search string in the popup dialog box.  A
+check box allows one to select case-sensitive search. Another check box
+allows selection of wrap-around at the end of the file back to the
+beginning.  The page containing the first matching string found is shown
+with the arrow cursor placed right after the string.  The search always
+starts on the page currently being viewed. To repeat the the search,
+select \ref{Search Again}{SAgain}\ (\key{Ctrl-S}).
+   \medskip
+Since DVI files do not contain information on where words start and
+end, you may at times get a spurious match.  Note that text search
+works even if a word contains an `fi' or `fl' ligatures.
+   \bigskip
+
+\section{SAgain}{File}File/Search Again. Key: Ctrl-S.
+
+A search for the next instance of the text search string is obtained by
+using \hb{Search Again}\ from the \hb{File}\ menu.  It is usually more
+convenient though to use the accelerator key `\key{Ctrl-S}'.
+A message box appears if the string is not found.
+    \medskip
+Note that using the Search facility puts up a `modeless' dialog box.
+You can remove this dialog box by selecting `Close' from its `System Menu'.
+
+\newpage
+
+\section{Zoom}{File}File/Zoom In. Key: Ctrl-Z.
+
+To zoom in on a part of an image, select \hb{Zoom In}\ from the
+\hb{File}\ menu --- or hold down the `\key{Ctrl}' key while pressing
+and holding down the left mouse button.  
+The cursor will change into a magnifying glass.  
+By pressing and holding down the left mouse button, you can define a
+rectangular zoom region.  The region will be magnified upon release of
+the left mouse button.  While the left mouse button is depressed,
+should you want to move the rectangle to another location, simply press
+the right mouse button -- the rectangle is now movable.  To undo the
+magnification, you need to \ref{Restore View}{RestoreV}\ 
+(`\key{Ctrl-V}').
+   \medskip
+Note that the rectangle defined this way will have the shape (aspect
+ratio) of the current window.
+   \medskip
+For additional \hb{Mouse Tricks}\ for Zoomin in, see 
+% \ref{The Magnifying Glass Icon}{MagGlass}
+\ref{The Magnifying Glass Cursor}{MagGlass}
+   \bigskip
+
+
+\section{RestoreV}{File}File/Restore View. Key: Ctrl-V.
+
+To restore the screen to the original magnification after viewing the
+enlarged region, use the \hb{Restore View}\ in the \hb{File}\ menu.  The
+same function can also be executed by either pressing the accelerator
+key `\key{Ctrl-V}', or  by clicking the right mouse button
+--- unless hypertext linkage is being used, in which case the right
+mouse button is used to return from a hypertext jump.
+    \medskip
+Note that a stack of screen magnifications and positions is maintained
+by \hb{DVIWindo}, so that it is possible to `zoom in' several times, yet
+easily undo the changes in magnification.
+
+
+\newpage
+
+\section{CopyClip}{File}File/Copy to Clipboard. Key: Ctrl-C. % check
+
+\hb{DVIWindo}\ can `copy' a specified region to the Clipboard.  This
+region can then be `pasted' into another application.  The pasted region
+acts as a graphical object that can be moved, scaled and cropped.  Typeset
+math using \TeX, then import into your favorite WYSIWYG application.
+   \bigskip
+To copy a rectangular region of the screen to Window's clipboard, hold
+down the `\key{Shift}' and `\key{Ctrl}' keys, press the left mouse
+button at one corner of the rectangle -- the cursor changes to a
+scissors -- drag to the opposite corner of the rectangle -- then release
+the mouse button.  To move the rectangle while it is being defined, hold
+down the right mouse button as well as the left.  To copy the whole page
+to the clipboard, simply bring the cursor back to where you started --
+\hb{DVIWindo}\ copies everything to the clipboard if the rectangle is very
+small.
+   \bigskip
+
+\newpage   
+   
+\section{Default}{File}File/Default Scale. Key: Ctrl-D.
+
+The \hb{Default Scale}\ controls the default `top of page' screen
+mapping and the default magnification scale that \hb{DVIWindo}\ 
+displays a DVI-file at.  This is a ``hard-wired'' value that cannot be
+changed; however, see \ref{Store New Page Scale}{StoreScale}\ for a
+workable alternative.
+   \bigskip
+When printing using \ref{Print View}{PrintV}, the page will print using
+the magnification currently in effect.  To have the full page properly
+positioned on the paper, select \hb{Default Scale}\ from the 
+\hb{File}\ menu before selecting \ref{Print View}{PrintV}.
+   \bigskip
+
+\section{Factory}{File}File/Factory Defaults. Key: \none. % new bkph
+
+\hb{Factory Default}\ resets most preferences to `out of the box' default.
+This can be handy when preferences inadvertently are changed to values
+that make the text appear off screen, or as grey blocks, for example.
+   \bigskip
+Note that 
+% \ref{Save Preferences}{SavePref}\ 
+\ref{Save Settings on Exit}{SavePref}\ 
+is reset by this action so as to avoid making the factory defaults the
+new permanent preferences. You can override this by explicitly checking
+% \ref{Save Preferences}{SavePref}.
+\ref{Save Settings on Exit}{SavePref}.
+   \bigskip
+
+\newpage
+
+\section{StoreScale}{File}File/Store New Page Scale. Key: Ctrl-Q.
+
+The \hb{Store New Page Scale}\ controls two aspects of how
+\hb{DVIWindo}\ functions: (1) it defines the `top of page'; and (2) it
+determines the `user-defined default screen magnification'.
+   \bigskip
+It is possible to set the `top of page' screen mapping to something
+other than the \ref{default screen mapping}{Default}. First, position
+the page on the screen at a point you want \hb{DVIWindo}\ to consider
+the `top of page', then  select \hb{Set New Page Scale}\ from the
+\hb{File}\ menu.  Now when you press `\key{Page Down}' or click on
+\hb{Next!}\ (and if \ref{Reset Scale Each Page}{ResetPage}\ has been
+checked), \hb{DVIWindo}\ will advance to the next page, and move to the
+`top of page' as defined by \hb{Store New Page Scale}.
+  \bigskip
+Similarly, to set the `user-defined default screen magnification',
+adjust the magnification to the desired level using the
+\hb{UnMagnify!/Magnify!}\ menus, or the `\key{\plus/\minus}' keys, then
+click on the \hb{Store New Page Scale}\ (be sure to position page to
+the desired `top of page' as well).
+   \bigskip
+To get the `default screen mapping' simply click on \ref{Default
+Scale}{Default}.
+   \bigskip
+
+\newpage
+
+\section{pTop}{File}File/Page Top. Key: Ctrl-N.
+
+This menu item moves the screen to the top of the page. What is
+considered the appropriate position for the top of the page is
+determined by the positioning in force when \ref{Set New Page
+Scale}{StoreScale}\ was last invoked.
+   \bigskip
+
+\section{pBottom}{File}File/Page Bottom. Key: Ctrl-B.
+
+This menu item moves the screen to the bottom of the page. The position
+for the bottom of the page, on the other hand, is determined by the page
+depth specified in the DVI file (which may not be accurate).
+   \bigskip
+
+\newpage
+
+\section{AboutDVI}{File}File/About DVIWindo\copyrght. Key: \none.
+
+Copyright, version number, and licensed user located here.
+Please note that \hb{DVIWindo}\ is normally licensed to a single
+end user.  Contact \hb{{\Y&Y}, Inc.}\ for generous site license terms.
+   \bigskip
+
+\section{Exit}{File}File/Exit. Key: Esc.
+
+To exit \hb{DVIWindo}, select \hb{Exit}\ from the \hb{File}\ menu, or simply
+press the \key{Esc} key.  It is not necessary to explicitly close the file
+currently being viewed since \hb{DVIWindo}\ does not leave open files.
+Preferences will be saved if the 
+% \ref{Save Preferences}{SavePref}\ 
+\ref{Save Settings on Exit}{SavePref}\ 
+has been checked.
+   \bigskip
+It is possible to exit \hb{DVIWindo}\ without saving your preferences 
+by holding down the `\key{Shift}' key while exiting, see
+% \ref{Save Preferences}{SavePref}\ 
+\ref{Save Settings on Exit}{SavePref}\ 
+for more details.
+   \bigskip
+Note: if a dialog box is open when you press the \key{Esc} key, then that
+dialog box is closed, rather than \hb{DVIWindo}\ itself.
+Press the \key{Esc} key again to close \hb{DVIWindo}.
+
+\newpage
+
+\section{PageSize}{Preferences}Preferences/Page Size. Key: \none.
+
+Different page sizes can be specified using the \hb{Page Size}\ in the
+\hb{Preferences}\ menu. Page size choices affect the \ref{page border}
+{DrawBorder}\ that is drawn on screen, and are also
+passed along to the printer driver when \ref{Print View}{PrintV}\ or
+\ref{Print\ellipses}{Print}\ are selected.
+   \bigskip
+
+\section{RuleUnits}{Preferences}Preferences/Ruler Units. Key: \none.
+
+Choose the desired units from \TeX's standard list of two-letter
+abbreviations in the \hb{Ruler Units}\ sub-menu of \hb{Preferences}.
+These measurements will be the ones displayed when the user activates
+the \ref{measurement tool}{meastool}.  Measurements can be given either
+in terms of the original \TeX\ source document or in the final (`true')
+version - as affected by \TeX's magnification.  Check the \ref{Ruler
+Dimensions True}{RuleDim}\ in the \hb{Preferences}\ menu to get the
+magnified measurements.
+   \bigskip
+
+\section{RuleDim}{Preferences}Preferences/Ruler Dimensions True. Key: \none.
+
+When using the \ref{measurement tool}{meastool}, measurements can be given
+either in terms of the original \TeX\ source document or in the final (`true')
+version - as affected by \TeX's magnification.  Check the
+\hb{Ruler Dimensions True}\ in the \hb{Preferences}\ menu to get
+the magnified measurements.
+   \bigskip
+
+\newpage   
+   
+\section{Spread}{Preferences}Preferences/Spread. Key: Ctrl-E.
+
+Check \hb{Spread}\ in the \hb{Preferences}\ menu to see two pages side by
+side.  In this mode \hb{Next!}\ advances by two pages, and
+\hb{Previous!}\ retreats by two.  Hold down `\key{Shift}' when clicking
+\hb{Next!}\ or \hb{Previous!}\ to move in {\it single\/} page increments.
+   \bigskip
+
+\section{count}{Preferences}Preferences/Use count0. Key: Ctrl-U.
+
+The page number shown in the \hb{DVIWindo} % window
+title bar can be either: (a)
+\key{dvipage} -- which is simply the sequential position of the current
+page within the DVI file -- or (b) \key{count0} -- used for the actual page
+number in plain \TeX\ and many other \TeX-based programs.
+   \bigskip
+
+% \newpage
+   
+\section{Landscape}{Preferences}Preferences/Landscape.  Key: Ctrl-L.
+
+It is possible to check the \hb{Landscape}\ orientation in the
+\hb{Preferences}\ menu.  This reorients the page outline on the screen
+and is passed along to the printer driver when the user selects either
+\ref{Print View}{PrintV}, or \ref{Print\ellipses}{Print}.
+It does {\it not\/} rotate text on the screen. 
+   \bigskip
+
+\newpage
+
+\section{ResetFile}{Preferences}Preferences/Reset Scale Each File.
+   Key: \none.
+
+To reset the image mapping whenever a new file is opened, check \hb{Reset
+Scale Each File}\ from the \hb{Preferences}\ menu.  The image mapping is
+reset to the `Page Scale', which can be set by clicking the
+\ref{Set New Page Scale}{StoreScale}\ in the \hb{File}\ menu.
+   \bigskip
+
+% \newpage
+   
+\section{ResetPage}{Preferences}Preferences/Reset Scale Each Page.
+   Key: \none.
+
+To reset the image mapping when moving to a new page, check \hb{Reset Scale
+Each Page}\ from the \hb{Preferences}\ menu.  The image mapping is reset to
+the `Page Scale', which can be set by clicking the
+\ref{Set New Page Scale}{StoreScale}\ in the \hb{File}\ menu.
+   \bigskip
+The default is to go to the top of the page when selecting \hb{Next!},
+and to go to the bottom of the page when selecting \hb{Previous}.  This
+behavior can be controlled using \hb{Reset Scale each Page}\ in the
+\hb{Preferences}\ menu.  What is considered the appropriate position for
+the top of the page now is determined by the positioning in force when
+\hb{Set New Page Scale}\ was last invoked.  The position for the bottom of
+the page, on the other hand, is determined by the page depth specified in
+the DVI file (which may not be accurate).
+   \bigskip
+
+\newpage
+   
+\section{DrawBorder}{Preferences}Preferences/Draw Page Border. Key: \none.
+
+\hb{DVIWindo}\ will draw the page outline if \hb{Draw Page Border}\ is
+checked in the \hb{Preferences}\ menu.
+The shape and size of the page outline is determined by the selection
+of \ref{Page Size}{PageSize}.
+   \bigskip
+
+\section{TextOutline}{Preferences}Preferences/Draw Text Outline. Key: \none.
+
+\hb{DVIWindo}\ will draw the rectangular area used for text, if
+\hb{Draw Text Outline}\ is checked in the \hb{Preferences}\ menu.  This text
+outline is not always meaningful since it is based on incomplete information
+obtained from the DVI file.
+   \bigskip
+
+\newpage
+
+\section{IgnSpec}{Preferences}Preferences/Ignore All Specials. Key: \none.
+
+When checked, \hb{DVIWindo}\ will ignore all specials.  This, among
+other things will turn off color fonts and the hypertext capabilities. 
+   \bigskip
+
+\section{PassEPS}{Preferences}Preferences/Pass Through EPS. Key: \none.
+
+\hb{DVIWindo}\ can pass through EPS files when printing to a PS printer
+(instead of printing the TIFF or EPSI preview in an EPSF file).
+Use a check box \hb{Pass Through EPS}\ in the \hb{Preferences} menu to
+control which is used.
+   \bigskip
+
+\section{ShowPrev}{Preferences}Preferences/Show Previews.  Key: \none.
+
+\hb{DVIWindo}\ will show previews in inserted EPS graphics if the 
+EPS files contains a preview in either TIFF or EPSI format. This
+can be turned off by unchecking \hb{Show Previews}\ in the
+\hb{Preferences}\ menu. 
+   \bigskip
+
+\newpage
+
+\section{CompFonts}{Preferences}Preferences/Complain Missing Fonts. Key: \none.
+
+Normally \hb{DVIWindo}\ complains when it cannot find a scalable font
+installed in Windows (either Adobe Type 1 or TrueType) that matches
+the TFM file name in the DVI file.
+When checked, messages concerning missing fonts are suppressed.
+   \bigskip
+
+\section{CompEncoding}{Preferences}Preferences/Complain Bad Encoding. Key: \none.
+
+\hb{DVIWindo}\ checks whether the TFM files used by \TeX\ when creating
+the DVI file were set up using the encoding
+used by \hb{DVIWindo}\ as controlled by the `ENCODING' environment
+variable and/or the `TEXANSI' environment variable.  
+Note that this applies only to {\it text\/} fonts, and only works for
+TFM files made using AFMtoTFM.  You may want to turn this check off if
+you are using TFM files made some other way. 
+    \bigskip
+
+\section{CompFiles}{Preferences}Preferences/Complain Missing Files. Key: \none.
+
+\hb{DVIWindo}\ complains if it can't find an inserted EPS, TIFF, or WMF
+files. This behavior can be disabled by unchecking \hb{Complain Missing
+Files}\ in the \hb{Preferences}\ menu.
+   \bigskip
+
+\section{CompSpec}{Preferences}Preferences/Complain Bad Specials. Key: \none.
+
+\hb{DVIWindo}\ complains if it does not understand a `special' that it thinks
+it should be able to understand.  This behavior can be disabled by
+unchecking \hb{Complain Bad Specials}\ in the \hb{Preferences}\ menu.
+   \bigskip
+   
+\newpage   
+
+% \section{SavePref}{Preferences}Preferences/Save Preferences. Key: \none. 
+\section{SavePref}{Preferences}Preferences/Save Settings on Exit. Key: \none.
+
+Preferences made by the user are saved at the end of the session in a private
+profile file named `\key{dviwindo.ini}' in the Windows directory.
+Preferences are saved automatically if the 
+% \hb{Save Preferences}\ 
+\hb{Save Settings on Exit}\ 
+item is `checked' in the \hb{Preferences}\ menu.
+   \bigskip
+The saving of preferences may be {\it temporarily\/} disabled by holding
+down the `\key{Shift}' key while selecting \ref{Exit}{Exit}\ from the
+\hb{File}\ menu.  However, if the 
+% \hb{Save Preferences}\ 
+\hb{Save Settings on Exit}\ 
+is {\it unchecked}, when holding down `\key{Shift}' while exiting will
+{\it temporarily reenable\/} saving of preferences.
+
+   \bigskip
+
+\section{SaveNow}{Preferences}Preferences/Save Settings Now. Key: \none.
+
+You can force \hb{DVIWindo} to write out the current settings
+immediately by selecting \hb{Save Settings Now} from the
+\hb{Preferences} menu.
+
+\newpage
+
+\section{DVIFonts}{Fonts}Fonts/DVI Fonts. Key: Ctrl-K.
+
+To see what fonts are used in a particular DVI file, {\bf Check}
+\hb{DVI Fonts}\ in the \hb{Fonts}\ menu to create a dialog box with a
+list of all fonts and the sizes at which they are used.	 {\bf Uncheck}
+\hb{DVI Fonts}\ to remove the dialog box, or simply select {\bf Close}
+from the dialog's own {\bf System} menu.
+   \bigskip
+To see what part of the text is in which font, click on a font in the
+dialog box.  All parts of the text using that font, in the indicated
+size, will appear in `reverse video'.
+   \bigskip
+It is also possible to go the other way:  to see what font is used for a
+particular part of the text, click on the text holding down the
+`\key{Shift}' key.  All text with the same font and size with be
+highlighted on the page, and the font name will be highlighted in the
+font list.
+   \bigskip
+There is one additional feature in this regard.  Move the mouse cursor
+to a particular character of interest; while holding down `\key{Shift}'
+and `\key{Ctrl}', click on the character with the left mouse button.  
+A dialog box will appear containing diverse information about the font
+that character is displayed in.
+   \bigskip
+While utilizing any of the above mentioned features, try ckecking the
+\ref{Color Fonts}{ColorFonts}\ under the \hb{Fonts}\ menu.
+
+\newpage
+
+\section{DVIFileInfo}{Fonts}Fonts/DVI File Info. Key: Ctrl-O.
+
+When \hb{DVI File Info}\ is chosen form the \hb{Fonts}\ menu, a modeless
+box pops up containing a variety of information contained in the DVI
+file, including number of pages, number of fonts, number of bytes,
+magnification factor, creation date, and much, much more.
+   \bigskip
+   
+\section{ColorFonts}{Fonts}Fonts/Color Fonts. Key: Ctrl-X.
+
+On a color monitor, it is possible to color code fonts and sizes.  Simply
+click \hb{Color Fonts}\ in the \hb{Preferences}\ menu.  This is useful in
+combination with using \ref{DVI Fonts}{DVIFonts}\ in the
+\hb{Preferences}\ menu.
+   \medskip
+Note: Turn \hb{Color Fonts} off while printing.  On a black and white printer,
+colors are simulated using grey levels, and grey-levels in turn
+are presented using half-tone patterns, which give the letters a 
+mottled or fuzzy look.
+   \bigskip
+
+\newpage
+
+\section{GreyText}{Fonts}Fonts/Grey Text. Key: Ctrl-G.
+
+When looking for `widows' and `orphans', or checking the layout of your
+document, checking \hb{Grey Text}\ in the \hb{Preferences}\ menu speeds up
+screen updating considerably.  Each block of contiguous characters in the
+DVI file is represented by a grey rectangle.
+(See also \ref{Text \plus\ Grey}{TextGrey}.)
+   \bigskip
+
+\section{TextGrey}{Fonts}Fonts/Text \plus\ Grey.   Key: Ctrl-Y.
+
+Each block of contiguous characters in the DVI file is represented by a grey
+rectangle, with the text superimposed.  This also works with
+\ref{Color Fonts}{ColorFonts}.
+   \bigskip
+
+\section{FillRules}{Fonts}Fonts/Fill Rules. Key: Ctrl-J.
+
+Showing outlined rules as opposed to filled rules can be helpful when
+trying to accurately fit together rules to draw boxes and grids.
+\ref{Zoom in}{Zoom}\ to check whether rules are drawn as outlines
+or as filled rectangles (normal presentation).
+    \medskip
+If rules look outlined rather than filled (or if they look unusually dark),
+check the \hb{Fill Rules}\ in the \hb{Fonts}\ menu.
+   \bigskip
+
+\newpage
+
+\section{ShowFonts}{Fonts}Fonts/Show Font\ellipses.  Key: Ctrl-F.
+
+% reference p. 29
+
+A list of all scalable fonts known to Windows may be obtained by selecting
+\hb{Show Font\ellipses}\ from the \hb{Fonts}\ menu in \hb{DVIWindo}.
+Double-click on a font name to see all the characters in that font.  It is
+possible to choose `regular,' `bold,' `italic' or `bold italic'
+styles of that font (if available).
+   \bigskip
+When viewing a font character set, you can magnify using \ref{Zoom in}{Zoom}\
+techniques, or you can \ref{Print}{Print}, or \ref{Print View}{PrintV}.
+   \bigskip
+If {\bf Show Bounding Boxes} in the `Font Selection' dialog box is checked,
+then each character is shown inside a rectangular box.
+    \bigskip
+
+\section{ShowWidths}{Fonts}Fonts/Show Widths\ellipses. Key: \none.
+
+Select \hb{Char Widths}\ in the \hb{Fonts}\ menu to see a list of character
+widths instead of the character's shapes.  The widths are based on 1000
+units per `em' (that is, standard Adobe Type 1 coordinate system).
+   \bigskip
+
+\newpage
+
+% \section{WriteAFM}{Fonts}Fonts/Write AFM\ellipses. Key: Ctrl-M.
+\section{WriteAFM}{Fonts}Fonts/Write AFM\ellipses. Key: \none.
+
+The item \hb{Write AFM}\ under the \hb{Fonts}\ menu is used to write
+out an Adobe Font Metric (AFM) file for any scalable font known to Windows.
+The resulting AFM file appears in the AFM sub-directory of the
+\hb{DVIWindo}\ directory.
+   \bigskip
+
+\section{WriteTFM}{Fonts}Fonts/Write TFM\ellipses. Key: Ctrl-M.
+
+The item \hb{Write TFM}\ under the \hb{Fonts}\ menu is used to write
+out a TFM file for any scalable font known to Windows.  
+\hb{DVIWindo}\ first writes an AFM file and then invokes AFMtoTFM
+with the current encoding as specified by the `ENCODING' environment
+variable.
+The resulting TFM file appears in the first directory in the
+list of directories in the TEXFONTS environment variable.
+   \bigskip
+
+\section{WriteAllTFMs}{Fonts}Fonts/Write All TFMs\ellipses. Key: \none.
+
+The item \hb{Write All TFMs}\ under the \hb{Fonts}\ menu is used to write
+out TFM files for selected groups of fonts.
+It is possible to select all fonts in Adobe Type 1 format,
+or all fonts in TrueType form. 
+It is possible to select all text fonts, or all symbol/math/decorative
+fonts. 
+Processing can also be confined to `new fonts' --- those fonts for which
+no TFM files exists yet.
+   \bigskip
+
+\newpage
+
+\section{FavPos}{Fonts}Fonts/Favor Positions. Key: \none.
+
+When \hb{Favor Positions}\ is checked, each character is placed
+individually on the page.  Positional offsets cannot accumulate.  {\it
+Output is slowed}. Spacing between characters may be slightly irregular.
+   \bigskip
+When \hb{Favor Positions}\ is NOT checked, sequences of characters are
+placed on the page as a group.  Positional offsets may accumulate.  Offsets
+are absorbed between words (and where there is explicit kerning within
+a word).
+   \bigskip
+Usually, \hb{Favor Positions}\ should be left {\it unchecked}.
+   \bigskip
+
+\section{ShowButtons}{Fonts}Fonts/Show Buttons. Key: \none.
+
+Should you check \hb{Show Buttons}\ in the \hb{Fonts}\ menu,
+\hb{DVIWindo}\ will display all hypertext buttons.
+   \bigskip
+
+\newpage
+
+\section{ViewHidden}{Fonts}Fonts/View Hidden. Key: \none.
+
+It is possible to use `specials' to create rules and text that are
+only visible in preview and do not get printed.
+\hb{Show Hidden}\ in the \hb{Fonts}\ menu controls whether such
+text and rules are shown in \hb{DVIWindo}.
+    \bigskip
+
+\section{SystemInfo}{Fonts}Fonts/System Info. Key: \none.
+
+\hb{System Info}\ in the \hb{Fonts}\ menu shows some system usage
+info, such as how much memory Windows claims is available,
+what percentage of the Windows GDI and USER segments (64k byte each)
+are used up, and so on.  This information may at times be useful
+in debugging Windows problems in systems with either limited resources
+(8 meg RAM), or heavy resource usage (such as network TSRs).
+
+\newpage
+
+\title{Around}Getting Around.
+
+Below is a complete % {\it complete\/} 
+listing of % all 
+keyboard and mouse functions with a brief description of each, along
+with pointers to a more detailed explanation.
+   \bigskip 
+
+\BeginDblList{1.75truein}{10truept}
+\\{\bf Key/Mouse Press}           &{\bf Description}.\cr   
+\\\key{Alt}-Left Mouse              &Position page on screen by dragging page
+				     using a hand cursor.\cr
+\\\key{Ctrl}-Left Mouse             &\ref{Zoom}{Zoom}-rectangle.\cr
+\\Right Mouse Click               &\ref{Undo}{RestoreV}\ previous zoom, 
+				     or previous hyperlink.\cr
+\\\key{Ctrl}-Left-Right Mouse       &\ref{Move the zoom-rectangle}{Zoom}.\cr
+\\\key{Shift-Ctrl}-Left Mouse       &\ref{Copy to clipboard}{CopyClip}\ (If
+				     rectangle too small, everything is
+				     copied to clipboard).\cr
+\\\key{Shift}-Left Mouse            &\ref{Measurement tool}{meastool}.\cr
+\\\key{Shift}-Left Right Mouse      &\ref{Move}{meastool}\ the measurement
+				     tool.\cr
+\\Double-Click Mouse              &Refresh Screen.\cr
+\\\key{Enter}                       &Refresh Screen.\cr
+\\\key{F10}                         &This function key is equivalent to
+				     pressing and releasing the Alt key.\cr
+\\\key{Esc}                         &\ref{Exit}{Exit}\ \hb{DVIWindo}.\cr
+\\\key{Ins}                         &\ref{Open}{Open}\ a file for viewing.\cr
+\\\key{PgDn}                        &\ref{Next!}{Next}\ (Go to Next Page).\cr
+\\\key{PgUp}                        &\ref{Previous!}{Previous}\
+				     (Go to Previous Page).\cr
+\\\key{Home}                        &Beginning of File (Go to First Page).\cr
+\\\key{End}                         &End of File (Go to Last Page).\cr
+\\\key{Ctrl-F1}                     &Preview last file.\cr
+\\\key{Ctrl-B}                      &Page Bottom.\cr
+\\\key{Ctrl-N}                      &Page Top.\cr
+\\\key{Ctrl-R}                      &\ref{Search}{Search}.\cr
+\\\key{Ctrl-S}                      &\ref{Search Again}{SAgain}.\cr
+\\\key{Ctrl-P}                      &\ref{Print}{Print}.\cr
+\\\key{Ctrl-T}                      &\ref{Print View}{PrintV}.\cr
+\\\key{Ctrl-F}                      &\ref{Show Font}{ShowFonts}.\cr
+\\\key{Ctrl-V}                      &\ref{Restore View}{RestoreV}\ --
+				     following a Zoom In.\cr
+\\\key{Ctrl-Z}                      &\ref{Zoom In}{Zoom}\ --
+				     Magnifying glass appears,
+				     depress left mouse to create bounding
+				     box.\cr
+\\\key{Ctrl}-Left/Right Arrow       &Center page horizontally on screen.\cr
+\\\key{Ctrl}-Up/Down Arrow          &Center page vertically on screen.\cr
+\\\key{Shift-Esc} 		    &Exits \hb{DVIWindo}, while toggling
+                                     the setting of
+%				     \ref{Save Preferences}{SavePref}.\cr
+				     \ref{Save Settings on Exit}{SavePref}.\cr
+\\\key{Ctrl-D}                      &Map screen using \ref{Default Scale}
+				     {Default}.\cr
+\\\key{SpaceBar}                    &Moves forward one page without
+				     changing the window scale or the
+				     offsets.\cr
+\\\key{Backspace}                   &Moves backward one page without
+				     changing the window scale or the
+				     offsets.\cr
+\\`\asterisk' \plus \key{num}            &Select Page {\tt num}.\cr
+\\\key{num}\plus{\tt Enter}           &Select page {\tt num} -- If {\tt num}
+				     is entered on the NumPad, the number
+				     lock must be on.\cr
+\\`\plus' on NumPad                 &Magnify! (Small increments).\cr
+\\`\minus' on NumPad                &Unmagnify! (Small increments).\cr
+\\\key{Shift}-`\plus' on NumPad     &Magnify! (Large increments).\cr
+\\\key{Shift}-`\minus' on NumPad    &UnMagnify! (Large increments).\cr
+\\\key{Shift}-Click Magnify!        &Magnify! (Large Increments).\cr
+\\\key{Shift}-Click Unmagfify!      &Unmagnify! (Large Increments).\cr
+\\\key{Ctrl}-Next!                  &Temporarily inverts the `Reset Scale
+				     Each Page' in the Preferences menu.\cr
+\\\key{Ctrl}-Previous!              &Temporarily inverts the `Reset Scale
+				     Each Page' in the Preferences menu.\cr
+
+\head \TeX\ Menu.
+
+\\\key{Ctrl}                        &Choose a menu item in \TeX\ menu while
+				     holding down Ctrl, causes \hb{DVIWindo}\
+				     to call the `Edit Menu Item'.\cr
+   \bigskip
+
+\head Two-Page Spread Mode.
+
+\\Next!                           &Advance by two pages.\cr
+\\Previous!                       &Decrement by two pages.\cr
+\\\key{Shift}-Next!               &Advance by a single page.\cr
+\\\key{Shift}-Previous!           &Decrement by a single page.\cr
+
+   \bigskip
+
+\head Fonts/DVI Fonts.
+
+\\\key{Shift-Ctrl} Click a char     &Character Information.\cr
+\\\key{Shift} Click a char          &Reverse Video of all text using the same
+				     font.\cr
+\\Next! on last page              &Goes to bottom of page.\cr
+\\Previous! on first page         &Goes to top of page.\cr
+
+\head Miscellaneous.		% following added 1995/April/26
+
+%% the above Getting Around section may need checking and expansion
+
+\\\key{Ctrl}-I			&Printer Setup.\cr
+\\\key{Ctrl}-C			&Copy to Clipboard.\cr
+\\\key{Ctrl}-E			&Spread.\cr
+\\\key{Ctrl}-U			&Use Count 0.\cr
+\\\key{Ctrl}-L			&Landscape.\cr
+\\\key{Ctrl}-K			&DVI File Fonts.\cr
+\\\key{Ctrl}-O			&DVI File Info.\cr
+\\\key{Ctrl}-X			&Color Fonts.\cr
+\\\key{Ctrl}-G			&Grey Text.\cr
+\\\key{Ctrl}-Y			&Text + Grey.\cr
+\\\key{Ctrl}-J			&Fill Rules.\cr
+\\\key{Ctrl}-M			&Write TFM...\cr
+
+\EndDblList
+
+\newpage
+
+\title{MouseTools}Mouse Tools.
+
+\altsec{meastool}The Measurement Tool.
+
+\hb{DVIWindo}\ has a tool for measuring horizontal and vertical distances in
+the document.  To activate it, hold down the `\key{Shift}' key and press
+the left mouse button.  Dragging the mouse creates a rectangle, the
+width and height of which are indicated in the units selected by the
+user in the menu \ref{Ruler Units}{RuleUnits}\ of the 
+\hb{Preferences}\ menu.
+   \bigskip
+The rectangle can be moved - instead of resized - by also holding down the
+right mouse button - just as with the rectangle used to define a
+\ref{zoom area}{Zoom}\ and the rectangle used to define an area to be
+\ref{copied}{CopyClip}\ to the clipboard.
+   \bigskip
+   
+% \altsec{Handy}The Gripping Hand Icon.
+\altsec{Handy}The Gripping Hand Cursor.
+
+There is a very simple method of positioning the page on the screen
+using the mouse.  Press `\key{Alt}' and then depress the left mouse
+button. A ``hand'' will appear.  This ``hand'' will grip the page,
+and as you move the mouse, the electronic page will move in tandem with
+the mouse movement.  If \hb{DVIWindo}\ does not refresh the screen properly,
+be sure to double-click the left mouse in the \hb{DVIWindo}\ display screen,
+this forces \hb{DVIWindo}\ to refresh the screen.
+   
+	\medskip
+
+Continued on next page\ellipses.
+
+\newpage
+
+% \altsec{MagGlass}The Magnifying Glass Icon.
+\altsec{MagGlass}The Magnifying Glass Cursor.
+
+In order to magnify a rectangular portion of the screen using the mouse,
+press `\key{Ctrl}' and then depress the left mouse button.  A ``magnifying
+glass'' will appear.  With `\key{Ctrl}' and left mouse button still
+pressed, as you move the mouse around, a rectangular region is created
+on screen.  When you release the left mouse button, the region defined
+will be magnified enough to fill the entire screen.
+   \bigskip
+   
+% \altsec{Scissors}The Scissors Icon.
+\altsec{Scissors}The Scissors Cursor.
+
+To copy a rectangular region of the screen to Window's clipboard, hold
+down the `\key{Shift}' and `\key{Ctrl}' keys, press the left mouse
+button at one corner of the rectangle -- the cursor changes to a
+scissors -- drag to the opposite corner of the rectangle -- then release
+the mouse button.  To move the rectangle while it is being defined, hold
+down the right mouse button as well as the left.  To copy the whole page
+to the clipboard, simply bring the cursor back to where you started --
+\hb{DVIWindo}\ copies everything to the clipboard if the rectangle is very
+small.
+   \medskip
+Th region copied to the clipboard can be `pasted' into another
+application.  The pasted region acts as a graphical object that can be
+moved, scaled and cropped.  Typeset math using \TeX, then import into
+your favorite WYSIWYG application. 
+   \bigskip
+
+
+\newpage
+
+\title{Tour}A Short Tour of \hb{DVIWindo}.
+
+\parskip\bigskipamount
+
+The purpose of this tutorial is to give the first-time user a very quick
+introduction to the most basic features of \hb{DVIWindo}\ for getting
+around.  There is quite a lot of information contained in this help
+file, but it is not complete; when desperate, read the manual.
+   \bigskip
+
+\altsec{MoveAround}Moving Around Within a Page.
+
+On the keyboard, you can move around within a page by pressing the arrow
+keys. The `\key{Arrow up}' moves the page up a little, `\key{Arrow Down}'
+moves the page down a little (`\key{Arrow Left}' and `\key{Arrow Right}'
+move the page left and right a little). If you depress the `\key{Shift}'
+key while you press one of the arrow keys, then the amount of change
+(up, down, left, or right) is increased. The mouse can be used to
+perform the same functions.  By clicking the left mouse button on either
+the vertical or horizontal slide bar, the page moves vertically or
+horizontally; pressing `\key{Shift}' before clicking the left mouse
+button increases the magnitude of the vertical or horizontal shift.
+
+A handy method of positioning the page to the desired location is pressing
+% `\key{Shift}-Left Mouse button.' % David Carlisle
+`\key{Alt}-Left Mouse button.'
+A hand will appear that will ``grip'' the page, and the page will move
+in tandem with the mouse movement.
+
+You can move to the top of the page by pressing `\key{Ctrl-N}' and to by
+the bottom of the page by pressing `\key{Ctrl-B}'.
+
+	\medskip
+
+Continued on next page\ellipses
+
+\newpage
+
+\altsec{Paginate}Moving Between Consecutive Pages.
+
+Needless to say, the keys `\key{Page Down}' and `\key{Page Up}', can be used
+to move between consecutive pages; the pair `\key{Spacebar}' and
+`\key{Backspace}' perform basically the same function -- but with an
+important difference.  Using the mouse, simple click the menu item labeled
+\hb{Previous!}\ or \hb{Next!}.  The behavior of the `\key{Page Down/Page Up}'
+pair, and the `\hb{Previous!/Next!}'\ pair can be modified using the
+\key{Ctrl}-key, as explained below.
+
+The menu item \ref{Reset Scale Each Page}{ResetPage}\ under the
+\hb{Preferences}\ menu controls the actions of \hb{DVIWindo}\ in two
+ways concerning pagination:
+
+\BeginBulletList
+   \Item the position of the new page on the screen (i.e.\ the page offset);
+   \Item the magnification of the new page.
+\EndBulletList
+
+When \ref{Reset Scale Each Page}{ResetPage}\ is {\bf Checked},
+\hb{DVIWindo}\ is functioning in its `top/bottom of page' mode, that is,
+when you page forward, \hb{DVIWindo}\ will move to the {\it top\/} of
+the next page, and when you page backward, \hb{DVIWindo}\ will move to
+the {\it bottom\/} of the previous page.  This mode is nice for reading
+through a document.  If \ref{Reset Scale Each Page}{ResetPage}\ is {\bf
+UnChecked}, the offset of the page remains unchanged as you go forward
+or backward in the document.
+
+% Continued on next page\ellipses
+ 
+% \newpage
+
+\hb{DVIWindo}\ has a `user-defined default magnification', which can be
+set by the \ref{Store New Page Scale}{StoreScale}\ under the 
+\hb{File}\ menu.   Now when \ref{Reset Scale Each Page}{ResetPage}\ is {\bf
+Checked}, and you paginate, \hb{DVIWindo}\ will reset the magnification
+scale to the current default (in addition to moving to the top or bottom
+of the page); conversely, when \hb{Reset Scale Each Page}\ {\bf
+UnChecked}, the magnification scale is left unchanged.
+
+	\medskip
+
+Continued on next page\ellipses
+
+\newpage
+
+The behavior described above can be modified on the keyboard as
+described in the paragraphs that follow. 
+
+Begin by using the `\key{Page Down/Page Up}' combination to paginate. 
+First, open the \hb{Preferences}\ menu, and make sure \ref{Reset Scale
+Each Page}{ResetPage}\ is {\bf Checked}.  Now, press `\key{Page Up}',
+\hb{DVIWindo}\ will move to the {\it top of the next page}; pressing
+`\key{Page Down}' will force DVIWindo to move to the {\it bottom of the
+previous page}.  This `top/bottom of the page' behavior is modified by
+the \key{Ctrl}-key.  While holding `\key{Ctrl}' down, now press 
+`\key{Page Down}' or `\key{Page Up}'; 
+now, \hb{DVIWindo}\ does not change the offsetof the page as you page.
+
+Now open the \hb{Preferences}\ menu, and make sure \ref{Reset Scale Each
+Page}{ResetPage}\ is {\bf UnChecked}.  Now, as you press `\key{Page Down}'
+or `\key{Page Up}', DVIWindo will not reset the page offset; consequently,
+offsets within the page will not change as you paginate.  Depressing and
+holding down `\key{Ctrl}' will toggle the behavior of `\key{Page Down/Page
+Up}' back to the `top/bottom of the page' behavior.
+
+Using the mouse to click on \hb{Previous!}\ or \hb{Next!}\ is functionally
+equivalent to the `\key{Page Down/Page Up}' key combination.  The `\key{Ctrl}'
+key may be used to temporarily toggle the setting of \ref{Reset Scale Each
+Page}{ResetPage}\ for that mouse click.
+
+	\medskip
+
+Continued on next page\ellipses
+
+\newpage
+
+Contrast the behavior of the `\key{Page Down/Page Up}' key combination
+with that of the `\key{Spacebar/Backspace}' combination.  Use
+`\key{Spacebar}' to advance the page, and `\key{Backspace}' to retreat a
+page.  You'll notice that when you advanced to the next page using
+`\key{Spacebar}', the positioning on the page did not change (e.g., if you
+were half way down the page, then after the `\key{Spacebar}' you are now 
+half way down the next page. `\key{Backspace}' works similarly -- the
+offset on the page does not change as you paginate.  The
+`\key{Spacebar/Backspace}' combination is uneffected by the setting of
+\ref{Reset Scale Each Page}{ResetPage}
+
+\newpage
+
+\altsec{NonCont}Move between Noncontiguous Pages.
+
+In order to move to a specific page, either choose \ref{Select
+Page\ellipses}{SelPage}\ in the \hb{File}\ menu using the mouse, or use the
+accelerator key `\asterisk', on the numeric key pad.  A small dialog
+box will appear, enter the desired page number.  There is a third, even
+faster method of moving to a specified page: Enter a number (with
+NumLock {\bf ON} if entered on the key pad) followed by `\key{Enter}', no
+dialog box will appear, \hb{DVIWindo}\ will move to the page entered.
+
+Should you press `\key{Home}', \hb{DVIWindo}\ will change pages to the
+{\it first page} of the document.  Similarly, pressing `\key{End}' causes
+\hb{DVIWindo}\ to change to the {\it last page}.
+   \bigskip
+
+\altsec{CenterPg}Centering the Page on the Screen.
+
+The page can be centered on the page horizontally by pressing `\key{Ctrl}'
+followed by either the `\key{Left Arrow}' or `\key{Right Arrow}' key.  To
+center the page vertically, press the `\key{Ctrl}' key followed by
+either the `\key{Up Arrow}' or `\key{Down Arrow}' key.
+
+\newpage
+
+%% the glossary may want to be re-organized
+%% alphabetical order?
+%% ordered based on function: 
+%% print drivers, compilers, macro packages, utilities?
+
+\parskip0pt
+
+\title{Glossary}Glossary of Terms.
+
+\altsec{DVIfile}DVI-File.
+
+A \hb{DVI}-file is the type of file that \hb{DVIWindo}\ reads and
+displays on the screen for viewing.  A \hb{DVI}-file, which is an
+acronym for {\it\hb{\underbar{d}}e\hb{\underbar{v}}ice
+\hb{\underbar{i}}ndependent}, is the output file of the \ref{\TeX}{TeX}\
+compiler.  A \hb{DVI}-file may be identified by its {\it extension\/} of
+`\key{.dvi}'.  For example, the file name of this help file is
+% `\key{dvi\_help.dvi}'. % \char95 
+`\key{\jobname.dvi}'. % 95/April/19
+   \bigskip
+
+The \hb{DVI}-file may also be printed, using such programs as
+\ref{DVIPSONE}{DVIPSONE}\ or \hb{DVIPS}, yielding a high quality 
+typeset manuscript.
+   \bigskip
+
+\altsec{DVIPSONE}DVIPSONE.
+
+The program \hb{DVIPSONE}, distributed by \hb{{\Y&Y}, Inc.}, produces
+resolution-independent PostScript (PS) output from \ref{DVI}{DVI}\ input.
+DVIPSONE can be called from the \ref{Print}{Print}\ 
+dialog in \hb{DVIWindo} or used directly from the DOS command line.
+   \bigskip
+
+\altsec{TeX}The \TeX\ compiler.
+
+The \hb{\TeX}\ compiler, written by Donald E. Knuth, is a computer program
+for typesetting technical manuscripts.  The input of the \hb{\TeX}\
+compiler is an ASCII-based manuscript, and the output of the \hb{\TeX}\
+compiler is a \ref{DVI}{DVIfile}-file.  The ultimate reference on how to
+write a manuscript acceptable to the \hb{\TeX}\ compiler is {\sl The
+\TeX{}book} by Donald E. Knuth.
+   \bigskip
+   
+\altsec{iniTeX}Ini\TeX.
+
+\hb{ini\TeX}\ is a `raw' % `primitive' 
+version of \ref{\TeX}{TeX}.  Its purpose
+is to create format files.  Format files are binary versions of a
+collection of macros, such as plain \TeX, \LaTeX, or AmS\TeX, that the
+\hb{\TeX}\ compiler is able to load and read at high speed.
+
+	\medskip
+
+Continued on next page\ellipses
+
+\newpage
+
+% \altsec{LaTeX}\LaTeX.	% need bold sc A
+
+\altsec{LaTeX}\LaTeXbf.	% need bold sc A
+
+\hb{\LaTeX}\ is a popular macro package containing many features to aid
+the writing of books, technical documents, and manuals.  The
+original reference manual for \LaTeX\ is % {\sl \LaTeX} % need slant sc A 
+\LaTeXsl\ by Leslie Lamport.
+   \bigskip
+
+\altsec{AmSTeX}\AmSTeX.
+
+The macro package \hb{\AmSTeX{}}\ was written by Michael Spivak under the
+sponsorship of the American Mathematical Society.  The package includes
+additional macros for building complex mathematical structures,
+additional fonts, and symbols.  A complete reference for \AmSTeX\ is
+{\sl The Joy of \TeX}, written by Michael Spivak.
+   \bigskip
+
+\altsec{CleanUp}The CleanUp Utility.
+
+The \hb{CleanUp}\ utility, supplied by \hb{{\Y&Y}, Inc.}, closes any
+inactive DOS boxes.
+   \bigskip
+   
+\altsec{SysSeg}The SysSeg Utility.
+
+The \hb{SysSeg}\ utility, supplied by \hb{{\Y&Y}, Inc.}, gives useage
+readings on the `GDI' and `USER' data segments
+(In Windows 95 use \hb{System Info} from the \hb{Help} menu instead).
+   \bigskip
+
+\newpage
+
+\parskip\medskipamount
+
+\title {Index}Index of Basic Functions.
+
+Moving Around \ref{Within a Page}{MoveAround}.
+
+Moving Between \ref{Consecutive Pages}{Paginate}.
+
+Moving Between \ref{Noncontiguous Pages}{NonCont}.
+
+\ref{Centering}{CenterPg}\ the Page on the Screen.
+
+\ref{Zooming in}{MagGlass}.
+
+\ref{Measuring}{meastool}\ distances.
+
+
+\end

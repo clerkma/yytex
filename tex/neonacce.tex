@@ -1,0 +1,157 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+% Copyright (C) 1992 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+% NOTE: this has changed with various versions of DVIPS, can't keep up ...
+
+% ============================================================================
+% Accented and composite characters in fonts that do not use TeX text encoding
+%		DVIPS `neon' version   VERSION 0.9
+% ============================================================================
+
+% Plain TeX - and hence lplain TeX - have accents hard-wired to certain codes.
+
+% A non-CM font can be reencoded to TeX text encoding ---
+% in this case accents and composite character will be where TeX expects them.
+% But, quite often it is advantageous to encode a font another way.
+% This can provide access to many characters not found in TeX text encoding.
+
+% When a font is reencoded, compound characters and accents may be moved.
+% This will prevent TeX's normal handling of compound characters and accents.
+% This file indicates how to deal with this ---
+%	--- and concludes with sample code specific for `StandardEncoding'.
+
+% Changes required for math constructions that use roman font are at the end
+
+% You may wish to just \input this file in your TeX source.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"	% save catcode of quotedbl
+\catcode`\"=12			% make quotedbl what it should be
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% NOTE: plain TeX (and LaTeX) has the accent character positions hardwired to:
+
+% 16 for `dotlessi', 17 for `dotlessj', 
+% 18 for `grave', 19 for `acute', 20 for `caron', 
+% 21 for `breve', 22 for `macron', 
+% 23 for `ring', 24 for `cedilla',
+% 25 for `germandbls', 26 for `ae', 27 for `oe', 
+% 28 for `oslash', 29 for `AE', 30 for 'OE', 31 for `Oslash',
+% 94 for `circumflex', 95 for `dotaccent', 125 for `hungarumlaut',
+% 126 for `tilde', 127 for `dieresis',
+% (see page 356 of the TeX book for additional information)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% The following sample redefinitions are for DVIPS `neon' encoding:
+
+% With DVIPS `neon' encoding it is not appropriate to use `stanacce.tex',
+% since most of the accents in `neon' are in the same place as they are in
+% `TeX type'.  Actually, the only changes really required for `neon' 
+% encoding are the following: 
+
+\chardef\pounds=163	% sterling		(36 in TeX italic)
+\chardef\L=232		% Lslash
+\chardef\l=248		% lslash
+
+\def\.#1{{\accent199 #1}}	% dotaccent	(95  in TeX text)
+\def\H#1{{\accent205 #1}}	% hungarumlaut	(125 in TeX text)
+
+\def\dot{\mathaccent"70C7 }	% dotaccent	(95  in TeX text)
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+% The rest is there to make it easy to get at composite characters:
+
+\chardef\aa=151 \chardef\AA=207 % aring, Aring
+\chardef\cc=149 \chardef\CC=203 % ccedilla, Ccedilla
+
+%  copyright		not in DVIPS `neon'
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% The following provides access to the 58 accented/composite characters.
+% Some convenient abbreviations conflict with macros in plain or lplain
+% (for example, \aa, \Aa, \ae, \Ae, \oe, \Oe, \sc, \Sc in plain TeX)
+% So these have had to be be named something slightly less menmonic.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% 58 `standard' accented chars exist in many fonts - including BSR CM from Y&Y
+% One can define control sequences to access these directly as follows.
+% One may want to define other ways for accessing these, for example,
+% using ligatures (in that case, need to remake TFM file using AFMtoTFM).
+
+\chardef\ay=153 \chardef\ee=146 \chardef\ie=142 \chardef\oy=137
+\chardef\ue=131 \chardef\ye=129 % a, e, i, o, u, y - dieresis
+
+\chardef\Ay=210 \chardef\Ee=200 \chardef\Ie=195 \chardef\Oy=190
+\chardef\Ue=159 \chardef\Ye=157 % A, E, I, O, U, Y - dieresis
+
+\chardef\ax=155 \chardef\ea=148\chardef\ia=144 \chardef\oa=139
+\chardef\ua=250 \chardef\ya=253 % a, e, i, o, u, y - acute
+
+\chardef\Ax=212 \chardef\Ea=202 \chardef\Ia=197 \chardef\Oa=192
+\chardef\Ua=218 \chardef\Ya=221 % A, E, I, O, U, Y - acute
+
+\chardef\ag=152 \chardef\eg=145 \chardef\ig=141 \chardef\og=136
+\chardef\ug=130 % a, e, i, o, u - grave
+
+\chardef\Ag=209 \chardef\Eg=198 \chardef\Ig=194 \chardef\Og=181
+\chardef\Ug=158 % A, E, I, O, U - grave
+
+\chardef\ac=154 \chardef\ee=147 \chardef\ic=143 \chardef\oc=138
+\chardef\uc=132 % a, e, i, o, u - circumflex
+
+\chardef\Ac=211 \chardef\Ee=201 \chardef\Ic=196 \chardef\Oc=191
+\chardef\Uc=160 % A, E, I, O, U - circumflex
+
+\chardef\At=204 \chardef\Nt=193 \chardef\Ot=135 % A, N, O - tilde
+
+\chardef\at=150 \chardef\nt=140 \chardef\ot=176 % a, n, o - tilde
+
+\chardef\sr=134 \chardef\zr=128 % scaron, zcaron
+
+\chardef\Sr=169 \chardef\Zr=156 % Scaron, Zcaron
+
+% Remaining four `composites': aring, Aring, ccedilla, Ccedilla defined above.
+
+% **************************************************************************
+
+% If you want to use < for `guillesinglleft' and > for `guillesingright'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=172
+% \catcode`\>=\active \chardef>=173
+
+% If you use < for `exclamdown', > for `questiondown', and | for `emdash'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=14
+% \catcode`\>=\active \chardef>=15
+% \catcode`\|=\active \chardef|=208
+
+\chardef\lq=96 \chardef\rq=39
+
+% Note that \lq and \rq also provide access to ` and '
+
+\catcode`\"=\dblcode		% restore original catcode of quotedbl
+
+% **************************************************************************
+
+% NOTE: definitions have embedded numbers that depend on the chosen encoding
+% These will need to be changed if you use an encoding other than `neon'.
+
+% **************************************************************************
+
+% *********************************************************************
+%	Y&Y, Inc. 45 Walden Street, Concord, MA 01742 USA  (978) 371-3286
+%   http://www.YandY.com  mailto:support@YandY.com
+% *********************************************************************

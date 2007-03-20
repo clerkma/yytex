@@ -1,0 +1,64 @@
+% Plain TeX test file to show all characters in a font
+% Customize by changing the fonts selected in the first few lines
+
+\nopagenumbers
+
+% Following defines the font that you want to test (by its TFM file name):
+
+% \font\test=cmr10
+% \font\test=sy
+\font\test=tir
+\font\test=lbi at 20pt
+
+% Following defines the font used for printing the character number:
+
+% \font\numfont=cmssbx10 at 5pt
+\font\numfont=hvb at 5pt
+
+% Following defines the font used for printing the \fontdimen information
+
+% \font\dimenfont=cmss10
+\font\dimenfont=hv
+
+\newcount\k\newcount\n\newcount\m
+
+% Print 16 x 16 table with character code numbers and characters
+
+\numfont
+\k=0\n=0\m=0
+\noindent
+{\loop\ifnum\n<16
+{\loop\ifnum\m<16
+\the\k\char58\space
+{\test\char\k},\space
+\global\advance\k by1
+\advance\m by1\repeat}
+\hfill\break
+\m=0\vskip 1mm\noindent
+\advance\n by1\repeat}
+
+% Show fontdimensions of the selected font
+
+% \test
+% \n=1
+% \noindent
+% {\dimenfont
+% {\loop\ifnum\n<8
+% \the\n: \the\fontdimen\n\test,\hfill\break
+% \advance\n by1\repeat}
+% }
+
+\dimenfont
+
+\settabs 6 \columns
+\+slant:& \the\fontdimen1\test,\cr
+\+space:& \the\fontdimen2\test,\cr
+\+stretch:& \the\fontdimen3\test,\cr
+\+shrink:& \the\fontdimen4\test,\cr
+\+xheight:& \the\fontdimen5\test,\cr
+\+emquad:& \the\fontdimen6\test,\cr
+\+extra:& \the\fontdimen7\test,\cr
+
+
+
+\end

@@ -1,0 +1,244 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\documentclass{article}
+
+%%%%%% start section 10.3.1
+
+\usepackage{epic}
+
+\usepackage{eepic}
+
+\begin{document}
+
+\setlength{\unitlength}{1mm}
+\begin{picture}(175,20)
+\put(0,0){\line(4,1){80}}
+\put(40,10){\circle*{5}}
+\put(40,10){\circle{10}}
+\end{picture}
+
+\setlength{\unitlength}{1mm}
+\begin{picture}(150,15)(0,0)
+\thicklines
+\dottedline{2}(0,10)(70,10)
+\dottedline[$\bullet$]{3}(0,5)(70,5)
+\dottedline[$\diamond$]{4}(0,0)(70,0)
+\end{picture}
+
+\vskip .2in
+
+\begin{picture}(70,22)(0,-2)
+\dashline{3}[0.7](0,18)(63,18)
+\thicklines
+\dashline{3}(0,13)(63,13)
+\dashline[-30]{3}(0,8)(63,8)
+\dashline[+15]{3}(0,4)(63,4)
+\dashline[+30]{3}(0,0)(63,0)
+\end{picture}
+
+% \quad\multiputlist(0,0)(50,0){1.00,1.25,1.50,1.75,2.00}
+\quad\multiputlist(0,0)(20,0){1.00,1.25,1.50,1.75,2.00}
+
+\vskip .2in
+
+\setlength{\unitlength}{1mm}
+\begin{picture}(62,32)(-1,-1)
+\thicklines
+\matrixput(0,0)(10,0){7}(0,10){4}{\circle{2}}
+\matrixput(10,0)(20,0){3}(0,20){2}{\circle*{2}}
+\matrixput(0,10)(20,0){4}(0,20){2}{\circle*{2}}
+\matrixput(1,0)(10,0){6}(0,10){4}{\line(1,0){8}}
+\matrixput(0,1)(10,0){7}(0,10){3}{\line(0,1){8}}
+\end{picture}
+
+\vskip .2in
+
+\quad
+\put(0,0){\grid(50,100)(5,10)}
+\put(0,0){\tiny\grid(100,100)(5,5)[-50,0]} % make numbers \tiny
+
+\vskip .2in
+
+\end{document}
+
+%%%%%% start section 10.2.6
+
+% \usepackage{curves}
+
+\usepackage{curvesls}
+
+\begin{document}
+
+\thinlines
+\setlength{\unitlength}{1mm}
+\begin{picture}(80,46)(0,0)
+% 1 mm dashes interspersed with 2 mm gaps
+  \curvedashes[1mm]{0,1,2}
+  \put(10,0){\curve(0,0, 19.6,39.2, 39.2, 0)}
+  \curvedashes{} % reset dashes
+  \newcounter{time}
+  \curvesymbol{\textsf{\thetime\,s}
+	\addtocounter{time}{1}}
+  \put(10,4){\curve[-2](0,0, 19.6,39.2, 39.2,0)}
+  \curvesymbol{\phantom{\circle*{1}}\circle*{1}}
+  \put(10,0){\curve[-2](0,0, 19.6,39.2, 39.2,0)}
+\end{picture}
+
+\vskip .2in
+
+\setlength{\unitlength}{1.8mm}
+\begin{picture}(40,30)
+   \thicklines
+   \multiput(20,5)(20,12){2}{%
+   \line(0,-1){2}\line(-5,3){20}}
+   \multiput(20,5)(-20,12){2}{\line(5,3){20}}
+   \put(20,3){\line(5,3){20}}
+   \put(20,3){\line(-5,3){20}}
+   \put(0,15){\line(0,1){2}}
+   \linethickness{1pt}
+   \put(20,5){%
+      \renewcommand{\xscale}{1}
+      \renewcommand{\xscaley}{-1}
+      \renewcommand{\yscale}{0.6}
+      \renewcommand{\yscalex}{0.6}
+      \scaleput(10,10){\bigcircle{10}}
+      \put(0,-2){%
+	\scaleput(10,10){\arc(5,0){121}}
+	\scaleput(10,10){\arc(5,0){-31}}} 
+    }
+\end{picture}
+
+\newcommand{\RAFsixE}{%
+ \scaleput(1.25,1.25){\arc(0,-1.25){-135}}
+ \scaleput(0,0){\curve(0.36,2.13,
+  1.25,3.19, 2.5,4.42, 5.0,6.10, 7.5,7.24,
+  10,8.09, 15,9.28, 20,9.90, 30,10.3,
+  40,10.22, 50,9.80, 60,8.98, 70,7.70,
+  80,5.91, 90,3.79, 95,2.58, 99.24,1.52)}
+ \scaleput(99.24,0.76){\arc(0,-0.76){180}}
+ \scaleput(0,0){\curve(1.25,0, 99.24,0)}
+}
+
+% \begin{center}
+ \begin{picture}(100,20)
+  \RAFsixE
+ \end{picture}
+% \end{center}
+
+\vskip .2in
+
+\begin{picture}(120,50)(0,0)
+  \renewcommand{\xscale}{0.9848}
+  \renewcommand{\xscaley}{0.1736}
+  \renewcommand{\yscale}{0.9848}
+  \renewcommand{\yscalex}{-0.1736}
+  \put(20,30){\RAFsixE}
+  \thicklines
+  \put(10,15){\vector(1,0){20}}
+\end{picture}
+
+\vskip .2in
+
+\setlength{\unitlength}{0.4pt}
+\linethickness{0.2mm}
+\quad\arc(100, 0){270}
+\bigcircle{100}
+
+\vskip .2in
+
+\setlength{\unitlength}{0.4pt}
+\linethickness{0.2mm}
+
+
+\setlength{\unitlength}{0.4pt}
+\linethickness{0.7mm}
+\begin{picture}(400,110)(-10,0)
+	\tagcurve(80,0, 0,0, 40,100, 80,0, 0,0)
+	\closecurve(150,0, 190,100, 230,0)
+	\curve(300,0, 340,100, 380,0)
+\end{picture}
+
+\vskip .2in
+
+\end{document}
+
+%%%%%% start section 10.2.1
+
+\begin{document}
+\setlength{\unitlength}{1mm}
+\begin{picture}(50,30)
+\linethickness{1pt}
+\bezier{20}(0,0)(10,30)(50,30)
+\bezier{200}(0,0)(40,0)(50,30)
+\end{picture}
+
+\end{document}
+
+%%%%%% start section 10.1.3
+
+\usepackage{fancybox}
+
+\begin{document}
+
+\fbox{This is an fbox}
+
+\shadowbox{This is a shadowbox}
+
+\doublebox{This is a doublebox}
+
+\ovalbox{This is an ovalbox}
+
+\Ovalbox{ This is an Ovalbox}
+
+\newenvironment{Boxedminipage}%
+{\begin{Sbox}\begin{minipage}}%
+{\end{minipage}\end{Sbox}\fbox{\TheSbox}}
+\begin{Boxedminipage}{5cm}
+An example of a boxed minipage
+defined using the Sbox command.
+\end{Boxedminipage}
+
+\end{document}
+
+%%%%%% start section 10.1.2
+
+\usepackage{shadow}
+% \usepackage{fancybox} % Note: \shadowbox is in fancybox
+
+\begin{document}
+
+\hsize=3in
+
+% \sboxrule \sboxsep \sdim
+
+\noindent
+A standard framed box \fbox{framed text},
+then a shadow box
+% \shadowbox{framed text with shadow}.
+\shabox{framed text with shadow}.
+\par\bigskip
+% \renewcommand{\shadowdim}{1.5\fboxsep}
+ \renewcommand{\sdim}{1.5\sboxsep}
+% \shadowbox{\parbox{6cm}{%
+\shabox{\parbox{6cm}{%
+A complete paragraph can be highlighted
+by putting it in a parbox, nested
+% inside a \texttt{framebox}.}}
+inside a \texttt{shabox}.}}
+
+\end{document}
+
+%%%%%% start section 10.1.1
+
+\usepackage{boxedminipage}  % Note: on IBM PC: \usepackage{boxedmin}
+
+\begin{document}
+
+\begin{boxedminipage}[t]{5cm}
+This is an example of a small 
+boxed minipage\footnote{Very simple
+example} which moreover has a footnote.
+\end{boxedminipage}
+
+\end{document}
+

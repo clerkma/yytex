@@ -1,0 +1,74 @@
+%% This is the file `PS1enc.def'
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%%
+%% This is for fonts set up with Adobe Standard Encoding
+%% (this is the default font encoding for text fonts in Type 1 format).
+%%
+%% Usage:  \usepackage[PS1]{fontenc}
+%%
+\ProvidesFile{PS1enc.def}[1994/09/01]
+\DeclareFontEncoding{PS1}{}{}
+\DeclareTextAccent{\`}{PS1}{193}
+\DeclareTextAccent{\'}{PS1}{194}
+\DeclareTextAccent{\^}{PS1}{195}
+\DeclareTextAccent{\~}{PS1}{196}
+\DeclareTextAccent{\"}{PS1}{200}
+\DeclareTextAccent{\H}{PS1}{205}
+\DeclareTextAccent{\r}{PS1}{202}
+\DeclareTextAccent{\v}{PS1}{207}
+\DeclareTextAccent{\u}{PS1}{198}
+\DeclareTextAccent{\=}{PS1}{197}
+\DeclareTextAccent{\.}{PS1}{199}
+\DeclareTextCommand{\b}{PS1}[1]
+   {\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char197}\vss}\hidewidth}}
+\DeclareTextCommand{\c}{PS1}[1]
+   {\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent203 #1%
+     \else{\ooalign{\hidewidth\char203\hidewidth
+        \crcr\unhbox\z@}}\fi}
+\DeclareTextCommand{\d}{PS1}[1]
+   {\oalign{#1\crcr\hidewidth.\hidewidth}}
+\DeclareTextCommand{\k}{PS1}[1]
+   {\oalign{#1\crcr\char206\hidewidth}}
+% \DeclareTextSymbol{\AA}{PS1}{65}	% no Aring in ASE
+\DeclareTextSymbol{\AE}{PS1}{225}
+\DeclareTextSymbol{\L}{PS1}{232}
+\DeclareTextSymbol{\O}{PS1}{233}
+\DeclareTextSymbol{\OE}{PS1}{234}
+\DeclareTextSymbol{\S}{PS1}{167}
+\DeclareTextSymbol{\P}{PS1}{182}
+\DeclareTextSymbol{\dag}{PS1}{178}
+\DeclareTextSymbol{\ddag}{PS1}{179}
+\DeclareTextSymbol{\SS}{PS1}{251}	% no Germandbls in ASE
+\DeclareTextSymbol{\_}{PS1}{95}
+% \DeclareTextSymbol{\aa}{PS1}{97}	% no aring in ASE
+\DeclareTextSymbol{\ae}{PS1}{241}
+\DeclareTextSymbol{\guillemotleft}{PS1}{171}
+\DeclareTextSymbol{\guillemotright}{PS1}{187}
+\DeclareTextSymbol{\guilsinglleft}{PS1}{172}
+\DeclareTextSymbol{\guilsinglright}{PS1}{173}
+\DeclareTextSymbol{\i}{PS1}{245}
+% \DeclareTextSymbol{\j}{PS1}{106}	% no dotlessj in ASE
+\DeclareTextSymbol{\l}{PS1}{248}
+\DeclareTextSymbol{\o}{PS1}{249}
+\DeclareTextSymbol{\oe}{PS1}{250}
+\DeclareTextSymbol{\pounds}{PS1}{163}
+\DeclareTextSymbol{\quotedblbase}{PS1}{185}
+\DeclareTextSymbol{\quotesinglbase}{PS1}{184}
+\DeclareTextSymbol{\ss}{PS1}{251}
+\DeclareTextSymbol{\$}{PS1}{`\$}
+% \DeclareTextSymbol{\TH}{PS1}{222}	% no Thorn in ASE
+% \DeclareTextSymbol{\th}{PS1}{254}	% no thorn in ASE
+% \DeclareTextSymbol{\DH}{PS1}{208}	% no Eth in ASE
+% \DeclareTextSymbol{\dh}{PS1}{240}	% no eth in ASE
+\DeclareTextCommand{\{}{PS1}
+   {\ifmmode\lbrace\else\char`\{\fi}
+\DeclareTextCommand{\}}{PS1}
+   {\ifmmode\rbrace\else\char`\}\fi}
+\DeclareTextComposite{\.}{PS1}{i}{`\i}	% ha ha
+% \DeclareTextComposite{\.}{PS1}{I}{157}	% no Idot in ASE
+% Adobe StandardEncoding doesn't have any composites...
+\endinput
+%% 
+%% End of file `PS1enc.def'.

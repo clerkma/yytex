@@ -1,0 +1,4244 @@
+% DVIWindo manual % This is in YTeX
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=10pt 	% for final version
+% \typesize=12pt		% for proofing
+
+% \hsize=4.66in % for letter paper version (default)
+% \hsize=5.5in % for legal paper version
+
+\font\manual=logo10
+\font\sc=cmcsc10
+\font\vt=cmvtt10
+
+\input memo.mac
+
+\newdimen\dwidth
+\newdimen\dheight
+
+\def\showimage#1#2#3{
+\dwidth=#2 \dheight=#3 
+\edef\width{\number\dwidth} \edef\height{\number\dheight}
+\special{insertimage: #1 \width \space \height}
+}
+
+% \def\subsubsection#1{{\bf #1}}
+
+% A good way to print fractions in text when you don't want
+% to use \over (which should be most of the time), and yet
+% just `1/2' doesn't look right.  (From the TeXbook, exercise 11.6.)
+ 
+\def\frac#1/#2{\leavevmode
+   \kern-.1em \raise .5ex \hbox{\the\scriptfont0 #1}%
+   $/$%
+   \kern-.15em \lower .25ex \hbox{\the\scriptfont0 #2}%
+}%
+
+\def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\def\SliTeX{S{\sc LI}{\TeX}}
+
+% \def\Y&Y{Y\kern-.25em\hbox{{\smllsize \&}}\kern -.25em Y}
+\def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.23em Y}
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\def\TeXtures{TeXtures}	% \def\TeXtures{{\TeX}tures}
+
+% \def\METAFONT{{\manual META}\-{\manual FONT}}
+
+\def\DVIWindo{{\sc dvi\-w}indo}
+\def\DVIPSONE{{\sc dvi\-ps\-one}}
+\def\REENCODE{{\sc re\-encode}}
+% \def\CHARSET{{\sc char\-set}}
+\def\AFMTOPFM{{\sc afm}\-to\-{\sc pfm}}
+\def\AFMTOTFM{{\sc afm}\-to\-{\sc tfm}}
+\def\TIFFTAGS{{\sc tifft}ags}
+\def\CLEANUP{{\sc clean\-up}}
+
+\def\TWOUP{{\sc two\-up}}
+
+% \def\PKTOPS{{\sc pk\-to\-ps}}
+% \def\DOWNLOAD{{\sc down\-load}}
+% \def\MODEX{{\sc mod\-ex}}
+% \def\SERIAL{{\sc ser\-ial}}
+
+\def\ANSI{{\sc ansi}}
+\def\ASCII{{\sc ascii}}
+
+\def\UART{{\sc uart}}
+\def\FIFO{{\sc fifo}}
+
+\def\DOS{{\sc dos}}
+
+\def\PSPATH{{\sc pspath}}
+\def\VECPATH{{\sc vecpath}}
+
+% \def\BIOS{{\sc bios}}
+% \def\PATH{{\sc path}}
+
+\def\AFM{{\sc afm}}
+\def\INF{{\sc inf}}
+\def\TFM{{\sc tfm}}
+\def\PFM{{\sc pfm}}
+\def\DVI{{\sc dvi}}
+
+\def\VEC{{\sc vec}}
+
+\def\PS{{\sc ps}}
+\def\PK{{\sc pk}}
+
+\def\PFA{{\sc pfa}}
+\def\PFB{{\sc pfb}}
+
+\def\EPS{{\sc eps}}
+
+\def\EPSF{{\sc epsf}}
+\def\EPSI{{\sc epsi}}
+
+\def\PSFIG{{\sc psfig}}
+
+\def\PIF{{\sc pif}}
+
+\def\DSC{{\sc dsc}}
+
+% \def\VM{{\sc vm}}
+% \def\MS{{\sc ms}}
+
+\def\ATM{{\sc atm}}
+
+\def\ATMINI{{\tt atm.ini}}
+\def\WININI{{\tt win.ini}}
+
+\def\ATMQLC{{\tt atmfonts.qlc}}
+
+\def\PSCRIPT{{\sc pscript.drv}}
+
+\def\PFM{{\sc pfm}}
+\def\PFB{{\sc pfb}}
+
+\def\CM{{\sc cm}}
+
+% \def\COPY{{\sc copy}}
+% \def\MODE{{\sc mode}}
+% \def\PRINT{{\sc print}}
+
+% \def\XONXOFF{{\sc xon/xoff}}
+% \def\DTRDSR{{\sc dtr/dsr}}
+% \def\ETXACK{{\sc etx/ack}}
+
+\def\IBM{{\sc ibm}}
+\def\PC{{\sc pc}}
+
+% \def\COMPAQ{{\sc compaq}}
+
+\def\TUG{{\sc tug}}
+
+% \def\SMARTDRV{{\sc smart\-drv.sys}}
+\def\SMARTDRV{{\sc smart\-drv.exe}}
+\def\RAMDRV{{\sc ram\-drv.sys}}
+\def\RAM{{\sc ram}}
+
+\def\AUTOEXEC{{\tt auto\-exec.bat}}
+
+\def\UNIX{{\sc unix}}
+\def\DVIPS{{\sc dvips}}
+\def\DVITWOPS{{\sc dvi2ps}}
+\def\DVIALW{{\sc dvialw}}
+\def\DVITOPS{{\sc dvitops}}
+\def\DVILASER{{\sc dvilaser/ps}}
+
+\def\TIFF{{\sc tiff}}
+
+% \def\controlc{{\tt control-C}}
+% \def\controld{{\tt control-D}}
+% \def\controlbreak{{\tt control-break}}
+
+\def\revert{\special{textcolor: revert}}		% switch back
+
+\def\black{\special{textcolor: 0 0 0}} 			% 0
+\def\darkred{\special{textcolor: 128 0 0}} 		% 1
+\def\darkgreen{\special{textcolor: 0 128 0}} 		% 2
+\def\peagreen{\special{textcolor: 128 128 0}} 		% 3
+\def\darkblue{\special{textcolor: 0 0 128}} 		% 4
+\def\lavender{\special{textcolor: 128 0 128}} 		% 5
+\def\slate{\special{textcolor: 0 128 128}} 		% 6
+\def\lightgray{\special{textcolor: 192 192 192}} 	% 7
+
+% following found only if device has more than 16 colors
+
+\def\palegreen{\special{textcolor: 192 220 192}} 	% 8
+\def\paleblue{\special{textcolor: 166 202 240}} 	% 9
+\def\offwhite{\special{textcolor: 255 251 240}} 	% 10
+\def\mediumgray{\special{textcolor: 160 160 164}} 	% 11
+
+\def\darkgray{\special{textcolor: 128 128 128}} 	% 12	% 8
+\def\brightred{\special{textcolor: 255 0 0}} 		% 13	% 9
+\def\brightgreen{\special{textcolor: 0 255 0}} 		% 14	% 10
+\def\yellow{\special{textcolor: 255 255 0}} 		% 15	% 11
+\def\brightblue{\special{textcolor: 0 0 255}} 		% 16	% 12
+\def\magenta{\special{textcolor: 255 0 255}} 		% 17	% 13
+\def\cyan{\special{textcolor: 0 255 255}} 		% 18	% 14 
+\def\white{\special{textcolor: 255 255 255}} 		% 19	% 15
+
+\def\rulered{\special{rulecolor: 128 0 0}}
+% \def\ruleblack{\special{rulecolor: 0 0 0}}
+\def\rulerevert{\special{rulecolor: revert}}
+
+\def\reverseon{\special{reversevideo: on}}
+\def\reverseoff{\special{reversevideo: off}}
+
+% \def\menu#1{{\bf\lavender #1\black}}
+% \def\menu#1{{\bf\slate #1\black}}
+% \def\menu#1{\slate{\bf #1}\black} % ???
+\def\menu#1{\slate{\bf #1}\revert}
+
+% \def\type#1{{\tt\lavender #1\black}}
+\def\type#1{\lavender{\tt #1}\black} % ???
+\def\type#1{\lavender{\tt #1}\revert}
+
+% \def\colorsection#1{\darkred\section{#1}\black}
+\def\colorsection#1{\darkred\section{#1}\revert}
+% \def\colorsubsection#1{\darkgreen\subsection{#1}\black}
+\def\colorsubsection#1{\darkgreen\subsection{#1}\revert}
+
+% \def\colornsection#1{\darkred\nsection{#1}\black}
+\def\colornsection#1{\darkred\nsection{#1}\revert}
+% \def\colornsubsection#1{\peagreen\nsubsection{#1}\black}
+\def\colornsubsection#1{\peagreen\nsubsection{#1}\revert}
+\def\colornsubsubsection#1{\nsubsubsection{#1}}
+
+% \def\boxit#1{\vbox{\hrule height\bthick\hbox{\vrule width\bthick\kern6pt
+% 	\vbox{\kern6pt#1\kern6pt}\kern6pt\vrule width\bthick}\hrule height\bthick}}
+
+% \def\backspecial{\lavender\verb@\special@\revert}
+
+% \def\warning{
+% {\narrower\par\noindent
+% {\bf WARNING:} Keep a copy of the original font metric files ({\PFM})
+% and the font outline files ({\PFB}) in a safe place before making
+% modifications using the utilities supplied with {\DVIWindo}.
+% \par}\par
+% }
+
+\newbox\boxa
+
+\setbox\boxa=\vbox{
+\hbox{{\bf \reverseon WARNING: \reverseoff} Keep a copy of the original font metric files ({\PFM})}
+\hbox{and the font outline files ({\PFB}) in a safe place before making}
+\hbox{modifications using the utilities supplied with {\DVIWindo}.}
+}
+
+% \def\warning{\centerline{\copy\box\boxa}}
+% \def\warning{\centerline{\copy\boxa}}
+\def\warning{\centerline{\rulered\brightred\boxit{\copy\boxa}\revert\rulerevert}}
+
+% \def\registered{{\ooalign
+% 	{\hfil\raise.02ex\hbox{{\sc r}}\hfil\crcr\mathhexbox20D}}}
+
+\font\sy=sy
+
+\def\registered{{\sy \char210}}
+
+\def\TM{$^{\smlsize TM}$}
+
+\def\coverpage{
+\noheaders
+\topglue 2in
+% \centerline{\bigggsize\bf\magenta DVIWindo - release 0.7.9\black}
+% \centerline{\bigggsize\bf\magenta DVIWindo - release 0.8\black}
+% \centerline{\bigggsize\bf\magenta DVIWindo - release 0.9\revert}
+\centerline{\bigggsize\bf\magenta DVIWindo - release 1.0\revert}
+\vskip .2in
+% \centerline{\bigsize Copyright {\copyright} 1991, 1992 {\Y&Y}. All rights reserved.} 
+
+\centerline{\bigsize Copyright {\copyright} 1991 -- 1993 {\Y&Y}, Inc. All rights reserved.}
+
+\vskip 3in
+
+% This is the version for printing with the logo
+
+% \centerline{\hbox to 1.33in{\special{illustration c:/dvitest/y&ylogo.eps}\hfill}}
+\centerline{\hbox to 1.33in{\special{illustration c:/ps/y&ylogo.eps}\hfill}}
+
+% This is the version for showing the logo on screen
+
+% \centerline{\hbox to 1.33in{\showimage{y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+\vskip 1in
+
+\centerline{\bigsize {\Y&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}
+
+\vskip .02in
+
+\centerline{\bigsize 
+% (800) 742--4059 --- 
+(508) 371--3286 (voice) ---
+(508) 371--2004 (fax)}
+
+\newpage
+\decreasepageno
+
+\noheaders
+\topglue 2in
+\hbox{ }	% to get blank page
+\newpage
+\decreasepageno
+}
+
+\coverpage  % comment out for draft version
+
+\noheaders
+
+% \versorightheader={COPYRIGHT {\copyright} 1991, 1992 {\Y&Y}}
+
+\versorightheader={COPYRIGHT {\copyright} 1991 -- 1993 {\Y&Y}, Inc.}
+
+% \nsection{Introduction to {DVIWindo}}
+\colornsection{Introduction to {DVIWindo}}
+
+{\DVIWindo}{\TM} is a Windows-based application for viewing
+{\DVI} files on {\IBM} {\PC} compatible computers.
+{\DVIWindo} uses outline font rendering technology 
+% (Adobe Type Manager ({\ATM}), 
+and so can display {\DVI} files calling for % arbitrary 
+outline fonts at arbitrary magnifications. 
+{\DVIWindo} makes it possible to preview documents using Computer
+Modern fonts, as well as fonts other than those in the Computer Modern family.
+% {\DVIWindo} can, of course, also display {\DVI} files calling for
+% Computer Modern fonts, since these are now available in outline form.
+%
+% {\DVIWindo} can display a document at any desired magnification.
+{\DVIWindo} does not use bitmapped fonts. % require
+% without the need for bitmapped fonts.
+
+\unvpar
+
+{\DVIWindo} provides many advanced features, such as the ability 
+to search for a text string, 
+to highlight text in a selected font,
+to print the page being viewed at arbitrary magnification, 
+%% print the document also...
+and to show inserted figures provided in the form of {\EPSF} files.
+{\DVIWindo} can print the whole document, or selected pages, 
+to any device for which a Windows printer
+driver is available, including many fax boards.
+
+{\DVIWindo} can copy a selected region of the screen to the Windows
+clipboard for pasting into other applications.
+{\DVIWindo} can show two-page `spread's and
+use graphical designation of an area to be `zoomed'.
+{\DVIWindo} also makes it easy to verify font installation by
+displaying a list of outline fonts known to Windows % known to {\ATM} 
+and by showing the full character set available in each font.
+% along with character metric information.
+% Different fonts can be shown in different colors.
+
+% MetaFile to ClipBoard later on ...
+
+\vskip .15in % \vskip .1in % \vskip .05in
+
+% \centerline{ 
+% Together with {\DVIPSONE}, {\DVIWindo} provides bitmap-free support for {\TeX}!}
+
+\centerline{\rulered\boxit{\hbox{
+\brightred Together with {\DVIPSONE}, {\DVIWindo} provides \reverseon bitmap-free \reverseoff support for {\TeX}!\revert}}\rulerevert}
+
+% \nsubsection{Requirements}
+\colornsubsection{Prerequisites}
+
+{\DVIWindo} and the utilities that come with it require about
+half a megabyte of disk space.  Also,
+
+\vskip .05in
+
+\beginbullets
+
+\bpar {\DVIWindo} uses outline font rendering technology for 
+on-screen display. 
+%  Adobe Type Manager ({\ATM}) to render characters. 
+Such techniques are available in % {\ATM} % Adobe Type Manager 
+Windows 3.0 (or later), running in standard or enhanced mode.
+% (not in real mode).
+Consequently the processor has to be at least an Intel 80286; % 286
+
+% say something about memory required? disk space? DOS version?
+
+\bpar The fonts called for in the {\DVI} file must be 
+available in outline form. % and loaded using {\ATM} (or True\-Type)
+
+\endbullets
+
+Adobe Type~1 outline fonts, for example, are supported by Adobe Type
+Manager ({\ATM}).  {\ATM} comes with a basic set of thirteen fonts.
+The remaining 22 `standard' printer-resident fonts may be found in the
+Adobe Plus Pack. 
+Blue Sky Research's Computer Modern fonts are available in 
+Adobe Type~1 form % for the {\PC} 
+from {\Y&Y}, as are {\LaTeX}+{\SliTeX} fonts, the Euler font set,
+and Lucida{\registered}Bright+LucidaNewMath%
+\cfootnote{Lucida is a registered trademark of Bigelow \& Holmes Inc.}. 
+
+{\DVIWindo} can also be used with other scalable font rendering schemes,
+such as True\-Type in Windows 3.1 (see section~2.14 and Appendix~C.1).
+% as well as other scalable font technology. 
+% such as BitStream's FaceLift
+% such as CompuGraphics IntelliFont
+
+%% forward reference ???
+
+% \nsubsection{Quick Start---Installing DVIWindo}
+\colornsubsection{Quick Start---Installing DVIWindo}
+	
+% The easiest way to install {\DVIWindo} is the automatic method.
+%
+% To install {\DVIWindo}, open the File Manager and select the drive
+% with the installation diskette, then double click on the file
+% \verb@install.exe@. 
+
+Use the Windows File Manager to navigate to the file named
+\type{install.exe} on the distribution diskette (drive \type{a:}
+or drive \type{b:}).  Double click on \type{install.exe} to run the
+installer. Follow the instructions in the installer dialogs. 
+% The installer will copy the distribution files to your hard disk and
+% create a program group called {\Y&Y}.
+You can instead use the Program Manager and select \menu{Run...} from
+the \menu{File} menu to run the installer program 
+(type \type{a:install} or \type{b:install}).
+
+% Alternatively, select \menu{Run...} from the Program Manager's
+% \menu{File} menu. Then, if the distribution diskette is in drive
+% \type{a:}, type: 
+%
+% \vskip .05in
+%
+% \lavender\verb@a:\install@\black % \type{a:install} 
+% 
+% \vskip .05in
+%
+% \noindent 
+% % If the distribution diskete in another drive, % Simply 
+% Replace the \type{a:} above with the appropriate drive letter
+% when installing from another diskette drive. %  other than \type{a:}).
+
+The installation program will copy the executable files to a 
+directory on the hard disk.  
+There is an opportunity to select a directory other than the
+default, which is \lavender\verb@c:\dviwindo@\revert.
+% You may specify a directory for these files when asked to verify the
+% default choice.
+The installation program also creates a new application group called
+{\Y&Y}, and installs the {\DVIWindo} icon in this group%
+\cfootnote{The installation procedure also installs the {\CLEANUP} icon
+in the {\Y&Y} group.  
+{\CLEANUP} can be used to get rid of inactive Windows --- see Appendix~E.}.
+% for details.}.
+You may want to resize and move this new group to a suitable
+location on the desktop.
+Alternatively, you can click and drag the {\DVIWindo} icon to
+another group (such as ``Windows Applications'')  % , for example
+and then remove the % (now empty) 
+{\Y&Y} application group, 
+using \menu{Delete} from the \menu{File} menu.
+% Just remember that changes made to the desktop will disappear
+% when exiting Windows, unless \menu{Save Changes} is checked
+% in the \menu{Exit} message box.
+\menu{Save Changes} is automatically checked by the installation procedure
+to make sure that changes made to the desktop will not disappear
+when exiting Windows.
+
+%% That is, the new group WILL be there, but the resizing won't be
+%% That is, groups and icons are preserved, but size and position is NOT
+
+Old copies of the {\DVIWindo} icon in the {\Y&Y} application group are
+automatically deleted when upgrading to a new release of {\DVIWindo}.  
+% as is EVERYTHING in that group!
+Copies of the {\DVIWindo} icon in other applications groups, however, are not.
+These may be removed, if desired, using \menu{Delete} from the \menu{File} menu%
+\cfootnote{The automatic installation procedure assumes that the top
+level shell is the Program Manager supplied with Windows.  
+% (for example, Norton DeskTop) 
+If it is not, then the automatic installation method will not be able to
+install the {\DVIWindo} icon.
+In that case you will need to follow the procedures 
+for installing application icons that apply to your shell.}.
+
+There are some files on the distribution diskette that are {\it not\/}
+automatically copied to the hard disk, because they are not always needed.
+These include encoding vector files ({\VEC}) (in subdirectory \type{vec}),
+% referred to in the Appendix, 
+a set of Windows font metric files ({\PFM}) (in subdirectory \type{pfm}), 
+and a set of {\TeX} font metric files ({\TFM}) (in subdirectory \type{tfm}), 
+
+To launch {\DVIWindo}, simply double-click on the {\DVIWindo} icon. 
+The user interface is straight\-forward; %  and
+it is possible to use {\DVIWindo} effectively without reading any further.  
+There are, however, some subtleties that may not be obvious just from
+looking at the menus. 
+This includes, for example, how a menu selection is modified when the
+`Shift' key is held down. % when the selection is made.
+Also, the most convenient methods for moving the image on the screen or
+for zooming in on a portion of the display may not be immediately apparent.
+
+% \nsubsection{Caveats} % Limitations 
+\colornsubsection{Caveats} % Limitations 
+
+\beginbullets
+
+% \bpar {\DVIWindo} does not display figures in {\EPS} file form called for
+% in a {\DVI} file using \lavender\verb@\special@\revert.
+% (This is because {\DVIWindo} does not have access to a general purpose
+% PostScript interpreter.)
+
+\bpar {\DVIWindo} does not come % is not supplied 
+with any outline fonts.  
+The required outline fonts have to be acquired separately.
+{\ATM} includes a set of Type~1 fonts, 
+and Windows~3.1 comes with some True\-Type fonts, 
+but these do not include math fonts often called for in {\TeX} documents.
+
+%% other than the logo* fonts...
+
+\bpar For a figure called for using {\lavender\verb@\special@\revert} 
+to be shown on screen, it has to be in {\EPSF} form --- 
+that is, include a {\TIFF} preview image ---
+or it must be in {\EPSI} form.
+% This is because {\DVIWindo} does not have access to a general purpose
+% Post\-Script interpreter.
+
+\bpar {\DVIWindo} can not directly show text calling for remapped fonts.
+The reason is that Windows % {\ATM} 
+provides only  for `native' encoding %  `raw' 
+of a font as an alternative to the default {\ANSI} reencoding.
+
+\endbullets
+
+\noindent
+Remapping is not a problem, of course, with Computer Modern fonts
+commonly used with {\TeX}, since the Windows font metric files
+({\PFM}) have been set up to reflect the appropriate character encoding.
+It is also not a problem when fonts are used directly with the encoding
+for which their metric files were set up 
+(which for most text fonts is Windows ANSI encoding). 
+It is only an issue when using {\it remapped} {\it non}-{\CM} fonts.
+% To make this possible:
+In that case, note that: % However: % Note that:
+
+\beginbullets
+
+\bpar Utilities are supplied with {\DVIWindo} that % perform % minor
+can % be used to 
+create new Windows font metric ({\PFM}) files,
+and, if necessary, even modify font outline files,
+to allow their use with {\DVI} files calling for 
+{\it arbitrarily\/} remapped fonts.
+
+\bpar With the availability of {\TeX}~3.0, one of the motivations
+for reencoding a font, namely the old restriction to fonts with a maximum
+of 128 characters, has disappeared. % been removed
+% to the 0--127 character code range,
+
+% \bpar Since the PC versions of the Blue Sky Research Computer Modern fonts
+% contain the 58 `standard' accented characters, another motivation for
+% reencoding a font has been lifted.
+
+\endbullets
+
+\noindent
+Methods for dealing with remapped fonts are detailed in Appendix~D
+(as well in the file \type{encoding.txt}).
+
+% \nsection{Using DVIWindo}
+\colornsection{How to use DVIWindo}
+
+\undosectionskip
+
+% \nsubsection{Brief Outline} % {A Quick Introduction}
+\colornsubsection{Menu Item Selection and Mouse Tricks} % {A Quick Introduction}
+
+To view a {\DVI} file, 
+select \menu{Open...} from {\DVIWindo}'s \menu{File} menu.
+A file selection menu pops up % with
+listing files, directories and drives.  
+To move downward in the directory structure, click on
+one of the listed directories; move upwards by clicking on `\type{[..]}'.
+A file name can also be entered directly.
+If the file name contains `wildcard' characters (`\type{*}' or `\type{?}')
+then a list of files matching the wildcard specification is shown. % obtained.
+Click \menu{OK} when the desired file has been selected.
+
+The first page of the file will be shown when it is opened.
+To move to the next page, click \menu{Next!} in the main menu --- 
+to move back to the previous page, click \menu{Previous!} % . 
+To move to an arbitrary page, 
+use \menu{Select Page...} from the \menu{File} menu.
+
+Typically not all of a page will be visible on the screen.
+An easy way to change what part is shown is to `drag' the
+image on the screen.
+To do this, hold down the `Alt' key, push down the left mouse button
+--- the cursor changes to a hand --- drag the image % on the screen
+--- then release the mouse button.
+
+% The scroll arrows can also be used to move the image on the screen
+% in small increments.  
+% For larger jumps, hold down the `Shift' key while scrolling.
+% For even larger motions, click on either side of the scroll bar `thumbs'.
+
+To zoom in on a part of the image, draw a rectangle around the region
+to be enlarged. % outline the region to be enlarged.
+To do this % decide on the region to be magnified, then 
+hold down the `Ctrl' key, press the left mouse button at 
+% one corner of the rectangular --- 
+one corner of the rectangle --- 
+the cursor changes to a magnifying glass --- 
+drag to the opposite corner of the rectangle ---  
+then release the mouse button.
+The rectangle % shown on the screen 
+will be enlarged to fit just inside the window (see also section~2.4). 
+To move the rectangle while it is being defined, 
+hold down the {\it right\/} mouse button as well as the left%
+\cfootnote{Should you change your mind about `zooming', simply bring
+the cursor back close to where you started.  
+The zooming operation is aborted if the designated rectangle is too small.}.
+
+To return to the image mapping in effect before zooming, 
+select \menu{Restore View} from the \menu{File} menu.
+%  --- or use the keyboard shortcut control-V 
+% (obtained by holding down `Ctrl' and pressing `V').
+% It is possible to zoom in repeatedly --- a stack of mappings is saved
+% that are used when \menu{Restore View} is invoked several times.
+To return to the default image mapping, 
+select \menu{Default Scale} from the \menu{File} menu.
+To see the bottom of the page instead of the top, select
+\menu{Page Bottom} from the \menu{File} menu.
+
+To print the page being viewed, select \menu{Print View} from the
+\menu{File} menu.  
+The default printer will be used unless another printer has previously been
+selected using \menu{Printer Setup...} from the \menu{File} menu
+(see also section ~2.7).
+%
+% To print the whole document, select \menu{Print...} from the \menu{File} menu.
+Printing can be to any device for which there is a Windows printer driver,
+including fax boards, such as the Intel SatisFaxtion{\TM} board
+with the FAXit{\TM} Windows driver (see section~2.7).
+This provides a convenient way of sending a letter % composed using {\TeX}
+directly from {\DVIWindo}, without the loss of resolution encountered
+when scanning a printed document in a fax machine.
+
+To copy a part of what is displayed to the clipboard, outline a
+rectangle as described above for magnifying part of the screen ---
+{\it except}, hold down the shift key as well as the control key before
+pressing the left mouse button.  In this case the cursor changes to
+a pair of scissors.  The material copied to the clipboard can the be
+pasted into another application (see also section~2.8).
+
+To search for a text string in the file, 
+use \menu{Search...} from the \menu{File} menu.
+A dialog box will appear requesting the string to be searched for.
+After locating the first occurrence of the string in the {\DVI} file,
+it is possible to search for the next, simply by selecting
+% To continue the search with the same string, select 
+\menu{Search Again} from the \menu{File} menu
+(see also section~2.6).
+% case sensitivity ?
+% Note that \menu{Search} provides a quick way of finding parts
+% of the {\DVIWindo} manual (\type{winmanua.dvi}) relevant to some keyword!
+
+It is not necessary to explicitly close one file before opening another.
+To refresh the display % simply 
+% (should it become confused)
+% (something that shouldn't normally be necessary), 
+double-click anywhere on the screen.
+% in the client region
+% 
+Finally, to exit {\DVIWindo}, select \menu{Exit} from the \menu{File} menu
+--- or press the `Esc' key.
+
+% \nsubsection{Keyboard ShortCuts}
+\colornsubsection{Keyboard Shortcuts}
+
+Menu item selection using the mouse is intuitive and 
+requires little learning.  
+For the experienced user, however,  % appear tedious and 
+it can at times appear to be a bit slow.  
+There are two types of keyboards shortcuts:
+% as in all Windows programs
+
+\beginbullets
+
+\vskip .05in
+
+\bpar Menu item selection using the `Alt' key:
+One letter is underlined in each menu item.
+To select this item from a particular menu, 
+hold down the `Alt' key and type the underlined letter.
+
+\vskip .05in
+
+\bpar Keyboard accelerator keys:  Next to many menu items is 
+% an indication of 
+noted an accelerator key combination, % combination, 
+often involving the `Ctrl' key (denoted by `\type{\char94}').
+
+\vskip .05in
+
+\endbullets
+
+\noindent
+The difference between these % the two 
+methods is that an accelerator key can
+be used even when the associated menu has {\it not\/} been pulled down.  
+
+Commonly used accelerator keys include 
+`Ins' for \menu{Open...}, 
+`PgDn' for \menu{Next!}, % next page, 
+`PgUp' for \menu{Previous!}, % previous page, 
+`Home' for beginning of file, 
+`End' for end of file,
+`Ctrl-B' for \menu{Page Bottom},
+`Ctrl-R' for \menu{Search...},
+`Ctrl-S' for \menu{Search Again},
+`Ctrl-P' for \menu{Print...},
+`Ctrl-F' for \menu{Show Font},
+and
+`Esc' for \menu{Exit}.
+
+% note that some of these don't have menu equivalents!
+
+% \nsubsection{Preferences}
+\colornsubsection{User Preferences}
+
+To make {\DVIWindo} more convenient to use, % most of the user 
+selectable preferences are saved at the end of a session in a
+`private profile file' --- \type{dviwindo.ini} in the Windows Directory.
+The information saved includes the shape and size of the window,
+and the last file open.
+These saved user preferences are read in when {\DVIWindo} is next invoked.  
+Saving of preferences may be disabled by unchecking 
+\menu{Save Preferences} in the \menu{Preferences} menu.
+The saving of preferences may also be {\it temporarily\/} disabled 
+by holding down the `Shift' % control 
+key while selecting \menu{Exit} from the \menu{File} menu%
+\cfootnote{If \menu{Save Preferences} is {\it unchecked\/},
+% If the saving of preferences has been {\it disabled\/}, 
+then holding down the `Shift' key while exiting {\DVIWindo}
+will temporarily {\it reenable\/} saving of preferences.}.
+% for just one session).
+% Conversely, holding down the control key while launching {\DVIWindo}
+% temporarily suppresses reading of the saved preferences and so 
+% reverts to the `wired-in' defaults. %% NEW %% really ?
+
+Should \type{dviwindo.ini} ever get corrupted, simply delete it.
+{\DVIWindo} will rebuild the file the next time it is launched. 
+%
+When multiple instances of {\DVIWindo} are loaded, then only the first
+instance will save its state in the private profile file
+(unless explicitly requested to do so by checking \menu{Save Preference}).
+
+Note that you can quickly get back to the file that was open the last time
+{\DVIWindo} was active % {\DVIWindo} last had open
+% the last time {\DVIWindo} was used by
+--- just use the accelerator key `Ins' followed by `Enter',
+right after invoking {\DVIWindo}. % again.
+
+% Note also that 
+It is not necessary to \menu{Exit} and then reload {\DVIWindo}
+while editing a file and running it through {\TeX}. %  again.
+{\DVIWindo} does not % actually 
+leave files open
+(which could prevent {\TeX} from overwriting them),
+and {\DVIWindo} notices when a file has changed, 
+and rescans it if necessary.
+
+Finally, there can be multiple instances of {\DVIWindo} 
+(the program code is shared).  
+This may be convenient when comparing different {\DVI} files.
+
+% \nsubsection{Screen Mapping and Zooming}
+\colornsubsection{Screen Mapping and Zooming}
+
+There are several alternate ways of changing the part of the page
+being viewed and the magnification at which it is being viewed.
+%
+First of all, to change the part of the page being viewed:
+
+\beginbullets
+
+\bpar hold down the `Alt' key and click and drag the image; or
+
+\bpar use the scroll bar arrow buttons (for small shifts); or
+
+\bpar use the scroll bar arrow buttons while holding down the `Shift' key; or
+
+\bpar click on either side of the scroll bar `thumb' (for large shifts).
+
+\endbullets
+
+\noindent
+Note that 
+the arrow keys are keyboard equivalents of the scroll bar arrow buttons.
+% \noindent
+To change the magnification:
+
+\beginbullets
+
+\bpar Hold down the `Ctrl' key and click and drag to define a rectangle
+that will be magnified to fit inside the window%
+\cfootnote{{\DVIWindo} sets a limit on the amount of magnification or
+demagnification.
+This is to reduce the chance of numeric overflow.
+% The need for this arises from a desire to prevent numeric overflow.
+% Note that 
+Windows, {\ATM} and {\DVIWindo} are all written using
+fixed point arithmetic --- mostly based on 16-bit integers.}
+% While {\DVIWindo} is careful to prevent overflow in its internal
+% calculations, it is possible to get unsightly `wrap around' 
+% at extremely large magnifications when {\ATM} is asked to render several
+% characters in a row.} % to about 20
+
+% well except for certain scaling and offset parameters in \specials...
+
+\bpar Select \menu{Zoom In} from the \menu{File} menu (accelerator key:
+Ctrl-Z)  and then click and drag as above; or
+
+\bpar Click on \menu{Magnify!} or \menu{Unmagnify!} 
+(accelerator keys: Numeric pad `\type{+}' and `\type{-}') 
+for small changes in magnification; or
+
+\bpar Click on \menu{Magnify!} or \menu{Unmagnify!} 
+while holding down the `Shift' key.
+
+\endbullets
+
+\noindent
+A change in magnification (and what part of the page % image 
+is being viewed) by % means of 
+`zooming', can be undone by selecting 
+\menu{Restore View} from the \menu{File} menu (accelerator key: Ctrl-V).  
+A stack of screen mapping states is kept so that nested zooming
+operations can be undone by repeated use of \menu{Restore View}.
+% \cfootnote{\menu{Magnify!} and \menu{Unmagnify} menu selections do not
+% affect the stack of screen mapping states --- nor does scrolling.
+% Selecting \menu{Default Scale} % also
+% resets the stack.}.
+
+
+% \nsubsection{Two-Page Spreads and Choice of Page Numbering Scheme}
+\colornsubsection{Two-Page Spreads and Page Numbering Schemes}
+
+Check \menu{Spread} in the \menu{Preferences} menu to see two pages
+side by side.   
+In this mode \menu{Next!} advances by two pages and \menu{Previous!}
+retreats by two.
+Hold down the `Shift' key when clicking \menu{Next!} or \menu{Previous!}
+to move in {\it single\/} page increments instead
+(at least this is what happens when \menu{Use Count0} is {\it not\/}
+checked --- see below). 
+
+The page number shown in the window title bar can be either: 
+(a) \type{dvipage} ---
+%% physical page ???
+which is simply the sequential position of the current page in the
+{\DVI} file --- % (starting at 1), 
+or (b) \type{count0} ---
+%% logical page ???
+used for the actual page number in plain {\TeX}
+and many other dialect of {\TeX}.
+In simple documents the two `page numbers' will be the same.
+The two will be different in a book with some
+front matter ahead of the actual text, for example.
+Depending on what one is doing, one or the other `page number'
+may be more convenient.
+One can choose either by checking or unchecking 
+\menu{Use count0} in the \menu{Preferences} menu. 
+
+When \menu{Use count0} is checked in the \menu{Preferences} menu, holding
+down the `Shift' key changes the semantics of \menu{Next!}. 
+% and \menu{Previous!}. 
+Instead of advancing the page number, a search is made for another page
+with the same value for \type{count0}.  
+This is useful when a file contains multiple pages with the same value
+for \type{count0}.
+%
+The setting of \menu{Use count0} also affects the interpretation of page
+numbers specified using \menu{Select Page} in the \menu{File} menu 
+(accelerator key: numeric keypad `\type{*}').
+
+In books and journals, it is customary for odd pages to appear on the
+right and the even pages on the left of a spread.
+% the right page to have an odd number, with the left being even.
+Correspondingly, when \menu{Spread} % two-page spreads are chosen 
+{\it and\/} \menu{Use count0}
+are checked, then display of the left page is suppressed unless it
+is even, and display of the right page is suppressed unless it is odd%
+\cfootnote{It is as if {\DVIWindo} inserts blank pages, as needed, to
+make sure that the left page is even and the right page is odd.}.
+% This is not done when \type{dvipage} is used for the page number, 
+% since \type{dvipage} may not correspond to the actual page number.
+If this should get too confusing, simply uncheck \menu{Use count0}
+and \menu{Spread}!
+
+% \nsubsection{Searching}
+\colornsubsection{Text String Search}
+
+One can use \menu{Select Page...} from the \menu{File} menu 
+to advance directly to the page of interest.  %  currently
+But this is not an option if the page number is unknown.
+In this case \menu{Search...} from the \menu{File} menu may be useful 
+(accelerator key: `Ctrl-R').
+Simply specify a search string in the popup dialog box%
+\cfootnote{Hyphens and spaces are ignored in search strings.}.
+A check box allows one to select case-sensitive search.
+Another check box allows selection of wrap-around at the end of the
+file back to the beginning.
+
+The page containing the first matching string found is shown with the
+arrow cursor placed right after the string. % where  was found
+Search always starts on the page currently being viewed.
+% \cfootnote{Spaces and hyphens are ignored in search strings.}.
+Search for the next instance using \menu{Search Again} from the
+\menu{File} menu (accelerator key: `Ctrl-S').
+% The search wraps around at the end of the file back to the beginning.
+A message box appears if the string is not found --- 
+perhaps try searching for a substring in that case, 
+or do not select case-sensitive search.
+%
+Searching for key words is a great way of dealing with a book that 
+has a difficult-to-use index!
+
+% \nsubsection{Printing}
+\colornsubsection{Printing from DVIWindo}
+
+To print the page currently being viewed, select
+\menu{Print View} (accelerator key: `Ctrl-T')
+from the \menu{File} menu.
+The page will be printed on the default printer%
+\cfootnote{The default printer is specified as `\type{device}' in
+the \type{[windows]} section of {\WININI}.}.
+To choose another printer (and configure it as desired),
+select \menu{Printer Setup...} from the \menu{File} menu
+before selecting \menu{Print View}.
+If the correct printer happens to be % is 
+already selected, click \menu{Cancel}.
+% (this saves some time). Then 
+
+Note that the page will be printed using the current mapping mode. 
+This is useful, for example, for seeing part of a page magnified.
+To have the full page properly positioned on the paper instead,
+select \menu{Default Scale} from the \menu{File} menu 
+(accelerator key: `Ctrl-D') before selecting \menu{Print View}.
+
+% If two-page `spread's have been selected then both pages will be printed. 
+
+To print the whole document --- or a selected range of pages ---
+select \menu{Print...} 
+(accelerator key: `Ctrl-P') from the \menu{File} menu.
+In this case the default scaling will be used, rather than that
+currently in effect.
+%% also allows `Setup' --- new
+
+% Note that 
+The speed of printing to a Post\-Script device,
+and the accuracy of character positioning,
+may not equal that of a {\sc dvi-to-ps} converter that produces
+Post\-Script code directly, such as {\DVIPSONE}.
+More importantly, the Windows Post\-Script driver does not have
+any of the advanced font-management techniques used by {\DVIPSONE},
+such as {\it partial font downloading}. % new 1991/Nov /10
+% Also, figures included using {\lavender\verb@\special@\revert}  
+% will be printed by {\DVIWindo} using the preview images rather 
+% than the {\EPS} files.
+But printing from {\DVIWindo} can be quite convenient for 
+letters and other short documents, as well as for drafts of individual pages.
+Also, {\DVIWindo} can print to a non-Post\-Script printer,
+including some fax boards), as long as
+there is a suitable printer driver installed in Windows.
+% supported by Windows and the outline font rendering scheme being used.
+
+The dialog box that appears when \menu{Print...} is selected makes it
+possible to request that {\DVIPSONE} --- if installed ---
+be called to do the printing%
+\cfootnote{To be able to call {\DVIPSONE} from {\DVIWindo}, there must
+be a {\PIF} file for {\DVIPSONE} in the Windows directory.  
+See the Windows manual --- or Appendix~E --- for information on how to
+set up {\PIF} files.}. 
+Simply check \menu{Use DVIPSONE}. 
+Printing using {\DVIPSONE} will be faster than printing directly from
+{\DVIWindo}, and much less likely to lead to problems with limited virtual 
+memory on the printer --- but, of course, 
+only makes sense when output goes to a Post\-Script printer.
+%
+The default is to run {\DVIPSONE} in a Window.  
+Check \menu{Run Minimized} to run it as an icon.
+In this mode, you will not see any error messages, and you may have to
+wait longer since {\DVIPSONE} then has low priority.
+
+When printing directly from {\DVIWindo},
+figures included using {\lavender\verb@\special@\revert}  
+may be printed using the preview images rather 
+than the {\EPS} files --- this will in some cases reduce the time taken
+to print, and is certainly useful when printing to a non Post\-Script printer.
+Printing from {\DVIWindo} will use the actual {\EPS} code only if
+\menu{Pass Through EPS} in the \menu{Preferences} menu 
+is checked {\it and} if output is going to a Post\-Script printer.
+
+When printing from {\DVIWindo}, it is important that the fonts
+available to the printer driver match those used for screen display.
+This will be the case, for example, when {\ATM} has been used to
+install Adobe Type~1 fonts, since {\ATM} automatically updates both
+{\ATMINI} and  the Post\-Script printer sections of {\WININI}.  
+If there is a mismatch, and a font is not available to the printer
+driver, then text will appear in another font chosen by the Windows
+font mapper (see Appendix~A for solutions to such problems).
+
+% either nothing is printed, or text appears in some default
+% font, such as Courier
+
+When printing directly from {\DVIWindo} 
+using fonts other than those in the Computer Modern family,
+one may have to ensure that the correct mapping is used.
+Problems may occasionally occur {\it even\/} when the 
+screen display is in order. 
+The reason is that, in certain situations,
+the Windows printer driver (typically {\PSCRIPT}) and 
+screen rendering software (typically {\ATM})
+do not agree on whether a font will be remapped
+to Windows {\ANSI} encoding % (or exactly what {\ANSI} encoding is!).
+(Methods for working around possible problems of this nature,
+using utilities supplied with
+{\DVIWindo}, are described in Appendix~D).
+
+% possible problem with printer-resident fonts...
+
+\colornsubsection{Copying to the Clipboard}
+
+To copy a rectangular region of the screen to Window's clipboard,
+hold down the `Shift' and `Ctrl' keys, press the left
+mouse button at one corner of the rectangle --- the cursor changes to 
+a scissors --- drag to the opposite corner of the rectangle --- then
+release the mouse button.  To move the rectangle while it is being
+defined, hold down the {\it right} mouse button as well as the left.
+To copy the whole page to the clipboard, simply bring the
+cursor back to where you started --- {\DVIWindo} copies
+{\it everything\/} to the clipboard if the rectangle is very small.
+
+The text and rules copied to the clipboard can then be `pasted' 
+into another application.  The inserted material will appear as 
+a single graphical object that can be moved, resized and cropped.
+Note that what is copied is {\it not} a bitmap image, and so will
+scale properly and print without jagged edges.
+
+%\nsection{Page Borders, Page Orientation, and Page Sizes}
+% \colornsection{Page Borders, Page Orientation, and Page Sizes}
+\colornsubsection{Page Borders, Page Orientation, and Page Sizes}
+
+{\DVIWindo} will draw the page outline if 
+\menu{Draw Page Border} is checked in the \menu{Preferences} menu.
+{\DVIWindo} will draw the rectangular area % (`bounding box')
+% that information in the {\DVI} file  suggests is actually 
+used for text,
+if \menu{Draw Text Outline} is checked in the \menu{Preferences} menu.
+The latter is not always meaningful, 
+since it is based on incomplete information obtained from the {\DVI} file.
+The top left corner of this `bounding box' is % , for example, 
+constrained to be at {\TeX}'s reference point  
+(one inch down and one inch in from the top left corner of the page),
+and no account is taken of headers, footers,
+% crop marks, 
+page numbers and other marks 
+added to the page in {\TeX}'s output routine.
+
+\unvpar
+
+% \indent
+Different page sizes can be specified using \menu{Page Size} in the
+\menu{Preferences} menu. % second level popup
+Page size choices affect the page border that is drawn on screen, 
+and are also passed along to the printer driver when 
+\menu{Print View} or \menu{Print...} %% new
+are selected
+(if the selection is other than \menu{Letter}, the default).
+
+% provided its going to a 3.x printer driver ...
+
+It is also possible to check \menu{Landscape} orientation 
+in the \menu{Preferences} menu.
+This reorients the page outline on the screen 
+({\it not\/} the text) and is passed along to the
+printer driver when the user 
+selects \menu{Print View} or \menu{Print...}. %% new
+
+To reset the image mapping % to the default position and magnification
+whenever a new file is opened, check \menu{Reset Scale each File} 
+from the \menu{Preferences} menu.
+To reset the image mapping % to the default position and magnification
+when moving to a new page, check \menu{Reset Scale each Page} 
+from the \menu{Preferences} menu.
+% \cfootnote{Note that \menu{Reset Scale} does {\it not\/} immediately
+% reset the scale, to do that, 
+% use \menu{Default Scale} from the \menu{File} menu.}.
+The image mapping in each case is reset to the `Page Scale', which can
+be set by clicking \menu{Set New Page Scale} in the \menu{File} menu.
+
+Horizontal and vertical rules are drawn as rectangular boxes
+when \menu{Rule Fill} in the \menu{Preferences} menu is unchecked.
+When viewing at high magnification, seeing rules `unfilled' in this way
+can be useful for checking the alignment produced by macros
+constructing `boxes' out of rules, 
+and for macros creating large delimiters % characters 
+by fitting together rules and characters.
+
+% \nsection{Information about a DVI file}
+% \colornsection{Information about a DVI File}
+\colornsubsection{Information about a DVI File}
+
+The {\DVI} file header and trailer contain information that may on
+occasion be of interest.
+This includes a comment inserted in the file by {\TeX} that gives the
+date and time when the {\DVI} file was generated.
+There is also information on 
+the number of fonts used, 
+the number of pages,
+the magnification,
+the part of the page that was used,
+the maximum depths of the stack, and so on.
+Check \menu{DVI Info} in the \menu{Fonts} % \menu{Special} 
+menu to obtain a dialog box showing this information.
+The dialog box title bar contains the {\TeX} comment from the {\DVI} file.
+Uncheck \menu{DVI Info} to remove the dialog box --- or simply
+select \menu{Close} from the dialog box's own \menu{System} menu.
+
+% \nsubsection{Checking on Fonts Used in a DVI File}
+% \colornsubsection{Checking on Fonts Used in a DVI File}
+\colornsubsection{Checking on Fonts Used and Color Coding Fonts}
+
+To see what fonts are used in a particular {\DVI} file, check
+\menu{DVI Fonts} in the \menu{Fonts} % \menu{Special} 
+menu to create a dialog box
+with a list of all of the fonts and the sizes at which they are used.
+A vertical scroll bar will appear if there are more fonts than fit into
+the box. 
+Uncheck \menu{DVI Fonts} to remove the dialog box --- or simply select
+\menu{Close} from the dialog box's own \menu{System} menu.
+
+To see what part of the text is in which font, click on a font in the
+dialog box.  
+All parts of the text using that font, in the indicated size,
+will appear in `reverse video', that is, white on black.
+It is also possible to go the other way:
+to see what font is used for a particular part of the text,
+click on the text while holding down the `Shift' key.
+The font and its size will be highlighted in the font list. % selection menu
+% (and all text using that font in the same size 
+% will appear in reverse video).
+%
+To remove the reverse video effect, click on a non-text area while
+holding down the `Shift' key, 
+or simply select the dummy entry (`Font Size ID') %% NEW
+at the top of the list of fonts in the dialog box. % new
+These capabilities are particularly useful when debugging 
+{\TeX} font selection macros. 
+
+% limitation due to overlap - math fonts in particular
+
+% \nsubsection{Color Coding of Fonts and `Greying' Text}
+% \colornsubsection{Color Coding of Fonts and `Greying' Text}
+% \colornsubsubsection{Color Coding of Fonts and `Greying' Text}
+
+On a color monitor it is possible to color code fonts and sizes.
+Simply check \menu{Color Fonts} in the \menu{Preferences} menu.
+This is especially useful when the set of fonts is shown in a
+dialog box using \menu{DVI Fonts} from the \menu{Fonts} % \menu{Special} 
+menu, % as described above, 
+since lines in the dialog box will be color coded also.
+
+% limitation to system palette
+
+% % \nsubsection{Grey text}
+% \colornsubsection{Grey text}
+
+For some purposes, the text on the page need not % actually 
+be readable.
+% Sometimes it is not necessary to actually be able to read the text on
+% the page.
+This is the case, for example, when checking at low magnification for
+`widows' and `orphans'.
+In this situation, screen updating can be speeded up considerably by
+checking \menu{Grey Text} from the \menu{Preferences} menu.
+Each block of contiguous characters in the {\DVI} file is 
+represented by a grey rectangle.
+It is % also 
+possible to superimpose the text on the grey boxes by
+checking \menu{Grey + Text}.
+Try this with \menu{Color Fonts} checked!
+
+% excessive depth in math fonts.  opaqueness in reverse video.
+
+% Grey + Text - moved to preferences menu ?
+
+% \colornsection{Alternate Ways of Launching DVIWindo}
+% \colornsubsection{Alternate Ways of Launching DVIWindo}
+\colornsubsection{Launching DVIWindo from the File Manager}
+
+{\DVIWindo} can be launched simply by double-clicking on the {\DVIWindo} icon.
+Sometimes it is convenient to set up other mechanisms for getting started.
+
+% \colornsubsection{Launching DVIWindo from the File Manager}
+% \colornsubsubsection{Launching DVIWindo from the File Manager}
+
+\unvpar
+
+A file may be specified as an argument on {\DVIWindo}'s command line.
+{\DVIWindo} will read this file when it starts and then display the
+first page. 
+One may use a fully qualified file name.  If the file name is not fully
+qualified, then the file is assumed to be in the current directory.
+
+It is easy to launch {\DVIWindo}, with the current directory set up
+appropriately, and a given file name on the command line, 
+simply by double-clicking on % the name of 
+a {\DVI} file in File Manager. 
+%
+This is possible because the installation procedure adds a line like:
+
+\vskip .05in
+
+\lavender\verb@dvi=c:\dviwindo\dviwindo.exe ^.dvi@\revert
+
+\vskip .05in
+
+\noindent
+to the {\lavender\verb@[Extensions]@\revert} section of your 
+{\WININI} file (in the Windows directory).
+This associates {\DVIWindo} with all files that have extension \type{dvi}. 
+
+% \colornsubsection{Icons that launch DVIWindo with particular files}
+\colornsubsection{Icons that launch DVIWindo with particular files}
+
+It is also possible to set up {\DVIWindo} icons connected to particular files.
+To do this, select the Program Group in which you want the icon to appear
+(click on the group). 
+Then select \menu{New} from the \menu{File} menu of the Program Manager.  
+Choose \menu{Program Item}.  Fill in the \menu{Description} field with some
+suitable short title (such as the file name).  
+Then fill in the \menu{Command Line} field with the pathname of the
+{\DVIWindo} executable file followed by the pathname of the file you
+wish {\DVIWindo} to read when it starts.  For example:
+
+\vskip .05in
+
+
+% \lavender\verb@c:\dviwindo\dviwindo.exe c:\dviwindo\winmanua.dvi@\revert
+\lavender\verb@c:\dviwindo\dviwindo.exe c:\dviwindo\mymanual.dvi@\revert
+
+\vskip .05in
+
+\noindent
+Now select \menu{OK}.  The icon will appear in the selected program group with
+the chosen title below the icon.  Double-clicking on this icon will launch
+{\DVIWindo} and request that it read the specified file.
+
+To change the filename or title, select the icon and then select 
+\menu{Properties} from the \menu{File} menu of the Program Manager. 
+To get rid of the icon, select \menu{Delete} from the \menu{File} menu.  
+To move the icon to another program group, simply click and drag it.  
+(Remember to select \menu{Save Changes} % when exiting Windows 
+to make changes to the desktop permanent when exiting Windows.)
+
+There may be several instances of the {\DVIWindo} icon, each associated with a
+different start-up file (and perhaps one without a startup file specified).
+%
+The initial page number may also be specified on the command line.
+To do this, use the command line argument `\type{p}' before the file name.  
+For example:
+
+\vskip .05in
+
+% \lavender\verb@c:\dviwindo\dviwindo.exe -p=13 c:\dviwindo\winmanua.dvi@\revert
+\lavender\verb@c:\dviwindo\dviwindo.exe -p=13 c:\dviwindo\mymanual.dvi@\revert
+
+\vskip .05in
+
+% Invoking DVIWindo from another Windows application:
+
+\noindent % dangerous bend
+In Windows 3.1, place the command line arguments in `Optional Arguments'
+when creating the PIF file.
+
+Finally, a note for the Windows application developer:
+It is possible to invoke DVIWindo from another Windows
+application using `\type{WinExec}' or `\type{LoadModule}'. 
+Simply specify the desired startup filename in the command line string,
+as shown above.  
+
+% It is also possible to communicate between the `client' (application
+% requesting DVIWindo) and the `server' (DVIWindo).  This allows dynamic
+% selection of page number to be shown, as well as feedback on user selection
+% of `buttons' set up using \special commands.  The capabilty is make it
+% possible to construct applications that use DVI files in a `hypertext'-like
+% fashion. More on this later...
+
+\colornsubsection{Font Name Remapping --- Scalable Font Rendering}
+
+Before {\DVIWindo} can show text on screen, it has to map font names
+used in {\TeX} to font names used in Windows.  
+A `font name' recorded in the {\DVI} file by {\TeX}, is actually the
+file name used by {\TeX} to find the corresponding {\TFM} file.  
+The name needed to show a font on screen, on the other hand, 
+is the Windows `Face Name' of that font.
+
+For many Type~1 fonts, the Windows Face Name is the same as the
+Post\-Script Font\-Name.  Fonts with long names, however, often
+have an abbreviated Windows Face Name in the {\PFM} file --- so one
+cannot depend on equality of the Face Name and the Post\-Script
+Font\-Name.  In the case of Computer Modern fonts, the font file name,
+the Post\-Script Font\-Name, and the Windows Face Name happen to all be
+the same (except that the last two are always upper case --- for
+compatibility with the Macintosh % Mac\-Intosh 
+versions of the CM outline fonts).
+
+\beginbullets
+
+\bpar For Type~1 fonts, the mapping from Windows Face Name to font
+file name may be found in the `\type{[Fonts]}' section of the {\ATMINI}
+file;
+
+\bpar For True\-Type fonts, the mapping from Windows Face Name to
+font file name may be found in the `\type{[Fonts]}' section of the {\WININI}
+file;
+
+\bpar For some other scalable font rendering scheme, the mapping
+from Windows Face Name to font file name is assumed to exist in the
+`\type{[Fonts]}' section of a user supplied font name remapping file.
+
+\endbullets
+
+A file called `\type{dviwindo.fnt}' in the {\DVIWindo} directory
+is considered to be a generic font name remapping file.
+% Such a file will apply to all {\DVI} files, but can be overridden by a
+% specific remapping file in the same directory as a particular {\DVI} file.
+% Such a specific remapping file should have the same file name as the
+% corresponding {\DVI} file, but with extension \type{.fnt}.
+Such a file will apply to all {\DVI} files, but can be overridden by a
+remapping file called `\type{dviwindo.fnt}' in the same directory as a
+particular {\DVI} file. 
+This in turn can be overridden by a specific remapping file with
+the same file name as the corresponding {\DVI} file, 
+but with extension \type{.fnt}.   % 1992/July/21 */
+
+To use {\DVIWindo} with scalable font schemes other than Adobe Type~1
+or True\-Type, establish a generic font name remapping file
+(use entries for True\-Type fonts found in {\WININI} or entries for
+Type~1 fonts in {\ATMINI} as a guide to the format). 
+Comment lines, starting with `{\tt ;}' are allowed.
+
+Independent of where the font name mapping information comes from,
+% In each of the above cases, 
+{\DVIWindo} {\it inverts\/} the mapping
+found in the file, in order to convert from the font file name in the
+{\DVI} file to the Windows Face Name.
+
+The font name remapping file can serve other purposes also.
+It can be used for font substitution when the {\DVI} file calls for a
+font that does not exist. 
+Some users, for example, install only the 40 most commonly used Computer
+Modern fonts --- out of the complete set of 75 --- and then use the
+sample substitution file \type{dviwindo.fnt} found on the {\DVIWindo}
+distribution diskette to map most of the `missing' 35 fonts onto the 40
+that {\it were\/} loaded. 
+
+Others use the font name remapping file when the DVI file uses
+font names that are convenient on some non-PC platforms.
+For example, on systems that allow long file names, with upper and
+lower case distinguished, it may make sense to use the actual
+Post\-Script Font\-Names in {\TeX}.
+When a file produced in such an environment is transported to a Windows
+environment, a mapping must be established between these names and the
+Windows Face Name.
+
+Finally, a {\DVI} file may have been created using a font file naming
+method that is at odds with the font file naming method used by the
+scalable font rendering schemes used in Windows.  
+In this case, a font substitution file can be set up to map the name
+used in the {\DVI} file to an appropriate Windows Face Name.
+
+% dviwindo.fnt only looked at if font not found some other way
+
+% font name remapping not as general as font substitution in DVIPSONE
+
+% \colornsection{Support for $\backslash$special's}
+
+\colornsection{Showing Inserted Figures on Screen} 
+
+{\DVIWindo} supports three classes of {\lavender\verb@\special@\revert}s: 
+
+\beginbullets
+
+\bpar The ten most common schemes for inclusion of figures in documents;
+
+\bpar A method for inserting {\TIFF} images.
+
+\bpar Methods for controlling text color, rule color and figure color, 
+as well as `reverse video' for text.
+
+\endbullets 
+
+The second and third classes of {\lavender\verb@\special@\revert}s are
+unique to {\DVIWindo}, and are described in section~4. % section~7.
+
+{\DVIWindo} complains if it does not understand a 
+{\lavender\verb@\special@\revert}
+that it thinks it should be able to understand.
+This behavior can be disabled by unchecking \menu{Complain Bad Specials}
+in the \menu{Preferences} menu.
+{DVIWindo} can be asked to ignore {\it all} specials by checking
+\menu{Ignore All Specials} in the \menu{Preferences} menu.
+This may be used to speed up previewing when there are large inserted
+{\TIFF} files. 
+
+\colornsubsection{Figure Insertion Schemes using $\backslash$special
+--- EPSF \& EPSI}
+
+{\DVIWindo} supports the ten most common schemes for inclusion of figures.
+These are the same ones accepted by {\DVIPSONE}, although support for
+these schemes is not as complete as in {\DVIPSONE}, because {\DVIWindo}
+does not contain a PostScript interpreter.
+
+\unvpar
+
+In order for an image to appear on the screen, 
+the inserted file must contain a preview.
+Both {\EPSF} and {\EPSI} files contain previews.
+What is called an {\EPSF} file here consists of both an encapsulated
+PostScript ({\EPS}) subfile intended for a PostScript interpreter, and
+a tagged image file format ({\TIFF}) preview image to be shown on screen.  
+
+% forget about Windows MetaFile previews here...
+
+{\EPSF} files are produced by many Windows applications.
+For example,
+
+\beginbullets
+
+\bpar In Micrografx Designer$^{\smlsize TM}$, select 
+`\menu{EPS (EncapsulatedPostScript)}' --- 
+rather than say `\menu{EPS (without TIFF preview)}' --- in
+the `\menu{Export...}' dialog box from the `\menu{File}' menu;
+
+\bpar In Adobe Illustrator$^{\smlsize TM}$, 
+select `\menu{Encapsulated PostScript (.EPS)}' --- 
+rather than say `\menu{PostScript (.AI)}' ---
+in the `\menu{Save As...}' dialog box from the `\menu{File}' menu;
+
+\bpar In Corel Draw!$^{\smlsize TM}$,
+select `\menu{PostScript[EPS] .EPS}' in the `\menu{Export}' dialog 
+box from the `\menu{File}' menu, and check `\menu{Include Image Header}'.
+
+\endbullets
+
+% Adding a preview image to an {\it existing} {\EPS} file is difficult.
+% Essentially a PostScript interpreter is needed to produce a bitmap, and
+% this bitmap has to be converted to {\TIFF} format.  
+% GhostScript, GoScript and Transcript.
+% Emerald City / Adobe LaserTalk
+
+% I got pstoepsi from ftp.cs.purdue.edu in the directory /pub/dgc
+
+Some {\TeX} macro packages that use {\lavender\verb@\special@\revert} 
+for figure insertion % unfortunately 
+do not understand the {\EPSF} file format.
+Those that read the file in order to extract the bounding box may get
+confused by the binary data in the {\EPSF} file. 
+%
+It is difficult to give a completely general recipe to cure such problems,
+since the details of how files are read in {\TeX} is somewhat
+implementation dependent.  However, the file \type{psfigfix.txt}
+illustrates how to modify \type{psfig.tex} and  \type{epsf.tex} 
+so that they ignore binary header information in {\EPSF} files.
+
+\colornsubsection{Splitting an EPSF file into an EPS file and a TIFF file}
+
+Another way of dealing with recalcitrant {\TeX} macro packages is to split
+the {\EPSF} file into separate {\TIFF} and {\EPS} files.  
+Save the two files using the same base filename, but extensions
+`\type{tif}' and `\type{eps}' respectively.  
+Then, in the {\lavender\verb@\special@\revert} for figure insertion,
+use the base filename without extension. 
+{\DVIWindo} will automatically add the extension `\type{eps}', 
+when it looks for the {\EPS} file in order to extract the  bounding box, 
+and the extension `\type{tif}', when it reads the {\TIFF} file in order
+to put an image on the screen.
+%
+({\DVIPSONE}, of course, deals correctly with {\EPSF} files, 
+ignoring the {\TIFF} subfile, and shipping the {\EPS} subfile to the
+PostScript output.)
+
+The {\EPS} $+$ {\TIFF} file pair can be produced either by `exporting'
+them separately from an application, or by extracting them from an
+existing {\EPSF} file. 
+When extracting the {\TIFF} subfile from the {\EPSF} file, look
+for the characters `\type{II*}' or `\type{MM*}' --- these denote the
+start of the {\TIFF} subfile. 
+Keep in mind that while the {\EPS} subfile is in {\ASCII}, 
+the {\TIFF} subfile is binary --- use an editor that can handle a full
+8-bit character set. 
+Check whether the resulting {\TIFF} file is readable by applying the
+utility {\TIFFTAGS}, described later.
+
+% Missing preview image:
+
+If there is no {\TIFF} preview image, 
+{\DVIWindo} will show a border around the
+rectangle that contains the figure, and the file name in the middle of
+this rectangle (provided there is enough space).
+% (unless it will not fit into the rectangle).  
+In order to be able to do this, it must at least find the {\EPS} file so
+that it can read the bounding box.  Otherwise nothing is shown.
+
+% File search order:
+
+To simplify generation of the {\lavender\verb@\special@\revert}s
+in {\TeX}, one may use a slash 
+(`\type{/}') instead of a backslash (`\lavender\verb@\@\revert`) 
+in the filename.  % unadvertized feature of DOS
+
+The file name may be fully qualified.  If the file is not found in the
+indicated directory, then it is searched for in the directory specified by the
+environmental variable {\PSPATH}, in the same directory that the {\DVI}
+file was read from, and in the current directory --- in that order. 
+({\PSPATH} may be a full {\DOS} `path', with multiple semicolon-separated
+pathnames). 
+
+\colornsubsection{Ten EPS Figure Insertion Schemes Supported}
+
+This section is rather long since there are quite a number of popular
+figure insertion schemes.
+Normally the {\TeX} user is insulated from details of the
+underlying \verb@\special@ syntax by some macro package, 
+such as \type{psfig.tex}, \type{epsf.tex}, \type{psadobe.tex},
+{\tt psprep.tex}, or {\tt psbox.tex}.
+But the user needs to at least ascertain that the output produced
+by the macro package is in one of the forms accepted by {\DVIWindo}.
+One approach is to simply run a {\DVI} file through {\DVIWindo}.
+%
+Typically there will be no error messages, and the figures will be
+placed correctly on the page, then:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar With a bit of luck there will be no need to read the rest of this
+rather long section!
+
+\endbullets
+
+\vskip .05in
+
+The following need only be read if this simple test fails---or 
+if you % the reader 
+happen to be interested in the fine details,
+or some of the more esoteric features.
+% particular {\DVI}-to-{\PS} converter.
+% This section is rather long, as result of the fact that {\DVIPSONE}
+% supports all of the most popular schemes for figure inclusion using
+% {\TeX}'s \verb@\special@ command.
+
+If you are presently using one of the schemes supported by {\DVIWindo}, 
+simply continue using it
+(until such time as usage of \verb@\special@ becomes standardized). 
+If you are not now using one of these schemes, 
+it is probably best to pick one of the simpler schemes, 
+such as \type{insertimage}, described in the next section.
+
+In reading the following, please we aware of the fact that,
+unfortunately, several programs are called {\DVITWOPS} 
+(Mark Senn {\it et al}'s, Anthony Li's and Stephan v. Bechtolsheim's programs,
+for example),
+and that more than one program is called {\DVIPS}
+(Tomas Rokicki's and ArborText's programs, for example).
+Similarly, each of the % {\TeX} 
+macro packages for figure inclusion
+mentioned has a large number of variants%
+\cfootnote{If it is not obvious how a macro package uses
+%  turns out to be difficult to figure out what just 
+{\lavender\verb@\special@\revert} for figure inclusion, 
+then it may help to look at a {\DVI} file.
+Most of the {\DVI} file will consist of incomprehensible binary codes
+with short chunks of text and font names interposed.
+The argument to {\lavender\verb@\special@\revert}, however, 
+is placed into the {\DVI} file quite unadulterated, so one can find it
+by searching for the file-name specified in the figure inclusion macro.}.
+
+Each of the schemes typically also supports capabilities other than figure
+inclusion (insertion of raw Post\-Script code, for example).
+Note, however, that only the features indicated here are supported by
+{\DVIWindo}. 
+
+Now for a list of the protocols supported by {\DVIWindo}:
+
+\vskip 0.1in
+
+\beginbullets
+
+\noindent
+(A) % DVIPS + PSFIG
+One of the schemes supported by Tomas Rokicki's {\DVIPS},
+% A variant on the above scheme (for Anthony Li's {\DVITWOPS})
+used by one dialect of Trevor Darrell's {\PSFIG} macro package:
+
+\vskip .05in
+
+\noindent
+\lavender\verb@\special{ps::[begin] <w> <h> <xll> <yll> <xur> <yur> startTexFig}@
+% \hfill\linebreak % ??? 
+\lavender\verb@\special{ps: plotfile <eps-file>}@\revert\hfill\linebreak
+\lavender\verb@\special{ps::[end] endTexFig}@\revert % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+The six integer arguments preceding \verb@startTexFig@
+represent the desired width and height of the inserted figure on the page, 
+and the lower left, and upper right corner of its bounding box, respectively.
+All of these quantities are given in {\DVI} units 
+(that is, `scaled' points, 65536 per pica
+% printer's 
+point - \type{pt}, of which there are 72.27 per inch).
+Note that letter case is significant in the words 
+`\verb@startTexFig@' and `\verb@endTexFig@.'
+
+The figure is scaled so as to map the bounding box into a rectangle of
+the specified width and height.
+The {\it upper left-hand\/} corner of this rectangle % (of the scaled figure)
+is placed at {\TeX}'s current point. 
+%
+Note that scaling may be different in the horizontal and the vertical
+direction, something that may lead to unexpected results.
+Isotropic scaling can be forced by making the aspect ratio of the
+rectangle defined by the requested width and height 
+match the aspect ratio of the rectangle defined by the bounding box
+(This is usually taken care of by the macro package being used).
+
+Clipping to the rectangle defined by the bounding box 
+may be called for by inserting the line:
+
+\vskip .05in
+
+\verb@\special{ps:: doclip}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+after the {\tt startTexFig} line.
+
+% This style of useage of \special{} is also apparently also supported
+% by ArborText's {\DVILASER}$^{\smlsize TM}$. %% uncomment ???
+
+\vskip .1in
+
+\noindent
+(B) % DVI2PS-SVB + PSFIG
+A variant on the previous theme for Stephan v. Bechtolsheim's {\DVITWOPS},
+generated by another dialect of Trevor Darrell's {\PSFIG} macro package:
+
+\vskip .05in
+
+\noindent
+\lavender\verb@\special{ps: psfiginit}@\revert\hfill\linebreak
+\lavender\verb@\special{ps: literal <w> <h> <xll> <yll> <xur> <yur> startTexFig}@
+% \hfill\linebreak % ???
+\lavender\verb@\special{ps: include <eps-file>}@\revert\hfill\linebreak
+\lavender\verb@\special{ps: literal "endTexFig "}@\revert % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+Clipping may be called for by inserting the line
+
+\vskip .05in
+
+\verb@\special{ps: literal "doclip "}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+after the {\tt startTexFig} line. 
+
+% \verb@\special{ps: plotfile <postlog-file>}@\hfill\linebreak
+% \verb@\special{ps: plotfile <prolog-file>}@\hfill\linebreak
+
+\vskip .1in
+
+\noindent
+(C) % DVI2PS-LI + PSFIG
+The scheme of % used by % {\UNIX}$^{\smlsize TM}$'s 
+Anthony Li's {\DVITWOPS}, % Tomas Rokicki's {\DVIPS} 
+used by yet another dialect of Trevor Darrell's {\PSFIG} macro package:
+
+% Trevor Darrell ``PsfigTeX 1.2 UserGuide''
+
+\vskip .05in
+
+% \ipar
+\noindent
+\lavender\verb@\special{pstext="<w> <h> <xll> <yll> <xur> <yur> startTexFig"}@\revert\hfill\linebreak
+\lavender\verb@\special{psfile=<eps-file>}@\revert\hfill\linebreak
+\lavender\verb@\special{pstext=endTexFig}@\revert
+
+\vskip .05in
+
+%% NOTE conflict between two different uses of psfile=
+
+\noindent
+Clipping to the specified bounding box may be requested 
+by inserting the line:
+
+\vskip .05in
+
+\verb@\special{pstext="doclip"}@
+
+\vskip .05in
+
+\noindent
+after the \verb@startTexFig@ line. % and before \verb@endTexFig@.
+
+% As in the previous schemes, there may be several % occurrences of
+% `\verb@psfile=<file-name>@' lines % specials % \verb@\special@s
+% between \verb@startTexFig@ and \verb@endTexFig@.
+
+\vskip .1in
+
+\noindent
+(D) % DVIPS + EPSF
+A different % Another 
+scheme supported by {\DVIPS}, 
+produced % generated 
+by Tomas Rokicki's \type{epsf.tex} macro package: 
+
+\vskip .05in
+
+{\narrower
+
+\ivpar % \noindent 
+\lavender\verb@\special{PSfile=<epsfile> llx=<xll> lly=<yll>@\revert\hfill\linebreak
+\lavender\verb@  urx=<xur> ury=<yur> rwi=<rwidth*10>}@\revert 
+% rhi=<rheight> clip=
+
+}
+
+\vskip .05in
+
+\noindent
+indicating that the file \verb@<eps-file>@ is to be inserted with the 
+{\it lower-left\/} corner of the bounding box of the inserted figure at
+{\TeX}'s current point 
+(Note that here the first two letters in the word `\type{PSfile}' 
+are in upper case).
+Four of the arguments specify the bounding box of the figure.
+The last argument specifies the requested width of the figure (scaled by 10).
+The coordinate system in which the parameters are specified is the
+default Post\-Script coordinate system, 
+with 72 units per inch (that is, {\TeX}'s `big points' - \type{bp})
+with the origin at the lower left-hand corner of the page. 
+The figure is scaled isotropically.
+
+\vskip .1in
+
+\noindent
+(E) % DVI2PS (Mark Senn) + PSADOBE
+The scheme of % used by % {\UNIX}$^{\smlsize TM}$'s 
+an older version of {\DVITWOPS}, % on Unix
+due to Mark Senn {\it et al\/}, % 
+% also supported by Tomas Rokicki's {\DVIPS} ?
+used by Gerald Roylance's macro package \type{psadobe}.
+% Stephan v. Bechtolsheim, Bob Brown, Richard Furuta, James Schaad,
+% Robert Wells, Neal Holtz, Chris Lindblad, Scott Jones etc etc
+In the simplest case this takes the form:
+
+\vskip .05in
+
+\lavender\verb@\special{psfile=<eps-file>}@\revert
+
+\vskip .05in
+
+\noindent
+indicating that the file \verb@<eps-file>@ is to be inserted with the 
+{\it origin\/} of the coordinate system of the inserted figure at {\TeX}'s
+current point.
+Additional arguments may be used to specify %  horizontal and vertical
+scaling, and offsets: % as well as clipping: % rotation ?
+
+\vskip .05in
+
+{\narrower
+
+\ivpar
+\lavender\verb@\special{psfile=<eps-file>@\revert\hfill\linebreak 
+\lavender\verb@  hscale=<x-scale>@ \verb@vscale=<y-scale>@\revert\hfill\linebreak
+\lavender\verb@  hoffset=<x-offset>@ \verb@voffset=<y-offset>@\revert\hfill\linebreak
+\lavender\verb@  hsize=<x-size>@ \verb@vsize=<y-size>}@\revert
+
+% and rotation ?
+
+}
+
+%% if scale > 8.0 it is treated as a percentage and divided by 100.0
+%% if scale < 8.0 it is treated as actual scale
+
+\vskip .05in
+
+\noindent
+All key-value pairs after the first are optional.
+Scales may be given as floating point quantities
+(and are {\it not} percentages). 
+%% well, Tomas Rokicki's DVIPS supports this WITH percentages for scales...
+Offsets and clipping sizes are specified in `big points', 72 to the inch.
+
+% If {\tt hscale} is specified, then the figure is scaled in the
+% horizontal direction, and if {\tt vscale} is specified it is scaled
+% in the vertical direction.
+Different scaling in the horizontal and vertical directions may be specified. 
+% Note that in this scheme, the clipping rectangle, 
+% specified by {\tt hsize} and {\tt vsize}, 
+% is constrained to have its lower left-hand corner at the origin.
+
+\vskip 0.1in
+
+%% This asshole scheme conflicts with an earlier one using pstext= psfile=
+
+% following triggered by illustration, postscript, postscriptfile, picture
+% /* needshift > 0 if need to shift by (-xll, -yll) */  /* Textures */
+
+\noindent
+(F) %% DVITOPS
+The scheme for figure inclusion used by James Clark's {\DVITOPS}:
+
+\vskip .05in
+
+\lavender\verb@\special{dvitops: import <eps-file> <width> <height>}@\revert
+
+\vskip .05in
+
+\noindent where \type{<width>} and  \type{<height>} are the desired
+width and height of the included illustration, specified in units 
+recognized by {\TeX} % dimensions ?
+(that is, \type{pt}, \type{pc}, \type{in}, \type{bp}, \type{cm}, \type{mm}, 
+\type{dd}, \type{cc}, \type{sp}---see chapter~10 of the {\TeX}book). 
+The illustration is scaled so that it will fit into the specified space.
+Scaling is the same in the horizontal and vertical directions---the
+illustration is centered in the direction in which there is extra space.
+The {\it lower left-hand\/} corner of the bounding box 
+% (of the scaled figure) 
+is placed at {\TeX}'s current point. 
+%
+Other uses of \verb@\special@ by {\DVITOPS} are not supported.
+
+\vskip .1in
+
+\noindent
+(G) % DVILASER/PS ArborText
+A scheme for figure inclusion supported by ArborText's 
+{\DVILASER}$^{\smlsize TM}$:
+
+\vskip .05in
+
+\lavender\verb@\special{ps: epsfile <eps-file> <scale-number>}@\revert
+
+\vskip .05in
+
+\noindent
+indicating that the file \type{<eps-file>} is to be inserted with the
+{\it lower left-hand\/} corner of the figure's bounding box placed
+at {\TeX}'s current point, %% ?
+scaled by \type{<scale-number>}/1000.
+Scaling is optional; \type{<scale-number>} should be an integer.
+%
+Other uses of \verb@\special@ by {\DVILASER} are not supported.
+
+\vskip .1in
+
+\noindent
+(H) % Textures
+% The scheme used by Blue Sky Research's Textures$^{\smlsize TM}$, 
+The scheme used by Blue Sky Research's {\TeXtures}$^{\smlsize TM}$, 
+which is:
+
+\vskip .05in
+
+\lavender\verb@\special{illustration <eps-file> scaled <scale-number>}@\revert
+
+\vskip .05in
+
+%% If scale > 33.3 it is treated as per mille scale and divided by 1000
+%% If scale < 33.3 it is treated as the actual scale
+
+% \ipar
+\noindent
+indicating that the file \type{<eps-file>} is to be inserted with the
+{\it lower left-hand\/} corner of the figure's bounding box placed
+at {\TeX}'s current point, %% ?
+scaled by \type{<scale-number>}/1000.
+Scaling is optional; \type{<scale-number>} should be an integer.
+%
+% Without scaling, the user coordinate system has 72 units to the inch.
+%
+
+\vskip 0.1in
+
+% following triggered by space (unless recognized by Textures)
+% /* needshift < 0 if need to shift by (-xll, -yur) */  /* DVIALW */
+
+\noindent
+(I) % Nelson Beebe DVIALW
+The scheme proposed by Nelson Beebe for his driver {\DVIALW},
+where %  a sequence of
+comma-separated key-value pairs appear, 
+starting with the pair \type{language "Post\-Script"} or \type{language "PS"}
+(Use a space between a key and the corresponding value, not `\type{=}').
+% what macro package uses this ?
+The following
+
+\vskip .05in
+
+\lavender\verb@\special{language "PS", include "<eps-file>"}@\revert
+
+\vskip .05in
+
+% \ipar
+\noindent
+% for example,
+causes inclusion of the illustration in the file \type{<eps-file>}.
+The included figure is positioned with the {\it upper left-hand\/} % UGH !
+corner of the figure's bounding box placed at {\TeX}'s current point. 
+If the figure is instead to be treated as an overlay
+(that is, using the default Post\-Script coordinate system), 
+then use % the form
+
+\vskip .05in
+
+\lavender\verb@\special{language "PS", overlay "<eps-file>"}@\revert
+
+\vskip .05in
+
+\noindent
+Unfortunately, this scheme depends on inserting verbatim Post\-Script
+code for scaling, positioning, and rotation.
+These features are not supported by {\DVIWindo}.
+%
+% Other uses of \verb@\special@ by {\DVIALW} are not supported.
+
+\vskip 0.05in
+
+\noindent 
+(J) % OzTeX and PsPrint
+The command syntax for figure inclusion used by Andrew Trevorrow 
+in Oz{\TeX} for the Macintosh, % Mac\-Intosh, 
+and in Psprint for Vax VMS, is also supported.
+This is not a very desirable state of affairs, however,
+because this form of \verb@\special@
+does not include any special keyword or
+separator that could be used to distinguish it from other uses of
+\lavender\verb@\special@\revert, 
+or from meaningless text.
+Instead the {\lavender\verb@\special@\revert}
+starts right off with the name of the file to be included.
+Use of this capability is somewhat risky.
+
+\endbullets
+
+\vskip 0.05in
+
+\ivpar
+\indent
+After suffering through this subsection, you will probably agree that:
+
+\vskip 0.05in
+
+\beginbullets
+
+\bpar A standard protocol using {\lavender\verb@\special@\revert}  for
+inclusion of figures in {\TeX} is urgently needed!
+
+\endbullets
+
+% \vskip 0.05in
+
+\colornsubsection{Additional Comments Regarding Figure Insertion}
+
+Note that, unfortunately, each of the above schemes has its own idea about
+where {\TeX}'s current point should be in relation to the origin of the
+coordinate system, or the specified bounding box of the illustration.
+Some schemes place the burden on the {\TeX} macros to read the {\EPS} file 
+in order to find the \verb@%%BoundingBox@ comment, 
+while others rely on the {\DVI} processing program to do this.
+Some schemes place the origin of the coordinate system 
+at {\TeX}'s current point,
+some place the {\it lower\/} left-hand corner of the rectangle defined by the
+bounding box there, yet others the {\it upper\/} left-hand corner.
+
+When {\DVIWindo} has to search for a bounding box comment in the
+{\EPS} file, it assumes that the file obeys the {\EPS} 
+document structuring conventions ({\DSC}).
+So, for example, the \verb@%%BoundingBox:@ line
+{\it must} occur before the first \verb@%%EndComments@ line, 
+and before the first line that does not start with `\verb@%%@',
+since a line that does not start with `\verb@%%@' signals the end of
+the header
+({\DVIWindo} will, however, search for the bounding box comment at the
+end of the file if \verb@%%BoundingBox: (at end)@ is used).
+
+%% Those that place the origin at {\TeX}'s current point belong to the former
+%% Those that supply the bounding box in the special call belong to the former
+
+
+\colornsection{The Color of Text, Rules, and TIFF Images}
+
+A number of {\lavender\verb@\special@\revert}s unique to {\DVIWindo}
+provide for control of the color of text, the color of rules, 
+the foreground and background colors of monochrome 
+(bi-level) figures, as well as for showing text in `reverse-video'.
+It is also possible to insert {\TIFF} image files.
+Note that these capabilities are still somewhat experimental,
+and details may change in future releases of {\DVIWindo}.
+
+To change the color in which text appears, use:
+
+\vskip .05in
+
+\lavender\verb@\special{textcolor: <red> <green> <blue>}@\revert
+
+\vskip .05in
+
+\noindent
+where \type{<red>}, \type{<green>}, and \type{<blue>} are numbers in
+the range 0 -- 255 specifying the corresponding color component.
+The text following such a color change command will appear in the specified
+color.  To switch back to black text, use
+
+\lavender\verb@\special{textcolor: 0 0 0}@\revert
+
+% revert ?
+\noindent
+The color of rules is controlled separately:
+
+\vskip .05in
+
+\lavender\verb@\special{rulecolor: <red> <green> <blue>}@\revert
+
+\vskip .05in
+
+\noindent
+Text can also be shown in reverse video using:
+
+\vskip .05in
+
+\lavender\verb@\special{reversevideo: <on|off>}@\revert
+
+\vskip .05in
+
+\noindent
+where `\type{on}' causes the text following to be shown in reverse video,
+while `\type{off}' switches back to normal presentation of text. 
+% \type{toggle} ?
+
+Some matters need particular attention when using these features: 
+
+\vskip .05in
+
+\beginbullets
+
+\bpar Since text colors on screen have to be solid colors from the system
+palette, you may not get exactly the color requested.  
+The 20 standard colors in the Windows system palette are listed below.
+% These are colors to which the 
+Text colors indicated in the
+{\lavender\verb@\special@\revert} command will be `rounded off' to
+one of these.
+
+\bpar The color has to be explicitly restored to black 
+after text that is shown in color
+(That is, the color is not automatically restored at the end
+of a brace-delimited group in {\TeX}).
+
+\bpar The color of rules (used for drawing boxes, for long division
+lines, for constructing large mathematical symbols) %  and so on
+is controlled separately from the color of text.  
+The color of rules on screen is not restricted in the same way as text color,
+since it may be generated by `dithering' of colors. % in the system palette.
+
+\bpar Reverse video applies only to areas covered with text and
+hence will not invert the background between words (or where
+there is positive kerning inside a word).
+% Reverse video can be turned on, off or toggled from its previous state.
+
+\bpar For the page independence required in {\DVI} files, 
+no color change or reverse video request should extend across a page boundary.
+Strictly speaking, this means that the {\lavender\verb@\output@\revert}
+routine has to be modified to 
+(a) reset the color to black at the end of the page, and
+(b) set the color at the top of a new page (but not for the
+headers and footers).  
+In practice, one can often get away without such complications when
+only individual words are in color (and they do not get hyphenated
+across a page boundary!), 
+or when placing colored text in boxes that cannot be broken.
+
+\vskip .05in
+
+\endbullets
+
+Colored text and reverse video is useful for accentuating text when:
+%  in a number of situations:
+
+\beginbullets
+
+\vskip .05in
+
+\bpar a color printer is available for output % directly 
+from {\DVIWindo};
+
+\vskip .05in
+
+\bpar the {\DVI} file is to be viewed only on screen, not printed
+(This may apply, for example, in the case of a manual of instruction);
+
+\vskip .05in
+
+\bpar one wishes to highlight changes in a way that draws attention
+to them when using the % in the {\DVI} 
+previewer (yet does not affect printed output
+% on a monochrome printer using 
+produced by {\DVIPSONE}).
+
+\vskip .05in
+
+\endbullets 
+
+\noindent
+There are some interactions between these 
+{\lavender\verb@\special@\revert}s and other features of {\DVIWindo}.
+To avoid confusion:
+
+\beginbullets
+
+\vskip .05in
+
+\bpar the effect of text color selection
+{\lavender\verb@\special@\revert}s 
+are suppressed when the `\menu{Color Fonts}' option is
+selected from the \menu{Preferences} menu.
+
+\vskip .05in
+
+\bpar the effect of reverse video selection
+{\lavender\verb@\special@\revert}s 
+is suppressed when the `\menu{Fonts Used}' dialog box is
+displayed and reverse video is % already 
+being used to highlight a font selected from that dialog box.
+
+\vskip .05in
+
+\endbullets
+
+% The {\DVIWindo} manual (\type{winmanua.dvi}) uses these % above
+% \lavender\verb@\special@{\revert}s to draw attention to warnings, 
+% to highlight section headings, menu items and verbatim text.
+
+% \endbullets
+
+\colornsubsection{Standard System Palette Colors}
+
+The standard system palette in Windows 
+% (different screen drivers may have slightly different values) 
+contains the following 16 colors:
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+\lavender\verb@\def\revert{\special{textcolor: 0 0 0}}@\revert\hfill\linebreak
+\lavender\verb@\def\darkred{\special{textcolor: 128 0 0}}@\revert\hfill\linebreak
+\lavender\verb@\def\darkgreen{\special{textcolor: 0 128 0}}@\revert\hfill\linebreak
+\lavender\verb@\def\peagreen{\special{textcolor: 128 128 0}}@\revert\hfill\linebreak
+\lavender\verb@\def\darkblue{\special{textcolor: 0 0 128}}@\revert\hfill\linebreak
+\lavender\verb@\def\lavender{\special{textcolor: 128 0 128}}@\revert\hfill\linebreak
+\lavender\verb@\def\slate{\special{textcolor: 0 128 128}}@\revert\hfill\linebreak
+\lavender\verb@\def\lightgray{\special{textcolor: 192 192 192}}@\revert\hfill\linebreak
+%
+% here is where the extra four colors are inserted
+%
+\lavender\verb@\def\darkgray{\special{textcolor: 128 128 128}}@\revert\hfill\linebreak
+\lavender\verb@\def\brightred{\special{textcolor: 255 0 0}}@\revert\hfill\linebreak
+\lavender\verb@\def\brightgreen{\special{textcolor: 0 255 0}}@\revert\hfill\linebreak
+\lavender\verb@\def\yellow{\special{textcolor: 255 255 0}}@\revert\hfill\linebreak
+\lavender\verb@\def\brightblue{\special{textcolor: 0 0 255}}@\revert\hfill\linebreak
+\lavender\verb@\def\magenta{\special{textcolor: 255 0 255}}@\revert\hfill\linebreak
+\lavender\verb@\def\cyan{\special{textcolor: 0 255 255}}@\revert\hfill\linebreak
+\lavender\verb@\def\white{\special{textcolor: 255 255 255}}@\revert
+
+}
+
+\vskip .05in
+
+\noindent
+% In addition, 
+The following four are also available if the display has more than 16 colors:
+% next four only if more than 16 colors:
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+\lavender\verb@\def\palegreen{\special{textcolor: 192 220 192}}@\revert\hfill\linebreak
+\lavender\verb@\def\paleblue{\special{textcolor: 166 202 240}}@\revert\hfill\linebreak
+\lavender\verb@\def\offwhite{\special{textcolor: 255 251 240}}@\revert\hfill\linebreak
+\lavender\verb@\def\mediumgray{\special{textcolor: 160 160 164}}@\revert
+
+% \vskip .05in
+
+}
+
+% NOTE: see epsftiff.txt for information on how to control the foreground and
+
+\colornsubsection{Inserting TIFF Images and using TIFFTags}
+
+\noindent
+In addition to the methods for figure insertion detailed in 
+section~3,  % section~6, 
+{\DVIWindo} also supports its own simple
+{\lavender\verb@\special@\revert} for figure insertion: 
+
+\vskip .05in
+
+\lavender\verb@\special{insertimage: <file-name> <width> <height> <ifdn>}@\revert
+
+\vskip .05in
+
+\noindent
+where \type{<file-name>} is the name of a {\TIFF} 
+(or {\EPSF} file with TIFF preview), 
+while \type{<width>} and \type{<height>} are the width and height of
+the space on the page for the image. 
+The \type{<ifdn>} (Image File Directory Number) field is the number of
+the image in the file (in case the file contains more than one subimage).  
+In most cases \type{<ifdn>} will be omitted, in
+which case the first --- usually the only --- image is used.  
+If \type{<height>} is omitted (or zero), 
+then the height is calculated from the width using the aspect ratio of
+the {\TIFF} image itself. 
+
+The image is inserted with the lower left corner at {\TeX}'s current point.  
+The width and height is specified in `scaled points' 
+(65536 per pica % printer's
+point --- there are 72.27 pica points per inch).  
+The image may be distorted if the aspect ratio of the designated area
+does not match that of the image in the file.  
+% The {\TeX} macros generating the {\lavender\verb@\special@\revert} can 
+% arrange for the correct aspect ratio if they read the 
+% `\lavender\verb@%%BoundingBox@\revert' comment in the {\EPSF} file.  
+Isotropical scaling can be forced by omitting the height argument. 
+
+% Simple {\TeX} macros for generating suitable \special:
+
+% To simplify generation of the {\lavender\verb@\special@\revert} 
+% in {\TeX}, one may use a slash 
+% (`\type{/}') instead of a backslash (`\lavender\verb@\@\revert`) 
+% in the filename.  % unadvertized feature of DOS
+
+% The file name may be fully qualified.  
+% If the file is not found in the indicated directory, 
+% then it is searched for in the directory specified by the
+% environmental variable {\PSPATH}, 
+% then in the same directory that the {\DVI} file was read from, and
+% finally in the current directory --- in that order. 
+% ({\PSPATH} may be a full {\DOS} `path', 
+% consisting of multiple semicolon separated pathnames).
+
+% Example macros:
+
+The following code illustrates how the appropriate 
+{\lavender\verb@\special@\revert}
+might be generated using % some very 
+simple {\TeX} macros:
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+\lavender\verb@\newdimen\dwidth@\revert\hfill\linebreak
+\lavender\verb@\newdimen\dheight@\revert\hfill\linebreak
+\lavender\verb@\def\showimage#1#2#3{@\revert\hfill\linebreak
+\lavender\verb@\dwidth=#2@\revert\hfill\linebreak
+\lavender\verb@\dheight=#3@\revert\hfill\linebreak
+\lavender\verb@\edef\width{\number\dwidth}@\revert\hfill\linebreak
+\lavender\verb@\edef\height{\number\dheight}@\revert\hfill\linebreak
+\lavender\verb@\special{insertimage: #1 \width \space \height}}@\revert
+
+}
+
+\vskip .05in
+
+\noindent
+And here is an example using the `\type{showimage}' macro:
+
+\vskip .05in
+
+\lavender\verb@\showimage{c:/dviwindo/y&ylogo.tif}{2in}{3in}@\revert
+
+\vskip .05in
+
+\noindent
+Look in the file \type{showtiff.tex} for a more elaborate{\TeX} macro
+that makes it easier to preserve the figure's aspect ratio.
+
+% \colornsubsection{Figuring dimensions of TIFF images}
+% \colornsubsection{Dimensions of TIFF images and using TIFFTAGS}
+
+% \noindent
+The utility {\TIFFTAGS} shows the tag fields in a {\TIFF} file --- useful
+information for setting up insertion of {\EPSF} and {\TIFF} figures.  
+There are tag fields for such parameters as image height and image width, 
+the  number of bits per sample and whether a compression scheme is used
+or not. 
+{\TIFFTAGS} can be applied to {\TIFF} files, as well as {\EPSF} files
+containing {\TIFF} previews.
+
+\colornsubsection{Controlling the Color of Monochrome TIFF Images}
+
+An image to be displayed may be color, grey-level, or monochrome (bi-level). 
+
+In the case of monochrome images, % (one bit per pixel), 
+it is possible to select the colors with which the `object' and
+`background' are shown. Use
+
+\vskip .05in
+
+\noindent
+\lavender\verb@\special{figurecolor: <r-o> <g-o> <b-o> <r-b> <g-b> <b-b>}@\revert
+
+\vskip .05in
+
+\noindent
+where \type{<r-o>}, \type{<g-o>}, and \type{<b-o>}
+are the red, green and blue components (0~--~255)
+of the color to be used for `foreground' (what would otherwise appear black
+--- default 0, 0, 0), 
+while \type{<r-b>}, \type{<g-b>}, and \type{<b-b>}
+are the red, green and blue components (0~--~255) of the color to be
+used for the `background' (what would otherwise appear white ---
+default 255, 255, 255).  If the last three numbers 
+are omitted, white is used for the background.
+
+\vskip .1in
+
+\noindent
+\brightred
+PLEASE NOTE: The above is only an experiment.
+% \revert
+The {\TUG} {\DVI} driver standards committee has yet to come up with
+any recommendations for syntax of {\lavender\verb@\special@\revert}
+command usage.  
+There are difficulties with the usage of
+{\lavender\verb@\special@\revert} for color changes of text and rules,
+as indicated above. 
+Other {\DVI} processors (such as {\DVIPSONE})
+do not support these {\lavender\verb@\special@\revert} commands.  
+The syntax of these {\lavender\verb@\special@\revert}s may change in future
+should a standard for usage of {\lavender\verb@\special@\revert} 
+be adopted. % one day.
+\revert
+
+% \nsection{Why is this manual so long?}
+% \colornsection{Why is this manual so long?}
+\colornsubsection{Why is this manual so long?}
+
+% Transition to appendix ?
+
+The above is usually all that one needs to know to make full use of
+{\DVIWindo}'s features.  
+The Appendices mostly deal with three remaining issues:
+(a) solving problems with font installation and {\ATM}, % solving 
+(b) forcing Windows
+% {\ATM} (and {\PSCRIPT}) 
+to reencode a font as desired,
+and (c) maximizing speed of Windows applications. % and printing.
+
+\newpage %% ???
+
+\runnerhead{Appendix---Advanced Topics}
+
+% \section{Appendix A --- Font Installation}
+\colorsection{Appendix A --- Font Installation with ATM}
+
+Adobe Type~1 outline fonts are installed (and removed) using {\ATM}.
+Simply double-click on the {\ATM} control panel icon and 
+then select \menu{Add} (or \menu{Remove}) from {\ATM}'s control menu.
+To add fonts, both the outlines font ({\PFB}) files and 
+the Windows font metric ({\PFM}) files are needed.
+During font installation, {\ATM} copies the {\PFB} and {\PFM} files to 
+directories (specified in {\ATMINI}) on the hard disk 
+(defaults {\lavender\verb@c:\psfonts@\revert} and 
+\lavender\verb@c:\psfonts\pfm@\revert).
+{\ATM} can also create {\PFM} files from {\AFM} and {\INF} files found 
+on some font distribution diskettes.
+
+% In addition, 
+{\ATM} adds a line to the file {\ATMINI} 
+(in the Windows directory) 
+for every font installed (and deletes the line when a font is `removed')%
+\cfootnote{Note that `removing' a font using {\ATM} does not actually
+cause the {\PFB} and {\PFM} files to be deleted from disk.}.
+{\ATM} also adds a `softfont' line to the listing for each 
+Post\-Script printer it finds installed in {\WININI}.
+%
+It is necessary to exit Windows after adding or removing
+fonts for these changes to take effect.
+% (because {\ATM} reads all {\PFM} files when
+% Windows is launched, and remembers information from these files).
+
+% Note that older versions of {\ATM} (before {\ATM} 2.0) 
+% insert information into {\WININI}, which indicates that the fonts are
+% print resident  or have been permanently downloaded.  To correct for
+% this, and  arrange for fonts to be atuomatically downloaded, a change
+% needs to be made in {\WININI} (see Appendix~A.2).
+
+% There is a limit of around 165 fonts in 
+The PostScript driver that comes with Windows 3.0
+has a limit of around 165 installed fonts 
+(200 minus the 35 `standard' printer resident fonts).
+% older versions of Windows (before Windows 3.1). 
+This does not affect how many fonts can be used for on-screen viewing,
+but does affect printing.
+The limit is much higher in Windows 3.1.
+
+% {\DVIWindo} will use a substitute if it cannot find a font --- but only
+% after complaining about it.
+% The complaints can be disabled by unchecking
+% \menu{Complain Missing Fonts} in the \menu{Preferences} menu.
+
+%% not the best place for this information ???
+
+% stupid excuse, actually...
+
+Normally {\ATM} expects to find both the {\PFB} files and the {\PFM}
+files in the directory selected after clicking \menu{Add}.  This is
+appropriate when installing fonts from a font diskette. %  distribution
+Sometimes, however, it is convenient to `re-install' fonts that have actually
+already been copied to the hard disk.  In this situation, the {\PFM}
+files are often in a sub-directory of the directory that contains the
+{\PFB} files. Fortunately, {\ATM} knows how to deal with this, provided
+that the {\PFM} directory is selected after clicking \menu{Add} --- 
+{\ATM} will look for the corresponding {\PFB} files in the parent directory
+of the one containing the {\PFM} files.
+
+A common source of confusion is that a font `installed' for
+use with one program may not be available for use with another.  So,
+for example, {\ATM} may have a different idea about what fonts are
+`installed' than does the Post\-Script printer driver.  In a situation
+like this, a {\DVI} file may % very well 
+display just fine on screen, yet
+not print properly --- the missing font is replaced by one
+picked by the font mapper's nearest match algorithm
+--- and you may be surprised by what Window's considers `near'!
+
+% \subsection{A.1 --- Checking on installed fonts}
+\colorsubsection{A.1 --- Checking on Installed Fonts}
+
+There are several ways to check on exactly what fonts are installed:
+
+\beginbullets
+
+\bpar Each font known to {\ATM} is listed in {\ATMINI}.  
+The corresponding line contains the path and file names of both {\PFB}
+and {\PFM} files, 
+as well as a designation as to whether the font is considered
+`bold' and/or `italic'.
+
+\bpar Each font known to the Post\-Script printer driver
+% (other than printer-resident fonts) 
+will be listed in {\WININI} in the `softfonts'
+section for each Post\-Script printer.
+
+\bpar Every True\-Type font is listed in the \type{[Fonts]}
+section of {\WININI}, with the designation \type{(TrueType)}.
+
+\bpar A list of all scalable fonts known to Windows may be obtained by 
+selecting \menu{Show Font...} from the \menu{Fonts} % \menu{Special} 
+menu in {\DVIWindo}.
+
+\endbullets
+
+\noindent
+The last method above is often the most convenient, although, as
+indicated, it does not tell the whole story, since, for example, fonts
+may be known to {\ATM} that are not `installed' as far as the printer
+driver is concerned.
+There are a couple of additional items of note related to font installation:
+
+\beginbullets
+
+\bpar {\ATM} does not remove softfont entries from {\WININI} when a
+font is removed, and it does not note duplications when adding new fonts.
+Consequently there will be duplicate entries in the softfonts
+sections of {\WININI} if a font is removed and then reinstalled using {\ATM}.
+% It is best to 
+Edit {\WININI} to remove these extraneous softfonts entries
+when this happens.
+
+\bpar When a `new' Post\-Script printer is installed,  % in {\WININI}
+it will not automatically inherit softfont entries from existing printers.  
+% If you would like the same set of fonts to be available for the new
+% printer,  
+Copy the set of softfont entries from another printer listed in
+{\WININI} in order for them to be available with the newly installed printer.
+Or, reinstall all fonts using {\ATM} (but beware of the duplication of
+softfont entries mentioned above).
+
+% \bpar The Windows printer driver (typically {\PSCRIPT}) assumes that
+% fonts listed in the softfont section have been `permanently' downloaded
+% to the printer.  This is generally not a good idea, since most printers
+% do not have enough virtual memory to accommodate more than a handful of
+% fonts (see next section).
+
+\endbullets
+
+%% Problems with Designer
+
+% \subsection{A.2 --- Automatic downloading of fonts}
+\colorsubsection{A.2 --- Automatic downloading of fonts}
+
+The PostScript printer driver will download fonts `automatically'
+(temporarily) with each print job {\it if\/} the softfont entries in
+{\WININI} are set up accordingly. 
+{\ATM} 2.0 sets up softfont entries for `automatic' downloading.
+{\ATM} 1.15, on the other hand, sets up {\WININI} softfont entries for
+`manual' (permanent) downloading. 
+That is, the Post\-Script printer driver is led to believe that the
+fonts are either printer resident or have been manually downloaded 
+ahead of time. 
+This is generally {\it not} a good idea, since many  % most
+printers do not have enough virtual memory to accommodate more than a
+handful of fonts. 
+It is also inconvenient to have to download fonts manually, 
+and to  power cycle the printer to remove them later.
+
+To fix this, simply extend the softfont entries in {\WININI} by adding
+the path and filename for the outline font file ({\PFB}) to the path and
+filename for the  metric font file ({\PFM}).
+% \cfootnote{ATM 2.0 sets up softfont entries in {\WININI}.}.
+For example, extend % the line
+
+\vskip .05in
+
+% \noindent
+\lavender\verb@softfont97=c:\psfonts\pfm\cmvtt10.pfm@\revert
+
+\noindent to:
+
+% \noindent
+\lavender\verb@softfont97=c:\psfonts\pfm\cmvtt10.pfm,c:\psfonts\cmvtt10.pfb@\revert
+
+\vskip .05in
+
+\noindent
+Note that {\WININI} % normally 
+does not contain softfont entries for the 
+35 standard printer-resident fonts, since their {\PFM} files are 
+`wired-in' % information about these is built into 
+the printer driver, and the {\PFB} file are not normally needed for printing.
+Consequently the alteration described above does not have to
+be made for printer-resident fonts.
+
+For printer-resident fonts to be shown on screen, however,
+{\ATM} has to have access to corresponding {\PFB} files. % for these fonts.
+{\ATM} comes with a basic set of 13 fonts --- the other 22 %  remaining
+`standard' printer-resident fonts may be found in Adobe's `Plus Pack'.
+For additional details look in the file \type{atmone.txt}.
+
+% following comes earlier ?
+
+{\DVIWindo} complains if a {\DVI} file calls for a font that it cannot find;
+% with {\ATM} 
+it then tries to use `Times' 
+(or `TimesNewRomanPS',  or `Times New Roman', or `Arial') 
+as a substitute. 
+% Spacing of characters on the display screen will be adversely affected
+% when {\DVIWindo} has to substitute for a font, since the metric
+% information will most likely not match.
+`Bundled' versions of {\ATM} come with a slightly different sets of fonts
+than does the `retail' version of {\ATM}.
+% Retail versions of {\ATM} come with slightly different sets of fonts.
+If your version of {\ATM} did not come with `Times-Roman',
+then there ought to be a line in the \type{[Aliases]} or \type{[Synonyms]}
+section of {\ATMINI} giving `TimesNewRomanPS' as an alias for `Times'
+(see also next subsection).
+
+Complaints about missing fonts can be turned off by unchecking
+\menu{Complain Missing Fonts} in the \menu{Preferences} menu.
+
+
+% \subsection{A.3 --- Adjustments to ATM.INI}
+\colorsubsection{A.3 --- Adjustments to ATM.INI}
+
+Some adjustments to {\ATMINI} are made automatically when {\DVIWindo}
+is installed. % For example, 
+The line
+
+\vskip .05in
+
+\type{ScreenAdjust=Off}
+
+\vskip .05in
+
+\noindent
+is added in the `\type{[Settings]}' section of the {\ATMINI} file.
+This stops {\ATM} from using font sizes that are 3$\,$\frac1/4 \% 
+smaller than those requested --- which can affect character positioning.
+Also, the line % make sure that
+
+\vskip .05in
+
+\type{BitMapFonts=Off}
+
+\vskip .05in
+
+\noindent
+is added in the `\type{[Settings]}' section of {\ATMINI}.
+This stops {\ATM} from using bitmap fonts 
+(available for small sizes of some fonts).
+
+%% The following paragraph is expendable. FLUSH
+
+% The following does not affect the operation of {\DVIWindo}, but
+% is related to the installation of {\ATM}.
+% Some older applications call for fonts with ridiculously small sizes.
+% When bitmap fonts were used, Windows % in this situation 
+% simply provided the smallest bitmapped font available.
+% When {\ATM} is installed, however, it provides a font in the size
+% actually called for --- with occasionally surprising results!
+% If this happens, you may need to comment out (or remove) a line from
+% either the \type{[Synonyms]} or \type{[Aliases]} section of {\ATMINI}.
+% If, for example, the application calls for the font `\type{Helv}' in a very
+% small size, and {\ATM} provides an unreadably small font,
+% then add a semicolon at the beginning of the line \type{Helv=Helvetica}.
+% In some cases such behavior can also be controlled by modifying the
+% point size at which entries in the \type{[Synonyms]} section `kick in'.
+% This is specified by the \type{SynonymPSBegin} entry (the default is 9pt).
+
+% SynonymPSBegin=9
+
+% [Aliases] Helv=Helvetica, Courier=Courier
+% [Synonyms] Helv=Helvetica, Courier=Courier
+% [Setup] PFM_Dir=c:\psfonts  PFB_Dir=c:\psfonts
+
+
+% \section{Appendix D --- Trouble shooting ATM font installation}
+\colorsection{Appendix B --- Trouble shooting ATM font installation}
+
+% \undosectionskip
+
+% \subsection{D.1 --- ATM fonts do not match Printer fonts}
+% \colorsubsection{B.1 --- ATM fonts do not match Printer fonts}
+
+Sometimes in Windows 3.0, when an application tries to create a printer
+context  (often when it is launched), one obtains a dialog box with the 
+much dreaded message: % shown above.
+{\bf ATM fonts do not match Printer fonts}.
+%
+% \vskip .05in
+% \centerline{`ATM fonts do not match PostScript printer fonts'}
+% \vskip .05in
+%
+% \noindent
+Such problems with {\ATM} typically are due to one of the following:	
+
+\vskip .05in
+
+\ftpar{(a)} the {\it default\/} printer is `inactive';
+
+\ftpar{(b)} {\ATMINI} contains some fonts 
+(other than printer-resident fonts)
+that do not appear in {\WININI}; or 
+% (other than printer-resident fonts)
+% (and that are not printer-resident)
+
+\ftpar{(c)} Softfont entries for the fonts in {\ATMINI} exist in
+{\WININI}, but not in the softfont list for the 
+{\it currently selected\/} printer; or 
+
+\ftpar{(d)} font names in the metric files ({\PFM}) do not match the
+font names in the corresponding outline files ({\PFB}).
+
+\vskip .05in
+
+\noindent
+These problems can be dealt with as follows:
+
+\vskip .05in
+
+\ftpar{(a)} The default printer should be activated from the Windows
+Control Panel.  
+(Use \menu{Save Changes} to make 
+this %  the change
+permanent when exiting Windows).
+
+\ftpar{(b)} Font mismatches may be dealt with by removing and
+reinstalling fonts using the {\ATM} control panel 
+(In some cases one can instead just edit {\WININI} to match {\ATMINI}
+ --- delete {\ATMQLC} if you do --- Appendix~D.3 explains why).
+Relaunch Windows for the changes to take effect.
+
+\ftpar{(c)} There may be several `printers' installed (for
+example: one to `{\sc file}', one to `{\sc lpt1}', one to `{\sc none}').  
+Each such `printer' has a section listing its `softfonts' in {\WININI}.  
+The fonts in {\ATMINI} must match those % listed 
+for the  {\it currently selected\/} printer.
+% (at the time Windows is launched).  
+Softfont entries for other `printers' are ignored.
+Use Windows' control panel to change the default printer selection.
+% (Use \menu{Save Changes} when exiting Windows to make the change permanent).
+
+% \noindent % earlier ?
+% As mentioned above, there will typically {\it not\/} be entries in
+% {\WININI} for the 35 `standard' printer-resident fonts (such as
+% Times-Roman), even though there will be entries for such fonts in
+% {\ATMINI}.  Such fonts are known to the PostScript printer driver ---
+% if {\WININI} did contain entries for these fonts, then the printer
+% driver would (unnecessarily) download such fonts.
+
+\ftpar{(d)} If the font names in the {\PFM} files do not match
+those in the {\PFB} files, go back to the source of the font files
+for corrected versions (Or use {\AFMTOPFM} to make new {\PFM} files
+--- see Appendix~D.1).
+
+\noindent
+In Windows 3.1, one is less likely to receive the above complaint from
+{\ATM}.  Mismatches between what fonts {\ATM} thinks are there, and what
+the printer driver thinks are there, show up instead when printing.
+Text in the offending font will be printed in some arbitrarily chosen
+font, often with startling results.
+
+% \vskip .05in
+
+% \end
+
+% \colorsubsection{B.2 --- Incorrect widths in older PFM files}
+
+% \noindent
+% Version~2 of the Adobe fonts were supplied with incorrect character
+% widths for ({\ASCII}) character codes 172, 173, 174, 175, 178, 179, 181,
+% 185, 188, 189, 190, 215, 240, and 247.  The % (free) 
+% upgrade conversion utility to version~3 corrects these errors in the
+% {\PFM} files.   
+% Alternatively use the {\AFMTOPFM} utility supplied with {\DVIWindo}
+% to make correct {\PFM} files from {\AFM} files.
+
+% get the AFMs from file server
+
+% To check on character widths, use `\menu{Select Font}' in the
+% `\menu{Fonts}' menu of {\DVIWindo}. 
+% If characters in the above mentioned positions stick far out of the
+% character box, or if there is a lot of extra space, then the metric
+%  file ({\PFM}) is corrupt. % probably faulty.  
+% Check particularly on the characters 
+% \frac1/4, \frac1/2, \frac3/4, % 1/4, 1/2, 3/4 
+% {\registered} % the symbol for registered trademark 
+% and `eth'.  
+
+%% FLUSH the following?
+
+% \subsection{D.3 --- Unrecoverable Application Errors} %  and PD fonts
+% \colorsubsection{B.2 --- Unrecoverable Application Errors} %  and PD fonts
+
+% On rare occasions one may find that an outline font file ({\PFB}) or a
+% Windows metric file ({\PFM}) has been corrupted (it is hard to check,
+% since most parts of these files are in binary form), 
+% or that a font program uses techniques or a font file format that are not
+% currently supported by {\ATM}.
+% In this case one typically gets no output for a whole group of
+% characters that are sent to {\ATM} at once
+% (although the horizontal spacing may be correct).  
+% At times {\ATM} may be internally corrupted after such an event and not
+% function properly until Windows is relaunched. 
+% In extreme cases one may get one of those unilluminating `Unrecoverable
+% Application Error' messages.
+% Since Windows~3 runs all applications in the same address space,
+% errors in one application can have hidden, 
+% potentially disastrous effects on other applications.
+% It is probably best to reboot the computer in this case, just to be safe.
+% In Windows 3.1 it sometimes if sufficient to just kill the affected
+% application using `Ctrl-Alt-Del', and to exit Windows after saving all
+% other work.
+
+% Some `public domain' ({\sc pd}) outline fonts % in particular 
+% may lead to such difficulties. 
+% At times this happens despite the fact that such a font may be in
+% % perfectly 
+% correct Type~1 format.
+% The reason is that {\ATM} actually has much stricter rules for
+% what it will accept in a font than what is specified
+% under `ATM compatibility' in the book defining the Type~1 format.
+% Reputable font foundries know these `hidden rules' and produce fonts
+% that do not trigger such problems.
+
+% Another sure way to get {\ATM} confused is to have an entry in 
+% {\ATMINI} point to a non-existent font metric file.  There will be no
+% error message, but the font metrics will be totally random. % NEW
+
+For additional information, see \type{atmone.txt}, \type{atmtwo.txt},
+and \type{atmfix.txt}.
+
+% \section{Appendix B --- Displaying Character Sets in Fonts}
+\colorsection{Appendix C --- Displaying Character Sets in Fonts}
+
+To help solve problems having to do with font installation, 
+{\DVIWindo} provides facilities for inspecting the installed base of fonts.
+Choose \menu{Show Font...} from the \menu{Fonts} % \menu{Special} 
+menu to see a complete
+list of scalable  fonts. % known to {\ATM}. %  installed in the system. %
+Double-click on a font name to see all of the characters in that font.
+It is possible to choose `bold' and `italic' versions of fonts.
+% If the word `synthesized' appears in the title bar, 
+If the letters `SYN' appears in the title bar, 
+then you chose `bold' and/or `italic' when there is in fact not a
+`bold' or `italic' version of the font available. % in outline form. 
+%
+True\-Type fonts carry the designation `\type{(TT)}' after their name%
+\cfootnote{If two fonts have the same name, and one of them is a
+True\-Type font,  then under some circumstances it may not be possible to
+access the other one.}.
+
+The methods described earlier for moving and magnifying the image of
+text on the screen can also be used to get a closer look at particular
+characters in such a display.  
+What is shown on screen can also be printed or copied to the clipboard.
+To return to viewing a {\DVI} file that may be open, either select
+\menu{Close} from the \menu{File} menu 
+(which, in this situation, `closes' the viewing of
+characters in a font, {\it not\/} the currently selected {\DVI} file), 
+or click \menu{Cancel} in the dialog box that pops up after selecting 
+\menu{Show Font...} from the \menu{Fonts} % \menu{Special} 
+menu.
+
+If \menu{Show Bounding Boxes} in the `Font Selection' % \menu{Special} 
+dialog box is checked, 
+then each character is shown inside a rectangular box, 
+the width of which corresponds to the character width,
+while the height and depth are the font's `Ascend' and `Descend' % quantities
+parameters
+(which, in the case of Type 1 fonts,
+are derived from the `\type{FontBBox}' line in the {\PFB} file).
+% parameters from the {\PFM} file.
+If there is an obvious disagreement between the space occupied by the
+characters and the supposed bounding boxes,
+then there is a mismatch between the outline font file
+and the corresponding Windows font metric file.  
+This often is the result of a mismatch in encoding assumed by {\ATM}
+and the application that created the font metric file.
+
+Select \menu{Char Widths} in the \menu{Fonts} % \menu{Special} 
+menu, to see a list of character widths instead of the characters' shapes.
+The widths are based on 1000 units per `em' 
+(that is, standard Adobe Type~1 coordinate system).
+
+The main utility of these font displays is to determine %  information
+whether {\ATM} is using the default {\ANSI} character encoding,
+as opposed to the % `raw' or 
+`native' encoding of the font.
+%
+This is helpful when working with fonts other than those in the
+Computer Modern family.
+When {\it non}-{\CM} fonts are used with {\TeX}, 
+many people prefer not to use {\ANSI} reencoding,
+since, for example, the ligatures `{\tt fi}' and `{\tt fl}' are not
+available in {\ANSI} encoding% 
+\cfootnote{Perhaps the easiest way to distinguish {\ANSI} encoding from 
+`standard' encoding, is that in {\ANSI} encoding there are very many accented
+(composite) characters, such as \"a, while there are none in 
+`standard' encoding.}. 
+Utilities for modifying {\PFM} and {\PFB} files to suppress 
+{\ANSI} reencoding are described in the Appendix~D. %  later
+
+\colorsubsection{C.1 --- Creating AFM files for Scalable Fonts}
+
+Adobe Type~1 fonts come with Adobe font metric ({\AFM}) files, from
+which {\TeX} font metric files ({\TFM}) can be constructed
+using {\AFMTOTFM} (see Appendix~D.5). % and A.1 ?
+Other scalable font types, such as True\-Type, do not come with {\AFM} files,
+and so it may not be obvious how to use them, since {\TeX} needs {\TFM} files.
+For this reason a facility has been added to {\DVIWindo} for dumping a
+rudimentary {\AFM} file for any scalable font known to Windows.
+
+% This is particularly useful for True\-Type fonts, since to use them in
+% {\TeX}, one needs {\TFM} files --- and {\TFM} files can be created from
+% {\AFM} files using {\AFMTOTFM}.
+Click on \menu{WriteAFM...} in the \menu{Fonts} % \menu{Special} 
+menu.
+After selecting a font, you will be asked to select a suitable encoding
+--- this is necessary because the metric information available in Windows
+does {\it not\/} include the encoding vector%
+\cfootnote{The encoding specified when using \menu{WriteAFM...} must
+correspond to the way the font is actually encoded --- it is not
+possible to reencode the font at this point.}.
+For most plain vanilla text fonts, just use `\type{ansi}' in
+Windows 3.0 --- or `\type{ansinew}' in Windows 3.1.
+For the Symbol font use `\type{symbol}' and for Zapf Dingbats use
+`\type{dingbats}' (this assumes that the corresponding encoding vectors have
+been copied to the directory in which {\DVIWindo} resides).
+See Appendix~D.1 for more information on encoding vector files.
+
+% Encoding vector files have a very simple format: Each non-comment line
+% contains a numeric code followed by the name of a character.  
+% A typical line would be \verb@`A 65'@.  
+% For examples, see the \type{vec} subdirectory on the {\DVIWindo}
+% distribution diskette. 
+
+% {\DVIWindo}, and utilities that allow specification of encoding vectors,
+% first look for encoding vector files in a directory given
+% by the environment variable {\VECPATH}.
+% If not found there, they look in the current directory,
+% and finally  in the directory from which {\DVIWindo} or the utility
+% were invoked.
+% % {\DVIWindo} looks for encoding vector files in the directory specified
+% % by the environment variable {\VECPATH}, or if this is not defined,
+% % in {\DVIWindo}'s home directory.
+% % (unless the environment variable {\VECPATH} is set to indicate where
+% % encoding vectors may be found --- 
+% Setting {\VECPATH} is particularly convenient if encoding vector files
+% have already been installed in the {\DVIPSONE} directory.
+% Otherwise you may need to copy the required encoding vector files from the
+% `\type{vec}' subdirectory of the {\DVIWindo} distribution diskette.
+
+% Encoding vector files have extension \type{.vec} and have a very simple
+% format: 
+% Each line contain a numeric code and a character name (e.g. `65 A').
+% Comment lines, starting with `\verb@%@' are allowed.
+% The first line in the file should be a comment line containing the word
+% `\type{Encoding:}' followed by a short descriptive name.
+% Several sample encoding vector files are supplied with {\DVIWindo}
+% in subdirectory \type{vec}.
+
+% The {\AFM} file produced by \menu{WriteAFM...} appears in {\DVIWindo}'s
+% home directory. 
+% It may need some minor editing before being used with {\AFMTOTFM}.
+
+The partial {\AFM} file produced by \menu{WriteAFM...} 
+appears in the directory from which {\DVIWindo} was invoked.  
+The name of the file is the font file name
+derived from {\ATMINI} (for Adobe Type~1 fonts) or {\WININI} 
+(for True\-Type fonts) or \type{dviwindo.fnt}  
+(for other font rendering software).  If a mapping for the font is not found
+in {\ATMINI}, {\WININI} or \type{dviwindo.fnt}, 
+then the MS Windows Face Name is used (possibly abbreviated).
+
+The {\AFM} file is incomplete, since some information commonly found in 
+{\AFM} files is not available in Windows.  
+Fortunately, most of the missing information is not required by {\AFMTOTFM},
+since {\TFM} files have no way of representing it either.
+
+The PostScript FontName cannot be determined easily from inside
+Windows, but for most fonts with short names it is the same as the MS
+Windows Face Name.  
+For some purposes,  an accurate FontName is required in the {\AFM} file.  
+Verify that the FontName generated is in fact reasonable.
+%% how to get DriverInfo ?
+
+The FontBBox information is also not available, although a usable
+bounding box can be constructed, if necessary, 
+using \type{xll = 0}, \type{yll = Descender}, 
+\type{xur = MaxWidth}, \type{yur = Ascender}. 
+%
+The character bounding boxes themselves are approximations, based on
+the space Windows thinks each character occupies on the page.  
+They all have the same height and depth.
+
+The kern pair table is sorted lexicographically with the first character
+treated as more significant (internally, this table is sorted
+lexicographically with the second character being more significant).
+The order produced is that needed for use in {\TeX} {\TFM} files ---
+exactly what {\AFMTOTFM} requires. 
+
+If you find `letters' with names like `a231' in the kern table, then there
+exist kern pairs for characters that are not in the encoding.  This probably
+means that you specified an encoding vector that does not match the font's
+actual encoding --- that is, the encoding assumed when the {\PFM} file
+was created in the first place.
+
+There is no ligature information, since this is not available in Windows.
+Fortunately a command line flag in {\AFMTOTFM} allows insertion of the
+standard ligatures for `fi', `fl', as well as `ffi'
+and `ffl' (if these glyphs exist).  
+% This will also inserted the standard {\TeX} `ligatures'
+% (such as  `{\tt ---}' becoming `{\tt emdash}').
+See Appendix~D.5.
+
+
+% \section{Appendix C --- Font remapping issues}
+\colorsection{Appendix D --- Font remapping issues}
+
+Windows Printer Font Metric (PFM) files for the 
+Blue Sky Research Computer Modern ({\CM}) outline fonts for the {\PC} are 
+set up to force Windows % {\ATM} (and {\PSCRIPT}) 
+to use the correct encoding vectors. 
+When using some {\it non}-{\CM} fonts, however, there may be a need to
+explicitly force remapping of the encoding vector.
+Unlike {\DVIPSONE}, {\DVIWindo} cannot reencode fonts `on the fly' ---
+% this is 
+because neither Windows nor {\ATM} provide for reencoding.
+It {\it is\/} possible % however, 
+to work with a font remapped in an arbitrary fashion
+using the utilities provided with {\DVIWindo} --- but it takes a bit of work.
+This can be avoided almost entirely if one uses fonts in their
+`native' encoding form.
+
+With the advent of {\TeX}~3.0, one of the motivations for
+reencoding fonts  has disappeared; namely the limitation in older
+versions of {\TeX} to fonts with a maximum of 128 characters.
+
+% still need to modify PFM Charset = Symbol and Family = Decorative
+% still need to standardize for ATM 1.1
+
+The reason something needs to be done to use fonts that have been
+reencoded in some arbitrary way is that Windows
+% {\ATM} (and {\PSCRIPT}) 
+provides only two ways of using a font:
+
+\beginbullets
+
+\bpar Reencoded to Windows `{\ANSI}' character encoding; or %  (the default)
+
+\bpar Using the font's `native' encoding. %  (or `raw')
+
+\endbullets
+
+\noindent
+In addition, the {\it default\/} is to use {\ANSI} encoding 
+(at least for fonts whose `native' encoding is Adobe StandardEncoding),
+which may not be % is generally not 
+desirable for use with {\TeX}.
+Also, the choice between the two encoding schemes 
+cannot be made dynamically --- it is fixed by how the
+{\PFM} and {\PFB} files are set up.
+The following subsections provide detailed information 
+on how to reencode fonts.
+
+% \subsection{C.1 --- Features of Utilities supplied with DVIWindo}
+\colorsubsection{D.1 --- AFMtoTFM, AFMtoPFM and ReEncode}
+
+Three utility programs supplied with {\DVIWindo} are used to
+change the encoding of font metric files and the corresponding
+outline font files. % and corresponding font metric files.
+Each deals with one of three types of files that need to be manipulated:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar {\TeX} Font Metric ({\TFM}) files contain the font metric information
+used by {\TeX};
+
+\bpar Printer Font Metric ({\PFM}) files contain the font metric
+information used by Windows;
+
+\bpar Printer Font Binary ({\PFB}) files contain the actual character
+outlines, used by {\ATM} and {\PSCRIPT}.
+
+\endbullets
+
+\vskip .05in
+
+{\PFM} and {\TFM} files are in compact binary forms that are
+difficult to work with directly.
+Consequently, the verbose, human readable Adobe Font Metric {\AFM} file
+is used as the reference from which both {\PFM} and {\TFM} files are created.
+
+\unvpar
+
+An encoding vector is a mapping from characters codes (0--255)
+to character names.  While alphanumeric characters are in the same
+position in most encoding vectors, there are a myriad different ways
+of using the other character positions.
+It is % What is most 
+very important that {\PFB}, {\PFM}, and {\TFM} files agree
+on what encoding vector is being used for a particular font.
+The {\TFM} and {\PFM} should be made using the {\it same} encoding
+vector as that in the {\PFB} file.
+
+It is not trivial to check on whether encodings match, since the
+encoding vector appears explicitly only in the {\PFB} and {\AFM} files,
+and is {\it not} found in the compact {\PFM} and {\TFM} metric files. 
+{\AFMTOTFM} and {\AFMTOPFM} insert a short descriptive name 
+in order to help make it easier to figure out what
+encoding was used when the metric files were created.
+
+All three utility programs obtain the encoding vector from an encoding
+vector file.  Encoding vector files have extension \type{.vec}, and a
+very simple format.  Each line contains a number and a character name.
+For example:
+
+\vskip .05in
+
+\verb@65 A@ %	\quad or \quad	\verb@33 exclam@
+
+\vskip .05in
+
+\noindent
+Encoding vector files may also contain blank lines, as well as comment lines
+starting with `\verb@%@'.  The first line of the encoding vector file
+should be a comment line giving a short descriptive name for the encoding.
+% following the word `\type{Encoding:}'.  
+For example:
+
+\vskip .05in
+
+\verb@% Encoding: TeX text@  % \quad or \quad \verb@% Encoding: Adobe StandardEncoding@
+
+\vskip .05in
+
+\noindent
+The distribution diskette contains several commonly used
+encoding vectors (to save space, these files are {\it not\/} 
+automatically copied to the hard disk during installation). 
+These files may be found in the subdirectory `\type{vec}'.
+
+The three utility programs have the following functions:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar {\AFMTOTFM} will create a {\TFM} file, given an {\AFM} file;
+% using a specified encoding.
+
+\bpar {\AFMTOPFM} will create a {\PFM} file, given an {\AFM} file;
+% using a specified encoding.
+
+\bpar {\REENCODE} will change the encoding of a {\PFB} outline font file.
+
+\endbullets
+
+\vskip .05in
+
+In each case an encoding vector must be specified.
+
+Utility programs supplied with {\DVIWindo} for
+manipulating font metric files ({\PFM}) and font outline files ({\PFB}),
+like utilities supplied with {\DVIPSONE}, 
+have a simple common user interface.  
+They all are {\DOS} applications that take command line
+flags and command line arguments, 
+followed by a list of files to be processed.
+Both command line flags and command line arguments are preceded by `\type{-}'.
+The difference between a command line flag and a command line argument
+is that a flag stands on its own, while a command line argument contains
+an `\type{=}' sign and a user specified string, number or filename.
+This is best illustrated by an example: 
+
+\vskip .05in
+
+% \lavender\verb@c:\dviwindo\reencode -s -e -c=standard c:\psfonts\por.pfb@\revert
+\lavender\verb@c:\dviwindo\reencode -s -d -c=standard c:\psfonts\por.pfb@\revert
+
+\vskip .05in
+
+\noindent
+Here `\type{s}' and \type{d}' are command line flags that
+control the operation of {\REENCODE}, while `\type{c=standard}' is a
+command line argument that, in this case, specifies a particular encoding
+vector. 
+% Note that the file name at the end is {\it not\/} preceded by `\type{-}'.
+%
+When it makes sense, these utility programs allow for multiple file names.
+Each file is processed in turn under control of the same command line
+flags and command line arguments.
+The file names may contain `wildcards' (`\type{*}' or `\type{?}').
+All files matching the wildcard specification will be processed.
+
+To see what command line flags and arguments are accepted by a
+particular utility program, invoke it without specifying any file
+names, just with the command line flag `\type{?}'. So, for example,
+
+\vskip .05in
+
+\lavender\verb@c:\dviwindo\reencode -?@\revert
+
+\vskip .05in
+
+\noindent
+will produce a short usage listing for the utility {\REENCODE}.
+
+% \noindent
+All of the utility programs place their output (if any) 
+in the current directory.
+The output filenames are the same as the input file names, 
+typically with some new extension.  
+So {\AFMTOPFM}, for example, produces the file \type{por.pfm}
+in the current directory when given the file 
+{\lavender\verb@c:\afm\por.afm@\revert}  as input.
+To avoid confusion, it is typically best to set the current directory
+to something other than the directory from which input files are obtained.
+A virtual disk is convenient for the current directory, 
+with new files renamed and moved to their final destination 
+from there, as desired.
+
+Utilities that require specification of encoding vectors
+first look for encoding vector files in a directory given
+by the environment variable {\VECPATH}.
+If these is no such variable, or if the file is not not found there, 
+they look in the current directory,
+and finally  in the directory from which the utility was invoked.
+% See Appendix~C.1 for more information about encoding vectors.
+Setting {\VECPATH} is particularly convenient if encoding vector files
+have already been installed in the {\DVIPSONE} directory.
+Otherwise you may need to copy the required encoding vector files from the
+`\type{vec}' subdirectory of the {\DVIWindo} distribution diskette.
+
+\vskip .1in % \vskip .05in
+
+\warning
+
+% \vskip .05in
+
+%% why so much space here ??
+
+% \subsection{C.2 --- Forcing use of a font's native encoding}
+\colorsubsection{D.2 --- Forcing use of a font's native encoding}
+
+As mentioned earlier, there are two encoding schemes that can be used
+with a font in Windows:
+(a) reencoding to Windows `{\ANSI}', or
+(b) using the font's `native' encoding.
+Unfortunately different programs have different rules for deciding when
+to use one encoding or the other!
+
+Presently (that is, for Windows 3.1 and {\ATM} 2.0), 
+the rules --- undocumented, of course --- are:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar The Windows Post\-Script driver will reencode the font to {\ANSI},
+{\it unless\/} the Family field in the {\PFM} file is set to `Decorative'.
+
+\bpar {\ATM} will reencode the font to Windows {\ANSI} if the {\PFB} file
+contains the line `\type{/Encoding StandardEncoding def}'.
+
+\endbullets
+
+\vskip .05in
+
+Since {\ATM} and {\PSCRIPT} look in different files for information,
+one may end up with different encoding when viewing on screen 
+than when printing!   
+Also note that some applications
+look at the `CharSet' field in the {\PFM} file, and assume `native'
+encoding if `CharSet' is set to `Symbol'.  
+
+\vskip .05in
+
+\beginbullets
+
+\bpar
+So, to be safe, when you really do not want Windows {\ANSI}, make sure that 
+(a) the {\PFB} file does not contain the `StandardEncoding' line, and 
+(b) set `Family' to `Decorative' and `CharSet' to `Symbol' in the {\PFM} file.
+
+\endbullets
+
+\vskip .05in
+
+\noindent
+% By the way, 
+Possible values for the `\type{CharSet}' field in the {\PFM} file are: 
+
+\vskip .05in
+
+`\type{ANSI}', 
+`\type{Symbol}', 
+`\type{Kanji}' 
+or 
+`\type{OEM}',
+
+\vskip .05in
+
+\noindent
+while possible values for the `\type{Family}' subfield are:
+
+\vskip .05in
+
+`\type{Roman}' (serif -- variable width),
+
+`\type{Swiss}' (sans-serif -- variable width),
+
+`\type{Modern}' (fixed width),
+
+`\type{Script}' (cursive), or
+
+`\type{Decorative}' (symbol).
+
+\vskip .05in
+
+\noindent
+% The font's native encoding is used when the `\type{CharSet}' 
+% field is something other than `\type{ANSI}' 
+% and/or the `\type{Family}' subfield is `\type{Decorative}'.
+%
+% what is the REAL decision rule ?
+%
+% To see how these fields are set in an existing {\PFM} file
+% invoke {\CHARSET} without any command line arguments or flags; 
+% just specify a file name:
+%  
+% \vskip .05in
+% 
+% \noindent
+% 
+% \lavender\verb@c:\dviwindo\charset c:\psfonts\por.pfm@\revert
+% 
+% \vskip .05in
+% 
+% \noindent
+% (No output file will be produced in this case.)
+%
+To see how these fields are set up in an existing {\PFM} file
+use \menu{Show Font...} from the \menu{Fonts} % \menu{Special} 
+menu.
+The title bar shows both `CharSet' and `Family'.
+
+% \vskip .05in
+
+% \warning
+
+% \vskip .05in
+
+% \noindent
+The two fields can be set as desired when creating a Windows font metric
+({\PFM}) file from an Adobe Font Metric ({\AFM}) file using {\AFMTOPFM}.%
+\cfootnote{{\AFM} metric files are usually supplied with % the
+outline fonts. % ({\PFB}) themselves.
+{\AFM} files for Adobe fonts can also be obtained
+% form \type{ps-file-server@adobe.com} 
+via anoynmous FTP from directory \type{pub/Adobe/AFMFiles} 
+at \type{ftp.mv.us.adobe.com} % [130.248.1.4]
+on the InterNet,
+or from {\tt ps-file-server@adobe.com}.}.
+%
+% For a font that already {\it has\/} a {\PFM} file, use {\CHARSET} 
+% (another utility supplied with {\DVIWindo}) instead to modify the two fields.
+% \vskip .05in
+% 
+% \warning
+% 
+% \vskip .05in
+% 
+% \noindent
+% To change the `\type{CharSet}' and `\type{Family}' fields in a {\PFM} file, 
+% use the command line arguments `\type{c}' and `\type{f}'.
+%
+% To force use of `native' encoding, set `\type{CharSet}' to `\type{Symbol}',
+% and set `\type{Family}' to `\type{Decorative}'. For example:
+% 
+% \vskip .05in
+% 
+% \noindent
+% \lavender\verb@c:\dviwindo\charset -c=symbol -f=decorative c:\psfonts\pfm\por.pfm@\revert
+% 
+% \noindent
+% \lavender\verb@copy por.pfm c:\psfonts\pfm@\revert
+% 
+% \vskip .05in
+% 
+% \noindent
+% Note that {\CHARSET} places its output in the current directory
+% (as do all the utilities supplied with {\DVIWindo}). 
+% So the resulting file has to be copied from there
+% to where it is actually needed.
+%
+% % \subsection{C.3 --- Forcing use of ANSI reencoding}
+% \colorsubsection{D.3 --- Forcing use of ANSI reencoding}
+%
+% To force {\ATM} (and {\PSCRIPT}) to use {\ANSI} encoding instead, 
+% set `\type{CharSet}' to `\type{ANSI}' and
+% `\type{Family}' to `\type{Roman}', `\type{Swiss}', or `\type{Modern}', 
+% as appropriate.  For example:
+% 
+% \vskip .05in
+%
+% \lavender\verb@c:\dviwindo\charset -c=ANSI -f=Roman c:\psfonts\pfm\por.pfm@\revert
+% 
+% \lavender\verb@copy por.pfm c:\psfonts\pfm@\revert
+% 
+% \vskip .05in
+% 
+% \noindent
+% Wild cards may be used in the file specification for {\CHARSET}, so
+% that several font metric files may be modified at once.
+%
+% \noindent
+% It is, unfortunately, not sufficient to merely change the 
+% `CharSet' and `Family' 
+% fields in the {\PFM} file, since
+In addition, the character width table in the {\PFM} file must
+correspond to the implied encoding of the font. 
+
+Use something like:
+
+\vskip .05in
+
+% \lavender\verb@c:\dviwindo\afmtopfm -s -e -d c:\afm\por.afm@\revert
+\lavender\verb@c:\dviwindo\afmtopfm -vsd -c=none c:\afm\por.afm@\revert
+
+\vskip .05in
+
+\noindent to force use of the font's native encoding.
+The command line flags `\type{s}' and `\type{d}' 
+in the call to {\AFMTOPFM} above force setting of 
+the `\type{CharSet}' field to `\type{Symbol}',
+and setting  the `\type{Family}' field to `\type{Decorative}',
+while `none', in a position where an encoding vector is expected,
+forces use of the encoding found in the {\AFM} file.
+
+The {\PFM} files supplied with the thirteen fonts that come with {\ATM}
+are set up for Windows {\ANSI} encoding (as are {\PFM} files created 
+during installation by {\ATM} for most Adobe Type~1 fonts).
+For your convenience, {\PFM} files set up for 
+StandardEncoding, are provided as an alternative in the \type{pfm}
+subdirectory of the {\DVIWindo} distribution diskette.
+The {\TFM} files on the distribution diskette are also set up for
+StandardEncoding --- as are the {\TFM} files supplied with
+{\DVIPSONE}. 
+This is not to suggest that StandardEncoding is an optimal encoding
+scheme --- it is just a good starting point, and it {\it is} 
+very important that outline font and font metric files all be consistent.
+
+One can also obtain ordinary Windows {\ANSI} encoding using {\AFMTOPFM}:
+
+\vskip .05in
+
+\lavender\verb@c:\dviwindo\afmtopfm -v c:\afm\por.afm@\revert
+
+\vskip .05in
+
+\noindent % to obtain ordinary ANSI encoding instead 
+% (This is the way the {\PFM} files that come with {\ATM} are set up).
+%
+Look in the file \type{encoding.txt} for additional details.
+
+% \subsection{C.3 --- `Standardizing' font files}
+\colorsubsection{D.3 --- `Standardizing' a Font File}
+
+\noindent
+As described above,
+% if you are using {\ATM} 1.1 (or later)  note that 
+% , there is an additional twist:{\ATM} 1.1 
+{\ATM} forces Windows {\ANSI} reencoding if the outline font file
+({\PFB})  contains the line
+
+\vskip .05in
+
+\type{/Encoding StandardEncoding def}
+
+\vskip .05in
+
+\noindent
+{\it independent\/} of the settings of `\type{Family}' and
+`\type{CharSet}' fields in the {\PFM} file.
+To use such a font with StandardEncoding instead of Windows {\ANSI},
+% To get around this, 
+use the {\REENCODE} utility supplied with 
+{\DVIWindo} to `standardize' the {\PFB} file.
+By `standardizing', we mean expanding out the StandardEncoding
+vector so that {\ATM} no longer recognizes that the font is using
+StandardEncoding.
+%
+% \vskip .05in
+% 
+% \warning
+% 
+% \vskip .05in
+%
+% \noindent
+Here is an example of the use of {\REENCODE} for this purpose:
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+\lavender\verb@c:\dviwindo\reencode -c=standard c:\psfonts\por.pfb@\revert\hfill\linebreak
+\lavender\verb@copy porx.pfb c:\psfonts@\revert\hfill\linebreak
+\lavender\verb@del c:\psfonts\atmfonts.qlc@\revert
+
+}
+
+\vskip .05in
+
+\noindent
+In the first line above, 
+{\REENCODE} is being asked to read the encoding vector file
+\type{standard.vec} (supplied with {\DVIWindo}) and use it to replace
+the encoding in the outline font file. % ({\PFB}).
+% (see Appendix~D.1 for details about encoding vector files).
+% \cfootnote{{\REENCODE},		%% redundant ???
+% and other utilities that allow specification of encoding vectors,
+% first look for encoding vector files in a directory given
+% by the environment variable {\VECPATH}.
+% If not found there,  they look in the current directory,
+% and finally  in the directory from which the utility was invoked.}.
+In the second line, the modified {\PFB} file is written over the original
+font file from the current directory, which is where {\REENCODE} places it.
+The last line above removes the information that {\ATM} cached when
+Windows was last exited.
+The file {\ATMQLC} will be reconstructed by {\ATM} the next time
+Windows is launched%
+\cfootnote{
+The directory where {\ATMQLC} % this file 
+is stored is specified by the \type{QLCDir} entry in {\ATMINI}).
+If there is no {\ATMQLC} file, then you are probably using an old version of
+{\ATM} % (version 1.0) 
+--- time to upgrade to the latest version. % }.
+Note, however, that {\ATMQLC} may not exists while Windows is running.}. %?
+Wild cards may be used in the file specification for {\REENCODE}, 
+so that several font files may be `standardized' at once.
+
+If {\REENCODE} is applied to a file {\it without\/} specification of an
+encoding vector then it inserts the line
+
+\vskip .05in
+
+\type{/Encoding StandardEncoding def}
+
+% \vskip .05in
+
+% \noindent
+% is inserted. 
+% (which may not be appropriate if that line was not
+% part of the original version of the font).
+% Look in the file \type{encoding.txt} for additional details.
+
+% \subsection{C.4 --- Using arbitrarily reencoded fonts}
+\colorsubsection{D.4 ---  Using Arbitrarily Reencoded Fonts}
+
+% {\ATM} (and {\PSCRIPT}) 
+Windows does not provide a way of using a font with
+other than {\ANSI} reencoding or its % `raw' or 
+`native' encoding.
+The utility {\REENCODE} can be used, however, to reencode an outline
+font file to an arbitrary specified encoding vector.
+Numerous commonly used encoding vectors are supplied on the {\DVIWindo}
+diskette.
+% (to save space, these files are {\it not\/} copied to the hard disk
+% during installation). 
+% % These files are distinguished from others on the diskette 
+% % by having the extension  `\type{.vec}'.
+% These files may be found in the subdirectory `\type{vec}'.
+
+% The simple format of encoding vector files should be apparent from
+% these examples: each non-comment line contains 
+% a numeric character code and a character name.
+% Comment lines start with `\lavender\verb@%@\revert'. % the character 
+
+Invoke {\REENCODE} with `\type{?}' as a command line argument to see a full
+list of command line arguments and flags:
+% 
+% \vskip .05in
+% 
+% % \noindent
+% \lavender\verb@c:\dviwindo\reencode -?@\revert
+
+\vskip .05in
+
+\noindent
+Note that if an outline font file ({\PFB}) is reencoded, 
+then the {\PFM} file % {\it also\/} 
+must be regenerated from the {\AFM} file
+(using {\AFMTOPFM}) with the {\it same\/} encoding.
+
+% \vskip .05in
+% 
+% \warning
+% 
+% \vskip .05in
+
+% \noindent
+For example, suppose we wish to reencode the font `\type{por}' to use 
+`Tex text' encoding 
+(the encoding used in \type{cmr10}, \type{cmbx10}, and \type{cmsl10}):
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+\lavender\verb@c:\dviwindo\reencode -c=textext c:\psfonts\por.pfb@\revert\hfill\linebreak
+\lavender\verb@copy porx.pfb c:\psfonts@\revert\hfill\linebreak
+\lavender\verb@c:\dviwindo\afmtopfm -vsd -c=textext c:\afm\por.afm@\revert\hfill\linebreak
+\lavender\verb@copy porx.pfm c:\psfonts\pfm@\revert\hfill\linebreak
+\lavender\verb@del c:\psfonts\atmfonts.qlc@\revert
+
+}
+
+\vskip .05in
+
+\noindent
+% In the above 
+It has been assumed above that the encoding vector file 
+\type{textext.vec} has been copied from the {\DVIWindo} distribution
+diskette to the directory \lavender\verb@c:\dviwindo@\revert, 
+and that the required {\AFM} file can be found 
+in the directory \lavender\verb@c:\afm@\revert.
+% \cfootnote{
+% Outline fonts ({\PFB}) are normally supplied with {\AFM} files.  
+% {\AFM} files for Adobe fonts can also be obtained from
+% \type{ps-file-server@adobe.com} on the InterNet.}.
+%
+% The command line flags `\type{s}' % and `\type{e}' 
+% in the call to {\AFMTOPFM} above force setting of the `\type{CharSet}' 
+% field to `\type{Symbol}'.
+% and make {\AFMTOPFM} read the encoding from the {\AFM} file
+% ({\AFMTOPFM} automatically sets the `\type{Family}' field to `\type{% Decorative}' unless {\ANSI} encoding is requested).
+
+If the reencoded font is to be used with {\TeX}, then the {\TFM}
+must also be regenerated using the new encoding, as described in the
+next section.
+% Look in the file \type{encoding.txt} for additional details.
+
+% \subsection{C.5 --- Keeping fonts and font metric files consistent}
+\colorsubsection{D.5 --- Keeping Fonts \& Font Metrics Consistent}
+
+It is very important that any {\DVI} processing program (such as
+{\DVIWindo} or {\DVIPSONE}) have the same ideas about the font encoding
+as {\TeX} did when it produced the {\DVI} file.  
+In the case of {\DVIWindo},
+this means % , amongst other things, 
+that the {\TeX} font metric ({\TFM}) file used by {\TeX} must have been
+produced using the {\it same\/} encoding vector as that used to produce
+the Windows font metric ({\PFM}) files.   
+This is easy to do, since all utilities accept the same encoding vector
+files.
+Use the utility {\AFMTOTFM} (supplied with {\DVIWindo} and {\DVIPSONE})
+to make up {\TFM} files if required.
+% {\AFMTOTFM} uses encoding vector files in {\it exactly} the same form
+% as does {\AFMTOPFM}.  
+So, for example:
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+\lavender\verb@c:\dviwindo\afmtotfm -a -c=textext c:\afm\por.afm@\revert\hfill\linebreak
+\lavender\verb@copy porx.tfm c:\tex\tfm@\revert
+
+\vskip .05in
+
+}
+
+\noindent
+where it has been assumed that {\TFM} files live in the directory
+\lavender\verb@c:\tex\tfm@\revert. 
+The command line flag `\type{a}' requests creation of the eleven 
+standard {\TeX} ligatures
+such as `\lavender\verb@f i@\revert'\ $\Rightarrow$ fi,
+`\lavender\verb@f l@\revert'\ $\Rightarrow$ fl,
+% `{\tt fi}', `{\tt fl}', as well as `{\tt ffi}'
+% and `{\tt ffl}' (if these glyphs exist).  
+as well as the `ligatures'
+\lavender\verb@---@\revert\  $\Rightarrow$ ---, and
+\lavender\verb@``@\revert\  $\Rightarrow$ ``);
+
+% "f" + "i" => "fi"
+% "f" + "l" => "fl"
+% "f" + "f" => "ff"
+% "ff" + "i" => "ffi"
+% "ff" + "l" => "ffl"
+% "exclam" + "quoteleft" => "exclamdown"
+% "question" + "quoteleft" => "questiondown"
+% "hyphen" + "hyphen" => "endash"
+% "endash" + "hyphen" => "emdash"
+% "quoteleft" + "quoteleft" => "quotedblleft"
+% "quoteright" + "quoteright" => "quotedblright"
+
+It is unfortunate that neither the {\TFM} nor the
+{\PFM} format make provision for full specification of the encoding 
+vector (unlike the {\AFM} file format).
+This makes it impossible for {\DVIWindo} to check that the 
+two correspond to the same mapping.
+% Metric files produced by the {\AFMTOTFM} and {\AFMTOPFM} do, however,
+% contain a short descriptive name copied from the first line of
+% the encoding vector file.  
+% This makes it possible to ascertain what encoding vector was used to
+% make a particular font metric file.
+%
+% It is, of course, very important that corresponding {\TFM} and {\PFM} 
+% files are made using the {\it same\/} encoding.
+Should confusion ever arise about the mapping being used,
+then look at the {\TFM} and {\PFM} files.  
+The copyright string, the Post\-Script Font\-Name,  
+the Windows Face Name, and the printer driver name
+in the {\PFM} file are in ASCII, with most of the rest of the file 
+being incomprehensible binary data.
+
+Both {\AFMTOTFM} and {\AFMTOPFM} also insert the name of the encoding.
+% (See Appendix~D.1 for details).
+%
+In the case of a {\PFM} file, this follows the string 
+`\lavender\verb@Encoding:@\revert'.
+The full name of the encoding appears when one of 
+{\TeX}'s ten `standard' encodings is used ---
+otherwise the name of the encoding vector file itself is used.
+The encoding name is copied from the first line of the encoding
+vector file, if that lines is a comment line containing the word
+`\type{Encoding:}'.
+
+One way in which incompatibilities in encoding show up is that the
+ligatures `fl' and `fi' either do not show at all or are replaced with
+other characters, such as `{\registered}' and `\={ }',  % ---
+while `--' becomes `$\pm$', and `---' becomes `Eth'.
+% fi => registered, fl => macron
+% emdash => Eth, endash => plusminus
+% `` => ordfeminine '' => ordmasculine
+% add more? use actual characters
+One useful convention may help here:
+
+\beginbullets
+
+\bpar Any file referring to a remapped version of a font should have a name
+obtained by extending the name of the original font file with an `\type{x}'.
+
+\endbullets
+
+\noindent
+So a remapped version of \type{por} would use file names starting with
+\type{porx} for associated {\TFM}, {\PFB} and {\PFM} files
+(as shown in the example above).
+Of course, the presence of the `\type{x}' does not tell one exactly 
+{\it which\/} remapping was used, but this may be better than not knowing 
+% at all 
+that remapping is in effect.
+Note also:
+
+\beginbullets
+
+\bpar Avoiding remapping altogether makes it much less likely that there
+be a mismatch between what encoding {\TeX} and 
+{\DVI} processing programs think apply.
+% like {\DVIWindo} and {\DVIPSONE} think apply.
+
+\endbullets
+	
+\noindent
+By the way, there is no standardization for naming of non-{\CM} font files.
+This problem is exacerbated % made worse %  accaserbated
+by the fact that  on a {\PC}, font file names are constrained to eight
+characters, with case is ignored, so that, for example, the PostScript
+name of a font {\it cannot\/} be used directly.
+This can lead to all sorts of confusions.  
+Suppliers of fonts in a format suitable for the {\PC} obviously already
+have had to come up with short names,
+so the following common-sense rule helps:
+
+\beginbullets
+
+\bpar When the font vendor already has a short name for a font
+(as used in the {\PFB} and {\PFM} files), 
+use that for all related files (such as the {\TFM} file).
+
+\endbullets
+
+% font naming conventions bitch and complain
+
+% \cfootnote{There is a font naming scheme proposed by Karl Berry that
+% may eventually come into wide-spread use.}.
+
+For convenience, {\TFM} files for the thirteen fonts supplied with {\ATM},
+set up for StandardEncoding,
+are provided in the \type{tfm} subdirectory of the
+{\DVIWindo} distribution diskette.
+
+\unvpar
+
+There also are ready-made {\TFM} files for the True\-Type fonts that
+come with Windows 3.1.
+Note that the latter assume Windows ANSI encoding. %% verify ?
+
+%% check this ... 
+
+\colorsection{Appendix E --- Making PIF files and using CLEANUP}
+
+While {\DVIWindo} is a full-fledged Windows application, many programs
+used with {\DVIWindo}, such as {\TeX} and {\DVIPSONE}, are not.
+It {\it is\/}, however, possible to use these other programs with ease
+from inside Windows.
+
+All that is needed is a suitable `Program Information File' ({\PIF}).  
+To create an icon for launching {\TeX} say,
+double click on the {\PIF} editor icon.  
+In the dialog box presented, fill in the `Program File Name', and 
+enter a short descriptive title (which will appear below the icon later)
+for the `Window Title'.
+When using Windows 3.1, place a question mark in `Optional Parameters'.
+In Windows 3.0, place the question mark at the end of the command line.
+The `{\tt ?}' will cause Windows to prompt you for the actual command line
+when you later double click on the newly created icon.
+This allows you to specify what file you want {\TeX} to process.
+Omit the question mark if you are setting up a {\PIF} file for {\DVIPSONE},
+so that it can be called from {\DVIWindo} --- {\DVIWindo} will supply
+suitable command line arguments.
+
+In the same dialog box of the {\PIF} editor,
+you can select what the `Startup Directory'
+will be at the time the application is invoked (at least in Windows 3.1).
+You can also choose whether you want the application to run full screen
+or windowed.  
+If Windows is running in enhanced mode it may make sense to select
+the windowed mode.   
+Finally, you can choose `Close Window on Exit'.
+% whether the window should be closed after the application exits. 
+The advantage of {\it not} closing the window is that you are then able
+to peruse error messages, if any, at your leisure.  
+The disadvantage is that after a
+while you will have accumulated a large number of inactive windows.
+
+You can get rid of inactive windows by selecting \menu{Close} from their
+\menu{System} menus (keyboard shortcut: `Alt-space' followed by
+`Alt-C'), but this soon becomes tedious.  
+A small Windows utility called {\CLEANUP} is included with {\DVIWindo}
+to take care of this. 
+% To setup {\CLEANUP}, 
+% copy \type{cleanup.exe} from the distribution diskette to the
+% {\DVIWindo} directory. Then
+% click on \menu{New...} in the Program Manager's \menu{File} menu.  
+% In the `Description' line, enter `Cleanup', 
+% then fill in `Command Line' with the path to `\type{cleanup.exe}'
+% in your {\DVIWindo} directory.
+% Also check `Run Minimized'.
+To use {\CLEANUP}, simply double click on the `CleanUp' icon --- this
+will remove all inactive windows. 
+
+% \section{Appendix E --- Optimizations}
+\colorsection{Appendix F --- Optimizations}
+
+{\DVIWindo} itself is quite efficient.  
+Most of the time in normal use of
+{\DVIWindo} is spent in the scalable font program % {\ATM}
+rendering characters on the screen 
+(as becomes apparent when \menu{Grey Text} is checked).
+Improvements are continuously % ha ha 
+being made to both Windows and {\ATM} to increase
+speed and improve rendering quality. % even more.
+For example, {\ATM} 2.0 is twice as fast on 386 and 486 processors as
+earlier versions.
+
+% \subsection{E.1 --- Speeding up hard disk access}
+\colorsubsection{F.1 --- Speeding up Hard Disk Access}
+
+% Presently (with Windows 3.1 and {\ATM} 2.0), 
+Certain aspects of Windows operation can be somewhat slow when a large
+number of fonts are installed. 
+There are basically two problem areas:
+
+\beginbullets
+
+\bpar
+{\ATM} reads every {\PFM} file listed in {\ATMINI} 
+when Windows is launched after new fonts have been installed.
+Some versions of {\ATM} may also read the start of every {\PFB} 
+file to check on the `StandardEncoding' line.
+Fortunately, recent versions of {\ATM}  cache some of this
+information in a special file ({\ATMQLC}) to speed up launching Windows
+the next time% 
+\cfootnote{If you are still using {\ATM}~1.0, consider upgrading to a more
+recent version.}. % {\ATM}~1.1 is noticeable better.
+
+\bpar When a printer `device context' is created,
+{\PSCRIPT} reads every {\PFM} file.  
+Applications differ as to when they create printer device contexts.
+Generally this happens (a) when asked to select a printer,
+% \menu{Printer Setup...} is selected,
+(b) when asked to actually print, and,  % in many cases 
+perhaps surprisingly, (c) when the application is first launched.
+
+\endbullets
+
+\noindent
+There are a number of things that can be done to reduce the
+time taken by these operations.
+Note that the recommendations below are not really specific to use of
+{\DVIWindo}, but apply to any Windows application. 
+% particularly when many fonts are installed.
+
+\beginbullets
+
+\bpar Use a disk cache (such as {\SMARTDRV})  %  or PC-KWIK
+to buffer hard disk I/O. 
+{\SMARTDRV} in particular is to be recommended, even though it may not
+provide the absolute maximum speedup, simply because it is robust.
+`Write queuing' can further improve speed (although in some rare 
+situations this may increase the change of hard disk writing problems).
+% because of what happens when Windows crashes...
+
+% use the latest version...
+
+\bpar Use a virtual disk such as {\RAMDRV}, 
+particularly for Windows temporary files.
+Add the lines `\type{set temp=d:}' and `\type{set tmp=d:}' 
+to the {\AUTOEXEC} file 
+(assuming the virtual disk is drive \type{d:}).  
+While other virtual disk software is available, 
+{\RAMDRV} is known to be robust. 
+
+% use the latest version...
+
+\bpar Use a large cache for {\ATM}, particularly if the {\DVI} files
+viewed call for many fonts in many different sizes.
+
+\bpar Use a print spooler that uses {\RAM} memory to buffer files
+% going to the printer 
+(The `Print Manager' that comes with Windows is not particularly efficient). 
+The print spooler's temporary file can be place on the virtual disk.
+% Unfortunately we have not yet found a print spooler that will work
+% reliably when other software is installed.
+Make sure the spooler is compatible with Windows --- 
+not many are! % at this point.
+
+\endbullets
+
+\noindent
+Note that all of the above recommendations involve increasing the
+amount of {\RAM} memory used for caching and buffering.
+Fortunately, the price of memory is constantly dropping.
+
+Even with the enhancements indicated above,
+hard disk access is still required for certain activities.
+There are several other things that will help reduce time taken waiting
+for hard disk access:
+
+\beginbullets
+
+\bpar Defragment the hard disk, particularly if it is nearly full and/or
+has been heavily used for a long time.  
+After a disk has been used for a while, files are split into several
+non-contiguous sections.
+This means multiple seeks may be needed to read even a relatively small file.
+
+\bpar Set up a permanent swap file for Windows. This means Windows
+does not have to create a new one every time it is launched. 
+Also, if the swap file is created right after defragmenting the disk,
+it will be one contiguous area, greatly speeding access.
+
+\bpar Copy all of the {\PFM} files onto the virtual disk 
+(perhaps into a suitably named subdirectory).  
+If this is done, creating a printer device context
+no longer involves a large number of hard disk accesses.
+%
+% \endbullets
+% 
+% \noindent
+It is convenient to add a line to the {\AUTOEXEC} file to automatically
+copy the {\PFM} files to the virtual disk%
+\cfootnote{
+If the font metric files ({\PFM}) are copied to a virtual disk, then
+the {\PFM} file entries in both
+{\ATMINI} and {\WININI} should, of course, refer to the virtual disk.}.
+% 
+% \beginbullets
+
+\bpar Load only the 40 fonts on the first diskette of the 
+Blue Sky Research Computer Modern outline fonts. 
+These fonts are the most commonly used.  
+Add fonts from the second diskette only as required.
+Use the \type{dviwindo.fnt} file to specify replacements
+for the remaining 35 fonts if you plan to use them.
+
+\endbullets
+
+% \noindent
+% Finally, if you work with just one particular printer, then it may
+% help to keep an application loaded that has an open device context for
+% that printer. 
+% This keeps the printer driver (typically {\PSCRIPT}) loaded in 
+% memory and removes the need for the printer driver to reread the {\PFM}
+% files,  greatly speeding up loading of applications that create a
+% printer device context immediately upon loading 
+% (such as Aldus PageMaker and MicroGrafx Designer).
+
+% One way to do this is to start the Windows `Write' application
+% immediately after launching Windows.
+% Select the desired printer using \menu{Printer Setup...} 
+% from Write's \menu{File} menu.
+% Then minimize the `Write' application (turn it into an icon).
+% This little `trick' can really pay off every time a new application is
+% launched and every time an application prints!
+
+% \subsection{E.2 --- Speeding up printing}
+\colorsubsection{F.2 --- Speeding up Printing}
+
+Printing can take some time, particularly when many font files have to
+be sent to the printer.   
+There are several things that can be done to reduce printing time.
+Note again that the recommendations below are mostly not specific to
+use of {\DVIWindo}, but apply to printing from any Windows application.
+
+\beginbullets
+
+\bpar Use a parallel connection rather than a serial connection if the
+printer offers both. 
+As much as an order of magnitude increase in speed can be anticipated
+from this single change. 
+
+\bpar Use the highest possible baud rate.  
+Under Windows 3.1 it is possible to use 38,400 and 57,600 baud.
+% (inherited from the same limit in {\DOS}). 
+Under Windows 3.0 the upper limit is 19,200 baud.
+Some replacements for the Windows {\sc comm.drv}, 
+such as Turbo\-Comm from Bio\-Engineering Laboratories.
+allow selection of higher rates, 
+including 38,400 and 57,600 baud in Windows 3.0.
+
+% remember to set printer to same baud rate first
+
+\bpar Use a serial port with a {\UART} 
+(Universal Asynchronous Receiver and Transmitter),
+such as the 16550~AFN chip,
+which has a built-in first-in first-out ({\FIFO}) buffer
+(Many new PC compatibles have these already).
+These chips are pin-for-pin compatible with older {\UART} chips
+(but may require special drivers %(such as TurboComm)
+for most effective use).
+% {\UART} chips with {\FIFO} buffers will be essential for efficient serial
+% communication in a multi-tasking environment.
+
+% \bpar Use printer-resident fonts if possible,
+% or possibly download some fonts `permanently'.  % sigh 
+
+% \bpar Use the command line flag `\type{n}'.  This forces {\DVIPSONE} ...
+
+% \bpar Use {\DVIPSONE} for printing --- it is much faster!
+
+\bpar Use {\DVIPSONE} for printing --- it is much faster.
+
+% \bpar Wait for Windows 3.1$\ldots$
+
+\endbullets
+
+% \section{Feedback}
+\colorsection{Feedback}
+
+Your comments and suggestions for improvements of {\DVIWindo}, one of
+the auxiliary programs, 
+{\AFMTOTFM}, {\AFMTOPFM}, {\REENCODE}, {\TIFFTAGS}, {\CLEANUP},
+or this document would be greatly appreciated.  
+In the case of a problem, it would be helpful to have the % exact 
+error message produced by {\DVIWindo}, 
+as well as the version number and compilation date
+(from the `About' dialog box of {\DVIWindo}).
+A copy of the {\DVI} file leading to the reported difficulty 
+may also be helpful.
+
+% For additional information see the file \type{readme.txt} 
+% (and other files with extension \type{.txt}).
+
+% \section{Colophon}
+\colorsection{Colophon}
+
+This manual was prepared using Lugaru's Epsilon$^{\smlsize TM}$ 
+(an implementation of Richard Stallman's Emacs), 
+run through Daniel Brotsky's {\YTeX} and printed on  
+% a NewGen$^{\smlsize TM}$ TurboPS/480 printer, %% ???
+an Apple LaserWriter II~NT
+from output produced by {\DVIPSONE}, reprocessed by {\TWOUP}. 
+
+The outline fonts used were from Blue Sky Research and \Y&Y. 
+
+\newpage
+
+% \offheaders
+
+% \versoleftheader={}
+
+% \hbox{ } \newpage
+
+\def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
+
+\line{{\bf 1.\enspace Introduction to DVIWindo\leaderfill 1}}
+
+\vskip .05in
+
+\line{\quad 1.1\enspace Prerequisites\leaderfill 1}
+\line{\quad 1.2\enspace Quick Start --- Installing DVIWindo\leaderfill 2}
+\line{\quad 1.3\enspace Caveats\leaderfill 3}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 2.\enspace How to use DVIWindo\leaderfill 3}}
+
+\vskip .05in
+
+\line{\quad 2.1\enspace Menu Item Selection and Mouse Tricks\leaderfill 3}
+\line{\quad 2.2\enspace Keyboard Shortcuts\leaderfill 5}
+\line{\quad 2.3\enspace User Preferences\leaderfill 5}
+\line{\quad 2.4\enspace Screen Mapping and Zooming\leaderfill 6}
+\line{\quad 2.5\enspace Two Page Spreads and Page Numbering Schemes\leaderfill 6}
+\line{\quad 2.6\enspace Text String Search\leaderfill 7}
+\line{\quad 2.7\enspace Printing from DVIWindo\leaderfill 8}
+\line{\quad 2.8\enspace Copying to the Clipboard\leaderfill 10}
+\line{\quad 2.9\enspace Page Borders, Page Orientation, and Page Sizes\leaderfill 9}
+\line{\quad 2.10\enspace Information about a DVI File\leaderfill 10}
+\line{\quad 2.11\enspace Checking on Fonts Used and Color Coding Fonts\leaderfill 11}
+% \line{\quad \quad 2.10.2\enspace Color Coding of Fonts and `Greying' Text\leaderfill 10}
+\line{\quad 2.12\enspace Launching DVIWindo from the File Manager\leaderfill 11}
+% \line{\quad \quad 2.11.1\enspace Launching DVIWindo from the File Manager\leaderfill 10}
+\line{\quad 2.13\enspace Icons that launch DVIWindo with particular files\leaderfill 12}
+\line{\quad 2.14\enspace Font Name Remapping --- Scalable Font Rendering\leaderfill 12}
+
+\vskip .05in % \vskip .1in
+
+\line{{\bf 3.\enspace Showing Inserted Figures on Screen\leaderfill 14}}
+
+\vskip .05in
+
+\line{\quad 3.1\enspace Figure Insertion Schemes using $\backslash$special --- EPSF \& EPSI\leaderfill 14}
+\line{\quad 3.2\enspace Splitting an EPSF File into an EPS File and a TIFF File\leaderfill 15}
+\line{\quad 3.3\enspace Ten EPSF Figure Insertion Schemes
+Supported\leaderfill 16}
+% A, B, C, D, E, F, G, H, I, J
+\line{\quad 3.4\enspace Additional Comments Relating to Figure Insertion\leaderfill 20}
+
+\vskip .05in % \vskip .1in
+
+\line{{\bf 4.\enspace The Color of Text, Rules, and TIFF Images\leaderfill 20}}
+
+\vskip .05in
+
+\line{\quad 4.1\enspace Standard System Palette Colors\leaderfill 22}
+\line{\quad 4.2\enspace Inserting TIFF Images and using TIFFTags\leaderfill 22}
+% \line{\quad 4.3\enspace Dimensions of TIFF Images --- Using TIFFTAGS\leaderfill 23}
+% \line{\quad 4.4\enspace Controlling the Color of Monochrome TIFF Images\leaderfill 24}
+\line{\quad 4.3\enspace Controlling the Color of Monochrome TIFF Images\leaderfill 23}
+% \line{\quad 4.5\enspace Why is this manual so long?\leaderfill 23}
+\line{\quad 4.4\enspace Why is this manual so long?\leaderfill 24}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf A.\enspace  Appendix --- Font Installation with ATM\leaderfill 25}}
+
+\vskip .05in
+
+% \line{\quad A.1\enspace Checking on Installed Fonts\leaderfill 22}
+% \line{\quad A.2\enspace Automatic Donwloading of fonts\leaderfill 23}
+% \line{\quad A.3\enspace Adjustments to ATM.INI\leaderfill 24}
+
+% \vskip .1in
+
+\line{{\bf B.\enspace Appendix --- Trouble Shooting ATM Font Installation\leaderfill 27}}
+
+\vskip .05in
+
+% \line{\quad B.1\enspace ATM Fonts don't Match Printer Fonts\leaderfill 32}
+% \line{\quad B.2\enspace Unrecoverable Application Errors\leaderfill 33}
+
+% \vskip .1in
+
+\line{{\bf C.\enspace  Appendix --- Displaying Character Sets in Fonts\leaderfill 28}}
+
+\vskip .05in
+
+% \line{\quad C.1\enspace Creating AFM files\leaderfill 25}
+
+% \vskip .1in
+
+\line{{\bf D.\enspace Appendix --- Font Remapping Issues\leaderfill 31}}
+
+\vskip .05in
+
+% \line{\quad D.1\enspace Using Utilities Supplied with DVIWindo\leaderfill 31}
+% \line{\quad D.2\enspace Forcing use of a Font's Native Encoding\leaderfill 27}
+% \line{\quad D.3\enspace `Standardizing' a Font File\leaderfill 28}
+% \line{\quad D.4\enspace Using Arbitrarily Reencoded Fonts\leaderfill 30}
+% \line{\quad D.5\enspace Keeping Outline Fonts and Font Metrics Consistent\leaderfill 30}
+
+% \vskip .1in
+
+\line{{\bf E.\enspace Appendix --- Making PIF files and using CLEANUP\leaderfill 38}}
+
+\vskip .05in
+
+\line{{\bf F.\enspace Appendix --- Optimizations\leaderfill 39}}
+
+% \vskip .05in
+
+% \line{\quad E.1\enspace Speeding up Hard Disk Access\leaderfill 33}
+% \line{\quad E.2\enspace Speeding up Printing\leaderfill 35}
+
+\end
+
+% difference between {\ATM} & {\PSCRIPT} ?
+
+% change with time in ATM ?
+
+% discuss interrupting long activities
+
+% {\ATM} problems   ATM.INI ATMFONTS.INI
+
+% modifications to ATM.INI
+
+% error messages
+
+% trouble shooting
+
+% do a `you' clean sweep
+
+% magnification steps
+
+% list all keyboard shortcuts ?
+
+% subsubsection conventions ?
+
+% install footnotes
+
+% eradicate PostScript printer terminology
+
+% `Close' ?
+
+% rule fill ?
+
+% for printer-resident fonts may need PFB files to get proper mapping!
+
+% UART = Universal Receiver and Transmitter
+
+% terminology: select versus check 
+
+% can read Textures files ...
+
+% discuss Fontname conflicts (different file names, same FontName)
+
+% discuss underscore.  why hv______.pfm versus hv.tfm ?
+
+% explain `Ignore Missing' 
+
+% Add to [Extensions] section of win.ini:
+
+% dvi=c:\dviwindo\dviwindo.exe ^.dvi
+
+% check on references to *.txt files
+
+% (TWOUP -vzs -m=1.25 -x=-30 -d=PRN winmanua)
+
+% TWOUP -vzg -m=1.45 -c=5 -d=COM1 winmanua
+% TWOUP -vzh -m=1.45 -c=5 -d=COM1 winmanua
+
+% TWOUP -vzg -m=1.4 -c=5 -d=LPT1 winmanua
+% TWOUP -vzh -m=1.4 -c=5 -d=LPT1 winmanua
+
+%% say that REENCODE adds an `x' when reencoding

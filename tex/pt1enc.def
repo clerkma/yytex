@@ -1,0 +1,155 @@
+%% This is the file `PT1enc.def'
+%% Copyright Y&Y, Inc (c) 1994.
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%%
+%% This is for fonts set up with the (undocumented) Textures-specific
+%% modification of Macintosh standard roman encoding
+%% (the default font encoding for text fonts in Textures 1.6 and later)
+%%
+%% Usage:  \usepackage[PT1]{fontenc}
+%%
+\ProvidesFile{PT1enc.def}[1994/10/15]
+\DeclareFontEncoding{PT1}{}{}
+%	{\catcode`\'=\active\chardef'=213\catcode`\`=\active\chardef`=212}{}
+\DeclareTextAccent{\`}{PT1}{96}		% \DeclareTextAccent{\`}{PT1}{212}
+\DeclareTextAccent{\'}{PT1}{39}		% \DeclareTextAccent{\'}{PT1}{213}
+\DeclareTextAccent{\^}{PT1}{94}		% \DeclareTextAccent{\^}{PT1}{246}
+\DeclareTextAccent{\~}{PT1}{126}	% \DeclareTextAccent{\~}{PT1}{247}
+\DeclareTextAccent{\"}{PT1}{127}	% \DeclareTextAccent{\"}{PT1}{172}
+\DeclareTextAccent{\H}{PT1}{125}	% \DeclareTextAccent{\H}{PT1}{253}
+\DeclareTextAccent{\r}{PT1}{23}		% \DeclareTextAccent{\r}{PT1}{251}
+\DeclareTextAccent{\v}{PT1}{20}		% \DeclareTextAccent{\v}{PT1}{255}
+\DeclareTextAccent{\u}{PT1}{21}		% \DeclareTextAccent{\u}{PT1}{249}
+\DeclareTextAccent{\=}{PT1}{22}		% \DeclareTextAccent{\=}{PT1}{248}
+\DeclareTextAccent{\.}{PT1}{95}		% \DeclareTextAccent{\.}{PT1}{250}
+					% is 95 underscore ? dotaccent ?
+\DeclareTextCommand{\b}{PT1}[1]
+   {\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char22}\vss}\hidewidth}}
+%    \vbox to.2ex{\hbox{\char248}\vss}\hidewidth}}
+\DeclareTextCommand{\c}{PT1}[1]
+   {\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent24 #1%
+%   {\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent252 #1%
+     \else{\ooalign{\hidewidth\char24\hidewidth
+%     \else{\ooalign{\hidewidth\char252\hidewidth
+        \crcr\unhbox\z@}}\fi}
+\DeclareTextCommand{\d}{PT1}[1]
+   {\oalign{#1\crcr\hidewidth.\hidewidth}}
+\DeclareTextCommand{\k}{PT1}[1]
+   {\oalign{#1\crcr\char254\hidewidth}}
+\DeclareTextSymbol{\AA}{PT1}{129}
+\DeclareTextSymbol{\AE}{PT1}{29}	% \DeclareTextSymbol{\AE}{PT1}{174}
+% \DeclareTextSymbol{\CC}{PT1}{130}	% Ccedilla
+% \DeclareTextSymbol{\L}{PT1}{76}	% no Lslash on Mac
+\DeclareTextSymbol{\O}{PT1}{31}		% \DeclareTextSymbol{\O}{PT1}{175}
+\DeclareTextSymbol{\OE}{PT1}{30}	% \DeclareTextSymbol{\OE}{PT1}{206}
+\DeclareTextSymbol{\S}{PT1}{164}	% section
+\DeclareTextSymbol{\P}{PT1}{166}	% paragraph
+\DeclareTextSymbol{\dag}{PT1}{160}	% dagger
+\DeclareTextSymbol{\ddag}{PT1}{224}	% daggerdbl
+\DeclareTextSymbol{\SS}{PT1}{167}	% no Germandbls on Mac
+\DeclareTextSymbol{\_}{PT1}{95}		% underscore ? dotaccent ?
+\DeclareTextSymbol{\aa}{PT1}{140}
+\DeclareTextSymbol{\ae}{PT1}{26}	% \DeclareTextSymbol{\ae}{PT1}{190}
+% \DeclareTextSymbol{\cc}{PT1}{141}	% Ccedilla
+\DeclareTextSymbol{\guillemotleft}{PT1}{199}
+\DeclareTextSymbol{\guillemotright}{PT1}{200}
+\DeclareTextSymbol{\guilsinglleft}{PT1}{220}
+\DeclareTextSymbol{\guilsinglright}{PT1}{221}
+\DeclareTextSymbol{\i}{PT1}{245}
+% \DeclareTextSymbol{\j}{PT1}{106}	% no dotlessj on Mac
+% \DeclareTextSymbol{\l}{PT1}{108}	% no lslash on Mac
+\DeclareTextSymbol{\o}{PT1}{28}		% \DeclareTextSymbol{\o}{PT1}{191}
+\DeclareTextSymbol{\oe}{PT1}{27}	% \DeclareTextSymbol{\oe}{PT1}{207}
+\DeclareTextSymbol{\pounds}{PT1}{163}
+\DeclareTextSymbol{\quotedblbase}{PT1}{227}
+\DeclareTextSymbol{\quotesinglbase}{PT1}{226}
+\DeclareTextSymbol{\ss}{PT1}{25}	% \DeclareTextSymbol{\ss}{PT1}{167}
+\DeclareTextSymbol{\$}{PT1}{`\$}
+% \DeclareTextSymbol{\TH}{PT1}{222}	% no Thorn on Mac
+% \DeclareTextSymbol{\th}{PT1}{254}	% no thorn on Mac
+% \DeclareTextSymbol{\DH}{PT1}{208}	% no Eth on Mac
+% \DeclareTextSymbol{\dh}{PT1}{240}	% no eth on Mac
+% \DeclareTextSymbol{\DJ}{A1}{208}	% no Dmacron on Mac
+% \DeclareTextSymbol{\dj}{A1}{100}	% no dmacron on Mac
+\DeclareTextCommand{\{}{PT1}
+   {\ifmmode\lbrace\else\char`\{\fi}
+\DeclareTextCommand{\}}{PT1}
+   {\ifmmode\rbrace\else\char`\}\fi}
+\DeclareTextComposite{\.}{PT1}{i}{`\i}	 % ha ha
+% \DeclareTextComposite{\v}{PT1}{S}{146} % no Scaron on Mac
+\DeclareTextComposite{\"}{PT1}{Y}{217}
+\DeclareTextComposite{\.}{PT1}{I}{73}	 % no Idot on Mac
+% \DeclareTextComposite{\v}{PT1}{s}{178} % no scaron on Mac
+\DeclareTextComposite{\"}{PT1}{y}{216}
+\DeclareTextComposite{\`}{PT1}{A}{203}
+\DeclareTextComposite{\'}{PT1}{A}{231}
+\DeclareTextComposite{\^}{PT1}{A}{229}
+\DeclareTextComposite{\~}{PT1}{A}{204}
+\DeclareTextComposite{\"}{PT1}{A}{128}
+\DeclareTextComposite{\r}{PT1}{A}{129}
+\DeclareTextComposite{\c}{PT1}{C}{130}
+\DeclareTextComposite{\`}{PT1}{E}{233}
+\DeclareTextComposite{\'}{PT1}{E}{131}
+\DeclareTextComposite{\^}{PT1}{E}{230}
+\DeclareTextComposite{\"}{PT1}{E}{232}
+\DeclareTextComposite{\`}{PT1}{I}{237}
+\DeclareTextComposite{\'}{PT1}{I}{234}
+\DeclareTextComposite{\^}{PT1}{I}{235}
+\DeclareTextComposite{\"}{PT1}{I}{236}
+\DeclareTextComposite{\~}{PT1}{N}{132}
+\DeclareTextComposite{\`}{PT1}{O}{241}
+\DeclareTextComposite{\'}{PT1}{O}{238}
+\DeclareTextComposite{\^}{PT1}{O}{239}
+\DeclareTextComposite{\~}{PT1}{O}{205}
+\DeclareTextComposite{\"}{PT1}{O}{133}
+\DeclareTextComposite{\`}{PT1}{U}{244}
+\DeclareTextComposite{\'}{PT1}{U}{242}
+\DeclareTextComposite{\^}{PT1}{U}{243}
+\DeclareTextComposite{\"}{PT1}{U}{134}
+% \DeclareTextComposite{\'}{PT1}{Y}{89}	% no Yacute on Mac
+% \DeclareTextComposite{\v}{PT1}{Z}{90}	% no Zcaron on Mac
+\DeclareTextComposite{\`}{PT1}{a}{224}
+\DeclareTextComposite{\'}{PT1}{a}{136}
+\DeclareTextComposite{\^}{PT1}{a}{135}
+\DeclareTextComposite{\~}{PT1}{a}{137}
+\DeclareTextComposite{\"}{PT1}{a}{138}
+\DeclareTextComposite{\r}{PT1}{a}{140}
+\DeclareTextComposite{\c}{PT1}{c}{141}
+\DeclareTextComposite{\`}{PT1}{e}{143}
+\DeclareTextComposite{\'}{PT1}{e}{142}
+\DeclareTextComposite{\^}{PT1}{e}{144}
+\DeclareTextComposite{\"}{PT1}{e}{145}
+\DeclareTextComposite{\`}{PT1}{i}{147}
+\DeclareTextComposite{\`}{PT1}{\i}{147}
+\DeclareTextComposite{\'}{PT1}{i}{146}
+\DeclareTextComposite{\'}{PT1}{\i}{146}
+\DeclareTextComposite{\^}{PT1}{i}{148}
+\DeclareTextComposite{\^}{PT1}{\i}{148}
+\DeclareTextComposite{\"}{PT1}{i}{149}
+\DeclareTextComposite{\"}{PT1}{\i}{149}
+\DeclareTextComposite{\~}{PT1}{n}{150}
+\DeclareTextComposite{\`}{PT1}{o}{152}
+\DeclareTextComposite{\'}{PT1}{o}{151}
+\DeclareTextComposite{\^}{PT1}{o}{153}
+\DeclareTextComposite{\~}{PT1}{o}{155}
+\DeclareTextComposite{\"}{PT1}{o}{154}
+\DeclareTextComposite{\`}{PT1}{u}{152}
+\DeclareTextComposite{\'}{PT1}{u}{151}
+\DeclareTextComposite{\^}{PT1}{u}{153}
+\DeclareTextComposite{\"}{PT1}{u}{154}
+% \DeclareTextComposite{\'}{PT1}{y}{121}	% no yacute on Mac
+% \DeclareTextComposite{\v}{PT1}{z}{122}	% no zcaron on Mac
+
+% `quoteright' has moved from 39 to 213 make space for `quotesingle' in Mac.
+% `quoteleft' has moved from 96 to 212 make space for `grave' in Mac.
+
+% Also need to deal with prime in math mode since 39 is remapped to 213
+
+% {\catcode213=\active \gdef^^d5{{^\bgroup\prim@s}}}
+% \mathcode213="8000 % ^\prime
+
+\endinput
+%% 
+%% End of file `PT1enc.def'.

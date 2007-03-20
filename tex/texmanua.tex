@@ -1,0 +1,1864 @@
+% Y&Y TeX Manual % This is in YTeX
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=10pt 	% for final version
+% \typesize=12pt		% for proofing
+
+% \hsize=4.66in % for letter paper version (default)
+% \hsize=5.5in % for legal paper version
+
+% \font\manual=logo10
+% \font\sc=cmcsc10
+% \font\vt=cmvtt10
+
+% \font\eusm=eusm10
+
+% \settabs 6 \columns
+% \settabs 8 \columns
+\settabs 9 \columns
+
+\font\cal=cmsy10
+
+\def\AMS{{\cal A\kern-.15em\lower.5ex\hbox{M}\kern-.1emS}}
+
+\font\sy=sy at 8pt
+
+\def\registered{$^{\hbox{\sy \char226}}$}
+
+\def\bs{\char92 } 
+
+\def\nl{\hfill\linebreak}
+
+\input memo.mac
+
+% \input lcdplain.mac
+\input lcdplain
+% \input accents.tex
+\input ansiacce
+
+\newdimen\dwidth
+\newdimen\dheight
+
+\def\showimage#1#2#3{
+\dwidth=#2 \dheight=#3 
+\edef\width{\number\dwidth} \edef\height{\number\dheight}
+\special{insertimage: #1 \width \space \height}
+}
+
+% \def\subsubsection#1{{\bf #1}}
+
+% A good way to print fractions in text when you don't want
+% to use \over (which should be most of the time), and yet
+% just `1/2' doesn't look right.  (From the TeXbook, exercise 11.6.)
+ 
+\def\frac#1/#2{\leavevmode
+   \kern-.1em \raise .5ex \hbox{\the\scriptfont0 #1}%
+   $/$%
+   \kern-.15em \lower .25ex \hbox{\the\scriptfont0 #2}%
+}%
+
+% \def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc A}\kern-.15em
+%    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% \def\latex2e{{\LaTeX}2\lower.5ex\hbox{$\epsilon$}}
+
+\def\latex2e{{\LaTeX}2\lower.5ex\hbox{$\varepsilon$}}
+
+\font\sc=lbr at 8pt
+
+\def\SliTeX{S{\sc LI}{\TeX}}
+
+% \def\Y&Y{Y\kern-.25em\hbox{{\smllsize \&}}\kern -.25em Y}
+% \def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.23em Y}
+\def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.12em Y}
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+% \def\METAFONT{{\manual META}\-{\manual FONT}}
+
+\def\DVIWindo{{\sc dvi\-w}indo}
+\def\DVIPSONE{{\sc dvi\-ps\-one}}
+\def\REENCODE{{\sc re\-encode}}
+% \def\CHARSET{{\sc char\-set}}
+\def\AFMTOPFM{{\sc afm}\-to\-{\sc pfm}}
+\def\AFMTOTFM{{\sc afm}\-to\-{\sc tfm}}
+\def\TIFFTAGS{{\sc tifft}ags}
+\def\CLEANUP{{\sc clean\-up}}
+
+\def\TWOUP{{\sc two\-up}}
+
+% \def\PKTOPS{{\sc pk\-to\-ps}}
+% \def\DOWNLOAD{{\sc down\-load}}
+% \def\MODEX{{\sc mod\-ex}}
+% \def\SERIAL{{\sc ser\-ial}}
+
+\def\ANSI{{\sc ansi}}
+\def\ASCII{{\sc ascii}}
+
+\def\UART{{\sc uart}}
+\def\FIFO{{\sc fifo}}
+
+\def\DOS{{\sc dos}}
+
+\def\PSPATH{{\sc pspath}}
+\def\VECPATH{{\sc vecpath}}
+
+% \def\BIOS{{\sc bios}}
+% \def\PATH{{\sc path}}
+
+\def\AFM{{\sc afm}}
+\def\INF{{\sc inf}}
+\def\TFM{{\sc tfm}}
+\def\PFM{{\sc pfm}}
+\def\DVI{{\sc dvi}}
+
+\def\VEC{{\sc vec}}
+
+\def\PS{{\sc ps}}
+\def\PK{{\sc pk}}
+
+\def\PFA{{\sc pfa}}
+\def\PFB{{\sc pfb}}
+
+\def\EPS{{\sc eps}}
+
+\def\EPSF{{\sc epsf}}
+\def\EPSI{{\sc epsi}}
+
+\def\PSFIG{{\sc psfig}}
+
+\def\PIF{{\sc pif}}
+
+\def\DSC{{\sc dsc}}
+
+% \def\VM{{\sc vm}}
+% \def\MS{{\sc ms}}
+
+\def\ATM{{\sc atm}}
+
+\def\ATMINI{{\tt atm.ini}}
+\def\WININI{{\tt win.ini}}
+
+\def\ATMQLC{{\tt atmfonts.qlc}}
+
+\def\PSCRIPT{{\sc pscript.drv}}
+
+\def\PFM{{\sc pfm}}
+\def\PFB{{\sc pfb}}
+
+\def\CM{{\sc cm}}
+
+% \def\COPY{{\sc copy}}
+% \def\MODE{{\sc mode}}
+% \def\PRINT{{\sc print}}
+
+% \def\XONXOFF{{\sc xon/xoff}}
+% \def\DTRDSR{{\sc dtr/dsr}}
+% \def\ETXACK{{\sc etx/ack}}
+
+\def\IBM{{\sc ibm}}
+\def\PC{{\sc pc}}
+
+% \def\COMPAQ{{\sc compaq}}
+
+\def\TUG{{\sc tug}}
+
+% \def\SMARTDRV{{\sc smart\-drv.sys}}
+\def\SMARTDRV{{\sc smart\-drv.exe}}
+\def\RAMDRV{{\sc ram\-drv.sys}}
+\def\RAM{{\sc ram}}
+
+\def\AUTOEXEC{{\tt auto\-exec.bat}}
+
+\def\UNIX{{\sc unix}}
+\def\DVIPS{{\sc dvips}}
+\def\DVITWOPS{{\sc dvi2ps}}
+\def\DVIALW{{\sc dvialw}}
+\def\DVITOPS{{\sc dvitops}}
+\def\DVILASER{{\sc dvilaser/ps}}
+
+\def\TIFF{{\sc tiff}}
+
+% \def\registered{{\ooalign
+% 	{\hfil\raise.02ex\hbox{{\sc r}}\hfil\crcr\mathhexbox20D}}}
+
+\font\sy=sy
+
+\def\registered{{\sy \char210}}
+
+\def\TM{$^{\smlsize TM}$}
+
+% \font\twelverm=lbrx at 11.2pt
+\font\twelverm=lbr at 11.2pt
+
+% \font\eighteenbf=lbdx at 16.4pt
+\font\eighteenbf=lbd at 16.4pt
+
+\def\coverpage{
+\noheaders
+% \topglue 2in
+\topglue 1.5in
+\centerline{\bigggsize\bf Y\&YTeX --- release 1.1}
+\vskip .1in
+% \centerline{\bigggsize\bf Manipulation Package --- Release 1.3}
+\vskip .2in
+\centerline{\bigsize Copyright {\copyright} 1993, 1994 {\Y&Y}, Inc. All rights reserved.}
+
+\vskip 3in
+
+% This is the version for printing with the logo
+
+\centerline{\hbox to 1.33in{\special{illustration c:/dvitest/y&ylogo.eps}\hfill}}
+
+% This is the version for showing the logo on screen
+
+% \centerline{\hbox to 1.33in{\showimage{y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+\vskip 1in
+
+%\centerline{\bigsize {\Y&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}
+
+\vskip .02in
+
+%\centerline{\bigsize 
+% (800) 742--4059 --- 
+%(508) 371--3286 (voice) ---
+%(508) 371--2004 (fax)}
+
+\newpage
+\decreasepageno
+
+\noheaders
+
+\topglue 2in
+\hbox{ }	% to get blank page
+\newpage
+\decreasepageno
+}
+
+\coverpage  % comment out for draft version
+
+\noheaders
+
+% \versorightheader={COPYRIGHT {\copyright} 1991, 1992 {\Y&Y}}
+%\versorightheader={COPYRIGHT {\copyright} 1993, 1994 {\Y&Y}, Inc.}
+
+% \nsection{Y\&YTeX}
+
+% Contents:
+
+% 1. Introduction & Background.
+% 2. QUICK START - automatic installation.
+% 3. Environment variables for Y&YTeX.
+% 4. Setting up convenient batch files to call Y&YTeX.
+% 5. Command Line Flags and Arguments.
+% 6. Using ready-made TeX `formats' and making new TeX `formats'.
+% 7. Setting up PIF files and convenient Windows icons.
+% 8. Interrupting and killing a TeX job.
+% 9. TeX Memory Allocations.
+%10. Acknowledgements/Credits.
+
+% \nsection{Introduction \& Background}
+\nsection{Introduction to {\Y&Y}TeX}
+
+{\Y&Y}TeX is the first `dynamic' {\TeX} for IBM PC compatibles, 
+with some unique capability. 
+First of all, because of dynamic memory allocation:
+
+\vskip .05in
+
+\bpar	Small jobs can run in as little memory as in a `small' {\TeX}; yet
+
+\vskip .05in
+
+\bpar	Large jobs have much more memory available than in any `big' {\TeX}.
+
+\vskip .05in
+
+\noindent
+Installation is straight-forward --- see section 2 --- `Quick Start'.
+
+{\Y&Y}TeX is a 32-bit protected mode implementation of {\TeX} 3.141, 
+compiled using the new MicroSoft\registered\ Visual C/C++ optimizing
+compiler for Windows NT.  {\Y&Y}TeX uses the new
+PharLap TNT\registered\ 6.1 DOS extender.  
+Unlike some other DOS extenders, 
+the PharLap TNT DOS extender interfaces properly with XMS, VCPI, 
+DPMI version 0.9, and DPMI version 1.0.  So: % As a result: 
+
+\vskip .05in
+
+\bpar	{\Y&Y}TeX runs in DOS;
+
+\vskip .05in
+
+\bpar	{\Y&Y}TeX runs in a DOS process buffer in Lugaru's 
+Epsilon\registered;
+
+\vskip .05in
+
+\bpar	{\Y&Y}TeX runs in a DOS box in Windows 
+% (see {\tt docs\bs win3.txt});
+(see \verb|docs\win3.txt|);
+
+\vskip .05in
+
+\bpar	{\Y&Y}TeX runs in a DOS box in OS/2 
+% (see {\tt docs\bs os2.txt}).
+(see \verb|docs\os2.txt|).
+
+\vskip .05in
+
+\bpar	{\Y&Y}TeX runs in Windows NT 
+% (see {\tt docs\bs winnt.txt});
+(see \verb|docs\winnt.txt|);
+
+% \vskip .05in
+\vskip .1in
+
+{\narrower
+
+\noindent
+{\bf Requirements:} \quad
+The 32 bit DOS extender requires a 386 or 486 processor; 
+{\Y&Y}TeX will not run on a machine with a 286 processor.  
+{\Y&Y}TeX runs best on a machine with 2 or more Megabytes 
+of free extended memory.  
+% Also some extended memory support may need to be installed.  
+% At a minimum you need
+% Try {\tt device=himem.sys} (or equivalent) in `{\tt config.sys}'.
+
+%% IS THIS TRUE ???
+
+}
+
+\vskip .05in
+
+\noindent When run in a DOS
+box in Windows enhanced mode, {\Y&Y}TeX can take advantage of Windows virtual
+memory support.  Consequently even very large {\TeX} jobs can run on a machine
+with relatively little free extended memory, provided that a swap file has
+been set up for Windows.  In DOS, {\Y&Y}TeX can take advantage of virtual
+memory provided by memory managers such as Qualitas 386MAX.
+
+{\Y&Y}TeX can run in many different environments, including plain vanilla
+MS-DOS, all three modes of MS Windows 3.x (including 386 enhanced mode),
+Windows NT, OS/2, QEMM, 386MAX, and HIMEM.SYS.  The PharLap TNT DOS-Extender
+is compatible with all key industry standards for memory management,
+including EMS, XMS, VCPI, and DPMI.
+
+% {\Y&Y}TeX can use memory management services provided by HIMEM.SYS, EMM386
+% (MS Windows 3.0 or later, MS DOS 5.0 or later), Quarterdeck QEMM 4.1 or
+% later, Qualitas 386MAX version 4.02 or later, COMPAQ CEMM 4.02 or later, 
+% and most others.
+
+{\Y&Y}TeX can be invoked directly, or using a convenient batch file.  In
+Windows, {\Y&Y}TeX can be easily invoked using a `Program Item' set up with
+the Program Manager.  This can call {\Y&Y}TeX via a batch file or directly.  
+Use a PIF file to control whether {\Y&Y}TeX will run windowed or full screen,
+and whether it will close on exit or stay around.  
+
+DVIWindo Setup creates suitable `TeX Menu' items, batch files and PIF files.
+Install DVIWindo {\it after\/} installing {\Y&Y}TeX and DVIPSONE for 
+installation to yield the most complete `TeX Menu.' 
+
+{\Y&Y}TeX gets started about as quickly as a typical `small' {\TeX}, yet
+processing is as fast as a typical `big' {\TeX}. And {\Y&Y}TeX can handle any
+size job --- including those too large for {\it any\/} `big' {\TeX} ---
+provided memory (real or virtual) is available. 
+Here are some of the special features of {\Y&Y}TeX:
+
+\vskip .05in
+
+\bpar	There is essentially no limit on main memory, string pool, 
+the number of strings, font storage, etc. 
+% (Well, the {\it real\/} limit is the 4 gigabytes that can be addressed).
+
+\vskip .05in
+
+\bpar	{\Y&Y}TeX is unique in providing more than 255 internal font numbers;
+
+\vskip .05in
+
+\bpar	ini{\TeX} provides for customization of initial main memory allocation 
+--- {\Y&Y}TeX can read format files made with different memory allocations;
+
+\vskip .05in
+
+\bpar	ini{\TeX} provides for customization of hyphenation pattern trie size
+--- load hyphenation patterns for as many languages as you like;
+
+\vskip .05in
+
+\bpar	ini{\TeX} provides for customization of hyphenation exception tables size 
+%	--- this way you can avoid heuristic hyphenation based on patterns;
+	--- this way you can avoid heuristic pattern-based hyphenation;
+
+\vskip .05in
+
+\bpar	{\TeX} Formats can be built incrementally.  Hyphenation patterns can 
+	be redefined {\it after\/} loading a format when running ini{\TeX}.
+
+\vskip .05in
+
+\bpar   {\Y&Y}TeX uses {\it half\/} the memory for font information that
+typical `big' {\TeX}'s use.  This means smaller `format' files also.
+
+\vskip .05in
+
+\bpar	Input in {\Y&Y}TeX is in binary mode, so {\it all\/} 8-bit characters
+are allowed, including control characters (even control-Z);
+
+\vskip .05in
+
+\bpar	{\Y&Y}TeX provides for command line customization of {\TeX}'s 
+{\tt xchr[]} array.
+This makes it easy, to deal with `non ASCII' keyboards,
+translate from DOS code page 850 to Windows ANSI encoding, etc.  
+
+% \end
+
+\nsection{QUICK START --- automatic installation}
+
+% \vskip .1in
+
+To install {\Y&Y}TeX automatically, insert the diskette and type: 
+
+\vskip .05in
+
+\verb|<from>:install  <from>:  <to>  [Y/N]|
+
+\vskip .05in
+
+\noindent where `\verb|<from>|' is the % diskette drive on which
+drive letter where the {\Y&Y}TeX
+distribution diskette may be found, while `\verb|<to>|' is the complete path
+of the directory where you want {\Y&Y}TeX installed.  For example:
+
+\vskip .05in
+
+\verb|b:install  b:  c:\y&ytex  Y|
+
+\vskip .05in
+
+\noindent
+{\bf Note:} \enspace
+ The destination should be a fully qualified name 
+(i.e. {\tt \char92} after {\tt :}).  
+
+If you to use `{\tt Y}' at the end of the command line, then suitable
+environment setting code will be added to your `{\tt autoexec.bat}' file.  
+If you do not use `{\tt Y},' then please add 
+the contents of the file `{\tt setyytex.bat}' 
+manually to `{\tt autoexec.bat}' later. 
+Choosing `{\tt Y}' also creates simple batch files
+`{\tt tex.bat}' and `{\tt latex.bat}' for {\TeX} and {\LaTeX}.
+
+Altogether, you will need about 2.8 Megabytes of disk space for {\Y&Y}TeX,
+the ready-made 
+formats for plain {\TeX} and {\LaTeX}, the {\LaTeX} style files, and the TFM
+files.  You can save over 1.0 megabyte if you already have the {\LaTeX} style
+files (or don't use {\LaTeX}) and if you already have the Computer Modern
+font TFM files. The installation batch file copies various compressed files
+to the destination and decompresses them.
+% , decompresses them, then deletes the compressed versions.
+
+% The installation batch file also creates sample environment variable setting
+% lines for your `{\tt autoexec.bat}' file.  These lines are shown on screen
+% and also written into the file `{\tt setyytex.bat}'.  These lines are
+% automatically appended to the `{\tt autoexec.bat}' file when `{\tt Y}' is
+% used on the command line.
+
+To make it easier to use {\Y&Y}TeX, you may wish to set up some simple batch
+files --- such files are installed in the `{\tt bat}' directory if `{\tt Y}'
+is chosen (make sure the `{\tt bat}' directory is on your DOS PATH.) 
+Note that DVIWindo's installation also creates such batch
+files when it sets up the `TeX Menu'.
+
+% {\bf Note:} \enspace
+% You'll want to add additional directories to the TEXINPUTS
+% variable.  Directories here are separated by semicolons (as in any DOS
+% `directory path'). 
+
+{\bf Note:} \enspace
+% You can save about 150 kbyte after installation by deleting
+% `{\tt cfig386.exe}' and `{\tt tellme.exe}' --- if you don't need them.  
+You can save 310 kbyte by deleting `{\tt *.doc}' files after installation.
+You can save another 650 kbyte if you don't need the corresponding `{\tt *.tex}' files.
+
+% To make it easier to use {\Y&Y}TeX, you may wish to set up some simple batch
+% files --- such files are installed in the `{\tt bat}' directory if `{\tt Y}'
+% is chosen.  Note that DVIWindo's installation alos creates such batch
+% files when it sets up the `TeX Menu'.
+
+% \nsection{Environment variables for Y\&YTeX}
+\nsection{Environment Variables for Y\&YTeX}
+
+% \end
+
+The installation procedure creates sample environment variable setting
+lines for your `{\tt autoexec.bat}' file.  These lines are shown on screen
+and also written into the file `{\tt setyytex.bat}'.  These lines are
+automatically appended to the `{\tt autoexec.bat}' file when `{\tt Y}' is
+used on the command line.
+% The installation procedure creates the file `{\tt setyytex.bat}' which should
+% be appended to your `{\tt autoexec.bat}' file.  
+This DOS batch code sets up the following variable: 
+
+\vskip .05in
+
+\+\quad{\tt TEXINPUTS} &&where your {\TeX} source files and {\LaTeX} style files
+are;\cr 
+
+\vskip .05in
+
+\noindent
+{\bf Note:} \enspace
+You most likely will want to add additional directories to {\tt TEXINPUTS}.
+Use semicolons to separate directories in the list, e.g.:
+
+\vskip .05in
+
+\verb|set TEXINPUTS=c:\y&ytex\latex;c:\tex;c:\letters|
+
+\vskip .05in
+
+\noindent
+You will need to set up the {\tt TEXINPUTS} environment variable.
+But you don't usually need to set up the following:
+
+\vskip .05in
+
+\+\quad{\tt TEXFONTS} &&where you keep your {\TeX} font metric files (TFM);\cr
+\vskip .05in
+\+\quad{\tt TEXFORMATS} &&where ready-made {\TeX} `format' files may be found;\cr
+\vskip .05in
+\+\quad{\tt TEXPOOL} &&the directory where the file `{\tt tex.poo}' can be found.\cr
+
+\vskip .05in
+
+\noindent
+If these environment variables are {\it not\/} set,  then {\Y&Y}TeX will
+look for metric files in the `{\tt tfm}' subdirectory, 
+and format files and the pool file % will be found if they are
+in the `{\tt fmt}' subdirectory --- which is where
+the installation procedure puts them. %  These are the installation defaults.
+
+The above environment variables take semi-colon separated lists of
+directories, which are searched in sequence for the corresponding files.
+(An added feature is that first level sub-directories are included
+automatically if a directory entry ends with a `{\tt \char92}'.
+Sub-directories are included {\it recursively\/} if the entry ends with `{\tt
+\char92\char92}'. 
+A given directory in the list is searched before its sub-directories when
+these are included by sub-directory expansion.
+Note that exploiting this feature may not always be a good idea, because it
+may lead to some loss of speed it there are too many directories).
+% directories to search.  
+
+{\TeX} normally drops all its output files in the current directory.
+You can redirect DVI file, LOG file, and AUX file output using command line
+arguments ({\tt -o}, {\tt -l}, and {\tt -a}), or the following environment
+variables: 
+
+\vskip .05in
+
+\+\quad{\tt TEXDVI}&&directory where DVI files are to be written;\cr
+\vskip .05in
+\+\quad{\tt TEXLOG}&&directory where LOG files are to be written;\cr
+\vskip .05in
+\+\quad{\tt TEXAUX}&&directory where AUX files are to be written.\cr
+
+\vskip .05in
+
+% (these can also be controlled using command line flags -o, -l, and -a).
+
+\noindent
+Finally,
+set up the TEXEDIT environment variable if you want to be able to call your
+editor by typing `{\tt E}' in response to an error message from {\TeX}.
+% \vskip .05in
+% \+{\tt TEXEDIT}&	command line to invoke the editor\cr
+% \vskip .05in
+% \noindent
+In the command string you provide,
+{\Y&Y}TeX replaces {\tt \%s} with the file name, {\tt \%d} with the line
+number, and {\tt \%l} with the error log file name.
+E.g. % Examples: 
+
+\vskip .05in
+
+\+\quad\verb|set TEXEDIT=epsilon +%d %s| &&&&&	for Lugaru's Epsilon.\cr
+\vskip .05in
+\+\quad\verb|set TEXEDIT=ne +%d %s| &&&&&		for Norton's Editor.\cr
+\vskip .05in
+\+\quad\verb|set TEXEDIT=q %s /n%d| &&&&&		for QEdit.\cr
+
+\vskip .05in
+
+\noindent
+Note that you have to use `{\tt \%\%s}', `{\tt \%\%d}' and 
+`{\tt \%\%l}' if you set TEXEDIT in a batch file --- such as 
+`{\tt autoexec.bat}' --- rather than from the command line.  
+The above examples assume the editors referred to in TEXEDIT are on your path.
+If they are not, give the complete path to the executable.  
+
+% Note that this method may not be as convenient as invoking the editor from
+% DVIWindo's `TeX Menu'
+% --- you only see one error at a time.
+
+Y\&YTeX also supports a simple font mapping scheme.  If a TFM file 
+cannot be found, Y\&YTeX looks for a file called `{\tt texfonts.map}' 
+in the same places it looks for TFM files (so set the {\tt TEXFONTS} 
+environment variable).  Each line in the `{\tt texfonts.map}' file 
+should contain the actual TFM file name, followed by a space or tab, 
+followed by the `alias' used to refer to the font in {\TeX}
+(Example: `{\tt tir ptmr}').
+
+% \nsection{Setting up convenient batch files to call Y\&YTeX}
+
+% \nsection{Setting up convenient batch files to call YandYTeX}
+\nsection{Setting up Convenient Batch Files to call Y\&YTeX}
+
+% \vskip .1in
+
+When {\Y&Y}TeX is invoked without a specific format on the command line, 
+it looks for the default plain {\TeX} format file.  So to run a file
+through plain {\TeX}, simply mention the file name on the command line:
+
+\vskip .05in
+
+\verb|c:\y&ytex\y&ytex myfile.tex|
+
+\vskip .05in
+
+\noindent
+A format file can be specified using `{\tt \&}' on the command line.
+For example, to run a file through {\LaTeX}, use the following:
+
+\vskip .05in
+
+\verb|c:\y&ytex\y&ytex &lplain myfile.ltx|
+
+\vskip .05in
+
+\noindent
+It may be convenient to set up some short batch files for this.
+For plain {\TeX}, set up a file called `{\tt tex.bat}' containing:
+
+\vskip .05in
+
+\noindent
+\hbox{\quad}\verb|@echo off|\nl
+\noindent
+\hbox{\quad}\verb|c:\y&ytex\y&ytex -v %1|
+
+\vskip .05in
+
+\noindent
+In this case you can leave out `{\tt \&plain}', since that is the default
+format file.
+For {\LaTeX}, set up a file called `{\tt latex.bat}' containing:
+
+\vskip .05in
+
+\noindent
+\hbox{\quad}\verb|@echo off|\nl
+\noindent
+\hbox{\quad}\verb|c:\y&ytex\y&ytex &lplain -v %1|
+
+\vskip .05in
+
+\noindent
+The {\Y&Y}TeX installation procedure attempts to create suitable batch files.
+Put these batch files somewhere on your DOS path, in `{\tt c:\bs bat}' say.
+Note that the DVIWindo installation procedure also sets
+up suitable batch files.
+
+If you invoke these batch files from Windows, you may want to add `{\tt
+pause}' at the end of the batch file.  That way the batch file won't finish
+until you type return.  This is real convenient if you set up the PIF file to
+`Close Window on Exit'.  Here then is a % somewhat
+more elaborate batch file:
+
+\vskip .05in
+
+\noindent
+\hbox{\quad}\verb|@echo off|\nl
+\noindent
+\hbox{\quad}\verb|rem show the current directory (where output will go)|\nl
+\noindent
+\hbox{\quad}\verb|chdir|\nl
+\noindent
+\hbox{\quad}\verb|rem|\nl
+\noindent
+\hbox{\quad}\verb|c:\y&ytex\y&ytex -v %1 %2 %3 %4 %5 %6 %7 %8 %9|\nl
+\noindent
+\hbox{\quad}\verb|rem skip the pause if there was no error|\nl
+\noindent
+\hbox{\quad}\verb|if not errorlevel 1 goto end|\nl
+\noindent
+\hbox{\quad}\verb|rem|\nl
+\noindent
+\hbox{\quad}\verb|rem pause, but only when run in a DOS box in Windows|\nl
+\noindent
+\hbox{\quad}\verb@set | find "windir=" > NUL@\nl
+\noindent
+\hbox{\quad}\verb|if not errorlevel 1 pause|\nl
+\noindent
+\hbox{\quad}\verb|:end|
+
+
+\nsection{Command Line Flags and Arguments}
+
+% \vskip .1in
+
+{\Y&Y}TeX can be controlled by command line flags and command line arguments.
+To see what command line arguments {\Y&Y}TeX understands, invoke it as follows:
+
+\vskip .05in
+
+\verb|    c:\y&ytex\y&ytex -?|
+
+\vskip .05in
+
+\noindent
+You should get something like:
+
+\vskip .05in
+
+\noindent
+\verb|Y&YTeX v1.1 Copyright (C) 1993, 1994 Y&Y, Inc. SN 1234|
+
+% \newpage
+
+\vskip .05in
+
+\noindent
+\verb|c:\y&ytex\y&ytex.exe [-?ivdrnwzcp] [-m=ini_mem]|\nl
+\noindent
+\hbox{\quad}\verb|[-e=hyph_size] [-h=trie_size] [-x=xchr_file]|\nl
+\noindent
+\hbox{\quad}\hbox{\quad}\verb|[-o=dvi_dir] [-l=log_dir] [-a=aux_dir]|\nl
+\noindent
+\hbox{\quad}\hbox{\quad}\hbox{\quad}\verb|[\&format_file] [tex_file]|\nl
+% \vskip .05in
+\noindent
+\hbox{\quad}\verb|-?    show this usage summary|\nl
+\noindent
+\hbox{\quad}\verb|-i    start up as iniTeX (create format file)|\nl
+\noindent
+\hbox{\quad}\verb|-v    be verbose (show implementation version number)|\nl
+\noindent
+\hbox{\quad}\verb|-d    do not allow DOS style file names|\nl  %%
+\noindent
+\hbox{\quad}\verb|-r    do not allow Mac style termination|\nl %%
+\noindent
+\hbox{\quad}\verb|-n    do not allow `non ASCII' characters in input files|\nl
+\noindent
+\hbox{\quad}\verb|-w    do not show `non ASCII' characters in hex|\nl
+\noindent
+\hbox{\quad}\verb|-z    do not discard control-Z at end of input file|\nl %%
+\noindent
+\hbox{\quad}\verb|-p    allow use of \patterns after loading format|\nl
+\noindent
+\hbox{\quad}\verb|-m    initial main memory size in kilo words (iniTeX)|\nl
+\noindent
+\hbox{\quad}\verb|-e    hyphenation exception dictionary size (iniTeX)|\nl
+\noindent
+\hbox{\quad}\verb|-h    hyphenation pattern trie size (iniTeX)|\nl
+\noindent
+\hbox{\quad}\verb|-x    use `non ASCII' character mapping (xchr[])|\nl
+\noindent
+\hbox{\quad}\verb|-o    write DVI file in specified directory|\nl
+\noindent
+\hbox{\quad}\verb|-l    write LOG file in specified directory|\nl
+\noindent
+\hbox{\quad}\verb|-a    write AUX file in specified directory|
+
+\vskip .05in
+
+\noindent
+
+\vskip .05in
+
+\noindent
+Here are some details regarding these command line flags and argument:
+
+\vskip .05in
+
+\ftpar{\tt i:} Start up as ini{\TeX} --- allows creation of new `formats' 
+ --- use {\tt \bs dump} when back at the `{\tt **}' prompt
+(See section 6).
+
+\vskip .05in
+
+\ftpar{\tt v:} Show which {\Y&Y}TeX implementation version is running.
+
+\vskip .05in
+
+\goodbreak
+
+\noindent {\sl Character set encoding, path separators, and input translation}:
+
+\vskip .05in
+
+\ftpar{\tt d:} The default is to allow {\tt\bs} in the first argument on the
+command line, and hence {\it not\/} treat tokens starting with {\tt\bs} as
+{\TeX} control sequences.  This applies to the second argument also, if the
+first is a format file.  The conversion also applies to directories specified
+in environment variables. You can turn off this conversion of {\tt\bs} to
+{\tt /} using `{\tt -d}' on the command line.  (Note that DOS treats {\tt /}
+in file names just like {\tt\bs} --- except on the command line, where {\tt
+/} indicates an argument follows). 
+
+\vskip .05in
+
+\ftpar{\tt r:} The default is to allow `return' as line terminator --- as
+well as `newline,' {\it and\/} `return' followed by `newline'.  This is handy
+when dealing with files ({\TeX} source as well as EPS files) ported from
+Macintosh or Unix.  You can force {\Y&Y}TeX to instead open file in {\it
+text\/} mode using the `{\tt -r}' command line flag --- then `return' alone
+will {\it not\/} act as a line terminator (i.e. standard DOS behavior).
+
+\vskip .05in
+
+\ftpar{\tt n:} While {\Y&Y}TeX can of course handle arbitrary characters codes
+from 0 to 255 in both input and output, sometimes input files use only the
+`ASCII' range 32 to 127, and any `non ASCII' character indicates a typo.
+This flag asks {\Y&Y}TeX to check for such characters in input.
+
+\vskip .05in
+
+\ftpar{\tt w:} {\TeX} normally shows `non ASCII' characters in screen output
+using hexadecimal notation (e.g. \verb@^^fe@ is character code 254).  Use
+this flag to instead show the character `as is'.  This is useful if the
+encoding you use for fonts is that used by the underlying operating system
+(e.g. local DOS code page in the case of DOS --- then accented characters
+will be displayed properly).
+
+\vskip .05in
+
+\ftpar{\tt z:} {\Y&Y}TeX normally reads its input files in {\it binary\/}
+mode so 
+it can deal with various line termination, and so it can handle {\it all\/}
+8-bit characters, including control-Z.  Since pre-DOS text files on IBM PC 
+compatibles used to be terminated with control-Z, {\Y&Y}TeX silently
+discards a control-Z if found right at the end of the file.  This
+behavior can be suppressed using the `{\tt -z}' command line flag. 
+
+\vskip .05in
+
+\ftpar{\tt x:}The command line customization of {\TeX}'s {\tt xchr[]} array is
+another unique 	feature of {\Y&Y}TeX.  It comes in handy when using
+`non-English' keyboards.   Each line in the file specified contains two
+numbers defining one entry in the {\tt xchr[]} array.  Input bytes matching
+the {\it second\/} number are replaced with the {\it first\/} number.  
+Details provided below. 
+
+\vskip .05in
+
+\goodbreak
+
+\noindent {\sl Allocations in ini{\TeX}}:
+
+\vskip .05in
+
+\ftpar{\tt m:} {\Y&Y}TeX allows most of {\TeX}'s various memory spaces to
+grow dynamically, but the definition of {\TeX} itself does {\it not\/}
+provide for growth in main memory while in ini{\TeX} mode.  {\Y&Y}TeX's
+default is to allocated 64~k words (i.e. 512~k byte) initially for {\TeX}'s
+main memory.  In the unlikely event that you should run out of memory while
+creating a new format, use the `{\tt -m}' command line flag to increase the
+initial allocation.  Note that this allocation is written into the format
+file and so also becomes the initial allocation when that format is used
+later --- although at that point main memory {\it can\/} grow without
+constraint.  
+
+\vskip .05in
+
+\ipar	If you have a machine with relatively little free extended memory,
+	you may wish to create formats with small initial memory (8 k words
+	for plain {\TeX}).  You can then run small {\TeX} jobs in less than
+	1.6 megabytes of free extended memory!  {\Y&Y}TeX speed is reduced a
+	few percent when the initial memory allocation is that small, however.
+% \vskip .05in
+% \ipar	
+	(Conversely, if you have lots of memory and often run large jobs, then
+	you may wish to use a larger initial allocation to gain some speed.)
+
+\vskip .05in
+
+\ftpar{\tt e:} The default allocation of 1009 for hyphenation exceptions is
+	typically an order of magnitude or two more than is needed.
+	You can, however, change the table size using the `{\tt -e}' command
+	line flag and giving a numeric argument. Suppose, for example, that 
+	you want to read in a hyphenation dictionary of 25,000 words, 
+	then you might want to use `{\tt -e=30000}' on the command line (that
+	is, about 25\% more then 25,000, to reduce the incidence of
+	collisions in the hash table).  This makes it possible, by the way, to
+	completely control hyphenation, {\it without\/} relying on
+	{\tt \bs patterns}!   
+	The `{\tt -e}' flag can be used only with ini{\TeX} ({\tt -i}). % ???
+
+\vskip .05in
+
+\ftpar{\tt h:} You can also control the size of the hyphenation pattern trie.
+	This can come in handy if you need to load up hyphenation patterns
+	for several languages.	
+	The `{\tt -h}' flag can only be used with ini{\TeX} ({\tt -i}). % ???
+
+\vskip .05in
+
+\ftpar{\tt p:} Normally {\TeX} refuses to allow redefinition of hyphenation
+	patterns once a format has been dumped (or once typesetting has begun).
+	It can, however, be very convenient to build {\TeX} formats
+	incrementally, by using ini{\TeX} with an existing format mentioned on
+	the command line.  Use the `{\tt -p}' command line flag to allow
+	{\tt \bs patterns} to flush previous definition of hyphenation
+	patterns. 
+
+\vskip .05in
+
+\goodbreak
+
+\noindent {\sl {\TeX}'s interaction  mode}:
+
+\vskip .05in
+
+\ftpar{\tt Q:}	quiet:	 \verb|batch| mode (omit all stops and omit terminal output);
+
+\vskip .05in
+
+\ftpar{\tt R:}	run:	 \verb|non_stop| mode (omit all stops);
+
+\vskip .05in
+
+\ftpar{\tt S:}	scroll:	 \verb|scroll| mode (omit error stops);
+
+\vskip .05in
+
+\ftpar{\tt T:}	default: \verb|error_stop| mode (stops at every opportunity to interact);
+
+\vskip .05in
+
+\goodbreak
+
+\noindent {\sl Output Redirection.}
+
+\vskip .05in
+
+\noindent 
+{\TeX}'s default is to write all output (DVI files, log files etc.) into the
+current directory.  Use the following flags to redirect output:
+
+\vskip .05in
+
+\ftpar{\tt o:}  Use `{\tt -o}' on the command line to
+% temporarily 
+redirect the DVI file output to another directory
+(Alternatively, set the environment variable TEXDVI).
+
+\vskip .05in
+
+\ftpar{\tt l:}   Use `{\tt -l}' on the command line to
+% temporarily 
+redirect the LOG file output to another directory
+(Alternatively, set the environment variable TEXLOG).
+
+\vskip .05in
+
+\ftpar{\tt a:}  Use `{\tt -a}' on the command line to
+% temporarily 
+redirect the AUX file output to another directory
+(Alternatively, set the environment variable TEXAUX).
+
+\vskip .05in
+
+\goodbreak
+
+\noindent {\sl Error message format control}:
+
+\vskip .05in
+
+\ftpar{\tt L:} {\TeX} normally only shows the line number when reporting an
+error.  Use the `{\tt -L}' command line flag to also show the file name.
+This can be very handy with editors like Epsilon that have a 
+`{\tt next-error}'
+macro that reads in the source file and positions the cursor on the line
+with the error.
+
+% \noindent {\sl Minor optimizations}:
+
+%% POSSIBLY FLUSH THE FOLLOWING TO MAKE SPACE
+
+% \vskip .05in
+
+% \ftpar{\tt c:} {\Y&Y}TeX's default is to prepend the current directory to all
+% directory lists. {\TeX} source files, format files, string pool files, and TFM
+% files are all searched for {\it first\/} in the current directory.  
+% Use  `{\tt -c}' on the command line to remove the current directory from the
+% search list for TFM files.  A small speed-up (0.1 sec) may be expected.
+
+%% POSSIBLY FLUSH THE FOLLOWING TO MAKE SPACE 
+%% ALSO, IRRELEVANT UNLESSS ALSO USING -G FLAG
+
+% \vskip .05in
+
+% \ftpar{\tt b:} When searching for files, it is necessary to check that a
+% directory item with read access is not perhaps also a directory, since in DOS
+% sub-directories have read access.  You can use `{\tt -b}' if you do not
+% have directories with names like `{\tt mysource.tex}' that could be
+% confused with {\TeX} source file names.  A small speed-up is possible.
+
+\vskip .05in
+
+\noindent 
+{\bf Note:} \enspace 
+You can use a space instead of `{\tt =}' on the
+command line (This is convenient when setting up batch files).
+
+\vskip .05in
+
+\goodbreak
+
+\noindent {\sl More information on {\TeX}'s `output translation' 
+array {\tt xchr[]}}:
+
+\vskip .05in
+
+\ipar If you have the two lines `{\tt 146 39}' and `{\tt 145 96}' in the
+mapping file, then the internal `ASCII' code 146 will be translated to 39
+for output of error messages, file names, log files ---
+and the internal `ASCII' code 145 will be translated to 96.
+Conversely, the numeric code 39 (`{\tt quoteright}' in ASCII) in input
+will be translated to 146 (`{\tt quoteright}' in Windows ANSI),
+while numeric code 96 (`{\tt quoteleft}' in ASCII) will be translated to 145 
+(`{\tt quoteleft}' in Windows ANSI). 
+
+% etc. 
+
+\vskip .05in
+
+\ipar Character codes not mentioned in the file are not translated.
+Ideally you would want to set up the {\tt xchr[]} array as a {\it
+permutation\/}, so that {\TeX} can construct an exact inverse for the 
+{\tt xord[]} array which is used on input (see the {\TeX} book for additional
+details).  
+
+\vskip .05in
+
+\ipar Note that you typically don't want to use `{\tt -x}' while building
+formats, since the source files for formats mostly are set up for `ASCII'.
+This is why it is so useful to have this as a command line option.
+
+\vskip .05in
+
+\noindent {\bf Note:} \enspace
+You can use the utility `{\tt translate.exe}' to build
+translation tables to refer to using the `{\tt -x=...}'
+command line argument (see `{\tt translate.txt}' for details). 
+
+
+\nsection{Using {\TeX} `Formats' and Making New {\TeX} `Formats'}
+
+\vskip .1in
+
+{\Y&Y}TeX is supplied with ready-made formats for plain {\TeX} and {\LaTeX}.
+These are automatically loaded into the `{\tt fmt}' subdirectory of the
+{\Y&Y}TeX directory during installation.  These ready-made formats are
+referred to by the batch files described above.  You may wish to create
+additional formats.
+
+\quad
+A {\TeX} `format' is a file reflecting the state of {\TeX} after reading some
+{\TeX} macro files.  Loading the `format' speeds up processing, since it
+quickly restores the state that {\TeX} was in after reading the {\TeX} macro
+files --- typically faster than reinterpreting the original {\TeX} macro files.
+
+The command line argument `{\tt -i}' invokes ini{\TeX}.  Use this to create
+new formats.
+% Use the {\tt \bs dump} command at the end to save the new format. 
+For example: 
+
+\vskip .05in
+
+\+\quad\verb|c:\y&ytex\y&ytex -i plain| &&&&&&		for plain {\TeX}\cr
+
+\vskip .05in
+
+\+\quad\verb|c:\y&ytex\y&ytex -i lplain| &&&&&&		for {\LaTeX}\cr
+
+\vskip .05in
+
+\+\quad\verb|c:\y&ytex\y&ytex -i splain| &&&&&&		for {\SliTeX}\cr
+
+\vskip .05in
+
+\+\quad\verb|c:\y&ytex\y&ytex -i amstex.ini| &&&&&&	for {\AMS}-{\TeX}\cr
+
+\vskip .05in
+
+% \+\quad\verb|c:\y&ytex\y&ytex -i unpack2e.ins| &&&&&&	followed by ---\cr
+
+\+\quad\verb|c:\y&ytex\y&ytex -i unpack.ins| &&&&&&	followed by ---\cr
+
+\vskip .05in
+
+% \+\quad\verb|c:\y&ytex\y&ytex -i latex2e.ltx| &&&&&&	--- for {\latex2e}\cr
+
+\+\quad\verb|c:\y&ytex\y&ytex -i latex.ltx| &&&&&&	--- for {\latex2e}\cr
+
+\vskip .05in
+
+\noindent Type {\tt \bs dump} when processing is complete and 
+`{\tt **}' % two asterisks appear as prompts.
+appears as prompt.
+Move the resulting files with extension `{\tt .fmt}' to
+where TEXFORMATS points (usually the `{\tt fmt}' subdirectory, e.g.  {\tt
+c:\bs y\&ytex\bs fmt}).  Also copy the corresponding `{\tt .log}' files for
+future reference.  
+The required source files may be found on the auxiliary source file diskette.  
+% (See Appendix~B for what {\TeX} source files are needed for each of the above).
+
+You can then `preload' the new formats by prefixing the corresponding file
+names with `\&' on the command line.  For example:
+
+\vskip .05in
+
+\verb|c:\y&ytex\y&ytex  &amstex  mysource.tex|
+
+\vskip .05in
+
+\noindent 
+{\bf Note:} \enspace you can create new formats directly from DVIWindo's
+`TeX Menu'.
+
+\nsection{Setting up PIF files and convenient Windows Icons}
+
+% \vskip .1in
+
+DVIWindo's installation procedure sets up suitable PIF files if there aren't
+any.
+You can easily link to {\Y&Y}TeX from DVIWindo's `TeX Menu,' so there
+will normally be no need for setting up PIF files, batch files or icons.
+
+If you don't use {\Y&Y}TeX from the `TeX Menu,' then you may want to use the
+PIF editor (usually in the `Main' program group) to set up suitable PIF files
+for plain {\TeX} and {\LaTeX}.  You may elect to set up the
+following: 
+
+\vskip .05in
+
+\+&	Program File Name &&&	\verb|c:\bat\tex.bat|\cr
+
+\+&	Windows Title &&&	\verb|Y&YTeX|\cr
+
+\+&	Optional Parameters &&&	\verb|?|\cr
+
+\+&	Start up Directory &&&	\verb|d:|\cr
+
+\vskip .05in
+
+\noindent
+The Optional Parameter `{\tt ?}' forces Windows to prompt you to supply a
+file name.  You can also select whether you want {\Y&Y}TeX to run full screen
+or windowed, and whether the window will be closed upon exit.  Closing the
+Window upon exit means you cannot view error messages.  Not closing it means
+you will end up with `Inactive' Windows.  You can use the `{\tt CleanUp}'
+utility (supplied with DVIWindo)
+to get rid of all inactive Windows.  Another useful trick is to refer
+to a batch file that ends with `{\tt pause}'.  Save the PIF file in the
+{\Y&Y}TeX directory, somewhere on your path, or in the Windows directory. 
+
+To set up an icon, click on `{\tt File}' in the Program Manager and select
+`{\tt New}'. 
+Select `{\tt Program Item}' instead of `{\tt Program Group}'. Then fill in:
+
+\vskip .05in
+
+\+&	Description:	&&&	\verb|Y&YTeX|\cr
+
+\+&	Command Line:   &&&	\verb|c:\windows\tex.pif|\cr
+
+\+&	Working directory: &&&	\verb|d:|\cr
+
+\vskip .05in
+
+\noindent
+You can select whether or not {\Y&Y}TeX will `run minimized'.  Running
+minimized is not recommended, since you will then not see possible error
+messages.
+
+% To % automatically 
+% set things up so that 
+% {\Y&Y}TeX is automatically invoked
+% when you double click on a {\TeX} source file, add 
+DVIWindo's installation procedure
+adds % tries to add % these additions to your `{\tt win.ini}' file.
+
+\vskip .05in
+
+\verb|tex=tex.bat ^.tex|
+
+\verb|ltx=latex.bat ^.ltx|
+
+\vskip .05in
+
+\noindent
+to the `{\tt [Extensions]} section of your `{\tt win.ini}' file.  
+This way {\Y&Y}TeX is automatically invoked when you double click
+on a {\TeX} source file.
+If you use both plain {\TeX} and {\LaTeX} you may want to 
+use different file extension to distinguish between them, as shown.
+% Note that the DVIWindo installation procedure
+% already tries to make these additions to your `{\tt win.ini}' file.
+
+\nsection{Interrupting and Terminating a {\TeX} Job}
+
+% \vskip .1in
+
+You can use control-C to interrupt {\Y&Y}TeX.  If there are input characters
+buffered up, there may be no immediate response, in which case use
+control-Break.   
+{\TeX} is not always in a state in which it is responsive to such
+interruptions.   In that case you can press control-C several times to 
+abort whatever it is doing (possible leaving output files in a messy state).
+
+If {\TeX} is waiting for you to enter a file name, simply type control-Z.
+This will cause an `emergency stop'.
+
+If you type `{\tt nul}' when {\TeX} is waiting for you to enter a file name, 
+then it will in effect read an empty file (i.e. immediately receive
+the end-of-file indication).
+
+% \nsection{TeX Memory Allocations (log file output with \tracingall)}
+\nsection{{\TeX} Memory Allocations }
+% (log file output with \verb|\tracingall|)
+
+% \vskip .1in
+
+{\Y&Y}TeX provides dynamic memory allocation for most types of memory used by
+{\TeX}.  In addition, allocations are {\it twice\/} those for Unix C {\TeX} for
+less critical types of memories for which dynamic allocation is not provided.
+So you are virtually guaranteed never to run out of memory --- provided you
+either have enough RAM installed, or have set up a large enough swap file for
+virtual memory.  Here is the log file output produced by running a
+{\TeX} source file containing just the line \verb|\tracingall\end|
+
+\vskip .05in
+
+\verb|Here is how much of TeX's memory you used:|
+
+\noindent
+\verb| 1 strings out of 5000|\nl
+\verb| 10 string characters out of 40000|\nl
+\verb| 5748 words of memory out of 65536|\nl
+\verb| 921 multiletter control sequences out of 9244|\nl
+\verb| 4746 words of font info for 16 fonts, out of 24746 for 511|\nl
+\verb| 14 hyphenation exceptions out of 1009|\nl
+\verb| 1i,0n,0p,17b,6s stack out of 600i,80n,120p,8192b,6000s|
+
+\vskip .05in
+
+\noindent
+{\bf Note:} \enspace
+This shows the current allocations, {\it not\/} the theoretical
+maximums --- which are governed by the 4 gigabyte limit of
+32 bit addressing.
+
+In ini{\TeX} you can also set some (initial) memory allocations: The command
+line flag `{\tt -m}' can be used to increase the initial allocation for
+{\TeX}'s main memory. The command line flag `{\tt -e}' can be used to
+increase the size of the hyphenation exception table (useful if you want to
+load up a hyphenation table for the whole unique word list of a book).  The 
+command line flag `{\tt -h}' can be used to increase the size of the
+hyphenation pattern trie (useful if you want to load up hyphenation patterns
+for a half dozen or more languages).
+
+% can also control size of DVIBUF ...
+
+\nsection{Non-{\TeX} Issues}
+
+The following are important issues that are {\it not\/} the concern
+to the {\TeX} implementation itself, but of the DVI processor 
+(printer driver or previewer).  Hence they are not covered in this manual.
+
+% \vskip .1in
+\vskip .05in
+
+\bpar Use of {\tt \bs special} (particularly for figure inclusion)
+--- {\TeX} passes the information straight to the DVI processor;
+
+\bpar Font character encoding schemes --- 
+{\TeX} treats characters {\it only\/} as numeric codes
+--- it has no conception of their names;
+
+\bpar Font naming issues  --- 
+{\TeX} only cares about the TFM file name;
+
+\vskip .05in
+
+\noindent
+If your {\TeX} source files do not use the actual font file names when
+referring to fonts, then set up a font name aliasing file called 
+`{\tt texfonts.map}' and put it one of the directories where {\TeX} looks for
+TFM files (as defined by the environment variable `{\tt TEXFONTS}').  For an
+example look at the `{\tt texfonts.map}' file on the {\Y&Y}TeX diskette.
+Note that DVIPSONE and DVIWindo can refer to the same `{\tt texfonts.map}'
+for font name aliasing information 
+(as long as {\tt TEXFONTS} is set up properly).
+
+% \nsection{Acknowledgements/Credits}
+
+% {\Y&Y}TeX is based in part on the Unix C implementation and in part on the
+% work of Shih-Ping Chan, Department of Mathematics, National University of
+% Singapore.  The Unix {\TeX} distribution is the work of Tim Morgan, Tomas
+% Rokicki, Pierre Mackay, Karl Berry, and others.  
+
+% % Also, many useful features/extensions were suggested by beta testers.
+% Special thanks also to Paul Agnostopolous, Fred Bartlett, Robert Becker,
+% John Eagleson, and Larry Tseng for very useful feedback and suggestions.
+
+% **************************************************************************
+% ***************************************************************************
+
+% \end
+
+\newpage
+
+\runnerhead{Appendix---Trouble Shooting}
+
+\section{Appendix A --- Trouble Shooting}
+
+% \vskip .1in
+
+\undosectionskip
+
+% \subsection{A.1 System Configuration and  Memory Management Support}
+\subsection{A.1 System Configuration and  Memory Management}
+
+The `{\tt tellme}' utility provided by PharLap shows details of your memory
+management and system configuration.  Invoke it using `{\tt tellme -help}' 
+to see a list of command line switches.
+
+In the unlikely event that you should encounter problems with {\Y&Y}TeX,
+please run `{\tt tellme}' before contacting {\Y&Y}.  Also, include the output
+from `{\tt tellme}' if you send us a bug report by email, or if you send a
+diskette  with problem files.  You can redirect the output from `{\tt
+tellme}' to a file using {\tt >} on the command line.  For example:
+
+\vskip .05in
+
+% \hbox{\quad}
+\verb|tellme > config.txt|
+
+\vskip .05in
+
+\noindent
+If all the `{\tt tellme}' tests run properly, then an application built with
+the TNT DOS-Extender should also run properly in the same configuration.
+This makes `{\tt tellme}' a useful test of TNT DOS-Extender compatibility. 
+
+You may also find the DOS utility `{\tt mem}' and the MicroSoft
+Diagnostic utility `{\tt msd}' helpful in checking out the memory layout.
+
+% \subsection{A.2 Memory Management Support:}
+
+The DOS extender used by {\Y&Y}TeX can use memory management support.  
+Such services are provided in a DOS box in Windows and OS/2, as well as Windows
+NT.  When running in DOS outside Windows, such services can be provided by a
+memory manager such EMM386 (supplied with MS Windows 3.0 or later and MS DOS
+5.0 or later), Qualitas 386MAX, Quarterdeck QEMM, COMPAQ CEMM, or DESQView.
+% {\Y&Y}TeX uses a DOS extender that may need some memory management services.
+% At a minimum, 
+% Check that you have HIMEM.SYS installed in your `{\tt config.sys}' file.
+
+In general, we recommend use of a disk cache such as SMARTDRV --- because 
+it greatly speeds disk I/O --- {\it unless\/} it takes away too much of the
+available extended memory.  If you have limited memory, avoid using a RAM
+disk, and limit use of memory for other purposes such as printer caches,
+the ATM cache (e.g. 256k), and SMARTDRV (10k per Meg of hard disk space).
+
+Note that usually the total RAM quoted for a machine includes 1 Mega\-byte that
+is used for conventional memory, ROM shadowing, and other purposes.  
+This area is {\it not\/} available for use as extended memory.
+%  --- {\Y&Y}TeX does not use conventional memory (the TNT DOS extender
+% itself does use about 80k of conventional memory).  
+At an {\it absolute minimum\/}, a machine should have 4 Megabytes total RAM.
+% but 8 Megabytes is recommended for more efficient use of {\Y&Y}TeX.  
+More memory is desirable if RAM is also used for
+other purposes such as a disk cache, RAM disk, ATM cache, or printer cache
+--- or if very complex {\TeX} jobs are to be run.  
+What makes for a `complex' job is hard to define.  
+The {\TeX} book is not, since {\Y&Y}TeX can process it in just 1.6 Meg,
+despite its length.  Jobs calling for many fonts or involving multi-column
+work make heavier demands.  
+Running ini-{\TeX} to create new formats also requires more memory.
+
+\subsection{A.2 Memory Allocation Problems:}
+
+If you get 
+
+\vskip .05in
+
+% \hbox{\quad}
+\verb|`! unable to allocate ... memory'|
+
+% \hbox{\quad}
+\verb|`! Cannot allocate ... bytes'|
+
+\vskip .05in
+
+\noindent
+or similar complaint from {\Y&Y}TeX, then you most likely do not have enough
+free extended memory.  To get started, {\Y&Y}TeX requires at least 1.6 meg of
+{\it free\/} extended memory (at least 2.4 meg for ini{\TeX}).  Complex jobs
+(e.g.  those calling for over a hundred fonts) may increase the memory
+requirement by another half meg or so.  The amount of memory needed also
+depends on the command line flags `{\tt -m}', `{\tt -e}', and `{\tt -h}' used
+with ini{\TeX} when the format was created.
+
+It is hard to give precise numbers, since {\Y&Y}TeX uses dynamic memory
+allocations for all of {\TeX}'s large arrays.  Note that a `big {\TeX}' with
+the usual {\it fixed\/} allocations would require a minimum of 4 to 5 meg of
+free extended memory, and hence might not run at all on some machines 
+with 8 meg RAM or less.
+
+You may have lots of extended memory, but may be using much of it for 
+a RAM disk, a disk cache, the ATM cache, and so on.  Use the DOS utility
+`{\tt mem}' to see what memory areas are available (type `{\tt mem /?}' or 
+`{\tt help mem}' for additional details). Note, however, that in a DOS box in
+Windows, `{\tt mem}' may report zero (or near zero) free `Extended (XMS)
+memory'.   This is OK.  Windows grabs all of the extended memory, but is
+quite willing to dole it out when somebody asks for it (using the DPMI 0.9
+interface). 
+
+% Another type of memory problem occurs when the support for extended memory is
+% not installed. Make sure you are running at least HIMEM.SYS or one of the
+% memory management programs mentioned earlier, or run inside a DOS box in
+% Windows.
+
+It may also be that you are loading EMM386.EXE in your CONFIG.SYS file and
+specifying EMS memory, but asking for less than let's say 2000k bytes.  If 
+you use EMM386 then:
+
+\vskip .05in
+
+\ftpar{(a)}	do not specify EMS memory (NOEMS);  or,
+
+\ftpar{(b)}	do not explicitly specify a maximum amount of EMS memory;  or,
+
+\ftpar{(c)}	specify a maximum amount of EMS memory of at least 2000 kilobytes.
+
+\vskip .05in
+
+\noindent
+If you do have less than 2 Megabytes of free extended memory, you can use
+{\Y&Y}TeX in a DOS box in Windows enhanced mode, since the DOS extender can use
+virtual memory supplied by Windows.  You need to set up a Windows swap file
+on your hard disk for this work (See your Windows documentation).  Relying on
+a swap file will slow down {\Y&Y}TeX.  Avoid using it unless you are really
+short of free extended memory. If you do use a swap file, make it a permanent
+file. 
+
+Note that in DOS, you can use a memory manager like 386MAX to provide
+virtual memory. 
+
+If you do have limited memory, you may wish to create new formats using
+ini-{\TeX} with the command line flag `{\tt -m}' specifying only 8 kilo words
+of initial main memory allocation ({\tt -m=8}).  This is enough for plain
+{\TeX}, but may not be enough for other formats. Increase this initial
+allocation if you run out of memory while running ini-{\TeX}. 
+
+\subsection{A.3 Environment Variables Should be Set:}
+
+If you get an error message like:
+
+\vskip .05in
+
+% \hbox{\quad}\verb|Sorry, I can't find that format; will try the default.|
+\verb|Sorry, I can't find that format; will try the default.|
+
+% \hbox{\quad}\verb|I can't find the default format file!|
+\verb|I can't find the default format file!|
+
+\vskip .05in
+
+\noindent
+then the environment variable TEXFORMATS is probably not set
+correctly or you are asking for a format that does not exist.  
+If you get an {\TeX} error message like:
+
+\vskip .05in
+
+\verb|(Fatal format file error; I'm stymied)|
+
+\verb|! I'm stymied|
+
+\vskip .05in
+
+\noindent
+then {\Y&Y}TeX is picking up format files intended for another implementation
+of {\TeX} --- or for an older version of {\Y&Y}TeX.  This may also be because
+the TEXFORMATS environment variable is not set correctly.  If you get an
+error message like: 
+
+\vskip .05in
+
+\verb|! font \rm=cmr10 not loadable: Metric file not found.|
+
+\vskip .05in
+
+\noindent
+then the environment variable TEXFONTS is not set properly.
+
+Remember to set the environment variable TEXINPUTS. 
+TEXINPUTS should include all the directories where your 
+{\TeX} source files are located (This is one thing the automated installation
+procedure cannot take care of for you, since it doesn't know 
+where % what directories you keep your source files in).
+you keep your source files.
+
+The environment variables TEXFONTS, TEXFORMATS, and TEXPOOL should also be
+set if the TFM files, format files and string pool files are in other than
+their default places. 
+
+% \subsection{A.5 Format and Pool File Version Mismatch:}
+
+Do not use a new version of {\Y&Y}TeX with old `format' files!  If you get an
+error message like 
+
+\vskip .05in
+
+\verb|(Fatal format file error; I'm stymied)|
+
+\vskip .05in
+
+\noindent
+then you have a mismatch between the current version of {\Y&Y}TeX and the
+saved format file (or formats for another {\TeX} implementation).
+
+Do not use a new version of {\Y&Y}TeX with old `pool' files!  If you get an
+error message like
+
+\vskip .05in
+
+\verb|Mismatch `tex.pool'.  Retangle me...|
+
+\vskip .05in
+
+\noindent
+while running ini{\TeX}, then you have the wrong pool file version.
+
+\subsection{A.4 Maximum Number Of Files Open / File Sharing}
+
+{\TeX} likes to open lots of files while it is processing your source file.
+You may get an error message saying that it is unable to open any more.
+For example something like:
+
+% \vskip .05in
+
+\hbox{\quad}\verb|checked_fopen : mode rb  Permission denied|
+
+\vskip .05in
+
+\noindent
+In this case, increase the number of files that DOS can have open 
+simultaneously.  We recommend increasing the number of files that 
+can be open simultaneously by using:	{\tt FILES=45}
+in your `{\tt config.sys}' file.  Windows also likes to keep lots of files
+open, so this may be a good thing to do in general when using {\TeX} or Windows.
+
+% \subsection{File sharing / Transfer stack overflow:}
+
+If you get an error message like
+
+\vskip .05in
+
+\verb|{\tt FATAL ERROR --- transfer stack overflow}|
+
+\verb|{\tt FATAL ERROR TNT.10049: Ran out of stack buffers}|
+
+\vskip .05in
+
+\noindent
+then you may have the file you are trying to process open in another
+application.  Make sure files you want to run through {\TeX} are currently 
+opened by other programs.  Note that some programs --- like Epsilon and
+DVIWindo --- do not leave files open, but some others foolishly do.  
+
+Make sure you have
+% It is generally a good idea to 
+installed SHARE.EXE (in the `{\tt autoexec.bat}'
+file) % in any case 
+to prevent problems resulting from simultaneous access to files.  
+
+% \subsection{Possible slow starting under low memory conditions:}
+\subsection{A.5 Slow Starting when Starved for Memory}
+
+It normally takes {\Y&Y}TeX a second or two to get going on a typical 486
+computer.  It may take slightly longer when run in a DOS box inside Windows
+on a machine with limited memory (less than 8 Megabyte).  Swapping by Windows
+--- particularly if Windows has built up a large cache of TrueType glyphs ---
+may slow startup a bit more.  
+
+Sometimes the first run of {\Y&Y}TeX takes longer to get going, while
+subsequent runs start rapidly, because unused parts of Windows and other
+applications have already been swapped out.  Starting {\Y&Y}TeX in ini{\TeX}
+mode (`{\tt -i}' on the
+command line) may take longer, since it has to allocate additional memory.
+
+If starting {\Y&Y}TeX takes {\it really\/} long (a minute instead of a couple
+of seconds!), then there is something wrong.  Here are some hints on working
+with very low memory situations: 
+
+\vskip .05in
+
+\bpar Get enough memory so that at least 2 Megabytes of extended memory are
+free {\it after\/} other uses are accounted for;
+
+\bpar Remove utilities that use large chunks of the % existing 
+extended memory;
+
+\bpar Use virtual memory support provided by memory managers like Qualitas
+386MAX.
+
+\vskip .05in
+
+\noindent
+The following are general hints on speeding up Windows systems:
+
+\vskip .05in
+
+\bpar Use a permanent swap file rather than a temporary swap file in Windows;
+
+\bpar Enable 32 bit disk access (unless you have a SCSI disk drive);
+
+\bpar Place the swap file on a disk other than the one with the Windows
+directory --- if you have one;
+
+\bpar Do NOT use a RAM disk for swapping --- let Windows use the memory directly;
+
+\bpar Avoid RAM disks and large ATM caches --- let Windows use the extended memory;
+
+\bpar Do not make the swap file unnecessarily large;
+
+\bpar Perhaps avoid swap files altogether if you have enough RAM 
+(16 Mega\-bytes or more). 
+
+\vskip .05in
+
+\noindent
+The size and location of the Windows swap file --- as well as 32 bit access
+--- are controlled from the `386 Enhanced' icon in the Windows Control Panel.
+
+\subsection{A.6 Acknowledgements/Credits}
+
+{\Y&Y}TeX is based in part on the Unix C implementation and in part on the
+work of Shih-Ping Chan, Department of Mathematics, National University of
+Singapore.  The Unix {\TeX} distribution is the work of Tim Morgan, Tomas
+Rokicki, Pierre Mackay, Karl Berry, and others.  
+
+% \indent % Also, 
+\quad Many useful features/extensions were suggested by beta testers.
+Special thanks % also 
+to Paul Agnostopolous, Fred Bartlett, Robert Becker,
+John Eagleson, and Larry Tseng for very useful feedback and suggestions.
+
+\newpage
+
+\runnerhead{Y\&YTeX}
+
+% \offheaders
+
+% \versoleftheader={}
+
+% \hbox{ } \newpage
+
+\def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
+
+\line{{\bf 1.\enspace Introduction to {\Y&Y}TeX\leaderfill 1}}
+
+\vskip .1in
+
+\line{\quad \enspace Requirements\leaderfill 1}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 2.\enspace Quick Start --- automatic installation\leaderfill 2}}
+
+\vskip .1in % \vskip .1in
+
+\line{{\bf 3.\enspace Environment Variables for {\Y&Y}TeX\leaderfill 3}}
+
+\vskip .1in % \vskip .1in
+
+\line{{\bf 4.\enspace Setting up Convenient Batch Files\leaderfill 4}}
+
+\vskip .1in
+
+\line{{\bf 5.\enspace Command Line Flags and Arguments\leaderfill 5}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 6.\enspace Using {\TeX} `Formats' and Making New `Formats'\leaderfill 9}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 7.\enspace Setting up PIF Files and Windows Icons\leaderfill 10}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 8.\enspace Interrupting and Terminating a {\TeX} Job\leaderfill 11}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 9.\enspace {\TeX} Memory Allocations\leaderfill 11}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 10.\enspace Non-{\TeX} Issues\leaderfill 12}}
+
+% \vskip .1in % \vskip .1in % \vskip .1in
+
+% \line{{\bf 11.\enspace Acknowledgements and Credits\leaderfill 12}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf A.\enspace  Appendix --- Trouble Shooting\leaderfill 13}}
+
+\vskip .1in
+
+\line{\quad A.1\enspace System Configuration and Memory Management\leaderfill 13}
+
+\vskip .05in
+
+% \line{\quad A.2\enspace Memory Management Support\leaderfill 23}
+\line{\quad A.2\enspace Memory Allocation Problems\leaderfill 14}
+
+\vskip .05in
+
+\line{\quad A.3\enspace Environment Variables Should be Set\leaderfill 15}
+
+\vskip .05in
+
+\line{\quad A.4\enspace Maximum Number of Files/File Sharing\leaderfill 16}
+
+\vskip .05in
+
+% \line{\quad A.5\enspace Format and Pool File Version Mismatch\leaderfill 16}
+
+% \vskip .05in
+
+\line{\quad A.5\enspace Slow Starting when Starved for Memory\leaderfill 16}
+
+\vskip .05in
+
+\line{\quad A.6\enspace Acknowledgements/Credits\leaderfill 17}
+
+\end
+
+\section{Appendix B: --- Files on the Diskette --- {\TeX} formats}
+
+% \vskip .1in
+
+The compressed file	`{\tt y\&ytex.zip}'
+is {\Y&Y}TeX itself, including `{\tt y\&ytex.exe}' and `{\tt tex.poo}.  
+
+The compressed file	`{\tt pharlap.zip}'
+includes PharLap's `{\tt tellme.exe}' and `{\tt cfig386.exe}' utilities and 
+several text files detailing use in Windows 3.x, Windows NT, and OS/2.
+
+The compressed file	`{\tt formats.zip}'
+contains ready made `formats' for plain {\TeX} and {\LaTeX}. 
+The version of plain {\TeX} is 3.141.
+The version of {\LaTeX} is 2.09 <1992 March 25>.
+We also separately supply {\latex2e} source files and style files ---
+but please note that these are still in $\beta$ test form.
+
+Style files for {\LaTeX} --- and some other {\TeX} macro files --- 
+may be found in: `{\tt latex.zip}'.  This includes files needed
+to make new `formats' for:
+
+\vskip .05in
+
+\bpar  plain {\TeX} 
+(i.e. `{\tt plain.tex}' \& `{\tt hyphen.tex}');
+
+\vskip .05in
+
+\bpar {\LaTeX} 
+(i.e. `{\tt lplain.tex}', `{\tt lfonts.tex}', `{\tt latex.tex}', 
+`{\tt lhyphen.tex}', \& `{\tt hyphen.tex}').
+
+\vskip .05in
+
+\bpar {\SliTeX}
+(i.e. `{\tt splain.tex}', `{\tt sfonts.tex}', `{\tt slitex.tex}', 
+`{\tt latex.tex}', `{\tt lhyphen.tex}', \& `{\tt hyphen.tex}').
+
+\vskip .05in
+
+\noindent
+The standard {\LaTeX} style files and document files are there as well.
+You may wish to delete the `{\tt *.doc}' files if you are short of disk space.
+
+{\TeX} metric files for the Computer Modern, {\AMS}, {\LaTeX}, and {\SliTeX}
+fonts may be found in 
+
+\vskip .05in
+
+% \hbox{\quad}\verb|textfms.zip|
+
+\verb|textfms.zip|
+
+\vskip .05in
+
+\noindent 
+Finally, there is `{\tt pkz204g.exe}', the shareware PKZIP package.  
+This is used to decompress the four ZIP files.
+
+\end
+
+\nsection{C: manual installation of {\Y&Y}TeX}
+
+% \vskip .1in
+
+If you want to control exactly what files get installed or where, you may
+wish to perform the installation manually.  Here are the steps:
+
+Create a directory for {\Y&Y}TeX on your hard disk 
+(e.g. `\verb|mkdir c:\y&ytex|).
+\bpar	Unzip `{\Y&Y}tex.zip' in this directory  
+(e.g. \verb|pkunzip y&ytex|).
+\bpar	Unzip `{\tt pharlap.zip}' in this directory  
+(e.g. \verb|pkunzip pharlap|).
+
+Create a directory for the ready-made format files 
+(e.g. \verb|mkdir c:\y&ytex\fmt|).
+\bpar	Unzip `{\tt formats.zip}' in this directory 
+(e.g. \verb|pkunzip formats|).
+\bpar	You may want to move `{\tt tex.poo}' into this directory also.
+
+Create a directory for the {\TeX} metric files (TFM) 
+(e.g. \verb|mkdir c:\y&ytex\tfm|)
+\bpar	Unzip `{\tt textfms.zip}' in this directory  --- unless you already have TFMs.
+
+Create a directory for {\TeX} source files. 
+(e.g. \verb|mkdir c:\y&ytex\latex|)
+\bpar	Unzip `{\tt latex.zip}' in this directory --- unless you already have
+style files 
+\bpar	Do not use old style file (pre {\TeX} 3.141) with this version of TeX.
+
+Set up the environment variables.
+Delete all of the `{\tt *.zip}' files you have transferred to your hard disk
+to save space. 
+
+% ***************************************************************************
+% ***************************************************************************
+
+\end
+
+% add -L and other new command line flags ?

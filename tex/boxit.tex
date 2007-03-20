@@ -1,0 +1,21 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=10pt
+
+\noheaders
+
+\newdimen\bthick % thickness of lines used in constructing stencils
+\bthick=6pt % 2.5 pixels at 300 dpi
+
+\def\boxit#1{%
+  \vbox{\hrule height\bthick\hbox{\vrule width\bthick\kern6pt
+  \vbox{\kern6pt#1\kern6pt}\kern6pt\vrule width\bthick}\hrule height\bthick}}
+
+% \special{rulecolor: 255 0 255} % old \special
+
+\special{color push rgb 1 0 1}%
+\boxit{\hbox to 4in{\vbox to 2in{}}}%
+\special{color pop}%
+
+\end

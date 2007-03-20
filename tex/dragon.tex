@@ -1,0 +1,50 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% Stuff to create the dragon curve using LaTeX circle font
+
+\nopagenumbers
+
+\def\topglue{\nointerlineskip\vglue-\topskip\vglue} % for top of page
+
+% \font\qc=lcircle1	% narrow line font
+\font\qc=lcirclew 	% wide line font
+
+% Can use following character codes for different size circles:
+% 0-3, 4-7, 8-11, 12-15, 16-19, 20-23, 24-27, 28-31, 32-35, 36-39
+% (except ATM 2.0 has a problem displaying character code 0).
+
+\catcode`\ =9 \endlinechar=-1 % ignore all spaces (temporarily)
+\newcount\dir \newdimen\y \newdimen\w
+\newif\ifvisible \let\B=\visibletrue \let\W=\visiblefalse
+\newbox\NE \newbox\NW \newbox\SE \newbox\SW \newbox\NS \newbox\EW
+% \setbox\SW=\hbox{\qc a} \setbox\NW=\hbox{\qc b}
+\setbox\SW=\hbox{\qc \char4} \setbox\NW=\hbox{\qc \char5}
+% \setbox\NE=\hbox{\qc c} \setbox\SE=\hbox{\qc d}
+\setbox\NE=\hbox{\qc \char6} \setbox\SE=\hbox{\qc \char7}
+\w=\wd\SW \dimen0=\fontdimen8\qc
+\setbox\EW=\hbox{\kern-\dp\SW \vrule height\dimen0 width\wd\SW} \wd\EW=\w
+\setbox\NS=\hbox{\vrule height\ht\SW depth\dp\SW width\dimen0}  \wd\NS=\w
+\def\L{\ifcase\dir \dy+\NW \or\dx-\SW \or\dy-\SE \or\dx+\NE\dd-4\fi \dd+1}
+\def\S{\ifcase\dir \dx+\EW \or \dy+\EW \or \dx-\EW \or \dy-\NS \fi}
+\def\R{\ifcase\dir \dy-\SW\dd+4 \or\dx+\SE \or\dy+\NE \or\dx-\NW\fi \dd-1}
+\def\T{\ifcase\dir\kern-\w\dd+2\or\ey-\dd+2\or\kern\w\dd-2\or\ey+\dd-2\fi}
+\edef\dd#1#2{\global\advance\dir#1#2\space}
+\def\dx#1#2{\ifvisible\raise\y\copy#2 \if#1-\kern-2\w\fi\else\kern#1\w\fi}
+\def\dy#1#2{\ifvisible\raise\y\copy#2 \kern-\w \fi \global\advance\y#1\w}
+\def\ey#1{\global\advance\y#1\y}
+\def\path#1{\hbox{\B \dir=0 \y=0pt #1}}
+\catcode`\ =10 \endlinechar=`\^^M % resume normal spacing conventions
+
+\newcount\n  % the current order in the \dragon and \nogard macros
+\def\dragon{\ifnum\n>0{\advance\n-1 \dragon\L\nogard}\fi}
+\def\nogard{\ifnum\n>0{\advance\n-1 \dragon\R\nogard}\fi}
+
+% will need to adjust topglue and hskip if n is changed
+
+\topglue 0.75in
+
+\hskip 1.5in
+% \path{\dir=3 \n=9 \dragon}
+\path{\dir=3 \n=10 \dragon}
+
+\end

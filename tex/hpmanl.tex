@@ -1,0 +1,979 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%ÆRM80Ø Manual for Converting HPTAG-generated DVI files to PDF format
+
+\immediate\write16{Format: \fmtname\space Version: \fmtversion}
+
+\overfullrule=5pt	% show justification problem areas
+% \overfullrule=0pt	% avoid ugliness in final output
+% \tolerance=800	% to avoid overfull box blocks ?
+
+\catcode`\@11		% make @ act as if it was a letter
+\newdimen\pc@		% define a new dimension for `pica' for efficiency
+\pc@12\p@		% a pica is 10 pt (\p@ is predefined in plain TeX)
+\hsize26\pc@		% horizontal size is 26 picas
+\vsize12\p@		% vertical page size 
+\vsize41\vsize		% is 41 picas (another way of doing this sort of thing)
+\advance\vsize\topskip	% plus topskip amount
+% \voffset-2.5\pc@	% take out, vertical shift not needed with TWOUP
+% \hoffset-3\pc@	% take out, horizontal shift not needed with TWOUP
+\parskip\z@		% set paragraph skip to 0pt
+\parindent\pc@		% set paragraph indent to one pica
+%
+% Define fonts.  
+% Originally: Minion for text, Syntax for heading, Memphis light for typewriter
+% Now: LucidaBright for text, LucidaSans for heading, and LucidaSansTypewriter
+%
+\font\tenrm=lbr at9.5\p@ % \font\tenrm=morg at10\p@
+\font\sixrm=lbr at6.1\p@ % \font\sixrm=morg at6\p@
+\font\sixbf=lbd at6.1\p@ % \font\sixrm=morg at6\p@
+\font\sevenrm=lbr at6.9\p@ % \font\sevenrm=morg at7\p@ 
+\scriptfont\z@\sevenrm
+\font\tenit=lbi at9.5\p@	% \font\tenit=moi at10\p@
+\font\tenbf=lbd at9.5\p@	% \font\tenbf=mob at10\p@
+\font\tensc=lbrsc at9.5\p@	% \font\tensc=mosc at10\p@
+\font\tendsc=lbdsc at9.5\p@	% \font\tensc=mosc at10\p@
+\font\tensl=lbsl at9.5\p@
+\font\eightsl=lbsl at7\p@	% fir slanted LaTeX
+\font\titlef=lsd at16\p@	% \font\titlef=sxb at16\p@
+\font\eighttitle=lsd at9.0\p@	% \font\eighttitle=sxb at9.6\p@
+\font\sectfnt=lsd at10.6\p@	% \font\sectfnt=sxb at11\p@
+\font\subsectfnt=lsd at9.5\p@	% \font\subsectfnt=sxb at10\p@
+\font\sixsubsectfnt=lsd at6.1\p@	% \font\sixsubsectfnt=sxb at6\p@
+\font\rhfnt=lsr at8.6\p@	% \font\rhfnt=sxr at9\p@
+\font\rhfol=lsb at8.6\p@	% \font\rhfol=sxubl at9\p@
+% \font\tentt=lbtnr at9.5\p@	% \font\tentt=meml at10\p@
+\font\tentt=lstnr at9.5\p@	% \font\tentt=meml at10\p@
+\font\tenttb=lstnb at9.5\p@
+% \font\secttt=lbtnr at10.6\p@	% \font\secttt=meml at11\p@
+\font\secttt=lstnr at10.6\p@	% \font\secttt=meml at11\p@
+\font\cmsy=cmsy10 at 10\p@	% for AMS TeX and AMS LaTeX logos only
+\font\lbms=lbms at 9.5\p@	% for < and > in -b=<starting page> etc
+\font\lbmi=lbmi at 9.5\p@	% for \varepsilon in LaTeX 2e, x, y
+%
+\let\sc\tensc			% short hand for smallcaps font
+\let\dsc\tendsc			% short hand for bold smallcaps font
+\let\tt\tentt			% short hand for typewriter fixed width font
+\let\ttb\tenttb
+\tenrm				% switch to ten point roman text font
+\baselineskip12\p@		% baseline skip is 12pt
+%
+\newwrite\toc			% allocate new output stream called TOC
+\immediate\openout\toc\jobname.toc	% open output stream file <jobname>.toc
+\def\noindex#1{}
+\def\tocwrite#1{{\let\index\noindex\xdef\toctext{#1}}\xdef\writeit{\write\toc
+  {\toctext\string{\noexpand\number\pageno\string}}}\writeit}
+\newcount\sectcnt		% allocate new counter for sections
+\def\section#1{\removelastskip26\p@ plus3.9\p@ minus1.95\p@
+  \global\advance\sectcnt\@ne{\sectfnt\let\tt\secttt\setbox8\hbox{\the
+  \sectcnt.\kern6\p@}\hangindent\wd8\noindent\box8#1\par}\afterheadtrue
+  \everypar{\afterhead}\global\subsectcnt\z@\nobreak\markbothsame{\the
+  \sectcnt.\ #1}\tocwrite{\string\tocsect{\the\sectcnt}{#1}}\nobreak
+  \vskip13\p@ plus2.6\p@ minus1.3\p@}
+\def\markbothsame#1{\xdef\chapmark{{#1}}\mark{{#1}{#1}}}
+\def\chapmark{{}}
+\newcount\subsectcnt		% allocate new counter for subsections
+\def\subsect#1{\removelastskip19.5\p@ plus3.25\p@ minus1.625\p@\global\advance
+  \subsectcnt\@ne\global\subsubsectcnt\z@{\subsectfnt\let\sixrm\sixsubsectfnt
+  \setbox8\hbox{\the\sectcnt.\the\subsectcnt\kern6\p@}\hangindent\wd8\noindent
+  \box8#1\par}\afterheadtrue\everypar{\afterhead}\nobreak\markright{\the
+  \sectcnt.\the\subsectcnt\ #1}\tocwrite{\string\tocsub{\the\sectcnt.\the
+  \subsectcnt}{#1}}\nobreak\vskip6.5\p@ plus1.95\p@ minus.975\p@}
+\newcount\subsubsectcnt		% allocate new counter for subsubsections
+\def\subsub#1{\removelastskip13\p@ plus2.6\p@ minus1.3\p@\global\advance
+  \subsubsectcnt\@ne{\subsectfnt\let\sixrm\sixsubsectfnt\noindent\the
+  \sectcnt.\the\subsectcnt.\the\subsubsectcnt\kern6\p@#1}\tocwrite{\string
+  \tocsubsub{\the\sectcnt.\the\subsectcnt.\the\subsubsectcnt}{#1}}\quad
+  \ignorespaces}
+%
+\def\markright#1{\expandafter\makerightmark\chapmark{#1}}
+\def\makerightmark#1#2{\mark{{#1}{#2}}}
+\def\rhhead{\ifodd\pageno\rightheadline\else\leftheadline\fi}
+\def\rightheadline{\line{\rhfnt\getrecto\botmark\hfil\rhfol\folio}}
+\def\getrecto{\expandafter\dogetrecto}
+\def\dogetrecto#1#2{#2}
+\def\getverso{\expandafter\dogetverso} 
+\def\dogetverso#1#2{#1}
+\def\leftheadline{\line{\rhfol\folio\hfil\rhfnt\getverso\botmark}}
+% \headline{\ifnum\pageno>1\rhhead\else\hfil\fi}
+\headline{\ifnum\pageno>1\rhhead\else\hfil\fi}
+% \footline{\ifnum\pageno=\@ne\hfil{\rhfol\folio}\fi\hfil}
+\footline{\ifnum\pageno=\z@\hfil{\rhfol\folio}\fi\hfil} %% no footer
+%
+\newif\ifafterhead
+\def\afterhead{\doafterhead\global\everypar{}}
+\def\doafterhead{{\setbox\z@\lastbox}\global\afterheadfalse}
+\newskip\nextskip
+\def\simpleremove{\par\ifdim\lastskip=\z@\else\vskip-\lastskip\fi}
+\def\removelastskip{\par\afterassignment\rem@vel@stskip\nextskip=}
+\def\rem@vel@stskip{\ifdim\lastskip=\z@\else\doremoveskip\fi\vskip\nextskip}
+\def\doremoveskip{\ifdim\lastskip>\nextskip\nextskip\z@\else\vskip-\lastskip
+  \fi}
+\newskip\egskip
+\def\afterendgroupskip{\par
+  \global\egskip\lastskip\endgroup\afterassignment\removeegskip\nextskip=}
+\def\removeegskip{\ifdim\egskip=\z@\else\doremoveegskip\fi\vskip\nextskip}
+\def\doremoveegskip{\ifdim\egskip>\nextskip\nextskip\z@\else\vskip-\egskip\fi}
+%
+\newif\iffirstitem
+\newif\ifinnerlist
+\def\makelistdisplay{\whang\wd8\advance\whang\leftskip\leftskip\whang}
+\let\item\zxvqj
+\def\regbeginlist{\removelastskip6.5\p@ plus1.95\p@ minus.975\p@
+  \begingroup\firstitemtrue\let\beginlist\innerbeginlist}
+\def\innerbeginlist{\begingroup\let\itemskip\relax\let\Itemskip\relax\let
+  \endlist\endinnerlist\innerlisttrue}
+\newcount\itemcount		% allocate new counter for items
+\newskip\qrtrskip  \qrtrskip\thr@@\p@ plus1.6\p@ minus.8\p@
+\def\itemskip{\iffirstitem\global\firstitemfalse\else\removelastskip\qrtrskip
+  \fi}
+\def\Itemskip{\iffirstitem\global\firstitemfalse\else\removelastskip\h@lfskip
+  \fi}
+\def\@tem{\itemskip\advance\itemcount\@ne%
+  \noindent\llap{\hbox to\whang{\hfil\hbox to\pc@{\eqthing\itemcount.\hfil}}}}
+% \def\bull{$\bullet$}
+% \chardef\bull=149		% bullet
+% \def\bull{{\lbms\char15}}	% bullet
+\def\bull{{\lbms\char14}}	% openbullet
+\def\b@tem{\itemskip\noindent\llap{\hbox to\whang{\hfil\raise\p@\hbox to\pc@
+  {\bull\hfil}}}}
+\newdimen\whang
+\def\llist{\beginlist\itemcount96\let\item\@tem\let\eqthing\char
+  \setbox8\hbox{\kern\tw@\pc@}\makelistdisplay}
+\def\nlist{\beginlist\itemcount\z@\let\item\@tem\let\eqthing\number
+  \setbox8\hbox{\kern\tw@\pc@}\makelistdisplay}
+\def\blist{\beginlist\let\item\b@tem\setbox8\hbox{\kern\tw@\pc@}%
+  \makelistdisplay}
+\def\ulist{\beginlist\let\item\u@tem\setbox8\hbox{\kern\tw@\pc@}%
+  \makelistdisplay}
+\def\u@tem{\noindent\kern-\tw@\pc@}
+\def\endlist{\simpleremove\global\let\beginlist\regbeginlist
+  \afterendgroupskip6.5\p@ plus1.95\p@ minus.975\p@}
+\def\endinnerlist{\endgraf\nextskip\lastskip\ifdim\nextskip=\z@\else\vskip-
+  \nextskip\aftergroup\vskip\aftergroup\nextskip\fi\global\let\beginlist
+  \regbeginlist\endgroup}
+\let\beginlist\regbeginlist
+%
+\chardef\other12		% \other will be used for \catcode 12
+\def\ttverbatim{\begingroup\ttv \obeyspaces \obeylines}
+\def\ttv{%
+% make `less', `greater', and `backslash' active to translate char code
+\catcode`\<\active \catcode`\>\active
+% maybe just make these act like \other instead ?
+% make {, }, $, &, #, %, ~, _, ^ act like \other, not their normal meaning
+  \catcode`\{=\other 
+  \catcode`\}=\other \catcode`\$=\other \catcode`\&=\other 
+  \catcode`\#=\other \catcode`\%=\other \catcode`\~=\other 
+  \catcode`\_=\other \catcode`\^ \other 
+  \tt \catcode`\\=\active}
+% \def\oddcharbackslash{\char"9D\relax}	% char 157 for `backslash'
+\def\oddcharbackslash{\char92\relax}	% char 92 for `backslash'
+% \def\oddchargreat{\char"9C\relax}	% char 156 for `greater'
+\def\oddchargreat{\char62\relax}	% char 62 for `greater'
+% \def\oddcharless{\char"98\relax}	% char 60 for `less'
+\def\oddcharless{\char60\relax}	% char 152 for `less'
+% need to play a game to do the following, since \ is redefined by \ttv
+% let char 219 act as escape (ala \) in place of \
+% also set up active definitions for <, >, \
+\bgroup
+\catcode`\€\z@ \ttv
+€global€let\€oddcharbackslash
+€global€let>€oddchargreat
+€global€let<€oddcharless
+€egroup
+{\obeyspaces\gdef {\ }}
+\outer\def\begintt{$$\let\par=\endgraf \ttverbatim \parskip=\z@pt 
+  \catcode`\€=\z@ \ttfinish}
+{\catcode`\€\z@\catcode`€\\other€obeylines€gdef€ttfinish#1^^M#2\endtt{#1€vbox%
+  {#2}€endgroup$$}}
+\catcode`\€\active
+{\obeylines\gdef€{\ttverbatim\let^^M=\ \let€=\endgroup}}
+\def\beginlines{\par\goodbreak\vskip6.5\p@ plus1.95\p@ minus.975\p@\nobreak
+  \begingroup\parskip\z@\everypar{\vrule height9.20833\p@ depth3.79167\p@
+  width\z@}\rightskip\z@ plus\thr@@ em\leftskip\pc@\parindent\z@\obeylines}
+\def\endlines{\par\endgroup\vskip6.5\p@ plus1.95\p@ minus.975\p@}
+%
+% define various logos
+%
+% \def\yandy{Y\hbox to.25\p@{\hss\sixrm\&\hss}Y}	% a bit too tight?
+\def\yandy{Y\hbox to.35\p@{\hss\sixrm\&\hss}Y}
+\def\yandyBold{Y\hbox to.35\p@{\hss\sixbf\&\hss}Y}
+\def\LaTeX{{L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15emT\kern-.1667em\lower
+  .7ex\hbox{E}\kern-.125emX}}
+\def\LaTeXSlanted{{L\kern-.26em\raise.3ex\hbox{\eightsl A}\kern-.15emT\kern-.1667em\lower
+  .7ex\hbox{E}\kern-.125emX}}
+\def\LaTeXBold{{L\kern-.3em\raise.3ex\hbox{\dsc a}\kern-.15emT\kern-.1667em\lower
+  .7ex\hbox{E}\kern-.125emX}}
+% \def\LaTeXe{\LaTeX\kern.15em2${}_{\textstyle\varepsilon}$}
+\def\LaTeXe{\LaTeX\kern.15em2{\lbmi \char34}}
+\def\LaTeXeBold{\LaTeXBold\kern.15em2{\lbmi \char34}}
+\def\SliTeX{S{\sc li}{\TeX}}
+\def\AMS{{\cmsy A\kern-.1667em\lower.5ex\hbox{M}\kern-.125emS}}
+% \def\AmSTeX{{\the\textfont\cmsyfam A\kern-.1667em\lower.5ex\hbox{M}\kern-.125
+\def\AmSTeX{{\cmsy A\kern-.1667em\lower.5ex\hbox{M}\kern-.125
+  emS}-\TeX}
+\def\SLiTeX{{S\kern-.06em{\sc l\kern-.035emi}\kern-.06emT\kern-.1667em\lower
+  .7ex\hbox{E}\kern-.125emX}}
+% \def\AmSLaTeX{{\the\textfont\cmsyfam A\kern-.1667em\lower.5ex\hbox{M}\kern
+\def\AmSLaTeX{{\cmsy A\kern-.1667em\lower.5ex\hbox{M}\kern
+  -.125emS}-\LaTeX}
+\font\tii=tii at 10.5pt
+\font\tibi=tibi at 10.5pt
+\def\MathTime{{\tii Math\-T\kern-2pt\i me}}
+\def\MathTimeBold{{\tibi Math\-T\kern-2pt\i me}}
+%
+% \def\ang#1{$\langle${#1}$\rangle$}
+\def\ang#1{{\lbms\char104}{#1}{\lbms\char105}}
+\def\angi#1{{\lbms\char104}{\it #1\/}{\lbms\char105}}
+\def\breakpar{{\parfillskip\z@\par}}
+\def\dottedline{\leaders\hbox to1em{\hss.\hss}\hfill}
+
+\newcount\width\newcount\height
+\width=\hsize\setbox0\hbox{fg}\height=\ht0%\unhbox0%
+
+%\def\tocsect#1#2#3{\vskip6.5\p@\noindent{\bf#1.\kern.5em#2\dottedline#3}\breakpar\vskip3.25\p@}
+
+%tighten up so reduced TOC fits on one page
+
+\newcount\poffset
+\poffset=4
+
+% \def\tocsect#1#2#3{\vskip4.5\p@\noindent{\bf#1.\kern.5em#2\dottedline#3}\breakpar\vskip2.25\p@}
+
+% experiment with hyper-text links:
+\def\tocsect#1#2#3{\vskip4.5\p@\noindent%
+\leavevmode\special{button: \the\width\space \the\height\space page: #3+\the\poffset}%
+\special{color: push rgb 0 0 1}%
+{\bf#1.\kern.5em#2\dottedline#3}%
+\special{color: pop}%
+\breakpar\vskip2.25\p@}
+
+% experiment with hyper-text links:
+\def\tocsub#1#2#3{\noindent%
+\leavevmode\special{button: \the\width\space \the\height\space page: #3+\the\poffset}%
+% \special{color: push rgb 0 1 1}%
+\special{color: push rgb 0 0.5 0.5}%
+\phantom{\bf0.\kern.5em}#1\kern.5em#2\dottedline#3%
+\special{color: pop}%
+\breakpar}
+% \def\tocsub#1#2#3{\noindent\phantom{\bf0.\kern.5em}#1\kern.5em#2\dottedline#3\breakpar}
+
+% experiment with hyper-text links:
+\def\tocsubsub#1#2#3{\noindent%
+\leavevmode\special{button: \the\width\space \the\height\space page: #3+\the\poffset}%
+\special{color: push rgb 0 1 1}%
+\phantom{\bf0.\kern.5em0.0\kern.5em}#1\kern.5em#2\dottedline#3%
+\special{color: pop}%
+\breakpar}
+% \def\tocsubsub#1#2#3{\noindent\phantom{\bf0.\kern.5em0.0\kern.5em}#1\kern.5em#2\dottedline#3\breakpar}
+
+% \def\vbar{$|$}
+\chardef\vbar=`\|	% vertical bar separating menu | submenu | subsubmenu
+% \def\trademark{$^{\rm TM}$}
+\chardef\trademark=153	% TM  - trademark (not registered)
+% \chardef\registered=174	% (R) - registered trademark
+% \chardef\copyright=169	% (C) - copyright
+% \chardef\paragraph=182	% pillcrow
+% \chardef\section=167		% section
+\chardef\onehalf=189	% {1\over2}
+% \chardef\multiply=215	% \times
+\chardef\times=215	% \times
+\chardef\ellipsis=133	% \dots
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\def\blankpage{
+	\topglue 2in
+	\hbox{ }	% to get blank page
+	\newpage
+%	\decreasepageno
+}
+
+% \font\bigggsize=lsr at 18pt
+\font\bigggsize=lsr at 20pt
+% \font\biggsize=lsr at 12pt
+\font\biggsize=lsr at 16pt
+% \font\bigsize=lbr at 12pt
+% \font\bigsize=lbr at 11pt
+\font\bigsize=lbr at 10pt
+
+\def\coverpage{
+% \nopagenumbers
+
+% \topglue 2in
+
+\hbox{ }
+
+% \vskip 2in
+
+\vskip 1in
+
+\centerline{{\bigggsize Converting HPTAG-Generated}}
+
+\vskip .1in
+
+\centerline{{\bigggsize DVI Files to Acrobat PDF Format}}
+
+\vskip .3in
+
+% \centerline{{\bigsize Copyright {\copyright} 1990--1995 {Y\&Y}, Inc. All rights reserved.}}
+
+\centerline{{\bigsize Copyright {\copyright} 1995--1996 {Y\&Y}, Inc. All rights reserved.}}
+
+\vskip 3in
+
+% \centerline{{\bigsize \hbox to 1.33in{\special{illustration c:/ps/y&ylogo.eps}\hfill}}} 
+
+\centerline{{\bigsize \hbox to 1.33in{\special{illustration c:/ps/y&ylogo}\hfill}}}
+
+% This is the version for showing the logo on screen
+
+% \centerline{\hbox to 1.33in{\showimage{y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+\vskip 1in
+
+\centerline{{\bigsize {Y\&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}}
+
+\vskip .02in
+
+\centerline{{\bigsize 
+% (800) 742--4059 --- 
+(508) 371--3286 (voice)  --- 
+(508) 371--2004 (fax)}}
+
+}
+
+\input texnansi.tex
+\input lcdplain.tex
+%
+\def\Q{\parskip=9pt \noindent \fourteenbf}            %`Q' in FAQ
+\def\A{\parskip=3pt \twelvebf A:}         %`A' in FAQ
+%
+%\def\bitem{\item{$\bullet$}} %bullet
+\def\bslash{$\backslash$}    %backslash
+%\def\gtr{$>$}                %greater than
+%\def\less{$<$}               %less than
+\def\lbrace{$\{$}            %left brace
+\def\rbrace{$\}$}            %right brace
+%
+\hyphenation{cur-rent-rgb-color}
+\hyphenation{dvi-ps-one}
+\hyphenation{Font-Name}
+\hyphenation{ger-man-dbls}
+\hyphenation{Get-Pro-file-String}
+\hyphenation{image-set-ter}
+\hyphenation{Lucida-Math}
+\hyphenation{poly-gonal}
+\hyphenation{Post-Script}
+\hyphenation{Stan-dard-En-cod-ing}
+\hyphenation{Times-New-RomanPS}
+\hyphenation{Use-DVI-PS-ONE}
+\hyphenation{white-chap-el}
+\hyphenation{work-around}
+%
+%abbreviated program/batch-file names and acronyms:
+\def\AFMtoPFM{{\sc afm}to\-{\sc pfm}}
+\def\AFMtoTFM{{\sc afm}to\-{\sc tfm}}
+\def\AFM{\sc afm}
+\def\ANSI{\sc ansi}
+\def\ASCII{\sc ascii}
+\def\ATM{\sc atm}
+\def\AUX{\sc aux}
+\def\BIOS{\sc bios}
+\def\CHANGED{\sc changed}
+\def\CMD{\sc cmd}
+\def\COPY{\sc copy}
+\def\DECODE{\sc decode}
+\def\DOS{\sc dos}
+\def\DSC{\sc dsc}
+\def\DOWNLOAD{\sc down\-load}
+\def\DTRDSR{\sc dtr/dsr}
+\def\DVIALW{\sc dvialw}
+\def\DVIENCODE{\sc dviencode}
+\def\DVIPSONE{\sc dvi\-ps\-one}
+\def\DVIPS{\sc dvi\-ps}
+\def\DVITOPS{\sc dvi\-to\-ps}
+\def\DVIWindo{{\sc dvi\-w}indo}
+\def\DVI{\sc dvi}
+\def\EBCDIC{\sc ebcdic}
+\def\ENCODE{\sc encode}
+\def\EPSF{\sc epsf}
+\def\EPSI{\sc epsi}
+\def\EPS{\sc eps}
+\def\EXTRATIF{\sc extratif}
+\def\TIFFTAGS{\sc tifftags}
+\def\FAT{\sc fat}
+\def\FIND{\sc find}
+\def\HIMEM{\sc himem}
+\def\HPTAG{\sc hptag}
+\def\INF{\sc inf}
+\def\LOG{\sc log}
+\def\MM{\sc mm}
+\def\MMM{\sc mmm}
+\def\MODEX{\sc modex}
+\def\OFM{\sc ofm}
+\def\PCL{\sc pcl}
+\def\PCSEND{\sc pcsend}
+\def\PDF{\sc pdf}
+\def\PFAtoPFB{{\sc pfa}to\-{\sc pfb}}
+\def\PFA{\sc pfa}
+\def\PFBtoPFA{{\sc pfb}to\-{\sc pfa}}
+\def\PFB{\sc pfb}
+\def\PFMtoAFM{{\sc pfm}to\-{\sc afm}}
+\def\PFMtoTFM{{\sc pfm}to\-{\sc tfm}}
+\def\PFM{\sc pfm}
+\def\PIF{\sc pif}
+\def\PK{\sc pk}
+\def\PKTOPS{{\sc pk}to\-{\sc ps}}
+\def\POSTPROC{\sc postproc}
+\def\PRINT{\sc print}
+\def\PSDOWN{\sc psdown}
+\def\PS{\sc ps}
+\def\PSM{\sc psm}
+\def\PSS{\sc pss}
+\def\QEMM{\sc qemm}
+\def\REENCODE{\sc reencode}
+\def\REPLACE{\sc replace}
+\def\REXX{\sc rexx}
+\def\RIP{\sc rip}
+\def\SAFESEAC{\sc safe\-seac}
+\def\SERIAL{\sc serial}
+\def\SETUPTTF{\sc setup\-ttf}
+\def\TEXTTUNE{\sc text\-tune}
+\def\TFMtoAFM{{\sc tfm}to\-{\sc afm}}
+\def\TFMtoPFM{{\sc tfm}to\-{\sc pfm}}
+\def\TFM{\sc tfm}
+\def\TIFF{\sc tiff}
+\def\TOC{\sc toc}
+\def\TPIC{\sc tpic}
+\def\TWOUP{\sc twoup}
+\def\WMF{\sc wmf}
+\def\XCOPY{\sc xcopy}
+\def\XONXOFF{\sc xon/xoff}
+%
+%full file names:
+\def\adobepsdrv{\tt adobeps.drv}
+\def\amsfontssub{\tt amsfonts.sub}
+\def\atmfontsqlc{\tt atmfonts.qlc}
+\def\atmini{\tt atm.ini}
+\def\autoexecbat{\tt autoexec.bat}
+\def\cmanansivec{\tt cmanansi.vec}
+\def\configsys{\tt config.sys}
+\def\dvipreamenc{\tt dvipream.enc}
+\def\dvipreampfa{\tt dvipream.pfa}
+\def\dvipsonebat{\tt dvipsone.bat}
+\def\dvipsonecmd{\tt dvipsone.cmd}
+\def\dvipsoneexe{\tt dvipsone.exe}
+\def\dvipsonepif{\tt dvipsone.pif}
+\def\dviwindoexe{\tt dviwindo.exe}
+\def\dviwindoini{\tt dviwindo.ini}
+\def\eepicsty{\tt eepic.sty}
+\def\ehandlerps{\tt ehandler.ps}
+\def\encodebat{\tt encode.bat}
+\def\epsftex{\tt epsf.tex}
+\def\lcircle10tfm{\tt lcircle10.tfm}
+\def\lcirclew10tfm{\tt lcirclew10.tfm}
+\def\lfontstex{\tt lfonts.tex}
+\def\lplainfmt{\tt lplain.fmt}
+\def\lucidasub{\tt lucida.sub}
+\def\mathsyvec{\tt mathsy.vec}
+\def\mathitvec{\tt mathit.vec}
+\def\mathexvec{\tt mathex.vec}
+\def\psfigtex{\tt psfig.tex}
+\def\plainfmt{\tt plain.fmt}
+\def\plaintex{\tt plain.tex}
+\def\pscriptdrv{\tt pscript.drv}
+\def\standardsub{\tt standard.sub}
+\def\texbat{\tt tex.bat}
+\def\texfontsadd{\tt texfonts.add}
+\def\texfontsmap{\tt texfonts.map}
+\def\texnansitex{\tt texnansi.tex}
+\def\texnansivec{\tt texnansi.vec}
+\def\texpool{\tt tex.pool}
+\def\textextvec{\tt textext.vec}
+\def\ttfontsreg{\tt ttfonts.reg}
+\def\winini{\tt win.ini}
+\def\yandytexcmd{\tt yandytex.cmd}
+%
+%environment variable names and misc commands:
+\def\AFMPATH{\tt AFMPATH}
+\def\ENCODING{\tt ENCODING}
+\def\LATEX{\tt LATEX}
+\def\LPLAIN{\tt LPLAIN}
+\def\PATH{\tt path}
+\def\PFMPATH{\tt PFMPATH}
+\def\PLAIN{\tt PLAIN}
+\def\PREPATH{\tt PREPATH}
+\def\PSFONTS{\tt PSFONTS}
+\def\PSPATH{\tt PSPATH}
+\def\SEAC{\tt seac}
+\def\SET{\tt set}
+\def\SUBPATH{\tt SUBPATH}
+\def\TEMP{\tt TEMP}
+\def\TEXANSI{\tt TEXANSI}
+\def\TEXAUX{\tt TEXAUX}
+\def\TEXDVI{\tt TEXDVI}
+\def\TEXFONTS{\tt TEXFONTS}
+\def\TEXFORMATS{\tt TEXFORMATS}
+\def\TEXINPUTS{\tt TEXINPUTS}
+\def\TEXLOG{\tt TEXLOG}
+\def\TEXNANSI{\tt TEXNANSI}
+\def\TFMPATH{\tt TFMPATH}
+\def\VECPATH{\tt VECPATH}
+\def\WINDIR{\tt windir}
+%
+\catcode219=\active % \catcode`\€\active % override ansiacce \catcode ...
+%
+%%%%%%%%%%%%%%%%%%%%%%
+% Document starts here
+%%%%%%%%%%%%%%%%%%%%%%
+%
+\coverpage
+
+\newpage
+\decreasepageno
+
+\topglue 2in
+\hbox{ }	% to get blank page
+
+\newpage
+\pageno=-3
+
+%Insert full TOC up front
+%
+\vskip 1in
+
+\centerline{{\bigggsize Converting HPTAG-Generated}}
+
+\vskip .1in
+
+\centerline{{\bigggsize DVI Files to Acrobat PDF Format}}
+
+\vskip .5in
+
+\centerline{{\biggsize Contents}}
+
+\vskip .2in
+
+
+\tocsect{1}{Introduction and Overview}{1}
+\tocsect{2}{Font Considerations}{1}
+\tocsub{2.1}{Replacing Bitmapped Fonts}{1}
+\tocsub{2.2}{Font Installation}{2}
+\tocsub{2.3}{Telling the Programs Where the Fonts Are}{3}
+\tocsub{2.4}{Forcing Distiller to Make Subfonts}{3}
+\tocsub{2.5}{Encoding Issues}{4}
+\tocsub{2.6}{Aliasing Font Names}{4}
+\tocsect{3}{Using the POSTPROC Utility}{6}
+\tocsect{4}{Using the EXTRATIF Utility}{9}
+\tocsect{5}{Using the TIFFTAGS Utility}{11}
+\tocsect{6}{Appendix --- Other Items to Watch For}{12}
+\tocsub{6.1}{Spurious Warning Messages}{12}
+\tocsub{6.2}{Test for Missing Characters}{12}
+
+\vskip 1.5in
+
+\hbox{\vrule\vbox{\hrule
+\hbox spread 8pt {\hfil\vbox spread 8pt{\vfil
+\hbox{\centerline{{\bigsize {Y\&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}}}%
+\hbox{\centerline{{\bigsize (508) 371--3286 (voice)  --- (508) 371--2004 (fax)}}}%
+\hbox{\centerline{{\bigsize Email: {\tensl tech-help@YandY.com}}}}%
+\hbox{\centerline{{\bigsize World Wide Web: {\tensl http://www.YandY.com}}}}%
+\vfil}\hfil}
+\hrule}\vrule}%
+
+\newpage
+\decreasepageno
+
+\topglue 2in
+\hbox{ }	% to get blank page so text starts on right
+
+\newpage
+\pageno=1
+
+% \special{PageOffset=4} % what to add to TeX pageno to get physical page
+
+\section{Introduction and Overview}
+
+This manual describes how to convert ``legacy'' {\DVI} files created under the {\HPTAG} system into Adobe Acrobat {\PDF} (portable document format) files. The process requires three steps for each {\DVI} file:
+
+\nlist
+\item Use {\yandy}'s {\DVIPSONE} PostScript driver to generate a PostScript file from each existing {\DVI} file. The command line used in most cases is
+
+\beginlines
+{\parindent=1pc
+€dvipsone -v -k -*2 -*4 -*X -*k=textext€ \angi{DVI file}
+}
+\endlines
+
+\item Use {\POSTPROC}, a special {\yandy} utility, to post-process the PostScript file into a {\PSM} file. This operation compensates for a number of problems in the PostScript file, including faint lines in some {\TIFF} images. The command line used in most cases is
+
+\beginlines
+{\parindent=1pc
+€postproc -v -d -l -g -o=€\angi{section order file} \angi{PostScript file}
+}
+\endlines
+
+\item Produce the final {\PDF} file by processing the {\PSM} file with Adobe Acrobat Distiller.
+\endlist
+
+\noindent In steps 1 and 2, you should specify fully qualified file names (complete paths).
+
+% following may need rewrite since version in Y&Y TeX System is up to date ???
+
+Upgrade Information:
+Successful operation of this system requires the most recent version of {\DVIPSONE}, which you will find in €a:\dvipsone€ on the source disk. Copy {\dvipsoneexe} and {\dvipreamenc} from this directory to €c:\dvipsone€. Note that {\it both\/} files must be copied so that the version numbers match; otherwise {\DVIPSONE} will complain.
+Also copy the latest version of {\DVIWindo} from €a:\dviwindo€ to
+€c:\dviwindo€.
+
+\section{Font Considerations}
+
+The original {\HPTAG} files use bitmapped fonts, which render poorly when converted to {\PDF} format. Therefore, successful conversion of {\HPTAG} {\DVI} files to {\PDF} format also requires installing equivalent Type~1 (outline) fonts, for use in {\DVIPSONE}'s PostScript output and in the {\PDF} files.
+
+\subsect{Replacing Bitmapped Fonts}
+
+The bitmapped fonts used fall into three groups:
+
+\blist
+\item Computer Modern (CM) for text and math
+
+\item Geneva Bold, Univers Condensed and Century text fonts % ITC
+
+\item Special symbol fonts such as {\sc hplogo, hppi30, keys10, hb, hpbats}.
+\endlist
+
+\noindent We accommodate these three groups as follows:
+
+\blist
+\item For CM, we use the Blue Sky Research CM fonts supplied with the {\yandy} CM TeX System. They match the original bitmapped CM fonts in terms of character metrics, character layout and character shape.
+
+\item Helvetica Bold provides a good match for the Geneva Bold fonts. 
+
+\item And the Adobe Univers Condensed font family (in font pack 38) is a good match for the bitmapped Univers Condensed. The {\HPTAG} {\DVI} files call mostly for Univ47 (Light), Univ48 (Light Oblique), Univ67 (Bold) and Univ68 (Bold Oblique); the Regular and Oblique styles of this family (Univ57 and Univ58) appear not to be used.   
+
+\item Finally, Adobe's ITC Century (font pack 141) provides a reasonable match for the bitmapped Century. The {\HPTAG} {\DVI} files call for six styles (Light, Light Italic, Book, Book Italic, Bold, Bold Italic); the Ultra and Ultra Italic appear not to be used.
+
+\item The special symbol fonts have been converted by {\yandy} to hinted {\ATM}-compatible Adobe Type~1 format, including: {\sc hplogo, hppi30, keys10, hb, hpbats, dm10a, dm10b, dm10c, ml10a, ml10b, ml10c, wl10a, wl10b, wl10c}.
+\endlist
+
+\noindent Adobe permits you to embed most fonts available from its type catalog in {\PDF} files that you create. The easiest and cheapest way to buy font sets from Adobe is to get the `Type on Call' ({\TOC} CD-ROM and to unlock the
+desired font packs.  
+
+Each font foundry has its a slightly different interpretation of faces such as Univers and Century. It may be that the bitmapped fonts originally used by {\HPTAG} match those from another foundry (such as MonoType) better than the Adobe version. We purchased the ITC Century font set from Adobe and noticed that it matches bitmapped Century overall, although it appears to be slightly narrower than the Century assumed by {\HPTAG}.
+
+\subsect{Font Installation}
+
+If you are in Windows 3.1 or Windows 95, use Adobe Type Manager to install the fonts provided by {\yandy}, which are in €a:\psfonts€ and €a:\hpfonts€ on the disk. To do so, double-click on the {\ATM} icon, click on `Add,' scroll down to the end of the directory list, double-click on €[-a-]€ and double-click on €psfonts€. Select all fonts and click on `Add.' Then repeat for the €hpfonts€ directory.
+
+If you are running under Windows NT and you want to use the fonts with {\DVIWindo}, you can install the fonts from the Control Panel. To do so, double-click on the `Fonts' icon, then `Install Fonts' from €a:\psfonts€ and €a:\hpfonts€. The Type~1 fonts on the disk will be converted to TrueType form. Check the box dictating that the original Type~1 fonts be used for printing. Note what directory the Type~1 fonts are installed in (or tell the system to put them in €c:\psfonts€).
+
+If you are running under Windows NT, but only want to use the fonts with {\DVIPSONE}, just create a directory --- say, €c:\psfonts€ if it doesn't already exist. Then copy all the {\PFB} files from €a:\psfonts€ and €a:\hpfonts€ to that directory.
+
+\subsect{Telling the Programs Where the Fonts Are}
+
+It is important that Distiller be able to find the fonts. To tell it where they are, start Distiller 2.1 in the Program Manager and select `Font Location' from the `Distiller' menu. Add €c:\psfonts€ (or wherever you've put the {\PFB} files) to the listed directories. (On some versions of Windows, Distiller gets the list of installed fonts from {\ATM}. In that case, there may be no need to explicitly tell Distiller about fonts you've installed with {\ATM}.)
+
+{\DVIPSONE} does not normally need to know where the fonts are; it will {\it not} be including them in its PostScript output file (€-k€ command line option; see later). If you use {\DVIPSONE} for other purposes, however, you should tell it where the fonts are by setting the €PSFONTS=...€ environment variable in the {\dviwindoini} file. (This variable typically will already be set to €c:\psfonts€ by the {\DVIWindo} installation.)
+
+\subsect{Forcing Distiller to Make Subfonts}
+
+Distiller should be set up so that it does not embed complete fonts in its {\PDF} files, but rather only embeds the characters actually used.
+
+To do so, in the `General' section of `Job Options' from the `Distiller' menu, check `Compress LZW Text and Graphics' and `Make Font Subsets.' Do not check `{\ASCII} Format' (since this increases file size without any real benefit). Check `Generate Thumbnails' if you want to provide thumbnails (which can make it easier to find your way around a document {\it if\/} it contains a lot of graphics). Also, in the `Monochrome Images' section do not check `Downsample to \dots' (this would make the images look ragged both on screen and when printing).
+
+% also ASCII form means trouble with byte counts and line terminations...
+
+You might wish to compare {\PDF} file size when you use different compression methods (such as CCITT Group 4, LZW, or run-length). Since all of these compression methods preserve full detail for monochrome images, you can choose the one that gives the smallest file size. If you don't want to experiment, select `CCITT Group 4.' This is a good compression method for monochrome images of line drawings, typed text, etc.
+
+\subsect{Encoding Issues}
+
+{\HPTAG} files refer to fonts that were set up for ``TeX Text'' encoding, as used in the Computer Modern (CM) text fonts (such as CMR10). This is a very peculiar layout that uses the ``control character'' range (character codes 0--31) for some special characters and for ligatures such as ``fi'' and ``fl.'' Upright upper case Greek letters also fall in this range, which is not the case for any normal roman text font. In addition, the layout in the character code range 32--127 does {\it not} match {\ASCII} in several places (check the file {\textextvec} for details).
+
+Of course, there is no problem with the CM text fonts, since these are designed to use ``TeX Text'' character layout.  Problems only arise when non-CM text fonts use this font encoding.
+
+In {\DVIPSONE}, you can enforce this encoding for plain text fonts by specifying €-*k=textext€ on the command line. Alternatively, you can edit the €ENCODING€ environment variable in the [Environment] section of {\dviwindoini}:
+
+\beginlines
+{
+€ENCODING=textext€
+}
+\endlines
+
+\noindent This change causes both {\DVIPSONE} and {\DVIWindo} to use this encoding. Just remember to reset the variable to something more useful (such as €texnansi€) when working with files other than pre-existing {\HPTAG} files.
+
+\subsect{Aliasing Font Names}
+
+Because you'll be using ``replacement'' fonts, you must decide how to handle differences between the original versions and their replacements. 
+There are two ways to do this.
+% Two options are available.
+
+The first (and recommended) option is to treat the font names in the {\DVI} file as mere aliases for the actual font file names. To do so, you add the list of correspondences between the aliases and the real font file names to the file {\texfontsmap}.
+
+This file should be in one of the directories listed in the €TEXFONTS€ environment variable in the {\dviwindoini} file. Typically the directory is €c:\yandytex\tfm€. Add the contents of {\texfontsadd}, provided on the source disk, to {\texfontsmap}.
+
+Fonts will be replaced {\it without\/} adjusting their metrics. Hence, text set ragged right will look smooth, but right-justified text will look ragged right, since the character widths of the replacement fonts will typically not exactly match those of the original fonts. This seems to produce quite good results in normal text. The place where things do not look perfect is in the table of contents, where material is expected to be accurately aligned on the right.
+
+The {\DVIPSONE} command line to use in this case is
+
+\beginlines
+{
+€dvipsone -v -k -*2 -*4 -*X -*k=textext€ \angi{DVI file}
+}
+\endlines
+
+\noindent The relevant command line flags and arguments (including some not shown above) are:
+
+\blist
+\item €-v€ --- Verbose mode
+
+\item €-k€ --- Do not include any fonts in the PostScript file. In this case Distiller will fetch the fonts itself. This helps avoid some Acrobat bugs, but means the Distiller {\it must\/} be told where the font files are.
+
+\item €-*2€ --- Map character codes 0--32 to higher values to avoid Acrobat Reader bugs
+
+\item €-*4€ --- Use {\TeX} €counter[1]€-€counter[2]€ as page label in €%%Page:€ comments (needed if the output pages are to be subsequently reordered)
+
+\item €-*X€ --- Apply alias name file ({\texfontsmap}) {\it before\/} processing fonts
+
+\item €-*k€ --- Specify encoding vector used for standard text fonts
+
+\item €-*3€ --- Don't stop processing when ``too many'' errors are seen (only needed if file processes with lots of error messages from unsupported €\special€ calls, missing {\TIFF} image files, etc)
+
+\item €-*x€ --- Add random prefix to font names to avoid Acrobat Reader bugs (not needed if €-k€ is used).
+
+\item €-*J€ --- Specify default resolution for {\TIFF} images that do not
+specify resolution using {\TIFF} tags (typical use ›-*J=300›).
+
+\endlist
+
+\noindent You could leave out €-*X€ (not recommended). In this case the ``alias'' is only discovered when the font is actually included in the PostScript file (which only happens if €-k€ is not used). So if €-k€ is {\it not\/} used, this means that the same outline font may be included more than once if several fonts are mapped to the same name (e.g., €gvb10, gvb12, gvb14, gvb18, gvb20, gvb24€ all mapped to €hvb€).
+
+With this many arguments to {\DVIPSONE}, you might want to create a {\dvipsonecmd} file for convenience. If you don't, and you use a {\dvipsonebat} file, then you may run into the batch file's 9-argument limit. In that case call {\DVIPSONE} directly from the {\DOS} command line, or make use of the fact that you can combine command line flags: €-vk€ is the same as €-v -k€, for example.
+
+The second approach when using replacement fonts is to use font ``substitution.'' In this case, the replacement font is assumed to be somewhat different from the original and is {\it adjusted} to have the same metrics as the original. This makes ragged text look even more ragged and unevenly spaced, but the right edges of justified text will be aligned. This method is not recommended; however, the command line to use if you do want to try it is
+
+\beginlines
+{
+€dvipsone -v -*2 -*4 -*x -*m -s=€\angi{subst file} €-t=€\angi{TFM dir} \angi{DVI file}
+}
+\endlines
+
+\noindent In this case we omit the €-*X€ (i.e., we do {\it not\/} want to treat names merely as aliases), and omit the €-k€ (font metrics are not adjusted when using €-k€). The additional flags and arguments are:
+
+\blist
+\item €-*m€ --- Suppress use of alias table (i.e., {\texfontsmap})
+
+\item €-s=€ --- Use specified font substitution table (needed because we now suppress use of font name aliasing table)
+
+\item €-t=€ --- Location of {\TFM} metrics to use when substituting fonts (needed because we want the metrics of the original fonts).
+\endlist
+
+While this alternate method makes rigth justified text look better, it
+is not generally recommended.
+
+\section{Using the POSTPROC Utility}
+
+\subsect{Using the POSTPROC Utility on DVIPSONE produced PS files}
+
+{\POSTPROC} can be asked to perform a number of useful functions:
+
+\blist
+\item It ``darkens'' thin {\TIFF} image lines
+
+\item It expands ``ff,'' ``ffi'' and ``ffl'' ligatures
+
+\item It ``borrows'' upright uppercase Greek letters from `Symbol.'
+% the Symbol font
+
+\item It reorders pages based on section number.
+\endlist
+
+\noindent Note that all of these operations can occur in one pass. Typical usage:
+
+\beginlines
+{
+€postproc -v -d -l -g -o=€\angi{section order file} \angi{PostScript file}
+}
+\endlines
+
+\noindent or
+
+\beginlines
+{
+€postproc -vdlg -o=€\angi{section order file} \angi{PostScript file}
+}
+\endlines
+
+\noindent Potential command line flags and arguments are:
+
+\blist
+\item €-v€ --- Verbose mode
+
+% \item €-t€ --- Trace mode (even greater verbosity)
+
+\item €-d€ --- ``Darken'' thin lines in monochrome images
+
+\item €-l€ --- Expand extended f-ligatures (ff, ffi, ffl)
+
+\item €-g€ --- Draw upright uppercase Greek glyphs from Symbol font
+
+\item €-o=€ --- Reorder sections as specified in section order file.
+
+\item €-r€ --- Reorder pages sequentially using €%%Page:€ \angi{page-label}
+
+\item €-R€ --- Only show €%%Page:€ information from source file; no output
+
+\endlist
+
+\noindent Following is additional discussion on some of these flags and arguments.
+
+The {\TIFF} images used in the {\HPTAG} {\DVI} files have lines one pixel wide at 300 dpi (i.e. 0.24 pt), which looks OK on ``write black'' laser printers, but only because of ``toner spread.'' On screen --- in Acrobat Reader --- the lines tend to drop out, except at high magnification. This is in large part due to Acrobat Reader using the wrong ``blt mode'' (raster operation): it appears to use {\sc whiteonblack} instead of {\sc blackonwhite} ({\DVIWindo} uses {\sc blackonwhite} for monochrome images).
+
+When rescaling an image using {\sc whiteonblack} mode, a pixel on screen is drawn white if {\it any\/} of the pixels in the underlying image are white (thus white pixels are preserved at the expense of black pixels). What one really wants with images that have thin black lines on a white background is the opposite: a pixel on screen is drawn black if {\it any\/} of the pixels in the underlying image are black (thus preserving black pixels at the expense of white ones).
+
+To compensate for this problem, a {\TIFF} file can be preprocessed to ``swell'' lines before they are incorporated into the PostScript file via {\DVIPSONE}. Adobe PhotoShop has capabilities to process and ``filter'' images in this manner.
+
+Alternatively, you can use {\POSTPROC} with the €-d€ flag {\it after\/} generating the PostScript file with {\DVIPSONE}. To ``darken'' thin lines in monochrome / bilevel images, {\POSTPROC} scans for images in the PostScript file and applies a filter to ``fatten'' the lines. Its default setting causes it to scan a $3 \times 3$ ``window'' over the image and produce a black pixel in the output image if two or more of the nine pixels in the input window are black. It can instead use $2 \times 2$ windows, and the threshold can also be adjusted.
+
+Note that {\POSTPROC} does not alter small {\TIFF} images --- which are typically
+used for icons or special symbols and need not be ``swelled.''
+
+The command line flag €-l€ locates the codes for ``ff,'' ``ffi'' and ``ffl'' ligatures in the PostScript file produced by {\DVIPSONE}, and replaces them with ``f f,'' ``f fi,'' and ``f fl'' respectively. (This is useful, because the bitmapped text fonts used by {\HPTAG} were apparently modified to contain these extra ligatures, while almost all commercial scalable fonts do not). In the process, {\POSTPROC} may also detect and warn about other unusual uses of the 0--31 character code range. To do all this, the program keeps track of what font is used at any point in the PostScript file, and only performs this expansion for text fonts, not math or symbol fonts.
+
+A peculiar property of Knuth's Computer Modern font layout is that upright upper case Greek letters appear in character code positions 0--10 in the roman text fonts. {\POSTPROC} with command line flag €-g€ checks for these character codes when they appear in text fonts and replaces them with calls for corresponding characters from the Symbol font. Symbol is printer resident and is also part of the Acrobat Reader, so it is always easily available.
+
+A section order file may be specified using the €-o€ command line argument. Such a file would list individual sections, as well as section number ranges. For example:
+
+\beginlines
+{
+€0, 2000, 1-16, 6000€
+}
+\endlines
+
+\noindent Here, section 0 (front matter) comes first, section 2000 (table of contents) comes next, then sections 1 through 16, followed by section 6000 (index) --- if present in the PostScript file. No error is indicated if sections listed in the section order file do not exist in the PostScipt file.
+
+Note that the ``section numbers'' are assigned by {\HPTAG}. Section numbers in {\HPTAG} {\DVI} files are {\TeX}'s €counter[1]€, while page numbers within a section are €counter[2]€. These numbers are copied into the €%%Page:€ Document Structuring Convention ({\DSC}) comments by {\DVIPSONE} when using the €-*4€ command line flag.
+
+If {\POSTPROC}'s €-r€ flag is used instead of €-o=...€, pages are simply sorted based on section number and page within section. This is probably not very useful, since they tend to already be in that order in the {\DVI} file.
+
+The PostScript output file produced by {\POSTPROC} appears in the current directory and has the same name as the input file, only with extension €.psm€. Note that if pages have to be reordered (€-r€ or €-o€), the entire PostScript file has to be pre-scanned initially to pick out the €%%Page€ {\DSC} comments and to determine where each page starts. This more or less doubles the time to process a file. So only use page reordering when it is required.
+
+\subsect{Using the POSTPROC Utility on HPTAG produced PS files}
+
+% new stuff 1996/Apr/23
+
+{\HPTAG} generated PS files that only call for Computer Modern fonts can
+be processed directly by {\POSTPROC} to remove the bitmapped {\PK} fonts.
+This is made possible by comments in the PS file specifying the source
+of each bitmapped font.  In this mode of operation, {\POSTPROC}
+replaces the bitmapped font with a call for the corresponding font
+in Adobe Type~1 format.
+
+There are several advantage to doing this.  For a start there is no
+need for {\DVIPSONE} to process the {\DVI} file to make a new {\PS} file. 
+Secondly, illustrations have already been converted to appropriate
+{\PS} form, so there is no question about resolution and or positioning.
+
+To remove bitmapped fonts from an {\HPTAG} generated PS file, 
+use the €-f€ command line flag with {\POSTPROC}.
+It is possible to `darken' the {\TIFF} images in the same step
+using the €-d€ command line flag
+(this works despite the fact that the PS code used for the image
+insertion is different from that in PS files made by {\DVIPSONE}).
+The €-l€ and €-g€ are not needed for the Computer Modern fonts
+and should not be used in this case.
+
+The {\POSTPROC} utility has several other less important command line options. For a usage summary invoke it as €postproc -?€.
+
+\section{Using the EXTRATIF Utility}
+
+{\EXTRATIF} extracts the bi-level / monochrome images from a PostScript file and writes them out as separate {\TIFF} image files. The resulting {\TIFF} files can later be used with {\DVIPSONE}. Sample usage:
+
+\beginlines
+{
+€extratif -v € \angi{PostScript file}
+}
+\endlines
+
+\noindent The utility produces a usage summary when invoked with just €-?€ on the command line.
+
+{\EXTRATIF} is useful when the original figures are not accessible --- or when the original figures are not in {\TIFF} format. You apply it to a PostScript file made by the {\HPTAG} system ({\it not\/} one made by {\DVIPSONE}). It does not handle color or grey-level images.
+
+When used as above, {\EXTRATIF} simply makes up image file names with increasing numeric extensions. The base name will be the same as that of the PostScript source file. Without more information, this is the best that {\EXTRATIF} can do, because the original names of the image files are not recorded in the PostScript file.
+
+This is somewhat inconvenient, since the files then have to be manually renamed so that they can be picked up by {\DVIPSONE} using the names recorded in the {\DVI} file. This process can be tedious and error prone if there are many images. To get around this problem, {\EXTRATIF} can make use of a log file produced by {\DVIPSONE} that specifies the image file names. Sample usage:
+
+\beginlines
+{
+€extratif -v -l=€\angi{log file} \angi{PostScript file}
+}
+\endlines
+
+\noindent The overall method then is as follows. First make a log file of ``missing file'' error messages from {\DVIPSONE}: Run {\DVIPSONE} on the corresponding {\DVI} file. Use verbose mode (€-v€) and direct PostScript output to the bit bucket (€-d=nul€). Capture the on-screen output from {\DVIPSONE} (e.g., by redirecting to file using €>€), for example:
+
+\beginlines
+{
+€c:\dvipsone\dvipsone -v -k -*3 -*8 -d=nul:€ \angi{DVI file} €>€ \angi{log file}
+}
+\endlines
+
+\noindent Note that
+
+\blist
+\item You need to force {\DVIPSONE} to use €stdout€ for error output using €-*8€, since €stderr€ output always appears on screen --- it cannot be redirected.
+
+\item You need to ask {\DVIPSONE} to continue processing even after
+meeting many errors using €-*3€.
+
+\item You cannot use redirection of output when calling the batch file {\dvipsonebat}, so {\dvipsoneexe} has to be called directly, as shown.
+
+\item When creating the log file, {\it none\/} of the image files called for should be accessible to {\DVIPSONE}. Otherwise the log of error messages will be incomplete, and {\EXTRATIF} will get confused later. If some of the image files do already exist, temporarily rename them or move them out of €PSPATH€.
+
+\item Older versions of {\DVIPSONE} produce {\it two\/} error messages per missing image. In that case use the €-d€ command line flag with {\EXTRATIF}.
+\endlist
+
+\noindent {\DVIPSONE} will complain about missing image files. The complaints should come out in the same order as the {\TIFF} files to be written out by {\EXTRATIF}.
+
+The file extension of the image files written out will be the same as the extension of the original file name (even though the format of the files written is always {\TIFF}). This may seem a bit odd at first, since the source file may have extension €.hpg€ for example. The files created by {\EXTRATIF} with extension €.hpg€ are actually {\TIFF} files. The odd naming convention is convenient because the {\HPTAG}-produced {\DVI} file refers to the images that way.
+
+The list of names in the log file might get out of synchronization with the files in the PostScript file (e.g., if the pages have been reordered, or if {\DVIPSONE} unexpectedly find some of the image files). {\EXTRATIF} checks for inconsistencies and complains if there appears to be a problem. Look for error messages marked €MISMATCH?€ --- if any such errors occur, a total count of errors is given at the end.
+
+If this happens --- and only a few files are misnamed --- then you may want to just rename those few. Otherwise you may need to run {\EXTRATIF} without guidance from a log file, and then rename all files manually later.
+
+\section{Using the TIFFTAGS utility} % new stuff 96/Apr/20
+
+Sometimes it is useful to dump out the `tags' in a {\TIFF} file to see what information is provided.  The {\TIFFTAGS} utility provided with {\DVIPSONE} can be used for this purpose. For a quick summary --- giving mostly only the size of the image --- just mention the {\TIFF} file name on the command line. To get a dump of {\it all\/} `tags' add €-v€ (verbose mode):
+
+\beginlines
+{
+€tifftags -v € \angi{TIFF file}
+}
+\endlines
+
+\noindent Some {\TIFF} files used with {\HPTAG} do not provide information on resolution.  The default in this case -- both in {\DVIPSONE} and {\DVIWindo} --- is 72 dpi.  But most such `unlabelled' {\HPTAG} {\TIFF} files seem to be made instead for 300 dpi. You can ask {\DVIPSONE} to assume a different default resolution using the €-*J€ command line file. For example, use €-*J=300€ for {\HPTAG} {\TIFF} files.
+
+You can let {\DVIWindo} use a different default resolution for {\TIFF} images by adding €DefaultTIFFDPI=300€ to the €[Window]€ section of the file €dviwindo.ini€ in your Windows directory.
+
+Some {\TIFF} files used with {\HPTAG} {\it do\/} have the resolution fields, but have non-sensical resolutions, such as 0 / 1 (meaning 0 dpi). New versions of {\DVIPSONE} and {\DVIWindo} replace 0 dpi resolutions by the default resolution, which can be controlled as described above.
+
+
+\section{Appendix --- Other Items to Watch For}
+
+\subsect{Spurious Warning Messages}
+
+When using {\DVIPSONE} and {\DVIWindo} you will get warnings about mismatches in encoding. These warnings result from interpretation of font checksums embedded in the {\DVI} files. {\TeX} copies such checksums from the corresponding {\TFM} metric file. The checksum is computed by whatever program generated the {\TFM} file (typically {\AFM2TFM}, {\AFMtoTFM}, EdMetrics, {\TFM}Gen, or PLtoTF).
+
+Different utilities for generating {\TFM} files use different algorithms for coming up with a font checksum. The {\yandy} TeX System, for example, uses the checksum to hide the encoding vector name. Other software computes a checksum in other ways.
+
+Warnings about encoding mismatches are benign, and can be ignored. You can turn them off in {\DVIWindo} by unchecking `Complain Bad Encoding' in the `Preferences' menu.
+
+{\DVIPSONE} will also warn about €\special€s it does not recognize. In the case of {\HPTAG}-generated {\DVI} files, this will include €revset€. This particular warning may appear on every page, but is also benign.
+
+\subsect{Test for Missing Characters}
+
+If you do {\it not\/} use €-k€ on the {\DVIPSONE} command line, the program will actually include the fonts called for --- and in the process will learn what characters are called for that do not actually occur in the fonts. This is a useful way to find out what odd characters are being used in the text fonts (When fonts are {\it not\/} included, {\DVIPSONE} has no way of telling which characters are missing.)
+
+So you can leave off the €-k€ just to get warnings about ``missing characters.'' Then discard the resulting PostScript file (or use €-d=nul€ to direct the output into a black hole). The warnings should be mostly about character codes 0--10 in text fonts (used for upper case upright Greek) and 11, 14, and 15 (ff, ffi, ffl). For other character codes, look at the ``TeX Text'' encoding vector (file {\textextvec}).
+%
+\bye
+

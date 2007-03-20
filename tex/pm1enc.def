@@ -1,0 +1,165 @@
+%% This is the file `PM1enc.def'
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%%
+%% This is for fonts set up with Macintosh standard roman encoding
+%% (the default font encoding for text fonts on the Macintosh)
+%%
+%% Usage:  \usepackage[PM1]{fontenc}
+%%
+\ProvidesFile{PM1enc.def}[1994/10/15]
+\DeclareFontEncoding{PM1}
+	{\catcode`\'=\active\chardef'=213\catcode`\`=\active\chardef`=212}{}
+\DeclareTextAccent{\`}{PM1}{96}
+\DeclareTextAccent{\'}{PM1}{171}
+\DeclareTextAccent{\^}{PM1}{246}
+\DeclareTextAccent{\~}{PM1}{247}
+\DeclareTextAccent{\"}{PM1}{172}
+\DeclareTextAccent{\H}{PM1}{253}
+\DeclareTextAccent{\r}{PM1}{251}
+\DeclareTextAccent{\v}{PM1}{255}
+\DeclareTextAccent{\u}{PM1}{249}
+\DeclareTextAccent{\=}{PM1}{248}
+\DeclareTextAccent{\.}{PM1}{250}
+\DeclareTextCommand{\b}{PM1}[1]
+   {\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char248}\vss}\hidewidth}}
+\DeclareTextCommand{\c}{PM1}[1]
+   {\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent252 #1%
+     \else{\ooalign{\hidewidth\char252\hidewidth
+        \crcr\unhbox\z@}}\fi}
+\DeclareTextCommand{\d}{PM1}[1]
+   {\oalign{#1\crcr\hidewidth.\hidewidth}}
+\DeclareTextCommand{\k}{PM1}[1]
+   {\oalign{#1\crcr\char254\hidewidth}}
+\DeclareTextSymbol{\AA}{PM1}{129}
+\DeclareTextSymbol{\AE}{PM1}{174}
+% \DeclareTextSymbol{\CC}{PM1}{130}
+% \DeclareTextSymbol{\L}{PM1}{76}	% no Lslash on Mac
+\DeclareTextSymbol{\O}{PM1}{175}
+\DeclareTextSymbol{\OE}{PM1}{206}
+\DeclareTextSymbol{\S}{PM1}{164}	% section
+\DeclareTextSymbol{\P}{PM1}{166}	% paragraph
+\DeclareTextSymbol{\dag}{PM1}{160}	% dagger
+\DeclareTextSymbol{\ddag}{PM1}{224}	% daggerdbl
+\DeclareTextSymbol{\SS}{PM1}{167}	% no Germandbls on Mac
+\DeclareTextSymbol{\_}{PM1}{95}
+\DeclareTextSymbol{\aa}{PM1}{140}
+\DeclareTextSymbol{\ae}{PM1}{190}
+% \DeclareTextSymbol{\cc}{PM1}{141}
+\DeclareTextSymbol{\guillemotleft}{PM1}{199}
+\DeclareTextSymbol{\guillemotright}{PM1}{200}
+\DeclareTextSymbol{\guilsinglleft}{PM1}{220}
+\DeclareTextSymbol{\guilsinglright}{PM1}{221}
+\DeclareTextSymbol{\i}{PM1}{245}
+% \DeclareTextSymbol{\j}{PM1}{106}	% no dotlessj on Mac
+% \DeclareTextSymbol{\l}{PM1}{108}	% no lslash on Mac
+\DeclareTextSymbol{\o}{PM1}{191}
+\DeclareTextSymbol{\oe}{PM1}{207}
+\DeclareTextSymbol{\pounds}{PM1}{163}
+\DeclareTextSymbol{\quotedblbase}{PM1}{227}
+\DeclareTextSymbol{\quotesinglbase}{PM1}{226}
+\DeclareTextSymbol{\ss}{PM1}{167}
+% \DeclareTextSymbol{\$}{PM1}{`\$}
+\DeclareTextSymbol{\$}{PM1}{36}
+% \DeclareTextSymbol{\TH}{PM1}{222}	% no Thorn on Mac
+% \DeclareTextSymbol{\th}{PM1}{254}	% no thorn on Mac
+% \DeclareTextSymbol{\DH}{PM1}{208}	% no Eth on Mac
+% \DeclareTextSymbol{\dh}{PM1}{240}	% no eth on Mac
+% \DeclareTextSymbol{\DJ}{A1}{208}	% no Dmacron on Mac
+% \DeclareTextSymbol{\dj}{A1}{100}	% no dmacron on Mac
+\DeclareTextCommand{\{}{PM1}
+%   {\ifmmode\lbrace\else\char`\{\fi}
+   {\ifmmode\lbrace\else\char123\fi}
+\DeclareTextCommand{\}}{PM1}
+%   {\ifmmode\rbrace\else\char`\}\fi}
+   {\ifmmode\rbrace\else\char125\fi}
+% \DeclareTextComposite{\.}{PM1}{i}{`\i}	% ha ha
+\DeclareTextComposite{\.}{PM1}{i}{105}	% ha ha
+% \DeclareTextComposite{\v}{PM1}{S}{146} % no Scaron on Mac
+\DeclareTextComposite{\"}{PM1}{Y}{217}
+\DeclareTextComposite{\.}{PM1}{I}{73}	% no Idot on Mac
+% \DeclareTextComposite{\v}{PM1}{s}{178} % no scaron on Mac
+\DeclareTextComposite{\"}{PM1}{y}{216}
+\DeclareTextComposite{\`}{PM1}{A}{203}
+\DeclareTextComposite{\'}{PM1}{A}{231}
+\DeclareTextComposite{\^}{PM1}{A}{229}
+\DeclareTextComposite{\~}{PM1}{A}{204}
+\DeclareTextComposite{\"}{PM1}{A}{128}
+\DeclareTextComposite{\r}{PM1}{A}{129}
+\DeclareTextComposite{\c}{PM1}{C}{130}
+\DeclareTextComposite{\`}{PM1}{E}{233}
+\DeclareTextComposite{\'}{PM1}{E}{131}
+\DeclareTextComposite{\^}{PM1}{E}{230}
+\DeclareTextComposite{\"}{PM1}{E}{232}
+\DeclareTextComposite{\`}{PM1}{I}{237}
+\DeclareTextComposite{\'}{PM1}{I}{234}
+\DeclareTextComposite{\^}{PM1}{I}{235}
+\DeclareTextComposite{\"}{PM1}{I}{236}
+\DeclareTextComposite{\~}{PM1}{N}{132}
+\DeclareTextComposite{\`}{PM1}{O}{241}
+\DeclareTextComposite{\'}{PM1}{O}{238}
+\DeclareTextComposite{\^}{PM1}{O}{239}
+\DeclareTextComposite{\~}{PM1}{O}{205}
+\DeclareTextComposite{\"}{PM1}{O}{133}
+\DeclareTextComposite{\`}{PM1}{U}{244}
+\DeclareTextComposite{\'}{PM1}{U}{242}
+\DeclareTextComposite{\^}{PM1}{U}{243}
+\DeclareTextComposite{\"}{PM1}{U}{134}
+% \DeclareTextComposite{\'}{PM1}{Y}{89}	% no Yacute on Mac
+% \DeclareTextComposite{\v}{PM1}{Z}{90}	% no Zcaron on Mac
+\DeclareTextComposite{\`}{PM1}{a}{224}
+\DeclareTextComposite{\'}{PM1}{a}{136}
+\DeclareTextComposite{\^}{PM1}{a}{135}
+\DeclareTextComposite{\~}{PM1}{a}{137}
+\DeclareTextComposite{\"}{PM1}{a}{138}
+\DeclareTextComposite{\r}{PM1}{a}{140}
+\DeclareTextComposite{\c}{PM1}{c}{141}
+\DeclareTextComposite{\`}{PM1}{e}{143}
+\DeclareTextComposite{\'}{PM1}{e}{142}
+\DeclareTextComposite{\^}{PM1}{e}{144}
+\DeclareTextComposite{\"}{PM1}{e}{145}
+\DeclareTextComposite{\`}{PM1}{i}{147}
+\DeclareTextComposite{\`}{PM1}{\i}{147}
+\DeclareTextComposite{\'}{PM1}{i}{146}
+\DeclareTextComposite{\'}{PM1}{\i}{146}
+\DeclareTextComposite{\^}{PM1}{i}{148}
+\DeclareTextComposite{\^}{PM1}{\i}{148}
+\DeclareTextComposite{\"}{PM1}{i}{149}
+\DeclareTextComposite{\"}{PM1}{\i}{149}
+\DeclareTextComposite{\~}{PM1}{n}{150}
+\DeclareTextComposite{\`}{PM1}{o}{152}
+\DeclareTextComposite{\'}{PM1}{o}{151}
+\DeclareTextComposite{\^}{PM1}{o}{153}
+\DeclareTextComposite{\~}{PM1}{o}{155}
+\DeclareTextComposite{\"}{PM1}{o}{154}
+\DeclareTextComposite{\`}{PM1}{u}{152}
+\DeclareTextComposite{\'}{PM1}{u}{151}
+\DeclareTextComposite{\^}{PM1}{u}{153}
+\DeclareTextComposite{\"}{PM1}{u}{154}
+% \DeclareTextComposite{\'}{PM1}{y}{121}	% no yacute on Mac
+% \DeclareTextComposite{\v}{PM1}{z}{122}	% no zcaron on Mac
+
+%% Above makes 39 and 96 active since that is not `quoteleft' and `quoteright'
+% `quoteright' has moved from 39 to 213 make space for `quotesingle' in Mac:
+% \catcode`\'=\active \chardef'=213
+% `quoteleft' has moved from 96 to 212 make space for `grave' in Mac:
+% \catcode`\`=\active \chardef`=212
+
+% Making ` and ' active, as above, may prevent some other TeX macro
+%	from working properly when loaded after this.
+% So when loading other TeX macro packages after this:
+%	(i) first make the quotes inactive again using:
+%		\catcode39=12 \catcode96=12 
+%	(ii) then \input the TeX macro package
+%	(iii) finally reinstate the remapping by making the quotes active:
+%		\catcode39=13 \catcode96=13 
+
+% Also need to deal with prime in math mode since 39 is remapped to 213
+
+{\catcode213=\active \gdef^^d5{{^\bgroup\prim@s}}}
+\mathcode213="8000 % ^\prime
+
+\endinput
+%% 
+%% End of file `PM1enc.def'.

@@ -1,0 +1,169 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%% 
+%% This is the file `A1enc.def'
+%%
+%% This is for fonts set up with Windows ANSI encoding
+%% (the default font encoding for text fonts in Microsoft Windows 3.1)
+%%
+\ProvidesFile{A1enc.def}[1994/09/01]
+\DeclareFontEncoding{A1}{}{}
+\DeclareTextAccent{\`}{A1}{96}
+\DeclareTextAccent{\'}{A1}{180}
+\DeclareTextAccent{\^}{A1}{136}
+\DeclareTextAccent{\~}{A1}{152}
+\DeclareTextAccent{\"}{A1}{168}
+\DeclareTextAccent{\H}{A1}{34}		% no hungarumlaut in ANSI
+\DeclareTextAccent{\r}{A1}{176}		% no ring in ANSI
+% \DeclareTextAccent{\v}{A1}{118}	% no caron in ANSI
+% \DeclareTextAccent{\u}{A1}{98}	% no breve in ANSI
+\DeclareTextAccent{\=}{A1}{175}
+\DeclareTextAccent{\.}{A1}{183}		% no dotaccent in ANSI
+\DeclareTextCommand{\b}{A1}[1]
+   {\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char175}\vss}\hidewidth}}
+\DeclareTextCommand{\c}{A1}[1]
+   {\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent184 #1%
+     \else{\ooalign{\hidewidth\char184\hidewidth
+        \crcr\unhbox\z@}}\fi}
+\DeclareTextCommand{\d}{A1}[1]
+   {\oalign{#1\crcr\hidewidth.\hidewidth}}
+% \DeclareTextCommand{\k}{A1}[1]
+%    {\oalign{#1\crcr\char12\hidewidth}} % no ogonek in ANSI
+\DeclareTextSymbol{\AA}{A1}{197}
+\DeclareTextSymbol{\AE}{A1}{198}
+% \DeclareTextSymbol{\CC}{A1}{199}
+\DeclareTextSymbol{\L}{A1}{76}		% no Lslash in ANSI
+\DeclareTextSymbol{\O}{A1}{216}
+\DeclareTextSymbol{\OE}{A1}{140}
+\DeclareTextSymbol{\S}{A1}{167}		% section
+\DeclareTextSymbol{\P}{A1}{182}		% paragraph
+\DeclareTextSymbol{\dag}{A1}{134}	% dagger
+\DeclareTextSymbol{\ddag}{A1}{135}	% daggerdbl
+\DeclareTextSymbol{\SS}{A1}{223}	% no Germandbls in ANSI
+\DeclareTextSymbol{\_}{A1}{95}
+\DeclareTextSymbol{\aa}{A1}{229}
+\DeclareTextSymbol{\ae}{A1}{230}
+% \DeclareTextSymbol{\cc}{A1}{231}
+\DeclareTextSymbol{\guillemotleft}{A1}{171}
+\DeclareTextSymbol{\guillemotright}{A1}{187}
+\DeclareTextSymbol{\guilsinglleft}{A1}{139}
+\DeclareTextSymbol{\guilsinglright}{A1}{155}
+\DeclareTextSymbol{\i}{A1}{105}		% no dotlessi in ANSI
+\DeclareTextSymbol{\j}{A1}{106}		% no dotlessj in ANSI
+\DeclareTextSymbol{\l}{A1}{108}		% no lslash in ANSI
+\DeclareTextSymbol{\o}{A1}{248}
+\DeclareTextSymbol{\oe}{A1}{156}
+\DeclareTextSymbol{\pounds}{A1}{163}
+\DeclareTextSymbol{\quotedblbase}{A1}{132}
+\DeclareTextSymbol{\quotesinglbase}{A1}{130}
+\DeclareTextSymbol{\ss}{A1}{223}
+\DeclareTextSymbol{\$}{A1}{\char`\$}
+\DeclareTextSymbol{\TH}{A1}{222}
+\DeclareTextSymbol{\th}{A1}{254}
+\DeclareTextSymbol{\DH}{A1}{208}
+\DeclareTextSymbol{\dh}{A1}{240}
+\DeclareTextSymbol{\DJ}{A1}{208}	% Cork maps Dmacron to Eth!
+% \DeclareTextSymbol{\dj}{A1}{100}	% no dmacron in ANSI
+\DeclareTextCommand{\{}{A1}
+   {\ifmmode\lbrace\else\char`\{\fi}
+\DeclareTextCommand{\}}{A1}
+   {\ifmmode\rbrace\else\char`\}\fi}
+\DeclareTextComposite{\.}{A1}{i}{`\i}	% ha ha
+\DeclareTextComposite{\v}{A1}{S}{138}
+\DeclareTextComposite{\"}{A1}{Y}{159}
+\DeclareTextComposite{\.}{A1}{I}{73}	% no Idot in ANSI
+\DeclareTextComposite{\v}{A1}{s}{154}
+\DeclareTextComposite{\"}{A1}{y}{255}
+\DeclareTextComposite{\`}{A1}{A}{192}
+\DeclareTextComposite{\'}{A1}{A}{193}
+\DeclareTextComposite{\^}{A1}{A}{194}
+\DeclareTextComposite{\~}{A1}{A}{195}
+\DeclareTextComposite{\"}{A1}{A}{196}
+\DeclareTextComposite{\r}{A1}{A}{197}
+\DeclareTextComposite{\c}{A1}{C}{199}
+\DeclareTextComposite{\`}{A1}{E}{200}
+\DeclareTextComposite{\'}{A1}{E}{201}
+\DeclareTextComposite{\^}{A1}{E}{202}
+\DeclareTextComposite{\"}{A1}{E}{203}
+\DeclareTextComposite{\`}{A1}{I}{204}
+\DeclareTextComposite{\'}{A1}{I}{205}
+\DeclareTextComposite{\^}{A1}{I}{206}
+\DeclareTextComposite{\"}{A1}{I}{207}
+\DeclareTextComposite{\~}{A1}{N}{209}
+\DeclareTextComposite{\`}{A1}{O}{210}
+\DeclareTextComposite{\'}{A1}{O}{211}
+\DeclareTextComposite{\^}{A1}{O}{212}
+\DeclareTextComposite{\~}{A1}{O}{213}
+\DeclareTextComposite{\"}{A1}{O}{214}
+\DeclareTextComposite{\`}{A1}{U}{217}
+\DeclareTextComposite{\'}{A1}{U}{218}
+\DeclareTextComposite{\^}{A1}{U}{219}
+\DeclareTextComposite{\"}{A1}{U}{220}
+\DeclareTextComposite{\'}{A1}{Y}{221}
+% \DeclareTextComposite{\v}{A1}{Z}{90}	% no Zcaron in ANSI
+\DeclareTextComposite{\`}{A1}{a}{224}
+\DeclareTextComposite{\'}{A1}{a}{225}
+\DeclareTextComposite{\^}{A1}{a}{226}
+\DeclareTextComposite{\~}{A1}{a}{227}
+\DeclareTextComposite{\"}{A1}{a}{228}
+\DeclareTextComposite{\r}{A1}{a}{229}
+\DeclareTextComposite{\c}{A1}{c}{231}
+\DeclareTextComposite{\`}{A1}{e}{232}
+\DeclareTextComposite{\'}{A1}{e}{233}
+\DeclareTextComposite{\^}{A1}{e}{234}
+\DeclareTextComposite{\"}{A1}{e}{235}
+\DeclareTextComposite{\`}{A1}{i}{236}
+\DeclareTextComposite{\`}{A1}{\i}{236}
+\DeclareTextComposite{\'}{A1}{i}{237}
+\DeclareTextComposite{\'}{A1}{\i}{237}
+\DeclareTextComposite{\^}{A1}{i}{238}
+\DeclareTextComposite{\^}{A1}{\i}{238}
+\DeclareTextComposite{\"}{A1}{i}{239}
+\DeclareTextComposite{\"}{A1}{\i}{239}
+\DeclareTextComposite{\~}{A1}{n}{241}
+\DeclareTextComposite{\`}{A1}{o}{242}
+\DeclareTextComposite{\'}{A1}{o}{243}
+\DeclareTextComposite{\^}{A1}{o}{244}
+\DeclareTextComposite{\~}{A1}{o}{245}
+\DeclareTextComposite{\"}{A1}{o}{246}
+\DeclareTextComposite{\`}{A1}{u}{249}
+\DeclareTextComposite{\'}{A1}{u}{250}
+\DeclareTextComposite{\^}{A1}{u}{251}
+\DeclareTextComposite{\"}{A1}{u}{252}
+\DeclareTextComposite{\'}{A1}{y}{253}
+% \DeclareTextComposite{\v}{A1}{z}{122}	% no zcaron in ANSI
+
+%% Make 39 and 96 active since that is not `quoteleft' and `quoteright'
+
+% `quoteright' has moved from 39 to 146 make space for `quotesingle' in ANSI:
+
+\catcode`\'=\active \chardef'=146
+
+% `quoteleft' has moved from 96 to 145 make space for `grave' in ANSI:
+
+\catcode`\`=\active \chardef`=145
+
+% NOTE: making ` and ' active, as above, may prevent some other TeX macro
+%	from working properly when loaded after this.
+% So when loading other TeX macro packages after this:
+%	(i) first make the quotes inactive again using:
+%		\catcode39=12 \catcode96=12 
+%	(ii) then \input the TeX macro package
+%	(iii) finally reinstate the remapping by making the quotes active:
+%		\catcode39=13 \catcode96=13 
+
+% Also need to deal with prime in math mode since 39 is remapped to 146
+
+{\catcode146=\active \gdef^^92{{^\bgroup\prim@s}}}
+\mathcode146="8000 % ^\prime
+
+% And we hope that disgusting \@parboxrestore kludge has disappeared!!!
+% (which `restores' grave, acute and macron to the wrong values)
+
+% \let\@acci=\'
+% \let\@accii=\`
+% \let\@acciii=\=
+
+\endinput
+%% End of file `A1enc.def'.

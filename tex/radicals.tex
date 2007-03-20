@@ -1,0 +1,81 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=12pt
+
+% The following wires in open face brackets instead of brackets
+
+% \mathcode`\[="4182
+% \mathcode`\]="4183
+
+% \delcode`\[="182382
+% \delcode`\]="183383
+
+\input lucidabr.mac
+
+\noheaders
+
+\noindent
+This is a test of nested radicals $\sqrt{5}/2$, $\sqrt{{a\over b}}$,
+$\sqrt{\sqrt{\pi}}$, $\sqrt{\sqrt{{a\over b}}}$
+
+\noindent
+This is a test of (displayed) nested radicals (nesting radicals?)
+%
+$$\sqrt{-1} + \sqrt{\sqrt{-1}} + \sqrt{\sqrt{\sqrt{-1}}} + 
+\sqrt{\sqrt{\sqrt{\sqrt{-1}}}}$$
+%
+This is a test of (displayed) nested radicals (nesting radicals?)
+%
+$$\sqrt{{a\over b}} + \sqrt{\sqrt{{a\over b}}} + \sqrt{\sqrt{\sqrt{{a\over b}}}} + 
+\sqrt{\sqrt{\sqrt{\sqrt{{a\over b}}}}}$$
+%
+This is a test of (displayed) nested radicals (nesting radicals?)
+%
+$$\sqrt{{{a\over b} + x\over x + {c\over d}}} + 
+\sqrt{\sqrt{{{a\over b} + x\over x + {c\over d}}}} + 
+\sqrt{\sqrt{\sqrt{{{a\over b} + x\over x + {c\over d}}}}} + 
+\sqrt{\sqrt{\sqrt{\sqrt{{{a\over b} + x\over x + {c\over d}}}}}}$$
+%
+That was a test of (displayed) nested radicals (nesting radicals?)
+
+% This is a test of displayed nested integral signs.
+
+% $$\int \eta^2\,d\eta +
+% \int \sqrt{\int \eta^2\,d\eta} +
+% \int \sqrt{\int \sqrt{\int \eta^2\,d\eta}} +
+% \int \sqrt{{\int \sqrt{\int \eta^2\,d\eta}}}$$
+
+% This is a test of displayed nested integral signs.
+
+\noindent
+This is a test of nested brackets
+$$[a b c] + 
+\bigl[[a b c] + [a b c]\bigr] +
+\Bigl[\bigl[[a b c] + [a b c]\bigr] + \bigl[[a b c] + [a b c]\bigr]\Bigr]$$
+% $$\biggl[\Bigl[\bigl[[a b c] + [a b c]\bigr] + \bigl[[a b c] + 
+% [a b c]\bigr]\Bigr]\biggr] +
+% \Biggl[\biggl[\Bigl[\bigl[[a b c] + [a b c]\bigr] + 
+% \bigl[[a b c] + [a b c]\bigr]\Bigr]\biggr]\Biggr]$$
+$$\left[\sqrt{\left[\sqrt{
+\Biggl[\biggl[\Bigl[\bigl[[a b c] + [a b c]\bigr] + \bigl[[a b c] + [a b c]\bigr]\Bigr]\biggr]\Biggr]}\right]}\right]$$
+That was a test of nested brackets
+
+\mathcode`\[="4182
+\mathcode`\]="4183
+\delcode`\[="182382
+\delcode`\]="183383
+
+\noindent
+This is a test of nested open face brackets
+$$[a b c] + 
+\bigl[[a b c] + [a b c]\bigr] +
+\Bigl[\bigl[[a b c] + [a b c]\bigr] + \bigl[[a b c] + [a b c]\bigr]\Bigr]$$
+% $$\biggl[\Bigl[\bigl[[a b c] + [a b c]\bigr] + \bigl[[a b c] + 
+% [a b c]\bigr]\Bigr]\biggr] +
+% \Biggl[\biggl[\Bigl[\bigl[[a b c] + [a b c]\bigr] + 
+% \bigl[[a b c] + [a b c]\bigr]\Bigr]\biggr]\Biggr]$$
+$$\left[\sqrt{\left[\sqrt{
+\Biggl[\biggl[\Bigl[\bigl[[a b c] + [a b c]\bigr] + \bigl[[a b c] + [a b c]\bigr]\Bigr]\biggr]\Biggr]}\right]}\right]$$
+That was a test of nested open face brackets
+
+\end

@@ -1,0 +1,340 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+% Copyright (C) 1992 - 1993 Y&Y, Inc.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+% ============================================================================
+% Accented and composite characters in fonts that do not use TeX text encoding
+%	MacIntosh version (`mac' encoding vector) VERSION 1.2 (1993 Aug 15)
+% ============================================================================
+
+% NOTE: Old Textures forces uncoordinated font use => STANDARD ENCODING
+% NOTE: Oz TeX use => STANDARD ENCODING
+
+% Plain TeX - and hence lplain TeX - have accents hard-wired to certain codes.
+
+% A non-CM font can be reencoded to TeX text encoding ---
+% in this case accents and composite character will be where TeX expects them.
+% But, quite often it is advantageous to encode a font another way.
+% This can provide access to many characters not found in TeX text encoding.
+
+% When a font is reencoded, compound characters and accents may be moved.
+% This will prevent TeX's normal handling of compound characters and accents.
+% This file indicates how to deal with this ---
+%	--- and concludes with sample code specific for `MAC' encoding.
+
+% Changes required for math constructions that use roman font are at the end
+
+% You may wish to just \input this file for Mac encoding in your TeX source.
+
+% IMPORTANT NOTE --- `quoteleft' and `quoteright' are active:
+
+% This defines ` to be active, since `quoteleft' is remapped from 96 to 212
+% This defines ' to be active, since `quoteright' is remapped from 39 to 213
+% Having `quoteleft' and `quoteright' active may interfere with other macros
+% So when reading other TeX macro packages _after_ ansiacce.tex:
+%	(i) first make the quotes inactive using:
+%		\catcode39=12 \catcode96=12 
+%	(ii) then \input the TeX macro package
+%	(iii) finally reinstate the remapping by making the quotes active:
+%		\catcode39=13 \catcode96=13 
+
+% NOTE: it would be much cleaner to do this by changing TeX's `xchr' table,
+% but few implementations of TeX provide for this desirable customization.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"	% save catcode of quotedbl
+\catcode`\"=12			% make quotedbl what it should be
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% NOTE: plain TeX (and LaTeX) has the accent character positions hardwired to:
+
+% 16 for `dotlessi', 17 for `dotlessj', 
+% 18 for `grave', 19 for `acute', 20 for `caron', 
+% 21 for `breve', 22 for `macron', 
+% 23 for `ring', 24 for `cedilla',
+% 25 for `germandbls', 26 for `ae', 27 for `oe', 
+% 28 for `oslash', 29 for `AE', 30 for 'OE', 31 for `Oslash',
+% 94 for `circumflex', 95 for `dotaccent', 125 for `hungarumlaut',
+% 126 for `tilde', 127 for `dieresis',
+% (see page 356 of the TeX book for additional information)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% The following sample redefinitions are for `MAC' encoding:
+
+% Tell TeX where various special characters are:
+
+\chardef\ae=190	% "BE	ae
+\chardef\oe=207 % "CF	oe
+\chardef\o=191  % "BF	oslash
+\chardef\AE=174	% "7C	AE
+\chardef\OE=206 % "CE	OE
+\chardef\O=175  % "AF	Oslash
+\chardef\i=245  % "F5	dotlessi 
+\chardef\ss=167	% "A7	germandbls
+
+% The following are constructed from pieces in CM, but exist in most T1 fonts
+
+\chardef\aa=140 \chardef\AA=129 % aring, Aring
+\chardef\cc=141 \chardef\CC=130 % ccedilla, Ccedilla
+
+% \chardef\l=189 \chardef\L=190	% lslash, Lslash  % not in Mac
+
+\chardef\pounds=163 \chardef\copyright=169
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% For backward compatability, provide for use of font with TeX's \accent:
+% (Although it is better to use actual accented characters, since \accent
+% creates explicit kerning which breaks the hyphenation machinery)
+
+\def\`#1{{\accent96 #1}}	% grave
+\def\'#1{{\accent171 #1}}	% acute
+\def\v#1{{\accent255 #1}}	% caron
+\def\u#1{{\accent249 #1}}	% breve
+\def\=#1{{\accent248 #1}}	% macron
+\def\^#1{{\accent246 #1}}	% circumflex
+\def\.#1{{\accent250 #1}}	% dotaccent
+\def\H#1{{\accent253 #1}}	% hungarumlaut
+\def\~#1{{\accent247 #1}}	% tilde
+\def\"#1{{\accent172 #1}}	% dieresis
+
+% Or, we can use the 58 pre-built accented character pseudo ligatures
+% --- but only if the TFM files for the text fonts have them.
+% This prevents the introduction of explicit kerning by \accent
+% --- but is limited to the `standard' 58 built-in accented characters,
+
+% \def\`{\char96 }	% grave
+% \def\'{\char171 }	% acute
+% \def\"{\char172 }	% dieresis
+% \def\^{\char246 }	% circumflex
+% \def\~{\char247 }	% tilde
+% \def\c{\char252 }	% cedilla		% Ccedilla and ccedilla
+% \def\v{\char255 }	% caron	% Scaron/scaron/Zcaron/scaron not in encoding
+% \def\={\char248 }	% macron % no macron accented chars in standard fonts
+% \def\aa{\char251 a} \def\AA{\char251 A}	% aring and Aring
+
+% underline and cedilla accents (macron at 248, cedilla at 252)
+
+\def\b#1{\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char248}\vss}\hidewidth}}
+\def\c#1{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent252 #1%
+  \else{\ooalign{\hidewidth\char252\hidewidth\crcr\unhbox0}}\fi}
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Changes required in math maros when roman font is reencoded to `mac'.
+% (An alternative is to draw the accents from the math fonts)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Make the adjustments needed when roman font is reencoded to `mac':
+
+\def\acute{\mathaccent"70AB }	% acute
+\def\grave{\mathaccent"7060 }	% grave
+\def\ddot{\mathaccent"70AC }	% dieresis
+\def\tilde{\mathaccent"70F7 }	% tilde
+\def\bar{\mathaccent"70F8 }	% macron
+\def\breve{\mathaccent"70F9 }	% breve
+\def\check{\mathaccent"70FF }	% caron
+\def\hat{\mathaccent"70F6 }	% circumflex
+\def\dot{\mathaccent"70FA }	% dotaccent
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% The following provides access to the 58 accented/ composite characters.
+% Some convenient abbreviations conflict with macros in plain or lplain
+% (for example, \aa, \Aa, \ae, \Ae, \oe, \Oe, \sc, \Sc in plain TeX)
+% So these have had to be be named something slightly less menmonic.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% 58 `standard' accented chars exist in many fonts - including BSR CM from Y&Y
+% One can define control sequences to access these directly as follows.
+% One may want to define other ways for accessing these, for example,
+% using ligatures (in that case, need to remake TFM file using AFMtoTFM).
+
+% \chardef\ay=138 \chardef\ee=145 \chardef\ie=149 \chardef\oy=154
+% \chardef\ue=159 \chardef\ye=216 % a, e, i, o, u, y - dieresis
+
+% \chardef\Ay=128 \chardef\Ee=232 \chardef\Ie=236 \chardef\Oy=133
+% \chardef\Ue=134 \chardef\Ye=217 % A, E, I, O, U, Y - dieresis
+
+% \chardef\ax=135 \chardef\ea=142 \chardef\ia=146 \chardef\oa=151
+% \chardef\ua=156 % \chardef\ya=??? % a, e, i, o, u, y - acute
+
+% \chardef\Ax=231 \chardef\Ea=131 \chardef\Ia=234 \chardef\Oa=238
+% \chardef\Ua=242 % \chardef\Ya=??? % A, E, I, O, U, Y - acute
+
+% \chardef\ag=136 \chardef\eg=143 \chardef\ig=147 \chardef\og=152
+% \chardef\ug=157 % a, e, i, o, u - grave
+
+% \chardef\Ag=203 \chardef\Eg=233 \chardef\Ig=237 \chardef\Og=241
+% \chardef\Ug=244 % A, E, I, O, U - grave
+
+% \chardef\ac=137 \chardef\ee=144 \chardef\ic=148 \chardef\oc=153
+% \chardef\uc=158 % a, e, i, o, u - circumflex
+
+% \chardef\Ac=229 \chardef\Ee=230 \chardef\Ic=235 \chardef\Oc=239
+% \chardef\Uc=243 % A, E, I, O, U - circumflex
+
+% \chardef\At=204 \chardef\Nt=132 \chardef\Ot=205 % A, N, O - tilde
+
+% \chardef\at=139 \chardef\nt=150 \chardef\ot=155 % a, n, o - tilde
+
+% Remaining four `composites': aring, Aring, ccedilla, Ccedilla defined above.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% To deal with \@parboxrestore kludge in LaTeX (restores grave, acute, macron)
+
+\chardef\atcode=\catcode`\@	% save catcode of at sign
+\catcode`\@=11			% make at a letter
+
+\let\@acci=\'
+\let\@accii=\`
+\let\@acciii=\=
+
+\catcode`\@=\atcode		% restore original catcode of at sign
+
+% NOTE: if grave, acute, and macron accents are lost after certain LaTeX
+% enviroments are used (such as the tabbing environment), then it is because
+% a LaTeX macro/style file is read in after this that redefines the above.
+
+% **************************************************************************
+
+% If you want to use < for `guillesinglleft' and > for `guillesingright'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=199
+% \catcode`\>=\active \chardef>=200
+
+% If you use < for `exclamdown', > for `questiondown', and | for `emdash'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=191
+% \catcode`\>=\active \chardef>=192
+% \catcode`\|=\active \chardef|=209
+
+\chardef\lq=212 \chardef\rq=213
+
+% Note that \lq and \rq also provide access to ` and '
+
+\catcode`\"=\dblcode		% restore original catcode of quotedbl
+
+% `quoteright' has moved from 39 to 213 to make space for `quotesingle' in mac:
+
+\catcode`\'=\active \chardef'=213
+
+% `quoteleft' has moved from 96 to 212 to make space for `grave' in mac:
+
+\catcode`\`=\active \chardef`=212
+
+% NOTE: making ` and ' active, as above, may prevent some other TeX macro
+% packages from working properly --- see notes at head of file for fix.
+
+% For proper hyphenation of words with accented characters we need to let
+% TeX know how to translate words with accented characters to lower case.
+% Hence define \lccode so that one can use them in \hyphenation{...}
+% Just for fun we also define \uccode, and set the \catcode to letter...
+
+\catcode231=11\catcode135=11	%	Aacute, aacute
+\lccode231=135\lccode135=135
+\uccode231=231\uccode135=231
+\catcode229=11\catcode137=11	%	Acircumflex, acircumflex
+\lccode229=137\lccode137=137
+\uccode229=229\uccode137=229
+\catcode128=11\catcode138=11	%	Adieresis, adieresis
+\lccode128=138\lccode138=138
+\uccode128=128\uccode138=128
+\catcode174=11\catcode190=11	%	AE, ae
+\lccode174=190\lccode190=190
+\uccode174=174\uccode190=174
+\catcode203=11\catcode136=11	%	Agrave, agrave
+\lccode203=136\lccode136=136
+\uccode203=203\uccode136=203
+\catcode129=11\catcode140=11	%	Aring, aring
+\lccode129=140\lccode140=140
+\uccode129=129\uccode140=129
+\catcode204=11\catcode139=11	%	Atilde, atilde
+\lccode204=139\lccode139=139
+\uccode204=204\uccode139=204
+\catcode130=11\catcode141=11	%	Ccedilla, ccedilla
+\lccode130=141\lccode141=141
+\uccode130=130\uccode141=130
+\catcode131=11\catcode142=11	%	Eacute, eacute
+\lccode131=142\lccode142=142
+\uccode131=131\uccode142=131
+\catcode230=11\catcode144=11	%	Ecircumflex, ecircumflex
+\lccode230=144\lccode144=144
+\uccode230=230\uccode144=230
+\catcode232=11\catcode145=11	%	Edieresis, edieresis
+\lccode232=145\lccode145=145
+\uccode232=232\uccode145=232
+\catcode233=11\catcode143=11	%	Egrave, egrave
+\lccode233=143\lccode143=143
+\uccode233=233\uccode143=233
+\catcode234=11\catcode146=11	%	Iacute, iacute
+\lccode234=146\lccode146=146
+\uccode234=234\uccode146=234
+\catcode235=11\catcode148=11	%	Icircumflex, icircumflex
+\lccode235=148\lccode148=148
+\uccode235=235\uccode148=235
+\catcode236=11\catcode149=11	%	Idieresis, idieresis
+\lccode236=149\lccode149=149
+\uccode236=236\uccode149=236
+\catcode237=11\catcode147=11	%	Igrave, igrave
+\lccode237=147\lccode147=147
+\uccode237=237\uccode147=237
+\catcode132=11\catcode150=11	%	Ntilde, ntilde
+\lccode132=150\lccode150=150
+\uccode132=132\uccode150=132
+\catcode238=11\catcode151=11	%	Oacute, oacute
+\lccode238=151\lccode151=151
+\uccode238=238\uccode151=238
+\catcode239=11\catcode153=11	%	Ocircumflex, ocircumflex
+\lccode239=153\lccode153=153
+\uccode239=239\uccode153=239
+\catcode133=11\catcode154=11	%	Odieresis, odieresis
+\lccode133=154\lccode154=154
+\uccode133=133\uccode154=133
+\catcode206=11\catcode207=11	%	OE, oe
+\lccode206=207\lccode207=207
+\uccode206=206\uccode207=206
+\catcode241=11\catcode152=11	%	Ograve, ograve
+\lccode241=152\lccode152=152
+\uccode241=241\uccode152=241
+\catcode175=11\catcode191=11	%	Oslash, oslash
+\lccode175=191\lccode191=191
+\uccode175=175\uccode191=175
+\catcode205=11\catcode155=11	%	Otilde, otilde
+\lccode205=155\lccode155=155
+\uccode205=205\uccode155=205
+\catcode242=11\catcode156=11	%	Uacute, uacute
+\lccode242=156\lccode156=156
+\uccode242=242\uccode156=242
+\catcode243=11\catcode158=11	%	Ucircumflex, ucircumflex
+\lccode243=158\lccode158=158
+\uccode243=243\uccode158=243
+\catcode244=11\catcode157=11	%	Ugrave, ugrave
+\lccode244=157\lccode157=157
+\uccode244=244\uccode157=244
+\catcode134=11\catcode159=11	%	Udieresis, udieresis
+\lccode134=159\lccode159=159
+\uccode134=134\uccode159=134
+\uatcode217=217\uatcode216=217	%	Ydieresis, ydieresis
+\lccode217=216\lccode216=216
+\uccode217=217\uccode216=217
+
+% **************************************************************************
+
+% NOTE: definitions have embedded numbers that depend on the chosen encoding
+% These will need to be changed if you use an encoding other than `mac'.
+
+% **************************************************************************

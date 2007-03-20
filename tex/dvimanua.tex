@@ -1,0 +1,4250 @@
+% DVIPSONE manual % This is in YTeX
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=10pt 	% for final version
+% \typesize=12pt		% for proofing
+
+% \hsize=4.66in % for letter paper version (default)
+% \hsize=5.5in % for legal paper version
+
+\font\manual=logo10
+\font\sc=cmcsc10
+\font\vt=cmvtt10
+
+% \font\eusm=eusm10
+\font\sy=sy
+
+\def\degrees{\ifmmode^\circ\else$^\circ$\fi}	% degrees
+
+% \def\copyright{{\ooalign{\hfil\raise.07ex\hbox{c}\hfil\crcr\mathhexbox20D}}}
+% \def\registered{{\ooalign{\hfil\raise.07ex\hbox{R}\hfil\crcr\mathhexbox20D}}}
+\def\registered{{\sy \char210}}
+
+% \def\AMS{{\eusm A\kern-.15em\lower.5ex\hbox{M}\kern-.1emS}}
+\def\AMS{${\cal A\kern-.15em\lower.5ex\hbox{${\cal M}$}\kern-.1emS}$}
+
+\def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\def\SliTeX{S{\sc li}{\TeX}}
+
+% \def\Y&Y{Y\kern-.25em\hbox{{\smllsize \&}}\kern -.25em Y}
+\def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.23em Y}
+
+\def\TeXtures{TeXtures}	% \def\TeXtures{{\TeX}tures}
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\newdimen\dwidth
+\newdimen\dheight
+
+\def\showimage#1#2#3{
+\dwidth=#2 \dheight=#3 
+\edef\width{\number\dwidth} \edef\height{\number\dheight}
+\special{insertimage: #1 \width \space \height}
+}
+
+\def\METAFONT{{\manual META}\-{\manual FONT}}
+
+\def\DVIPSONE{{\sc dvi\-ps\-one}}
+\def\DVIWindo{{\sc dviw}\-indo}
+\def\PKTOPS{{\sc pk\-to\-ps}}
+\def\AFMTOTFM{{\sc afm\-to\-tfm}}
+\def\DOWNLOAD{{\sc down\-load}}
+\def\TWOUP{{\sc two\-up}}
+\def\MODEX{{\sc mod\-ex}}
+\def\SERIAL{{\sc ser\-ial}}
+
+\def\DOS{{\sc dos}}
+\def\BIOS{{\sc bios}}
+\def\PATH{{\sc path}}
+
+\def\AFM{{\sc afm}}
+\def\TFM{{\sc tfm}}
+\def\PFM{{\sc pfm}}
+\def\DVI{{\sc dvi}}
+% \def\PS{{\sc ps}}
+\def\PK{{\sc pk}}
+\def\PFA{{\sc pfa}}
+\def\PFB{{\sc pfb}}
+\def\EPS{{\sc eps}}
+\def\EPSF{{\sc epsf}}
+\def\EPSI{{\sc epsi}}
+\def\PSFIG{{\sc psfig}}
+\def\DSC{{\sc dsc}}
+
+\def\VM{{\sc vm}}
+\def\MS{{\sc ms}}
+
+\def\ATM{{\sc atm}}
+\def\CM{{\sc cm}}
+
+\def\COPY{{\sc copy}}
+\def\MODE{{\sc mode}}
+\def\PRINT{{\sc print}}
+
+\def\XONXOFF{{\sc xon/xoff}}
+\def\DTRDSR{{\sc dtr/dsr}}
+\def\ETXACK{{\sc etx/ack}}
+
+\def\IBM{{\sc ibm}}
+\def\PC{{\sc pc}}
+
+\def\PS{Post\-Script}
+
+\def\COMPAQ{{\sc compaq}}
+\def\TUG{{\sc tug}}
+
+\def\UNIX{{\sc unix}}
+\def\DVIPS{{\sc dvips}}
+\def\DVITWOPS{{\sc dvi2ps}}
+\def\DVIALW{{\sc dvialw}}
+\def\DVITOPS{{\sc dvitops}}
+\def\DVILASER{{\sc dvilaser/ps}}
+
+\def\TIFF{{\sc tiff}}
+
+\def\controlc{{\tt control-C}}
+\def\controld{{\tt control-D}}
+\def\controlbreak{{\tt control-break}}
+
+\input memo.mac
+
+\def\coverpage{
+\noheaders
+\topglue 2in
+% \centerline{\bigggsize\bf DVIPSONE - release 0.7.5}
+% \centerline{\bigggsize\bf DVIPSONE - release 0.8}
+% \centerline{\bigggsize\bf DVIPSONE -- release 0.9}
+\centerline{\bigggsize\bf DVIPSONE -- release 1.0}
+\vskip .2in
+% \centerline{\bigsize Copyright {\copyright} 1990--1992 {\Y&Y}. All rights reserved.}
+
+\centerline{\bigsize Copyright {\copyright} 1990--1993 {\Y&Y}, Inc. All rights reserved.}
+
+\vskip 3in
+
+% This is the version for printing with the logo
+
+% \centerline{\hbox to 1.33in{\special{illustration c:/dvitest/y&ylogo}\hfill}}
+\centerline{\hbox to 1.33in{\special{illustration c:/ps/y&ylogo.eps}\hfill}}
+
+% This is the version for showing the logo on screen
+
+% \centerline{\hbox to 1.33in{\showimage{y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+\vskip 1in
+
+\centerline{\bigsize {\Y&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}
+
+\vskip .02in
+
+\centerline{\bigsize 
+% (800) 742--4059 --- 
+(508) 371--3286 (voice)  --- 
+(508) 371--2004 (fax)}
+
+\newpage
+\decreasepageno
+
+\noheaders
+\topglue 2in
+\hbox{ }	% to get blank page
+\newpage
+\decreasepageno
+}
+
+\coverpage 
+
+\noheaders
+
+% \versorightheader={COPYRIGHT {\copyright} 1990--1992 {\Y&Y}}
+\versorightheader={COPYRIGHT {\copyright} 1990--1993 {\Y&Y}, Inc.}
+
+\nsection{Introduction to {DVIPSONE}}
+
+{\DVIPSONE}$^{\smlsize TM}$ produces resolution-independent 
+{\PS}$^{\smlsize TM}$ ({\sc ps}) output from 
+{\TeX}$^{\smlsize TM}$ device-independent ({\DVI}) input.
+The very file used for proofing on a laser printer
+can be sent to a high resolution image setter.
+{\DVIPSONE}'s sophisticated font management techniques 
+ ---  such as {\it partial font downloading}  --- 
+make it possible to run print jobs calling for many fonts, even on
+printers that have  
+% with % limited
+relatively little virtual memory.
+{\DVIPSONE} meets or exceeds the specifications of the draft level-0 
+driver standard announced by the {\TeX} Users Group ({\TUG})
+driver standards committee, 
+except, of course, that {\DVIPSONE} does not normally use bitmapped fonts!%
+% \cfootnote{It {\it is\/} possible, however, to use bitmapped fonts 
+% with {\DVIPSONE}, as explained in Appendix~A.3.} % on `Advanced Topics.'}
+\cfootnote{It {\it is\/} possible to use bitmapped fonts 
+with {\DVIPSONE} --- see Appendix~A.3.} % on `Advanced Topics.'}
+{\DVIPSONE} is simple to install on any IBM PC$^{\smlsize TM}$ 
+or compatible.  %% or PS/2 for that matter
+
+% add more stuff bragging about features here ???
+
+\vskip .15in % \vskip .1in % \vskip .05in
+
+\centerline{\boxit{\hbox{
+Together with {\DVIWindo}, {\DVIPSONE} provides bitmap-free support for {\TeX}!}}}
+
+
+\nsubsection{Quick Start --- Installing DVIPSONE}
+	
+The easiest way to install {\DVIPSONE} is the automatic method.
+
+% \nsubsubsection{Automatic Installation}
+
+If the distribution diskette is in drive {\tt a:}, and the directory you
+wish to install {\DVIPSONE} on is on drive {\tt c:}, % then 
+type:
+
+\vskip .05in
+
+	\verb@a:install a: c:\dvipsone@
+
+\vskip .05in
+
+\noindent 
+If your are installing from a diskette drive other than {\tt a:},
+simply replace both occurrences of {\tt a:} above with the appropriate
+drive letter.
+Similarly, to install to a drive other than {\tt c:}, replace {\tt c:}
+with the appropriate drive letter.
+It is also possible to use a directory name other than {\tt dvipsone}.
+
+The installation procedure copies % all of 
+executable and text files % on 
+from the distribution diskette into the specified directory%
+\cfootnote{Some rarely used files are not % automatically 
+copied by the installation procedure.}. 
+% ({\tt c:\dvipsone} in the example above).
+If this directory does not exist, the installation procedure creates it.
+% requests permission to create it. 
+A few sample outline fonts will % also 
+be copied into subdirectory {\tt pfb} of the specified directory.
+% After copying all of the executable and text files, 
+Some sample Adobe Font Metric ({\AFM}) files are also copied into
+subdirectory {\tt afm}. % of the specified directory.
+The installation procedure then offers to install {\TeX} font metric
+% ({\tt tfm}) 
+files for printer-resident fonts in the subdirectory
+{\tt tfm}. %  of the directory {\tt dvipsone}
+This step may be skipped % in order to save time
+if printer-resident fonts will not be used, 
+or if {\TeX} metric files for them already exist.
+% been copied to some hard disk directory.
+
+% some files are not copied.
+
+% Normally outline fonts would already have been installed.
+
+% \nsubsubsection{Manual Installation}
+
+The manual installation procedure is almost as simple.  
+Create a directory for {\DVIPSONE} using, for example,
+
+\vskip .05in
+
+	\verb@mkdir c:\dvipsone@
+
+\vskip .05in
+
+\noindent Then copy all of the files from the distribution diskette
+into this directory using the {\DOS} {\COPY} command:
+
+\vskip .05in
+
+	\verb@copy a:*.* c:\dvipsone@
+
+\vskip .05in
+
+\noindent
+If desired, subdirectories {\tt pfb}, {\tt afm}, and {\tt tfm} may also
+be established and files from the corresponding subdirectories of the 
+distribution diskette copied into them.
+% The manual installation method comes in handy when
+% a directory other than {\tt dvipsone} is to be used.
+
+\nsubsection{Invoking {DVIPSONE}}
+
+If {\DVIPSONE} is installed on \verb@c:\dvipsone@, it can be called by typing
+
+\vskip .05in
+
+	\verb@c:\dvipsone\dvipsone@
+
+\vskip .05in
+
+\noindent
+It may be convenient to append
+\verb@c:\dvipsone@ to the {\PATH} variable in the {\tt autoexec.bat} file%
+\cfootnote{{\DVIPSONE}'s installation procedure does not attempt to do this
+automatically, since the length of the command search path is limited
+to 127 characters in {\DOS}, 
+and on many systems the {\PATH} variable is already almost that long.}.
+% the maximum permitted length.}. 
+% If you do modify the {\PATH} variable, 
+Then {\DVIPSONE} can be invoked directly using just
+
+\vskip .05in
+
+	\verb@dvipsone@
+
+\vskip .05in
+
+% batch file for calling DVIPSONE ?
+
+\noindent  By the way, if {\DVIPSONE} is called in this way, that is,
+without arguments, it will generate a concise list of the
+command line arguments that it recognizes.
+To see a more detailed listing of the command line arguments, type
+
+\vskip .05in
+
+	\verb@dvipsone -?@
+
+\vskip .05in
+
+\noindent To convert the {\DVI} file {\tt testcase.dvi} 
+to {\PS} form type
+
+\vskip .05in
+
+	\verb@dvipsone testcase@
+
+\vskip .05in
+
+\noindent The output will appear in the current directory under the name
+% as the file 
+{\tt testcase.ps}.  
+To print this file, use the {\DOS} {\PRINT} command or
+the {\DOS} {\COPY} command.
+% or some print spooling program.  
+For example:
+
+\vskip .05in
+
+%  \verb@print testcase.ps@ \quad or \quad \verb@copy testcase.ps PRN:/b@
+\verb@print testcase.ps@ \quad or \quad \verb@copy testcase.ps PRN:@
+
+\vskip .05in
+
+\noindent The output from {\DVIPSONE} can also be sent directly to the 
+printer by using a command line argument:
+
+\vskip .05in
+
+	\verb@dvipsone -d=PRN testcase@
+
+\vskip .05in
+
+\noindent Replace {\tt PRN} in the above with your particular printer port.
+
+It's as simple as that!
+
+
+\nsubsection{Sending Output to the Printer --- DOS PRINT and COPY} %  commands
+
+A few additional notes may be called for regarding transmission of data
+to the printer --- although the issues raised are not specific to {\DVIPSONE}.
+Life is relatively 
+simple if the printer is connected to a parallel port.
+In this case output can be sent directly from {\DVIPSONE},
+or using the {\DOS} {\PRINT} or {\COPY} commands, 
+without any special incantations, except for:
+
+\vskip .05in
+
+	\verb@mode LPT1:,,b@
+
+\vskip .05in
+
+\noindent
+(In versions of {\DOS} before 4.0, the trailing `{\tt b}' should
+instead be a `{\tt p}').
+This command tells the system to wait when the printer is busy 
+(rather than to consider this an error condition).
+% issue the following {\DOS} command:
+The above command may be placed in the {\tt autoexec.bat} 
+file for convenience. 
+Use {\controlbreak} to get out of a busy retry loop.
+
+When the printer is on a serial port, things are not quite that
+simple, because communication parameters and the handshake protocol 
+(flow control) must be set up correctly on both ends.
+Methods for doing this tend to be somewhat device specific, 
+and are described in your printer manual and the documentation for {\DOS}.
+% \cfootnote{
+Problems in printing % output from {\DVIPSONE} 
+almost invariably arise from disagreement between the printer and the
+computer about communications parameters or flow control settings.
+Note, for example, that when the {\DOS} {\PRINT} or {\COPY} commands
+are used to send a file over a serial port, 
+it is assumed that the printer is set for hardware flow control. 
+The same applies to {\DVIPSONE} and most utility programs supplied with
+{\DVIPSONE} when asked to send output directly to a serial port.
+
+Some older printers do not have a parallel port, and do not support
+hardware handshaking on their serial port.
+In this case, send the output of {\DVIPSONE} to a file and then use
+the utility {\SERIAL} (described in Appendix~A.6) 
+to send this file to the printer.
+
+\vskip .05in
+
+\bpar Please read Appendix~A.5 if your printer is connected to a serial
+port, particularly if it does not support hardware flow control.
+% for detailed information about the use of serial ports.
+
+\vskip .05in
+
+\noindent
+When {\DVIPSONE} sends output directly to a printer it ends
+transmission with {\controld}, the {\PS} end-of-job indicator.
+When output is instead directed to a file, the {\controld} is not appended.
+When this file is later sent to the printer using the {\DOS} {\COPY}
+command it is desirable to add a {\controld} at the end.  
+This can be accomplished by {\COPY}ing the file {\tt controld.txt} to
+the printer.  
+This file can be appended to the {\PS} file using `{\tt +}' as in:
+
+\vskip .05in
+
+%	\verb@copy testcase.ps+c:\dvipsone\controld.txt PRN:/b@
+	\verb@copy testcase.ps+c:\dvipsone\controld.txt PRN:@
+
+\vskip .05in
+
+% work around - send to file instead.
+
+\noindent
+Should it become desirable to stop %  interrupt
+{\DVIPSONE} while it is processing a {\DVI} file, type {\controlc}
+(On rare occasion, when {\DVIPSONE} is sending output directly to a
+printer, it may be necessary to type {\controlbreak} instead).
+% If the output was directed to a printer it may be advantageous to send
+% an end-of-file indication (see footnote) % to the printer 
+% to avoid having to wait for the time-out period before sending the next
+% print job.  NOT ANYMORE !
+% If the output went to a file instead, that file will be incomplete and
+% should perhaps be deleted to avoid confusion. NOT ANYMORE !
+
+
+\nsubsection{Setting up the Environment}
+
+While it is not necessary to set environment variables to use
+{\DVIPSONE}, it can be convenient to do so.
+
+{\DVIPSONE} has built-in defaults for where it expects to find such
+things as outline font files.
+These defaults can be overridden by command line arguments
+(see section~2.1).
+This % Using such command line arguments 
+can become tedious if it has to be done every time {\DVIPSONE} is invoked. 
+It may then % In this case it may 
+be more convenient to use environment variables to override the
+built-in defaults. 
+For example, {\DVIPSONE} normally expects to find outline fonts in either
+
+\vskip .05in
+
+	\verb@c:\cm@ \quad\quad or \quad\quad \verb@c:\psfonts@ 
+\quad\quad or \quad\quad \verb@c:\dvipsone\pfb@
+
+\vskip .05in
+
+\noindent
+If the outline fonts are installed somewhere else, you can use the
+`{\tt f}' command line argument to tell {\DVIPSONE} where. 
+If the outline fonts are in the directory \verb@d:\myfonts@, for
+example, then call {\DVIPSONE} as follows:
+
+\vskip .05in
+
+	\verb@dvipsone -f=d:\myfonts -d=PRN testcase@
+
+\vskip .05in
+
+\noindent
+If the command line argument has to be used this way often,
+it may be useful to make up a suitable batch file.
+
+An alterative is to set the environment variable
+{\tt PSFONTS}, by typing
+
+\vskip .05in
+
+	\verb@set PSFONTS=d:\myfonts@
+
+\vskip .05in
+
+\noindent % For convenience 
+Commands for setting environment variables may be placed in %   the
+{\tt autoexec.bat},   %  file
+so that they will be executed automatically when the machine is 
+powered up or rebooted.
+
+Search paths will be described in more detail in section~2.4.
+Additional environment variables will be discussed in section~2.5. % later
+
+\nsubsection{Where to obtain Adobe Type~1 Outline Fonts}
+
+{\DVIPSONE} works with Adobe Type~1 outline fonts (in 
+Adobe Type Manager$^{\smlsize TM}$ ({\ATM}) compatible format).
+This means that one can use any of over 12,000 fonts % March 1992
+available in that form from 30 vendors, including over 1300 % June 1991
+in the Adobe Font Library$^{\smlsize TM}$ alone.
+% as well as any font in this form provided by other vendors. 
+And one can, of course, use printer-resident % Type~1 (as well as Type~5) 
+fonts. 
+
+\quad\quad
+For use with {\TeX} you most likely will want to use Computer Modern
+({\CM}) fonts in Adobe Type~1 form. %
+The Blue Sky Research Computer Modern outline font set
+is available from {\Y&Y}. % in Adobe Type~1 form. % for the PC from:
+
+{\Y&Y} also carries the {\LaTeX}+{\SliTeX}
+font set % (line, circle and symbol fonts) 
+as well as the Euler font set,
+consisting of the Euler fonts and the mathematical symbol fonts
+({\tt msam10}, {\tt msbm10}, and {\tt euex10})
+in the {\AMS} font collection.
+% --- all in Adobe Type~1 outline form.
+Additional {\TeX}-compatible font families are also available,
+%  from {\Y&Y}
+including the Lucida{\registered}Bright + LucidaNewMath font set, 
+which presently is the only font set in Adobe Type~1 form
+that can replace Computer Modern when typesetting mathematical material%
+\cfootnote{Lucida is a registered trademark of Bigelow \& Holmes Inc.}. 
+
+% 92/March/14
+
+% \noindent
+{\DVIPSONE} can use fonts in the compact printer font binary form 
+({\PFB}), as well as in printer font ASCII form ({\PFA})%
+\cfootnote{{\DVIPSONE} can even use font files in the form used on the
+Macintosh$^{\smlsize TM}$ --- as 
+discussed in Appendix~A.10.}. % on `Advanced Topics.'}. % ???
+% {\DVIPSONE can use Type 3 bitmap fonts derived from PK}
+
+Note that while {\DVIPSONE} normally only requires the printer fonts,
+discussed above,
+{\TeX} needs to have font metric information in the form of {\TeX} font
+metric ({\TFM}) files.
+Such files are, of course, supplied with {\TeX} % , at least 
+for the Computer Modern font family.
+To use fonts other than Computer Modern, suitable font metric files
+have to be created.
+{\TeX} font metric files are supplied with {\DVIPSONE} for the 35 most
+common printer-resident outline fonts.
+In addition, a utility program called {\AFMTOTFM},
+supplied with {\DVIPSONE},
+can be used to create {\TeX} font metric ({\TFM}) files from Adobe font
+metric files ({\AFM}), % yes, but information is not equivalent
+as described in Appendix~A.2. % later
+Adobe font metric files are normally supplied with fonts in 
+Adobe Type~1 format%
+\cfootnote{AFM files for Adobe fonts may also be obtained 
+% on the Internet from {\tt ps-file-server@adobe.com}
+via anoynmous FTP from directory {\tt pub/Adobe/AFMFiles} 
+at {\tt ftp.mv.us.adobe.com} % [130.248.1.4]
+on the InterNet,
+or from {\tt ps-file-server@adobe.com}.}.
+
+% at least for fonts in the Adobe Type Library
+
+\nsection{How to use {DVIPSONE}}
+
+The next subsections describe various features of {\DVIPSONE} in more detail.
+
+% tighten up space here ?
+
+\nsubsection{Command Line Flags and Arguments Defined}
+
+{\DVIPSONE} is controlled by
+command line flags and arguments --- some of which have already been mentioned.
+A % detailed 
+listing of command line flags and arguments can be obtained by typing %
+\cfootnote{Less frequently used command line flags are not shown, in
+order that the list be less than 25 lines long, and so fit on the screen
+without scrolling.} 
+
+\vskip .05in
+
+\quad\quad	\verb@dvipsone -?@
+
+\vskip .05in
+
+\noindent 
+Command line flags and arguments are preceded by `{\tt -}'; the first
+argument {\it not\/} preceded by `{\tt -}'
+% is {\it not\/} a command line flag or argument 
+is taken to be the name of the first {\DVI} file to be processed.
+The difference between command line flags and arguments is that a
+flag is a letter that stands on its own, while an argument is a letter
+followed by `{\tt =}' and a name or a string of characters. 
+For example, to increase the verbosity of the output of {\DVIPSONE},
+one can use the command line flag `{\tt v}';
+while redirection of the output to the second parallel port
+can be forced using the command line argument `{\tt d=LPT2}'.
+%
+% command line flags and commands are case sensitive
+%
+To do both while processing the file {\tt testfile.dvi}, type:
+
+\vskip .05in
+
+	\verb@dvipsone -v -d=LPT2 testfile@
+
+\vskip .05in
+
+% \cfootnote{The printer should be set for hardware flow control
+% (\DTRDSR) when output is sent to a serial port is directly from
+% {\DVIPSONE} or using the {\DOS} {\COPY} command.}.
+
+% following is all new - 1992/March/14
+
+% Command line flags {\it toggle} the corresponding settings in {\DVIPSONE}. 
+% Hence they do not have any effect if they appear an {\it even} 
+% number of times on the command line.
+
+\noindent
+It is possible to avoid repeated typing of commonly used command line
+arguments and command line flags by storing them in a 
+`command line file' --- called {\tt dvipsone.cmd} --- in the
+{\DVIPSONE} directory. 
+The format of the file is the same as that of the command line.
+Actual command line arguments override corresponding arguments
+in the command line file. 
+
+Command line flags, on the other hand, simply toggle the corresponding
+settings in {\DVIPSONE}.
+Hence they do not have any effect if they appear an even
+number of times on the command line.
+This makes it possible to cancel the effect of flags
+in the command line file by repeating them on the command line itself.
+
+A command line file is particularly handy when {\DVIPSONE} is called
+from {\DVIWindo}, since there is no direct way to control the command
+line in this case (although {\DVIWindo} does set up the output
+destination, the page ranges and the {\DVI} file name).
+
+\nsubsection{Multiple DVI files and Wildcard Arguments}
+
+\noindent
+Any number of {\DVI} files may be processed in one invocation of
+{\DVIPSONE} --- the same command line flags and arguments will apply 
+to all of the files.
+
+Wild card arguments are permitted when specifying {\DVI} files.
+So, for example, to process all {\DVI} files in directory 
+\verb@c:\myfiles@ whose names start with the word `{\tt chapter}', type
+% \cfootnote{Note that in this case the `{\tt .dvi}' extension is needed
+% so that {\DOS} will provide the full list of files to {\DVIPSONE}.  
+% If files are specified {\it without\/} use of wildcards, the extension
+% may be omitted.} 
+
+\vskip .05in
+
+	\verb@dvipsone c:\myfiles\chapter*.dvi@
+
+\vskip .05in
+
+\noindent
+(Note that in this case the `{\tt .dvi}' extension is needed so that
+{\DOS} will provide the full list of files to {\DVIPSONE}.  If files are
+specified {\it without\/} use of wildcards, the extension may be omitted.)
+
+% Mac Textures files  - see later
+
+\nsubsection{Detailed List of Command Line Flags}
+
+% Currently 
+{\DVIPSONE} understands the following command line {\it flags\/}:
+
+\vskip .05in
+
+\beginbullets
+
+% \ftpar{{\tt ?}} Query. Give detailed list of command line flags.
+
+\ftpar{{\tt v}} Verbose mode. List font file names % as they are processed
+and {\DVI} file pages as they are being processed
+(In the default `non-verbose' mode, a `*' is  used to denote each font
+file, while a `.' is used to denote each page that is processed).
+
+\ftpar{{\tt r}} Reverse order.  Print pages in reverse order 
+(Normally pages are printed in the order in which they appear in the
+DVI file). 
+
+\ftpar{{\tt g}} Odd pages only. Print only odd numbered pages.  
+This is useful for duplex (two-sided) printing. 
+
+\ftpar{{\tt h}} Even pages only. Print even numbered pages only, 
+in reverse order.
+% This is  useful for duplex printing.  
+It is assumed that page $2n$ is to be printed on the back of page
+$(2n-1)$.
+% (as is traditional in the publishing industry).
+
+\ftpar{{\tt q}} Quiet mode. Suppresses messages regarding font substitution
+and \verb@\special@'s that are not recognized.  
+(In some cases a flood of such message may bury other, possibly more
+important, output). 
+
+\ftpar{{\tt z}} Force output to conform to encapsulated {\PS}
+({\EPS}) specifications.
+% \cfootnote{Single page output produced by {\DVIPSONE} is basically
+% in a form suitable for inclusion as an illustration in another document.
+% Setting this flag suppresses % possible 
+% output (such as setting of {\tt jobname}, and selection of paper type) 
+% that is not compatible with the {\EPS} file format.}.
+
+\endbullets
+
+\vskip .05in
+
+Single page output produced by {\DVIPSONE} is already almost 
+in a form suitable for inclusion as an illustration in another document.
+Setting this flag suppresses some 
+output (such as setting of {\tt jobname}, and selection of paper type) 
+that is not compatible with the {\EPS} file format.
+
+In addition, there are also a few less frequently used command line flags:
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt n}} New optimization. Use a font encoding scheme that 
+typically saves 10\% - 15\% of file space (and hence file transmission time), 
+and also improves across-job font-caching for certain fonts%
+\cfootnote
+{{\sc warning:} The output produced when the `{\tt n}' flag is used may not
+work with some `clone' {\PS} interpreters, and with some
+`synthetic' fonts.}. % (such as Helvetica-Narrow), 
+% and when using composite characters on a `non-clone' interpreter.}.
+
+% uses dviencoding if possible - not if composite characters in use
+
+\ftpar{{\tt N}} Potentially unsafe optimization.
+Do not automatically include base characters and
+accents in a font with composite characters.
+This optimization reduces output file size considerably, 
+but can only be used if the file does not call for accented
+characters that occur directly in the font
+(however, accented characters constructed using {\TeX}'s \verb@\accent@
+will work correctly)%
+\cfootnote
+{{\sc warning:} Do not use the `{\tt n}' or `{\tt N}' command line
+flags when portability of the resulting {\PS} file is paramount.}.
+
+% 'N' suppresses base and accented extraction for accented characters
+
+\ftpar{{\tt Z}} Keep comments in inserted {\EPS} files 
+({\DVIPSONE}'s default is to strip out lines that start with a single
+`{\tt \%}')% 
+\cfootnote{{\PS} level II files may contain ASCII85 encoded
+material, where a line starting with `{\tt \%}' is not
+necessarily a comment.}.
+
+\ftpar{{\tt k}} Assume that {\it all\/} fonts called for are printer
+resident (see section 2.6.3). 
+In this case % it is assumed that the
+a font name used in {\TeX} is the {\PS} font name of the font.
+There is no translation from font file name to {\PS} font name.
+% The font name can be up to 32 characters in length.
+% It is not possible to reencode the font on the fly.
+% The BSR CM fonts use all uppercase FontNames.
+% Use \font\roman=CMR10 if desired...
+
+\ftpar{{\tt u}} Usage output. Print information on
+virtual memory ({\VM}) usage and page rendering time at the head of each page.
+% Total includes permanent junk
+
+\ftpar{{\tt j}} % Allow inclusion of verbatim {\PS}
+Allow insertion of verbatim {\PS}, and
+treat certain unrecognized specials as verbatim {\PS}.
+% (See warnings in section~3.3 regarding use of raw {\PS}).
+% to be inserted verbatim. % also `j' allow verbatim
+
+\endbullets
+
+\vskip .05in
+
+(See warnings in section~3.3 regarding use of raw {\PS}).
+
+\nsubsection{Detailed List of Command Line Arguments}
+
+% Currently 
+{\DVIPSONE} understands the following command line {\it arguments\/}:
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt d}} Destination. Output will be sent to the designated
+device ({\tt PRN}, {\tt LPT1}, {\tt LPT2}, {\tt LPT3},
+{\tt AUX}, {\tt COM1}, {\tt COM2}
+or a file).
+If this argument is omitted, the output will be sent to a file in the
+current directory with the same name as the {\DVI} file, but with file
+extension {\tt .ps}.
+
+\endbullets
+
+\vskip .05in
+
+Another useful destination argument is {\tt NUL}, which makes it 
+possible to run a {\DVI} file through {\DVIPSONE} without
+producing printer {\it or\/} file output --- a quick way to determine
+whether all the required fonts and included illustrations can be found
+by {\DVIPSONE}. 
+% This can save paper...
+% It is also a way of checking how much disk I/O slows things down.
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt b}} Begin page. Start of a range of pages to print.
+% Do not print pages with numbers lower than the given argument. 
+
+\ftpar{{\tt e}} End page. End (inclusive) of a range of pages to print.
+% Do not print pages with numbers higher than the given argument. 
+
+\endbullets
+
+\vskip .05in
+
+% You can specify either beginning or ending pages, or both.
+Several page ranges may be given, 		% /* NEW */
+in which case `{\tt b}'s and `{\tt e}'s must alternate;
+although the sequence may start and end on either a `{\tt b}' or an `{\tt e}'.
+If only a beginning page is specified, then everything from that page
+on is printed.
+Conversely, if only an ending page is specified, 
+then everything up to (and including) that page is printed.
+% Either beginning or ending pages or both may be specified.
+% It is not necessary to specify both beginning and ending page numbers.
+The specified page ranges above are compared with {\TeX}'s 
+{\tt counter[0]}, normally used for the page number.
+Sometimes a {\DVI} file contains several pages with the same values for
+this `page number'.  
+In this case it may be more convenient to % instead 
+give page ranges in
+terms of the page count in the {\DVI} file (thus ignoring {\tt counter[0]}).
+To do this, use the upper case versions of the above command line
+arguments, that is `{\tt B}' \& `{\tt E}'%  % and
+\cfootnote{Page ranges may be specified {\it either}
+using the lower case letters {\it or} the upper case letters --- the two
+forms may not be mixed.}.
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt m}} Magnify. Scale the output by the number given as the argument.
+The argument need not be an integer (the default is 1.0). % 1992/July/16
+
+\ftpar{{\tt o}} Orient.  Rotate the output counter-clockwise by an
+angle in degrees specified by the argument.
+(To obtain `landscape' printing, specify plus or minus $90\degrees$).
+
+\ftpar{{\tt x}} Shift in $x$.  Move the output to the right by an amount
+in points (72 per inch) specified by the argument.
+
+\ftpar{{\tt y}} Shift in $y$.  Move the output down by an amount
+in points (72 per inch) specified by the argument.
+
+\endbullets
+
+\vskip .05in
+
+Scaling and rotation take place about the center of the page. % format.
+Shifting can be used to deal with paper sizes other than the
+standard ones (although it is possible to % actually 
+specify the papertype using the command line argument `{\tt l}'). % later
+
+% scaling and rotation before or after shift ?
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt c}} Copies. Print the specified number of copies of each page.
+Copies of multi-page documents will not be collated. % of course
+
+\endbullets
+
+\vskip .05in
+
+Use the upper-case version of this command to obtain collated copies
+(this will, however, produce a larger {\PS} file that will take
+longer to print).
+
+% \nsubsubsection{Search Paths}
+
+The next few command line arguments allow specification of {\DOS} 
+`search paths' for various files used by {\DVIPSONE}.  
+A search path consists of several `path names' separated by 
+`;'s % semicolons 
+(there should not be any spaces in a search path specification).
+A path name in turn is a drive letter followed by `:' and a sequence of
+directory names separated by `\verb@\@'s. 
+So, for example, a search path for font files might be
+% \cfootnote{Note that there should not be any spaces in a search path
+% specification.}
+
+
+\vskip .05in
+
+	\verb@c:\cm;c:\psfonts;c:\dvipsone\pfb@
+
+\vskip .05in
+
+\noindent
+% (Note that there should not be any spaces in a search path specification).
+To see what {\DVIPSONE} currently uses as defaults for various paths,
+use the query command line flag `{\tt ?}'.
+% Remember that the built-in defaults may be overridden by environment
+% variables.
+% Note that the 
+Note that output provided by {\DVIPSONE} in response to this query
+already takes into account any environment variables that may have
+overridden built-in defaults. 
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt f}} Font search path. Specifies where printer fonts ({\PFB}
+or {\PFA}) may be found.
+
+\ftpar{{\tt i}} Illustration search path.  
+Specifies where Encapsulated {\PS} ({\EPS}) files to be inserted
+using {\TeX}'s \verb@\special@ may be found.
+
+\endbullets
+
+\vskip .05in
+
+%% old version: 
+% If no path is specified for illustrations, complete filenames given in
+% the {\DVI} file are used. 
+% If a path {\it is\/} specified, the pathname is stripped off the
+% file names given in the {\DVI} file, and the result appended to the
+% illustration pathname.
+%% new version:
+If a fully qualified file name is given for an inserted illustration, 
+then an attempt will be made to open the file using that name.
+If this fails, and an illustration path exists, then the pathname is
+stripped off the file name given in the {\DVI} file, and the result
+appended to each of the paths in the illustration pathname in turn.
+If this also fails, then the file is searched for in the directory from
+which the {\DVI} file was read --- and finally in the current directory.
+% If the extension is omitted, then the extension \verb@eps@ is used.
+
+The rationale here is that {\DVIPSONE} may very well be running on a
+computer other than the one on which {\TeX} was run to create the {\DVI} file.
+This means that the directory structure is % most likely 
+not the same as it was when the {\DVI} file was created.
+The above convention makes it easy to deal with this situation.
+
+% \nsubsubsection{Font Metric Files}
+
+{\DVIPSONE} gets all the font metric information it needs from the
+printer font files.
+% In the rare case that such
+This, by the way, is a major advantage, since this prevents all too 
+common disasters resulting from mismatches between the {\TFM} file 
+used by {\TeX} when producing the {\DVI} file, and the {\TFM} file used by
+the {\DVI} processing program. % 1992/Macrh/14
+%
+When a printer font file cannot be found, however, {\DVIPSONE} must obtain
+metric information elsewhere for use with a substitute font.
+{\DVIPSONE} can use three other sources of metric information, given by
+files on the following search paths:
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt t}} {\TFM} search path.  Indicates where {\TeX} font metric
+files % ({\TFM}) 
+may be found.
+
+\ftpar{{\tt a}} {\AFM} search path.  Indicates where Adobe font metric
+files % ({\AFM}) 
+may be found.
+
+\ftpar{{\tt p}} {\PFM} search path.  Indicates where Micro\-Soft ({\MS})
+Windows font metric files % ({\PFM}) 
+may be found.
+
+\endbullets
+
+\vskip .05in
+
+If {\DVIPSONE} is run on the same computer system as
+that used to produce the {\DVI} file, 
+then {\TFM} files must exist for the fonts used,
+since {\TeX} had to have access to them.  
+But {\DVIPSONE} may very well be running on another system,
+% But this is not always the case, 
+so it is useful to allow for other
+sources of font metric information, particularly for fonts other than
+Computer Modern.
+{\DVIPSONE} first tries to find a {\TFM} file, because {\TFM} files are
+compact and consequently can be read quickly.
+If this fails, it tries to find an {\AFM} file.
+{\DVIPSONE} only looks for {\PFM} files if it can't find {\TFM} 
+or {\AFM} files%
+\cfootnote{
+Note that in most cases {\DVIPSONE} doesn't need font metric files at
+all, and when it does, only {\it one\/} of the possible forms need be
+present.}. 
+% because {\PFM} files specify character widths with slightly lower
+% resolution than {\TFM} files%
+% contain horizontal character escapements (widths) that have been rounded to 
+% multiples of $1/1000$-th of the design size.
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt s}} Substitution. Use the specified font substitution file.
+A variety of information about fonts may be found in this file.
+See section~2.6 for a detailed description of the font substitution process.
+
+\endbullets
+
+\vskip .05in
+
+Font substitution files (and any encoding vectors specified therein)
+are first searched for in the same directory as the {\DVI} file being
+processed, and if not found there, in the home directory of {\DVIPSONE}.
+This makes it convenient to override a general purpose font
+substitution file in the {\DVIPSONE} directory with a customized one of the
+same name in the directory of the {\DVI} file being processed.
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt l}} Paper type. Use the specified papertype.
+% Currently 
+Acceptable values are {\tt letter}, {\tt legal}, {\tt ledger},
+{\tt a4}, {\tt b5}, {\tt b4}, {\tt quarto}, {\tt executive}, and {\tt note}
+% give sizes? % but commands to printer not given ?
+(The default is {\tt letter} format on {\PS} printers).
+
+\endbullets
+
+\vskip .05in
+
+Note that {\PS} commands for paper size specification 
+% (and tray selection)
+tend to be device dependent.
+Sometimes the desired effect can be obtained instead by specifying
+suitable $x$ and $y$ offsets%
+\cfootnote{When papertype is specified, code is
+emitted that prevents the output from conforming to the {\EPS} file
+specification, and so it should not be used unmodified as an inserted 
+illustration in another document --- see command line flag `{\tt z}'.}. 
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt w}} Insert the specified {\PS} prolog file after
+{\DVIPSONE}'s own preamble 
+(See warnings in section~3.3 regarding use of {\PS} prolog files).
+% can now specify several in comma separated list % 1993/Nov/15
+
+\endbullets
+
+% \vskip .05in
+
+\nsubsection{Detailed List of Environment Variables}
+
+% The following 
+Environment variables can be used to control {\DVIPSONE}'s behavior:
+
+% these where ftpar's
+
+\vskip .05in
+
+\beginbullets
+
+\vtpar{{\tt PSFONTS}}
+Specifies the search path for font files 
+(see also `{\tt f}' command line argument).
+
+\vskip .05in
+
+\vtpar{{\tt PSPATH}} 
+Specifies the search path for included illustration ({\EPS}) files 
+(see also `{\tt i}' command line argument).
+
+\vskip .05in
+
+\vtpar{{\tt TFMPATH}}
+Specifies the search path for {\TeX} font metric ({\TFM}) files.
+(see also `{\tt t}' command line argument).
+
+\vskip .05in
+
+\vtpar{{\tt AFMPATH}}
+Specifies the search path for Adobe font metric ({\AFM}) files.
+(see also `{\tt a}' command line argument).
+
+\vskip .05in
+
+\vtpar{{\tt PFMPATH}}
+Specifies the search path for Micro\-Soft Windows font metric 
+({\PFM}) files. 
+(see also `{\tt p}' command line argument).
+
+\vskip .05in
+
+\vtpar{{\tt SUBPATH}}
+Specifies the search path for font substitution files.
+
+\vskip .05in
+
+\vtpar{{\tt VECPATH}}
+Specifies the search path for font encoding vector files.
+
+\vskip .05in
+
+\vtpar{{\tt PREPATH}}
+Specifies the search path for the preamble file.
+
+\endbullets
+
+\vskip .05in
+
+(There are no command line arguments equivalent to the last
+three infrequently used % , less frequently used, 
+environment variable settings).
+
+%% also discuss {\tt w} for user prolog file ?
+
+%% also discuss {\tt j} for raw postscript insertion ?
+
+%% also discuss {\tt n} for supression of dviencoding trick ?
+
+\vskip 0.05in
+
+\beginbullets
+
+\bpar
+Note that environment variable settings override built-in defaults, and
+command line arguments in turn override environment variable setting.
+% both
+
+\endbullets
+
+\vskip 0.05in
+
+The following example illustrates a set of {\DOS} commands for setting up
+the environment for {\DVIPSONE} installed on drive {\tt d:}
+
+\vskip 0.05in
+
+\ipar
+\verb@set psfonts=d:\cm;d:\psfonts;d:\dvipsone\pfb@\hfill\linebreak
+\verb@set tfmpath=d:\tex\fonts;d:dvipsone\tfm@\hfill\linebreak
+\verb@set subpath=d:\dvipsone@\hfill\linebreak
+\verb@set vecpath=d:\dvipsone@\hfill\linebreak
+\verb@set prepath=d:\dvipsone@ % \hfill\linebreak
+
+\vskip 0.05in
+
+\noindent
+It is typically {\it not\/} necessary to explicitly specify these
+paths, since {\DVIPSONE} has reasonable defaults, 
+and % because {\DVIPSONE} 
+also looks in the directory from which it is invoked, as well as
+% fontsubpath, procsetpath, vecpath
+the directory containing the {\DVI} file, as appropriate. 
+% for some of the required files, 
+% procsetpath, fontsubpath ?
+% as discussed earlier.
+If it {\it is\/} necessary to set up these environment variables, then
+it may be best to include these commands in the {\tt autoexec.bat} file
+so that they are invoked automatically when the computer is powered up
+or rebooted. 
+
+\nsubsection{Font Substitution Files}
+
+Font substitution files can be used for a variety of purposes.
+Each line in such a file
+% Each font substitution is specified by a line 
+contains the name of a font for which a substitution is desired,
+followed by the name of the font to be used in its place.
+These two names may be followed by one or more substitution control flags:
+% each of which starts and ends with an asterisk (*):
+
+\vskip 0.05in
+
+{\tt *reside*}, {\tt *remap*}, {\tt *force*}, or {\tt *alias*}.
+
+\vskip 0.05in
+
+\noindent
+The exact interpretation of the first two fields in each 
+line depends on these flags
+(Note: both names are case sensitive). % 1993/Oct/1
+Not all combinations of flags make sense. %  --- or are allowed.
+Comment lines, starting with `{\tt \%}', may also occur.
+% A font substitution file may also contain comments --- that is, lines
+% starting with a percent sign ({\tt \%}).
+
+\nsubsubsection{Missing Fonts}
+
+The simplest case is that of a straightforward substitution of one font
+for another in case no file can be found for the original font.
+If, for example, the set of outline fonts available does not contain
+{\tt cmr9}, but does contain {\tt cmr10}, then the substitution file
+should contain the line
+
+\vskip .05in
+
+\verb@cmr9	cmr10@
+
+\vskip .05in
+
+\noindent
+There are only small differences between outline fonts that have design
+sizes that are one point apart. 
+So {\tt cmr10} scaled to 9 point will look very similar to {\tt cmr9}.
+Note that a font metric file must % {\it must\/} %, however, 
+be available for the {\it original\/} font %  that is being substituted for
+so that characters can be placed correctly on the page,
+since the substitute font will % typically 
+have different character spacings.
+
+A simple font substitution file, {\tt standard.sub}, supplied with
+{\DVIPSONE}, provides for substitution of 10~point for 9~point fonts,
+7~point for 8~point and 6~point fonts in the Computer Modern family. 
+% This set of substitutions is also the default used by {\DVIPSONE} when no
+% substitution file is specified.
+This substitution file is used by {\DVIPSONE} when no substitution file
+is specified.
+Note that the font substitutions described here are {\it only\/}
+invoked if a file cannot be found for a particular font.
+
+\nsubsubsection{Forced Substitution}
+
+% Note that {\DVIPSONE} normally will {\it only\/} consider a
+% substitution after it discovers that there is no font file for the
+% font specified in the {\DVI} file. 
+If the substitution is to be {\it forced\/}, even when a font
+file exists for the specified font, the flag {\tt *force*} should 
+appear on the font substitution line, as in
+
+\vskip .05in
+
+\verb@cmr9	cmr10	*force*@
+
+\vskip .05in
+
+\noindent
+One possible motivation for forcing substitutions is a desire to
+reduce the size of the output {\PS} file, 
+as described in Appendix~A.8. % ???
+For an example, see the file {\tt force.sub}.
+
+\nsubsubsection{Printer-Resident Fonts}
+
+To indicate a printer-resident font, add the substitution flag {\tt *reside*}
+to a line containing the font name used in the {\TeX} file followed by the
+{\PS} {\tt FontName} used on the printer.  
+Here is an example:
+
+\vskip .05in
+
+\verb@tir	Times-Roman	*reside*@
+% \verb@mtr	TimesNeWRoman	*reside*@
+
+\vskip .05in
+
+\noindent
+A printer resident font may be one that exists in the printer's ROM or
+on its hard disk.
+It may also be one manually downloaded to the printers virtual
+memory (see next subsection and Appendix~A.1).
+
+% presently *reside* does not imply *force* ...
+
+Unfortunately, what a printer-resident font is called in {\TeX}  
+depends on what {\TeX} macros you are using, 
+and how your {\TFM} files are set up.%
+% \cfootnote{There is a font naming scheme proposed by Karl Berry that
+% may eventually come into wide-spread use.}.
+
+\vskip 0.05in
+
+\beginbullets
+
+\bpar We hope that the naming of non-CM fonts in {\TeX} will be
+standardized soon!
+
+\endbullets
+
+\vskip 0.05in
+
+The file {\tt resident.sub} contains substitutions
+(using the font file name abbreviations advocated by Adobe Systems)
+% (using one particular naming convention)
+for the 35 fonts commonly found on Adobe {\PS} printers. %  today.
+Font metric files corresponding to fonts remapped to `TeX text' encoding,
+have an `{\tt x}' appended to the abbreviated font name 
+(see sections~2.6.5 and~A.2). 
+Font metric files set up for Adobe StandardEncoding 
+do not have the extra `{\tt x}'.
+Additional examples of font substitution files may be found in other
+files with extension {\tt .sub}. 
+
+\nsubsubsection{Downloading Fonts --- Adobe Type~1 Fonts} 
+%  --- using PCSEND and PSDOWN ???
+
+One way of using non-resident fonts in Adobe Type~1 form is to download
+them `permanently' to the printer's virtual memory ahead of time and
+to treat them from then on as if they were printer-resident fonts.
+That means that such fonts should appear in the font substitution file
+with the flag {\tt *reside*}
+so that {\DVIPSONE} can associate the font name used by {\TeX} with the
+{\PS} name used by the font in the printer.
+
+Manually downloading fonts is, however, generally {\it not\/} 
+recommended, since it makes it impossible to use more than a handful of
+fonts in any one print job, and also makes it necessary to reboot the
+printer to clear its virtual memory of `permanently' downloaded fonts
+when space is needed for a different set of fonts.
+Typical fonts in Adobe Type~1 form require from 20 to 60k-bytes of 
+virtual memory --- and it is not uncommon for {\TeX} {\DVI} files to call
+for 30 or more fonts.
+% and so only a relatively small number will fit
+%
+It is usually better % The preferred method is 
+to let {\DVIPSONE} manage % `automatically' download printer fonts as needed
+printer fonts.  
+% Note that 
+{\DVIPSONE} uses special techniques to conserve printer memory,
+including {\it partial font downloading}, which make it possible to run
+even large print jobs on printers with limited virtual memory.
+
+Should it become necessary to download a font, despite what has been
+said above, use Adobe's {\tt pcsend} for a printer using a parallel
+connection, or Adobe's {\tt psdown} for a printer on a serial connection%
+\cfootnote{The downloaders {\tt pcsend} and {\tt psdown}
+come % are supplied 
+with fonts in the Adobe Font Library.}.
+It is also possible to download font files using the utility program 
+{\DOWNLOAD} supplied with {\DVIPSONE}. % expand - arguments ?
+For further details see Appendix~A.1. % on `Advanced Topics.' % later
+
+\nsubsubsection{On-The-Fly Remapping of Font Character Encoding}
+
+{\DVIPSONE} may be asked to remap the relationship between the character
+code used in {\TeX} (number between 0 and 255) and the character name
+in the font.  
+Such remapping is indicated by the substitution file flag 
+{\tt *remap*}, optionally followed by the name of an encoding vector.
+Most printer-resident fonts use Adobe's Standard Encoding, 
+which agrees with the encoding used for {\TeX} text fonts
+in positions used for ordinary printable ASCII characters, 
+but not in positions used for `special' characters 
+(such as the ligatures `fi' and `fl').
+It is therefore sometimes convenient to remap the character set in a font%
+\cfootnote{Remapping is more important when using
+% particularly helpful when using older implementations of 
+older implementations of {\TeX} (before release 3.0),
+since ligatures appear in character positions above 128
+in the Adobe Standard Encoding vector,
+and older versions of {\TeX} % {\TFM} files ?
+were limited to fonts with a maximum of 128 characters.}.
+%
+The remapping is specified by an encoding vector file.
+Each line in such a file contains a character code number followed by a
+character name. 
+Comment lines, starting with `{\tt \%}', may also occur.
+% An encoding vector file may contain comments --- that is, lines
+% starting with a percent sign ({\tt \%}).
+
+%\indent
+\quad\quad 
+An example of an encoding vector file is {\tt textext.vec},
+which gives the encoding for roman
+(as well as bold extended and sans serif)
+fonts in the Computer Modern family.
+This encoding is the default used by {\DVIPSONE} when remapping
+is called for using the {\tt *remap*} flag, but no encoding vector % file
+is specified. 
+The encoding vector {\tt texital.vec} for italic fonts 
+% (but not for slanted)
+is very similar --- it differs only in that `{\tt sterling}' replaces 
+`{\tt dollar}'.
+% appears in {\tt textext.vec}.
+For additional examples, see 
+% {\tt texitali.vec} and {\tt typewrit.vec}, and
+other files with extension {\tt .vec}.
+
+The utility of remapping, of course, is not confined to printer-resident
+fonts, since Adobe Type~1 fonts may be used that are not printer
+resident.  
+If a non-resident font needs to be remapped, 
+then it also requires the {\tt *remap*}
+flag on the corresponding line in the font substitution file. 
+For example:
+
+\vskip .05in
+
+\verb@baskit  nbix  *remap*  texital@
+
+\vskip .05in
+
+\noindent
+It is helpful to adopt some systematic convention to help distinguish
+{\TFM} files for remapped fonts from {\TFM} files for the `native'
+% unadulterated
+versions. 
+The auxiliary program {\AFMTOTFM}, described in Appendix~A.2,
+adds the letter `{\tt x}' to the file name when the font has been remappped
+Note that this does not, however, 
+tell one {\it which} %  what particular % exactly 
+encoding vector was used%
+\cfootnote{A {\TFM} file produced using {\AFMTOTFM} contains a short
+descriptive name of the encoding.
+This information is copied from the first line of the encoding vector file,
+where it follows the word `{\tt Encoding:}'.},
+
+% mention `Encoding: ... ' in files ?
+
+To use any font, {\TeX} needs to have an appropriate {\TFM} file.  
+The same encoding vector file 
+(as appears in the font substitution file used by {\DVIPSONE})
+should be specified when this font
+metric file is created using {\AFMTOTFM}
+(see Appendix~A.2 for details). % later
+
+
+\nsubsubsection{Aliasing Font Names}
+
+Sometimes a {\DVI} file calls for a font under a name different from that
+used for naming the file on the computer system running {\DVIPSONE}.
+In this case the font substitution flag {\tt *alias*} comes in handy.
+Suppose, for example, that a {\DVI} file calls for {\tt manfnt}, when only
+the file {\tt logo10} is available%
+\cfootnote{The font {\tt manfnt} contains special characters used in
+the {\TeX} book, such as the `dangerous bend' symbol, while 
+{\tt logo10} contains the subset of these characters used for the word 
+{\METAFONT}.}. 
+% manfnt contains logo10, logo9, logo8, logosl10, four quadrants of circle10
+% dangerous bend, triangle, 1pt, 2pt, 3pt blanks etc...
+Then one might use the line
+
+\vskip .05in
+
+\verb@manfnt	logo10	*alias*@
+
+\vskip .05in
+
+\noindent
+in the font substitution file.
+(If any characters are called for that are not in {\tt logo10}, of
+course, nothing will appear on the page in those positions).
+
+This is also useful when the names of fonts have changed and 
+a {\DVI} file uses the older name for a font:
+
+\vskip .05in
+
+\ipar
+\verb@circle10	lcircle1	*alias*@\hfill\linebreak
+\verb@circlew1	lcirclew	*alias*@ % \hfill\linebreak
+% \verb@msxm10	msam10	*alias*@\hfill\linebreak
+% \verb@msym10	msbm10	*alias*@ % \hfill\linebreak
+
+% maybe kill the last two, since metrics differ
+
+\vskip .05in
+
+\noindent
+Aliasing is treated differently from ordinary substitution --- the font
+metrics of the substituted font are used without alteration. 
+% (and no message appears warning of a substitution).
+
+%% tir	mtr	*alias*
+
+%% TimesNewRoman for Times-Roman
+
+\nsection{Inserting Encapsulated {\PS} Files}
+
+The {\TeX} \verb@\special@ macro  % command
+can be used to insert illustrations or graphic information in text.
+Unfortunately there is no standard yet for use of \verb@\special@ --- every
+{\DVI}-to-{\PS} converter uses its own scheme.
+This is a major nuisance: % so: % and so
+
+\vskip 0.05in
+
+\beginbullets
+
+\bpar We hope that the use of \verb@\special@ for figure inclusion in
+{\TeX} will soon be standardized! 
+
+\endbullets
+
+% \vskip 0.05in
+
+\nsubsection{Ten EPS Figure Insertion Schemes Supported}
+
+Rather than inventing yet another way of using \verb@\special@
+to insert {\EPS} files, {\DVIPSONE} supports the % ten
+most popular existing protocols.
+This section is rather long since there are quite a number of these.
+% \cfootnote{The form of \verb@\special@ usage appropriate for ArborText's
+% {\DVILASER}$^{\smlsize TM}$ is not
+% supported, because it depends on insertion of % extensive 
+% verbatim {\PS} code and references to % several 
+% functions built into the prolog used by that driver.}:
+Normally the {\TeX} user is insulated from details of the
+underlying \verb@\special@ syntax by some macro package, 
+such as {\tt psfig.tex}, {\tt epsf.tex}, {\tt psadobe.tex}, 
+{\tt psprep.tex}, or {\tt psbox.tex}.
+But the user needs to at least ascertain that the output produced
+by the macro package is in one of the forms accepted by {\DVIPSONE}.
+One approach is to simply run a {\DVI} file through {\DVIPSONE}.
+% that was produced from {\TeX} source calling for insertion of illustrations.
+Typically there will be no error messages, and the figures will be
+placed correctly on the page, then:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar With a bit of luck there will be no need to read the rest of this
+rather long section!
+
+\endbullets
+
+\vskip .05in
+
+The following need only be read if this simple test fails --- or 
+if you % the reader 
+happen to be interested in the fine details,
+or some of the more esoteric features. % or are unusllay masochistic
+% particular {\DVI}-to-{\PS} converter.
+% This section is rather long, as result of the fact that {\DVIPSONE}
+% supports all of the most popular schemes for figure inclusion using
+% {\TeX}'s \verb@\special@ command.
+
+If you are presently using one of the schemes supported by {\DVIPSONE}, 
+simply continue using it
+(until such time as usage of \verb@\special@ becomes standardized). 
+If you are not now using one of these schemes, 
+it is probably best to pick one of the simpler ones
+(such as (E), (F), or (G)) % (schemes (D), (E), or (F))
+and not get too attached to any of the more esoteric features
+(since these are likely to change should % when
+usage of \verb@\special@ ever become standardized). % does
+If good control over clipping is required, then use one of the variants
+of Trevor Darrell's {\PSFIG} macro packages (such as (A), (B), and (C)).
+% or of his {\tt epsf} macro package (scheme (D)).
+% His macro package provides most of the needed facilities in a
+% relatively straightforward way. 
+Scheme (I) has been proposed as a model for a possible future standard
+by Nelson Beebe. % TUGboat reference ?
+% Of these schemes, the one more likely than the others to be close to a
+% future standard is perhaps (I), the scheme used in Nelson Beebe's {\DVIALW}.
+
+In reading the following, please we aware of the fact that,
+unfortunately, several programs are called {\DVITWOPS} 
+(Mark Senn {\it et al}'s, Anthony Li's and Stephan v. Bechtolsheim's programs,
+for example),
+and that more than one program is called {\DVIPS}
+(Tomas Rokicki's and ArborText's programs, for example).
+Similarly, each of the % {\TeX} 
+macro packages for figure inclusion
+mentioned has a large number of variants%
+\cfootnote{If it is not obvious how a macro package uses
+%  turns out to be difficult to figure out what just 
+\verb@\special@ for figure inclusion, 
+then it may help to look at a {\DVI} file.
+% to see what exact form of \verb@\special@ usage a particular 
+% macro package employs. 
+Most of the {\DVI} file will consist of incomprehensible binary codes
+with short chunks of text and font names interposed.
+The argument to \verb@\special@, however, is placed into the {\DVI}
+file quite unadulterated, so one can find it by searching for the
+file-name specified in the figure inclusion macro.}.
+
+Each of the schemes typically also supports capabilities other than figure
+inclusion (insertion of raw {\PS} code, for example).
+Note, however, that only the features indicated here are supported by
+{\DVIPSONE}. 
+Attempts to use unsupported features may lead to unpredictable results,
+since, for example, inserted verbatim {\PS} code will be
+operating in a % totally 
+different environment from the intended one
+(See subsection~3.3 for warnings about user supplied prolog files 
+and the use of inserted {\PS} code). 
+
+Now for a list of the protocols supported by {\DVIPSONE}:
+
+\vskip 0.1in
+
+\beginbullets
+
+\noindent
+(A) % was (B) % DVIPS
+One of the schemes supported by Tomas Rokicki's {\DVIPS},
+% A variant on the above scheme (for Anthony Li's {\DVITWOPS})
+used by one dialect of Trevor Darrell's {\PSFIG} macro package:
+
+\vskip .05in
+
+\noindent
+\verb@\special{ps::[begin] <w> <h> <xll> <yll> <xur> <yur> startTexFig}@
+% \hfill\linebreak
+\verb@\special{ps: plotfile <eps-file>}@\hfill\linebreak
+\verb@\special{ps::[end] endTexFig}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+The six integer arguments preceding \verb@startTexFig@
+represent the desired width and height of the inserted figure on the page, 
+and the lower left, and upper right corner of its bounding box, respectively.
+All of these quantities are given in {\DVI} units 
+(that is, `scaled' points, 65536 per % printer's point 
+pica point - {\tt pt}, of which there are 72.27 per inch).
+% \cfootnote{In this case, the bounding box comment in the inserted {\EPS}
+% file can be ignored by {\DVIPSONE}, since the {\TeX} macro package
+% already had to read the {\EPS} file to position the figure.}. %  extract it
+% 
+Note that letter case is significant in the words 
+`\verb@startTexFig@' and `\verb@endTexFig@.'
+
+The figure is scaled so as to map the bounding box into a rectangle of
+the specified width and height.
+% lower left corner is placed such that, when the height of the figure
+% is added to it, one reaches {\TeX}'s current point.
+The {\it upper left-hand\/} corner of this rectangle % (of the scaled figure) 
+is placed at {\TeX}'s current point. % check ???
+%
+Note that scaling may be different in the horizontal and the vertical
+direction, something that may lead to unexpected results.
+Isotropic scaling can be forced by making the aspect ratio of the
+rectangle defined by the requested width and height 
+% specified rectangle on the page 
+match the aspect ratio of the rectangle defined by the bounding box
+% in the {\EPS} file.
+(This is usually taken care of by the macro package being used).
+
+% \noindent
+Clipping to the rectangle defined by the bounding box 
+may be called for by inserting the line:
+
+\vskip .05in
+
+\verb@\special{ps:: doclip}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+after the {\tt startTexFig} line.
+%
+There can be several `\verb@ps: plotfile@' lines between the {\tt startTexFig}
+and {\tt endTexFig} line, making it possible to insert
+prolog and postlog files for a particular figure
+(See section~3.3 for a way to insert a single common prolog file 
+accessible to code in all inserted figures).
+
+% This style of useage of \special{} is also apparently also supported
+% by ArborText's {\DVILASER}$^{\smlsize TM}$. %% uncomment ???
+
+% \verb@\special{ps: plotfile <postlog-file>}@\hfill\linebreak
+% \verb@\special{ps: plotfile <prolog-file>}@\hfill\linebreak
+
+\vskip .1in
+
+\noindent
+(B) % was (C) % DVI2PS-SVB
+A variant on the previous theme for Stephan v. Bechtolsheim's {\DVITWOPS},
+generated by another dialect of Trevor Darrell's {\PSFIG} macro package:
+
+\vskip .05in
+
+\noindent
+\verb@\special{ps: psfiginit}@\hfill\linebreak
+\verb@\special{ps: literal <w> <h> <xll> <yll> <xur> <yur> startTexFig}@
+% \hfill\linebreak
+\verb@\special{ps: include <eps-file>}@\hfill\linebreak
+\verb@\special{ps: literal "endTexFig "}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+Clipping may be called for by inserting the line
+
+\vskip .05in
+
+\verb@\special{ps: literal "doclip "}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+after the {\tt startTexFig} line. 
+Also, there can be several `\verb@ps: include@' lines calling for {\PS}
+files, as in the previous scheme.
+
+% \verb@\special{ps: plotfile <postlog-file>}@\hfill\linebreak
+% \verb@\special{ps: plotfile <prolog-file>}@\hfill\linebreak
+
+\vskip .1in
+
+\noindent
+(C) % was (A) % DVI2PS-LI
+The scheme of % used by % {\UNIX}$^{\smlsize TM}$'s 
+Anthony Li's {\DVITWOPS}, % Tomas Rokicki's {\DVIPS} 
+used by yet another dialect of Trevor Darrell's {\PSFIG} macro package:
+% for example), 
+% which takes the form:
+
+% Trevor Darrell ``PsfigTeX 1.2 UserGuide''
+
+\vskip .05in
+
+% \ipar
+\noindent
+\verb@\special{pstext="<w> <h> <xll> <yll> <xur> <yur> startTexFig"}@\hfill\linebreak
+\verb@\special{psfile=<eps-file>}@\hfill\linebreak
+\verb@\special{pstext=endTexFig}@
+
+\vskip .05in
+
+%% NOTE conflict between two different uses of psfile=
+
+% The six integer arguments preceding \verb@startTexFig@
+% represent the desired width and height of the
+% inserted figure on the page, 
+% and the lower left and upper right corner of its bounding box, 
+% all in {\DVI} units 
+% (that is, `scaled' points, 65536 per pica % printer's 
+% point)%
+% \cfootnote{In this case, the bounding box comment in the inserted {\EPS}
+% file can be ignored by {\DVIPSONE}, since the {\TeX} macro package
+% already had to read the {\EPS} file to position the figure.}. 
+
+% The figure is scaled so as to map the bounding box into a rectangle of
+% the specified width and height.
+% The {\it upper left-hand\/} corner of this rectangle 
+% is placed at {\TeX}'s current point. % check ???
+
+% Note that scaling may be different in the horizontal and the vertical
+% direction, something that may lead to unexpected results.
+% Isotropic scaling can be forced by making the aspect ratio of the specified
+% rectangle on the page match the aspect ratio of the rectangle defined 
+% by the bounding box. % in the {\EPS} file.
+
+\noindent
+Clipping to the specified bounding box may be requested 
+by inserting the line:
+
+\vskip .05in
+
+\verb@\special{pstext="doclip"}@
+
+\vskip .05in
+
+\noindent
+after the \verb@startTexFig@ line. % and before \verb@endTexFig@.
+%
+As in the previous schemes, there may be several % occurrences of
+`\verb@psfile=<file-name>@' lines % specials % \verb@\special@s
+between \verb@startTexFig@ and \verb@endTexFig@.
+% This is useful for inserting prolog and postlog files for a
+% particular figure. 
+
+If several figures share the same prolog file, then it may make sense
+to read such a common prolog file once at the beginning.
+A user prolog file accessible to all included {\EPS} files
+% A prolog file 
+may be inserted using:
+
+\vskip .05in
+
+\verb@\special{header=<user-prolog-file>}@
+
+\vskip .05in
+
+\noindent 
+The user's prolog file is read once and loaded into the same 
+{\PS} dictionary used by {\DVIPSONE}'s procedures.  
+In the {\PS} output by {\DVIPSONE}, 
+the prolog file appears after {\DVIPSONE}'s own procedures,
+but before any of the actual pages, 
+independent of where the corresponding \verb@\special@ occurred 
+in the {\TeX} source file.
+(See subsection~3.3 for warnings about the use of user supplied prolog files).
+% There may now be more than one prolog file 93/Nov/15
+
+\vskip .1in
+
+\noindent
+(D) % DVIPS + EPSF
+Another scheme supported by {\DVIPS}, 
+generated by Tomas Rokicki's {\tt epsf} macro package: 
+
+\vskip .05in
+
+{\narrower
+
+\ivpar % \noindent 
+\verb@\special{PSfile=<epsfile> llx=<xll> lly=<yll>@\hfill\linebreak
+\verb@  urx=<xur> ury=<yur> rwi=<rwidth*10>}@ % rhi=<rheight> clip
+
+}
+
+\vskip .05in
+
+\noindent
+indicating that the file \verb@<eps-file>@ is to be inserted with the 
+{\it lower-left\/} corner of the bounding box of the inserted figure at
+{\TeX}'s current point % positioning ?
+(Note that here the first two letters in the word `{\tt PSfile}' 
+are in upper case).
+Four of the arguments specify the bounding box of the figure.
+The last argument specifies the requested width of the figure (scaled by 10).
+The coordinate system in which the parameters are specified is the
+default {\PS} coordinate system, 
+with 72 units per inch (that is, {\TeX}'s `big points' - {\tt bp})
+with the origin at the lower left-hand corner of the page. 
+The figure is scaled isotropically.
+
+% and height are optional.  
+% If both are omitted, the figure is printed at its normal size.
+% If only one is specified, then the figure will be isotropically scaled.
+% If both are given, horizontal and vertical scaling is applied to fit
+% the given bounding box into the specified rectangular space.
+
+\vskip .1in
+
+% following triggered by "=" as separator
+% no shift needed - hence no need to read file for BBox
+
+\noindent
+(E) The scheme of % used by % {\UNIX}$^{\smlsize TM}$'s 
+an older version of {\DVITWOPS}, % on Unix
+due to Mark Senn {\it et al\/}, % 
+% also supported by Tomas Rokicki's {\DVIPS} ?
+used by Gerald Roylance's macro package \verb@psadobe@.
+% Stephan v. Bechtolsheim, Bob Brown, Richard Furuta, James Schaad,
+% Robert Wells, Neal Holtz, Chris Lindblad, Scott Jones etc etc
+In the simplest case this takes the form:
+
+\vskip .05in
+
+\verb@\special{psfile=<eps-file>}@
+
+\vskip .05in
+
+\noindent
+indicating that the file \verb@<eps-file>@ is to be inserted with the 
+{\it origin\/} of the coordinate system of the inserted figure at {\TeX}'s
+current point.
+% (So the bounding box given in the inserted {\EPS} file can be ignored.)
+% Which means that {\DVIPSONE} need not search for the BBox in the file...
+Additional arguments may be used to specify %  horizontal and vertical
+scaling, and offsets, as well as clipping: % rotation ?
+
+\vskip .05in
+
+{\narrower
+
+\ivpar
+\verb@\special{psfile=<eps-file>@\hfill\linebreak 
+\verb@  hscale=<x-scale>@ \verb@vscale=<y-scale>@\hfill\linebreak
+\verb@  hoffset=<x-offset>@ \verb@voffset=<y-offset>@\hfill\linebreak
+\verb@  hsize=<x-size>@ \verb@vsize=<y-size>}@
+
+% and rotation ?
+
+}
+
+%% if scale > 8.0 it is treated as a percentage and divided by 100.0
+%% if scale < 8.0 it is treated as actual scale
+
+\vskip .05in
+
+\noindent
+All key-value pairs after the first are optional.
+Scales may be given as floating point quantities
+(and are {\it not} percentages). 
+%% well, Tomas Rokicki's DVIPS supports this WITH percentages for scales...
+Offsets and clipping sizes are specified in `big points', 72 to the inch.
+
+% If {\tt hscale} is specified, then the figure is scaled in the
+% horizontal direction, and if {\tt vscale} is specified it is scaled
+% in the vertical direction.
+Different scaling in the horizontal and vertical directions may be specified. 
+Note that in this scheme, the clipping rectangle, 
+specified by {\tt hsize} and {\tt vsize}, 
+is constrained to have its lower left-hand corner at the origin.
+%
+%% not clear whether this is implemented as it should be ???
+%
+% the lower left corner of the bounding box.
+% does not permit specification of clipping on left and bottom
+% The same scheme is apparently used by Tomas Rokicki's DVIPS ?
+%% ditto for Tomas Rokicki's DVIPS - except, he uses percentage scaling
+% that is, scales are multiplied by 100 in his case...
+
+\vskip 0.1in
+
+%% This asshole scheme conflicts with an earlier one using pstext= psfile=
+
+% following triggered by illustration, postscript, postscriptfile, picture
+% /* needshift > 0 if need to shift by (-xll, -yll) */  /* Textures */
+
+\noindent
+(F) The scheme for figure inclusion used by James Clark's {\DVITOPS}:
+
+\vskip .05in
+
+\verb@\special{dvitops: import <eps-file> <width> <height>}@
+
+\vskip .05in
+
+\noindent where {\tt <width>} and  {\tt <height>} are the desired
+width and height of the included illustration, specified in units 
+recognized by {\TeX} % dimensions ?
+(that is, {\tt pt}, {\tt pc}, {\tt in}, {\tt bp}, {\tt cm}, {\tt mm}, 
+{\tt dd}, {\tt cc}, {\tt sp} --- see chapter~10 of the {\TeX}book). 
+The illustration is scaled so that it will fit into the specified space.
+Scaling is the same in the horizontal and vertical directions --- the
+illustration is centered in the direction in which there is extra space.
+The {\it lower left-hand\/} corner of the bounding box 
+% (of the scaled figure) 
+is placed at {\TeX}'s current point. 
+
+It is also possible to insert a prolog file using
+
+\vskip .05in
+
+\verb@\special{dvitops: prolog <user-prolog-file>}@ 
+
+\vskip .05in
+
+\noindent
+The user's prolog file appears after {\DVIPSONE}'s own preamble, 
+but before anything else, 
+% independent of where in the file this \verb@\special@ occurs 
+independent of where the corresponding \verb@\special@ occurred 
+in the {\TeX} source file.
+(See subsection~3.3 for warnings about the use of prolog files).
+% there may be more than one prolog file 93/Nov/15
+To switch the output to landscape mode for one page, 
+start the page with:
+
+\vskip .05in
+
+\verb@\special{dvitops: landscape}@
+
+\vskip .05in
+
+\noindent
+% at the top of the page.
+In landscape mode, {\TeX}'s origin, 
+normally 1" below and 1" to the right of the top left-hand corner of the page,
+is 1" above and 1" to the right of the lower left-hand corner of the page%
+\cfootnote{Note that some dialects of {\TeX}, such as {\YTeX}, center
+the text on the page, and so move the origin --- this may produce
+unexpected results when \verb@\hsize@ and \verb@\vsize@ are
+interchanged to match landscape orientation.}.
+%
+Finally, to include verbatim {\PS} use
+
+\vskip .05in
+
+\verb@\special{dvitops: inline <PostScript fragment>}@
+
+\vskip .05in
+
+\noindent
+Note that in this case the {\DVI} coordinate system is, in effect,
+using scaled points (65536 per pica % printer's 
+point),  and with the origin 
+1" below and 1" to the right of the top left corner of the page
+(See subsection~3.3 for warnings about the use of included {\PS}). 
+%
+%% inline, prolog, landscape  DONE !
+%
+Other uses of \verb@\special@ by {\DVITOPS} are not supported.
+
+\vskip .1in
+
+\noindent
+(G) A % One of the schemes 
+scheme for figure inclusion supported by ArborText's 
+{\DVILASER}$^{\smlsize TM}$:
+
+\vskip .05in
+
+\verb@\special{ps: epsfile <eps-file> <scale-number>}@
+
+\vskip .05in
+
+\noindent
+indicating that the file {\tt <eps-file>} is to be inserted with the
+{\it lower left-hand\/} corner of the figure's bounding box placed
+at {\TeX}'s current point, %% ?
+scaled by {\tt <scale-number>}/1000.
+Scaling is optional; {\tt <scale-number>} should be an integer.
+%
+% Without scaling, the user coordinate system has 72 units to the inch%
+% Note that other forms of \verb@\special@ usage appropriate for ArborText's
+% {\DVILASER}$^{\smlsize TM}$ are not supported. 
+% because they depend on insertion of % extensive 
+% verbatim {\PS} code and references to % several 
+% functions built into the prolog used by that driver.}.
+%
+Other uses of \verb@\special@ by {\DVILASER} are not supported.
+
+\vskip .1in
+
+\noindent
+% (H) The scheme used by Blue Sky Research's {\TeX}tures$^{\smlsize TM}$, 
+(H) The scheme used by Blue Sky Research's {\TeXtures}$^{\smlsize TM}$, 
+which is:
+
+\vskip .05in
+
+\verb@\special{illustration <eps-file> scaled <scale-number>}@
+
+\vskip .05in
+
+%% If scale > 33.3 it is treated as per mille scale and divided by 1000
+%% If scale < 33.3 it is treated as the actual scale
+
+% \ipar
+\noindent
+indicating that the file {\tt <eps-file>} is to be inserted with the
+{\it lower left-hand\/} corner of the figure's bounding box placed
+at {\TeX}'s current point, %% ?
+scaled by {\tt <scale-number>}/1000.
+Scaling is optional; {\tt <scale-number>} should be an integer.
+%
+% Without scaling, the user coordinate system has 72 units to the inch.
+%
+It is also possible to include {\PS} program fragments verbatim using
+
+\vskip .05in
+
+\verb@\special{postscript <postscript-fragment>}@
+
+\vskip .05in
+
+\noindent
+or, if it is more convenient to place these program fragments in a
+file, using
+
+\vskip .05in
+
+\verb@\special{postscriptfile <postscript-file>}@
+
+\vskip .05in
+
+% \ipar
+\noindent
+In either case, the origin of the coordinate system is at {\TeX}'s
+current point. %  and the scale is 72 units per inch.
+
+\vskip .05in
+
+% \ipar
+The difference between {\tt illustration} and {\tt postscriptfile} is that 
+{\tt illustration} treats the file as an encapsulated {\PS} file
+that is to be positioned in accordance with the bounding box specified in
+the file, while {\tt postscriptfile} treats the file as raw {\PS}
+code to be inserted without any additional positioning.
+% i.e. there is no %%BoundingBox:
+
+% grestore - gsave sequence not supported
+
+% "picture" not supported because it refers to images in bitmap form.
+
+\vskip 0.1in
+
+% following triggered by space (unless recognized by {\TeXtures})
+% /* needshift < 0 if need to shift by (-xll, -yur) */  /* DVIALW */
+
+\noindent
+(I) The scheme proposed by Nelson Beebe for his driver {\DVIALW},
+where %  a sequence of
+comma-separated key-value pairs appear, 
+starting with the pair {\tt language "{\PS}"} or {\tt language "PS"}
+(Use a space between a key and the corresponding value, not `{\tt =}').
+% what macro package uses this ?
+The following
+
+\vskip .05in
+
+\verb@\special{language "PS", include "<eps-file>"}@
+
+\vskip .05in
+
+% \ipar
+\noindent
+% for example,
+causes inclusion of the illustration in the file {\tt <eps-file>}.
+The included figure is positioned with the {\it upper left-hand\/} % UGH !
+corner of the figure's bounding box placed at {\TeX}'s current point. 
+If the figure is instead to be treated as an overlay
+(that is, using the default {\PS} coordinate system), 
+then use % the form
+
+\vskip .05in
+
+\verb@\special{language "PS", overlay "<eps-file>"}@
+
+\vskip .05in
+
+\noindent
+Finally, verbatim {\PS} fragments can be included using the form
+
+\vskip .05in
+
+\verb@\special{language "PS", literal "<program-fragment>"}@
+
+\vskip .05in
+
+% \endbullets
+
+\noindent
+The {\PS} code following {\tt literal} is placed 
+{\it before} the contents of an included file if {\tt literal} occurs in a 
+\verb@\special@ that also specifies a file to be `included' or `overlayed'.
+%
+% The inserted PostScript code can refer to \verb@CurrentX@ and
+% \verb@CurrentY@ for the position of {\TeX}'s current point,
+% to \verb@PaperHeight@ and \verb@PaperWidth@ for the page dimensions,
+% and to \verb@BoxHeight@ and \verb@BoxWidth@ for the size of the
+% bounding box of the inserted figure (if any).
+% Each is measured in units of 72 per inch ({\TeX}'s big points).
+%
+The main use of the ability to include {\tt literal} 
+{\PS} in this situation is to insert code for scaling, 
+positioning, and clipping,
+since there are no key-value pairs for such transformations.
+%
+Other uses of \verb@\special@ by {\DVIALW} are not supported.
+
+\vskip 0.05in
+
+\noindent 
+(J) The command syntax for figure inclusion used by Andrew Trevorrow 
+in Oz{\TeX} for the Macintosh, and in Psprint for Vax VMS,
+is also supported, but {\it only\/} if the % `undocumented' 
+command line flag `{\tt j}' is used.
+This is because this form of \verb@\special@
+does not include any special keyword or
+separator that could be used to distinguish it from other usage of
+\verb@\special@, or from meaningless text.
+Instead the \verb@\special@ starts right off with the name of the file
+to be included.
+Activation of this feature is somewhat risky.
+
+\endbullets
+
+\vskip 0.05in
+
+\ivpar
+\indent
+After suffering through this subsection, you will probably agree that:
+% it is about time that there be a standard for usage of
+% \verb@\special@ for figure inclusion!
+
+\vskip 0.05in
+
+\beginbullets
+
+\bpar A standard protocol using \verb@\special@  for inclusion of figures in
+{\TeX} is desperately needed! % urgently
+
+\endbullets
+
+% \vskip 0.05in
+
+\nsubsection{Additional Comments Relating to Figure Insertion}
+
+In the absence of magnification, %  scaling
+the coordinate system in effect when
+the {\EPS} file is inserted has 72 units to the inch 
+({\TeX}'s `big points' - {\tt bp}).
+If a \verb@\magnification@ other than 1000 was specified in the {\TeX}
+source file, then both the text and the {\PS} figures will be
+scaled in proportion.  %% does OzTeX screw this up ?
+% same for command line specification of magnification
+
+Note that, unfortunately, each of the above schemes has its own idea about
+where {\TeX}'s current point should be in relation to the origin of the
+coordinate system, or the specified bounding box of the illustration.
+Some schemes place the burden on the {\TeX} macros to read the {\EPS} file 
+in order to find the \verb@%%BoundingBox@ comment, 
+while others rely on the {\DVI} processing program to do this.
+Some schemes place the origin of the coordinate system 
+at {\TeX}'s current point,
+some place the {\it lower\/} left-hand corner of the rectangle defined by the
+bounding box there, yet others the {\it upper\/} left-hand corner.
+
+When {\DVIPSONE} has to search for a bounding box comment in the
+{\EPS} file, it assumes that the file obeys the {\EPS} 
+document structuring conventions. % ({\DSC}).
+So, for example, the \verb@%%BoundingBox:@ line
+must occur before the first \verb@%%EndComments@ line, 
+and before the first line that does not start with `\verb@%%@',
+since a line that does not start with `\verb@%%@' signals the end of
+the header comments % header
+({\DVIPSONE} will, however, search for the bounding box comment at the
+end of the file if \verb@%%BoundingBox: (at end)@ is used).
+
+%% Those that place the origin at {\TeX}'s current point belong to the former
+%% Those that supply the bounding box in the special call belong to the former
+
+% The inclusion of verbatim {\PS} code is not encouraged,
+% since it may lead to dependencies on the prolog file of particular
+% {\DVI}-to-{\PS} converters (see section~3.3).
+% % Also, in an attempt to guard against inadvertent modification
+% % of its own prolog, {\DVIPSONE} in some cases encloses included code in 
+% % {\tt save - restore} pairs,
+% % which makes use of raw {\PS} code somewhat less attractive.
+% % Furthermore, 
+% The environment in which the included {\PS} code operates is not
+% guaranteed to remain unchanged in future releases of {\DVIPSONE}.
+
+{\DVIPSONE} can handle both ordinary encapsulated {\PS} files ({\EPS})
+as well as `previewable' encapsulated {\PS} files ({\EPSF}),
+produced by % some {\DOS} and 
+many Micro\-Soft Windows applications, 
+where a low-resolution monochrome bitmap image 
+in {\TIFF} format % in Windows MetaFile or 
+is  packaged with a {\PS} file.
+{\DVIPSONE} recognizes this format and extracts the {\PS} part
+of the file. %  over the header and bitmap information. 
+%
+There is also no problem using {\EPSI} files, since the bitmap preview
+images in such files just appear as {\PS} comments.
+
+It is inconvenient in {\TeX} to use `\verb@\@' as a separator between
+subdirectories and file names%
+% when specifying file names for illustrations%
+% (although one may be able to use \verb@\string@ for this purpose)
+\cfootnote{One can use backslashes inside a \verb@\special@ using
+something like the following:
+\verb~{\catcode`\@=0~ 
+\verb~\catcode`\\=12~ 
+\verb~@special{ps: epsfile c:\ps\image.ps}}~.\linebreak % ?
+This (temporarily) defines at-sign as {\TeX}'s control sequence prefix
+and redefines backslash to be an ordinary character.}, % but is inconvenient
+so {\DVIPSONE} permits use %  of ordinary slashes
+of `\verb@/@' instead % actually feature of DOS
+(This is actually just an unadvertised feature of {\DOS}).
+
+If you are using the {\TeXtures} version of these figure inclusion
+commands, note that on the Macintosh, `:'s are used 
+instead of `\verb@\@'s to separate names of folders and subfolders 
+(the Macintosh equivalent of directories and subdirectories).
+% in a file name.
+Consequently {\DVIPSONE} converts colons to backslashes
+so they can be used to refer to files on the {\PC}%
+\cfootnote{When using files with Macintosh file names in them,
+one has to be aware of limitations on file names on the {\PC}.
+There should be no embedded spaces or backslashes, 
+only the first eight characters of filenames and subdirectory names 
+are significant 
+% cannot be more than 8 characters long,
+and letter case is ignored.}. %  not significant
+To make it convenient to use this form of the \verb@\special@ command
+directly on a {\PC}, {\DVIPSONE} does {\it not\/} perform the
+conversion to backslash if the colon is followed immediately by a
+backslash or slash, as in:
+
+\vskip .05in
+
+\verb@c:\epsfiles\figure1.eps@
+
+\vskip .05in
+
+\noindent
+Sometimes a {\DVI} file contains many \verb@\special@'s that are not
+recognized by {\DVIPSONE}.  In this case a flood of messages will appear
+that may submerge other, more important information.  
+The `{\tt q}' command line flag can be used to suppress these messages if
+desired. % required. 
+
+\nsubsection{Dangerous Bends --- Prolog Files and Verbatim PostScript}
+
+Some users have a desire to 
+(a) insert a prolog file that contains procedures that can be referred
+to later, or to (b) include verbatim {\PS} code.
+There are several problems with implementation of both of these ideas.
+One of them is that different DVI processing programs have different
+coordinate systems in effect where inserted {\PS} code appears
+(some use the default {\PS} coordinate system, many use the device
+coordinate system, while a few use the {\DVI} coordinate system
+of scaled points).
+Further, some have the origin at {\TeX}'s current point, others 
+at the origin of the default {\PS} coordinate system, 
+yet others at one or another corner of the illustration's bounding box.
+
+Another potential problem appears when a page break occurs between two
+fragments of code meant to be interrelated.
+Since pages in the {\PS} file are supposed to be independent
+(so that pages can be printed in arbitrary order),
+definitions made on one page are necessarily lost before the code on
+the next page is interpreted.
+Finally, code referring to specific procedures defined in the prolog of
+a particular {\DVI} processing program is %, of course, 
+not portable. 
+
+%  The inclusion of verbatim {\PS} code is not encouraged,
+% since it may lead to dependencies on the prolog file of particular
+% {\DVI}-to-{\PS} converters (see section~3.3).
+
+% The environment in which the included {\PS} code operates is not
+% guaranteed to remain unchanged in future releases of {\DVIPSONE}.
+
+If usage of \verb@\special@ should ever become standardized,
+methods for doing these things will change
+(or more likely, be deprecated). % prohibited
+Keep that in mind when using the following extensions:
+% So use the following extensions with caution:
+% only if really needed,  or for experimentation:
+% In the interim, {\DVIPSONE} supports
+
+\vskip .05in
+
+\beginbullets
+
+\vskip 0.1in
+
+\noindent
+(A) Insertion of a prolog file using:
+
+\vskip .05in
+
+\verb@\special{header=<user-prolog-file>}@
+
+\vskip .05in
+
+\noindent The user's prolog file is read once and loaded into the same 
+{\PS} dictionary used by {\DVIPSONE}'s procedures.  
+In the {\PS} output by {\DVIPSONE}, 
+the prolog file appears after {\DVIPSONE}'s
+own procedures, but before any of the actual pages, 
+independent of where the corresponding \verb@\special@ occurred 
+in the {\TeX} source file.
+The prolog file should define a number of procedures that may be called
+later; it should {\it not\/} render anything on the page.
+Procedures in the user's prolog file can be accessed from
+inserted {\EPS} files, or verbatim {\PS} code.
+% There can be only one user prolog file. % flushed 93/Nov/15
+
+Note that there is {\it no\/} protection from identifier collision with
+names used by {\DVIPSONE} or built-in {\PS} procedures.
+In fact, one of the common uses of a prolog file is to redefine built-in
+{\PS} procedures. % used by {\DVIPSONE}. % such as \verb@showpage@.
+To avoid potential identifier collision problems, 
+the user's prolog file should start off by constructing its own
+dictionary, and load this on the dictionary stack (using {\tt begin}), 
+{\it before\/} defining any procedures,
+and remove the dictionary at the end of the prolog file using {\tt end}.
+This dictionary can then be referred to from inserted {\PS} code 
+later in the file (using {\tt begin} and {\tt end}).
+
+% Be aware that {\TeX} will already have emitted some {\DVI} code for
+% positioning on the page when the \verb@\special@ calling for the prolog
+% file is inserted, {\it even\/} if this \verb@\special@ is the first item
+% in the source file.
+% So the prolog file should not change the current point, or redefine the
+% coordinate system.
+% and parameters 
+
+A user supplied prolog file can be used to reduce output file size by
+supplying commonly used procedures that would otherwise have to be
+included in several of the {\EPS} files (although dependence on a
+prolog file actually violates the definition of an {\EPS} file).
+% see pages 717 and 736 of PS book for admonishongs against this...
+This is a good place for a suitably sanitized version of the % Apple's
+{\tt LaserPrep} file used by many Macintosh applications, for example%
+\cfootnote{To use a {\tt LaserPrep} prolog file, first excise the 
+{\tt eexec} encrypted matter, including the part modifying the 
+interpreter and the part defining {\tt smooth4} and {\tt stretch}. 
+% These functions are not needed, include raw code for 68,000 series
+% microcomputers, and may confuse printers other than Apple Laser\-Writers.
+Also make sure that there are no lines so long that they will overflow
+the input buffer in the {\PS} interpreter, and that lines are
+terminated with newline (control-J) instead of return (control-M).
+It is best to always use the latest Apple LaserWriter PostScript 
+printer driver (available from {\tt ftp.apple.com}).
+% The file {\tt lprep68.pro} is such a modified preamble file.
+% LaserPrep sucks - Apple sucks - there are no antidotes
+}.
+% laserprep avoids conflict since it starts with:
+% /md 200 dict def		% define a working dictionary
+% md begin			% start using it
+%
+When using files produced by some applications, 
+particularly older Macintosh programs, you should be
+aware that the bounding boxes specified in these files often bear no
+relation to the areas actually occupied by the included figures:
+
+\beginbullets
+
+\vskip .05in
+
+\bpar We hope that applications producing output that does not conform
+to the recommendations for {\sc PS} code in {\EPS} files will soon 
+be stamped out!
+
+\vskip .05in
+
+\endbullets
+
+% Apple LaserPrep neutered to make it fairly safe to use...
+% Removed all the encrypted garbage for modifying the interpreter
+% Removed dependence on Apple Laser Writer code
+% Removed definitions of stretch and smooth4
+% Reduced incidence of long lines
+
+A prolog file may also be used to produce letter-heads and overlays.
+Consider the following % prolog file, 
+for example:
+
+\vskip .05in
+
+\ipar
+% \noindent
+\verb@/DRAFTfont /Helvetica-Bold findfont 200 scalefont def@\hfill\linebreak
+\verb@/oldshowpage /showpage load def@\hfill\linebreak
+\verb@/showpage{save 52.3 rotate 177 -62 moveto@\hfill\linebreak
+\verb@0.2 setlinewidth DRAFTfont setfont@\hfill\linebreak
+\verb@(DRAFT) true charpath stroke restore oldshowpage} bind def@
+
+\vskip .05in
+
+\noindent
+Note: a user prolog file may also be specified on the command line using the
+% `undocumented' 
+{\tt w} command line argument. %% ???
+
+\vskip .1in
+
+\noindent
+(B) Insertion of verbatim {\PS} using:
+
+\vskip .05in
+
+\verb@\special{verbatim="<PS-code>"}@
+
+\vskip .05in
+
+\noindent
+Note again that there is {\it no\/} protection from identifier collision
+with names used by {\DVIPSONE}.
+The inserted code is {\it not} surrounded by either {\tt save} and {\tt
+restore}, or {\tt gsave} and {\tt grestore}. % 1992 March 14
+
+When this method for inserting verbatim {\PS} code is used,
+% In {\DVIPSONE}, 
+the inserted code operates in an environment where
+the default {\PS} coordinate system is in effect 
+(that is, 72 units per inch, 
+with the origin at the lower left-hand corner of the page).
+% except where other drivers do something else ...
+%
+Any repositioning of the current point by the included code will
+modify were characters and rules placed later on the same page appear.
+In fact, one use for verbatim {\PS} code is to reposition {\TeX}
+output.  Consider the following example:
+
+\vskip .05in
+
+\noindent
+\verb@This text will appear in portrait style.@\hfill\linebreak
+\verb@\special{verbatim="currentpoint 792 0 translate 90 rotate moveto"}@
+% \hfill\linebreak
+\verb@This text will appear in landscape style.@\hfill\linebreak
+\verb@\special{verbatim="currentpoint -90 rotate -792 0 translate moveto"}@
+% \hfill\linebreak
+\verb@Now we should be back in portrait style.@
+
+% yes,  but font IS reset by DVIPSONE ...
+
+\vskip .075in % \vskip .1in
+
+\noindent
+Any {\PS} procedure definitions introduced using this form of
+\verb@\special@ persist only for the current page.
+Permanent definitions should be placed in a user prolog file instead.
+
+\endbullets
+
+% \vskip .05in
+
+\unvpar
+\indent
+As another example, suppose we want to show some large characters
+stroked rather than filled:
+
+\vskip .05in
+
+\noindent
+\verb@\font\cmhuge=cmr10 at 72pt@\hfill\linebreak
+\verb@\special{verbatim=/olds/s load def /s{true charpath stroke}def}@\hfill\linebreak
+\verb@{\cmhuge CM}@\hfill\linebreak
+\verb@\special{verbatim=/s/olds load def}@ % \hfill\linebreak
+
+% \vskip .05in
+
+\noindent
+Notice, however, that doing something like this requires some knowledge
+of the procedures defined in 
+{\DVIPSONE}'s preamble (It does no good to redefine {\tt show}, for
+example, since {\DVIPSONE} tries to protect itself from 
+% such dangerous 
+redefinitions by using {\tt load} in the preamble).
+
+It is recommended that these features be used sparingly, if at all,
+since they are typically not % directly 
+compatible with those provided by other {\DVI} processing programs
+(such as {\DVIWindo}),
+and since they lead to a number of awkward unresolved problems.
+These commands may change as better solutions are discovered
+(and support for such features may disappear should the {\DVI} driver
+standards committee decide that there is no consistent way of
+defining % some of 
+their actions.) 
+
+Inclusion of unrecognized verbatim PostScript text 
+(that is, other than that used for figure insertion involving 
+{\tt startTexFig}, {\tt doclip} and {\tt endFigTex}) 
+following {\tt ps:}, % actually, this one IS always enabled 92/Sep/25
+{\tt ps::}, {\tt ps: literal} and {\tt pstext=} 
+is enabled by the % `undocumented' 
+command line flag `{\tt j}' --- if you use this flag,
+or any of the other methods for inserting verbatim {\PS},
+you are on your own!
+{\DVIPSONE} can not check for any errors in the included {\PS} code,
+so there is no protection against bugs.
+% in the included {\PS} code.
+% Inclusion of buggy raw {\PS} code is one way to kill a print job.
+Use {\tt save} and {\tt restore}, or at least
+{\tt gsave} and {\tt grestore}, % to preserve the graphics state
+whenever appropriate.
+The included {\PS} code should not leave extra objects on the stack, 
+or remove items from the stack.  Good luck!
+
+\newpage %% ???
+
+\runnerhead{Appendix --- Advanced Topics}
+
+\section{Appendix --- Advanced Topics}
+
+The information above is normally all than one % ever
+needs to make effective use of {\DVIPSONE}. 
+Occasionally % auxiliary 
+the information provided below may be helpful.
+
+\subsection{A.1 Manually downloading fonts --- using DOWNLOAD} % 4.1
+
+As already indicated, it is normally better to rely upon {\DVIPSONE}'s
+advanced font management techniques than to download fonts permanently.
+If it should nevertheless become desirable to do so, use the utility
+program {\DOWNLOAD} supplied with {\DVIPSONE} to download Adobe Type~1
+fonts to the printer. 
+This program can also be used to reboot the printer 
+% (on printers that provide this capability without power cycling)
+and to cause the printer to print a sorted
+directory of fonts in the printer's FontDictionary.
+% (excluding fonts on the printer's hard disk).
+%
+One can also use {\DOWNLOAD} to download fonts to the hard disk on 
+some printers that have a hard disk.
+%
+The program % {\DOWNLOAD} 
+uses the following command line flags:
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt v}} Verbose mode.
+
+\ftpar{{\tt b}} Reboot printer (to clear virtual memory)%
+\cfootnote{Some non-Adobe {\PS} interpreters do not support
+clearing of virtual memory without power cycling.}.
+% And others will print a power-up page}.
+
+\ftpar{{\tt f}} Print sorted font dictionary on printer.
+
+\ftpar{{\tt p}} Load the specified font file `permanently' to VM.
+
+\ftpar{{\tt h}} Load the specified font file to printer's hard disk%
+\cfootnote{Since hard disk I/O functions tend to be printer specific,
+however, it is usually best to use the downloading program supplied
+with the printer instead.}.
+
+\ftpar{{\tt i}} Read {\PS} program from keyboard and send to printer%
+\cfootnote{Keyboard input is terminated with a control-Z.}.
+
+\ftpar{{\tt k}} Use the specified password (default is `0' --- the
+factory default on most {\PS} printers). % 92/March/15
+
+\ftpar{{\tt d}} Destination. Output will be sent to the designated device
+% Also, the command line argument {\tt d} can be used to select the
+% destination for the output 
+({\tt PRN}, {\tt LPT1}, {\tt LPT2}, {\tt LPT3}, 
+{\tt AUX}, {\tt COM1}, {\tt COM2}, or a file).
+
+\endbullets
+
+\vskip .05in
+
+When output is sent to a serial port, {\DOWNLOAD} assumes that the
+printer is set for hardware flow control --- see Appendix~A.5 for details.
+If the destination argument is omitted, the output will be sent to a
+file in the current directory with the same name as the {\PFB} file,
+but with file extension {\tt .pfa}. %% really ???
+%
+{\DOWNLOAD} can be used in this way to convert binary {\PFB} format font
+files into hexadecimal {\PFA} format font files
+(The latter can be sent to the printer later using the 
+{\DOS} {\PRINT} or {\COPY} commands).
+%  by directing its output to a file rather than a printer.
+
+\subsection{A.2 Non Computer Modern fonts --- using AFMTOTFM} % 4.2
+
+Printer-resident fonts and downloadable outline fonts in Adobe Type~1
+form can, of course, be used directly by {\DVIPSONE}. 
+But {\TeX} needs 
+% has to first be given the font metric information in the form of 
+{\TeX} font metric ({\TFM}) files corresponding to these fonts.
+Such files are provided with {\DVIPSONE} for the 35 fonts most commonly
+found on existing {\PS} printers.
+Font metric files corresponding to fonts remapped to `TeX text' encoding,
+have an `{\tt x}' appended to the abbreviated font name.
+Font metric files set up for Adobe StandardEncoding do not have 
+the added `{\tt x}'.
+
+If there is no {\TFM} file for the font you wish to use, 
+one can be made from font metric information in another form.
+Downloadable fonts in Adobe Type~1 form are % usually 
+supplied with font metric information in % a different % (human readable) 
+Adobe font metric ({\AFM}) files%
+\cfootnote{{\AFM} files for Adobe fonts may also be obtained on the
+Internet from {\tt ps-file-server@adobe.com}.}. %% repetition ???
+The utility program {\AFMTOTFM} can be used to create
+the required {\TFM} files from these {\AFM} files.
+
+The program {\AFMTOTFM} can process any number of {\AFM}
+files in one invocation --- all files will be processed under control of 
+the same command line arguments. 
+The output files will appear in the current directory with the same
+names as the input files, but with extension {\tt .tfm}.
+To see what command line arguments {\AFMTOTFM} takes, 
+invoke it by typing 
+
+\vskip .05in
+
+	\verb@afmtotfm -?@.  
+
+\vskip .05in
+
+% Presently 
+\noindent
+The optional command line arguments are:
+
+\vskip .05in
+\beginbullets
+
+% \ftpar{{\tt ?}} Query --- produces listing of arguments.
+
+\ftpar{{\tt v}} Verbose mode --- provides detailed output during operation.
+
+\ftpar{{\tt n}} No ligatures.  Suppresses ligatures specified in {\AFM}
+file --- useful for fixed width fonts 
+(such as Courier, PrestigeElite, LetterGothic, or Orator).
+
+\ftpar{{\tt a}} Add standard {\TeX} `ligatures'.
+
+\endbullets
+
+\vskip .05in
+
+\noindent
+Note that many outline fonts only have two ligatures % wired in % NEW
+% (`{\tt f i}' $\to$ `{\tt fi}' and `{\tt f l}' $\to$ `{\tt fl}').  % 
+(`{\vt f i}' $\to$ `{\vt fi}' and `{\vt f l}' $\to$ `{\vt fl}').  
+Computer Modern text fonts also use the ligature mechanism for
+other purposes, such as mapping `{\tt hypen hypen} $\to$ {\tt endash}'.
+The `{\tt a}' command line flag makes it possible to insert as many of
+{\TeX}'s eleven standard `ligatures' as possible,
+{\it without} the need to modify the {\AFM} file.
+Note that typically non-CM fonts do not have the three ligatures 
+{\tt ff}, {\tt ffi}, and {\tt ffl}  --- 
+in this case only eight ligatures will actually appear in the resulting
+{\TFM} file. 
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt x}} Do not append `{\tt x}' to filename when font is remapped
+(Normally the `{\tt x}' is added to distinguish {\TFM} files for
+remapped fonts from {\TFM} files for fonts that are not remapped).
+
+\ftpar{{\tt u}} Do not remove trailing underscores from file names
+(Normally trailing underscores --- used % required
+by the Adobe downloader {\tt psdown} --- are removed).
+
+% \ftpar{{\tt b}} Be backward compatible --- limit total of ligatures and
+% kerning pairs to 255.
+
+\ftpar{{\tt c}} Encoding vector --- specifies the mapping between
+character number and character name.  The default is 
+{\tt none}, which means use the encoding in the {\AFM} file.
+
+\endbullets
+
+\vskip .05in
+
+\noindent
+Often using the encoding in the {\AFM} file --- that is, no reencoding  --- 
+works well.
+In some cases one may want to use {\tt textext} as the encoding vector
+(which is appropriate for ordinary roman, bold, and sans serif fonts).
+For italic fonts (but not for slanted fonts) one may instead wish to
+use {\tt texital} 
+(in this encoding `{\tt sterling}' replaces `{\tt dollars}').
+For `typewriter' fonts, those with constant character widths, use 
+{\tt typewrit}, and for italic constant width fonts use {\tt typeital}.
+Other useful encoding vectors may be found in files with extension {\tt .vec}.
+% \cfootnote{A {\TFM} file produced using {\AFMTOTFM} contains a short
+% descriptive name of the encoding following the word `{\tt Encoding:}'.
+% This information is copied from the first line of the mapping vector file.}.
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt s}} Specify the width of the word space.  
+Normally the width of the space is specified in the {\AFM}
+file --- use this argument if it is not.
+
+\ftpar{{\tt b}} Backward compatibility with older versions of {\TeX}
+ ---  limits number of kern pairs to 256.
+
+\ftpar{{\tt m}} Maximum number of kerning pairs allowed per character.
+
+\ftpar{{\tt l}} Minimum kerning width transferred to {\TFM} file.
+
+\endbullets
+
+\vskip .05in
+
+Note that {\AFMTOTFM} assumes that the kerning pair information is
+sorted on the first character in each pair (as is customary in {\AFM} files).
+
+{\TFM} files for {\TeX} before release 3.0 provide space for a maximum of
+% have limited capacity for storing information about kerning pairs (a maximum
+255 kerning pairs and ligatures.
+% Excess kerning pairs in an {\AFM} are discarded. 
+This is enough in most cases, but if you are using 
+an older version of {\TeX} and have
+a font with more than 255 kerning pairs and ligatures,
+use the command line arguments `{\tt m}' and `{\tt l}'
+to control which kerning pairs are trimmed off.
+% This means that the kerning information for some letters is retained,
+% while that for others is completely lost.
+% that do not fit into the tables being constructed are discarded. 
+% For backward compatability, TFM files produces have this restriction
+% The user can gain some control over this process by means of the
+% command line arguments {\tt m} and {\tt l}. 
+% In this case, the best
+A good technique is to keep on increasing the `{\tt l}' argument  
+(thereby discarding more and more of the kerning pairs with small
+kerning widths) until all remaining kerning pairs fit.
+
+% Note that typical {\AFM} files only specify two ligatures % NEW
+% (`{\tt f i}' $\to$ `{\tt fi}' and `{\tt f l}' $\to$ `{\tt fl}').  
+% It has been customary for fonts used with {\TeX} to use 
+% additional `ligatures' 
+% (such as `{\tt hyphen hyphen}' $\to$ `{\tt endash}' and `{\tt endash
+% hyphen}' $\to$ `{\tt emdash}').
+%% You may wish to add such `ligatures' to the {\AFM} files before
+%% running them through {\AFMTOTFM}.
+%% For detailed format see the sample files in the subdirectory {\tt afm}.
+
+It is often convenient to have some indication in the TFM file itself
+regarding what encoding was used when making it. To do this, start the
+encoding vector file with a comment line containing the word 
+{\tt Encoding:} --- see files for extension {\tt .vec} for examples.
+
+To use a font in {\TeX}, you need to first build an association between
+the name used in the source document and a font file name. For example,
+
+\vskip .05in
+
+\ipar
+\verb@\font\sc=cmcsc10	% small caps font@\hfill\linebreak
+\verb@\font\times=tir at 10pt	% printer resident Times-Roman@ % \hfill\linebreak
+% \verb@\font\nwbask=nbr	% non-resident NewBaskerville@
+
+\vskip .05in
+
+\noindent
+Switching fonts in the text then is easy:
+
+\vskip .05in
+
+\verb@So {\sc dvipsone} recognizes the {\times Times-Roman} font.@
+
+\vskip .05in
+
+\noindent
+This is all one needs for occasional use of non-CM fonts.
+
+When switching all of the text to another font family
+it is % it more convenient to switch font sizes, 
+helpful to organize related fonts into groups and to construct
+macro packages that redefine several names at once, as is done in 
+commonly used predefined formats, 
+such as {\tt plain.tex} or {\tt lplain.tex}.
+It is helpful to model such macros on existing ones such as the ones
+found in Appendix~B of the {\TeX}book (see particularly pages~350--351). 
+
+% textfont0, scriptfont0, scriptscriptfont0	roman
+% textfont1, scriptfont1, scriptscriptfont1	math ittalic
+% textfont2, scriptfont2, scriptscriptfont2	math symbol
+% textfont3, scriptfont3, scriptscriptfont3	math extended
+
+\vskip 0.1in
+
+\noindent{\bf For {\TeX}perts only!}
+
+\vskip 0.1in
+
+\noindent
+What was said above applies to ordinary ({\tt roman}) text fonts --- things
+are a bit more complex for fonts used for mathematical typesetting.
+% See the {\TeX}book for additional details --- particularly Appendix~B.
+First of all, note that {\AFM} files and {\TFM} files contain somewhat
+different information.
+For example, a {\TFM} file does not contain 
+% the character bounding boxes, or, more importantly, 
+the character encoding scheme 
+(mapping from numeric character code to character name).
+Conversely, an {\AFM} file does not contain a number of parameters 
+(such as how much inter-word space stretches and shrinks) 
+that are used by {\TeX}.
+This is particularly problematic when one tries to build a substitute
+for one of the fonts used for mathematics,
+such as {\tt cmmi10}, {\tt cmsy10}, or {\tt cmex10} --- that is, a font
+in family~1, 2, or~3%
+\cfootnote{Consult the {\TeX}book for more information regarding 
+{\tt textfont1}, {\tt textfont2}, and {\tt textfont3}.}.
+
+For use with {\AFMTOTFM}, the comment syntax of ordinary {\AFM} files has
+been extended % slightly 
+so that {\AFM} files can be used to convey the
+required additional information. % in {\AFM} comments.
+The extra parameters appear in {\AFM} comments so that they do not
+interfere with the operation of % disturb 
+other programs reading {\AFM} files.
+To see what comments are required, 
+look at the sample % {\tt afm} 
+files in the subdirectory {\tt afm}.
+
+This extension of the {\AFM} file format makes it possible to create
+non-CM substitutes for {\tt cmmi10}, {\tt cmsy10} and {\tt cmex10} 
+(in increasing order of difficulty).
+% Adobe's LucidaMath
+Bigelow \& Holmes' LucidaBrightMath fonts are singularly well suited
+for this since they include all of the characters of the Computer
+Modern math fonts  
+(as well as all of the characters in the {\AMS} math symbol fonts)%
+\cfootnote{Lucida is a registered trademark of Bigelow \& Holmes Inc.}. 
+These fonts come with ready-made {\TFM} files, as well as {\AFM} files
+with the required extensions described above.
+Three of the LucidaBrightMath fonts are set up exactly the way
+{\tt cmmi10}, {\tt cmsy10} and {\tt cmex10} are.
+This makes it easy to `wheel out' Computer Modern math fonts 
+and `wheel in' LucidaBrightMath fonts.
+% The Lucida{\registered}Bright + LucidaBrightMath font set is 
+% available from {\Y&Y}%
+
+See Appendix~B of the {\TeX}book for additional details 
+on how to use non-CM fonts in {\TeX}.  
+When using fonts that are not designed for use with {\TeX},
+it may be necessary to also consult other volumes in Knuth's 
+{\it Computers \& Typesetting\/} Series published by Addison-Wesley,
+particularly {\it{\TeX}: The Program\/} and {\it Computer Modern Typefaces\/}.
+% and Ralph Youngen's article ?
+
+%% see included TFMs
+
+\subsection{A.3 What about Bitmapped Fonts? Using PKTOPS} % 4.3
+
+{\DVIPSONE} normally uses only Adobe Type~1 outline fonts. % exclusively.
+The reason for this is that inclusion of bitmapped fonts % would 
+makes the {\PS} output produced resolution dependent.
+Since some fonts are not yet available in outline form,
+it is necessary to have a mechanism for using bitmapped
+fonts in conjunction with {\DVIPSONE}. 
+% These conflicting requirements can be satisfied if the bitmapped fonts are
+% downloaded to the printer ahead of time --- these fonts can then be treated
+% exactly as indicated above for printer resident fonts.
+% if they were printer resident. 
+
+% discuss printers with hard disks ?
+
+% \indent
+\quad\quad
+Computer Modern fonts in bitmapped form are usually available in 
+{\PK} (packed) format, which is not suitable for use on % downloading to 
+a {\PS} printer.
+A utility program called {\PKTOPS} (supplied with {\DVIPSONE})
+generates an Adobe Type~3 font from a {\PK} font file.
+The resulting Type~3 bitmap font file can be used by {\DVIPSONE}.
+It should be % provided it is
+placed somewhere on the font searchpath%
+\cfootnote{{\DVIPSONE} can use Type~3 font files properly {\it only} 
+if they are in the special form produced by {\PKTOPS}.
+Other fonts will be included in the output without modification
+(and without guaranties!).}. % somewhat unpredictable results.}.
+% Note that the output produced by {\DVIPSONE} will {\it not} be 
+% truly resolution independent if it includes bitmapped fonts.
+
+The Type~3 font file produced by {\PKTOPS} can also be downloaded
+to the printer before the {\PS} job calling for that font. 
+In the latter case, the fact that this font is to be treated as printer
+resident should be noted in the font substitution file --- see section~2.6.3.
+
+Ideally, the resolution (dpi) of the {\PK} font should match that
+of the printer. % but {\it much\/} better results are obtained if it does.  
+If you cannot obtain an exact match, try to find a {\PK} file made
+at a resolution that is some integer multiple of the printer's resolution.
+If this is not possible, use the {\it highest\/} resolution available%
+\cfootnote{If the resolution of the bitmap font does not match that of the
+printer, the output will tend to look somewhat heavier and a bit jagged,
+although it {\it will\/} print at the correct size.}.
+
+% Since bitmapped font files in Adobe Type~3 form tend to be quite large,
+% particularly for high resolution devices, it may at times be useful to 
+% create a Type~3 font that does not contain the full set of characters
+% in the  original packed font.   % CMINCH is 697kbyte!
+% Command line flags provide the required control, as shown below.
+
+The program {\PKTOPS} can process multiple {\PK} files in one
+invocation --- all files will be processed under control of the same
+command line arguments. 
+To see what command line arguments {\PKTOPS} takes, invoke it by typing:
+
+\vskip .05in
+
+	\verb@pktops -?@.  
+	
+\vskip .05in
+
+% Presently 
+\noindent
+The optional command line arguments are:
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt v}} Verbose mode.
+
+\ftpar{{\tt c}} Insert comments in output file.
+
+\ftpar{{\tt d}} Destination. Output will be sent to the designated
+device ({\tt PRN}, {\tt LPT1}, {\tt LPT2}, {\tt LPT3}, 
+{\tt AUX}, {\tt COM1}, {\tt COM2} 
+% (When output is sent to a serial port {\PKTOPS} assumes that the
+% printer is set for hardware flow control --- see Appendix~A.5 for details).
+% \cfootnote{The printer should be set for hardware flow control
+% (\DTRDSR) when output is sent to a serial port directly from
+% {\PKTOPS}, or when sending a {\PS} file using the {\DOS} {\COPY} command.},
+% {\DOS} does not support software (\XONXOFF) flow control in direct output.
+or a file). 
+
+\endbullets
+
+\vskip .05in
+
+If the destination is omitted, output will be sent to a file in the
+current directory with the same name as the {\PK} file, 
+but with file extension {\tt .ps}.
+
+Normally bitmaps for all characters will converted.
+% and included in the output. 
+In some situations one may want to limit the size of the output file by 
+including only those characters actually needed:
+
+\vskip .05in
+
+\beginbullets 
+
+\ftpar{{\tt s}} Include bitmaps for the characters given in the following string.
+
+\ftpar{{\tt r}} Include bitmaps for the characters in the given range.
+
+\ftpar{{\tt x}} Include bitmaps for the characters specified by the given
+hexadecimal string.  The bits of the first character in the hexadecimal
+string indicate whether the characters from 0 to 3 should be included,
+and so on.
+
+\endbullets
+
+\vskip .05in
+
+The command line arguments {\tt s} and {\tt r} may be repeated.
+% The default is to include {\it all} characters
+% in the font file (if the command line
+% arguments {\tt s}, {\tt r} and {\tt x} are {\it not\/} used). 
+
+To download an Adobe Type~3 font file produced by {\PKTOPS}, 
+either select the appropriate destination using the command line flag
+{\tt d}, or send the resulting file to the printer as any ordinary
+{\PS} file, using the {\DOS} {\PRINT} or 
+{\COPY} commands. % for example: % more ? % do not use {\DOWNLOAD}
+%
+% \vskip .05in
+%	\verb@copy c:\cm\cmdunh10.ps PRN:/b@
+%	\verb@copy c:\cm\cmdunh10.ps PRN:@
+% \vskip .05in
+%
+% \noindent
+
+The resulting font file is set up for `permanent' downloading to the
+printer. It is possible to modify the font file to provide for temporary
+downloading by commenting out a specially marked line of {\PS}
+code at the beginning of the file.
+
+% You may need to send the {\PS} end-of-job indicator ({\controld})
+% following a file sent using the {\DOS} {\COPY} command.  
+% As mentioned before, 
+% this can be done conveniently by copying the file {\tt controld.txt} 
+% to the printer.
+% The font file and this end-of-job file can be concatenated using `{\tt +}'
+% as follows:
+
+% \vskip .05in
+
+% 	\verb@copy c:\cm\cmdunh10.ps+c:\dvipsone\controld.txt PRN:/b@
+% 	\verb@copy c:\cm\cmdunh10.ps+c:\dvipsone\controld.txt PRN:@
+
+\vskip .05in
+
+\subsection{A.4 Transformation of the PS Output --- using TWOUP} % 4.4
+
+Since the output produced by {\DVIPSONE} conforms to
+Adobe's document structuring conventions for {\PS} files, 
+it is possible to process such
+files to  select pages, rearrange pages, print two pages side by side
+on the same physical sheet of paper and so on.  
+Some of these transformations are enabled by use of outline fonts, 
+since these can be freely rescaled.
+
+% To illustrate the possibilities, 
+The utility program {\TWOUP} illustrates some of the possibilities.
+% is included that
+It provides for printing two pages next to each other on the same piece
+of paper. 
+Using such a program saves trees while reviewing drafts.
+{\TWOUP} can also be used to generate pages in signature order --- 
+ready for `saddle-back' stapling or stitching.
+% Use Swingline 615 saddle stapler..
+This manual %  booklet
+describing {\DVIPSONE} % , for example, 
+was printed using {\TWOUP}.
+
+The output of {\TWOUP} conforms to the document structuring
+conventions as well, and so can be passed through {\TWOUP} a second time to 
+print four logical pages on one physical page (and so on).  
+Note that {\TWOUP} can be used to process any file satisfying the
+document structuring conventions, not just the output of {\DVIPSONE}.
+
+To avoid confusion, let us call the pages in the input file `logical' pages
+and the pages in the output file `physical' pages.
+Further, if the document contains $m$ pages, 
+let $n=\lceil m/4 \rceil$, that is, % be defined such that
+$4n - 3 < m \le 4n$.
+The command line flags and command line arguments that control {\TWOUP} are: 
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt v}} Verbose mode.
+
+\ftpar{{\tt l}} Specify logical pagesize (default `{\tt letter}').
+
+\ftpar{{\tt p}} Specify physical pagesize (default `{\tt letter}').
+
+\ftpar{{\tt o}} Insert blank logical pages to insure that odd pages are
+always on the right.  (The default is to % just 
+print pages in the order they appear in the input file, without concern
+for whether the page numbers are even or odd). 
+
+\ftpar{{\tt e}} Insert blank logical pages to insure that even pages are
+always on the right.
+% Increment page numbers by one 
+% (thus interchanging the meaning of even and odd). 
+(This is useful if the `page numbers' in the PostScript file are off by
+one from the actual page numbers). 
+
+\ftpar{{\tt z}} Use the second number in \verb@%%Page:@ comments as
+page number rather than the first.
+
+\endbullets
+
+\vskip .05in
+
+Normally {\TWOUP} uses the first number appearing in the
+\verb@%%Page:@ document structuring comments as `page number'.
+Output from {\DVIPSONE} uses the first number for {\TeX}'s {\tt counter[0]}
+(In some documents the first `number' may be an alphanumeric label instead).
+The second number is % always 
+just the page count within the {\PS} file.
+
+\vskip .05in
+
+\beginbullets
+
+% \ftpar{{\tt s}} Print pages in order required for saddle-back stapling. 
+
+\ftpar{{\tt s}} Print pages in signature order --- for saddle-back stapling. 
+
+\endbullets
+
+\vskip .05in
+
+\noindent
+In this case, the first physical page printed contains logical page
+$4n$ on the left and logical page 1 on the right.  
+The next physical page contains logical page 2 on the
+left and logical page $4n-1$ on the right, and so on.  
+The last physical page printed contains logical page $2n$ on the left
+and logical page $2n+1$ on the right. 
+The staples holding the resulting booklet together will be
+visible when the booklet is open on the last physical page printed.
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt g}} Print the `top' sides of signature-order pages
+% `saddle-back'
+only (that is, only the odd numbered physical pages).  
+This is useful for duplex printing.
+
+\ftpar{{\tt h}} Print the `bottom' sides of signature-order pages
+% `saddle-back' 
+only (that is, only the even numbered physical pages) --- in reverse order. 
+% This is useful for duplex printing.
+
+\endbullets
+
+\vskip .05in
+
+Use the command line flags {\tt g} and {\tt h} % in conjunction with {\tt s}
+to print on both sides of the paper. 
+After printing the `top' of each page, load the paper into the paper
+tray face down (but without rotating it) % ha ha - in the plane of the paper
+to print the `bottom' of each page.
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt x}} Shift the right logical page right, and the left
+logical page left, by the specified amount (in points).  
+Positive values increase the gutter width. 
+
+\ftpar{{\tt y}} Shift both logical pages up on the physical page by the
+specified amount (in points).
+
+\ftpar{{\tt m}} Magnify the logical pages using the specified scale factor
+(the default is 1.0).  % 1992/July/16
+
+\endbullets
+
+\vskip .05in
+
+{\TWOUP} normally uses a scale factor that assures that the logical
+page will fit into
+one half of the physical page.  
+There will be a lot of white space on the output page
+if the logical pages have a significant margin and the
+aspect-ratio of one half of the physical page doesn't match the aspect-ratio
+of the logical page.
+In this case it may be % is
+helpful to increase the scale.
+The precomputed scale factor is multiplied by the scale factor
+specified on the command line. 
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt r}} Rotate through $180\degrees$ (This is useful when a file
+is sent through {\TWOUP} more than two times --- since each pass turns
+the output through $90\degrees$).
+
+\endbullets
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt d}} Destination. Output will be sent to the designated
+device ({\tt PRN}, {\tt LPT1}, {\tt LPT2}, {\tt LPT3},
+{\tt AUX}, {\tt COM1}, {\tt COM2} or a file).
+If this argument is omitted, the output will be sent to a file in the
+current directory with the same name as the input file, but with file
+extension {\tt .ps2} (or {\tt .ps4}, and so on).
+
+\endbullets
+
+\vskip .05in
+
+\subsection{A.5 Setting up Serial Ports} % 4.5
+
+Information on setting up serial ports is not specific to {\DVIPSONE},
+but is included here, since incorrectly set serial ports can 
+be an obstacle to effective use of 
+{\DVIPSONE}, {\DOWNLOAD}, {\PKTOPS}, or {\TWOUP}.
+Before using a serial port to print any file, the following needs to be
+taken care of:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar The printer should be set to the same baud rate as the computer's
+serial port.  
+Methods for doing this are printer specific --- see your printer manual
+for details. 
+On the Apple LaserWriter II~NT$^{\smlsize TM}$, for example, a file
+containing the following lines will set the transmission rate to 19,200
+baud (and set hardware flow control): 
+
+% This is somewhat dated ...
+
+% options = stopbits databits databits flow flow flow parity parity
+
+\vskip .05in
+
+{\narrower
+
+\ipar
+\verb@serverdict begin 0 exitserver@\hfill\linebreak
+\verb@statusdict begin 25 19200 4 setsccbatch@ % \hfill\linebreak
+% page 115 in Apple LaserWriter II NT book
+% 	\verb@statusdict begin 25 19200 7 setsccbatch@\hfill\linebreak
+
+}
+
+\vskip .05in
+
+\bpar The computer's serial port must be set to the same baud rate as
+the printer. 
+Use the {\DOS} {\MODE} command for this. 
+{\DOS} limits the transmission speed to 19,200 baud --- use {\MODEX},
+described in Appendix~A.7,
+if you would like to use 38,400 or 57,600 baud instead.
+% (or even 115,200 if your printer supports it).
+
+\bpar The serial port's communication parameters should match those of
+the printer. 
+Typically this means 8 bits of data, 1 stop bit and no parity.
+Use the {\DOS} {\MODE} command to set these parameters on the serial port.
+
+\bpar The printer should be set to use hardware flow control (\DTRDSR)
+if possible (if the printer does not support hardware flow control, 
+use the utility {\SERIAL}, described in Appendix~A.6).
+Note that most {\PS} printers default to software flow control,
+while other printers connected to PCs normally default to hardware flow
+control. 
+
+\bpar Make sure the cable connecting the printer to the computer has a
+full set of signaling lines to support hardware flow control. 
+Some so-called `printer cables' 
+(particularly those used on Macintosh computers) 
+carry only signal ground, receive data and transmit data lines 
+(pins~1, 2 and~3),
+and do not connect {\sc DSR} and {\sc DTR} lines (pins~6 and~20).
+To be safe, use a modem cable in combination with % and 
+a null modem instead.
+
+\bpar Make sure that the cable `has a twist' in it --- that is, that the
+`receive' line on the computer side becomes the `transmit' line on the 
+printer end, and vice versa.  
+Printer cables are normally wired up this way.
+A modem cable can be used if a null modem  
+(a.k.a modem eliminator) is inserted.
+
+\bpar Use a serial connection tester 
+(such as the RS232 Mini-Tester available from Radio Shack) 
+that shows which lines in a serial cable are connected and carrying signals.
+
+\bpar Tell the operating system not to panic when the printer says it
+is busy (If this is not done, the busy condition will be treated as an
+error and you will get the `abort, retry, or fail?' message). 
+This can be taken care of by adding the trailing `{\tt b}' parameter to the
+{\DOS} {\MODE} command (or the {\MODEX} command).  For example:
+
+\vskip .05in
+
+%	\verb@mode LPT1:,,b@
+
+	\verb@mode COM1: 19200,n,8,1,b@
+
+% \noindent 
+or
+
+	\verb@modex COM1: 57600,n,8,1,b@
+
+\vskip .05in
+
+(In versions of {\DOS} before 4.0, the trailing `{\tt b}' should
+instead be a `{\tt p}').
+
+\vskip .05in
+
+\bpar In order to use the {\DOS} {\PRINT} command, redirect output
+intended for {\tt LPT1} to {\tt COM1} using the {\DOS} {\MODE} command:
+
+\vskip .05in
+
+	\verb@mode LPT1:=COM1:@
+
+\vskip .05in
+
+\noindent
+(Any changes to the communications parameters of the serial channel
+should be made {\it before} issuing the redirection command).
+
+\vskip .05in
+
+\bpar You may need to send the {\PS} end-of-job indicator
+({\controld}) following a file sent using the {\DOS} {\PRINT} or % the {\DOS}
+{\COPY} commands
+(When output goes directly to the printer, {\DVIPSONE} already takes
+care of this --- but it is not appropriate to have a {\controld} in a
+{\PS} file).
+% following described twice earlier...
+The end-of-job indication can be sent by `printing' the file 
+{\tt controld.txt}.  
+Files sent to the printer using {\COPY} may be conveniently
+concatenated using `{\tt +}',
+as indicated earlier: % (see {\DOS} manual).
+
+\vskip .05in
+
+%	\verb@copy testcase.ps+c:\dvipsone\controld.txt PRN:/b@
+	\verb@copy testcase.ps+c:\dvipsone\controld.txt PRN:@
+
+\vskip .05in
+
+% \bpar When {\DVIPSONE} is stopped (using {\controlc} or {\controlbreak})
+% while sending output to the printer, either wait for the printer to
+% time out, or send the {\PS} end-of-job indicator
+% (that is, `print' the file {\tt controld.txt}).
+% Otherwise data from the incomplete print job may interfere with the
+% next print job. 
+
+\vskip .05in
+
+\endbullets
+
+\noindent
+For additional details on setting up serial connections, see your
+printer documentation.
+% \cfootnote{For the Apple LaserWriter II NT, % for example,
+% see pages 110--115 in the Owner's Guide.}.
+
+\subsection{A.6 Software Flow Control --- using SERIAL} % 4.6
+
+Some older {\PS} printers to not provide hardware flow control. 
+In this case a downloader must be used for all but very short files,
+since {\DOS} does not directly support software flow control.
+% ({\XONXOFF} or {\ETXACK}).
+In fact, the {\DOS} {\PRINT} or {\COPY} commands cannot be used, and
+output from {\DVIPSONE}, {\DOWNLOAD}, {\PKTOPS}, and {\TWOUP} 
+cannot be sent directly to such a printer.
+In this case use {\SERIAL}, a utility program supplied with {\DVIPSONE},
+which uses software flow control%
+\cfootnote{Actually, {\SERIAL} supports both hardware ({\DTRDSR}) and
+software ({\XONXOFF}) flow control --- but {\SERIAL} is not needed if hardware
+flow control is available, since output can then be sent directly to
+the printer from {\DVIPSONE} and the utility programs;
+or using the {\DOS} {\PRINT} and {\COPY} commands.}.
+%
+To see what command line arguments {\SERIAL} takes, invoke it by typing:
+
+\vskip .05in
+
+	\verb@serial -?@. 
+	
+\vskip .05in
+
+% Presently 
+\noindent
+The optional command line arguments are:
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{{\tt v}} Verbose mode.
+
+\ftpar{{\tt e}} Do not send end-of-job (control-D) to the printer at
+the end.
+
+\ftpar{{\tt w}} Do not wait for end-of-job (control-D) from printer at
+the end.
+
+\ftpar{{\tt l}} Do not write a log file ({\tt printer.log}).
+
+\ftpar{{\tt t}} Specify waiting timeout (default 30 sec). 
+Zero means wait indefinitely.
+
+\ftpar{{\tt d}} Send the output to the specified destination 
+(the default is {\tt AUX} --- also known as {\tt COM1}).
+
+\vskip .05in
+
+\endbullets
+
+\noindent
+Not waiting for the end-of-job indicator from the printer allows you to
+continue using the computer as soon as the file has been sent to the
+printer, but means that any error messages sent back 
+(by {\tt ehandler.ps}, for example --- see section~A.13) will be lost.
+
+(Note that in order to use software flow control it is necessary 
+to access the serial port directly, that is, 
+to bypass both {\DOS} and {\BIOS}.  
+This means that {\SERIAL} may not work on some {\PC} clones that do not
+use the standard hardware interface for the serial port.)
+
+\subsection{A.7 Higher Baud Rates on Serial Lines --- using MODEX} % 4.7
+
+The {\DOS} utility {\MODE} allows one to change the settings on serial
+communication ports {\tt COM1} and {\tt COM2}.
+Unfortunately {\DOS} limits the maximum baud rate to 19,200 while the
+serial port hardware is actually able to go far beyond that.
+For driving printers, it is often convenient to use 38,400 or
+57,600 baud. % (or even 115,200 if your printer supports it).
+The utility {\MODEX}, supplied with {\DVIPSONE},
+makes it possible to use these higher baud rates.
+The program {\MODEX} takes arguments similar to those taken by {\MODE}.
+% except that the trailing `{\tt b}' argument is not supported.
+When not given any arguments, {\MODEX} reports the present
+settings on the two serial ports.
+%
+Typical usage:
+
+\vskip .05in
+
+%	\verb@mode COM1: 19200,n,8,1,b@\hfill\linebreak
+	\verb@modex COM1: 57600,n,8,1,b@
+
+\vskip .05in
+
+\noindent
+The trailing `{\tt b}' argument in the call to {\MODEX} above sets up
+proper handling of the printer busy condition --- that is, wait when the
+printer is busy, rather than treat this as an error. %
+% \cfootnote{If the trailing argument is specified and the baud rate is
+% above 19200, then {\MODEX} first calls {\DOS} {\MODE} with a baud
+% rate of 19200 to set up proper handling of the busy condition, and then
+% separately increases the baud rate setting.}
+(In versions of {\DOS} before 4.0, the trailing `{\tt b}' should
+instead be a `{\tt p}').
+%
+% The subsequently call to {\MODEX}  sets the desired higher baud rate.
+The above call to {\MODEX} may conveniently be inserted in the 
+{\tt autoexec.bat} file. 
+
+Agreement on flow control between the printer and
+{\DOS} is even more important at higher baud rates.
+It is recommended that hardware flow control be used ({\DTRDSR}),
+since {\DOS} does not directly support software flow control ({\XONXOFF}
+or {\ETXACK}).
+% Some printers may not be able to keep up at the higher baud rates --- typical
+% symptoms are overruns (parts of the file mysteriously disappears) and
+% {\tt ioerror}s.
+% which is not directly supported by {\DOS}).
+See sections~A.5 and~A.6 for additional details.
+
+% \cfootnote{Make sure that the serial printer cable you are using
+% carries the required signal lines in addition to the lines used for data 
+% (some cables connect only signal ground and read data and write data).
+% It may be easiest to use a modem cable and a null modem, instead of a
+% printer cable, since modem cables invariable have the signalling lines
+% wired up.}.
+
+Remember to change the baud rate on the printer {\it before\/} changing
+it on the computer end. 
+The method for doing this varies from printer to printer, but usually
+involves the command {\tt sccbatch} used outside the normal server loop.
+% Remember also that it will be necessary to change the baud rate on the
+% printer {\it before\/} the baud rate is changed on the computer.
+Refer to your printer documentation for the proper procedure
+(See also Appendix~A.5).
+
+% explain more here ?
+
+% \vskip .05in
+
+\subsection{A.8 Optimizing Performance} % 4.8
+
+{\DVIPSONE} is very fast and typically requires much less time per page
+than the printer to which the output is ultimately sent.  
+There may nevertheless be some interest in optimizing performance.
+
+% \par
+\quad\quad
+The operational speed of {\DVIPSONE} is usually limited by input and output.
+When output goes directly to a printer, for example, the speed of the
+print engine and the {\PS} interpreter will be the limiting factors.
+If output is to a file, then disk I/O is likely to be the limiting
+factor, since both {\DVI} input files and {\PS} output files can be quite
+large and since several font files typically will have to be read and
+decompressed --- that is, changed from a compact binary {\PFB} format
+to the hexadecimal 
+{\PFA} form that the {\PS} interpreter is willing to deal with.
+For these reasons, whatever can be done to speed up I/O will help speed
+up {\DVIPSONE}%
+\cfootnote{
+A simple % One 
+way to determine whether output is the main constraint on speed
+is to see whether running {\DVIPSONE} with the destination {\tt NUL}
+reduces the time taken to process a {\DVI} file.}.
+% increases throughput a great deal.}.
+
+The following recommendations are not specific to {\DVIPSONE}, but
+general techniques for improving throughput:
+% The following can be recommended: 
+
+\vskip .05in
+
+\beginbullets
+
+\bpar Install an interrupt-driven % Print 
+spooler (such as LaserTools' Print\-Cache$^{\smlsize TM}$). % ???
+Using a print spooler makes it possible to
+continue using the computer while output is being sent to the printer.
+Also, some print spoolers are able to bypass inefficient {\DOS} or {\BIOS} 
+% built-in
+I/O routines%
+\cfootnote{Note, however, that some print spoolers are not compatible with
+Micro\-Soft Windows because they access the serial port hardware directly.}.
+Interrupt driven spoolers often provide faster output than
+non-interrupt driven procedures such as the {\DOS} {\COPY} command.
+% or {\DOS} {\PRINT} command.
+
+% \bpar Use hardware flow control (\DTRDSR) instead of software flow
+% control (\XONXOFF).  (This is needed in any case for spooling programs
+% and use of the {\DOS} {\COPY} command).
+
+\bpar Install a Disk Cache (such as Micro\-Soft's {\sc SMARTDRV}).
+This can greatly increase disk throughput
+by reducing the number of accesses required when reading from the disk.
+Write queuing further improves performance (although it may also 
+increase the risk of disk problems on some systems).
+
+\bpar Install a RAM disk or virtual disk (such as Micro\-Soft's {\sc RAMDRIVE}).
+Sending the output to a RAM disk has several advantages.  
+It removes contention between disk input and disk output, % greatly 
+speeding throughput. 
+It also means that the {\PS} file, which may be only of 
+temporary interest,
+is automatically discarded when the computer is turned off.
+
+% if output won't fit, use RAM disk to hold input - reduce disk contention...
+
+% large files
+
+\bpar Make sure the allocation of buffers specified in {\tt config.sys}
+is adequate --- at least 20 % (unless a disk cache is being used).
+(fewer may be called for when a disk cache is being used).
+Also, some versions of {\DOS} have features 
+that allow retention of directory information 
+(such as % {\COMPAQ}'s 
+{\sc fastopen}). % $^{\smlsize TM}$).
+This speeds up opening of files. %  --- install such utilities if available.
+
+\bpar On a printer with both parallel and serial ports, 
+use the parallel port (it may be up to ten times faster).
+
+\bpar On a printer with only a serial port, increase the baud rate to
+38,400 or 57,600 
+% (or even 115,200 if your printer provides for this).
+Use {\MODEX} (described in Appendix~A.7) for this purpose.
+
+\endbullets
+
+\vskip .05in
+
+Note that higher baud rates are not directly supported by {\DOS},
+% (and hence Windows),  
+so you may have to reset the baud rates when you return to
+some other application that uses the serial port. 
+% Remember to change the baud rate on the printer before changing it on
+% the computer end. 
+% The method for doing this varies from printer to printer, but usually
+% involves the command {\tt sccbatch} used outside the normal server loop.
+
+% give example {\PS} code for this ?
+
+\vskip .05in
+
+\beginbullets
+
+\bpar Use the command line flags `{{\tt n}}' and/or `{{\tt N}}', 
+if possible, to reduce the size of the file being sent to the printer.%
+\cfootnote
+{{\sc warning:} Do not use the `{\tt n}' or `{\tt N}' command line
+flags when portability of the resulting {\PS} file is paramount.}.
+
+\endbullets
+
+\subsection{A.9 Conserving Printer Virtual Memory (VM)} % 4.9
+
+{\DVIPSONE} uses advanced font management techniques,
+such as {\it partial font downloading}, 
+that make it very
+unlikely that a print job will run out of virtual memory ({\VM}).
+It makes much better use of printer memory, for example, than is possible by
+downloading the fonts to the printer ahead of time and then treating
+them as if they were printer-resident fonts.
+% Twilight zone, the printer is dyslexic!
+It is nevertheless possible that a very large book, treated as a single job,
+may not run on a printer with only a small amount of virtual
+memory.   In this case there are several things that can be done:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar Avoid manual downloading of fonts --- let {\DVIPSONE}
+manage fonts. % download them as needed.
+
+\bpar Split the job into parts using command line flags to select page
+ranges (using the command line flags {\tt b} and {\tt e}). 
+This is particularly helpful when some fonts are only used in
+certain page ranges such as in appendices or the bibliography.
+
+\bpar Force substitution.  If you are working with the complete set of
+the 75 Computer Modern fonts, it may make sense to force substitution
+for some less frequently used fonts. %  --- use the basic set of 40.
+
+\vskip .05in
+
+\noindent
+For example, a scaled version of {\tt cmr7} may be used in
+place of the rarely occurring {\tt cmr6}.  
+% For example, a scaled version of {\tt cmr10} may be used in
+% place of the rarely occurring {\tt cmr9}.  
+One can do most things with a basic subset of 40 of the Computer Modern
+fonts.  The font substitution file {\tt forced.sub} illustrates.
+
+\vskip .05in
+
+\bpar Increase the printer's available virtual memory by reducing the
+imageable area (use {\tt note} instead of {\tt letter} for pagetype).
+
+\bpar Make more use of printer-resident fonts.
+
+\bpar Limit the number of characters in manually downloaded Adobe Type~3
+bitmapped fonts.
+
+\bpar Better still, avoid using % permanently downloaded Adobe Type~3 
+bit\-map\-ped fonts, if at all possible!
+
+\endbullets
+
+\subsection{A.10 Macintosh Outline Font Files} % 4.10
+
+{\DVIPSONE} can use Adobe Type~1 font files in the form used on the
+Macintosh$^{\smlsize TM}$. 
+This may be convenient if the desired outline fonts are not available
+in the generic form used on {\IBM} {\PC} compatibles and other 
+computers.
+
+\quad\quad
+A way must, however, be found to transfer the Macintosh font files
+to your {\PC}. 
+When considering different ways of doing this, 
+remember that the font files are in a complex packed binary form.
+There are a number of possibilities:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar
+Kermit$^{\smlsize TM}$ can be used to ship binary files from a
+Macintosh to a {\PC} over a cable connecting their serial ports.
+
+\bpar 
+Travelling Software's LapLink$^{\smlsize TM}$ provides a way of
+connecting a {\PC} to a Mac and transferring binary files
+(use `MacBinary' format).
+
+\bpar 
+Central Point Software's Deluxe Option Board$^{\smlsize TM}$ makes it
+possible to read Mac diskette's on a {\PC}'s 3 1/2" drive 
+(Use `unary' transfer mode). 
+%  to make sure you both data and resource forks are transmitted).
+
+\bpar Macintosh computers with `superdrives' can write diskettes 
+in PC format using AccessPC$^{\smlsize TM}$ or % similar applications.
+Apple's MacPC Exchange.
+
+\bpar 
+Some service bureaus can transfer files from a Macintosh
+compatible medium to a {\PC} compatible medium.
+
+\endbullets
+
+\vskip .05in
+
+Note that the files needed are the (printer) font files themselves,
+{\it not\/} the screen fonts {\it or\/} the font metric files.
+{\DVIPSONE} assumes that Macintosh font files are in MacBinary format.
+% added 1992/Nov/1 */
+Some method of transferring the files split the file into a `data fork' file
+and a `resource fork' file.  DVIPSONE can work directly with the latter.
+
+Please note, however, that many font licensing agreements
+do not permit use of a particular font on more than one platform.
+
+\subsection{A.11 Using {\TeXtures}$^{\smlsize TM}$ Files} % 4.11
+
+{\DVIPSONE} normally expects to see {\DVI} files as input, 
+but can also read files produced by {\TeXtures}$^{\smlsize TM}$ on the
+Macintosh (assuming a way is found for transferring the files from a
+Macintosh to the {\PC} --- see previous subsection)%
+\cfootnote{DVItool, a utility that comes with {\TeXtures}, can
+also be used to convert {\TeXtures} files to {\DVI} format.}.
+% {\TeXtures} files have the {\TeX} source in the data fork and the {\DVI}
+% file in the resource fork.
+If an extension is not specified for the input,
+{\DVIPSONE} first looks for a file with extension {\tt .dvi}, then for
+a file with extension {\tt .tex} --- just in case the input is a {\TeXtures}
+file.
+
+%% or use DVITool
+
+% \subsection{A.12 Printer's Points versus Big Points} % 4.12
+
+\subsection{A.12 Pica Points versus Didot Points} % 4.12
+
+Dimensions expressed in `points' in {\TeX} refer to pica points,
+of which there are 72.27 per inch.
+Dimensions expressed in `points' in {\PS} refer to
+didot % what {\TeX} calls big 
+points, of which there are 72 per inch.
+The output of {\DVIPSONE} is scaled according to {\TeX}s interpretation
+of what a point is.
+Thus, for example, when a 10 point font is called for, 
+the call to the {\PS} {\tt scalefont} operator 
+has an argument equivalent to $9.9626401\ldots$
+
+\section{A.13 Trouble Shooting --- and using EHANDLER.PS}
+
+If there is a problem printing with a printer connected on a parallel
+port, try the following test: %  in {\DOS}
+
+\vskip .05in
+
+\ipar
+\verb@copy CON LPT1:@\hfill\linebreak
+\verb@showpage <control-D> <control-Z>@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+If the printer is connected properly it should eject a blank page.
+
+The most common problems with printing, % output from {\DVIPSONE}, 
+however,
+arise from difficulties with serial port communication parameter and
+flow control settings.
+To check that the proper handling for the printer busy condition has
+been set up, try:
+
+\vskip .05in
+
+	\verb@mode COM1:@	\quad or \quad \verb@mode COM1: /status@
+
+\vskip .05in
+
+\noindent
+{\DOS} should report {\tt RETRY=B} for the specified port.  
+To check on the baud rate and other communication settings, try:
+
+\vskip .05in
+
+	\verb@modex COM1:@
+
+\vskip .05in
+
+\noindent
+See sections~A.5 and~A.6 for additional details.
+%
+Suspect flow control problems if only the first few pages of a document are
+printed correctly. % new
+
+Some printers are not able to keep up with the data for some 
+flow control settings at the higher baud rates --- typical 
+symptoms are overruns (parts of the file mysteriously disappear) and
+{\tt ioerror}s (as reported by the error handler {\tt ehandler.ps}
+to be discussed next).
+
+% \nsubsection{The {\PS} Printer Error Handler}
+
+If the printer is receiving data from the computer 
+(as indicated by flashing LEDs, or on its LCD display), 
+but does not print anything, or prints something that is garbled,
+use the error handler {\tt ehandler.ps} to get additional diagnostic
+information. 
+Send {\tt ehandler.ps} to the printer {\it before\/} sending the
+offending {\PS} file%
+\cfootnote{Note that some `clone' {\PS} interpreters do not 
+correctly set up all of the information expected by the errorhandler.}
+(you may need to reboot the printer before doing this
+if the {\sc PS} interpreter has `crashed').
+If the `offending command' is `{\tt ioerror}', there may be 
+a mismatch in the settings of the communication parameters or 
+handshaking protocol.
+
+%% This is a kind of joke, since you can't load ehandler.ps then!
+
+The error handler remains resident in the printer and provides a page
+containing % both what was printed before the error as well as 
+detailed analysis of the state of the {\PS} interpreter whenever
+the error occurs. 
+%
+The error handler's default is to produce hardcopy error analysis, 
+but it can be set up to instead send the information back to the
+computer. 
+The latter is only useful if the printer is hooked up to a serial port.
+The program {\SERIAL} can then show the error information on the screen
+and also send it to a log file 
+(this is one case where sending a file to the printer using {\SERIAL}
+may make sense even when the printer supports hardware flow control).
+%
+Hardcopy output from {\tt ehandler.ps} is selected by the line
+
+\vskip .05in
+\verb@/showflag true def@
+\vskip .05in
+
+\noindent while serial port output is selected by the line
+
+\vskip .05in
+\verb@/printflag true def@
+\vskip .05in
+
+\noindent
+To change the default, read {\tt ehandler.ps} into an editor as a plain
+ASCII file and search for the two lines setting 
+{\tt showflag} and {\tt printflag} --- change `{\tt false}' to `{\tt true},'
+as appropriate and then save the file.
+
+If there are problems with printing, then use the test files found in the
+{\tt ps} subdirectory of the {\DVIPSONE} distribution diskette
+(these files are not copied to the hard disk by the installation
+procedure).
+This is a sequence of {\PS} test files of increasing complexity.
+% may be found in the {\tt ps} subdirectory of the {\DVIPSONE} distribution
+% diskette.  These can be useful when attempting to diagnose printer problems
+If the first few test files are printed without error, but the last few
+are not, then the printer may have an interpreter that is not completely
+compatible with Adobe Type~1 fonts.
+For additional details, see the file {\tt readme.txt} in that subdirectory.
+
+Another type of problem arises when {\DVIPSONE}'s files are placed
+in a directory other than where {\DVIPSONE} expects to find them.  
+In this case it may be necessary to use command line flags or to set
+environment variables to tell {\DVIPSONE} where the files it needs
+are (see sections~2.4 and~2.5).
+This should not normally be an issue, since {\DVIPSONE} looks for most
+of the files it needs in the directory of the {\DVI} file or the home
+directory it is called from, as appropriate. 
+
+
+\section{Feedback}
+
+Your comments and suggestions for improvements of {\DVIPSONE}, one of
+the auxiliary programs, 
+{\AFMTOTFM}, {\PKTOPS}, {\DOWNLOAD}, {\SERIAL}, {\TWOUP}, {\MODEX},
+% and ehandler.ps ?
+or this document would be greatly appreciated.  
+In the case of a problem, it would be helpful to have the % exact 
+error message produced by {\DVIPSONE}, 
+as well as the version number and compilation date.
+A copy of the {\DVI} file leading to the reported difficulty 
+may also be helpful.
+
+For problems with printing, download the file {\tt ehandler.ps} to the
+printer before sending the job that causes problems (see previous section).
+It will provide detailed analysis of the state of the
+{\PS} interpreter when the error occurs.
+
+Also, please test the printer with the series of {\PS} test files
+described in the previous section in order to try and pin down the problem.   
+Printing the test files will help ascertain whether the {\PS} interpreter
+has problems dealing with certain features of Adobe Type~1 fonts.
+
+For additional information see the file {\tt readme.txt} 
+(and other files with extension {\tt .txt}).
+
+\section{Colophon}
+
+This manual was prepared using Lugaru's Epsilon$^{\smlsize TM}$ 
+(an implementation of Richard Stallman's Emacs), 
+run through Daniel Brotsky's {\YTeX} and printed on a 
+% NewGen$^{\smlsize TM}$ TurboPS/480 printer,
+an Apple LaserWriter II NT
+from output produced by {\DVIPSONE}, reprocessed by {\TWOUP}. 
+
+The outline fonts used were from Blue Sky Research and from \Y&Y. 
+
+\newpage
+
+% \offheaders
+
+% \versoleftheader={}
+
+% TABLE OF CONTENTS
+
+\def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
+
+\line{{\bf 1.\enspace Introduction to DVIPSONE\leaderfill 1}}
+
+\vskip .05in
+
+\line{\quad 1.1\enspace Quick Start --- Installing DVIPSONE\leaderfill 1}
+\line{\quad 1.2\enspace Invoking DVIPSONE\leaderfill 2}
+\line{\quad 1.3\enspace Sending Output to the Printer --- DOS PRINT and COPY\leaderfill 3}
+\line{\quad 1.4\enspace Setting up the Environment\leaderfill 4}
+\line{\quad 1.5\enspace Where to obtain Adobe Type 1 Outline Fonts\leaderfill 4}
+
+\vskip .1in % \vskip .05in
+
+\line{{\bf 2.\enspace How to use DVIPSONE\leaderfill 5}}
+
+\vskip .05in
+
+\line{\quad 2.1\enspace Command Line Flags and Arguments Defined\leaderfill 5}
+\line{\quad 2.2\enspace Multiple DVI files and Wildcard Arguments\leaderfill 6}
+\line{\quad 2.3\enspace Detailed List of Command Line Flags\leaderfill 6}
+\line{\quad 2.4\enspace Detailed List of Command Line Arguments\leaderfill 8}
+\line{\quad 2.5\enspace Detailed List of Environment Variables\leaderfill 11}
+\line{\quad 2.6\enspace Font Substitution Files\leaderfill 12}
+\line{\quad \quad 2.6.1\enspace Missing Fonts\leaderfill 12}
+\line{\quad \quad 2.6.2\enspace Forced Substitution\leaderfill 12}
+\line{\quad \quad 2.6.3\enspace Printer Resident Fonts\leaderfill 13}
+\line{\quad \quad 2.6.4\enspace Downloading Fonts --- Adobe Type 1 fonts\leaderfill 13}
+\line{\quad \quad 2.6.5\enspace On-The-Fly Remapping of Font Character Encoding\leaderfill 14}
+\line{\quad \quad 2.6.6\enspace Aliasing Font Names\leaderfill 15}
+% 2.6.1 2.6.2 2.6.3 2.6.4 2.6.5 2.6.6
+
+\vskip .1in % \vskip .05in
+
+\line{{\bf 3.\enspace Inserting Encapsulated PostScript Files\leaderfill 15}}
+
+\vskip .05in
+
+\line{\quad 3.1\enspace Ten EPS Figure Insertion Schemes Supported\leaderfill 16}
+% A, B, C, D, E, F, G, H, I, J
+\line{\quad 3.2\enspace Additional Comments Relating to Figure Insertion \leaderfill 21}
+\line{\quad 3.3\enspace Dangerous Bends --- Prolog Files and Verbatim PostScript\leaderfill 22}
+
+\vskip .1in % \vskip .05in
+
+\line{{\bf A.\enspace  Appendix --- Advanced Topics\leaderfill 26}}
+
+\vskip .05in
+
+\line{\quad A.1\enspace Manually downloading fonts --- using DOWNLOAD\leaderfill 26}
+\line{\quad A.2\enspace Non Computer Modern fonts --- using AFMTOTFM\leaderfill 27}
+% For TeXperts only
+\line{\quad A.3\enspace What about Bitmapped Fonts? Using PKTOPS\leaderfill 30}
+\line{\quad A.4\enspace Transformation of the PS Output --- using TWOUP\leaderfill 31}
+\line{\quad A.5\enspace Setting up Serial Ports\leaderfill 33}
+\line{\quad A.6\enspace Software Flow Control --- using SERIAL\leaderfill 34}
+\line{\quad A.7\enspace Higher Baud Rates --- using MODEX\leaderfill 35}
+\line{\quad A.8\enspace Optimizing Performance\leaderfill 36}
+\line{\quad A.9\enspace Conserving Printer Virtual Memory (VM)\leaderfill 37}
+\line{\quad A.10\enspace Macintosh Outline Font Files\leaderfill 38}
+\line{\quad A.11\enspace Using {\TeXtures} Files\leaderfill 39}
+\line{\quad A.12\enspace Pica Points versus Didot Points\leaderfill 39}
+\line{\quad A.13\enspace Trouble Shooting --- Using EHANDLER.PS\leaderfill 39}
+
+\end
+
+%	What DVIPSONE does
+%	What DVIPSONE does not do
+%	Level 0 draft standard - minus bitmapped fonts
+%	Where to get CM outline fonts?
+%		BSR Macintosh and PC fonts
+%		ArborText PC fonts
+
+	What are outline fonts?
+		advantages over bitmaps
+		lack of dot-growth
+		rendering hints
+		across-job caching
+
+%	Upgrading
+%	Future releases
+
+Format of font files
+	PFB, PFA and Mac format font files
+
+Format of DVI files
+	TeX DVI files
+	Textures DVI Mac files 
+	DVItool
+
+Advanced Topics
+	order of precedence: built-in, environment, command line
+%	permanent (`manual') downloading of fonts
+%	generating TFM from AFM for TeX
+%	remapping font encoding
+%	sample encoding vectors
+	checking on rendering speed and page VM usage
+%	running out of VM
+%		use forced substitution
+%		use page range selection
+
+Search order for files
+	Search paths
+	File name extensions
+	input:	.dvi, then .tex
+	font:	.pfb, .pfa, null, __.pfb, __.pfa
+	illustration as specified, in pspath, in {\PS} file dir, in current dr
+	default directories - in ps file dir, in dvipsone program dir
+	sub
+	vec
+	pream
+
+Specifications
+	Level 0 draft standard
+	64 fonts
+	font numbers up to 255
+	characters in range 0 to 255
+	no restrictions on number of characters on page
+	no restrictions on number of rules on page
+	no restriction on size of character
+	no restriction on size of rule
+	stack depth and alternate preamble
+	beyond level 0 draft standard
+	128 entries in font substitution file
+
+Performance
+	AT class 286 without co processor
+	486
+
+Interpreting output from DVIPSONE
+	verbose mode
+	Timing information
+
+Error Messages
+	error message
+	current task when error occurred
+	position in DVI file
+
+% What to about bugs in DVIPSONE
+% 	there shouldn't be any
+% 	using ehandler.ps
+% 	serial number, date and time of compilation
+% 	supplying DVI file generating error
+
+Appendix
+
+% BBox at end treated correctly
+% EPSI, EPSF treated correctly
+% (one page) output can be treated as {\EPS} file
+
+% order of search for pfb, pfa, Mac fonts, __
+
+% eps files also searched for in dvi file directory and in current directory.
+
+Also available: Mac to PC diskette copying
+Also available: Reprocess for use with ATM, convert AFM to PFM.
+Also available: Complete set of CM fonts - get the missing 35 fonts
+Also available: LateX fonts
+
+% use more footnotes ? OK
+
+% scaling and rotation before or after shift ? ?
+
+% worry about trademarks and copyrights ? more ?
+
+% PostScript, Computer Modern, TeX, DVI, EPS ? TM's
+
+% search order for pfb, pfa, Mac
+
+% Make sure downloader can handle Type~3 fonts ?
+
+% don't use download for bitmapped fonts  ?
+
+% hyphen hint for {\PS} and Macintosh
+
+% careful with hard-wired section numbers...
+
+% mention that it looks for things in directory called from
+
+% PRN = LPT1
+
+% need to list auxiliary programs up front ?
+
+% errors cause non-zero return to {\DOS} us if errlevel = 1 etc
+
+% ehandler should be more prominent ?
+
+% expand trouble shooting section ?
+
+% list of error messages  --- TOO MANY
+
+% TeX is a trademark of the American Mathematical Society.
+
+% is there a problem with non-remapped TFM's because of old 
+% restriction to 7-bit characters ?
+
+% index and table of contents ?
+
+% for ehandler.ps
+
+% for hardcopy paper/film output set showflag true
+% for screen/file output         set printflag true
+
+% mention that SERIAL goes directly, bypass DOS and BIOS */
+
+% run through TeX: 	YTEX manual
+% run through DVIPSONE: DVIPSONE manual
+
+% (TWOUP -vzs -m=1.25 -x=-30 -d=PRN manual)
+
+% TWOUP -vzg -m=1.4 -d=PRN manual
+% TWOUP -vzh -m=1.4 -d=PRN manual
+
+% it is called signature order ...
+
+% LPT1: IRQ #7, LPT2: IRQ #5, COM1: IRQ #4,  COM2: IRQ #3
+
+                              Null Modem Cable Diagrams
+                              --- --- --- --- --- --- --- --- -
+
+For cabling a PC, XT, or other 25-pin Connector to a PostScript printer:
+
+                    PC (25-pin)             Printer (25-pin)
+                    --- ---  --- --             --- --- --- ---  --- -
+
+                      TxD  2 --- --- --- --- --- --- -- 3  RxD
+                      RxD  3 --- --- --- --- --- --- -- 2  TxD
+                      Gnd  7 --- --- --- --- --- --- -- 7  Gnd
+                      CTS  5 --- --- --- --- --- --- -- 20 DTR
+                                 |
+                      DSR  6  --- -
+
+For cabling an AT or other 9-pin Connector to a PostScript printer:
+
+                    PC (9-pin)             Printer (25-pin)
+                    --- ---  --- -             --- --- --- ---  --- -
+
+                      RxD  2 --- --- --- --- --- --- -- 2  TxD
+                      TxD  3 --- --- --- --- --- --- -- 2  RxD
+                      Gnd  5 --- --- --- --- --- --- -- 7  Gnd
+                      DSR  6 --- --- --- --- --- --- -- 20 DTR
+                                 |
+                      CTS  8  --- -
+
+
+           One other question that comes up with PostScript printers
+           connected via serial is how to set word length and parity. In our
+           experience, you always set your PC to use an 8 bit word length and
+           set parity to none. You set your printer the same way unless it
+           no option for parity none (for example, the NEC LC890 cannot use
+           a parity=none setting). If your printer has no parity=none option,
+           set it up for 7 bit word length, and set parity to "space" (this
+           is equivalent to 8 bit, parity none, so you can continue to run
+           your PC at 8 bit, parity none, while your printer is set for 7 bit,
+           parity "space," without any difficulty).
+
+
+Turn section 4 into one or more appendices ? 
+Make the whole thing look less ominous?
+
+Also:  \special{ps: epsfile <file-name> <scale>}
+
+Also:  \special{header=<file-name>}
+
+Also:  	ps::[begin] <w> <h> <llx> <lly> <urx> <ury> startTexFig
+	ps:: doclip
+	ps: plotfile <prolog-file>
+	ps: plotfile <epsf-file>
+	ps: plotfile <postlog-file>
+	ps::[end] endTexFig
+
+Also:  dvitops import <eps-file> width height ?
+
+Note that ehandler.ps won't necessarily run on clones...
+
+% describe  -w=<user-prolog> ?
+
+% also deal with ps:: <xll> <yll> <xur> <yur> doclip ???
+
+% discuss need for % at end of line containing \special ...
+
+% discuss `shrouded fonts' in output - safe to send to service bureau
+
+% check command line flags in all utility programs...
+
+% run through TeX: 	YTEX dvimanua
+% run through DVIPSONE: DVIPSONE dvimanua
+
+% (TWOUP -vzs -m=1.25 -x=-30 -d=PRN dvimanua)
+
+% TWOUP -vzg -m=1.4 -c=5 -d=LPT1 dvimanua
+% TWOUP -vzh -m=1.4 -c=5 -d=LPT1 dvimanua
+
+% TWOUP -vzg -m=1.45 -c=5 -d=COM1 dvimanua
+% TWOUP -vzh -m=1.45 -c=5 -d=COM1 dvimanua
+
+% Reside FontNames % max length of font names ? % Display PostScript ?

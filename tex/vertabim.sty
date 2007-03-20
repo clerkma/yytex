@@ -1,0 +1,64 @@
+%% vertabim.sty -- verbatim with a TAB twist (expands TABs to spaces)
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%%
+%%      Useful for including listings of makefiles, awk scripts, etc.
+%%
+%%      Written by Peter Dalgaard (pd@kubism.ku.dk)
+%%      Never mind about copyright.
+%%
+%%      Sorry about the bad pun in the package name, but I needed to
+%%      stay within the MS-DOS 8-character filename limit.
+%%
+%%      No documentation, but it simply provides the environment
+%%      verbatimtab and the macro \verbatimtabinput. They work just
+%%      like verbatim, respectively \verbatiminput, except that TABs
+%%      get expanded. 
+%%
+\NeedsTeXFormat{LaTeX2e}
+\RequirePackage{verbatim}
+\def\filedate{1994/12/15} % No defn of filedate in verbatim.sty, so
+                          % wait till it's loaded, or it too will
+                          % appear with that date...
+\def\fileversion{v1.0}
+\ProvidesPackage{vertabim}
+     [1994/12/15 v1.0 verbatim with a TAB twist]
+\@ifundefined{verbatimtabinput}{}{\endinput}
+\typeout{Package: `vertabim'
+    \fileversion \space <\filedate> (PD)}
+\newcount\vertabim@pos
+\def\vertabim@outchr#1{%
+    #1\relax%
+    \advance \vertabim@pos 1\relax % at least one of the \relax's
+                                   % following digits in
+                                   % these macros is crucial for
+                                   % proper operation. The others are
+                                   % due to paranoia!
+    \ifnum \vertabim@pos =8\relax
+    \vertabim@pos =0\relax \fi}
+\def\vertabim@dotab{%
+    \vertabim@outchr\space
+    \ifnum\vertabim@pos=0\relax
+    \else\vertabim@dotab\fi}
+{\@makeother\^^I
+\gdef\vertabim@expandtabs#1{%
+    \ifx#1\relax \let\next\relax
+    \else
+    \ifx#1^^I%
+        \vertabim@dotab
+        \else\vertabim@outchr#1\fi
+    \let\next\vertabim@expandtabs\fi
+    \next}
+}
+\def\vertabim@setup{%
+    \@makeother\^^I%
+    \def\verbatim@processline{\vertabim@pos =0\relax
+         \mbox{}\expandafter\vertabim@expandtabs\the\verbatim@line\relax\par
+    }}
+\newenvironment{verbatimtab}%
+    {\verbatim\vertabim@setup}%
+    {\endverbatim}
+\def\verbatimtabinput{\begingroup
+    \vertabim@setup
+    \verbatim@input{\frenchspacing\@vobeyspaces}%
+    }

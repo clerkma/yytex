@@ -1,0 +1,138 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=12pt
+
+\noheaders
+
+\def\bbf{\bigsize\bf}
+
+\noindent {\bbf Program:} \quad\quad PFMANAL
+
+\vskip .1in
+
+\noindent {\bbf Functions:}
+
+\vskip .05in 
+
+\bpar Analyze a MicroSoft Windows Font Metric (PFM) file.
+
+\bpar Help in comparative anatomy of a set of binary files.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent {\bbf Inputs:}
+
+\vskip .05in
+
+\beginbullets
+
+\bpar A MicroSoft Windows Font Metric (PFM) file.
+
+\bpar A set of binary files to be compared.
+
+\endbullets
+
+\vskip .05in
+
+\noindent {\bbf Outputs:}
+
+\vskip .05in
+
+\bpar Listing on standard output of what was found in the PFM file.
+
+\bpar For multiple files, listing of what each file contains at
+particular offset.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent {\bbf Controlling Behavior:}
+
+\vskip .05in
+
+\noindent The actions taken by PFMANAL are controlled by variables in
+the source code and by whether there is a single argument or several.
+There is also a command line flag (`-') that turns on detailed tracing.
+
+Sample invocations of PFMANAL:
+
+\vskip .05in
+
+\verb@pfmanal c:\psfonts\pfm\tir_____.pfm@
+
+\verb@pfmanal 23 c:\psfonts\pfm\*.pfm@
+
+\vskip .05in
+
+\noindent
+If there is more than one arguments, the first must be a number, 
+and the rest names of files.
+The number specifies an offset in bytes from the beginning of each file.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Flags and Variables:}
+
+\vskip .05in
+
+\noindent Additional control is provided by settings of variables and flags in
+the program itself, listed at the beginning of the source code of PFMANAL.
+Typically these are variables that would only rarely be changed.
+In some cases these are variables that have become `frozen', 
+when settings other than the ones in the code were determined to be
+less useful or unsatisfactory.
+% (changing these may lead to unsatisfactory performance of FONTONE).
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Notes:}
+
+\vskip .05in
+
+\bpar Part of the output produced by PFMANAL is in a format
+reminiscent of that found in an AFM file.  It is not possible to
+construct an AFM file, however, since so much information required in
+an AFM file is not found in a PFM file.
+For example, the character encoding is unknown, the character
+bounding box is unknown, and ligature information is missing.
+
+\bpar In the `comparative anatomy' mode (more than one argument), PFMANAL
+shows what is at the specified offset in each file.
+Shown are first the byte at that offset as a character, then as a
+number (ASCII code), 
+then the 16 bit number obtained by combining this byte with the following one,
+then the 24 bit number obtained by combining three bytes,
+finally the 32 bit number obtained by combining four bytes.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Bugs in ATM for Windows and PostScript Interpreters:}
+
+\vskip .05in
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Restrictions:}
+
+\vskip .05in
+
+\bpar Expected order:  FONTONE expects characters in the HEX file, the
+AFM file and the HNT file to appear in order of numerical code.
+
+\bpar Lack of copyright message generality:
+Presently only three different copyright messages (and corresponding 
+`time capsules') can be generated automatically.
+
+\end
+

@@ -1,0 +1,354 @@
+% **************************************************************************
+% Copyright (c) 1992 - 1993 Y&Y, Inc. 
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% **************************************************************************
+
+% This file illustrates a simple way to use Windows TrueType fonts in TeX.
+% For serious use you may want to define new `formats' based on either
+% plain.tex (for Plain TeX) or lplain.tex and friends (for LaTeX).
+
+% TeX Font Metric (TFM) Files:
+
+% For this sample file to work correctly, TeX needs to have
+% TFM files for the TrueType fonts that are called for.  
+% Such TFM files have already been copied to your TEXFONTS directory.
+
+% TFM files for other TrueType fonts can be made directly from DVIWindo.
+% Simple select `WriteTFM...' from the `Font' menu and chose the font
+% and style (its best to make TFMs for all four styles of a particular font).
+% This will deposit an AFM file for the chosen font in the DVIWindo directory
+% and then call AFMtoTFM to make a TFM file for that font.
+% This TFM file will be deposited in the first directory listed in TEXFONTS.
+
+% The AFM file is `human readable' and worth inspecting for potential problems.
+% You can also use AFMtoTFM to make a suitable TFM file from the AFM file.
+% Use `afmtotfm -vadj <AFM-file> to get ligatures and pseudo-ligatures.
+
+% **************************************************************************
+
+\magnification=1200
+
+\nopagenumbers
+
+% **************************************************************************
+
+% Font Encoding (character layout) issues:
+
+% NOTE: In MS Windows all TrueType text fonts use Windows ANSI encoding.
+%       Unlike Type 1 fonts, TrueType fonts cannot be reencoded `on the fly'.
+
+% NOTE: Windows ANSI encoding (used for all TrueType fonts) is 
+% different from the `TeX text' encoding assumed in plain TeX and LaTeX.
+% (See `ansiacce.tex' for more information).
+% Hence use the following to deal with this encoding difference:
+
+\input ansiacce.tex
+
+% Dangerous Bend --- Esoteric Details:
+
+% If you don't care about special characters accents for now, comment out the
+% above line and then just fix a problem with `quoteleft' and `quoteright':
+
+% `quoteright' is in code position 39 in `TeX text' encoding,
+% but in code postion 146 in MS Windows ANSI encoding
+% (Windows ANSI has `quotesingle' in code position 39 instead).
+% `quoteleft' is in code position 96 in `TeX text' encoding,
+% but in code postion 145 in MS Windows ANSI encoding
+% (Windows ANSI has `grave' in code position 96 instead).
+% So we make these characters active and map them (39 => 146, 96 => 145).
+
+% \catcode`\'=\active \chardef`=146
+% \catcode`\`=\active \chardef`=145
+
+% NOTE: making ` active, as above, may prevent some other macro packages
+% from working, so it is best to make this change only AFTER those are read ---
+% or use \catcode\char96=12 \catcode\char39=12 before reading the macros ---
+% and then use \catcode\char96=13 \catcode\char39=13 again afterwards --- 
+% so that `quotedblleft' and `quotedblright' pseudo ligature work right.
+
+\def\lq{\char145 } \def\rq{\char146 }
+
+% Note that \lq and \rq provide an alternative way to access ` and '
+
+% **************************************************************************
+
+% The following 13 TrueType fonts come with Windows 3.1
+
+% Four styles of TrueType `Arial' --- a sans serif font (like Helvetica)
+
+\font\arial=arial
+\font\arialbd=arialbd
+\font\arialbi=arialbi
+\font\ariali=ariali
+
+% Four styles of TrueType `Courier New' --- a fixed width face (like Courier)
+
+\font\cour=cour
+\font\courbd=courbd
+\font\courbi=courbi
+\font\couri=couri
+
+% Four styles of TrueType `Times New Roman' --- a serif font (like Times)
+
+\font\times=times
+\font\timesbd=timesbd
+\font\timesbi=timesbi
+\font\timesi=timesi
+
+% TrueType MS Windows symbols & icons font (analogous to ZapfDingbats)
+
+\font\wingding=wingding
+
+\font\wingdinglarge=wingding at 12pt
+
+% TrueType version of Symbol font
+
+% \font\symbol=symbol	  % avoid: conflict with ATM (Type 1) Symbol font
+
+% **************************************************************************
+
+\def\newpage{\vfill\eject}			% start on a new page
+
+\def\Y&Y{{\wingding \char91}}			% Yin and Yang symbol
+\def\Windows{{\wingding \char255}}		% MS Windows (TM) flag
+\def\bpar{\noindent {\wingdinglarge C} \quad}	% hand showing `OK'
+
+% **************************************************************************
+
+\noindent \cour This text is in `Courier New', a TrueType font.
+
+\vskip .05in
+
+\noindent \courbd This text is in `Courier New Bold', a TrueType font.
+
+\vskip .05in
+
+\noindent \couri This text is in `Courier New Italic', a TrueType font.
+
+\vskip .05in
+
+\noindent \courbi This text is in `Courier New Bold Italic', a TrueType font.
+
+\vskip .25in
+
+\noindent \arial This text is in `Arial', a TrueType font.
+
+\vskip .05in
+
+\noindent \arialbd This text is in `Arial Bold', a TrueType font.
+
+\vskip .05in
+
+\noindent \ariali This text is in `Arial Italic', a TrueType font.
+
+\vskip .05in
+
+\noindent \arialbi This text is in `Arial Bold Italic', a TrueType font.
+
+\vskip .25in
+
+\noindent \times This text is in `Times New Roman', a TrueType font.
+
+\vskip .05in
+
+\noindent \timesbd This text is in `Times New Roman Bold', a TrueType font.
+
+\vskip .05in
+
+\noindent \timesi This text is in `Times New Roman Italic', a TrueType font.
+
+\vskip .05in
+
+\noindent \timesbi This text is in `Times New Roman Bold Italic', a TrueType font.
+
+% \vskip .05in
+
+% \noindent \symbol This text is in Symbol, a TrueType font.
+
+\vskip .25in
+
+\noindent \times All this in MicroSoft {\Windows} with software from {\Y&Y}!
+
+\vskip .25in
+
+\bpar \times In DVIWindo, type control-K to see list of fonts used.
+
+\vskip .05in
+
+\bpar \times In DVIWindo, type control-X to color code fonts.
+
+\vskip .05in
+
+\bpar \times In DVIWindo, Shift-click on a letter to see what font it is in.
+
+\vskip .05in
+
+\bpar \times In DVIWindo, click on font in `Font Used' list to show it in reverse video.
+
+\vskip .05in
+
+\bpar \times In DVIWindo, Ctrl-Shift-click on a letter to get full pedigree.
+
+\vskip .25in
+
+\bpar \times Test of ready-made accented characters: 
+\^a \~n \"u \'y \`e \aa\ \cc\ \v s
+
+\vskip .05in
+
+\bpar \times Test of constructed accented characters: \^c \~x \"c \'z \`r
+
+\vskip .05in
+
+\bpar \times Test of special characters: \oe\ \AE\ \OE\ \ss\ \O\ \o\ \ae\
+\dh\ \th\ \DH\ \TH 
+
+\vskip .05in
+
+\chardef\florin=131
+\chardef\ellipsis=133
+\chardef\dagger=134
+\chardef\daggerdbl=135
+\chardef\perthousand=137
+\chardef\bullet=149
+\chardef\currency=164
+\chardef\yen=165
+
+\bpar \times Test of some extra characters: \pounds\ \florin\ \yen\
+\currency\ \S\ \P\ \copyright\ \trademark\ \registered\ \dagger\ \daggerdbl\ 
+\perthousand\ \ellipsis\ \bullet
+
+\vskip .05in
+
+\bpar \times Test of pseudo ligatures !`  ?` - -- --- ``quote''
+
+\vskip .05in
+
+\bpar \times Test some more pseudo ligatures
+<<French>> and ,,German`` and ``English''
+
+\end 
+
+% IMPORTANT: END HERE IF TRUETYPE LUCIDA BRIGHT FONTS NOT INSTALLED
+% THE TRUETYPE LUCIDA BRIGHT FONTS ARE IN MICROSOFT FONT PACK #2
+
+\newpage
+
+% THE FOLLOWING ONLY WORKS IF LUCIDA BRIGHT TRUETYPE FONTS INSTALLED
+
+% **************************************************************************
+
+% Four styles of Lucida Bright - available on separate fonts diskette from MS
+
+\font\lbrite=lbrite
+\font\lbrited=lbrited
+\font\lbritedi=lbritedi
+\font\lbritei=lbritei
+
+% Four styles of Lucida Fax - available on separate fonts diskette from MS
+
+\font\lfax=lfax
+\font\lfaxd=lfaxd
+\font\lfaxdi=lfaxdi
+\font\lfaxi=lfaxi
+
+% Four styles of Lucida Sans - available on separate fonts diskette from MS
+
+\font\lsans=lsans
+\font\lsansd=lsansd
+\font\lsansdi=lsansdi
+\font\lsansi=lsansi
+
+% Four styles of Lucida Sans TypeWriter - available on separate fonts diskette from MS
+
+\font\ltype=ltype
+\font\ltypeb=ltypeb
+\font\ltypebo=ltypebo
+\font\ltypeo=ltypeo
+
+% Lucida Calligraphy Italic and Lucida Handwriting Italic
+
+\font\lblack=lblack
+\font\lcallig=lcallig
+\font\lhandw=lhandw
+
+% **************************************************************************
+
+\vskip .25in
+
+\noindent \lbrite This text is in Lucida Bright, a TrueType font.
+
+\vskip .05in
+
+\noindent \lbrited This text is in Lucida Bright Demibold, a TrueType font.
+
+\vskip .05in
+
+\noindent \lbritei This text is in Lucida Bright Italic, a TrueType font.
+
+\vskip .05in
+
+\noindent \lbritedi This text is in Lucida Bright Demibold Italic, a TrueType font.
+
+\vskip .25in
+
+\noindent \lfax This text is in Lucida Fax, a TrueType font.
+
+\vskip .05in
+
+\noindent \lfaxd This text is in Lucida Fax Demibold, a TrueType font.
+
+\vskip .05in
+
+\noindent \lfaxi This text is in Lucida Fax Italic, a TrueType font.
+
+\vskip .05in
+
+\noindent \lfaxdi This text is in Lucida Fax Demibold Italic, a TrueType font.
+
+\vskip .25in
+
+\noindent \lsans This text is in Lucida Sans, a TrueType font.
+
+\vskip .05in
+
+\noindent \lsansd This text is in Lucida Sans Demibold, a TrueType font.
+
+\vskip .05in
+
+\noindent \lsansi This text is in Lucida Sans Italic, a TrueType font.
+
+\vskip .05in
+
+\noindent \lsansdi This text is in Lucida Sans Demibold Italic, a TrueType font.
+
+\vskip .25in
+
+\noindent \ltype This text is in Lucida Sans Typewriter, a TrueType font.
+
+\vskip .05in
+
+\noindent \ltypeb This text is in Lucida Sans Typewriter Bold, a TrueType font.
+
+\vskip .05in
+
+\noindent \ltypeo This text is in Lucida Sans Typewriter Oblique, a TrueType font.
+
+\vskip .05in
+
+\noindent \ltypebo This text is in Lucida Sans Typewriter Bold Oblique, a TrueType font.
+
+\vskip .25in
+
+\noindent \lblack This text is in Lucida Blackletter, a TrueType font.
+
+\vskip .05in
+
+\noindent \lcallig This text is in Lucida Calligraphy Italic, a TrueType font.
+
+\vskip .05in
+
+\noindent \lhandw This text is in Lucida Handwriting Italic, a TrueType font.
+
+\end

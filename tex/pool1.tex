@@ -1,0 +1,141 @@
+% Sample TeX source file to access Symbol font (and Times-Roman and Courier)
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\magnification=1200	% enlarge to 120% actual size
+
+\nopagenumbers		% don't want page numbers here
+
+\def\\{\char92 }	% to get backslash typeset easily
+
+% Tell TeX what TFM file contains info on font `sy' (Symbol):
+
+\font\sy=sy
+
+% TeX's default is to use 10 pt font size.
+% To get a different font size just add `at 12pt' or whatever:
+
+\font\bigsy=sy at 16.78pt
+
+% Tell TeX what TFM file contains info on font `com' (Courier):
+
+\font\com=com
+
+% Tell TeX what TFM files contain info on fonts `tir', `tii', `tib', `tibi'
+% (Use the following if you have Adobe Times-Roman fonts ---
+% that is, if you bought ATM separately)
+
+% \font\tir=tir
+% \font\tib=tib
+% \font\tii=tii
+% \font\tibi=tibi
+
+% Tell TeX what TFM files contain info on fonts `mtr', `mti', `mtb', `mtbi'
+% (Use the following if you have Adobe TimesNewRomanPS fonts ---
+% that is, if ATM came bundled with some application)
+
+\font\tir=mtr
+\font\tib=mtb
+\font\tii=mti
+\font\tibi=mtbi
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** % 
+
+\tir	% switch to Times-Roman
+
+\noindent {\tib THIS IS THE FILE `{\com pool1.tex}'
+(SEE ALSO {\com pool1.dvi} AND {\com pool1.ps}).}
+
+\vskip .25in
+
+\noindent This is a test of the capability to 
+{\tii insert\/}	% this shows how to get Times-Italic
+characters from the Adobe Type~1 Symbol 
+{\tib font}.	% this shows how to get Times-Bold
+
+\vskip .1in
+
+\bigsy	% switch to big Symbol font
+
+\noindent This text should come out all in greek.
+
+\vskip .1in
+
+\tir	% switch to Times-Roman again.
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+\noindent {\tib NOTE 1:} \enspace
+For this to work, the corresponding TFM files must be where
+{\TeX} expects to find TFM files.  That is, copy {\com sy.tfm}, 
+{\com mtr.tfm}, {\com com.tfm}, etc.
+from the DVIWindo diskette TFM directory to the directory on the
+hard disk that has all the other TFM files.  
+
+PC{\TeX}, for example, would have them in {\com c:\\pctex\\textfms}.
+Often the environment variable TEXTFMS will point to the directory
+containing the TFM files.  
+This environment variable is normally set up in the
+{\com autoexec.bat} file.
+
+\vskip .1in
+
+\noindent {\tib NOTE 2:} \enspace
+Before doing any of this, install ATM.  
+This will install the outline font files for the `standard' fonts that come
+with ATM, including Symbol, Courier, Helvetica (or GillSans, or ArialMT), 
+and Times-Roman (or TimesNewRomanPS).
+It will also add some `{\com softfonts}' entries to the WIN.INI file in your 
+Windows directory.
+(Actually, before installing ATM, make sure that Windows knows about the 
+printers you are planning to use --- if not already done, use Windows Setup 
+to `install' printer drivers if needed --- see Windows documentation).
+
+\vskip .1in
+
+\noindent {\tib NOTE 3:} \enspace
+When printing to a PostScript printer, the default in Windows is 
+{\tii not\/} to download the fonts normally resident in the printer
+(such as Times-Roman, Symbol, Helvetica, Courier), 
+but to simply refer to the fonts present in the printers ROM.
+If you wish to {\tii force\/} downloading of an outline font file,
+you can make a small change in the file WIN.INI in your
+Windows directory.
+
+Search for a line referring to `{\com sy.pfm}'.  
+If this only contains a referrence to the PFM file and not the PFB file ---
+as in the following: 
+
+\vskip .03in
+
+{\com softfont116=c:\\psfonts\\pfm\\sy.pfm}
+
+\vskip .03in
+
+\noindent
+then Windows will use the printer resident font.  
+(The same applies if there is {\tii no\/} {\com softfont} entry referring to
+this font at all). 
+If you want to force the Windows printer driver to download the
+outline font (thus overriding what is in the printer) then change the line 
+to include a referrence to the PFB file --- as follows:
+
+\vskip .03in
+
+{\com softfont116=c:\\psfonts\\pfm\\sy.pfm,c:\\psfonts\\sy.pfb}
+
+\vskip .1in
+
+\noindent {\tib NOTE 4:} \enspace
+In Windows 3.1 there are TrueType fonts more or less matching
+the commonly used Type~1 printer fonts
+(such as TimesNewRoman, Symbol, Arial, Courier).
+Most of these have names that differ from the corresponding
+Adobe Type~1 fonts, hence present no problems.
+Unfortunately the `Symbol' font has the same name!
+To avoid confusion and possible problems when printing,
+comment out a line in the file WIN.INI in your Windows directory.
+In the section headed `{\com [fonts]}', add a semicolon at the beginning of
+the line `{\com Symbol (TrueType)=SYMBOL.FOT}'.
+
+\end

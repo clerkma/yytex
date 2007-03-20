@@ -1,0 +1,50 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% \typesize=12pt % for YTeX
+
+\def\black{\special{textcolor: 0 0 0}}
+\def\red{\special{textcolor: 255 0 0}}
+\def\blue{\special{textcolor: 0 0 255}}
+\def\green{\special{textcolor: 0 255 0}}
+\def\magenta{\special{textcolor: 255 0 255}}
+\def\cyan{\special{textcolor: 0 255 255}}
+\def\yellow{\special{textcolor: 255 255 0}}
+
+\def\rulemagenta{\special{rulecolor: 255 0 255}}
+\def\rulecyan{\special{rulecolor: 0 255 255}}
+\def\ruleblack{\special{rulecolor: 0 0 0}}
+
+\def\reverseon{\special{reversevideo: on}}
+\def\reverseoff{\special{reversevideo: off}}
+
+\newdimen\bthick % thickness of lines used in constructing stencils
+\bthick=0.48pt % 2 pixels at 300 dpi
+
+\def\boxit#1{\vbox{\hrule height\bthick\hbox{\vrule width\bthick\kern6pt
+	\vbox{\kern6pt#1\kern6pt}\kern6pt\vrule width\bthick}\hrule height\bthick}}
+
+\rulemagenta
+\centerline{\boxit{\hbox{This is just a bit of text in a box.}}}
+\ruleblack
+
+\vskip .1in
+
+\noindent
+And \reverseon this \reverseoff word is in 
+\blue blue \black and the next in
+\red red \black and the next in
+\green green\black.
+
+\noindent
+And the \reverseon next \reverseoff in
+\cyan cyan \black and the next in
+\magenta magenta \black and the next in
+\yellow yellow\black.
+
+\vskip .1in
+
+\rulecyan
+\centerline{\boxit{\hbox{\strut This is  another bit of text in a box.}}}
+\ruleblack
+
+\end

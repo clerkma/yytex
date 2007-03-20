@@ -1,0 +1,444 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+%	Copyright (C) 1991--1998 Y&Y, Inc.
+%	Copyright 2007 TeX Users Group.
+%	You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+% ============================================================================
+% Accented and composite characters in fonts that use `ansinew.vec' encoding
+%		(Windows ANSI)	VERSION 2.8 (1998 Jan 21)
+% ============================================================================
+
+% \input ansiacce in TeX source when using fonts with `Windows ANSI' encoding.
+
+% `plain' TeX - and `lplain' TeX - have accents hard-wired to certain codes.
+% When a font is reencoded, compound characters and accents may be moved.
+% This file deals with this for Windows ANSI encoding.
+
+% Changes required for math constructions that use roman font are at the end
+
+% IMPORTANT NOTE --- `quoteleft' and `quoteright' are active:
+
+% This defines ` to be active, since `quoteleft' is remapped from 96 to 145
+% This defines ' to be active, since `quoteright' is remapped from 39 to 146
+% Having `quoteleft' and `quoteright' active may interfere with other macros.
+% If this is a problem when reading macro packages after ansiacce.tex, then:
+%	(i) first make the quotes act as `other character' using:
+%		\catcode\string`\'=12 \catcode\string`\`=12
+%	(ii) then \input the other TeX macro package
+%	(iii) finally reinstate the remapping by making the quotes `active':
+%		\catcode\string`\'=13 \catcode\string`\`=13
+
+% NOTE: it would be cleaner to do this by changing TeX's `xchr' table,
+% but few implementations of TeX provide for this desirable customization.
+
+% NOTE:  Default is to use the 58 ready-made accented/composite characters
+% that occur in text fonts directly, using the macros defined below.
+% To instead build them by overprinting, use \buildcomposites.
+% To instead link to them via pseudo ligatures, use \usecomposites.
+
+% NOTE: Windows ANSI is based on ISO Latin 1 with additions of some
+% typographically important characters in the 128 - 159 range
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% First, protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"	% save catcode of quotedbl
+\catcode`\"=12			% make quotedbl `other'
+
+\chardef\atcode=\catcode`\@	% save catcode of atsign
+\catcode`\@=11			% make atsign `letter'
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% NOTE: plain TeX (and LaTeX) has the accent character positions hardwired to:
+
+% 16 for `dotlessi',	   17 for `dotlessj',	18 for `grave',	
+% 19 for `acute',	   20 for `caron',	21 for `breve',	
+% 22 for `macron',	   23 for `ring',	24 for `cedilla',
+% 25 for `germandbls',	   26 for `ae',		27 for `oe',
+% 28 for `oslash',	   29 for `AE',		30 for 'OE',	
+% 31 for `Oslash',	   94 for `circumflex',	95 for `dotaccent',
+% 125 for `hungarumlaut',  126 for `tilde',	127 for `dieresis',
+% (see page 356 of the TeX book for additional information)
+% Windows ANSI lacks dotlessi, dotaccent, caron, ring, breve, hungarumlaut
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% If you get error messages like `Error: No ... in Windows ANSI,' then
+% you are using a character that is not accessible in Windows ANSI encoding
+% You may then want to switch to some other encoding -- like TeX 'n ANSI --
+% and add \input texnansi instead of \input ansiacce to your TeX source file.
+% But this only works if your TeX system supports on the fly font reencoding.
+
+\def\ansierror#1{\immediate\write16{Error: No #1 in Windows ANSI}}
+
+% The following sample redefinitions are for `ANSINEW' encoding:
+% Tell TeX where various special characters are:
+
+\def\ae{^^e6}	% 230	ae
+\def\oe{^^9c}	% 156	oe
+\def\o{^^f8}	% 248	oslash
+\def\AE{^^d0}	% 198	AE
+\def\OE{^^8c}	% 140	OE
+\def\O{^^d8}	% 216	Oslash
+% \chardef\i=105  % 	dotlessi %	not in ANSI
+\def\ss{^^df}	% 223	germandbls
+
+% \def\i{i\ansierror{dotlessi}}	% needed for accented chars based on dotlessi
+
+% Following constructed from pieces in CM, but exist in Type 1 text fonts
+
+\def\aa{^^e5} \def\AA{^^c5}		% aring (229), Aring (197)
+% \def\cc{^^e7} \def\CC{^^c7}		% ccedilla (231), Ccedilla (199)
+
+% NOTE: \cc may conflict with `carbon copy' in letter.sty ...
+
+% \chardef\l=144 \chardef\L=128	% lslash, Lslash  % not in Windows ANSI...
+
+\def\l{l\ansierror{lslash}}
+\def\L{L\ansierror{Lslash}}
+
+% Windows ANSI also has the Icelandic characters:
+
+\def\th{^^fe} \def\TH{^^de}		% thorn (254), Thorn (222)
+\def\dh{^^f0} \def\DH{^^d0}		% eth (240), Eth (208)
+
+\def\pounds{^^a3}	\def\copyright{^^a9}	% 163 and 169
+\def\registered{^^ae}	\def\trademark{^^99}	% 174 and 153
+% \def\dag{^^86} \def\ddag{^^87}	% dagger (134), daggerdbl (135)
+\def\S{^^a7}		\def\P{^^b6}	% section (167), paragraph (182)
+
+% Make it more convenient to use { } _ | \ glyphs direct from text font ?
+
+% \chardef\{=`\{ \chardef\}=`\} \chardef\_=`\_
+% \chardef\|=`\| \chardef\backslash=`\\
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% Following set up for 56 of the 58 accented characters/composites
+
+% aacute, acircumflex, adieresis, agrave, aring, atilde, ccedilla,
+% eacute, ecircumflex, edieresis, egrave, iacute, icircumflex,
+% idieresis, igrave, ntilde, oacute, ocircumflex, odieresis, ograve, otilde,
+% scaron, uacute, ucircumflex, udieresis, ugrave, yacute, ydieresis,
+% Aacute, Acircumflex, Adieresis, Agrave, Aring, Atilde, Ccedilla,
+% Eacute, Ecircumflex, Edieresis, Egrave, Iacute, Icircumflex,
+% Idieresis, Igrave, Ntilde, Oacute, Ocircumflex, Odieresis, Ograve, Otilde,
+% Scaron, Uacute, Ucircumflex, Udieresis, Ugrave, Yacute, Ydieresis
+
+% Zcaron and zcaron are not encoded in Windows ANSI.
+
+\def\`#1{% grave
+\if#1a^^e0\else%	\char224 
+\if#1e^^e8\else%	\char232 
+\if#1i^^ec\else%	\char236 
+\if#1o^^f2\else%	\char242 
+\if#1u^^f9\else%	\char249 
+\if#1A^^c0\else%	\char192 
+\if#1E^^c8\else%	\char200 
+\if#1I^^cc\else%	\char204 
+\if#1O^^d2\else%	\char210 
+\if#1U^^d9\else%	\char217 
+% \if#1{\i}^^ec\else%	\char236 
+\if#1\i^^ec\else%	\char236 
+{\accent96 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\'#1{% acute
+\if#1a^^e1\else%	\char225 
+\if#1e^^e9\else%	\char233
+\if#1i^^ed\else%	\char237
+\if#1o^^f3\else%	\char243 
+\if#1u^^fa\else%	\char250 
+\if#1y^^fd\else%	\char253 
+\if#1A^^c1\else%	\char193 
+\if#1E^^c9\else%	\char201 
+\if#1I^^cd\else%	\char205 
+\if#1O^^d3\else%	\char211 
+\if#1U^^da\else%	\char218 
+\if#1Y^^dd\else%	\char221 
+% \if#1{\i}^^ed\else%	\char237 
+\if#1\i^^ed\else%	\char237 
+{\accent180 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\^#1{% circumflex
+\if#1a^^e2\else%	\char226 
+\if#1e^^ea\else%	\char234 
+\if#1i^^ee\else%	\char238 
+\if#1o^^f4\else%	\char244 
+\if#1u^^fb\else%	\char251 
+\if#1A^^c2\else%	\char194 
+\if#1E^^ca\else%	\char202 
+\if#1I^^ce\else%	\char206 
+\if#1O^^d4\else%	\char212 
+\if#1U^^db\else%	\char219 
+% \if#1{\i}^^ee\else%	\char238 
+\if#1\i^^ee\else%	\char238 
+{\accent136 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\~#1{% tilde
+\if#1a^^e3\else%	\char227 
+\if#1n^^f1\else%	\char241 
+\if#1o^^f5\else%	\char245 
+\if#1A^^c3\else%	\char195 
+\if#1N^^d1\else%	\char209 
+\if#1O^^d5\else%	\char213 
+{\accent152 #1}%
+\fi\fi\fi\fi\fi\fi}
+
+\def\"#1{% dieresis
+\if#1a^^e4\else%	\char228 
+\if#1e^^eb\else%	\char235 
+\if#1i^^ef\else%	\char239 
+\if#1o^^f6\else%	\char246 
+\if#1u^^fc\else%	\char252 
+\if#1y^^ff\else%	\char255 
+\if#1A^^c4\else%	\char196 
+\if#1E^^cb\else%	\char203 
+\if#1I^^cf\else%	\char207 
+\if#1O^^d6\else%	\char214 
+\if#1U^^dc\else%	\char220 
+\if#1Y^^9f\else%	\char159 
+% \if#1{\i}^^ef\else%	\char239 
+\if#1\i^^ef\else%	\char239 
+{\accent168 #1}%
+\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi\fi}
+
+\def\v #1{% caron
+\if#1s^^9a\else%	\char154 
+\if#1S^^8a\else%	\char138 
+{\accent136 #1}% caron NOT in Windows ANSI encoding (fake using circumflex)
+\ansierror{caron}%
+\fi\fi}
+
+\def\r #1{% ring
+\if#1a^^e5\else%	\char229 
+\if#1A^^c5\else%	\char197 
+{\accent176 #1}% ring NOT in Windows ANSI encoding (fake using degree)
+\ansierror{ring}%
+\fi\fi}
+
+\def\c #1{% cedilla
+\if#1c^^e7\else%	\char231 
+\if#1C^^c7\else%	\char199 
+{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent184 #1
+  \else{\ooalign{\hidewidth\char184\hidewidth\crcr\unhbox0}}\fi}%
+\fi\fi}
+
+\def\H#1{{\accent34 #1}\ansierror{hungarumlaut}} % fake using quotedbl
+\def\u#1{{\accent175 #1}\ansierror{breve}}	% fake using macron
+\def\k#1{{\accent184 #1}\ansierror{ogonek}}	% fake using cedilla
+
+% dotaccent and macron have to be treated differently in AMS TeX
+
+\ifx\amstexloaded@\relax%
+\def\D#1{{\accent46 #1}\ansierror{dotaccent}} % not in Windows ANSI
+\def\B#1{{\accent175 #1}}	% macron
+\let\graveaccent\`
+\let\acuteaccent\'
+\let\tildeaccent\~
+\let\hataccent\^
+\let\underscore\_
+\else
+\def\.#1{{\accent46 #1}\ansierror{dotaccent}}	% not in Windows ANSI
+\def\=#1{{\accent175 #1}}	% macron
+\fi
+
+% underline (using macron at 175)
+\def\b#1{\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char175}\vss}\hidewidth}}%
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% For backward compatability, provide for use of font with TeX's \accent:
+% (It is however generally better to use ready-made accented characters, since
+% \accent creates explicit kerning, which breaks the hyphenation machinery)
+% NOTE: Use \buildcomposites if you want accented/composite characters
+% constructed by `overprinting' base and accent.
+
+\def\buildcomposites{%
+\def\`##1{{\accent96 ##1}}%	 grave
+\def\'##1{{\accent180 ##1}}%	 acute
+\def\^##1{{\accent136 ##1}}%	 circumflex
+\def\~##1{{\accent152 ##1}}%	 tilde
+\def\"##1{{\accent168 ##1}}%	 dieresis
+\def\=##1{{\accent175 ##1}}%	 macron
+% \def\v##1{{\accent149 ##1}}%	 caron		% not in ANSI
+% \def\u##1{{\accent149 ##1}}%	 breve		% not in ANSI
+% \def\.##1{{\accent149 ##1}}%	 dotaccent	% not in ANSI
+% \def\H##1{{\accent149 ##1}}%	 hungarumlaut	% not in ANSI
+\def\v##1{{\accent136 ##1}\ansierror{caron}}
+\def\u##1{{\accent175 ##1}\ansierror{breve}}
+\def\.##1{{\accent46 ##1}\ansierror{dotaccent}}
+\def\H##1{{\accent34 ##1}\ansierror{hungarumlaut}}
+% underline and cedilla accents (macron at 175, cedilla at 184)
+\def\b##1{\oalign{##1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char175}\vss}\hidewidth}}%
+\def\c##1{\setbox0\hbox{##1}\ifdim\ht0=1ex\accent184 ##1
+  \else{\ooalign{\hidewidth\char184\hidewidth\crcr\unhbox0}}\fi}%
+}
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% USING READY-MADE ACCENTED CHARACTERS:
+% We can also use pre-built accented character using pseudo ligatures ---
+% provided the TFM files for the text fonts have them wired in.
+% The following assumes that the TFM files have the required pseudo-ligatures.
+% Use -vadj on the command line with AFMtoTFM to set up these pseudo-ligatures.
+% This only works for the 58 ready-made accented/composite characters.
+
+\def\usecomposites{%
+\chardef\`=96	% grave
+\chardef\'=180	% acute
+\chardef\^=136	% circumflex		% new position in new ANSI (Win 3.1)
+\chardef\~=152	% tilde			% new position in new ANSI (Win 3.1)
+\chardef\"=168	% dieresis
+\chardef\c=184	% cedilla
+\chardef\i=105	% no dotlessi in ANSI - but need this for pseudo ligs
+% and some extra goodies
+\chardef\==175	% macron	% no standard accented chars uses this
+\def\v{\ansierror{caron}\char136}
+\def\u{\ansierror{breve}\char175}
+\def\.{\ansierror{dotaccent}\char46}
+\def\H{\ansierror{hungarumlaut}\char34}
+}
+
+% NOTE: To use the above scheme, use \'a, NOT \'{a}, and \c c, NOT \c{c}.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% \buildcomposites	% build composites from base and accent
+% \usecomposites	% use instead ready-made composites
+
+% Default is to use 56 ready-made composites and build others by overprinting.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% Changes required in math macros when roman font is reencoded to `ansinew'.
+% (An alternative is to draw the accents from the math fonts)
+
+% Most accents are *not* in same place as in TeX text encoding
+
+\def\usetextaccents{
+\def\grave{\mathaccent"7060 }	%  96 grave
+\def\acute{\mathaccent"70B4 }	% 180 acute
+\def\hat{\mathaccent"7088 }	% 136 circumflex
+\def\tilde{\mathaccent"7098 }	% 152 tilde
+\def\ddot{\mathaccent"70A8 }	% 168 dieresis
+\def\bar{\mathaccent"70AF }	% 175 macron
+% \def\check{\mathaccent"708D }	% caron		% not in ANSI
+\def\check{{\ansierror{caron}}\mathaccent"7088}	% caron
+% \def\breve{\mathaccent"70C6 }	% breve		% not in ANSI
+\def\breve{{\ansierror{breve}}\mathaccent"70AF}	% breve
+% \def\dot{\mathaccent"70B7 }	% dotaccent	% not in ANSI
+\def\dot{{\ansierror{dotaccent}}\mathaccent"702E} % dotaccent
+}
+
+% Do not redefine accents in math mode when using MathTime,
+% since MathTime uses accents in the math fonts - not the text font.
+
+% \usetextaccents
+
+% In LaTeX 2e check whether mathtime package has been loaded,
+% otherwise check whether \MTMI is defined
+
+\ifx\@ifpackageloaded\undefined\ifx\MTMI\undefined\usetextaccents\fi
+\else\@ifpackageloaded{mathtime}{}{\usetextaccents}\fi
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% To deal with \@parboxrestore kludge in LaTeX (restores grave, acute, macron)
+
+\let\@acci=\'
+\let\@accii=\`
+\let\@acciii=\=
+
+% NOTE: if grave, acute, and macron accents are lost after certain LaTeX
+% enviroments are used (such as the tabbing environment), then it is because
+% a LaTeX macro/style file is read in after this that redefines the above.
+
+% **************************************************************************
+
+% Need to deal with prime in math mode since 39 is remapped to 146
+
+{\catcode146=\active \gdef^^92{{^\bgroup\prim@s}}}
+\mathcode146="8000 % ^\prime
+
+% **************************************************************************
+
+% If you want to use < for `guilsinglleft' and > for `guilsinglright'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=139
+% \catcode`\>=\active \chardef>=155
+
+% If you use < for `exclamdown', > for `questiondown', and | for `emdash'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=161
+% \catcode`\>=\active \chardef>=191
+% \catcode`\|=\active \chardef|=151
+
+\chardef\lq=145 \chardef\rq=146
+
+% Note that \lq and \rq also provide access to ` and '
+
+\catcode`\@=\atcode		% restore original catcode of at sign
+
+\catcode`\"=\dblcode		% restore original catcode of quotedbl
+
+% If you use " for quotedblright then uncomment the following:
+
+% \catcode`\"=\active \chardef"=148
+
+% `quoteright' has moved from 39 to 146 make space for `quotesingle' in ANSI:
+
+\catcode`\'=\active \chardef'=146
+
+% `quoteleft' has moved from 96 to 145 make space for `grave' in ANSI:
+
+\catcode`\`=\active \chardef`=145
+
+% NOTE: making ` and ' active, as above, may prevent some other TeX macro
+% packages from working properly --- see notes at head of file for fix.
+
+% For proper hyphenation of words with accented characters we need to let
+% TeX know how to translate words with accented characters to lower case.
+% Hence define \lccode so that one can use them in \hyphenation{...}
+% Just for fun, we also define \uccode, and set the \catcode to letter...
+
+% Mostly in ISO Latin 1, accented characters (and a few special characters)
+% occur in upper case form in the range 192 - 222, which is offset
+% by 32 from the corresponding lower case forms in the range 224 - 254.
+
+\bgroup
+\newcount\n\newcount\m\n=224\m=192
+\loop\ifnum\n<255
+\global\catcode\n=11\global\catcode\m=11
+\global\lccode\n=\n\global\lccode\m=\n
+\global\uccode\m=\m\global\uccode\n=\m
+\advance\n by1\advance\m by1\repeat
+\egroup
+
+% Then there are just a few odd ones in Windows ANSI introduced in Windows 3.1
+
+\catcode140=11\catcode156=11	% OE, oe
+\lccode140=156\lccode156=156
+\uccode140=140\uccode156=140
+\catcode159=11\catcode255=11	% Ydieresis, ydieresis
+\lccode159=255\lccode255=255
+\uccode159=159\uccode255=159
+\catcode138=11\catcode154=11	% Scaron, scaron
+\lccode138=154\lccode154=154
+\uccode138=138\uccode154=138
+
+\endinput
+
+% **************************************************************************
+
+% NOTE: definitions have embedded numbers that depend on the chosen encoding
+% These will need to be changed if you use an encoding other than `ANSINEW'

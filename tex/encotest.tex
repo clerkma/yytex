@@ -1,0 +1,205 @@
+% ENCOTEST.TEX
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Test file to show off DVIWindo's on-the-fly font reencoding capabilities
+
+% It assumes that the env var ENCODING has been set to `texnansi'
+% and that the TFM files are based on that encoding also.
+% The TFM files were generated using AFMtoTFM with -vadj -c=texnansi
+
+\input texnansi
+
+% Need some ANSI encoded font that has a full glyph complement.
+% We assume here that LucidaBright fonts have been installed.
+
+\font\lbd=lbd at 14pt
+\font\lbr=lbr at 12pt
+\font\lbrsmall=lbr at 10pt
+\font\lbi=lbi at 10pt
+
+\nopagenumbers
+
+\lbr
+
+\noindent {\lbd This is a test of on-the-fly reencoding in DVIWindo.}
+
+\vskip .2in
+
+\noindent {\lbd Reencoding makes many new glyphs accessible:}
+
+\vskip .1in
+
+% Zcaron, zcaron, Lslash, lslash
+% dotlessi, caron, ring, dotaccent, hungarumlaut, breve, ogonek
+% fi, fl, fraction, minus
+
+\noindent 
+\char128\ \char144\			% Lslash, lslash
+\char141\ \char157\			% Zcaron, zcaron
+\char131\				% florin,
+\char162\ \char163\ \char164\ \char165\ % cent, sterling, currency, yen 
+\char133\ \char137\ \char166\		% ellipsis, perthousand, brokenbar
+\char134\ \char135\			% dagger, daggerdbl
+\char139\ \char155\			% guilsinglleft, guilsinglright
+\char149\	  			% bullet
+\char169\ \char174\ \char153\ 		% copyright, registered, trademark
+\char182\ \char167\			% paragraph, section
+\char12\ \char13\			% fi fl
+\char170\ \char186\			% ordfeminine, ordmasculine
+\char181\ \char172\ \char177\ 		% mu, logicalnot, plusminus
+\char215\ \char247\			% multiply, divide
+\char145\ \char143\			% fraction, minus
+\char188\ \char189\ \char190\		% onequarter, onehalf, threequarters
+\char208\ \char240\ \char222\ \char254\ % Eth, eth, Thorn, thorn
+etc.
+
+\vskip .1in
+
+\noindent {\lbrsmall Several of the glyphs shown above are 
+	{\lbi not\/} in Windows ANSI encoding {\lbi or\/} in Macintosh
+	standard roman encoding, hence {\lbi inaccessible\/} using
+	{\lbi any\/} other Windows or Macintosh {\TeX} implementation!}
+
+\vskip .2in
+
+\noindent {\lbd Reencoding can change character layout to
+	  what plain {\TeX} assumes.}
+
+\vskip .1in
+
+\noindent Special characters (26--31): 
+\quad \ae\quad \oe\quad \o\quad \AE\quad \OE\quad \O\quad  
+
+\vskip .05in
+
+\noindent {\lbrsmall The above do occur in Windows ANSI, 
+           but in code positions 230, 156, 248, 198, 140, 216}
+
+\vskip .1in
+
+\noindent Accents (18--24): 
+\quad \`{}\quad \'{}\quad \v{}\quad \u{}\quad \={}\quad 
+\r{}\quad \c{}\quad \k{}\quad
+
+% grave, acute, caron, breve, macron, ring, cedilla
+
+\vskip .05in
+
+\noindent {\lbrsmall Some of these are in Windows ANSI, 
+	but in code positions 96, 180, ... 175, 184.}
+
+\noindent {\lbrsmall Note that caron, breve, and ring 
+	are {\lbi not\/} in Windows ANSI, yet accessible in DVIWindo!}
+
+\vskip .1in
+
+\noindent Accents (94--95, 125--127): 
+\quad \^{}\quad \.{}\quad \H{}\quad \~{}\quad \"{}\quad 
+
+% circumflex, dotaccent, hungarumlaut, tilde, dieresis
+
+\vskip .05in
+
+\noindent {\lbrsmall Some of these are in Windows ANSI, 
+	but at code positions 136, ..., 152, 168.}
+
+\noindent {\lbrsmall dotaccent, hungarumlaut, and ogonek are 
+	{\lbi not\/} in Windows ANSI, yet accessible in DVIWindo!}
+
+\vskip .1in
+
+\noindent Special characters (16, 17, 25) \quad \i\quad \j\quad \ss\quad 
+
+\vskip .05in
+
+\noindent {\lbrsmall germandbls may be found in Windows ANSI encoding, but 
+	{\lbi not\/} dotlessi and dotlessj.}
+
+\vskip .2in
+
+\noindent {\lbd Reencoding can make unencoded characters accessible:}
+
+\vskip .1in
+
+\noindent {\lbrsmall Many of the glyphs shown above are not in Windows ANSI.}
+
+\vskip .1in
+
+\noindent f-ligatures: 
+\quad fi, \quad fl, \quad ff, \quad ffi, \quad ffl.
+
+\vskip .05in
+
+\noindent {\lbrsmall Note that Windows ANSI includes {\lbi no\/} ligatures at
+	all, not even fi and fl!  
+	And Macintosh standard roman encoding {\lbi only\/} has
+	the fi and fl ligatures...} 
+
+\vskip .2in
+
+\noindent {\lbd Reencoding provides access to ready-made accented characters:}
+
+\vskip .1in
+
+\noindent
+\`a\quad \'a\quad \"a\quad \^a\quad \~a\quad \char23a\quad
+\c c\quad\`e\quad \'e\quad \"e\quad \^e\quad 
+\`i\quad \'i\quad \"i\quad \^i\quad 
+% \`\i\quad \'\i\quad \"\i\quad \^\i\quad 
+\~n\quad
+
+\vskip .1in
+
+\noindent
+\`o\quad \'o\quad \"o\quad \^o\quad \~o\quad
+\`u\quad \'u\quad \"u\quad \^u\quad 
+\v s\quad\'y\quad\"y\quad\v z
+
+\vskip .1in
+
+\noindent
+\`A\quad \'A\quad \"A\quad \^A\quad \~A\quad \char23A\quad
+\c C\quad\`E\quad \'E\quad \"E\quad \^E\quad 
+\`I\quad \'I\quad \"I\quad \^I\quad 
+\~N\quad
+
+\vskip .1in
+
+\noindent
+\`O\quad \'O\quad \"O\quad \^O\quad \~O\quad
+\`U\quad \'U\quad \"U\quad \^U\quad 
+\v S\quad\'Y\quad\"Y\quad\v Z
+
+\vskip .1in
+
+\noindent {\lbrsmall Note that the above can be conveniently accessed using 
+	`pseudo ligatures'.}
+
+\vskip .2in
+
+\noindent {\lbd {\TeX}'s pseudo ligatures still work correctly:}
+
+\vskip .1in
+
+\noindent Standard pseudo ligs: 
+endash --\quad emdash ---\quad
+exclamdown !`\quad questiondown ?`
+
+\vskip .1in
+
+\noindent Standard pseudo ligs: 
+quotedblleft ``\quad quotedblright '' 
+
+\vskip .1in
+
+\noindent Extra pseudo ligs: 
+quotedblbase ,,\quad guillemotleft << \quad guillemotright >>
+
+\vskip .1in
+
+\noindent {\lbrsmall There is a lot of flexibility in where these are placed in
+	the encoding, since they are {\lbi only\/} accessed via pseudo
+	ligatures.} 
+
+\end

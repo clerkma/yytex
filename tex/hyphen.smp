@@ -1,0 +1,105 @@
+%%% This is the file hyphen.smp which illustrates a way to set up
+%%% hyphenation patterns for several languages.
+%%% Copyright 2007 TeX Users Group.
+%%% You may freely use, modify and/or distribute this file.
+
+%%% With LaTeX 2e you may want to use the babel package, which provides
+%%% extensive support for multi-lingual work.
+
+%%% NOTE: You may want to first rename the original hyphen.tex file to
+%%% ushyph.tex, then you can then rename this file hyphen.tex and run
+%%% ini-TeX as you would when using just English.  The alternative is 
+%%% to hunt down the place where hyphen.tex is \input and to instead 
+%%% \input this hyphen.smp file.
+
+%%% The hyphenation pattern files referenced here may be found 
+%%% on the Y&Y TeX CD-ROM under CTAN/languages/hyphenation,
+%%% or on CTAN itself under /tex-archive/languages/hyphenation.
+
+%%% Note that there may be more than one hyphenation pattern file
+%%% for a given language. These may differ in encoding assumptions e.g.
+%%% Read the head of the hyphenation pattern files to decide which to use.
+
+%%% Note that some old pattern files are set up for OT1 encoding.
+%%% These do not permit proper hyphenation with accented characters.
+%%% Others are set up for T1 encoding.  These can be used with LY1 also.
+
+%%% You should be aware that hyphenation pattern files for T1 encoding
+%%% differ in how they deal with `8-bit' characters.  
+%%% Some   (i) use TeX control sequences (like \ss);
+%%% others (ii) use TeX's ^^ hexadecimal notation (like ^^AE); while
+%%% a few  (iii) use the `8-bit' characters directly.
+%%% Of these, (i) is best and (iii) is the worst way of doing things.
+
+%%% You wouldn't typically load up patterns for as many languages.
+%%% This is just for illustration. Delete the ones you don't need.
+
+%%% If you do use this many hyphenation patterns you will probably need 
+%%% to expand hyphenation pattern memory from the command line in ini-TeX
+%%% using -h, e.g.
+%%%
+%%%			tex -h=50000 plain.tex
+%%%
+%%% If you also have very many hyphenation exceptions, use -e.
+%%% Type tex -? to get a full command line summary from yandytex.exe
+
+%%% When switching languages you may also need to adjust \lefthyphenmin 
+%%% and \righthyphenmin and possibly make some characters active or 
+%%% change the catcode of some special characters.  See the hyphenation
+%%% pattern files themselves for details.
+
+\chardef\atcode=\catcode`\@	% save catcode of at sign
+
+\catcode`\@=11				% make at sign aact just like a letter
+
+% First assign numbers to languages
+
+\chardef\l@usenglish=0
+\newlanguage\l@ukenglish
+\newlanguage\l@german
+\newlanguage\l@french
+\newlanguage\l@italian
+\newlanguage\l@spanish
+\newlanguage\l@swedish
+\newlanguage\l@finnish
+
+% Define some convenient macros to switch languages
+
+\def\usenglish{\language=\l@usenglish}
+\def\ukenglish{\language=\l@ukenglish}
+\def\german{\language=\l@german}
+\def\french{\language=\l@french}
+\def\italian{\language=\l@italian}
+\def\spanish{\language=\l@spanish}
+\def\swedish{\language=\l@swedish}
+\def\finnish{\language=\l@finnish}
+
+\language=\l@usenglish
+\input ushyph.tex
+
+\language=\l@ukenglish
+\input ukhyph.tex
+
+\language=\l@german
+\input ghyph31.tex
+
+\language=\l@french
+\input frhyph.tex
+
+\language=\l@italian
+\input ithyph.tex
+
+\language=\l@spanish
+\input eshyph.tex
+
+\language=\l@swedish
+\input sehyph.tex
+
+\language=\l@finnish
+\input fihyph.tex
+
+\usenglish
+
+\catcode`@=\atcode	 % restore catcode of @ to whatever it was
+
+%%% end of hyphen.smp sample file

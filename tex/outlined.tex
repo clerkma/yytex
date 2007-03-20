@@ -1,0 +1,52 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=12pt
+
+\noheaders
+
+\def\topglue{\nointerlineskip \vglue-\topskip \vglue} % for top of page
+
+\font\cmrlarge=cmr10 at 48pt
+
+\topglue 1in
+
+This is a test of a large character shown outlined:
+
+\vskip .1in
+
+\special{verbatim=/oldshow/s load def /s{true charpath stroke}def}
+
+{\cmrlarge CM}
+
+\special{verbatim=/s/oldshow load def}
+
+\vskip .1in
+
+That was a test of a large character shown outlined.
+
+% \end
+
+% \typesize=12pt
+
+% \noheaders
+
+\vskip .1in
+
+\verb@\font\cmrlarge=cmr10 at 48pt@
+
+\verb@This is a test of a large character shown outlined:@
+
+\verb@\vskip .1in@
+
+\verb@\special{verbatim=/oldshow/s load def /s{true charpath stroke}def}@
+
+\verb@{\cmrlarge CM}@
+
+\verb@\special{verbatim=/s/oldshow load def}@
+
+\verb@\vskip .1in@
+
+\verb@That was a test of a large character shown outlined.@
+
+\end

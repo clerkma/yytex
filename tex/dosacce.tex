@@ -1,0 +1,241 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+% Copyright (C) 1994 Y&Y, Inc. 
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+% ============================================================================
+% Accented and composite characters in fonts that do not use TeX text encoding
+%	PC version (for `DOS850' encoding vector)  VERSION 1.0 (1994 Jun 24)
+% ============================================================================
+
+% `plain' TeX - and `lplain' TeX - have accents hard-wired to certain codes.
+
+% A non-CM font can be reencoded to TeX text encoding ---
+% in this case accents and composite character will be where TeX expects them.
+% But, quite often it is advantageous to encode a font another way.
+% This can provide access to many characters not found in TeX text encoding.
+
+% When a font is reencoded, compound characters and accents may be moved.
+% This will prevent TeX's normal handling of compound characters and accents.
+% This file indicates how to deal with this ---
+%	--- and concludes with sample code specific for `DOS850' encoding.
+
+% Changes required for math constructions that use roman font are at the end
+
+% You may wish to just \input this file for DOS 850 in your TeX source.
+
+% NOTE: it would be much cleaner to do this by changing TeX's `xchr' table,
+% but few implementations of TeX provide for this desirable customization.
+
+% NOTE: This uses accented/composite characters in the font directly, by
+% using pseudo-liagtures.  If your TFM files do not have these, then comment
+% out the section labelled: `% USING READY-MADE ACCENTED CHARACTERS'
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"	% save catcode of quotedbl
+\catcode`\"=12			% make quotedbl what it should be
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% NOTE: plain TeX (and LaTeX) has the accent character positions hardwired to:
+
+% 16 for `dotlessi', 17 for `dotlessj', 
+% 18 for `grave', 19 for `acute', 20 for `caron', 
+% 21 for `breve', 22 for `macron', 
+% 23 for `ring', 24 for `cedilla',
+% 25 for `germandbls', 26 for `ae', 27 for `oe', 
+% 28 for `oslash', 29 for `AE', 30 for 'OE', 31 for `Oslash',
+% 94 for `circumflex', 95 for `dotaccent', 125 for `hungarumlaut',
+% 126 for `tilde', 127 for `dieresis',
+% (see page 356 of the TeX book for additional information)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% The following sample redefinitions are for `DOS850' encoding:
+
+% Tell TeX where various special characters are:
+
+\chardef\ae=145	%	ae
+% \chardef\oe=156 %	oe	% not in DOS 850
+\chardef\o=155  % 	oslash
+\chardef\AE=146 %	AE
+% \chardef\OE=140 %	OE	% not in DOS 850
+\chardef\O=157  %	Oslash
+\chardef\i=213  %	dotlessi
+\chardef\ss=225	%	germandbls
+
+% The following are constructed from pieces in CM, but exist in most T1 fonts
+
+\chardef\aa=134 \chardef\AA=143 % aring, Aring
+\chardef\cc=135 \chardef\CC=128 % ccedilla, Ccedilla
+
+% NOTE: \cc may conflict with `carbon copy' in letter.sty ...
+
+% \chardef\l=189 \chardef\L=190	% lslash, Lslash  % not in DOS 850
+
+\chardef\pounds=156 \chardef\copyright=184
+
+% DOS 850 also has the icelandic characters:
+
+\chardef\th=231 \chardef\TH=232		% thorn, Thorn
+\chardef\dh=208 \chardef\DH=209		% eth, Eth
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% For backward compatability, provide for use of font with TeX's \accent:
+% (Although it is better to use actual accented characters, since \accent
+% creates explicit kerning which breaks the hyphenation machinery)
+% NOTE: This is overridden by section: `% USING READY-MADE ACCENTED CHARACTERS'
+
+% \def\`#1{{\accent96 #1}}	% grave		% not in DOS 850
+\def\'#1{{\accent239 #1}}	% acute
+% \def\^#1{{\accent94 #1}}	% circumflex	% not in DOS 850
+% \def\~#1{{\accent126 #1}}	% tilde		% not in DOS 850
+\def\"#1{{\accent249 #1}}	% dieresis
+\def\=#1{{\accent238 #1}}	% macron
+% \def\v#1{{\accent141 #1}}	% caron		% not in DOS 850
+% \def\u#1{{\accent247 #1}}	% breve		% not in DOS 850
+% \def\.#1{{\accent250 #1}}	% dotaccent	% not in DOS 850
+% \def\H#1{{\accent34 #1}}	% hungarumlaut	% not in DOS 850
+
+% underline and cedilla accents (macron at 175, cedilla at 184)
+
+\def\b#1{\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char238}\vss}\hidewidth}}
+\def\c#1{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent184 #1%
+  \else{\ooalign{\hidewidth\char247\hidewidth\crcr\unhbox0}}\fi}
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% USING READY-MADE ACCENTED CHARACTERS:
+% We can use pre-built accented character using pseudo ligatures --- 
+% provided the TFM files for the text fonts have them wired in.
+% Using prebuilt accented chars prevents the introduction of explicit kerning
+% by \accent --- but is limited to prebuilt accented chars in the font.
+% Plain vanilla text fonts in Type 1 format have 58 `standard' composite chars.
+% The following assumes that the TFM files have the required pseudo-ligatures.
+% Use command line flags `a', `d' and `j' with AFMtoTFM to set this up.
+% If your TFM files do *not* have the pseudo ligs then comment this section out.
+% Do the same if you use accented characters *other* than the 58 `standard' ones
+
+% \chardef\`=96	% grave		% not in DOS 850
+\chardef\'=239	% acute
+% \chardef\^=94	% circumflex	% not in DOS 850
+% \chardef\~=126 % tilde	% not in DOS 850
+\chardef\"=249	% dieresis
+\chardef\c=247	% cedilla
+\chardef\==238	% macron
+% \chardef\v=141	% caron		% not in DOS 850
+% \chardef\u=247	% breve		% not in DOS 850
+% \chardef\.=250	% dotaccent	% not in DOS 850
+% \chardef\H=34		% hungarumlaut	% not in DOS 850
+
+\chardef\i=213
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Changes required in math macros when roman font is reencoded to `DOS850'.
+% (An alternative is to draw the accents from the math fonts)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Make the adjustments needed when roman font is reencoded to `DOS850':
+
+\def\grave{\mathaccent"7060 }	%  96 grave
+\def\acute{\mathaccent"70EF }	% 239 acute
+\def\hat{\mathaccent"705E }	% 94 circumflex
+\def\tilde{\mathaccent"707E }	% 126 tilde
+\def\ddot{\mathaccent"70FA }	% 250 dieresis
+\def\bar{\mathaccent"70EE }	% 238 macron
+% \def\check{\mathaccent"708D }	%     caron		% not in DOS 850
+% \def\breve{\mathaccent"70C6 }	%     breve		% not in DOS 850
+% \def\dot{\mathaccent"70FA }	% 250 dotaccent		% not in DOS 850
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% The following provides access to the 58 accented/ composite characters.
+% Some convenient abbreviations conflict with macros in plain or lplain
+% (for example, \aa, \Aa, \ae, \Ae, \oe, \Oe, \sc, \Sc in plain TeX)
+% So these have had to be be named something slightly less menmonic.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% 58 `standard' accented chars exist in many fonts - including BSR CM from Y&Y
+% One can define control sequences to access these directly as follows.
+% But its probably more convenient to use the mechanism described above...
+
+% \chardef\ay=228 \chardef\ee=235 \chardef\ie=239 \chardef\oy=246
+% \chardef\ue=252 \chardef\ye=255 % a, e, i, o, u, y - dieresis
+
+% \chardef\Ay=196 \chardef\Ee=203 \chardef\Ie=207 \chardef\Oy=214
+% \chardef\Ue=220 \chardef\Ye=159 % A, E, I, O, U, Y - dieresis
+
+% \chardef\ax=225 \chardef\ea=233 \chardef\ia=237 \chardef\oa=243
+% \chardef\ua=250 \chardef\ya=253 % a, e, i, o, u, y - acute
+
+% \chardef\Ax=193 \chardef\Ea=201 \chardef\Ia=205 \chardef\Oa=211
+% \chardef\Ua=218 \chardef\Ya=221 % A, E, I, O, U, Y - acute
+
+% \chardef\ag=224 \chardef\eg=232 \chardef\ig=236 \chardef\og=242
+% \chardef\ug=249 % a, e, i, o, u - grave
+
+% \chardef\Ag=192 \chardef\Eg=200 \chardef\Ig=204 \chardef\Og=210
+% \chardef\Ug=217 % A, E, I, O, U - grave
+
+% \chardef\ac=226 \chardef\ec=234 \chardef\ic=238 \chardef\oc=244
+% \chardef\uc=251 % a, e, i, o, u - circumflex
+
+% \chardef\Ac=194 \chardef\Ec=202 \chardef\Ic=206 \chardef\Oc=212
+% \chardef\Uc=219 % A, E, I, O, U - circumflex
+
+% \chardef\At=195 \chardef\Nt=209 \chardef\Ot=213 % A, N, O - tilde
+
+% \chardef\at=227 \chardef\nt=241 \chardef\ot=245 % a, n, o - tilde
+
+% \chardef\sr=154 % \chardef\zr=255 % scaron, zcaron
+
+% \chardef\Sr=138 % \chardef\Zr=223 % Scaron, Zcaron
+
+% Remaining four `composites': aring, Aring, ccedilla, Ccedilla defined above.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% If you want to use < for `guillesinglleft' and > for `guillesingright'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=174
+% \catcode`\>=\active \chardef>=175
+
+% If you use < for `exclamdown', > for `questiondown', and | for `emdash'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=173
+% \catcode`\>=\active \chardef>=168
+% \catcode`\|=\active \chardef|=151
+
+\chardef\lq=96 \chardef\rq=39
+
+% Note that \lq and \rq also provide access to ` and '
+
+\catcode`\"=\dblcode		% restore original catcode of quotedbl
+
+% If you use " for quotedblright then uncomment the following:
+
+% \catcode`\"=\active \chardef"=148
+
+\endinput
+
+% **************************************************************************
+
+% NOTE: definitions have embedded numbers that depend on the chosen encoding
+% These will need to be changed if you use an encoding other than `DOS850'
+
+% **************************************************************************
+
+% **************************************************************************
+%	Y&Y, Inc, 45 Walden Street, Concord, MA 01742 USA  (978) 371-3286
+% **************************************************************************
