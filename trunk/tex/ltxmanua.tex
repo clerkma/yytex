@@ -1,0 +1,1441 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% LaTeX + SliTeX Font manual % This is in YTeX
+
+\typesize=10pt 	% for final version
+% \typesize=12pt		% for proofing
+
+% \hsize=4.66in % for letter paper version (default)
+% \hsize=5.5in % for legal paper version
+
+\font\manual=logo10
+\font\sc=cmcsc10
+% \font\vt=cmvtt10
+
+\input memo.mac
+
+\newdimen\dwidth
+\newdimen\dheight
+
+\def\showimage#1#2#3{
+\dwidth=#2 \dheight=#3 
+\edef\width{\number\dwidth} \edef\height{\number\dheight}
+\special{insertimage: #1 \width \space \height}
+}
+
+% \def\subsubsection#1{{\bf #1}}
+
+\def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\def\SliTeX{S{\sc LI}{\TeX}}
+
+% \def\Y&Y{Y\kern-.25em\hbox{{\smllsize \&}}\kern -.25em Y}
+\def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.23em Y}
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\def\METAFONT{{\manual META}\-{\manual FONT}}
+
+\def\DVIWindo{{\sc dvi\-w}indo}
+\def\DVIPSONE{{\sc dvi\-ps\-one}}
+\def\REENCODE{{\sc re\-encode}}
+% \def\CHARSET{{\sc char\-set}}
+\def\AFMTOPFM{{\sc afm}\-to\-{\sc pfm}}
+\def\AFMTOTFM{{\sc afm}\-to\-{\sc tfm}}
+\def\TIFFTAGS{{\sc tifft}ags}
+\def\CLEANUP{{\sc clean\-up}}
+
+\def\TWOUP{{\sc two\-up}}
+
+% \def\PKTOPS{{\sc pk\-to\-ps}}
+% \def\DOWNLOAD{{\sc down\-load}}
+% \def\MODEX{{\sc mod\-ex}}
+% \def\SERIAL{{\sc ser\-ial}}
+
+\def\ANSI{{\sc ansi}}
+\def\ASCII{{\sc ascii}}
+
+\def\UART{{\sc uart}}
+\def\FIFO{{\sc fifo}}
+
+\def\DOS{{\sc dos}}
+
+\def\PSPATH{{\sc pspath}}
+\def\VECPATH{{\sc vecpath}}
+
+% \def\BIOS{{\sc bios}}
+% \def\PATH{{\sc path}}
+
+\def\AFM{{\sc afm}}
+\def\INF{{\sc inf}}
+\def\TFM{{\sc tfm}}
+\def\PFM{{\sc pfm}}
+\def\DVI{{\sc dvi}}
+
+\def\VEC{{\sc vec}}
+
+\def\PS{{\sc ps}}
+\def\PK{{\sc pk}}
+
+\def\PFA{{\sc pfa}}
+\def\PFB{{\sc pfb}}
+
+\def\EPS{{\sc eps}}
+
+\def\EPSF{{\sc epsf}}
+\def\EPSI{{\sc epsi}}
+
+\def\PSFIG{{\sc psfig}}
+
+\def\PIF{{\sc pif}}
+
+\def\DSC{{\sc dsc}}
+
+% \def\VM{{\sc vm}}
+% \def\MS{{\sc ms}}
+
+\def\ATM{{\sc atm}}
+
+\def\ATMINI{{\tt atm.ini}}
+\def\WININI{{\tt win.ini}}
+
+\def\ATMQLC{{\tt atmfonts.qlc}}
+
+\def\PSCRIPT{{\sc pscript.drv}}
+
+\def\PFM{{\sc pfm}}
+\def\PFB{{\sc pfb}}
+
+\def\CM{{\sc cm}}
+
+% \def\COPY{{\sc copy}}
+% \def\MODE{{\sc mode}}
+% \def\PRINT{{\sc print}}
+
+% \def\XONXOFF{{\sc xon/xoff}}
+% \def\DTRDSR{{\sc dtr/dsr}}
+% \def\ETXACK{{\sc etx/ack}}
+
+\def\IBM{{\sc ibm}}
+\def\PC{{\sc pc}}
+
+% \def\COMPAQ{{\sc compaq}}
+
+\def\TUG{{\sc tug}}
+
+% \def\SMARTDRV{{\sc smart\-drv.sys}}
+\def\SMARTDRV{{\sc smart\-drv.exe}}
+\def\RAMDRV{{\sc ram\-drv.sys}}
+\def\RAM{{\sc ram}}
+
+\def\AUTOEXEC{{\tt auto\-exec.bat}}
+
+\def\UNIX{{\sc unix}}
+\def\DVIPS{{\sc dvips}}
+\def\DVITWOPS{{\sc dvi2ps}}
+\def\DVIALW{{\sc dvialw}}
+\def\DVITOPS{{\sc dvitops}}
+\def\DVILASER{{\sc dvilaser/ps}}
+
+% \def\TIFF{{\sc tiff}}
+
+\newbox\boxa
+
+\setbox\boxa=\vbox{
+\hbox{{\bf WARNING:} Keep a copy of the original font metric files ({\PFM})}
+\hbox{and the font outline files ({\PFB}) in a safe place before making}
+\hbox{modifications using the utilities supplied with {DVI\-Windo}.}
+}
+
+\def\warning{\centerline{\boxit{\copy\boxa}}}
+
+% \def\registered{{\ooalign
+% 	{\hfil\raise.02ex\hbox{{\sc r}}\hfil\crcr\mathhexbox20D}}}
+
+\font\sy=sy
+
+\def\registered{{\sy \char210}}
+
+\def\TM{$^{\smlsize TM}$}
+
+\chardef\bs=92
+
+\def\coverpage{
+\noheaders
+% \topglue 2in
+\topglue 1.5in
+% \centerline{\bigggsize\bf BSR CM Fonts}
+\centerline{\bigggsize\bf Extra {\LaTeX} + {\SliTeX} Fonts}
+\vskip .1in
+% \centerline{\bigggsize\bf Computer Modern Outline Fonts}
+\vskip .2in
+% \centerline{\bigsize Copyright {\copyright} 1991, 1992 {\Y&Y}. All rights reserved.}
+\centerline{\bigsize Copyright {\copyright} 1991 -- 1993 {\Y&Y}, Inc. All rights reserved.}
+
+\vskip 3in
+
+% This is the version for printing with the logo
+
+\centerline{\hbox to 1.33in{\special{illustration c:/dvitest/y&ylogo.eps}\hfill}}
+
+% This is the version for showing the logo on screen
+
+% \centerline{\hbox to 1.33in{\showimage{y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+\vskip 1in
+
+\centerline{\bigsize {\Y&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}
+
+\vskip .02in
+
+\centerline{\bigsize 
+% (800) 742--4059 --- 
+(508) 371--3286 (voice) ---
+(508) 371--2004 (fax)}
+
+\newpage
+\decreasepageno
+
+\noheaders
+\topglue 2in
+\hbox{ }	% to get blank page
+\newpage
+\decreasepageno
+}
+
+\coverpage  % comment out for draft version
+
+\noheaders
+
+% \versorightheader={COPYRIGHT {\copyright} 1991, 1992 {\Y&Y}}
+\versorightheader={COPYRIGHT {\copyright} 1991 -- 1993 {\Y&Y}, Inc.}
+
+\nsection{Extra {\LaTeX} + {\SliTeX} Outline Fonts }
+
+The extra {\LaTeX} + {\SliTeX} Adobe Type~1
+outline fonts from {\Y&Y} come on one diskette.
+Included are:
+
+\vskip .05in
+
+\bpar The actual outline font files themselves
+---- `Printer Font Binary' (PFB) format for IBM PC, 
+`Printer Font ASCII' (PFA) format for Unix/NeXT, 
+or Mac outline font files for Macintosh);
+
+\vskip .05in
+
+\bpar Platform specific metric files 
+(`Printer Font Metric' (PFM) Windows metrics for IBM PC, 
+or `screen fonts' for Macintosh);
+
+\vskip .05in
+
+\bpar Human readable `Adobe Font Metric' (AFM) files.
+
+\vskip .05in
+
+\noindent
+The AFM files are not needed by Adobe Type Manager (ATM),
+but are required by Display PostScript Systems. 
+Note that
+the AFM files are the ultimate repository of font metric information,
+since all other formats, including PFM and TFM are incomplete.
+
+\nsubsection{Purpose of the Fonts}
+
+{\LaTeX} uses the basic Computer Modern fonts for most
+purposes, but also rely on a few extra fonts, 
+such as the `line' and `circle' fonts used in the 
+`picture environment' for drawing simple diagrams.
+{\SliTeX} also needs sans serif fonts in the `{\tt lcmss}' family.
+In addition, for `color' work, {\SliTeX} uses some `invisible' fonts,
+which have the same metrics as the corresponding normal fonts, 
+but have no visible glyphs.
+
+Altogether, the extra {\LaTeX} + {\SliTeX} font set includes:
+
+\vskip .05in
+
+\bpar {\LaTeX} `line' fonts `{\tt line10}' (regular) 
+and `{\tt linew10}' (bold);
+
+\vskip .05in
+
+\bpar {\LaTeX} `circle' fonts `{\tt lcircle1}' (regular) 
+and `{\tt lcirclew}' (bold);
+
+\vskip .05in
+
+\bpar {\LaTeX} `symbol' fonts in six design sizes:
+`{\tt lasy5}', `{\tt lasy6}', `{\tt lasy7}', `{\tt lasy8}', `{\tt lasy9}',
+`{\tt lasy10}' (regular), as well as `{\tt lasyb10}' (bold);
+
+\vskip .05in
+
+\bpar {\SliTeX} sans serif fonts:
+`{\tt lcmss8}' (regular), `{\tt lcmssb8}' (bold), and `{\tt lcmssi8}' (italic);
+
+\vskip .05in
+
+\bpar `Invisible' versions of the {\SliTeX} sans serif fonts:
+`{\tt ilcmss8}' (regular), `{\tt ilcmssb8}' (bold), and `{\tt ilcmssi8}' (italic);
+
+\vskip .05in
+
+\bpar `Invisible' versions of Computer Modern math fonts:
+`{\tt icmmi8}' (math italic),
+`{\tt icmsy8}' (math symbol),
+`{\tt icmex10}' (math extension), 
+as well as `{\tt icmtt8}' (fixed width text), and
+`{\tt ilasy8}' ({\LaTeX} symbol).
+
+\vskip .05in
+
+\bpar Three design sizes of the `logo' fonts used for typesetting
+the word \METAFONT: % {\manual METAFONT}:
+`{\tt logo8}', `{\tt logo9}', `{\tt logo10}', as well as
+`{\tt logobf10}' (bold), and `{\tt logosl10}' (slanted).
+
+\vskip .05in
+
+\noindent
+The `logo' fonts are not strictly part of the extra {\LaTeX}
++ {\SliTeX} font set, but are included here for convenience.
+To conserve space and limit the length of font menus you may
+wish to not load these unless they are really needed.
+The same goes for the `invisible' fonts.
+
+The fonts are all fully hinted (both character-level and font-level), and so
+will render well even on low-resolution (on screen) and medium-resolution
+(laser printer) devices.  The fonts are completely compliant with the Type~1 
+specification and, in addition, are ATM compatible (a tighter constraint).  
+They also include `work arounds' for numerous bugs in `clone' interpreters.
+
+It may interest you to know that the {\LaTeX} fonts and the `logo' fonts
+were converted directly from the \METAFONT\  % {\manual METAFONT} 
+source by {Y\&Y} to ensure
+perfect accuracy.  This was possible because the {\LaTeX} fonts and `logo'
+fonts use \METAFONT\  % {\manual METAFONT} 
+in a rather restricted way.
+Outlines for the three sans serif {\SliTeX} fonts were created by
+Blue Sky Research.
+
+\nsection{Installation --- IBM PC compatibles}
+
+For use with Adobe Type Manager (ATM) in IBM PC Windows, simply install using
+the ATM control panel.  When not using ATM, install instead using the Windows
+PostScript driver.  For use with DVIWindo in Windows, install using ATM.
+
+For use with DVIPSONE, install using ATM as above, or, when not using ATM,
+simply copy the PFB files to a directory where DVIPSONE expects outline fonts
+to reside (typically `{\tt c:\bs psfonts}').  Metric files are not needed in this case.
+
+With some other applications, you will need to determine where they keep
+outline font files (PFB or PFA) and font metric files (PFM or AFM).
+
+\nsection{Installation --- Macintosh}
+
+Install for use with Adobe Type Manager (ATM).
+Details depends on whether you are using 
+System 6, System 7.0, or System 7.1.
+For System 7.1, drag the outline fonts themselves to the
+{\it closed\/} system folder, then drag the `screen fonts'
+to the closed system folder.
+Refer to the documentation that comes with ATM for details.
+
+Note that a font utility like `SuiteCase II' makes font installation
+and font removal much more convenient.
+
+\nsection{Installation --- UniX/NeXT}
+
+You can use Adobe's `font installer' application if you have it.
+Alternatively, use the shell script `{\tt nextinst.bat}' supplied with the fonts.
+Read the printed instructions (file `{\tt nextfont.txt}')
+supplied separately for installation
+on NeXT with Display PostScript (DPS).
+
+For Display PostScript for X-Windows in Solaris 2.3 please
+refer to the instructions supplied with that DPS system.
+
+DOS diskettes can be read on Sun workstations using MTOOLS.
+Use  `{\tt man mtools}'
+to see what commands are available for manipulating DOS diskettes.
+You can for example do `{\tt mdir a:}' to see what files are on a diskette
+and `{\tt mcopy a:*.*}' to copy all the files in the top-level directory
+on the diskette to your current directory.
+
+If you can't find `mtools' on your system, try the InterNet.
+For example, look in `{\tt /src/unixdos/mtools}' on `{\tt world.std.com}'.
+
+Note that MTOOLS interprets DOS file names as all uppercase.  This is OK
+for the font files themselves, since the fonts have all upper case names
+anyway.  But you may find it convenient to rename some other files.
+For example, having extensions `TFM' (instead of `tfm') on `TeX Metric Files'
+files may not work with your {\TeX} implementation.
+
+For use with DVIPS, fonts in Type~1 format have to be listed in the
+file `{\tt psfonts.map}' (typically found in `{\tt /usr/lib/tex/ps}'). If the
+fonts have PostScript FontNames different from the TFM file name,
+then both TFM file name and PostScript FontName must be mentioned on
+the line listing a particular font (see `{\tt psfonts.lt}').
+
+DVIPS can be asked to `automatically download' the outline font for
+the duration of the print job.  In this case each line added to
+`{\tt psfonts.map}' should end with `<' followed by the file name of the
+corresponding PFA (or PFB) file.  DVIPS will typically look for the
+outline font files in PFA (or PFB) format in the directory
+`{\tt /usr/lib/tex/ps}'  (see `{\tt psfonts.ltx}' or `{\tt psfonts.ltz}').
+
+% Older versions of DVIPS had some problems with fonts that have
+% repeat encodings (a character appearing in more than one place
+% in the encoding vector).  Please use the latest version of DVIPS.
+
+\nsection{Remapping of character codes}
+
+Since many applications cannot effectively use character codes 0--31 and 127,
+% cannot be generated from the keyboard on the Macintosh, 
+these characters have been remapped to the 161--196 range.
+Character codes in the range 0--9 can be accessed via codes 161--170, while
+10--32 can be accessed via 173--195, and 127 can be accessed via 196.
+
+All of these codes can be generated by suitable key chords using the shift
+and option keys on the Macintosh.  On IBM PC compatibles these characters can
+be generated by holding down the `{\tt Alt}' key, typing `{\tt 0}' and the numeric code
+on the numeric key pad (with `{\tt Num Lock}' on).  
+Of course, you don't need to use these methods when
+the fonts are used with TeX.
+
+\nsection{IBM PC utility programs supplied with the PC fonts}
+
+PFBtoPFA converts from the compact binary form to the printable ASCII format.
+
+PFAtoPFB converts from printable ASCII format to the compact binary format.
+
+PFBtoPFA and PFAtoPFB come in handy when a change is to be made to an outline
+font file.  A PFB file cannot normally be edited directly, since it contains
+binary length fields.
+
+SPACIFY can be used to put a `{\tt space}' character in character code
+position 32.  This is useful for use of these fonts with applications
+other than TeX.  Please read `spacify.txt' for additional details.
+
+REENCODE permanently changes the encoding vector in a PFB or PFA file.
+The encoding vector is stored in a file that can be specified on the
+command line.  Each line of the file simply contains a number followed by a
+space or tab and the PostScript name of the corresponding character.
+For example:	`{\tt 65	A}'.  This provides a more efficient way of reencoding
+a font than directly editing the encoding vector in the PFA file.
+
+Some applications (such as DVIPSONE) can reencode a font on the fly, and so
+don't require permanent reencoding of a font.  However, the Windows
+PostScript driver (and Adobe Type Manager) do not provide for reencoding,
+so REENCODE can come in handy when a font is used with a Windows application.
+
+DOWNLOAD can be used to permanently download a font to the printer, to
+reset the printers virtual memory, or to print out a list of printer resident
+fonts.  Note that some of the PostScript commands used by DOWNLOAD are not
+standardized -- they work on the Apple Laser Writer and its relatives, but
+may not work on some `clone' printers.  It is therefore preferably to use
+specialized utility programs supplied with the printer instead of DOWNLOAD.
+
+SERIAL can be used to send PostScript files to a printer connected over
+a serial link that does not support hardware hand-shaking  (The DOS
+COPY command can be used for printers connected over serial links that
+support hardward hand-shaking).  Serial is also handy when the information 
+sent back over the serial line from the printer is of interest.
+
+All utility programs from {\Y&Y} give a brief usage summary when invoked
+without arguments.  To see more detail, use the command line flag `{\tt -?}'.
+So to see what arguments DOWNLOAD takes, invoke it as follows:
+
+\verb|	download -?|
+
+% leaving out the bullshit about automatic versus manual downloading...
+
+\nsection{PostScript `Clone' Interpreters Bugs and Test Files} 
+
+Most clone PostScript interpreters have some `misfeature' or other,
+particularly when it comes to Type~1 font interpretation.  Such interpreters
+may work prefectly well on plain vanilla Adobe text fonts, yet fail on more
+complex fonts that fall well within in the Type~1 specification --- and
+are even ATM compatible --- which is a tighter constraint.
+
+% PostScript Interpreter Test Programs:
+
+In the PS subdirectory you will find nine PostScript test programs, and the
+error handler `{\tt ehandler.ps}'.  These test files may come in useful should
+there be a problem printing PostScript files using these fonts.  The test
+programs check for various known bugs in `clone' interpreters, particularly 
+as regards Type~1 font interpretation.  There is a short `{\tt readme.txt}' file
+in the same directory that describes the tests in more detail.
+
+\nsection{Problems with ATM for Windows}
+
+Older versions of ATM for Windows (ATM 2.5 and before) have some bugs
+such as being unable to handle repeated encodings.  We recommend:
+
+\vskip .05in
+
+{\bf Get the latest version of ATM}
+
+\vskip .05in
+
+\noindent
+A character that appears more than once in the
+encoding vector can only be accessed through the first mentioned encoding.
+So if, for example, the character `{\tt suppress}' appears in character code
+positions 32, 128, and 195, and the `{\tt dup 195 /space def}' appears first in the
+encoding vector, then that character can only be accessed using 
+`{\tt Alt 0 1 9 5}', not by typing the `{\tt space}' key, 
+or using `{\tt Alt 0 1 2 8}'.  
+What is worse, old versions of ATM go into `invisible ink mode' if you try to
+access the character using one of these alternatives --- characters in the
+same string after this point will not be shown on screen.
+
+Similarly characters in code positions 0 - 31 should be accessed through
+their alternate codes (161 - 170 or 172 - 194) in non-TeX applications.
+
+We also recommend that you use the utility `{\tt spacify}' to put a `{\tt
+space}'  character in code position 32.  This is not neccessary in the case
+of the Macintosh version of the fonts since the `coordinated' fonts already 
+have a space character in character code position 32.
+
+\nsection{Problems with Adobe Font Downloaders and Adobe Font Foundry}
+
+On IBM PC compatibles, 
+we cannot recommend Adobe Font Downloaders, since they are slow and not very
+user friendly --- use the DOWNLOAD utility instead if possible.  If you are
+forced to use a downloader from Adobe, be aware that some of them will
+*only* recognize fonts that have file names that have been padded out to a
+full eight characters using the underscore character.  These downloaders also
+will not recognize fonts that have more than six real characters in the file
+name (i.e. names with fewer than two trailing underscore characters).
+The file names of both PFB and PFM files must have this form.
+
+We do not recommend making bitmapped versions of these fonts, but if you
+do use Adobe Font Foundry (supplied with any Adobe font set), then please
+note that the foundry requires not only PFB and PFM files, but also AFM
+and INF files.  The default directories for these files are
+`{\tt c:\bs psfonts}',
+`{\tt c:\bs psfonts\bs pfm}', `{\tt c:\bs psfonts\bs afm}', 
+`{\tt c:\bs psfonts\bs fontinfo}'.  
+ATM does  {\it not\/} copy the AFM and INF files from the font distribution
+diskettes (since it doesn't need them).  You'll have to copy them to the appropriate
+directories. 
+Also note that the font foundry program also does recognizes only fonts
+with names that have been padded out with underscore characters...
+
+\nsection{Problems with old versions of DVIPS}
+
+If you have an older version of DVIPS, the best advice is:  
+
+\vskip .05in
+
+{\bf Get the latest version of DVIPS!}
+
+\vskip .05in
+
+\noindent
+Seriously, it will be well worth your while.  DVIPS is constantly evolving
+and improving, as well as adapting new features found in other DVI drivers. 
+Here is some advice should you be FORCED to use an older version:
+
+(1)	Older versions of DVIPS can only handle Type~1 fonts in PFA format.
+	They cannot unpack the more compact PFB format.  To deal with this,
+	you will have to run the PFB files through the utility PFBtoPFA.
+
+(2)	Older versions of DVIPS have a problem with fonts that use repeated
+	encodings, because DVIPS modifies the metrics of `PostScript' fonts
+	based on information in the TFM files.  Many fonts for use with TeX
+	use repeated encodings because (a) TeX expects certain characters to
+	be in the control character range (0 - 31) and at the same time (b)
+	many applications cannot access characters in that range.
+
+DVIPS redefines the metrics of a font by referring to the TFM file in a way
+that causes the second appearance of a character in the encoding to end up
+with zero width.  This means that ligatures and Greek characters will
+overprint, since the higher numbered encodings are listed first 
+(in order to deal with the repeat encoding `misfeature' of ATM for Windows).  
+
+% *	So please get the latest version of DVIPS!
+
+\nsection{Using the extra {\LaTeX} + {\SliTeX} fonts with GhostScript}
+
+
+Please add the contents of the file fontmap.add to the end of the 
+GhostScript FontMap file in order to use the extra LaTeX + SliTEX fonts with
+GhostScript. 
+
+
+\end
+
+\endinput
+
+
+
+
+
+
+
+
+
+
+
+
+The fonts are ready for installation using Adobe Type Manager (ATM) --- 
+as described in the next section. 
+
+You may be using these fonts with an application that has its own
+installation procedure, in which case % and so 
+the following may not apply.  
+For example, if you will be using the fonts only with
+% for use with 
+{\Y&Y}'s DVI\-PS\-ONE, then just copy all of the PFB files to some
+convenient directory (\verb@c:\psfonts@ say) on your hard disk
+and set the environment variable PSFONTS to that directory.
+
+\vskip .05in
+
+{\narrower \sl
+
+\noindent
+You can pretty much ignore most of this document
+if you will be using the % Blue Sky Research Computer Modern outline fonts 
+extra {\LaTeX} + {\SliTeX} outline fonts from {\Y&Y} only with DVI\-PS\-ONE.
+
+}
+
+% explain what to do with DVIPS ???
+
+\vskip .05in
+
+\noindent
+But, if you plan to use these fonts with Windows applications
+(such {\Y&Y}'s DVI\-Windo, MicroSoft Word for Windows, 
+Aldus PageMaker, Adobe Illustrator etc.) 
+then please read at least sections 2 and 3.  % want to 
+
+\nsection{Font installation using Adobe Type Manager (ATM)}
+
+To install the outline fonts for use with MicroSoft Windows, % ~3.0 or 3.1
+insert the diskettes containing PFB
+and PFM files into a diskette drive.  
+Launch Windows and double-click on the ATM control panel icon
+(in the `Main' program group).
+Select `{\tt Add}' and choose the fonts to be installed from the diskette.
+% Install the desired fonts from the ATM control menu.  
+You can select several fonts at once by holding down the control key
+while clicking on font names ---
+or you can hold the mouse button down and drag the cursor to select
+a range of fonts.  After selecting fonts, click `Add' again.
+Repeat the process using the second diskette.  
+% Note that with older versions of ATM, 
+% the newly installed fonts will not be accessible from Windows
+% applications until you exit and relaunch Windows.
+
+During the installation process, the PFB font files will be copied to the
+directory \verb@c:\psfonts@, while the PFM files will be copied to 
+\verb@c:\psfonts\pfm@ (assuming ATM uses the default directories).  
+The installation procedure also adds `softfont' entries to each section
+of `{\tt win.ini}' file designated for a PostScript printer 
+% in the {\tt win.ini} file in your Windows directory 
+(make sure to select `Install as Auto-Download Fonts' when adding fonts
+using ATM).  If you later add another PostScript printer,
+% (or add another port for an existing PostScript printer), 
+you will need to reinstall the fonts.
+You can do this from the original diskettes or from the PFM file
+directory using ATM as above.
+% manually copy the softfont entries into the corresponding section of {\tt
+% win.ini}. 
+% Alternatively, reinstall the fonts after adding the new printer driver.
+
+By the way, older versions of ATM do not do a good job maintaining the
+{\tt win.ini} file. % very well
+Make sure to use the latest version of ATM (at least 2.5 or 2.6).
+%
+% They % Older version of ATM 
+% do {\it not} remove softfont entries from
+% {\tt win.ini} when a font is `{\tt Removed}'.
+% You can use a text editor to manually delete all softfont entries in
+% {\tt win.ini} relating to the deleted font.
+% Also, older versions of ATM create duplicate entries in {\tt win.ini}.
+% when a font is reinstalled.
+For additional information, please refer to the ATM manual.
+
+It is best to always use ATM to `Add' or `Remove' fonts.
+%
+In any case, {\it never} replace existing PFB or PFM files while Windows is
+running --- doing this can cause ATM to overwrite random parts of memory.
+%
+% Also, to install a new version of a font, it may appear to be easier to
+% simply replace the PFB file in \verb@c:\psfonts@  and the PFM file in  
+% \verb@c:\psfonts\pfm@ with the new versions.
+% If you use this short-cut technique, however, make sure to delete ATM's
+% `quick load cache' file ({\tt atmfonts.qlc}) in the  \verb@c:\psfonts@
+% directory ---  ATM will rebuilt it the next time you launch Windows.
+% If you cannot find {\tt atmfonts.qlc}
+% then you most likely have a very old version of ATM.
+
+If you would like to check on what fonts are installed, double
+click the ATM icon in the `Main' program group.
+Alternatively, look in the file {\tt atm.ini} in your Windows directory.
+Each line of this file gives the Windows name of a
+font and both the PFB and PFM file names (as well as the style of the font
+% whether the font is considered 
+--- BOLD or ITALIC---or both).  
+This is not a very reliable list, by the way, since fonts are listed even if
+the corresponding PFB and PFM files are missing or corrupted.
+
+If you have DVI\-Windo, it is better to select
+`{\tt Show Font}' from the `{\tt Font}' menu.  
+All installed scalable outline fonts 
+(Type~1, TrueType, FaceLift and so on) are listed, 
+and their character sets can be inspected. 
+Problem fonts (missing or % with obviously 
+corrupted PFB or PFM files) will not be listed. 
+Alternatively use the Windows applet `Character Map' in the `Accessories'
+program group.
+
+Note that with ATM installed, Type~1 fonts can be used {\it not\/} just with
+PostScript printers, but any of hundreds of different printers with Windows
+drivers, including such `printers' as fax boards and % Adobe 
+Acrobat PDF Writer.
+
+% {\bf Note:} Some applications, such as older versions of MicroSoft Word for
+% Windows, need to be prodded to update their cached font list when new fonts
+% are installed by ATM. 
+% Start Word for Windows % after installing the fonts 
+% and choose `{\tt Printer Setup}'
+% from the `{\tt File}' menu; 
+% then click on the name of your printer and select `{\tt OK}'.
+
+\nsection{`Automatic' versus `manual' downloading of fonts}
+	
+When you use Type~1 fonts normally with Windows applications, 
+then the fonts needed by a particular print job
+will be sent to the printer as part of the PostScript file.
+These fonts will be  % automatically removed
+disappear from the printer at the end of the print job.  
+This is referred to as `automatic' or `temporary' downloading.
+
+If you use the same fonts all the time, and if your printer has enough
+memory, and if you are not sharing the printer with other users,
+% who might object, 
+then it may make sense to download the fonts `manually' or
+`permanently' ahead of time.  
+Fonts that are downloaded `manually' remain resident in the printer until
+the printer is rebooted or power cycled.  
+This saves the time for downloading the fonts with each print job
+%  While this may save some time, 
+--- although it is somewhat less convenient. It is also not
+really necessary if your printer driver uses techniques such as 
+`partial font downloading' --- as {\Y&Y}'s DVI\-PS\-ONE does. 
+
+% Fonts can be either downloaded `manually' (i.e. permanently) or
+% `automatically' (i.e. only for the duration of a particular print job).
+% Fonts that are downloaded manually remain resident in the printer until
+% the printer is rebooted or power cycled.  
+
+Usually applications using outline fonts come with utilities for downloading.
+You can, for example, use one of the Adobe downloader 
+(PCSEND for serial ports, PSDOWN for parallel ports, or WINDOWN for Windows)
+to preload the CM fonts you plan to use.  
+Alternatively, use the utility DOWNLOAD supplied with the CM fonts.  
+To see what command line arguments DOWNLOAD takes, invoke it using 
+`{\tt download -?}'.
+
+% Show serverdict begin 0 exitserver line ?
+
+Fonts downloaded `permanently' are treated exactly like printer
+resident fonts. 
+Note, however, that the virtual memory (VM) on some older printer
+% 's virtual memory (VM)  
+may be filled by just a handful of fonts.
+%
+% There is thus an advantage to `automatic downloading' --- particularly if the
+% application uses {\it partial font downloading} 
+% (presently only {\Y&Y}'s DVI\-PS\-ONE uses partial font downloading).  
+
+If you are using ATM~2.0 or later, then the installation procedure will set
+things up for `automatic downloading'
+if you select `Install as Auto-Download Fonts' when adding fonts.
+If you do {\it not\/} want fonts to be automatically downloaded,
+then make sure to uncheck this box when installing the fonts.
+Alternatively, you can alter the behavior of the
+% to be downloaded automatically by the 
+Windows PostScript printer driver by
+removing the reference to a font's PFB file in all `softfont' entries
+referring to that font in your `{\tt win.ini}' file.
+
+% With earlier versions of ATM, to provide for automatic downloading of a
+% particular font when you are using Windows, you need to make a small change
+% in the file {\tt win.ini} in your Windows directory.  
+% Simply extend the softfont
+% entry in {\tt win.ini} with the path to the PFB file.  
+% For example, change:
+% (recent versions of ATM may already do this for you):
+
+% \vskip .03in
+
+% 	\verb@softfont29=c:\psfonts\pfm\cmr10.pfm@
+
+% \noindent to
+
+%	\verb@softfont29=c:\psfonts\pfm\cmr10.pfm,c:\psfonts\cmr10.pfb@
+
+% \vskip .03in
+
+% \noindent
+% where it is assumed that the PFB font file resides in 
+% \verb@c:\psfonts@.
+
+% Note that there should be no space after the comma above, and the order of
+% entries should be as shown.  Also remember that there is a softfont entry
+% for every printer/port combination you have `installed' in Windows, 
+% so this alteration may need to be made in more than one place in {\tt win.ini}.
+
+\nsection{Accents and hyphenation in non-English languages}
+
+As you may note by looking at the AFM files, 
+the BSR CM text fonts from {\Y&Y} come with
+the set of 58 `standard' accented characters found in 
+ISO Latin~1, Windows ANSI, and the Macintosh standard roman encoding.  
+These are not characters normally found in Computer Modern fonts, 
+and hence they do not appear in the encoding.  
+Refer to the AFM files to find out exactly which accented characters
+are available.  
+
+To gain access to these pre-built accented characters you may wish to create
+new fonts  % (with different names) 
+using the utility REENCODE, or use some other method for reencoding the font
+--- such as on-the-fly reencoding provided for by the font substitution
+mechanism in {\Y&Y}'s DVI\-PS\-ONE.
+To see what command line arguments REENCODE takes, invoke
+it using `{\tt reencode -?}'.  
+Reencode requires an encoding vector file ---
+this is % simply 
+a file containing lines like 
+
+\vskip .03in
+
+65 \quad A
+
+\vskip .03in
+
+\noindent
+giving the mapping from
+a character number to a character name.  
+Several sample encoding vector files (extension `{\tt .vec}')
+may be found on diskette B. % (with extension `{\tt .vec}').
+
+The rationale for including the accented characters ---
+despite the fact that they can be constructed using {\TeX}'s
+\verb@\accent@ macro from the base and accent characters --- is that a word
+with an accented character that was constructed using \verb@\accent@
+contains explicit kerning, and so is {\it not\/} 
+hyphenated properly by {\TeX}.  
+This means that providing for hyphenation of words in non-English
+languages is awkward. % , if not impossible.  
+The problem evaporates if the font contains the accented characters directly.
+
+It does, however, take a bit of work to fully exploit this feature, 
+since the plain {\TeX} and {\LaTeX} macros % set up 
+for these accented characters  (such as \verb@\aa@)
+have to be replaced with new ones using the appropriate character code. 
+%
+Here is an example:
+
+\vskip .03in
+
+% \noindent
+Presently: \quad \verb@\def\aa{\accent'27a}@ $\,$ ({\TeX} book, page 356)
+
+% \noindent
+Change to: $\,$ \verb@\def\aa{\char225}@ $\,$	(assuming `{\tt aacute}' is decimal 225)
+
+\vskip .03in
+
+\noindent
+% We recommend that the remapped font maintain the original encoding below 128,
+% and use some `standard' encoding above 128.  
+What encoding to use is a matter of taste.
+% When working with Computer Modern fonts in {\TeX} it may make sense to
+% retain the encoding below 128.
+When working in Windows, Windows ANSI may be a reasonable choice.
+Another possibility is the encoding agreed upon at the Cork, Ireland TUG
+meeting in 1990.  There are some constraints on reencoding fonts
+containing composite characters (see below).
+%  --- for additional details look in the file {\tt composite.txt}.
+
+A good way of using pre-built % even better way of dealing with 
+accented characters is to build pseudo-ligatures into the TFM files so that
+an accent character followed by a letter is automatically replaced with
+the corresponding accented letter (provided it exists in pre-built form).
+So, for example, a `ligature' may be included that maps 
+`{\tt dieresis}' followed by `{\tt a}' 
+to `{\tt adieresis}'
+(NOTE: we are referring here to the actual `{\tt dieresis}' accent, 
+{\it not\/} `{\tt quotedbl}').
+The utility AFMtoTFM  does this when given suitable
+command line flags.  For example, 
+
+{\tt afmtotfm -vadjx -c=tex256 cmr10}
+
+\noindent
+creates a TFM file set up for the 256 character {\TeX} `Cork' encoding with
+suitable pseudo-ligatures.   To make use of the new pseudo-ligatures
+transparently with existing {\TeX} source files, one can simple modify the
+definitions of the accent macros.  For example, in `{\tt plain.tex}'
+we find:
+
+\verb|\def\"#1{{\accent"7F #1}}|
+
+\noindent
+which invokes {\TeX} \verb|\accent| macro with argument 127,
+(the character code of `dieresis' in Computer Modern's `TeX text'
+encoding).  Replace this with %  We above
+
+\verb|\chardef\"=4|
+
+\noindent
+where 4 is the character code of `{\tt dieresis}' in the `Cork' encoding.
+
+\nsection{Constraints on reencoding fonts}
+
+The composite characters in the BSR CM fonts from {\Y&Y} 
+are constructed using a standard Type~1 Char\-String operator called
+`StandardEncoding Accented Character' % ({\tt seac}), 
+as are % all 
+composite characters in standard Adobe text fonts.
+This works as it should in most PostScript interpreters that support Type~1
+fonts. %  when the font is used with Adobe's StandardEncoding vector.  
+
+Some PostScript interpreters, however, 
+may not work properly when the font is reencoded.  
+The symptom of this problem is an `{\tt invalidfont}' error in `{\tt show}' 
+when a string is rendered that contains a composite character.
+% that is affected by this problem. 
+%
+Many non-clone PostScript interpreters require that base characters and accents
+must be in the encoding vector (i.e. it is not sufficient that there are 
+{\tt Char\-Strings} for these glyphs).  So when reencoding a font, make
+sure that all base characters and accents actually show up somewhere
+in the encoding.
+%  (that is, it is {\it not\/} enough that the font
+% contain the character programs for the base and accent characters).
+
+ATM for Windows has a different problem.  It has hard-wired positions
+for base characters and accents.  On screen rendering will be affected
+when accents appear in other positions.  
+% (For a real blast try an encoding
+% where `{\tt ecircumflex}' is in position 136, as it is in IBM OEM encoding).
+What is more, the place where ATM expects to find accents in the encoding
+depends on which version of ATM is being used! % you are using!
+(If you have DVI\-Window, you can get around this problem by using the
+utility SAFESEAC on the PFB files).
+%
+% Other PS interpreters `do the right thing' --- that is map the accent
+% character number into a character name using StandardEncoding, and then look
+% up that name in the reencoded font.  Somewhat surprisingly, many of the
+% `clone' interpreters work correctly, while the non-clone interpreters do not
+% (see discussion of problems with clone interpreters below).  
+%
+% The moral of the story is:  check first that your printer can handle
+% remapped fonts with composite (accented) characters before investing a lot
+% of time redoing the {\TeX} macros for accented characters.  This can be done
+% even with one of Adobe's own fonts:  Use the REENCODE utility to move the
+% accents from their standard position and print some text containing
+% accented characters using the modified font (see next section for method 
+% for creating such a test file).
+%
+For additional details see the file {\tt composite.txt}.
+
+\nsection{Printer Font ASCII from Printer Font Binary format}
+
+For the PC, the fonts are supplied in the compact binary (PFB) format which
+conserves disk space.  These font files cannot be sent directly to the
+printer in this format, since the PostScript interpreter is expecting 
+`ASCII' % \hbox{7-bit}
+characters only.  The fonts have to be unpacked into the more verbose
+hexadecimal (PFA) format on the way to the printer.  This is usually taken
+care of by the application (for example, {\Y&Y}'s DVI\-PS\-ONE), or the Windows
+PostScript driver ({\tt pscript.drv}).  
+The downloader supplied with the fonts,
+DOWNLOAD, also does the conversion, as do Adobe's downloaders.
+
+Some applications are not able to do the unpacking, and so require fonts
+in the verbose PFA format.  PFA format is normally also required when the
+fonts are to be used with Display PostScript on Unix systems. % /NeXT
+
+%% flush some of the following if space is needed.
+
+A utility (PFB\-to\-PFA) is supplied with the fonts that unpacks 
+the PFB files into PFA format.  
+A second utility (PFA\-to\-PFB) can be used to convert back
+to the PFB format.  
+% This is useful if you want to manually change the encoding vector, or
+This may be useful if you want to manually change the
+font name --- something that cannot be done directly
+in the PFB file, since the lengths of the ASCII section is encoded in the
+binary file format, and the font will not work if the encoded length does not
+match the actual length of the ASCII section of the font file. 
+% (Actually, it
+% is usually more convenient to just use the REENCODE utility to do this). 
+
+The PFB\-to\-PFA utility also makes it easy to manually download a font,
+and is useful for constructing simple test files.  For example, suppose
+PFB\-to\-PFA has been used to create {\tt cmr10.pfa} from {\tt cmr10.pfb}. 
+Then read the PFA file into an editor (in text only mode) and add the lines:
+
+\vskip .03in
+
+\def\nl{\hfill\linebreak}
+
+{\narrower
+
+\tt
+\noindent
+/CMR10 findfont 72 scalefont setfont\nl
+100 100 moveto (This is CMR10) show showpage
+
+}
+
+\vskip .03in
+
+\noindent
+to the end of the file. Then use the DOS COPY command:
+%  to send it to the printer:
+
+\vskip .03in
+
+{\tt	COPY cmrtest.ps lpt1:/b}
+
+\vskip .03in
+
+\noindent
+(assuming that the PostScript printer is on LPT1).
+%  and that the new file is called {\tt cmrtest.ps}).
+
+\nsection{Changing the case of the PostScript FontName}
+
+The PostScript `FontName's of these CM fonts are all upper case, in order
+to be consistent with the Macintosh versions (where font name contraction
+would cause lower case names to become non-unique).  Many applications,
+such as DVI\-PS\-ONE, actually don't care what the FontName is  (since they
+read it from the PFB file itself).  If you download the font to the
+printer `permanently' ahead of time, however, then there has to be a match
+between the PostScript FontName and the name used by the application.  
+
+A utility called NAMECASE is provided that will change the case of `FontName
+in a PFB or PFM file so that fonts can be used with applications that
+expect lower case FontNames.  To see what command line arguments NAMECASE
+takes, invoke it using `{\tt namecase -?}'.  
+The FontName case should only be changed if really necessary, 
+since this will reduce portability.
+
+\nsection{Dealing with large numbers of fonts in MS Windows}
+
+Adobe Type Manager 2.0 and later has a limit of about 900 installed fonts.
+% (about 460 in earlier versions of ATM). 
+In practice, however, you will encounter another limit long before this: 
+the Windows PostScript printer ({\tt pscript.drv})
+version 3.5 or later (supplied with Windows 3.1) has a limit of about 330
+installed fonts. % The limit for {\tt pscript.drv} 
+% (version 3.4 --- supplied with Windows 3.0 --- had a limit of about 165).
+
+You may find that certain operations 
+(such as launching Windows, or launching an application)
+% that establishes a `Printer Device Context' immediately when loaded) 
+slow down % a lot 
+when a large number of fonts are installed.  In this
+case it may make sense to install only those fonts that are really needed.
+% When PFB files are requested, 
+In the case of the CM fonts, note that diskette A contains the 40 most commonly
+used fonts.  The 35 fonts on diskette B are used only rarely.
+
+% There are some other things that can be done if this slow-down is a problem.
+% One is to copy all of the PFM files to a RAM disk.  This can be done
+% conveniently using a line in the {\tt autoexec.bat} file.  
+% If this is done, both {\tt win.ini} and {\tt atm.ini} should be updated
+% to reflect the new location of the metric files 
+% (and {\tt atmfonts.qlc} should be deleted after making the change).
+
+Also, try and get the latest version of ATM (2.5 or later)
+and the latest version of the Windows PostScript driver 
+(3.55 or later).  
+These versions of ATM and the PostScript printer driver
+cache metric information in a file, greatly speeding up Windows launch
+and opening of printer device contexts. % in applications.
+
+% Another `trick' is to start some application like MS Windows Write, and use
+% `Printer Setup' from the file menu to select the printer that will be used
+% in other applications later on.  Then minimize the application (turning it
+% into an icon).  
+% This forces the PostScript printer driver ({\tt pscript.drv}) to
+% remain resident and thus speeds up creating of printer device contexts.
+
+\nsection{PostScript `clone' interpreters}
+
+PostScript `clone' interpreters (i.e. non-Adobe interpreters)
+%  developed independently)
+% that can deal with Adobe Type~1 fonts 
+usually work just fine on Type~1 fonts from
+Adobe, as well as fonts created using tools licensed from Adobe.  
+Adobe font creation software % (i.e. {\tt BuildFont}) 
+uses the Type~1 format in a very stylized way.  
+Consequently, being able to properly interpret fonts in the `standard'
+Adobe form does not assure that an interpreter can deal with arbitrary Type~1
+fonts at all.  In fact, a font may be a perfectly valid Type~1 font, and even
+be `ATM compatible' to boot (a much tighter constraint) and yet not run on
+some `clone' interpreter.
+% (We have yet to find a single `clone' interpreter that
+% does not have at least one bug in Type~1 font interpretation).
+
+The Blue Sky Research Computer Modern outline fonts contain numerous
+work-arounds for known bugs in non-Adobe PostScript font rendering software
+(In fact several highly desirable optimization had to be omitted for
+this reason). 
+There is one problem % are some problems that are 
+that is purposefully not dealt with, however.  
+This is the inability of some interpreters to deal with characters that have
+widths that are not integer multiples of 1/1000 of an `em'.  All fonts from
+Adobe use integer widths, but the CM fonts cannot --- since that would
+violate the basic metrics of the Computer Modern fonts.
+
+If there are problems printing with the CM fonts, use the PFBtoFPA utility
+to construct a simple test file as described in the previous section and
+send that to the printer, after first sending down the error handler
+({\tt ehandler.ps}).  
+% If there are errors reported (such as `{\tt invalidfont}' or
+% `incorrect number of parameters for \verb@start_char@'), 
+% or if the printer `hangs' and has to be rebooted, then you may have a
+% PostScript interpreter that cannot handle non-integer character widths. 
+% In this case, {\Y&Y} can supply a `simplified' font set that has rounded-off
+% character widths.
+% The errors introduced by this are small, since usually tiny errors
+% in one direction are more or less balanced by tiny errors in the other
+% direction (unless the line consists of a long string made up by
+% repeating the same character). 
+%
+Note that there are some PostScript test files in directory `{\tt ps}' on
+diskette C % (diskette D for Unix/NeXT version)
+that may be helpful in pinning down clone interpreter problems.
+
+% or if the font is mono spaced !
+
+% When we note on the order form that you are using a printer that is known to
+% have this problem, we automatically call to check whether you would prefer to
+% receive the `simplified' version of the fonts.  The modified fonts have the
+% letters NG after the version number in the first line of the PFB file.
+
+\nsection{Using the CM outline fonts with DVIPS}
+
+For use with DVIPS, append the contents of one of the files `{\tt psfonts.cm},'
+`{\tt psfonts.cmx},' or `{\tt psfonts.cmz}' to DVIPS's `{\tt psfonts.map}' file
+(typically found in \verb|/usr/lib/tex/ps|).  
+Use `{\tt psfonts.cm}'
+if fonts are `permanently' downloaded to the printer ahead of time;
+use `{\tt psfonts.cmx}' if fonts are kept in PFA form;
+use `{\tt psfonts.cmz}' if fonts are kept in PFB form.
+If you have a recent version of DVIPS, then instead just add the line
+
+\verb|p+ psfonts.cm|
+
+\noindent
+to the end of the `{\tt config.ps}' file used by DVIPS.   This will in effect 
+append the entries in `{\tt psfonts.cm}' to the list of fonts in Adobe Type~1
+format that are available to DVIPS.  Please consult your DVIPS manual.
+
+Very old versions of DVIPS have a problem with outline fonts that
+contain repeated encodings. DVIPS redefines the metrics of a font, and
+characters that appear twice in the encoding can end up with zero width.
+This means that ligatures and Greek characters will overprint,
+as will some characters on the 0 -- 31 range, such as 
+`$-$', `$+$', `$=$' etc. 
+(Printer drivers --- such as DVIPSONE --- that do not refer to the TFM files
+for metric information do not have this problem).
+
+The solution is to get the latest version of DVIPS
+and check the information that comes with DVIPS.
+% regarding work-arounds for this problem.
+
+% There are two work-arounds for this problem.  One is to prevent DVIPS
+% from redefining the font's metrics.  
+% In the file `{\tt texps.pro}' change
+
+% \vskip .03in
+% 
+% {\tt /Metrics currentdict put}
+% \noindent to
+% {\tt /Bogus currentdict put}
+% \vskip .03in
+%% Mention other methods ?
+
+% \noindent
+% Another possibility --- if you are desperate and cannot get the latest
+% version --- is to remove the repeated
+% encodings from the fonts themselves. Simply delete the lines starting with 
+% `{\tt dup 161 ... put}'
+% through 
+% `{\tt dup 196 ... put}' 
+% after the line 
+% `{\tt /Encoding 256 array}'.  
+
+% This change should be made on a PFA file, {\it not\/} a PFB file, since
+% the latter contains binary segment length codes which will be invalidated by
+% any editing. If you are using PFB files, convert them first to PFA format
+% using PFB\-to\-PFA, edit the PFA file, and then convert back to PFB form
+% using PFA\-to\-PFB.  Of course, this is assuming that you will never want
+% to access characters in the `control character' range (0--31 and 127) using
+% the alternate character codes. 
+
+DVIPS also uses a % particular 
+coordinate system, and produces code that has a
+tendency to trigger bugs in HP PostScript printer floating point arithmetic.
+If you get occasional odd jumps in horizontal position in output from DVIPS
+when printing to one of the 600 dpi HP PS printers, then make sure you have
+the latest ROM revision for that printer, since early versions had an
+arithmetic error in the Intel floating point library linked into the
+interpreter.  While this bug has apparently been fixed in the latest HP PS
+printers, a similar problem just appeared recently in new HP printers 
+(These problems do not occur with PS output from DVIPSONE). 
+
+DVIPS PS output also interacts with a problem in some NewGen printers.
+As mentioned above, DVIPS redefines the metrics of fonts (without changing
+the UniqueID of a font).  And DVIPS uses relative positioning most of 
+the time.  nder certain circumstances, such as when it comes to a superscript
+or a subscript, however, DVIPS may switch to absolute positioning.  Sudden
+jumps in position can occur if errors in position have accumulated at that
+point.  Some NewGen printers do not allow redefinition of font metrics
+(unless the font's UniqueID is also changed). 
+The result are jarring discontinuities, mostly at superscripts in subscripts
+(These problems do not occur with PS output from DVIPSONE).
+
+% explain about psfonts.map ???
+
+\nsection{Accessing special characters and font encoding}
+
+Alphanumeric characters can be accessed in Windows applications just by
+typing the appropriate key, of course, but Computer Modern fonts also contain
+many special characters that are located in `control character' positions.
+Unfortunately, you can't effectively use the codes between 0 and 31 in most
+Windows applications.  
+So these have been remapped to positions 161--195 (see the table at the end).  
+Also, note that {\TeX} uses character code 32 for Polish
+`{\tt suppress}' % or `{\tt cancel}'
+--- to get a real space, use character code 160
+% (Ironically, the `{\tt suppress}' in CM fonts is too short and too shallow
+% to be useful for constructing a real `lslash' or `Lslash').
+
+Many Windows applications (like PageMaker) do use the kerning
+information in the PFM files (although only above some user-selectable
+point size).  
+Unfortunately, however, Windows applications cannot deal with ligatures
+(for a start, the PFM file format does not provide for ligature information).
+To get the ligatures commonly used in {\TeX}, you will need to
+explicitly use numeric codes derived from the table below 
+(e.g. ff is 174, fi is 175, and fl is 176). 
+
+\nsection{Accessing the `space' character}
+
+The CM fonts can be used with any application that understands 
+Adobe Type~1 fonts. 
+There is a serious inconvenience though in that % most 
+fonts designed to work with {\TeX} 
+% the original CM fonts 
+do not contain a `{\tt space}'.  
+For this reason, we have added a `{\tt space}' in position 160 to help,
+but it is awkward to have to type ALT `0' `1' `6' `0' just to get a space.  
+One way around this problem is to interchange `{\tt suppress}' and `space'.
+A program called `{\tt spacify}' can do this for you.  
+Note that {\it both} the PFB and the PFM file must be modified. 
+See the file `{\tt spacify.txt}' for details.
+Note that you will lose the ability to construct the
+% Note that this only makes sense if you will never use the 
+% Polish characters `{\tt lsuppress}' or `{\tt Lsuppress}'.
+Polish `{\tt lslash}' and `{\tt Lslash}'.
+(Ironically, the `{\tt suppress}' in CM fonts is too short and too shallow
+to be useful for constructing a real `lslash' or `Lslash' anyway).
+
+\nsection{Accessing characters with codes greater than 127}
+
+To gain access to the codes above 127 in Windows applications 
+(when using the US English version of Windows), hold
+down the `Alt' key, type 0 (important) and then the (decimal) code
+number on the numeric key pad  % See the table below:
+(with `Num Lock' {\it on}).	%		/* 1993/March/28 */
+
+\vskip .1in
+
+% \settabs 6 \columns
+\settabs 9 \columns
+
+\+TeX&Window&charname&&&TeX&Window&charname\cr
+
+\vskip .1in
+
+\+0&	161&	Gamma	&&&16&	179&	dotlessi\cr
+\+1&	162&	Delta	&&&17&	180&	dotlessj\cr
+\+2&	163&	Theta	&&&18&	181&	grave	\cr
+\+3&	164&	Lambda	&&&19&	182&	acute	\cr
+\+4&	165&	Xi	&&&20&	183&	caron	\cr
+\+5&	166&	Pi	&&&21&	184&	breve	\cr
+\+6&	167&	Sigma	&&&22&	185&	macron	\cr
+\+7&	168&	Upsilon	&&&23&	186&	ring	\cr
+\+8&	169&	Phi	&&&24&	187&	cedilla	\cr
+\+9&	170&	Psi	&&&25&	188&	germandbls\cr
+\+10&	173&	Omega	&&&26&	189&	ae	\cr
+\+11&	174&	ff	&&&27&	190&	oe	\cr
+\+12&	175&	fi	&&&28&	191&	oslash	\cr
+\+13&	176&	fl	&&&29&	192&	AE	\cr
+\+14&	177&	ffi	&&&30&	193&	OE	\cr
+\+15&	178&	ffl	&&&31&	194&	Oslash	\cr
+\+-&	160&	space	&&&32&	195& 	suppress \cr
+\+&&&&&127&	196&	dieresis\cr
+
+% \+16&	179&	dotlessi\cr
+% \+17&	180&	dotlessj\cr
+% \+18&	181&	grave	\cr
+% \+19&	182&	acute	\cr
+% \+20&	183&	caron	\cr
+% \+21&	184&	breve	\cr
+% \+22&	185&	macron	\cr
+% \+23&	186&	ring	\cr
+% \+24&	187&	cedilla	\cr
+% \+25&	188&	germandbls\cr
+% \+26&	189&	ae	\cr
+% \+27&	190&	oe	\cr
+% \+28&	191&	oslash	\cr
+% \+29&	192&	AE	\cr
+% \+30&	193&	OE	\cr
+% \+31&	194&	Oslash	\cr
+
+% \section{Colophon}
+
+% This manual was prepared using Lugaru's Epsilon$^{\smlsize TM}$ 
+% (an implementation of Richard Stallman's Emacs), 
+% run through Daniel Brotsky's {\YTeX} and printed on  
+% a QMS PS 815 MR printer
+% from output produced by {DVI\-PS\-ONE}, reprocessed by {TWOUP}. 
+% Outline fonts used were from Blue Sky Research and \Y&Y. 
+
+\newpage
+
+% \hbox{ } \newpage
+
+\def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
+
+\line{{\bf 1.\enspace Blue Sky Research Computer Modern Outline Fonts\leaderfill 1}}
+
+\vskip .05in
+
+\line{{\bf 2.\enspace Font installation using Adobe Type Manager (ATM)\leaderfill 1}}
+
+\vskip .05in
+
+\line{{\bf 3.\enspace `Automatic' versus `manual' downloading of fonts\leaderfill 2}}
+
+\vskip .05in
+
+\line{{\bf 4.\enspace Accents and hyphenation in non-English languages\leaderfill 3}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 5.\enspace Constraints on reencoding fonts\leaderfill 4}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 6.\enspace Printer Font ASCII from Printer Font Binary format\leaderfill 5}}
+
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 7.\enspace Changing the case of the PostScript FontName\leaderfill 6}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 8.\enspace Dealing with large numbers of fonts in MS Windows\leaderfill 6}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 9.\enspace PostScript `clone' interpreters\leaderfill 7}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 10.\enspace Using the CM outline fonts with DVIPS\leaderfill 7}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 11.\enspace Accessing special characters and font encoding\leaderfill 8}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 12.\enspace Accessing the `space' character\leaderfill 9}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\line{{\bf 13.\enspace Accessing characters with codes greater than 127\leaderfill 9}}
+
+\vskip .05in % \vskip .1in % \vskip .05in
+
+\vskip .5in
+
+$$\def\normalbaselines{\baselineskip20pt
+    \lineskip3pt \lineskiplimit3pt }
+  \def\mapright#1{\smash{
+      \mathop{\longrightarrow}\limits^{#1}}}
+  \def\mapdown#1{\Big\downarrow
+    \rlap{$\vcenter{\hbox{$\scriptstyle#1$}}$}}
+  \matrix{&&&&&&0\cr
+    &&&&&&\mapdown{}\cr
+    0&\mapright{}&{\cal O}_C&\mapright\iota&
+      \cal E&\mapright\rho&\cal L&\mapright{}&0\cr
+    &&\Big\Vert&&\mapdown\phi&&\mapdown\psi\cr
+    0&\mapright{}&{\cal O}_C&\mapright{}&
+      \pi_*{\cal O}_D&\mapright\delta&
+      R^1f_*{\cal O}_V(-D)&\mapright{}&0\cr
+    &&&&&&\mapdown{\theta_i\otimes\gamma^{-1}}\cr
+    &&&&&&\hidewidth R^1f_*\bigl({\cal O}
+      _V(-iM)\bigr)\otimes\gamma^{-1}\hidewidth\cr
+    &&&&&&\mapdown{}\cr
+    &&&&&&0\cr}$$
+% }
+
+\end
+
+% difference between {\ATM} & {\PSCRIPT} ?
+
+% change with time in ATM ?
+
+% {\ATM} problems   {\tt atm.ini} ATMFONTS.INI
+
+% modifications to ATM.INI
+
+% error messages
+
+% trouble shooting
+
+% do a `you' clean sweep
+
+% magnification steps
+
+% check on references to *.txt files
+
+% (TWOUP -vzs -m=1.25 -x=-30 -d=PRN bsrmanua)
+
+% TWOUP -vzg -m=1.4 -c=5 -d=LPT1 bsrmanua
+% TWOUP -vzh -m=1.4 -c=5 -d=LPT1 bsrmanua
+
+% TWOUP -vzg -m=1.45 -c=5 -d=COM1 bsrmanua
+% TWOUP -vzh -m=1.45 -c=5 -d=COM1 bsrmanua
+
+
+%% non PS printers.
+
+% DVIPS and HP
+
+% DVIPS and Newgen

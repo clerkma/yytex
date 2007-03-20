@@ -1,0 +1,62 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\nopagenumbers
+
+% -------------------------------------------------------------------------
+% How to output displayed math so that an accurate bounding box is created.
+% -------------------------------------------------------------------------
+
+% Problem: to make an EPS file using DVIPSONE of displayed math such that
+%          the bounding box accurately reflects the area actually used.
+
+% DVIPSONE normally puts a %%BoundingBox: ... comment in the PostScript file
+% based on the information passed to it by TeX (you can override this using 
+% -*P=... command line argument to force a paper-size derived bounding box).
+
+% Normally TeX sets `width' and `height' in the DVI file based on page size.
+% You can avoid this by using \shipout{...} directly rather than letting TeX's
+% normal page \output{...} processing occur.  
+
+% But displayed math is center in a box that has the current line width.
+% You can work around this problem by not using display math ($$...$$),
+% instead using ordinary math ($...$), but then large operators and
+% spacing will correspond to \textstyle, not \displaystyle rules.
+
+% This in turn can be avoided by explicitly adding \displaystyle to the math
+% to be typeset.  This is somewhat awkward if you have to do it every time.
+% You can simplify life by defining \everymath to do this automatically for
+% you. See below. 
+
+% \shipout\hbox{$r=\sqrt{x^2+y^2}$} %% OK, but textstyle, not displaystyle
+
+% \shipout\hbox{$\displaystyle r=\sqrt{x^2+y^2}$} %% OK, but awkward
+
+% Consider the idea from 19.4 excerise in TeX book:
+
+% \def\leftdisplay#1$${\leftline{$\displaystyle{#1}$}$$}
+% \everydisplay{\leftdisplay}
+
+% \shipout\vbox{\noindent$$x=\sqrt{x^2+y^2}$$}
+
+% But it is better to make $...$ automatically use displaystyle:
+
+\def\forcedisplay#1${\displaystyle{#1}$}
+\everymath{\forcedisplay}
+
+% Then you can simply use the following, for example:
+
+\shipout\hbox{$z=\sqrt{x^2\over y^2}$}
+
+% Now the bounding box created by TeX is accurate.  Check it out in DVIWindo!
+
+\end
+
+% Here are some more ideas from Donald Arseneau:
+
+% In LaTeX check out [fleqn]
+
+% Can also force equation left using:
+
+% $$\hskip0pt ... \hskip\displaywidth minus1fil\eqno ... $$
+
+% $$\hskip0pt ... \hskip\displaywidth minus1fil$$

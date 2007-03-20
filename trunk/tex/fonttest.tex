@@ -1,0 +1,130 @@
+% FONTTEST.TEX: a simple test program to show the layout (encoding) of a font
+% To use, simply TeX this file.  You will be asked to supply a font name
+% This must be a font for which TeX has metric information
+% else you will see: ! Font \test=.. not loadable: Metric (TFM) file not found.
+% A table much like the ones in the Appendix of the TeX book is created
+
+\nopagenumbers
+
+\chardef\atcode=\catcode`\@
+\catcode`\@=11			% make at a letter
+
+\message{Please enter a font name: }
+\read16 to\testfont
+\message{OK: will now test \testfont}
+
+\font\test=\expandafter\testfont
+
+\def\oct#1{\hbox{\rm\'{}\kern-.2em\it#1\/\kern.05em}} % octal constant
+\def\hex#1{\hbox{\rm\H{}\tt#1}} % hexadecimal constant
+
+% macros for font tables
+\def\oddline#1{\cr
+  \noalign{\nointerlineskip}
+  \multispan{19}\hrulefill&
+  \setbox0=\hbox{\lower 2.3pt\hbox{\hex{#1x}}}\smash{\box0}\cr
+  \noalign{\nointerlineskip}}
+\def\evenline{\cr\noalign{\hrule}}
+\def\chartstrut{\lower4.5pt\vbox to14pt{}}
+\def\beginchart#1{$$\postdisplaypenalty=-10000 % \global\count@=0 #1
+  \halign to\hsize\bgroup
+    \chartstrut##\tabskip0pt plus10pt&
+    &\hfil##\hfil&\vrule##\cr
+    \lower6.5pt\null
+    &&&\oct0&&\oct1&&\oct2&&\oct3&&\oct4&&\oct5&&\oct6&&\oct7&\evenline}
+\def\endchart{\raise11.5pt\null&&&\hex 8&&\hex 9&&\hex A&&\hex B&
+  &\hex C&&\hex D&&\hex E&&\hex F&\cr\egroup$$}
+\def\:{\setbox0=\hbox{\char\count@}%
+  \ifdim\ht0>7.5pt\reposition
+  \else\ifdim\dp0>2.5pt\reposition\fi\fi
+  \box0\global\advance\count@ by1 }
+\def\reposition{\setbox0=\hbox{$\vcenter{\kern2pt\box0\kern2pt}$}}
+\def\normalcharta{%
+  \global\count@=0
+  &\oct{00x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline0
+  &\oct{01x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{02x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline1
+  &\oct{03x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{04x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline2
+  &\oct{05x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{06x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline3
+  &\oct{07x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{10x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline4
+  &\oct{11x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{12x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline5
+  &\oct{13x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{14x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline6
+  &\oct{15x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{16x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline7
+  &\oct{17x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline}
+
+\def\normalchartb{%
+  \global\count@=128
+  &\oct{20x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline8
+  &\oct{21x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{22x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline9
+  &\oct{23x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{24x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{A}
+  &\oct{25x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{26x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{B}
+  &\oct{27x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{30x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{C}
+  &\oct{31x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{32x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{D}
+  &\oct{33x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{34x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{E}
+  &\oct{35x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{36x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{F}
+  &\oct{37x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline}
+
+\def\normalchart{%
+  \global\count@=0
+  &\oct{00x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline0
+  &\oct{01x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{02x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline1
+  &\oct{03x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{04x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline2
+  &\oct{05x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{06x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline3
+  &\oct{07x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{10x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline4
+  &\oct{11x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{12x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline5
+  &\oct{13x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{14x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline6
+  &\oct{15x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{16x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline7
+  &\oct{17x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{20x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline8
+  &\oct{21x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{22x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline9
+  &\oct{23x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{24x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{A}
+  &\oct{25x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{26x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{B}
+  &\oct{27x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{30x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{C}
+  &\oct{31x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{32x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{D}
+  &\oct{33x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{34x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{E}
+  &\oct{35x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline
+  &\oct{36x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\oddline{F}
+  &\oct{37x}&&\:&&\:&&\:&&\:&&\:&&\:&&\:&&\:&\evenline}
+
+\catcode`\@=\atcode		% restore original catcode of at sign
+
+% \beginchart\tenit
+% \beginchart\tentt
+% \beginchart\teni
+% \beginchart\tensy
+% \beginchart\tenex
+% \beginchart{\tentex\postdisplaypenalty=0}
+
+\beginchart\test
+\normalchart
+\endchart
+
+\end
+
+

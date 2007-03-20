@@ -1,0 +1,132 @@
+% META_ANS.TEX  keyboard replacement file for Windows ANSI
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Makes `meta' characters active and replaces them with suitable TeX macros
+
+% A source file using Windows ANSI can then be read in even if the fonts
+% use a different encoding or if they do not contain ready-made accented chars
+
+% \catcode130=\active % quotesinglbase
+% \catcode131=\active % florin
+% \catcode132=\active % quotedblbase
+\catcode133=\active \def^^85{...}	% ellipsis
+\catcode134=\active \def^^86{{\dag}}	% dagger
+\catcode135=\active \def^^87{{\ddag}}	% dbldagger
+% \catcode136=\active % circumflex
+% \catcode137=\active % perthousand
+\catcode138=\active \def^^8a{\v{S}}	% Scaron
+% \catcode139=\active % guilsinglleft
+\catcode140=\active \def^^8c{{\OE}}
+
+\catcode145=\active \def^^91{`}
+\catcode146=\active \def^^92{'}
+\catcode147=\active \def^^93{``}
+\catcode148=\active \def^^94{''}
+\catcode149=\active \def^^95{$\bullet$}
+\catcode150=\active \def^^96{--}
+\catcode151=\active \def^^97{---}
+% \catcode152=\active % tilde
+% \catcode153=\active %trademark
+\catcode154=\active \def^^9a{\v{s}}	% scaron
+% \catcode155=\active % guilsinglright
+\catcode156=\active \def^^9c{{\oe}}
+
+\catcode159=\active \def^^9f{\"Y}
+\catcode160=\active \def^^a0{~}
+\catcode161=\active \def^^a1{!`}
+% \catcode162=\active \def^^a2{\cents}
+\catcode163=\active \def^^a3{\pound}
+% \catcode164=\active % currency
+% \catcode165=\active % yen
+% \catcode166=\active % brokenbar
+% \catcode167=\active % section
+% \catcode168=\active % dieresis
+% \catcode169=\active % copyright
+% \catcode170=\active % ordfeminine
+% \catcode171=\active % guilemotleft
+% \catcode172=\active % logicalnot
+\catcode173=\active \def^^ad{-}
+% \catcode174=\active % registered
+% \catcode175=\active % macron
+% \catcode176=\active % degree
+% \catcode177=\active % plusminus
+% \catcode178=\active % twosuperior
+% \catcode179=\active % threesuperior
+% \catcode180=\active % acute
+% \catcode181=\active % mu
+\catcode182=\active \def^^b6{{\P}}
+% \catcode183=\active % periodcentered
+% \catcode184=\active % cedilla
+% \catcode185=\active % onesuperior
+% \catcode186=\active % ordmasculine
+% \catcode187=\active % guillemotright
+% \catcode188=\active % onequarter
+% \catcode189=\active % onehalf
+% \catcode190=\active % threequarters
+
+\catcode191=\active \def^^bf{?`}
+\catcode192=\active \def^^c0{\`A}
+\catcode193=\active \def^^c1{\'A}
+\catcode194=\active \def^^c2{\^A}
+\catcode195=\active \def^^c3{\~A}
+\catcode196=\active \def^^c4{\"A}
+\catcode197=\active \def^^c5{{\AA}}
+\catcode198=\active \def^^c6{{\AE}}
+\catcode199=\active \def^^c7{\c{C}}
+\catcode200=\active \def^^c8{\`E}
+\catcode201=\active \def^^c9{\'E}
+\catcode202=\active \def^^ca{\^E}
+\catcode203=\active \def^^cb{\"E}
+\catcode204=\active \def^^cc{\`I}
+\catcode205=\active \def^^cd{\'I}
+\catcode206=\active \def^^ce{\^I}
+\catcode207=\active \def^^cf{\"I}
+\catcode208=\active \def^^d0{{\DH}}
+\catcode209=\active \def^^d1{\~N}
+\catcode210=\active \def^^d2{\`O}
+\catcode211=\active \def^^d3{\'O}
+\catcode212=\active \def^^d4{\^O}
+\catcode213=\active \def^^d5{\~O}
+\catcode214=\active \def^^d6{\"O}
+% \catcode215=\active % multiply
+\catcode216=\active \def^^d8{{\O}}
+\catcode217=\active \def^^d9{\`U}
+\catcode218=\active \def^^da{\'U}
+\catcode219=\active \def^^db{\^U}
+\catcode220=\active \def^^dc{\"U}
+\catcode221=\active \def^^dd{\'Y}
+\catcode222=\active \def^^de{{\TH}}
+\catcode223=\active \def^^df{{\ss}}
+\catcode224=\active \def^^e0{\`a}
+\catcode225=\active \def^^e1{\'a}
+\catcode226=\active \def^^e2{\^a}
+\catcode227=\active \def^^e3{\~a}
+\catcode228=\active \def^^e4{\"a}
+\catcode229=\active \def^^e5{{\aa}}
+\catcode230=\active \def^^e6{{\ae}}
+\catcode231=\active \def^^e7{\c{c}}
+\catcode232=\active \def^^e8{\`e}
+\catcode233=\active \def^^e9{\'e}
+\catcode234=\active \def^^ea{\^e}
+\catcode235=\active \def^^eb{\"e}
+\catcode236=\active \def^^ec{\`\i}
+\catcode237=\active \def^^ed{\'\i}
+\catcode238=\active \def^^ee{\^\i}
+\catcode239=\active \def^^ef{\"\i}
+\catcode240=\active \def^^f0{{\dh}}
+\catcode241=\active \def^^f1{\~n}
+\catcode242=\active \def^^f2{\`o}
+\catcode243=\active \def^^f3{\'o}
+\catcode244=\active \def^^f4{\^o}
+\catcode245=\active \def^^f5{\~o}
+\catcode246=\active \def^^f6{\"o}
+% \catcode247=\active % divide
+\catcode248=\active \def^^f8{{\o}
+\catcode249=\active \def^^f9{\`u}
+\catcode250=\active \def^^fa{\'u}
+\catcode251=\active \def^^fb{\^u}
+\catcode252=\active \def^^fc{\"u}
+\catcode253=\active \def^^fd{\'y}
+\catcode254=\active \def^^fe{{\th}}
+\catcode255=\active \def^^ff{\"y}

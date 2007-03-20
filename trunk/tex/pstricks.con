@@ -1,0 +1,49 @@
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%% 
+%% BEGIN pstricks.con (for DVIPSONE driver)
+%%
+%% Configuration file for PSTricks 97: must be renamed `pstricks.con'
+%%
+%% Version 97 (2001/03/21)
+%%
+%% For use with DVIPSONE.  (May require the -j flag with dvipsone)
+
+\def\pstdriver{DVIPSONE}
+\def\pstunit{1bp}
+{\catcode`\"=12 \gdef\pstverb#1{\special{" #1}} }
+\def\pstVerb#1{\special{ps:: #1}}
+\def\pstverbscale{1 dviscl div dup neg scale}
+\def\pstrotate{CP CP translate 3 -1 roll neg rotate \tx@NET}
+\ifx\textsuperscript\@undefined
+   \def\pstheader#1{\special{header=#1}}
+\else
+  \ifx\Gin@PS@file@header\@undefined
+    \def\pstheader#1{\AtBeginDvi{\special{header=#1}}}
+  \else
+    \let\pstheader\Gin@PS@file@header
+  \fi
+\fi
+
+\pstcustomize
+
+\endinput
+
+%% To get PSTricks charpath and textpath to work:
+----------- pst-show.pro ------------------------------------------
+%!
+% NOTE: no longer needed with recent versions of Y&Y TeX System
+%
+% Patch for dvipsone to get PSTricks' charpath and textpath to work.
+% Save as pst-show.pro, put it with your other PSTricks .pro files.
+% Add "\pstheader{pst-show.pro}" to the beginning of your document.
+%
+% We unbind show:
+dvidict begin
+/S {show dup 0 rmoveto} def
+/T {show 2 index 0 rmoveto} def
+/s {show} def
+end
+------------- end pst-show.pro ------------------------------------
+%%
+%% END: pstricks.con

@@ -1,0 +1,55 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=12pt % \typesize=10pt
+
+\noheaders
+
+\noindent
+This is a figure insertion test file (A)!
+% \vskip -1.75in
+
+% 72 396 540 756
+
+% \special{pstext="30670848 23592960 4718592 25952256 35389440 49545216 startTexFig"}
+\special{pstext="21800000 16769150 4718592 25952256 35389440 49545216 startTexFig"}
+\special{psfile=c:/dvitest/epsf-ex.ps}
+\special{pstext=endTexFig}
+
+\vskip 3.55in
+\noindent
+That was a figure insertion test file (A)!
+
+% \end
+
+\vfill\eject
+
+\noindent
+This is a figure insertion test file (B)!
+% \vskip -1.75in
+
+% \special{ps::[begin] 30670848 23592960 4718592 25952256 35389440 49545216 startTexFig}
+\special{ps::[begin] 21800000 16769150 4718592 25952256 35389440 49545216 startTexFig}
+\special{ps: plotfile c:/dvitest/epsf-ex.ps}
+\special{ps::[end] endTexFig}
+
+\vskip 3.55in
+\noindent
+That was a figure insertion test file (B)!
+
+\vfill\eject
+
+\noindent
+This is a figure insertion test file (C)!
+% \vskip -1.75in
+
+\special{ps: psfiginit}
+% \special{ps: literal 30670848 23592960 4718592 25952256 35389440 49545216 startTexFig}
+\special{ps: literal 21800000 16769150 4718592 25952256 35389440 49545216 startTexFig}
+\special{ps: include c:/dvitest/epsf-ex.ps}
+\special{ps: literal "endTexFig "}
+
+\vskip 3.55in
+\noindent
+That was a figure insertion test file (C)!
+
+\end

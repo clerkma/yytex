@@ -1,0 +1,85 @@
+% dvi_help.sty - macros for Dr. Donald P. Story's dvi_help.tex
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%
+\def\newpage{\vfill\eject}
+\nopagenumbers
+\parindent0pt
+%
+\def\AmSTeX{\hbox{$\cal A\kern-.125em\lower.5ex\hbox{$\cal M$}
+   \kern-.125em S$}-\TeX}
+%
+%
+% Macros for coloring fonts
+%
+% \def\text#1{\special{textcolor: #1}}
+% \def\rule#1{\special{rulecolor: #1}}
+% \def\green{0 128 0}
+% \def\blue{0 0 255}
+% \def\revert{\special{textcolor: revert}}
+% \def\rulerevert{\special{rulecolor: revert}}
+% \def\hb#1{\text\blue\rule\blue{#1}\rulerevert\revert}
+% \def\hg#1{\text\green\rule\green{#1}\rulerevert\revert}
+%
+\def\green{0 0.5 0}
+\def\blue{0 0 1}
+\def\colorpush#1{\special{color push rgb #1}}
+\def\colorpop{\special{color pop}}
+\def\hb#1{\colorpush\blue{#1}\colorpop}
+\def\hg#1{\colorpush\green{#1}\colorpop}
+%
+% Macros for hypertext - buttons and marks
+%
+\newcount\height
+\newcount\width
+%
+\def\ref#1#2{\leavevmode
+   \setbox0=\hbox{\hg{#1}}\height=\ht0\width=\wd0%
+   \special{button: \the\width\space \the\height\space "<#2>"}%
+   \unhbox0}
+\def\xref#1{\leavevmode\special{mark: \space "<#1>"}}
+\def\launch#1#2{\leavevmode
+   \setbox0=\hbox{\hg{#1}}\height=\ht0\width=\wd0%
+   \special{button: \the\width\space \the\height\space launch: #2}%
+   \unhbox0}
+%
+% Formatting macros
+%
+% \def\k#1{{\tt#1}}  % macro for formatting a key on keyboard (\k = ogonek)
+\def\key#1{{\tt#1}}  % macro for formatting a key on keyboard
+% \def\title#1#2.{\centerline{\xref{#1}\text\blue\Chapterfont #2\revert}
+\def\title#1#2.{\centerline{\xref{#1}\colorpush\blue
+	\Chapterfont #2\colorpop}\bigskip}
+\def\section#1#2#3/#4. Key: #5.{%
+   \leftline{\xref{#1}\ref{#3}{#2}{\bf/#4}}\smallskip
+   \ifx#5\empty\else\noindent\kern1em%
+    Accelerator Key: {\tt#5}\smallskip\fi}
+\def\altsec#1#2.{\leftline{\xref{#1}{\bf#2}}\smallskip}
+\def\head#1.{\bigskip\noindent{\bf#1}}
+\def\\{\cr\noalign{\medskip}}
+\def\specialhat{\ifmmode\def\next{^}\else\let\next=\underbar\fi\next}
+\catcode`\^=\active \let ^=\specialhat
+\let\none=\empty
+\def\List#1{\halign{\kern20truept\ref##\hfil&\qquad\hb##\hfil\cr#1\crcr}}
+%
+\newdimen\vtophsize
+\def\BeginDblList#1#2{%
+   \begingroup
+     \vtophsize=\hsize
+     \advance\vtophsize by -#1
+     \advance\vtophsize by -#2
+     \def\\##1&##2\cr{\line{\vtop{\hsize=#1\noindent##1}\kern#2
+         \vtop{\hsize=\vtophsize\noindent\hangindent=1em\strut##2\strut}}}
+}
+\def\EndDblList{\endgroup}
+
+\def\BeginBulletList{%
+   \begingroup
+   \parskip=\smallskipamount
+   \parindent30truept
+   \hangindent\parindent
+%   \def\Item{\item{$\bullet$}}
+   \def\Item{\item{\bullit}}
+}
+\def\EndBulletList{\endgroup}
+\endinput

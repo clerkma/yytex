@@ -1,0 +1,528 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=12pt
+
+\def\bbf{\bigsize\bf}
+
+\noindent {\bbf Program:} \emspace FONTONE
+
+\vskip .1in
+
+\noindent {\bbf Function:}
+
+\vskip .05in 
+
+\noindent Generate Adobe Type~1 fonts from PostScript Type~3 outline
+fonts in HEX format.
+
+\vskip .1in
+
+\noindent {\bbf Inputs:}
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{(a)} PostScript Type~3 outline fonts in HEX format.
+
+\ftpar{(b)} Font metric information files in Adobe Font Metric (AFM)
+format or in simplified code-width (WID) format.
+
+\ftpar{(c)} Font- and character-level hint information files (HNT).
+
+\endbullets
+
+HEX format is the Type~3 font format produced by CONVERT.
+
+Font metric information can be provided using either an ordinary AFM
+file, or a simplified code-width (WID) format file.
+A WID format file, contains one line per
+character giving the character code followed by the width 
+(in standard Adobe units)---in the form ``C 32 ; WX 625''.
+Note that this simplified font metric information format does not provide for
+automatic construction of composite characters 
+(see command line flag `n' below).
+
+If no font metric file can be found, then the metric information in
+the HEX input file is used. 
+It is usually preferable to use information from the AFM file since
+that ensures that application programs have precisely the same font
+metric information as appears in the printer font.
+(Also, the HEX format does not permit specification of non-integer
+character escapements in standard Adobe units).
+
+If no hint file can be found, then only the minimally required hinting
+information (BlueValues) are inserted. 
+
+\vskip .1in
+
+\noindent {\bbf Outputs:}
+
+\vskip .05in
+
+\noindent The output of FONTONE is an Adobe Type~1 font file in printer font
+ASCII ({\tt .pfa}) format
+(The output file is ATM compatible if the command line flag `g' is used).
+This output file can be processed by the program BINCOMP to produce a
+font file in printer font binary ({\tt .pfb}) format.
+The output of FONTONE is normally written in the current directory 
+(but see command line argument `p'), and has the same file
+name as the input, normally with extension {\tt .pfa}
+(but see command line argument `e').
+
+More than one font file can be specified on the command line.
+Wild card arguments can be used to specify a collection of input files.
+All files will be processed with the same options selected by command
+line flags and command line arguments in effect.
+
+\vskip .1in
+
+\noindent {\bbf Controlling behavior:}
+
+\vskip .05in
+
+\noindent The actions taken by FONTONE are controlled by command line
+flags and command line arguments, and by environment variables.  
+A command line flag is a character preceded by `-'.
+Several command line flags may be concatenated following a single `-'.
+
+A command line argument is a single character preceded by `-',
+followed by a space and an argument.
+The argument may be a number, word, file name or directory, as appropriate
+(The actual argument may not contain embedded space).
+
+
+Sample of invocation of FONTONE:
+
+\verb@fontone -vgjnmqq -w c:\at&t -h c:\at&t c:\at&t\book*.hex@
+
+\noindent
+An argument on the command line that is not preceded by an appropriate command
+line argument is treated as the name of the first input file to be converted.
+If no input files are specified, FONTONE gives a brief usage list of command
+line flags and command line arguments.
+
+FONTONE also looks at some environment variables that can be used to
+supply information that would normally be supplied by command line arguments.
+Additional control---of features that are normally fixed---is provided
+by flags and variables in the program itself. 
+
+\noindent {\bbf Command Line Flags:}
+
+\vskip .05in
+
+\noindent Command line flags are used for modifications of some action
+of FONTONE that can be specified without requiring additional arguments.
+
+\beginbullets
+
+\ftpar{(v)} Verbose mode. Produces more detailed information (on
+{\tt stdout}) about actions taken by FONTONE, as well as some
+statistical data.  A dot is output for every character outline
+encountered in each of the two passes.
+
+\ftpar{(g)} Make output ATM compatible.  Disables various time- and
+space-saving `tricks' that are not guaranteed to be compatible with
+ATM.  (It probably no longer makes sense {\it not} to use this flag).
+Also enables automatic generation of composite characters based on
+information in Composites section (CC) of AFM file.
+
+\ftpar{(k)} Treat input as {\TeX} font.  This means, amongst other
+things, that the font name will be converted to upper case, that a
+CharString will be added for the {\tt space} character,
+and that `control character' positions 0--31 (as well as 128--159) 
+may be used for encoded, printing characters.
+
+\ftpar{(u)} Convert font name to upper case.  This is to deal with a
+problem resulting from the way font names are abbreviated on the MacIntosh.
+Mostly useful for {\TeX} fonts, some of which are not unique based on
+just the first 5 characters of the font name.
+
+\ftpar{(b)} Insert character definition for {\tt space}.  
+Since {\tt space} character has no corresponding outline, it does not occur
+in the input HEX file. The width for this character is taken from the
+AFM file.  This is mostly useful for {\TeX}, where the space
+character is not encoded in the typical Computer Modern (CM) font.
+
+\ftpar{(j)} Treat characters with codes in the `control character'
+ranges 0--31 and 128--159 as encoded printable characters.  
+These positions are not used in the Adobe StandardEncoding vector.
+It is therefore normally convenient to have special characters
+in these positions in the HEX file that are {\it not} encoded.
+{\TeX} however needs these character positions for encoded printable
+characters, so the encoding of these character positions should {\it not} 
+be suppressed.
+
+\ftpar{(n)} Construct composite characters based on the 
+Composites (CC) section of the AFM file.  Note that the base
+characters and the accents must be in their usual position in the
+Adobe StandardEncoding vector as dictated by the Type~1 specification.
+% Hence it is not possible to construct arbitrary composites this way.
+
+\ftpar{(l)} Remap encoding in the `control character' range 0--31 to
+above 160
+(using the scheme employed in Lucida Math fonts, which maps
+0--9 to 161--171, 10--32 to 173--195, 127 to 196, and 32 to 128).
+This is useful for fonts (such as {\TeX} fonts) that have encoded,
+printable characters in these positions, since some applications (such
+as the typical Windows applications on the PC) cannot access these
+`control character' codes.  
+
+\ftpar{(r)} Reverse character outline paths. All paths must be
+traversed with `ink on the left'---use this flag if they all have ink
+on the right instead---hopefully this is now obsolete!
+
+\ftpar{(q)} If absent, include BSR copyright.
+If present include Y\&Y copyright.
+If repeated include AT\&T copyright.
+
+\ftpar{(m)} Neuter font so it will work on NewGen PostScript `clone' printer.
+The NewGen PostScript interpreter has numerous bugs, some of which
+the code produced by FONTONE already works around. This printer is
+however also unable to handle non-integer character escapements and
+insists on a Subrs array.
+With this command line flag, character escapements are rounded off and
+a dummy Subrs array is provided.  Normally these modifications are
+not a problem, since character widths are given in standard
+Adobe coordinate system as integers---but for {\TeX} fonts this
+introduces a small inaccuracy, since character widths in Computer
+Modern are mostly rational multiples of 1/36th of a point for a 10
+point font (and 10*1000/36, for example, is not an integer).
+
+\endbullets
+
+There are also a number of command line flags that now seem of less
+importance (and that do not appear in the brief usage list that FONTONE
+prints when invoked without any files specified for conversion).
+
+\beginbullets
+
+\ftpar{(s)} Correct for scaling problem in BSR release 0.8 fonts
+(that is, multiply by 72.27 over 72). Hopefully now obsolete!
+
+\ftpar{(f)} Suppress spike artifact work-around.  Normally FONTONE modifies
+outlines to avoid an `overshoot' artifact, described below, present in
+most PostScript font rendering systems 
+(It is not clear why one would want to suppress this).
+
+\ftpar{(z)} Suppress extra four characters usually inserted at
+beginning of each CharString for backward compatibility with
+PostScript interpreter release 21.0 and earlier 
+(It is probably not worth the savings in file and virtual memory (VM)
+space to lose this compatibility, 
+even though there are only a few of these beasties left). 
+
+\ftpar{(t)} Operate in one pass mode.  As explained below, this means
+that bounding boxes may not be computed correctly and that the side-bearing 
+encoded into the CharString will be set to zero rather than the correct
+value (although the character will still render correctly). Not clear
+why one would want to do this, since the extra pass doesn't take 
+{\it that} long. 
+
+\ftpar{(d)} Do not include the downloading code (which is normally
+commented out) at the beginning of the font file.
+
+\endbullets
+
+(There are also a number of other, obsolete command line flags,
+such as `a', `i', `c', `y', `x', which make it is possible to produce
+output that does not contain various layers of encoding and
+encrypting---while this was invaluable in early debugging, 
+it is now better dealt with by taking the normal {\tt .pfa} file
+produced by FONTONE and passing it once or twice through the program DECRYPT).
+
+\vskip .1in
+
+\noindent {\bbf Command Line Arguments:}
+
+\vskip .05in
+
+\noindent  Command line argument provide additional information to
+FONTONE, such as drive and directory names.
+
+\beginbullets
+
+\ftpar{(w)} Next argument specifies drive and directory where font
+metric information files (AFM or WID) can be found. FONTONE looks for
+a file with the same name as the input HEX format file, but with
+extension {\tt .afm}.  If it cannot find such a file it tries to find
+a file with the extension {\tt .wid}. 
+If this fails, it used the character width information in the input
+HEX format file. 
+
+\ftpar{(h)} Next argument specifies drive and directory where hinting
+information files can be found. FONTONE looks for a file with the
+same name as the input HEX format file, but with extension {\tt .hnt}.
+If such a file cannot be found, only the minimally required
+entries (BlueValues) is included.
+
+\ftpar{(p)} Next argument specifies drive and directory where output
+is to be sent.  If omitted, output goes into current directory.
+
+\ftpar{(e)} Next argument is extension to use for output file name.
+If omitted, the extension {\tt .pfa} is used.
+
+\endbullets
+
+(There are a number of other, now obsolete command line arguments.)
+
+\vskip .1in
+
+\noindent{\bbf Environment Variables:}
+
+\vskip .05in
+
+\noindent Sometimes it is convenient to set up environment variables to
+avoid having to type the same command line arguments each time FONTONE
+is invoked:
+
+\beginbullets
+
+{{\tt afmpath}} Specifies drive and directory for {\tt .afm files}.
+
+{{\tt widpath}} Specifies drive and directory for {\tt .wid files}.
+
+{{\tt hntpath}} Specifies drive and directory for {\tt .hnt files}.
+
+\endbullets
+
+\vskip .1in
+
+\noindent{\bbf Flags and Variables:}
+
+\vskip .05in
+
+\noindent Additional control is provided by settings of variables and flags in
+the program itself, listed at the beginning of the source code of FONTONE.
+Typically these are variables that would only rarely be changed.
+In some cases these are variables that have become `frozen', 
+when settings other than the ones in the code were determined to be
+less useful or unsatisfactory.
+
+Two examples of such variables are 
+MINCURVETO (normally 3) and MINLINETO (normally 1).  
+In a CharString, {\tt curveto}'s shorter than MINCURVETO are turned into
+{\tt lineto}'s, and {\tt lineto}'s shorter than MINLINETO are removed
+altogether.
+Another example of a variable is {\tt columns} (normally 128) which
+determines how long the hexadecimal lines in the output will be.
+
+\vskip .1in
+
+\noindent{\bbf Notes:}
+
+\vskip .05in
+
+\bpar If possible, FONTONE rearranges outlines so that they end with a
+{\tt lineto}, which can then be eliminated since {\tt closepath}
+generates an implicit {\tt lineto} if the path is not actually closed.
+FONTONE actually finds the {\it optimum} reordering based on the
+number of encoded bytes saved by omitting the {\tt lineto}, minus
+any extra cost incurred because the initial {\tt moveto} has changed.
+This may result in significant savings in font file size and virtual
+memory (VM) usage.
+
+\bpar While the Adobe Type~1 manual claims that coordinates in
+CharStrings are restricted to plus or minus 2000, the actual
+restriction on most PostScript interpreters appears to much weaker,
+possible a restriction on {\it increments} in coordinates being less
+than 2048. 
+In most cases this is not an issue, but some {\TeX} fonts, such as 
+{\tt cmex10} use coordinates that lie outside the claimed maximum range.
+
+\bpar FONTONE normally passes over the HEX format file twice, in part
+so it can get accurate bounding box information (but see command line
+flag `t').  This is needed because
+the left side bearing must be known before constructing a CharString.
+The first pass is also used to obtain an accurate count of characters,
+needed when constructing the CharString dictionary.
+
+\bpar For backward compatibility with older PostScript Interpreters,
+each encrypted CharString starts with four bytes that are discarded
+when the CharString is decrypted.  This is a convenient place to bury
+copyright strings, date and time and any other message desired 
+(This may possibly be useful later in pursuing a copyright infringement
+or in determining exactly which version of a font is being used).  
+Presently what gets inserted in this `time capsule' depends on use of
+the command line `q' flag.  
+The program DECRYPT has provisions for listing the contents
+of the `time capsule'.
+
+\bpar The PostScript interpreter only requires newlines (ASCII 10), and
+treats returns (ASCII 13) merely as white space.
+Unfortunately, the MacIntosh uses returns as line separators.
+Consequently, if fonts are to be used on the Mac, then the outer layer
+at least (the unencrypted part) should have both newlines and returns.
+
+\bpar The PostScript interpreter on most printers translates returns
+into newlines when they come in over a serial communications channel,
+so lines can be terminated by either newlines or returns.  
+But, this transformation is {\it not} applied to data coming over an
+AppleTalk connection.
+This means that the PostScript operator {\tt readline}, for example,
+can easily yield a {\tt rangecheck} error when the input overflows the
+allocated string before a newline is found.  
+Thus it is usually {\it not} satisfactory on a MacIntosh to terminate lines
+{\it only} with returns.
+Fortunately, inside the encrypted section it is safe to use only
+newlines, since the MacIntosh never `sees' this data, and newlines is
+what the PostScript interpreter wants to see.
+
+% removing short lineto's, curveto's, 
+% combining parallel segments cancelling anti-parallel segments
+
+\bpar For character escapements that are not integers in the standard
+Adobe coordinate system, FONTONE determines a good rational
+approximation for {\tt hsbw}. 
+It is possible to get very high accuracy this way using only a small
+number of total encoded bytes (much better than say arbitrarily always
+using 1000 as the divisor).
+The algorithm is based on Euclid's method for finding the greatest
+common divisor.
+(This features must be disabled for the NewGen printer, since it cannot
+handle {\tt div} before {\tt hsbw} in CharStrings).
+
+\bpar For {\TeX} fonts, when an AFM file is not present, FONTONE makes
+use of the fact that Computer Modern font metrics obey certain regularities.
+This allows it to compute {\it exact} character escapements from the rounded
+quantities appearing in the HEX file (or even in {\tt .tfm} files).
+
+\bpar FONTONE looks for repeated knots and counts places where three
+knots in a row have the same coordinates.  This is usually an
+indication of some error in the outline (or exessive down scaling).
+The outline is not altered, but the count shows up in the statistical
+information at the end.
+
+\bpar FONTONE has a character string that records the current task, 
+so that, should something go wrong, the error message will include a
+notation indicating what task FONTONE thought it was working on.
+
+\bpar Several possible error conditions (such as inability to find
+character metric information or a hint file) are considered non-fatal
+and FONTONE continues after giving an error message.  It is therefore
+important to watch for these error messages, since generation of an
+output file and normal termination is not always an indication that
+everything was done in exactly the way the user expected.
+
+\vskip .1in
+
+\noindent{\bbf Bugs in ATM for Windows and PostScript Interpreters:}
+
+\vskip .05in
+
+\bpar Some PostScript interpreters that use `eroding' techniques in
+character rendering are subject to an `overshoot' artifact (sometimes called
+`epaulets' since they appear similar to military uniform shoulder
+decorations on the left and right upright of the upper case letter `M').
+This artifact occurs where an acute angle in an outline comes close to
+the opposite side of the outline.
+FONTONE detects these conditions and inserts (very) short {\tt lineto}'s
+that split the angle of turning in half and thus remove the potential
+artifact. 
+
+\bpar Some PostScript interpreters are fussy about the sizes of
+dictionaries and arrays.  While it seems reasonable to complain when a
+data structure is too {\it small} to contain the items to be inserted,
+in some cases these interpreters actually crash when the allocation is
+too {\it large}.  
+FONTONE goes to some trouble to make sure that the allocations
+for {\tt Subrs} and {\tt CharStrings}, for example, are correct.
+
+\bpar There are number of bugs in ATM for Windows.  FONTONE contains 
+work-arounds for the ones that are known to the author at this stage.
+Other work-arounds are embedded in other utility programs.
+BINCOMP, for example, writes the binary part of a font as one long
+binary section, since it has been determined that the CharString
+lying under a splice between two binary sections is damaged and will
+not work---possible even crashing the machine.  
+This despite the fact that the documentation from Adobe explicitly
+states that multiple binary sections may follow one another---and in
+fact that it is customary on the Mac to use sections limited to lengths
+of 2046 bytes.
+
+\bpar Due to a bug in ATM for Windows, only the {\it first}
+mentioned code number of a multiply-encoded character works. 
+So it is important to have the code number that will normally be used
+appear first in the listing of the encoding vector. 
+FONTONE assumes that when the command line flag `l' is used for
+remapping then the higher numbered reference should appear first.
+
+\bpar Some PostScript `clone' printers, such as the NewGen, do not
+completely implement the definition of Adobe Type~1 fonts and so may
+not render some characters, or, more commonly, will crash.  
+This despite the fact 
+that they work just fine on fonts in the Adobe font library.  
+The reason is that the fonts in the Adobe font library follow a very simple
+stylized layout, and a program tested {\it only} with such fonts is not
+necessarily able to interpret arbitrary Type 1 fonts.  FONTONE
+includes work-arounds for some short comings of such printers.
+It turns out, for example, that some printers insist that the trailing
+512 zeros in a font file be segregated into 8 lines of 64 zero.
+This despite the fact that they can handle lines of 128 character
+length in the hexadecimal section of the font code.
+
+\vskip .1in
+
+\noindent{\bbf Restrictions:}
+
+\vskip .05in
+
+\bpar Limit on number of unencoded characters:
+Unencoded characters must appear in the input HEX format file and
+therefore must be assigned a numeric code.  
+This presently limits the total number of characters 
+(encoded plus unencoded) to 256.  
+Furthermore, it has proven convenient to insert the `unencoded'
+characters in the `control character' ranges 0--31 and 128--159.
+This limits the number of unencoded characters to a total of 64 (not
+counting automatically generated composite characters).
+Normally FONTONE does not insert the corresponding names into the
+encoding vector (but see command line flag `j').
+One way to work around this limitation, should a font ever contain more
+than 64 unencoded characters (other than composites),
+would be to use character codes larger than 255 for unencoded
+characters in the HEX format input file.
+(Note also, that presently the `unencoded' characters must appear in the
+same place in the AFM file used to provide character metric information).
+
+\bpar Computation of bounding boxes:
+While bounding box information is
+generally not used by PostScript interpreters, it should be noted
+that the font bounding box computed by FONTONE assumes that the
+outlines follow the suggestions in the Adobe Type~1 booklet.
+That is, there are knots at all extrema and no knots lie outside the
+bounding box.  
+The bounding box can then be obtained simply by taking the max and
+min of knot coordinates, without actually constructing the Bezier curves.
+
+\bpar Lack of Subrs:
+FONTONE assumes that each outline is self-contained.
+There is no provision for sharing of portions of outlines by means of Subrs.
+
+\bpar Flex procedure:
+FONTONE detects and counts opportunities for invoking the Flex
+procedure (FlxProc), but does not insert the code for FlxProc.  
+To include this capability, a bit of code would have to be written and
+attached to the hook provided where presently FlxProc's are merely
+{\it counted}, not actually implemented.   
+Perhaps more seriously, the OtherSubrs and Subrs for FlxProc would need
+to be injected into the output file---and these are rather big 
+(pages 78 and 91--95 of the Adobe Type~1 booklet).
+
+\bpar Hint substitution is not provided for:
+The reason for this is that avoiding hint substitutions makes possible a
+clean separation of character outline and character hinting information. 
+This in turns helps greatly in automating the generation of
+character-level hints.
+There is little to indicate that the increased complexity of hint
+substitution yields significant improvement in character rendering.  
+Note also that SHOWCHAR has an optimization routine that searches for
+the best possible {\tt fixed} hints in a situation where hint
+substitution might make sense because of overlapping stems.
+
+\bpar Lack of copyright message generality:
+Presently only three different copyright messages (and corresponding 
+`time capsules') can be generated automatically.
+
+\end
+

@@ -1,0 +1,1748 @@
+% TeX Menu Manual % This is in YTeX
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=10pt 	% for final version
+% \typesize=12pt		% for proofing
+
+% \hsize=4.66in % for letter paper version (default)
+% \hsize=5.5in % for legal paper version
+
+% \font\manual=logo10
+% \font\sc=cmcsc10
+% \font\vt=cmvtt10
+
+% \font\eusm=eusm10
+
+% \settabs 6 \columns
+% \settabs 8 \columns
+\settabs 9 \columns
+
+\font\cal=cmsy10
+
+\def\AMS{{\cal A\kern-.15em\lower.5ex\hbox{M}\kern-.1emS}}
+
+\font\sy=sy at 8pt
+
+\def\registered{$^{\hbox{\sy \char226}}$}
+
+\def\bs{\char92 } 
+
+\def\nl{\hfill\linebreak}
+
+\input memo.mac
+
+% \input lcdplain.mac
+\input lcdplain
+% \input accents.tex
+\input ansiacce
+
+\newdimen\dwidth
+\newdimen\dheight
+
+\def\showimage#1#2#3{
+\dwidth=#2 \dheight=#3 
+\edef\width{\number\dwidth} \edef\height{\number\dheight}
+\special{insertimage: #1 \width \space \height}
+}
+
+% \def\subsubsection#1{{\bf #1}}
+
+% A good way to print fractions in text when you don't want
+% to use \over (which should be most of the time), and yet
+% just `1/2' doesn't look right.  (From the TeXbook, exercise 11.6.)
+ 
+\def\frac#1/#2{\leavevmode
+   \kern-.1em \raise .5ex \hbox{\the\scriptfont0 #1}%
+   $/$%
+   \kern-.15em \lower .25ex \hbox{\the\scriptfont0 #2}%
+}%
+
+% \def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc A}\kern-.15em
+%     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% \def\latex2e{{\LaTeX}2\lower.5ex\hbox{$\epsilon$}}
+
+\def\latex2e{{\LaTeX}2\lower.5ex\hbox{$\varepsilon$}}
+
+\font\sc=lbr at 8pt
+
+\def\SliTeX{S{\sc LI}{\TeX}}
+
+% \def\Y&Y{Y\kern-.25em\hbox{{\smllsize \&}}\kern -.25em Y}
+% \def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.23em Y}
+\def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.12em Y}
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+% \def\METAFONT{{\manual META}\-{\manual FONT}}
+
+\def\DVIWindo{{\sc dvi\-w}indo}
+\def\DVIPSONE{{\sc dvi\-ps\-one}}
+\def\REENCODE{{\sc re\-encode}}
+% \def\CHARSET{{\sc char\-set}}
+\def\AFMTOPFM{{\sc afm}\-to\-{\sc pfm}}
+\def\AFMTOTFM{{\sc afm}\-to\-{\sc tfm}}
+\def\TIFFTAGS{{\sc tifft}ags}
+\def\CLEANUP{{\sc clean\-up}}
+
+\def\TWOUP{{\sc two\-up}}
+
+% \def\PKTOPS{{\sc pk\-to\-ps}}
+% \def\DOWNLOAD{{\sc down\-load}}
+% \def\MODEX{{\sc mod\-ex}}
+% \def\SERIAL{{\sc ser\-ial}}
+
+\def\ANSI{{\sc ansi}}
+\def\ASCII{{\sc ascii}}
+
+\def\UART{{\sc uart}}
+\def\FIFO{{\sc fifo}}
+
+\def\DOS{{\sc dos}}
+
+\def\PSPATH{{\sc pspath}}
+\def\VECPATH{{\sc vecpath}}
+
+% \def\BIOS{{\sc bios}}
+% \def\PATH{{\sc path}}
+
+\def\AFM{{\sc afm}}
+\def\INF{{\sc inf}}
+\def\TFM{{\sc tfm}}
+\def\PFM{{\sc pfm}}
+\def\DVI{{\sc dvi}}
+
+\def\VEC{{\sc vec}}
+
+\def\PS{{\sc ps}}
+\def\PK{{\sc pk}}
+
+\def\PFA{{\sc pfa}}
+\def\PFB{{\sc pfb}}
+
+\def\EPS{{\sc eps}}
+
+\def\EPSF{{\sc epsf}}
+\def\EPSI{{\sc epsi}}
+
+\def\PSFIG{{\sc psfig}}
+
+\def\PIF{{\sc pif}}
+
+\def\DSC{{\sc dsc}}
+
+% \def\VM{{\sc vm}}
+% \def\MS{{\sc ms}}
+
+\def\ATM{{\sc atm}}
+
+\def\ATMINI{{\tt atm.ini}}
+\def\WININI{{\tt win.ini}}
+
+\def\ATMQLC{{\tt atmfonts.qlc}}
+
+\def\PSCRIPT{{\sc pscript.drv}}
+
+\def\PFM{{\sc pfm}}
+\def\PFB{{\sc pfb}}
+
+\def\CM{{\sc cm}}
+
+% \def\COPY{{\sc copy}}
+% \def\MODE{{\sc mode}}
+% \def\PRINT{{\sc print}}
+
+% \def\XONXOFF{{\sc xon/xoff}}
+% \def\DTRDSR{{\sc dtr/dsr}}
+% \def\ETXACK{{\sc etx/ack}}
+
+\def\IBM{{\sc ibm}}
+\def\PC{{\sc pc}}
+
+% \def\COMPAQ{{\sc compaq}}
+
+\def\TUG{{\sc tug}}
+
+% \def\SMARTDRV{{\sc smart\-drv.sys}}
+\def\SMARTDRV{{\sc smart\-drv.exe}}
+\def\RAMDRV{{\sc ram\-drv.sys}}
+\def\RAM{{\sc ram}}
+
+\def\AUTOEXEC{{\tt auto\-exec.bat}}
+
+\def\UNIX{{\sc unix}}
+\def\DVIPS{{\sc dvips}}
+\def\DVITWOPS{{\sc dvi2ps}}
+\def\DVIALW{{\sc dvialw}}
+\def\DVITOPS{{\sc dvitops}}
+\def\DVILASER{{\sc dvilaser/ps}}
+
+\def\TIFF{{\sc tiff}}
+
+% \def\registered{{\ooalign
+% 	{\hfil\raise.02ex\hbox{{\sc r}}\hfil\crcr\mathhexbox20D}}}
+
+\font\sy=sy
+
+\def\registered{{\sy \char210}}
+
+\def\TM{$^{\smlsize TM}$}
+
+% \font\twelverm=lbrx at 11.2pt
+\font\twelverm=lbr at 11.2pt
+
+% \font\eighteenbf=lbdx at 16.4pt
+\font\eighteenbf=lbd at 16.4pt
+
+\def\coverpage{
+\noheaders
+% \topglue 2in
+\topglue 1.5in
+% \centerline{\bigggsize\bf DVIWindo's `TeX Menu'}
+% \centerline{\bigggsize\bf TeX Menu}
+\centerline{\bigggsize\bf The TeX Menu}
+% \vskip .1in
+\vskip .2in
+% \centerline{\bigsize\bf (Appendix to DVIWindo Manual)}
+% \centerline{\bigsize (Appendix to DVIWindo Manual)}
+\centerline{\bigsize (for DVIWindo release 1.1)}
+\vskip .2in
+\centerline{\bigsize Copyright {\copyright} 1993, 1994 {\Y&Y}, Inc. All rights reserved.}
+
+% \vskip 3in
+\vskip 2.9in
+
+% This is the version for printing with the logo
+
+\centerline{\hbox to 1.33in{\special{illustration c:/dvitest/y&ylogo.eps}\hfill}}
+
+% This is the version for showing the logo on screen
+
+% \centerline{\hbox to 1.33in{\showimage{y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+\vskip 1in
+
+\centerline{\bigsize {\Y&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}
+
+\vskip .02in
+
+\centerline{\bigsize 
+% (800) 742--4059 --- 
+(508) 371--3286 (voice) ---
+(508) 371--2004 (fax)}
+
+\newpage
+\decreasepageno
+
+\noheaders
+
+\topglue 2in
+\hbox{ }	% to get blank page
+\newpage
+\decreasepageno
+}
+
+\coverpage  % comment out for draft version
+
+\noheaders
+
+% \versorightheader={COPYRIGHT {\copyright} 1991, 1992 {\Y&Y}}
+\versorightheader={COPYRIGHT {\copyright} 1993, 1994 {\Y&Y}, Inc.}
+
+% \nsection{Y\&YTeX}
+
+% Contents:
+
+% 1. Introduction & Background.
+% 2. QUICK START - automatic installation.
+% 3. Environment variables for Y&YTeX.
+% 4. Setting up convenient batch files to call Y&YTeX.
+% 5. Command Line Flags and Arguments.
+% 6. Using ready-made TeX `formats' and making new TeX `formats'.
+% 7. Setting up PIF files and convenient Windows icons.
+% 8. Interrupting and killing a TeX job.
+% 9. TeX Memory Allocations.
+%10. Acknowledgements/Credits.
+
+% \nsection{Introduction \& Background}
+\nsection{Introduction to DVIWindo's `TeX Menu'}
+
+% *************************************************************************
+% *	DVIWindo's `TeX' pulldown menu:		(file: texmenu.txt)	*
+% *************************************************************************
+
+DVIWindo release~1.1 supports a {\it user customizable\/} pulldown menu,
+called the `TeX Menu.'  
+This menu appears to the right of the `{\tt Font}' menu,
+and can be edited directly from DVIWindo. 
+% An initial menu is set up by the DVIWindo installation procedure.
+% Details of the menu are remembered in the `{\tt [Applications]}' 
+% section of `{\tt dviwindo.ini}'. 
+
+One use of this menu is to call {\TeX} or {\LaTeX} (or any other
+{\TeX} format for that matter) on the source file corresponding to the
+currently displayed DVI file --- which is why this menu is labelled `{\tt
+TeX.}' 
+But this is {\it also\/} the place to call an editor or spell checker on 
+the same source file ---
+
+\vskip .05in
+
+\bpar	In fact, you can call {\it any\/} Windows or DOS application from 
+	this menu --- {\it you\/} decide what applications should be listed. 
+
+\vskip .05in
+
+\noindent
+In addition,
+you can set up function keys ({\tt F1} -- {\tt F12}) to act as `hot keys'
+to invoke menu items.  You can call {\TeX} with one key stroke from
+DVIWindo --- and preview the resulting DVI file with another!
+
+The installation procedure for DVIWindo release~1.1 constructs a `TeX Menu'
+for you. % --- % but you are free to fine tune this menu later.
+% This can be fine-tuned later. % which can be fine-tuned later.
+You can later modify the `TeX Menu' from within DVIWindo itself.
+%  --- or by editing the file `{\tt dviwindo.ini}' 
+% (using a `text only/plain ASCII' editor). 
+% Initially, its best to let
+% Note that 
+For DVIWindo's installation procedure to set up as complete
+a `TeX Menu' as possible,
+% For this to work optimally, 
+you should install DVIWindo {\it after\/} you install {\Y&Y}TeX and DVIPSONE.
+% {\it before\/} you install DVIWindo. 
+
+%% FOLLOWING IS FLUSHABLE
+
+By the way, if you {\it don't\/} see a menu item called `{\tt TeX}' in
+DVIWindo (to the right of `{\tt Fonts}'), then there is no 
+`{\tt [Applications]}' section in  your `{\tt dviwindo.ini}' file.
+This normally can't happen, since the installation procedure creates an
+`{\tt [Applications]}' section. 
+% Note, by the way, that the `TeX Menu' won't show up in DVIWindo's menu bar
+% {\it unless\/} you have some items listed in the `{\tt [Applications]}'
+% section of `{\tt dviwindo.ini}' --- which is normally the case, since
+% the installation procedure creates an initial `{\tt [Applications]}' section.
+
+DVIWindo release~1.1 uses a modified Windows `Common Dialog Box' 
+for file selection.   
+To enable this feature, the installation procedure adds the line
+`{\tt CommDlg=1}' to the `{\tt [Window]}' section of `{\tt dviwindo.ini}'.
+
+\nsection{Sample Scenarios}
+
+The following gives a quick idea of what can be done using the `TeX Menu'
+--- detailed information on installing the `TeX Menu' is given in section~3.
+
+Launch DVIWindo.  Select `{\tt Notepad}' from the `TeX Menu.'  The `{\tt Open
+File}' Dialog Box is presented.  Select some % existing 
+`{\tt .tex}' source file.
+Edit, then save.  Without terminating Notepad, select `{\tt plain TeX}' from
+DVIWindo's  `TeX Menu'.  The `{\tt Open File}' Dialog is presented with the
+appropriate `{\tt .tex}' file already selected.  Press `{\tt Enter}'.  {\TeX}
+runs in a window.  If there are no errors, the {\TeX} window disappears 
+when {\TeX} is done. % finishes. 
+If there are errors, the process pauses.  Go back to Notepad to edit 
+and resave the source file --- then select the {\TeX} window with the error
+messages and press any key to get rid of it.  
+
+Run {\TeX} again. If there are 
+no errors, select `{\tt Preview}' from DVIWindo's `TeX Menu' 
+(or type `{\tt Ctrl-F1}'). 
+The `{\tt Open File}' Dialog is presented with the appropriate DVI file already
+selected.  Press `{\tt Enter}'.  DVIWindo shows the DVI file. 
+
+If changes in the source file are desired, just click on the Notepad
+window, edit and save.  Then again select `{\tt plain TeX}' from DVIWindo's
+`TeX Menu.'  DVIWindo notices when the DVI file has changed and
+automatically refreshes its display. 
+
+If the DVI file already exists when you start, just launch DVIWindo, and
+select `{\tt Open}' from the `{\tt File}' menu (or double click the DVI
+file shown in File Manager).  The appropriate `{\tt .tex}' source file will be
+automatically selected when you later call the editor or {\TeX}.
+%  from the `TeX Menu.' 
+
+Creating new {\TeX} `formats' is also easy.  Select `{\tt iniTeX}' from the
+`TeX Menu.'  You will be prompted for 
+\enspace (i) the menu name you want to use for 
+the new format (`{\tt SliTeX}' say) and
+\enspace (ii) the {\TeX} file name that defines
+the format (`{\tt splain}' say).  {\TeX} will be called with `{\tt -i}' on
+the command line.  When {\TeX} is done with the file it will present the
+`{\tt *}' prompt. 
+Type `{\tt \bs dump}' at this point.  The new format file will be copied to
+the directory where {\TeX} expects to find formats, and a new menu item will be
+appended to DVIWindo's `TeX Menu.'  You don't even have to exit DVIWindo
+for the new format to appear in the menu!
+
+Often DVIWindo can figure out what file name to use when calling an
+application from the `TeX Menu.'
+You can {\it also\/} force DVIWindo to prompt you for a file name by
+holding down the `Shift' key when using the `TeX Menu.'  
+% In that case, the file name selected replaces the last item in the value 
+% (or is appended to the line, following a space, if there is only one item
+% in the value field).
+{\TeX} menu items can also be connected to `hot keys', 
+which can further speed up calling applications from DVIWindo.
+
+Note that most of this behavior is {\it not\/} hard-wired into DVIWindo, but is
+in fact completely customizable.  DVIWindo itself knows nothing special
+about ini{\TeX}, for example.  All the `smarts' is in a simple pattern
+replacement scheme that fills in fields in command lines for calls
+directly to Windows or DOS applications, or to batch or PIF files.  
+
+While one {\it can\/} certainly just use the initial setup for the `TeX
+Menu', one can also customize it to deal with particular editors, particular
+{\TeX} implementations, and to call arbitrary programs, batch files, 
+or PIF files. 
+An item in the `TeX Menu' can be edited by holding down the 
+control key before selecting it (see section~4).
+
+
+\nsection{Quick Start: Installing the `TeX Menu'}
+
+The initial `TeX Menu' is created at the end of the DVIWindo installation.
+It is best to install DVIWindo {\it after\/} installing
+{\Y&Y}TeX and DVIPSONE, since the installation procedure can then create
+{\TeX} menu items for {\TeX}, {\LaTeX}, and DVIPSONE.
+You can also make a new `TeX Menu' later by running the installation program
+again later and removing check marks for all boxes requesting file copying
+(but you will then lose any customizations you may have made to the menu at
+that point). 
+% It is best to install DVIWindo {\it after\/} installing
+% {\Y&Y}TeX and DVIPSONE, since the installation procedure can then create
+% {\TeX} menu items for {\TeX}, {\LaTeX}, and DVIPSONE.
+
+If the installation procedure can't figure out what it needs to know by
+looking in `{\tt dviwindo.ini},' `{\tt win.ini},' `{\tt atm.ini}' 
+--- or by looking around on your hard disk ---
+then it will ask you some questions. % may be asked some questions.
+% You may be asked some questions while the installation procedure creates
+% the `TeX Menu' (you won't be asked a particular question if the
+% installation procedure can figure out what it needs to know just by
+% looking in `{\tt dviwindo.ini,}' `{\tt win.ini,}' `{\tt atm.ini}' or by
+% looking around on your hard disk).  
+You may want to read this section to be % better 
+prepared for such questions % you may be asked 
+before you run the installation process. 
+
+\vskip .05in
+
+\bpar	If you already have a `TeX Menu' (i.e. if you have an 
+	`{\tt [Applications]}' section in your `{\tt dviwindo.ini}' file)
+	then you will be asked whether you want to replace that with a new
+	`TeX Menu.'  You can decline, or replace your old `TeX Menu' (in
+	which case a backup copy of `{\tt dviwindo.ini}' containing a record
+	of your old `TeX Menu' will be made). 
+
+\vskip .05in
+
+\bpar	The installation procedure tries to set up `TeX Menu' entries for as
+	many applications as it knows about, and can find on your hard disk.
+	This search can take a couple of minutes.  You will be asked whether
+	you are willing to wait for the full search.  If you answer `No',
+	search is confined to directories on your DOS PATH.  This
+	speeds up the search a great deal, but % may mean that 
+	may miss some applications that happen not to be on your PATH.
+
+\vskip .05in
+
+\bpar	Some {\TeX} users 
+	\enspace (i)~like {\TeX} to operate in a common working
+	directory (often on a RAM drive) and to drop its DVI files there;
+	while others 
+	\enspace (ii)~prefer {\TeX} to always operate in the directory of the
+	source file and to drop DVI files in the source file's
+	directory.  The choice affects which directory DVIWindo will switch
+	to before it calls {\TeX}. 
+	The information is recorded in the `{\tt WorkingDirectory}' entry of 
+	the `{\tt [Window]}' section of `{\tt dviwindo.ini}', and can be
+	changed later. \enspace
+	NOTE: `{\tt WorkingDirectory=nul}' means {\it no\/} working
+	directory 
+	(See section~11 for additional discussion).
+
+\vskip .05in
+
+\bpar	When several Windows and DOS applications ({\TeX}, DVIWindo, editors)
+	are accessing files, conflicts can occur.  To avoid problems
+	you should really have `{\tt share.exe}' loaded.  If you do not, the
+	installation procedure will offer to add a suitable line to your `{\tt
+	autoexec.bat}.' \enspace
+	NOTE: this change will only take effect the next time you reboot.
+	
+\vskip .05in
+
+\bpar	If you have a PostScript printer, you should install and use
+	DVIPSONE, since it produces much shorter PS files (and hence 
+	speeds printing) than when you print from DVIWindo using the
+	Windows PS driver (which is as slow as all other DVI-to-PS
+	converters).
+	You can easily link to DVIPSONE from DVIWindo
+	for printing if DVIPSONE is installed.  You may be asked what
+	port your PostScript printer is on.  Leave this field blank if you
+	don't have a PS printer.  Note that this only affects how DVIPSONE is
+	called from the `TeX Menu' --- when printing from DVIWindo, 
+	you can	achieve more control over what DVIPSONE does 
+	(check `Use DVIPSONE' from `Print' in DVIWindo's `File' menu).
+
+\vskip .05in
+
+\bpar	The installation procedure may add menu items for some programs it
+	knows about, such as Lugaru's Epsilon, Trigram System's MicroSpell
+	and Borde \& Rokicki's `{\TeX}Help' --- if it finds them on your disk.
+	You can later delete the menu items you don't want % later
+	(See section~4).
+
+\vskip .05in
+
+\bpar	To control the detailed behavior of DOS applications, it is
+	convenient to use batch files.  The installation procedure 
+	creates a few such batch files (`{\tt dvipsone.bat}', `{\tt tex.bat}',
+	and `{\tt initex.bat}').  If these conflict with batch files you
+	already have, then your old versions will first be renamed and a
+	warning issued.  Calls from the `TeX Menu' are to the newly created
+	batch files rather than directly to the applications.  Do not delete
+	the new batch files --- {\it unless\/} you also modify the 
+	`TeX Menu' calls that use them.
+% in the `{\tt [Applications]}' section of `{\tt dviwindo.ini}'.
+	
+\vskip .05in
+
+\bpar	To control the detailed behavior of DOS applications, it is
+	convenient to use PIF files.  The installation procedure
+	copies some convenient ready-made PIF files (from the `{\tt texmenu}'
+	directory on the DVIWindo diskette) for DVIPSONE, {\TeX}, and
+	ini{\TeX}. 
+	It will not, however, overwrite PIF files that you may already have
+	in place.  In this case, you may want to replace your old PIF files
+	later with the new ones found in the `{\tt texmenu}' directory on the
+	DVIWindo diskette. % if you wish.
+
+\vskip .05in
+
+\bpar	DVIWindo and DVIPSONE are unique in providing complete flexibility in
+	font encoding (see `{\tt encoding.txt}' and `{\tt morass.txt}').
+	However, you may find it most convenient to simply use Windows ANSI
+	encoding for all plain text fonts (at least initially).	
+	This is particularly convenient if the fonts are {\it also\/}
+	to be used by other Windows applications.
+	The installation procedure will ask whether you plan on using Windows
+	ANSI encoding for plain text fonts. % (other than Computer Modern).  
+
+\vskip .05in
+
+% \noindent
+\ipar	If you answer `Yes,' then
+	the line  `{\tt Set TEXANSI=1}' will be added to your `{\tt
+	autoexec.bat}' file.   
+	This tells DVIPSONE to {\it also\/} reencode all plain text fonts so
+	as to match the behavior in DVIWindo (This does not affect Computer
+	Modern fonts, of course, since these use their own fixed hard-wired
+	encoding). \enspace
+	NOTE: Setting `{\tt TEXANSI=0}' has the same effect as not setting
+	it at all.
+
+\vskip .05in
+
+% \bpar	
+
+\noindent
+After installation, launch DVIWindo.  You should get a pulldown
+menu item on the right called `TeX.' 
+% which lists all the items in the `{\tt [Applications]}' section 
+% of `{\tt dviwindo.ini}'. 
+
+% \vskip .05in
+
+% \bpar	
+
+At this stage you may want to add new entries to the `TeX Menu' to link to your
+favorite editor % --- use the ready-made entry for `Notepad' as a template.
+--- and you may want to remove some entries that are not needed.
+See sections~6 and~8 for details.
+
+\nsection{Editing, Adding, and Deleting `TeX Menu' items} %  from DVIWindo
+
+Each `{\tt Menu Item}' in the `TeX Menu' is associated with an
+`{\tt Application Call Pattern}.'
+The `{\tt Menu Item}' can be thought of as a `key' with the
+`{\tt Application Call Pattern}' as the corresponding `value.'
+
+When you select a particular `{\tt Menu Item},' the application 
+listed in  the corresponding `{\tt Application Call Pattern}' is called.
+For example, 
+if the menu item `{\tt CleanUp}'
+corresponds to the application call pattern
+`\verb|c:\dviwindo\cleanup.exe|,' 
+% for example, 
+then selecting `{\tt CleanUp}'
+from the menu calls the program `{\tt cleanup.exe}'.
+Refer to section~8 for additional details about 
+what can go into an `{\tt Application Call Pattern}.' 
+
+At the top of the menu % are two hard-wired lines: `{\tt Add Item}' and 
+is a hard-wired entry: `{\tt Preview}' 
+% The first, `{\tt Add Item}' allows you to add an item to the `TeX Menu', 
+% while `{\tt Preview}' 
+--- this is used to show the DVI file corresponding to the {\TeX} source
+file last selected.
+But you won't often use `{\tt Preview}', since the currently selected DVI file 
+is usually then one you want to look at any way --- but `{\tt Preview}' 
+{\it is\/} useful, for example, with  Arvind Borde and Tom Rokicki's 
+`TeX Help' program, which drops a DVI file in its own directory when you use
+% the `{\tt V}' command. 
+`{\tt V}.'
+
+% The following operations are possible from within DVIWindo:
+The `TeX Menu' is completely customizable from within DVIWindo.
+The `Edit Menu Item' dialog box is called up whenever 
+you hold down the `{\tt Ctrl}' key while selecting a menu item.
+You may want to look at the initial entries created by the
+installation procedure using this method 
+--- just select `{\tt Cancel}' if you don't want to actually 
+modify the menu item.
+The following can be done from the `TeX Menu' editing dialog box:
+
+\vskip .05in
+
+\bpar You can change what a menu item does by
+editing the  `{\tt Application Call Pattern}' (the `value')
+and selecting `{\tt Replace}';
+
+\vskip .05in
+
+\bpar You can change what a menu item is called by
+editing the `{\tt Menu Item Name}' (the `key') and selecting `{\tt Replace}';
+
+\vskip .05in
+
+\bpar You can {\it add\/} a new menu item ---
+directly after the one selected ---
+by editing both `{\tt Menu Item Name}' and `{\tt Application Call Pattern}'
+and then selecting `{\tt Add}';
+
+\vskip .05in
+
+\bpar You can {\it remove\/} a menu item by selecting `{\tt Delete}';
+
+\vskip .05in
+
+\bpar You can add a separating line directly after the currently selected
+menu item by selecting `{\tt Separator}';
+
+\vskip .05in
+
+\bpar You can remove a separator by selecting the menu item just 
+{\it before\/} it, and then selecting `{\tt Delete Next}'
+(Note that you cannot select a separator {\it directly\/}).
+
+\vskip .05in
+
+\noindent
+% For more intricate manipulations of the `Tex Menu,'  edit the
+% `{\tt [Applications]}' section of the `{\tt dviwindo.ini}' file.  
+% This way you can easily re-order menu items, add separating lines between
+% different sections of the menu, change hot keys and so on.
+The `TeX Menu' is recorded in the `{\tt Applications}' section of
+the `{\tt dviwindo.ini}' file.
+Details of the structure of the `{\tt [Applications]}' section are
+given in section~8.
+
+\nsection{Hot Keys Speed up Operations}
+
+You can activate a menu item with one key stroke by tying it to a `hot key'.
+To do this, add `{\tt |}' after the key, followed by a function key number.
+For example:
+
+\vskip .05in
+
+\verb@Plain TeX|F5@
+
+\vskip .05in
+
+\noindent
+arranges for function key {\tt F5} to produce the same effect as if you
+pull down the `TeX Menu' and selected `{\tt Plain TeX}'. If you run out of
+function keys, you can use the `Ctrl' key in conjunction with the function
+keys.  The notation for this in the menu is as follows:
+
+\vskip .05in
+
+\verb@Epsilon|C-F3@
+
+\vskip .05in
+
+\noindent
+Hot key entries are shown in the `TeX Menu' for ease of reference.  
+
+Note that `{\tt C-F1}' is the default hot-key for `{\tt Preview}', and that
+`{\tt F10}' cannot be used since it is equivalent to `Alt'.  For consistency
+with other Windows applications you may also wish to avoid {\tt F1}, since
+many Windows applications use this as the `Help' key (and perhaps {\tt F3},
+which is often used for `Exit'). 
+You can change the hot-key for `{\tt Preview}' % also 
+by adding a line of the form 
+
+\vskip .05in
+
+`{\tt PreviewHotKey=F1}' 
+
+\vskip .05in
+
+\noindent to the `{\tt [Window]}' section of your `{\tt dviwindo.ini}' file. 
+
+\nsection{Transferring Input Focus to Another Window}
+
+The `TeX Menu' can be used for things other than launching
+DOS or Windows applications.
+You can, for example, transfer control to another existing Window.
+If the menu item `{\tt -> Epsilon}' has application call pattern
+
+\vskip .05in
+
+\verb|$Window(Epsilon)|
+
+\vskip .05in
+
+\noindent
+then clicking on the menu item `{\tt -> Epsilon}' % (key) 
+whill cause the
+input focus to be  transferred to a Windows with title `{\tt Epsilon}' --- 
+if there is such a Window. \enspace
+NOTE: The `{\tt ->}' is not part of the syntax, just a 
+% convenient 
+graphic way to
+indicate in the key that this menu item transfers focus to another Window. 
+
+Some applications do not have fixed Windows titles.  The title
+may, for example, consist of the application name followed by the name of the
+file that is open.  In this case use ellipses at the end of the Window title.
+Then only the initial part of the Window Title need match for a successful
+transfer.  So for menu item `{\tt -> Notepad}' you might want to use the value
+
+\vskip .05in
+
+\verb|$Window(Notepad...)|
+
+\vskip .05in
+
+\noindent
+You cannot transfer input focus to an iconized window, but the above will
+at least {\it activate\/} the icon, so that pressing `{\tt Enter}' will
+restore that window.  %  the window
+
+
+\nsection{What appears in the `TeX Menu'?}
+
+The relationship between what appears in the `TeX Menu' and what is
+in the `{\tt [Applications]}' section of `{\tt dviwindo.ini}' is very simple:
+Each line contains a `key' and a `value' (written `key=value')
+as in any Windows `{\tt ini}' file.  
+The `key' shows up in the pulldown menu, and when you click on a
+`key', the corresponding `value' is used to call an application.  
+For example, the line 
+
+\vskip .05in
+
+\verb|CleanUp=c:\dviwindo\cleanup.exe|
+
+\vskip .05in
+
+\noindent
+creates a menu item labelled `{\tt CleanUp}' (key) in the pulldown menu, and
+calls `\verb|c:\dviwindo\cleanup.exe|' (value) when you click on `{\tt
+CleanUp}'. 
+
+Items are listed in the menu in the order that they appear in
+`{\tt dviwindo.ini}'.  In addition, a line of the form 
+`{\tt Separator...=...}' creates a 
+horizontal bar in the menu that can be used to visually separate
+different groups of applications ({\TeX} formats, editors, DOS programs, etc.).
+
+You can edit the `TeX Menu' by editing the `{\tt [Applications]}'
+section of `{\tt dviwindo.ini},' but it is typically more convenient
+%  the you do not have to do it this way, since you can 
+to edit the `TeX Menu' directly from DVIWindo.
+
+Note that you can call not only `{\tt *.exe}' and `{\tt *.com}' files, 
+but `{\tt *.bat}' files, DOSKEY macros, as well as `{\tt *.pif}' files.  
+
+What happens when you call a DOS application can be controlled 
+by a corresponding PIF file (see section~9).  It is also often more
+convenient to call a batch file rather than calling an application
+directly, since this provides more detailed control over what happens
+(see section~9).
+
+\nsection{Pattern Replacement Rules}
+
+In many cases the `TeX Menu' set up by DVIWindo's installation 
+procedure is all that is needed.
+If it is not, simple editing directly from DVIWindo can
+usually set up a satisfactory menu.
+Creating powerful `Application Call Patterns' requires some
+understanding of the pattern replacement rules used ---
+although in most cases you will be able to simply copy an 
+existing call pattern. 
+% In which case there is no need to understand how the
+% menu setup is recorded in the `{\tt dviwindo.ini}' file.
+% Also, you can probably infer from the initial `{\tt dviwindo.ini}'  file
+% how the `TeX Menu' works, but following are the details, 
+% just in case you do need to refer to them. 
+
+It's easiest to talk about this in terms of how the `TeX Menu'
+is stored in `{\tt dviwindo.ini}'.
+The simplest type of entry is one with just a key and a literal value, 
+for example,
+
+\vskip .05in
+
+\verb|CleanUp=c:\dviwindo\cleanup.exe|
+
+\vskip .05in
+
+\noindent
+which creates a menu item labelled `{\tt CleanUp}' (the key) in the pulldown
+menu, and calls `\verb|c:\dviwindo\cleanup.exe|' (the value) when you click on
+`{\tt CleanUp}'. 
+
+But most applications also need some command line flags or command line
+arguments.  If the command line values are constant, they can be just part of
+the `value' part of the line in the `{\tt [Applications]}' section (e.g. such
+as `{\tt -i}' when calling ini{\TeX}, or `{\tt -d=lpt1}' when calling
+DVIPSONE with output going to the parallel port).   
+
+But it is important to have the ability to also insert {\it variable\/}
+items such as file names.  This could potentially get a little awkward, since
+the {\TeX} source file often is {\it not\/} in the directory of the DVI file
+currently being viewed.  In addition, there may be several directories from
+which {\TeX} source files may be drawn.  However, a simple pattern
+replacement scheme makes it easy to deal with such things (for detailed
+examples see the end of this section).
+
+The pattern replacement scheme makes it possible to insert 
+\enspace (i) the name of the currently selected DVI file,
+\enspace (ii) values of environment variables, 
+\enspace (iii) file names constructed using search based on a semicolon
+separated directory path, 
+\enspace (iv) strings that you are prompted to supply, 
+\enspace (v) file name that you are asked to supply
+in a file selection dialog box.  
+%
+Pattern replacements happen in the following sequence:
+
+\vskip .05in
+
+\ftpar{(i)}	The character `{\tt *}' is replaced by the name of the DVI file
+	currently open --- {\it without\/} the directory path of the file, 
+	and {\it without\/} extension.  The `{\tt *}' is replaced with `{\tt
+	?}' if  no DVI file is currently open;
+
+\vskip .05in
+
+\ftpar{(ii)}	The pattern `\verb|%<environvar>%|' is replaced by the value
+	of the corresponding environment variable `\verb|<environvar>|.'
+	This is often used to introduce a semicolon-separated list of
+	directories to be used with the next rule.
+	The pattern is simply removed if the environment variable 
+	cannot be found; 
+
+\vskip .05in
+
+\ftpar{(iii)}	The pattern `\verb|<path>#<filename>.<ext>|' is replaced with
+	the first file found with a name of the form
+	`\verb|<dir>\<filename>.<ext>|',
+	where `\verb|<dir>|' is one of the directories listed in the
+	semicolon-separated list of directories in `\verb|<path>|'.  The file
+	is first 
+	searched for in the directory of the current DVI file (or if no 
+	DVI file is open, then in the current directory --- as if 
+	`{\tt .;}' had been prepended to the specified 
+	`\verb|<path>|'). If no file is found,
+	then `\verb|#<filename>|' is replaced with `{\tt ?}'. 
+
+\vskip .05in
+
+\ftpar{(iv)}	The pattern \verb@"<argname>|<inivalue>"@ is replaced with
+	text that the you are % user is 
+	prompted to supply.  The string `\verb|<argname>|' is used as 
+	the window title to let you % the user 
+	know what field is being requested, while the string
+	`\verb|<inivalue>|' (if present) is offered as the initial value.
+	This is used to prompt for command 
+	line arguments {\it other\/} than file names; 
+
+\vskip .05in
+
+\ftpar{(v)}	The pattern `\verb|<dir>?<.ext>|' is replaced with a file
+	name that you are % the user is 
+	prompted for, using as initial guess the file previously selected for
+	an application from the `TeX Menu' (but with 
+	default extension `\verb|<.ext>|' --- if an extension is specified);
+
+\vskip .05in
+
+% \ftpar{(vi)}	
+
+{\narrower
+
+\noindent {\bf Important Note:} \enspace
+You can {\it also\/} force DVIWindo to prompt you for a file name by
+holding down the `Shift' key when using the `TeX Menu.'  In that
+case, the file name selected replaces the last item in the value 
+(or is appended to the line, following a space, if there is only one item
+in the value field).
+
+}
+
+\vskip .05in
+
+\noindent
+File names derived using the rules above use the standard backslash `{\tt
+\bs}' as directory separator.  
+Some {\TeX} implementations cannot handle `{\tt \bs}' on the command line. 
+Add the line `{\tt Deslash=1}' to `{\tt [Window]}' section of your `{\tt
+dviwindo.ini}' file to convert `{\tt \bs}' to `{\tt /}' (which works for most
+applications, except some DOS utilities, which interpret the `{\tt /}' as a
+command line flag...). 
+
+Here are some simple examples to illustrate use of these features:
+
+\vskip .05in
+
+\verb|TeX=c:\y&ytex\y&ytex.exe -v %TEXINPUTS%#*.tex|
+
+\verb|DVIPSONE=c:\dvipsone\dvipsone -v -d=lpt1 *.dvi|
+
+\verb|Notepad=c:\windows\notepad.exe %TEXINPUTS%#*.tex|
+
+% \verb@iniTeX=c:\bat\initex.bat "Format File|plain" "Menu Name|TeX"@
+
+\verb@iniTeX=c:\initex.bat "Format File|plain" "Menu Name|TeX"@
+
+\vskip .05in
+
+\noindent
+The `TeX Menu' makes it possible for you to customize
+DVIWindo so it can be used to call arbitrary Windows or DOS 
+applications.  
+
+\nsection{Customization of DOS Programs running in Windows}
+
+Windows applications take care of their own window positioning and sizing, 
+as well as font selection.  Many programs used in Windows are, however, DOS
+programs run in a `DOS box'.  For DOS programs a bit more control is often
+desirable, as discussed in the next section.
+
+Note that none of this is DVIWindo or {\TeX} specific --- its just relevant
+Windows stuff brought together in one place --- please refer to your Windows
+documentation for additional details if needed.  PIF files and batch files
+can provide detailed control of DOS jobs.  The PIF file should have the same
+name as the executable or batch file (but extension `{\tt .pif},' of course),
+and be stored either somewhere on your PATH, in the directory of the
+corresponding application, or in the Windows directory.
+
+For a DOS application running in Windows, use a PIF file to control: 
+
+\vskip .05in
+
+\bpar	whether the application comes up full screen or windowed;
+
+\vskip .05in
+
+\bpar	whether the window is closed when the application finished;
+
+\vskip .05in
+
+\bpar	what directory is selected as the `working directory'.
+
+\vskip .05in
+
+\noindent We recommend:
+
+\vskip .05in
+
+\bpar	`Windowed' mode (unless the screen resolution is low);
+
+\vskip .05in
+
+\bpar   `Close Window on Exit' (but see below);
+
+\vskip .05in
+
+\bpar	leave the `Start-up Directory' blank (let DVIWindo control this).
+
+\vskip .05in
+
+\noindent
+Leave  the `{\tt Optional Parameters}' field blank --- 
+or insert a `{\tt ?}' (so that you will be prompted for parameters when you
+call the PIF file directly). You may also wish to leave the `{\tt Program
+Filename}' blank (ignore complaints from the PIF editor when you do this).
+That way, the PIF file is not tied to a particular directory path
+or file extension.
+%
+Also, if you want the application to be able to run even when
+other applications have the current focus,
+then make sure the `Background' check box is checked. % 1994/Mar/18 
+
+\vskip .05in
+
+\bpar For a DOS application running in a window 
+% you can 
+also 
+% \vskip .05in
+% \bpar	
+select the font.
+
+\vskip .05in
+
+\noindent
+% That way you can arrange things so you can 
+Select a font that allows you to comfortably read what is shown, without the
+window taking up too much of your screen (which may be hard to do on low
+resolution displays). 
+To select the font, pull down the systems menu when DOS window is showing
+(i.e. click on the `{\tt -}' in the top left corner).  
+Then click on `{\tt Fonts...}'. 
+Make sure to check `{\tt Save Settings on Exit}'. 
+Windows saves this information for you in the  `{\tt [DOS
+Applications]}' section of the file `{\tt dosapp.ini}.'
+
+If your DOS window has scroll bars on the side (i.e. it is not maximized)
+then you can select `Maximize' from the DOS box system menu to enlarge it.
+If you want the DOS window to come up `full size' in future,
+%  change to be permanent, % 1994/Mar/18 
+then {\it instead\/} drag the borders of the window to their maximum state.  
+If you do it this way, % this, 
+the window dimensions will be remembered in `{\tt dosapp.ini}.'
+
+\vskip .05in
+
+\bpar For a DOS application % running in windowed mode, 
+% you can 
+get additional control
+% \vskip .05in
+% \bpar	
+using a batch file.
+
+\vskip .05in
+
+\noindent While you can % certainly 
+call an application directly, you can often
+take care of additional matters --- such as moving or deleting files ---
+using a batch file.  You can also decide to pause if an error occurs.  
+You can even use `{\tt echo}' and file indirection 
+({\tt >} or {\tt {>}{>}}) in a batch file to append
+entries to `{\tt dviwindo.ini}' which then show up in the `TeX Menu'
+(see `{\tt initex.bat}'). % for example).
+
+\nsection{Switching between Applications using `Alt' key chords}
+% , Screen resolution
+
+Once you have DVIWindo looking at a DVI file, it is easy to call your
+favorite editor --- or {\TeX} --- on the corresponding {\TeX} file from the
+`TeX Menu.' 
+You can set up the call to {\TeX} so you'll see the error output, yet get rid
+of the {\TeX} Window afterwards (see below).  You'll probably want to keep the
+editor window around, however, rather than start the editor up again later.
+This speeds the `Edit --- {\TeX} --- Preview' cycle.  
+You can have three windows showing 
+\enspace (i) the DVI file, 
+\enspace (ii) the source file, and 
+\enspace (iii) {\TeX} error output.
+
+One way to make it easy to switch between DVIWindo and the Editor, is to make
+sure that neither window totally obscures the other, so you can easily shift
+focus to the other window by clicking somewhere on a corner that sticks out.
+Of course, if you have enough screen resolution you can place the two windows
+next to each other so they don't overlap at all.  
+
+Another helpful trick is to set up `TeX Menu' items that switch to other
+Windows.  Use the construction `\verb|$Windows(...)| for this.
+(See section~6). % for details.
+
+Having DVIWindo and the editor window (and perhaps a {\TeX} Window) visible on
+screen at the same time is something that works well if you have high enough
+screen resolution (1280 x 1024 say).  Otherwise you can save yourself
+a lot of eye-strain by running everything full screen.  To switch between
+applications when running in full screen mode use the Windows `{\tt Alt}' key
+chords. `{\tt Alt-Tab}', for example, cycles through the windows and is a
+fast way to switch between different applications.  Alternatively, use
+`{\tt Ctrl-Esc}' to  bring up a list of tasks from which you can pick.  This
+may be faster if have % very 
+many applications active at the same time. 
+
+% Another helpful trick is to setup `TeX Menu' items that switch to other
+% Windows.  Use the construction `\verb|$Windows(...)| for this.
+% See section~6 for details.
+
+Sometimes it is also convenient to use `{\tt Alt-Enter}' to switch between
+windowed and full screen mode.  Windows key-board short-cuts like these
+can save you a lot of time.  The same goes for DVIWindo's short-cut keys,
+of course,
+such as using `{\tt Insert}' on the numeric key pad followed by `{\tt
+Enter}' to open and read in the DVI file that DVIWindo was last looking at,
+using `{\tt space}' and `{\tt backspace}' keys to move back and forth in the
+file without changing window scale and offsets, typing in a number followed
+by `{\tt Enter}' to go to a specified page number, etc. 
+
+Note that DVIWindo notices when the DVI file changes and redisplays it.
+This means that in many cases you don't even need to give DVIWindo the
+focus to see the new DVI file!  It also means that you don't lose the
+magnification, screen position or page when you go off to edit and re-{\TeX}.
+
+Initially, there may not be a DVI file, in which case you'll start by
+selecting the editor, and then {\TeX} from the `TeX Menu.'  You could then look
+at the resulting DVI file by selecting `{\tt Open}' from the `{\tt File}'
+menu.  But this typically won't have the name of the DVI file of interest 
+already set up as default. In this case, choose {\it instead\/} `{\tt
+Preview}' from the `TeX Menu' (or type `{\tt Ctrl-F1}'). 
+This tries to set up the DVI filename as the default before
+calling the `File Open' dialog. 
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+{\bf Note:} \enspace
+What if you want to edit (or {\TeX}) a file other than the source file
+corresponding to the currently displayed DVI file?
+Just hold down the `{\tt Shift}' key while selecting the editor
+--- or {\TeX} --- from the menu.  
+You will be presented with an `{\tt Open File}' dialog box.
+
+}
+
+\nsection{Where are the DVI Files?}
+
+{\TeX} % generally 
+seem to choose one of two quite different ways of operating: 
+
+\vskip .05in
+
+\ftpar{(1)} A common working directory (usually temporary)
+is used for all DVI files, (sometimes a RAM disk);
+
+\vskip .05in
+
+\ftpar{(2)} Each DVI file is kept in the directory 
+% with the corresponding  % same as
+of the corresponding {\TeX} source file (perhaps permanently).
+
+\vskip .05in
+
+\noindent
+If you indicate a preference for the first approach, a line of the form 
+`{\tt WorkingDirectory=...}' 
+will be added to the `{\tt [Window]}' section of your `{\tt dviwindo.ini}' file
+% by the installation procedure.
+when the initial `TeX Menu' is being built.
+
+If you % instead prefer 
+select the second scheme, then make sure to also leave the
+`{\tt Working Directory}' field {\it empty\/} when creating the PIF file.
+DVIWindo arranges for the current directory to be the directory of the {\TeX}
+source file.  In this case DVIWindo needs to have a way to find the
+appropriate working directory. % , so: 
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+{\bf Important Note:} \enspace Use a pattern of % the
+form 
+\verb|tex %TEXINPUTS%*.tex|
+% \noindent
+on the command line rather than just `\verb|tex *|'! 
+%  Note that 
+While the latter works fine for {\TeX} --- since it searches the directory
+list in TEXINPUTS --- it {\it does not\/} allow the `TeX Menu' to set up the 
+appropriate directory.
+
+}
+
+\vskip .05in
+
+\noindent
+% By the way, 
+Some users prefer yet a third, hybrid scheme:
+
+\vskip .05in
+
+\ftpar{(3)} Everything {\it but\/} the DVI file ends up in the source file
+directory --- the DVI file itself is redirected to some other
+(perhaps temporary) directory.  
+
+\vskip .05in
+
+\noindent
+If you prefer this scheme, set up the environment variable TEXDVI to where you
+want {\TeX} to drop DVI files, and leave `{\tt WorkingDirectory}' blank 
+(or set it to `{\tt nul}') in `{\tt dviwindo.ini}'.  In this case DVIWindo
+will pick up the TEXDVI environment variable and use it to find the DVI file
+when you click on `{\tt Preview}' in the `TeX Menu.'
+
+By the way,
+to debug problems with the choice of current directory, add `{\tt chdir}' to the
+start of the batch file to see what directory you are in. % at that point.
+
+%% following may be flushable
+
+DVIWindo remembers the last DVI file viewed and its directory when you exit.
+To start working again on the same file, simply launch DVIWindo, press
+`{\tt Insert}' on the numeric keyboard, followed by `{\tt Enter}'.
+
+\nsection{Inactive Windows, Batch Files, and `Pause'}
+
+When you run {\TeX} and there are errors, you'll presumably want to see these.
+So you don't always want to close the window immediately after {\TeX} finishes.
+But if you do {\it not\/} select `{\tt Close Window on Exit}' in the PIF file,
+you may end up with a lot of `{\tt Inactive TeX}' Windows.  You can see
+what windows are there by double clicking on the desktop background, 
+or typing `Ctrl-Esc', or by % cycling 
+stepping through applications using `Alt-Tab'.
+
+You can get rid of all inactive windows periodically using the `{\tt CleanUp}'
+utility supplied with DVIWindo
+(Which is why % it is convenient to add 
+`{\tt CleanUp}' is added % as a menu item 
+to the `TeX Menu.') % for this reason.
+
+Fortunately, however, there is a better way of dealing with this issue!  
+You can set up a batch file that calls {\TeX} and then pauses % , but only
+if {\TeX} should return a non-zero error code.  
+% Then 
+You can view the error information at your
+leisure and make the window go away simply by pressing a key when the
+window has the current focus and you no longer need it.  The installation
+procedure creates such batch files `{\tt tex.bat}' and `{\tt initex.bat}'
+which pause for you if {\TeX} returns a non-zero exit code.
+
+This can be slightly inconvenient if you use the same batch file
+from DOS, where you probably {\it don't\/} want the `{\tt pause}' at the end.  
+It's not entirely trivial to tell in a batch file
+whether one is running in plain DOS
+or in a DOS box in Windows.  However (at least for DOS 5 or 6), one can 
+replace the simple `{\tt pause}' statement with: 
+
+\vskip .05in
+
+\noindent
+\hbox{\quad}\verb@set | find "windir=" > NUL@\nl
+\noindent
+\hbox{\quad}\verb@if not errorlevel 1 pause@
+
+\vskip .05in
+
+\noindent
+The batch files created by the installation procedure use this trick.
+For older % earlier
+versions of DOS, use the `{\tt decode}' utility supplied
+with DVIWindo:
+
+\vskip .05in
+
+\noindent
+\hbox{\quad}\verb@c:\dviwindo\decode -x@\nl
+\noindent
+\hbox{\quad}\verb@if errorlevel 1 pause@
+
+\vskip .05in
+
+\noindent
+Either way, there is no `{\tt pause}' unless you are running in Windows 
+{\it and\/} there is an error in processing your {\TeX} source file
+(See `{\tt tex.bat}' e.g.). % for example). 
+
+\nsection{Calling your Editor from DVIWindo} % Notepad, Codewright
+
+You can easily link to any Windows- or DOS-based editor from DVIWindo using
+the methods described above.  Most people prefer to just keep on using
+whatever editor they are used to.  The simplest Windows editor is Notepad 
+(an `applet' that comes with Windows).  A more sophisticated true Windows
+editor which some users rate highly is Premia's `Codewright'.  Codewright
+provides for customization through an extension language 
+(and `dynamic link libraries').
+Many editors have some `macro' or `hot-key' capability that makes it possible
+to call {\TeX} with one key stroke once the `macro' has been set up ---
+although you may prefer to call {\TeX} from DVIWindo's `TeX Menu' instead.
+
+The simplest DOS editor is EDIT (it comes with DOS 6).  A more sophisticated
+DOS-based editor is Lugaru's `Epsilon.'  Epsilon is an implementation of
+`Emacs' that supports customization through a simple C-like language called
+EEL.  Epsilon also has many `windows-like' features such as a menu bar, scroll
+bars, and mouse support.  Epsilon allows multiple buffers 
+(use `{\tt Ctrl-X 2}' to split the screen), and DOS process buffers 
+(use `{\tt Ctrl-X Ctrl-M}' to create a process buffer).  
+
+You can run {\TeX} in the process buffer (as long as it uses a DOS extender
+that is XMS, VCPI, and DPMI compliant).  Then you can see the error log next
+to the source file, without ever leaving the editor.  What's more, if you use
+`{\tt -L}' on the {Y\&Y}TeX command line, you will get {\TeX} error message
+in a form suitable for Epsilon's `next-error' command.  You can then
+jump to the source line that caused the error with one key stroke.
+
+{\Y&Y}TeX comes with a sample EEL customization file  
+% ({\tt tex.e} and 
+{\tt texhigh.e}) for Epsilon, which flash
+matching braces (\verb|{...}|) and matching `\verb|$|' signs.
+
+\nsection{Calling your Editor from {\Y&Y}TeX}
+
+You can, by the way, also call your favorite editor directly from 
+{\Y&Y}TeX --- % simply 
+if you type `{\tt E}' when an error is reported.  To make this
+work, you need to set the environment variable TEXEDIT to a suitable string
+for calling the editor.  When you use {\Y&Y}TeX, 
+\verb|%s| in the string is replaced by the source file name, 
+\verb|%d| is replaced by the line number, and 
+\verb|%l| is replaced by the error log name. For example:
+
+\vskip .05in
+
+\+\quad\verb|set TEXEDIT=epsilon +%d %s| &&&&& for Lugaru's Epsilon;\cr
+\vskip .05in
+\+\quad\verb|set TEXEDIT=ne +%d %s| &&&&& for Norton's Editor;\cr
+\vskip .05in
+\+\quad\verb|set TEXEDIT=q %s -n%d| &&&&& for QEdit.\cr
+
+\vskip .05in
+
+\noindent
+DVIWindo's installation procedure tries to add code to your `{\tt
+autoexec.bat}' file to set up such an environment variable for you 
+(but this code will only become active the next time you reboot).
+
+If you use Epsilon, and want to see the log file in one buffer,
+with the source file in another, then use:
+% buffer, with the error log file in another buffer, use:
+
+\vskip .05in
+
+\verb|set TEXEDIT=epsilon +%d %s %l|
+
+\vskip .05in
+
+{\narrower
+
+\noindent
+{\bf Note:} \enspace If you set TEXEDIT from a batch file, then you need to
+use \verb|%%s|, \verb|%%d|, and \verb|%%l| 
+where we show \verb|%s|, \verb|%d|, and \verb|%l| in the above.
+
+}
+
+\vskip .05in
+
+\noindent
+The above takes you directly to the source line that caused the problem, 
+but you work on one % {\TeX} 
+error at a time, since {\TeX} is terminated
+after calling the editor.  In some situtations you may prefer to
+collect a whole lot of error messages before turning to the editor
+to modify the source file.
+
+\vskip .05in
+
+{\narrower
+
+\noindent {\bf WARNING:} \enspace
+It is very tempting to temporarily switch to the editor window and
+edit the source file {\it immediately\/} when {\TeX} shows an error message.  
+This in itself is OK, of course.
+But writing out the modified source file and then returning to {\TeX} can
+% obviously 
+lead to problems, since {\TeX} still has the original source file open. 
+This can be dangerous if you do {\it not\/} have 
+`{\tt share.exe}' installed --- in which case you may get more
+than just a simple `sharing violation' slap on the wrist! % error message
+% So please, 
+So, do {\it not\/} write the modified file to disk before allowing
+{\TeX} to finish --- and make sure to install `{\tt share.exe}' in your
+`{\tt autoexec.bat}' file.
+Type `{\tt x}' to stop {\TeX} after an error message if needed.
+
+}
+
+\nsection{Adding New {\TeX} Formats}
+
+Adding new formats is a cinch using the `{\tt initex.bat}' batch file created
+by the installation procedure.  The following is a simplified version of 
+`{\tt initex.bat}' --- which can be conveniently called from the `TeX Menu':
+
+\vskip .05in
+
+\noindent
+\hbox{\quad}\verb|@echo off|\nl
+\hbox{\quad}\verb|c:\dviwindo\cdd %TEMP%|\nl
+\hbox{\quad}\verb|call tex -i %1|\nl
+\hbox{\quad}\verb|copy %1.log %TEXFORMATS%|\nl
+\hbox{\quad}\verb|copy %1.fmt %TEXFORMATS%|\nl
+\hbox{\quad}\verb|echo %2=tex.bat &%1 %%TEXINPUTS%%#*.tex|{\tt {>}{>}}\nl
+\hbox{\quad\quad\quad\quad\quad\quad\quad\quad\quad\quad}\verb|c:\windows\dviwindo.ini|
+
+\vskip .05in
+
+\noindent
+This batch file controls what the current directory is when it runs.
+It also assumes that an environment variable called TEMP points to a
+suitable directory for temporarily storing FMT and LOG files.
+This is safer than writing FMT and LOG files directly into the directory
+pointed to by TEXFORMATS (in case there is an error in the source files).
+
+The above runs {\TeX} with `{\tt -i}' on the command line and the 
+user supplied format name.  Type `{\tt \bs dump}' when {\TeX} is done and
+shows you the `{\tt *}' prompt.  The batch file then copies the `{\tt fmt}'
+and `{\tt log}' files to where {\TeX} expects format files to be.  Finally,
+it appends a line to the `TeX Menu' for the new format under a user specified
+name (This works best if the `{\TeX} part' of the `{\tt [Applications]}'
+section comes last in the menu). 
+
+For ini{\TeX} itself
+the installation procedure inserts the following line 
+in the `{\tt [Applications]}' section: 
+
+\vskip .05in
+
+\noindent
+\verb@iniTeX=c:\bat\initex.bat "Format File|plain" "Menu Name|TeX"@
+
+\vskip .05in
+
+\noindent
+This prompts you twice, first for the % name of the format file,
+`Format Source File',
+% {\tt Format File}, 
+and then for the % menu name:
+`Format Menu Name':
+% that is to appear on the `TeX Menu' 
+% {\tt Menu Name}:
+
+\vskip .05in
+
+\bpar	For plain {\TeX} use `{\tt plain}' as the file name,
+and `{\tt plain TeX}' as the menu name;
+
+\vskip .05in
+
+\bpar	For {\LaTeX} use `{\tt lplain}' as the file name,
+and `{\tt LaTeX}' as the menu name;
+
+\vskip .05in
+
+\bpar	For {\AMS}-{\TeX} use `{\tt amstex.ini}' as the file name,
+and `{\tt AMSTeX}' as the menu name;
+
+\vskip .05in
+
+\bpar	For {\SliTeX} use `{\tt splain}' as the file name,
+and `{\tt SliTeX}' as the menu name;
+
+\vskip .05in
+
+\bpar	For {\latex2e} use `{\tt latex2e.ltx}' as file,
+and `{\tt LaTeX2e}' as the menu name. 
+
+\vskip .05in
+
+\noindent Note that for {\latex2e}, ini{\TeX} actually has to be run twice,
+first on the file `{\tt unpack2e.ins}', which generates the file 
+`{\tt latex2e.ltx}' used in the second run.
+Please note that as of this writing, {\latex2e} is still in $\alpha$ test.
+
+The required source files for these formats may be supplied on a
+separate `{\TeX} source file' diskette.
+Here is a list of the files you need to create various {\TeX} formats:
+
+\vskip .05in
+
+\bpar Plain {\TeX}: \enspace `{\tt plain.tex}' and `{\tt hyphen.tex}';
+
+\vskip .05in
+
+\bpar {\LaTeX}:	\enspace `{\tt lplain.tex}', `{\tt lfonts.tex}',
+	`{\tt latex.tex}', `{\tt lhyphen.tex}', and `{\tt hyphen.tex}'; 
+
+\vskip .05in
+
+\bpar {\SliTeX}: \enspace `{\tt splain.tex}', `{\tt sfonts.tex}',
+	`{\tt slitex.tex}', `{\tt latex.tex}', `{\tt lhyphen.tex}', 
+	and `{\tt hyphen.tex}'; 
+
+\vskip .05in
+
+\bpar {\AMS}-{\TeX}:	The files needed to make a new `format' file for
+{\AMS}-{\TeX} are in the `{\tt amstex}' and `{\tt amsfonts}' subdirectories of
+the `{\tt ams}' directory.
+
+% refer also to the {Y\&Y}TeX manual...
+
+\vskip .05in
+
+\noindent
+The new `format' shows up in the `TeX Menu' as soon as the `{\tt initex.bat}'
+batch file finishes.  You can add as many formats as you like, 
+and remove references in the `TeX Menu' to formats you no longer need,
+using the method described in section~4
+(although this does {\it not\/} delete the corresponding `{\tt fmt}' files). 
+
+\newpage
+
+\runnerhead{DVIWindo's `TeX Menu'}
+
+% \hbox{ }
+
+% \newpage
+
+% \offheaders
+
+% \versoleftheader={}
+
+% \hbox{ } \newpage
+
+\def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
+
+\line{{\bf 1.\enspace Introduction to DVIWindo's `TeX Menu'\leaderfill 1}}
+
+\vskip .1in
+
+% \line{\quad \enspace Requirements\leaderfill 1}
+
+% \vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 2.\enspace Sample Scenarios\leaderfill 1}}
+
+\vskip .1in % \vskip .1in
+
+\line{{\bf 3.\enspace Quick Start: Installing the `TeX Menu'\leaderfill 2}}
+
+\vskip .1in % \vskip .1in
+
+\line{{\bf 4.\enspace Editing, Adding and Deleting `TeX Menu' items\leaderfill 5}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 5.\enspace Hot Keys Speed up Operations\leaderfill 6}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 6.\enspace Transferring Input Focus to Another Window\leaderfill 6}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 7.\enspace What appears in the `TeX Menu'\leaderfill 7}}
+
+\vskip .1in
+
+\line{{\bf 8.\enspace Pattern Replacement Rules\leaderfill 8}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 9.\enspace Customization of DOS Programs running in Windows\leaderfill 10}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 10.\enspace Switching between Applications using `Alt' key chords\leaderfill 11}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 11.\enspace Where are the DVI Files?\leaderfill 12}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 12.\enspace Inactive Windows, Batch Files, and `Pause'\leaderfill 13}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 13.\enspace Calling your Editor from DVIWindo\leaderfill 14}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 14.\enspace Calling your Editor from {\Y&Y}TeX\leaderfill 15}}
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf 15.\enspace Adding New {\TeX} Formats\leaderfill 16}}
+
+\end
+
+\vskip .1in % \vskip .1in % \vskip .1in
+
+\line{{\bf A.\enspace  Appendix --- Trouble Shooting\leaderfill 13}}
+
+\vskip .1in
+
+\line{\quad A.1\enspace System Configuration and Memory Management\leaderfill 14}
+
+\vskip .05in
+
+% \line{\quad A.2\enspace Memory Management Support\leaderfill 23}
+\line{\quad A.2\enspace Memory Allocation Problems\leaderfill 14}
+
+\vskip .05in
+
+\line{\quad A.3\enspace Environment Variables Should be Set\leaderfill 15}
+
+\vskip .05in
+
+\line{\quad A.4\enspace Maximum Number of Files, File Sharing\leaderfill 16}
+
+\vskip .05in
+
+% \line{\quad A.5\enspace Format and Pool File Version Mismatch\leaderfill 16}
+
+\vskip .05in
+
+\line{\quad A.5\enspace Slow Starting when Starved for Memory\leaderfill 17}
+
+
+\end
+
+% ****************************************************************************
+% ****************************************************************************
+% 
+
+APPENDIX A: sample `[Applications]' section for `dviwindo.ini':
+% --------------------------------------------------------------
+
+Following is a rather lenghty sample `[Applications]' section for
+`dviwindo.ini' showing lots of possibilities.
+
+; NOTE: Check that you also have CommDlg=1 in the '[Windows]' section.
+; NOTE: Add WorkingDirectory=... if DVI files should appear in common place.   
+; NOTE: Do NOT specify a `working directory' in the PIF files. 
+; NOTE: Make sure there is a blank line before '[Applications]'
+
+[Applications]
+; Call Windows Notepad with {\TeX} file corresponding to current DVI file
+Notepad|F2=c:\windows\notepad %TEXINPUTS%#*.tex
+; Call DOS EDIT with {\TeX} file corresponding to current DVI file
+Edit|F3=c:\dos\edit.com %TEXINPUTS%#*.tex
+; Call Lugaru's Epsilon with {\TeX} file corresponding to current DVI file
+Epsilon|F4=c:\epsilon\bin\epsilon %TEXINPUTS%#*.tex
+; Call vedit, vi, CodeWright, qedit, your favorite editor --- in similar way
+;
+; Following creates a line in menu separating Editors above from Utilities
+Separator=
+; Utility to remove inactive Windows (those without `close window on exit')
+CleanUp=c:\dviwindo\cleanup.exe
+; Utility to show percent system resources used in GDI and USER segments
+SysSeg=c:\dviwindo\sysseg.exe
+;
+; Following creates a line in menu separating Utilities above from Applications
+Separator=
+; Windows DOS box (full screen)
+DOS Full Screen=c:\windows\dosprmpt.pif
+; Windows DOS box (windowed):
+DOS Windowed=c:\windows\doswinpt.pif
+;
+; NOTE: more control available by calling DVIPSONE from `Print' in `File' menu
+DVIPSONE=dvipsone -v -d=lpt1 *.dvi
+;
+Separator=
+; Call Trigram Systems MicroSpell {\TeX} spell checker
+Micro Spell|F11=c:\spell\ms %TEXINPUTS%*.tex
+; Arvind Borde & Tomas Rokicki `TeXHelp' program (DOS version from AP)
+TeX Help|F12=c:\texhelp\texhelp
+;
+; Following creates a line in menu separating Utilities from {\TeX} calls
+Separator=
+; Following is for creating new formats using iniTeX (-i on command line)
+iniTeX=initex.bat "Format Source File|plain" "Format Menu Name|TeX"
+; Above batch file automatically created entries added below
+Separator=
+;
+TeX|F5=tex.bat &plain %TEXINPUTS%#*.tex
+LaTeX|F6=tex.bat &lplain %TEXINPUTS%#*.tex
+AMS TeX|F7=tex.bat &amstex %TEXINPUTS%#*.tex
+SliTeX|F8=tex.bat &splain %TEXINPUTS%#*.tex
+LaTeX2e|F9=tex.bat &latex2e %TEXINPUTS%#*.tex
+
+APPENDIX B: sample batch files:
+------------------------------
+
+Here is `tex.bat':
+
+@echo off
+rem NOTE: we *don't* want a format specified in this one - let {\TeX} use default
+c:\y&ytex\y&ytex -v %1 %2 %3 %4 %5 %6 %7 %8 %9
+if not errorlevel 1 goto end
+rem following trick requires DOS 5 or 6 
+set | find "windir=" > NUL
+if not errorlevel 1 pause
+:end
+
+Here is `latex.bat' (don't really need this one):
+
+@echo off
+c:\y&ytex\y&ytex -v &lplain %1 %2 %3 %4 %5 %6 %7 %8 %9
+if not errorlevel 1 goto end
+rem following trick requires DOS 5 or 6 
+set | find "windir=" > NUL
+if not errorlevel 1 pause
+:end
+
+Here is `initex.bat':
+
+@echo off
+rem This is 'initex.bat' conveniently called from DVIWindo 'TeX menu'
+rem
+rem Best to switch here to a temporary directory, ideally a RAM disk
+if not "%TEMP%" == "" cdd %TEMP%
+rem Note: cdd.com is a utility that switched both drive and directory
+rem
+rem Some sanity checks first!
+if exist %TEXFORMATS%\nul goto fmtexist
+echo Sorry, cannot find %TEXFORMATS% directory
+goto endpause
+:fmtexist
+if exist c:\windows\dviwindo.ini goto iniexist
+echo Sorry, cannot find c:\windows\dviwindo.ini
+goto endpause
+:iniexist
+rem
+rem deal with use of 'amstex' instead of 'amstex.ini'
+if "%1" == "amstex" call {\TeX} -i amstex.ini
+if not "%1" == "amstex" call {\TeX} -i %1
+rem
+rem don't mess with files if {\TeX} had a cow ...
+if not errorlevel 1 goto seemsok
+echo Sorry, {\TeX} appears to be have become unhappy --- formats will not be saved
+goto endpause
+:seemsok
+copy %1.log %TEXFORMATS%
+copy %1.fmt %TEXFORMATS%
+rem
+del %1.log
+del %1.fmt
+rem
+rem deal with 'amstex.ini' special case (want &amstex, not &amstex.ini)
+if not "%1" == "amstex.ini" goto notams
+echo %2=tex.bat &amstex %%TEXINPUTS%%#*.tex>> c:\windows\dviwindo.ini
+goto end
+:notams
+rem deal with 'plain' special case (omit format, since plain is default)
+if not "%1" == "plain" goto notplain
+echo %2=tex.bat %%TEXINPUTS%%#*.tex>> c:\windows\dviwindo.ini
+goto end
+:notplain
+echo %2=tex.bat &%1 %%TEXINPUTS%%#*.tex>> c:\windows\dviwindo.ini
+goto end
+:endpause
+rem following trick requires DOS 5 or 6 
+set | find "windir=" > NUL
+if not errorlevel 1 pause
+rem following requires decode.exe utility
+rem decode -x
+rem if errorlevel 1 pause
+:end
+
+% ****************************************************************************
+% ****************************************************************************
+

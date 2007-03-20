@@ -1,0 +1,92 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\input texnansi
+\font\lucidbold=lbd at 9.5pt
+\font\cmss=cmssq8 at 16pt
+\font\cmbold=cmbx12 at 20pt
+\def\biggsize {\cmss}
+\def\bigggsize {\cmbold}
+\def\newpage{\vfill\eject}
+\nopagenumbers
+\parskip .1in
+
+\def\textrevert{\special{color pop}}
+
+\def\textcolor#1#2#3{\special{color push rgb #1\space #2\space #3\space}}
+
+\def\noboxit#1{\vbox{\hbox{\kern6pt\vbox{\kern6pt#1\kern6pt}\kern6pt}}}
+
+\newcount\width
+\newcount\height
+
+\def\buttonnoruleword#1#2{%
+\setbox0\hbox{\noboxit{\hbox{#1}}}\height=\ht0\width=\wd0%
+\special{color push rgb 0.25 0.25 0.5}%
+\rlap{\vrule width \wd0 height \ht0}%
+\special{button: \the\width\space \the\height\space #2}%
+\special{color push rgb 1.0 1.0 0}%
+\unhbox0%
+\special{color pop}%
+\special{color pop}%
+}
+
+\def\beginning{
+\hskip 0.3in
+\buttonnoruleword{CLICK HERE TO GO TO START}{"HOME"}
+}
+
+\def\ending{
+\hskip 0.3in
+\buttonnoruleword{CLICK HERE TO GO TO END}{"END"}
+}
+
+\noindent
+{\bigggsize Viewing DVI files on the World Wide Web}
+
+\vskip .3in
+
+\noindent
+If you're viewing this text in DVIWindo or some other DVI previewer, you've successfully configured your Web browser to launch that previewer automatically when encountering a DVI file on the Web.
+
+As explained on our {\it What's New\/} page, for Netscape 1.22 the process is as easy as
+
+\leftskip=20pt
+\noindent 1. Going to Options / Preferences / Helper Apps in Netscape's menu
+
+\noindent 2. Configuring File Type {\tt application/x-dvi} with Extension {\tt dvi} to launch your previewer (specify the fully qualified path to your previewer --- {\tt c:{$\backslash$}dviwindo{$\backslash$}dviwindo.exe}, say --- on your system)
+
+\leftskip=0pt
+\noindent This done, whenever you highlight a hypertext reference (HREF) of the form {\tt filename.dvi} in a Web page, Netscape downloads a copy of {\tt filename.dvi} to its cache directory, launches your previewer, and opens {\tt filename.dvi} for viewing.
+
+Straightforward as this process appears to be, it involves a number of ``dangerous bends'' that, in the long run, might make the DVI format a less than optimal one for posting information on the Web. To read about them, go to the next page.
+\newpage
+
+\noindent\special{mark: "HOME"}{\biggsize\bf $\bullet$ - \textcolor{0.5}{0.5}{0.5} START OF PAGE \textrevert}
+\ending
+
+\vskip .3in
+
+Using DVI files as an information exchange medium will only be an error-free process if the source DVI file contains no inserted images or any other use of {$\backslash$}special. For if images are used in the file, they would also have to be available for accessing by your browser software. Upon encountering a reference to an image in the DVI file, for example, DVIWindo would have to be able to call back to the browser to request that the image file be downloaded. Implementing this feature for DVIWindo and Netscape (or for any other combination of DVI previewer and browser) might be prohibitively complicated.
+
+In addition, the process will only be error-free if the DVI file uses only the 75 basic Computer Modern Fonts (and perhaps the AMS fonts) --- ie, fonts that one can assume everyone has. For non-CM fonts, there are likely to be problems with font naming and font encoding. A suitable aliasing file might deal with the naming issues, but many DVI previewers can't properly handle nonstandard encoding.
+
+{\lucidbold Unless you have the Lucida Bright fonts loaded on your system, for example, you probably received an error message as you loaded this file, and this paragraph is being displayed in something other than Lucida Bright DemiBold. The line lengths in the original source document have been preserved, but differences in character widths between the two fonts are making these lines display at a different measure than those in the other paragraphs in this document. Furthermore, because the substituted font probably lacks access to even the most common ligatures (f-i and f-l), those combinations are replaced by open boxes, as in ``file.''}
+
+Note also that the hypertext ``buttons'' placed at the start and end of this page only work if your previewer is DVIWindo; the {$\backslash$}special commands required to produce the buttons and their colors are not standardized across all previewer implementations.
+
+DVI files are typically small compared with the two other potential interchange methods: PostScript (PS) and Acrobat (PDF). But despite this advantage, and despite reported problems with the Acrobat Reader on the Macintosh platform, Y\&Y feels that the PDF format offers the best hope for straightforward interchange of formatted data via the Web.
+
+Interestingly enough, for example, in the PDF file that can be produced from this DVI file, the hypertext buttons accurately transform into hypertext links that the Acrobat Reader {\it can\/} properly interpret.
+
+Currently, the American Mathematical Society is posting material in PostScript, PDF {\it and\/} DVI format. It will be interesting to see which form ultimately proves most popular and useful.
+
+\vskip .3in
+
+\noindent\special{mark: "END"}
+{\biggsize\bf $\bullet$ - \textcolor{0}{0}{1.0} END OF PAGE \textrevert}
+\beginning
+
+\end
+
+

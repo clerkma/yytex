@@ -1,0 +1,965 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=12pt
+
+\noheaders
+
+\def\bbf{\bigsize\bf}
+
+\noindent {\bbf Program:} \quad\quad SHOWCHAR
+
+\vskip .1in
+
+\noindent {\bbf Function:}
+
+\vskip .05in 
+
+\noindent Generate character-level hints, 
+display character outlines,
+and permit interactive editing of character-level hints.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent {\bbf Inputs:}
+
+\vskip .05in
+
+\beginbullets
+
+\ftpar{(a)} PostScript Type~3 outline fonts in HEX format.
+
+\ftpar{(b)} Font- and character-level hint information files (STM or HNT).
+
+\endbullets
+
+\vskip .05in
+
+HEX format is the Type~3 font format produced by CONVERT and used as
+input by FONTONE.
+
+SHOWCHAR can be used to display character outlines, to automatically
+generate character-level hints, 
+to generate character-level hints interactively, or to edit existing
+hinting information.
+Typical usage  involves two passes, one to generate character-level
+hints automatically, 
+the second to hand-tune these hints and to deal with exceptional situations.
+In the first pass, no input hinting file is specified.
+The file produced in this first pass is then used as
+input for the second, interactive pass.
+
+Hinting information can be provided using either an ordinary HNT
+file, or a simplified stem position and width only (STM) file
+(see description of file format below). 
+In either case, SHOWCHAR  assumes the extension for {\tt input} files is
+{\tt .hnt}, while the extension for {\tt output} files is{\tt .stm}
+(This is to avoid inadvertently overwriting input files).
+
+\vskip .1in
+
+\goodbreak
+
+\noindent {\bbf Outputs:}
+
+\vskip .05in
+
+\noindent The output of SHOWCHAR is a hint (HNT) or stem (STM) file
+(although the extension {\tt .stm} is % normally 
+used in either situation).
+(If there was no input file, or if the input file was in STM format,
+then the output will also be a STM file).
+The output normally goes into the current directory (but see command
+line flag `p').
+
+More than one font file can be specified on the command line.
+Wild card arguments can be used to specify a collection of input files.
+If multiple files are specified, SHOWCHAR operates in batch mode, where
+characters are not shown on the screen and processing proceeds
+without user interaction.
+All files will be processed with the same options selected by command
+line flags and command line arguments in effect.
+
+To interactively edit a stem file, a {\it single} HEX format font file
+should be specified, since SHOWCHAR automatically goes into batch mode
+when multiple files are given.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Hint File Format:}
+
+\vskip .05in
+
+\noindent
+A STM format file, contains one line per hinted
+character giving the character code followed by a description of 
+horizontal stems and vertical stems.  
+Two numbers are used to describe each stem.  A sample line might be:
+
+\verb@C 4 ; H 316 386 ; V 139 163 499 523 ; @
+
+\noindent
+This indicates that there is a horizontal stem with lower edge at 316
+and upper edge at 386, and two vertical stems, one with left edge at
+139 and right edge at 163, the other with left edge at 499 and right
+edge at 523 (The edges of stems are here also referred to as `strokes').
+
+For use as input to FONTONE, hint lines must be ordered by character code.
+No line need appear for a character that has no character-level hints.
+There should be no more than one line per character (output containing
+repeated information can sometimes be generated inadvertently when one
+backs up in SHOWCHAR to correct hinting in an earlier character---such
+repetitions should be edited out before passing the hinting information
+to FONTONE.)
+Comments may appear in the hint file using lines whose first character
+is `\%'. 
+
+Each line is divided into `fields', starting with the character code field.
+The character code field, the horizontal field and the vertical field
+must be separated by `;'s. 
+All horizontal stem information must appear following the letter `H',
+all vertical stem information following the letter `V'.
+If there are no horizontal stems, the horizontal field may be omitted,
+similarly for the vertical field.
+
+Two other field types are allowed: 
+When there are exactly three horizontal stems, and these fit the rules
+for {\tt hstem3} (see Adobe Type~1 booklet page 53), then the horizontal field
+may be replaced with a field starting with `E' followed by the six
+numbers that would otherwise appear in the horizontal field
+(This sometimes happens for characters like E, F, $\equiv$, $\div$,
+\char02, and \char04).
+When there are exactly three vertical stems, and these fit the rules
+for {\tt vstem3} (see Adobe Type~1 booklet page 54), then the vertical field
+may be replaced with a field starting with `M' followed by the six
+numbers that would otherwise appear in the vertical field
+(This sometimes happens for characters like m, \$, \char08, \char14,
+and \char15).
+
+For use as input to FONTONE, each field must contain an even number of
+entries, and these entries must be ordered.  
+Stems are not allowed to overlap.
+
+The difference between a stem file (STM) and a hint file (HNT), 
+is that a HNT file contains font-level hints at the start of the
+file, in addition to the character-level hints that would
+normally appear in a STM file.
+Either file format may be used as input to SHOWCHAR 
+(but the files must have extension {\tt .hnt} in either case).
+
+\vskip .1in
+
+\goodbreak
+
+\noindent {\bbf Controlling Behavior:}
+
+\vskip .05in
+
+\noindent The actions taken by SHOWCHAR are controlled by command line
+flags and command line arguments.  
+A command line flag is a character preceded by `-'.
+Several command line flags may be concatenated following a single `-'.
+
+A command line argument is a single character preceded by `-',
+followed by a space and an argument.
+The argument may be a number, word, file name or directory, as appropriate
+(The actual argument may not contain embedded space).
+
+Sample invocation of SHOWCHAR:
+
+\vskip .05in
+
+\verb@showchar -v -h c:\at&t c:\at&t\book*.hex@
+
+\vskip .05in
+
+\noindent
+An argument on the command line that is not preceded by an appropriate command
+line argument is treated as the name of the first font file to be processed.
+If {\it no} input files are specified, SHOWCHAR gives a brief usage list
+of command line flags and command line arguments.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent {\bbf Command Line Flags:}
+
+\vskip .05in
+
+\noindent Command line flags are used for modifications of some action
+of SHOWCHAR that can be specified without requiring additional arguments.
+
+\beginbullets
+
+\ftpar{(v)} Verbose mode. 
+Produces a (tiny) bit more detailed information when starting up and
+when running in batch mode.
+
+\ftpar{(n)} No output. This suppresses generation of the output stem file.  
+Useful when one wishes only to look at character outlines (to determine
+x-height, ascender and descender levels, for example)
+or for checking hinting information.
+
+\ftpar{(a)} Batch mode. Use this flag if a single font file is to be
+processed in batch mode (If multiple files are specified they are
+treated in batch mode automatically).
+
+\ftpar{(t)} Complain about repeated knots.  
+When this flag is used, SHOWCHAR stops and ring the bell when three
+knots in a row have the same coordinates.
+% Type a character to continue.
+If the flag appears twice in the command line, SHOWCHAR will complain
+when {\it two} knots in a row have the same coordinates.
+
+\endbullets
+
+There are also a number of less frequently used, as well as some 
+command line flags now considered obsolete: 
+
+\beginbullets
+
+\ftpar{(r)} Reverse character outline paths. All paths must be
+traversed with `ink on the left'---use this flag if they all have ink
+on the right instead---hopefully this is now no longer needed!
+(If used here, this flag must also be used in FONTONE).
+
+\ftpar{(s)} Correct for scaling problem in BSR release 0.8 fonts
+(that is, multiply by 72.27 over 72). Hopefully now obsolete!
+(If used here, this flag must also be used in FONTONE).
+
+\ftpar{(o)} Out of sequence.  Do characters in the order they appear in
+the file rather than in order of character code.  
+Not often used, since FONTONE expects hinting information to be ordered
+(Possibly useful when there are only a few characters in a font, 
+and they appear in order already in the HEX format file).
+
+\ftpar{(b)} Suppress insertion of potential stem edges at extrema of 
+outlines (Not particularly useful).
+
+\ftpar{(i)} Suppress italic and slanted stems. 
+This suppresses generation of vertical stem hints for italic and
+slanted fonts (Now considered obsolete). 
+
+\endbullets
+
+\vskip .1in
+
+\goodbreak
+
+\noindent {\bbf Command Line Arguments:}
+
+\vskip .05in
+
+\noindent  Command line argument provide additional information to
+SHOWCHAR, such as drive and directory names.
+
+\beginbullets
+
+\ftpar{(c)} Next argument specifies character code to start on.
+This is useful to get a quick look at a particular character
+outline---usually used in conjunction with the `n' flag
+(Not very useful when actually generating hints).
+
+\ftpar{(h)} Next argument specifies drive and directory where hinting
+information files can be found. SHOWCHAR looks for a file with the
+same name as the input HEX format file, but with extension {\tt .hnt}.
+% If this fails it looks for a file with extension {\tt .stm}. % NO
+
+\ftpar{(p)} Next argument specifies drive and directory where output
+is to be sent.  If omitted, output goes into the current directory.
+
+\ftpar{(e)} Next argument is extension to use for output file name.
+If omitted, the extension {\tt .stm} is used.
+
+\endbullets
+
+% (There are a number of other, now obsolete command line arguments.)
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Flags and Variables:}
+
+\vskip .05in
+
+\noindent Additional control is provided by settings of variables and flags in
+the program itself, listed at the beginning of the source code of SHOWCHAR.
+Typically these are variables that would only rarely be changed.
+In some cases these are variables that have become `frozen', 
+when settings other than the ones in the code were determined to be
+less useful or unsatisfactory.
+% (changing these may lead to unsatisfactory performance of SHOWCHAR).
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Interactive Use:}
+
+\vskip .05in
+
+\noindent
+In interactive mode, SHOWCHAR presents each character in turn on the
+screen with potential stem edges (called strokes here) marked, 
+and stem widths indicated.
+When invoked with proper arguments, SHOWCHAR first displays a screen
+with font bounding box and screen scaling information 
+(how much information is shown here is controlled by the command line
+flag `v').
+
+To start systematically working through the character outlines, 
+press the `space' key {\it twice}.
+After viewing a particular outline, type the `end' key (numeric keypad)
+to proceed to the next character. 
+To terminate operation of SHOWCHAR before all the character outlines
+have been presented, type the `escape' key
+(The output file, if any, will be incomplete in this case---see the
+discussion of the `page up' key below for an alternative).
+
+A complete list of all available key strokes is given below.
+
+\vskip .1in
+
+\noindent{\bbf Screen Information Format:}
+
+\vskip .05in
+
+\noindent
+The font name appears in the upper left corner of the screen, followed
+by a colon and the character code number.
+
+The position and scale of the character outline on the screen is 
+based on the Font BoundingBox in the given HEX format font file 
+(details of the scaling calculation are given on the first
+screen after SHOWCHAR is started).
+If the bounding box is inaccurate, some part of a character may lie off
+screen, or the character may occupy so small a part of the screen that
+it is hard to see what is going on. 
+In this case magnifying and demagnifying may be useful
+(see numeric keypad `+' and `-' keys below).
+Also, the character's image may be shifted around on the screen using the
+arrow keys while holding down the `control' key.
+(But note that the `flagging' of strokes is lost when any of these keys are
+used, so positioning of the character should be completed {\it before}
+hints are edited).
+
+The character outline appears in yellow, with small red circles marking
+the positions of `moveto's, small cyan diamonds marking the ends of
+`lineto's and small blue squares marking the knots in `curveto's
+(Note that there is an asymmetry here---inherited from the way
+PostScript describes an outline---in that the mark appearing at a
+particular position may be different were the outline to be traversed in
+reverse order).
+
+Lines with length above a certain threshold have white arrowheads added to
+indicate the direction of traversal of the character outline.
+The baseline of the character is shown as a dotted magenta line, with
+the character origin and the origin plus the character escapement
+position marked using white crosses.
+
+Places where two successive knots have the same coordinates are shown
+by a diagonal magenta cross that is somewhat larger than the marks
+described above. 
+A yellow circle is added to the magenta cross where {\it three} knots
+coincide. 
+
+Potential stem edges (here called strokes) are shown as light green and
+light red lines.
+Green is used for potential downstrokes (left edge of a vertical stem)
+and potential rightstrokes (lower edge of a horizontal stem), while red
+is used for potential upstrokes (right edge of a vertical stem) and
+potential leftstrokes (upper edge of a horizontal stem).
+The coordinates of the stems are shown at the edge of the screen in grey
+(bottom for vertical strokes and left for horizontal strokes).
+
+Strokes that are part of a stem to be output for hinting purposes are
+shown brighter than those that are not.
+Coordinates of strokes so flagged are also emphasized by being shown
+in color on the edge of the screen.
+The hinting information for a character must be consistent before it
+can be output. This means that strokes must be paired correctly---green
+and red alternating, starting with green and ending with red.
+That is, a downstroke must be followed by an upstroke for increasing $x$,
+and a rightstroke must be followed by a leftstroke for increasing $y$.
+% There must be an even number of horizontal stroked and 
+% an even number of vertical strokes.
+
+Properly paired strokes define horizontal and vertical stems.
+The width of such stems is shown on the screen on the edge of the
+screen opposite to where the coordinates of the strokes are given.
+When the selected strokes are {\it not} paired correctly, 
+SHOWCHAR will refuse to proceed to the next character outline when the
+`end' key is pressed.
+
+When there is no input STM or HNT file, SHOWCHAR normally marks the
+stems it decides should be used for hinting.
+If an input file {\it is} specified, SHOWCHAR suppresses its own
+hinting mechanisms and marks the strokes specified in the file.
+In both cases the user can then override the suggested hinting information.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Keys and Actions:}
+
+\vskip .05in
+
+\noindent
+One of the vertical or horizontal strokes is 
+usually selected while editing 
+(The only exception is that no stroke is selected right after a new
+character outline has been read in). 
+The selected stroke (much like a cursor) is shown brighter than the rest.
+The arrow keys are used to move from stroke to stroke.
+When a vertical stroke is currently selected, the system is said to be in
+`vertical' mode, while it is in `horizontal' mode when a horizontal
+stroke is selected.
+The `insert' and `delete' keys are used to flag and unflag 
+the currently selected stroke.
+%  to be used as part of the hinting information
+During editing, stroke information may be temporarily inconsistent 
+(for example, the next flagged stroke after a flagged green stroke
+may be another green stroke).
+Strokes must, however, be properly paired when the characters hints are
+written out using the `end' key. 
+
+The following is a detailed list of keys that can be used in
+an interactive session with SHOWCHAR and what they do.
+Most of these keys are on the numeric keyboard, or are special function keys.
+% unless otherwise noted.
+
+\beginbullets
+
+\vskip .05in
+
+\vtpar{{\tt space}} Used to go from the initial screen full of scaling
+information to the first character outline display.  
+Normally two `spaces' are required.  % Do not use another key stroke
+
+\vskip .05in
+
+\vtpar{{\tt escape}} Stop processing, close files and exist.  
+The output hint file, if any, will be incomplete (see discussion of
+`page up' key below for an alternative). 
+
+\vskip .05in
+
+\vtpar{{\tt left arrow}}  Move cursor to next vertical stroke to the left.
+If currently  in horizontal mode, switch to vertical mode and go to
+right-most vertical stroke. 
+
+\vskip .05in
+
+\vtpar{{\tt right arrow}}  Move cursor to next vertical stroke to the right.
+If currently  in horizontal mode, switch to vertical mode and go to
+left-most vertical stroke. 
+
+\vskip .05in
+
+\vtpar{{\tt down arrow}}  Move cursor to next horizontal stroke lower down.
+If in vertical mode, switch to horizontal mode and go to top-most
+horizontal stroke. 
+
+\vskip .05in
+
+\vtpar{{\tt up arrow}}  Move cursor to next horizontal stroke higher up.
+If in vertical mode, switch to horizontal mode and go to bottom-most
+horizontal stroke. 
+
+\vskip .05in
+
+\vtpar{{\tt insert}}  Flag the current stroke as a stem edge to use in hinting
+(No action if the stroke is already flagged).
+
+\vskip .05in
+
+\vtpar{{\tt delete}}  Unflag the current stroke as a stem edge to use in
+hinting (No action if the stroke is not flagged).
+
+\vskip .05in
+
+\vtpar{{\tt end}}  Write hints for this character and go to next.
+Complains if hint stroke information is inconsistent.
+The user should fix inconsistent hint information before trying again.
+
+\vskip .05in
+
+\vtpar{{\tt home}}  Return to previous character.  
+(Normally not recommended when producing output hint file,
+since this may lead to duplicate hint lines in output file.  
+If this feature {\it is} used, make sure to edit the output file
+afterwards to remove all but the last of a series of repeated hint lines.) 
+
+\vskip .05in
+
+\vtpar{{\tt numeric keypad +}} Zoom in one step---magnify the display.  
+Note: edited hint information is lost, so do this {\it before} making any
+changes to a character's hinting information.
+
+\vskip .05in
+
+\vtpar{{\tt numeric keypad -}} Zoom out one step---demagnify the display.  
+Note: edited hint information is lost, so do this {\it before} making any
+changes to a character's hinting information.
+
+\vskip .05in
+
+\vtpar{{\tt control left arrow}} Move screen image further left.
+
+\vskip .05in
+
+\vtpar{{\tt control right arrow}} Move screen image further right.
+
+\vskip .05in
+
+\vtpar{{\tt control down arrow}} Move screen image further down.
+
+\vskip .05in
+
+\vtpar{{\tt control up arrow}} Move screen image further up.
+
+\vskip .05in
+
+\vtpar{{\tt page down}} Leave interactive mode, 
+but continue displaying character outlines as they are processed.
+
+\vskip .05in
+
+\vtpar{{\tt page up}} Leave interactive mode and stop displaying character
+outlines as they are processed. That is, enter batch mode.
+(A better way to finish off a session than using `escape', which would
+produce an incomplete output file).
+
+\vskip .05in
+
+\vtpar{{\tt control insert}} Insert a ghost stem at the current position.
+% (Ghost stems have a width of 20 or 21 units in the Adobe standard
+% coordinate system).
+If the selected stroke is a left stroke, an additional right stroke is
+inserted below it.  
+If the selected stroke is a right stroke, an additional left stroke is
+inserted above it.
+
+\vskip .05in
+
+\vtpar{{\tt control delete}} Remove both strokes of a stem if possible.
+
+\vskip .05in
+
+\vtpar{{\tt F1}} Set flags in all stroke positions (Flag {\it all} strokes).
+
+\vskip .05in
+
+\vtpar{{\tt control F1}} Clear flags from all stroke positions.
+
+\vskip .05in
+
+\vtpar{{\tt F2}} From now one, show strokes for vertical stems for
+italic and slanted fonts (default). Now obsolete.
+
+\vskip .05in
+
+\vtpar{{\tt control F2}} From now on, do not show strokes for vertical
+stems for italic and slanted fonts. Now obsolete.
+
+\vskip .05in
+
+\vtpar{{\tt F3}} Show strokes that SHOWCHAR would flag. 
+(Can be used to override what is in input hint file, or to revert to
+what SHOWCHAR suggested before changes were made).
+
+\vskip .05in
+
+\vtpar{{\tt F4}} Show strokes that are flagged in hinting file---if one is
+supplied.  (Can be used to revert to what was in hinting file after
+making changes).
+
+\vskip .05in
+
+\vtpar{{\tt F5}} From now on, insert potential strokes at extrema of
+outlines (default). 
+
+\vskip .05in
+
+\vtpar{{\tt control F5}} From now on, do not insert potential strokes
+at extrema. 
+
+\vskip .05in
+
+\vtpar{{\tt F6}} From now on, level almost horizontal {\tt lineto}'s so
+they can be considered in stem marking decisions.  
+(This is useful only for inaccurate outlines where what should be
+exactly horizontal isn't quite).
+
+\vskip .05in
+
+\vtpar{{\tt control F6}} From now on, do not level almost horizontal
+{\tt lineto}s (default). 
+
+\vskip .05in
+
+\vtpar{{\tt F7}} From now on, combine almost colinear {\tt lineto}s. 
+(This is useful only for inaccurate outlines where what should be one
+long line is broken into two).
+
+\vskip .05in
+
+\vtpar{{\tt control F7}} From now on, do not combine almost colinear
+{\tt lineto}s (default). 
+
+\vskip .05in
+
+\vtpar{{\tt F8}} From now on, turn almost flat {\tt curveto}s into {\tt
+lineto}s. (This is only useful for inaccurate outlines).
+
+\vskip .05in
+
+\vtpar{{\tt control F8}} From now on, do not turn almost flat {\tt
+curveto}s into {\tt lineto}s (default).
+
+\endbullets
+
+(Note: changes made to outlines are for purposes of computing
+hints {\it only}, the input font file is {\it not} altered.)
+
+When a key is pressed that is not a numeric key-pad key or a special
+function key, then processing of outlines continues at the
+corresponding character.  So if you want to see what the outline for
+lower case letter `f' looks like, press the key labelled `f'.
+This is useful for gathering font-level hinting information, 
+such as where ascenders and descenders reach to (see later).
+It obviously is not a feature one should use while editing hints, since
+the information in the output hint file will no longer be in order.
+(This can lead to `surprises' when one inadvertently hits a normal
+key-board character in the middle of an editing session).
+
+Another feature of the interactive mode of SHOWCHAR, rarely used, is
+the ability to actually move strokes.  Normally strokes are available
+for flagging as parts of potential stems for hinting purposes in all
+places likely to be useful.  When fonts with poorly digitized outlines
+are analyzed, there may not be enough in the way of exactly-horizontal
+or exactly-vertical separation between knots to trigger the mechanism
+that creates these potential strokes.  Also, occasionally one may
+decide that a complex feature may be better served by a stem other than
+one that can be constructed using strokes in predefined positions.  It
+is then useful to be able to move existing strokes or to introduce new
+strokes using `control insert' and then move these around by holding
+down the `alt' (meta) key while using the arrow keys.  While this is
+somewhat awkward, it is also something that one does not need to do
+when good outlines are available.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Notes:}
+
+\vskip .05in
+
+\bpar To use the output of the first (automatic) pass of SHOWCHAR as
+input to the second (interactive) pass of SHOWCHAR, the file must be renamed
+so the extension changes from {\tt .stm} to {\tt .hnt}.
+
+\bpar Remember that ghost stems only make sense at the ends of 
+{\it vertical} stems. Thus ghost stems are always {\it horizontal} stems.
+
+\bpar What are loosely called `knots' here are actually real knots
+(coordinate pairs given to {\tt moveto} and {\tt lineto}, and the last
+coordinate pair given to {\tt curveto}) {\it plus} control points 
+(first two coordinate pairs given to {\tt curveto}). 
+That is, what are called `knots' here are actually {\it all}
+coordinates that appear in outline descriptions, 
+including those that do not actually lie on the outline, but are used
+to control Bezier curves.
+
+\bpar Potential positions for strokes are arrived at by looking for
+separations between successive knots that are either exactly horizontal
+or exactly vertical.  In addition, extrema of outlines in either the
+horizontal or the vertical direction are used to produce potential
+stroke positions
+(The latter often come in handy for insertion of ghost stems).
+
+\bpar Coincident knots should be avoided, since they not only make
+CharStrings longer than they need be, but because they interfere with
+the operation of some rendering algorithms.  
+Rendering algorithms depending on `erosion' methods, for example, use the
+direction of successive line segments between knots to determine what is
+`to the left' of the outline.
+This direction is undefined when a line segment has length zero, and so
+the erosion method may produce an undesirable artifact where a line
+segment of length zero occurs.
+SHOWCHAR also can do a better job when successive knots do not coincide.
+This is why SHOWCHAR flags coincident knots and why SHOWCHAR and
+FONTONE complain when several knots in succession have the same coordinates.
+It is usually worth going back to the original outline to figure out
+why successive knots coincide.
+
+\bpar In order to allow for a clean separation of character outline and
+character hinting information, hint replacement is not provided for.
+To make up for this, SHOWCHAR performs a tree search for an optimum 
+set of {\it fixed} hints in a situation where hint replacement might be
+useful---that is, where stems overlap.
+The objective function weights long stems more than short
+stems, weights `stems' with large overlap between left and right stroke
+more heavily than those with little overlap, weights long straight
+stems more heavily than those arising from curved parts of the outline
+and so on.
+Processing of the outlines of most characters does not require this
+search, 
+but for some complex characters (hairy ligatures, for example) 
+the search may require an appreciable amount of time.
+
+\bpar Adobe does not describe the operation of their rendering
+algorithm, nor how the rendering algorithm uses hinting information.  
+As a result, creating hinting information is an art rather than a science.
+What SHOWCHAR does is based on analysis of a large number of fonts from
+Adobe's font library.
+Unfortunately, even in this library there is no consistency in the use
+of hinting information.
+In fact, many of Adobe's fonts actually do things that are explicitly
+ruled out by the Adobe Type~1 booklet
+(Some fonts actually do truly bizarre things, such as having negative
+stem widths).
+One conclusion one might reach is that character rendering can be
+satisfactory even when some details of the hinting information are not
+exactly correct.
+
+\bpar Font rendering algorithms in different PostScript interpreters
+use hinting information in different ways.
+The algorithm in ATM for Windows, for example, is clearly different
+from the algorithm on the Apple LaserWriter II---and clearly better.
+No doubt rendering algorithms will continue to evolve to make better
+and better use of hinting information.
+As a result it may be futile to try and produce the `optimum'
+hinting information for a particular PostScript interpreter.
+For complex characters in particular, there is no `correct' way of
+hinting, just some heuristics that seem to work well.
+For simple characters, on the other hand, there is no such problem, 
+and SHOWCHAR produces what everyone would agree is the only
+sensible set of hints.
+
+\bpar SHOWCHAR has a character string that records the current task, 
+so that, should a fatal error occur, then the error message will
+include a notation indicating the task SHOWCHAR thought it was working on.
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Font-Level Hints:}
+
+\vskip .05in
+
+\noindent
+SHOWCHAR generates character-level hints.
+Character-level hints provide most of the information needed to improve
+rendering of characters on low-resolution devices.
+Additional information is provided by font-level hints.
+Font-level hints are particularly useful in providing for uniform
+rendering of character features that occur at similar heights in
+specified `alignment zones'.
+Font level hints are added manually to the front of a file containing
+character-level hints 
+(thus turning a STM format file into a HNT format file).
+There are usually just a few lines of font-level information.
+These are copied without alteration into the font's Private dictionary
+when FONTONE processes the hint file.
+
+A fairly complete sample set of font-level hints is given here:
+
+\vskip .05in
+
+\verb@/BlueValues [-22 0 683 705 430 446 667 679] def@
+
+\verb@/OtherBlues [-206 -195] def@
+
+\verb@/BlueFuzz 2 def@
+
+\verb@/BlueScale .04796 def@
+
+\verb@/StdHW [31] def@
+
+\verb@/StdVW [65] def@
+
+\verb@/StemSnapH [22 27 31 42 76 105] def@
+
+\verb@/StemSnapV [22 25 65 68 83 89 103] def@
+
+\vskip .05in
+
+\noindent
+The most important font-level hint is the {\tt BlueValues} array---it is
+actually required in a font, and FONTONE supplies a dummy value if none
+is found in the hinting file.
+This array contains pairs of vertical coordinates defining alignment
+zones where features normally end.
+The first coordinate is the overshoot position of a character like `O'
+that drops below the baseline.  
+The second coordinate is the position of the corresponding
+`non-overshoot' position, namely the baseline itself (normally 0)---the
+bottom of a character like `X'. 
+Together these two form an alignment zone.  
+Under appropriate circumstances (see the Adobe Type~1 booklet), a stem
+edge lying within this zone is moved to align exactly with the baseline.
+
+The next pair of numbers defines the zone between the top of an upper-case
+letter like `X', that has no overshoot, and a letter like `O' that
+does have overshoot.
+The next  pair of numbers defines the zone between the top of a
+lower-case letter like `x' and the top of a letter like `o'. 
+Another alignment zone is defined here for ascenders.
+
+The next most important font-level hint is the {\tt OtherBlues} array.
+It plays a role for {\it descending} features that is similar to that played
+by {\tt BlueValues} for {\it ascending} features (well, actually 
+{\tt BlueValues} already includes one zone for `descending' features).
+In the example here, descenders terminate in the alignment zone lying
+between -195 and -206.
+
+Values for entries in these two arrays are best obtained by using SHOWCHAR
+to look at the outlines of particular characters such as `X', `O', `x',
+`o', `f', `p', `g' (this is why the feature exists in SHOWCHAR  that
+allows one to display the outline of an ordinary alphanumeric character
+just by typing the corresponding key).  
+Additional statistical information on the positions of horizontal stem
+edges may also be obtained using the program HINTANAL.
+
+The {\tt BlueFuzz} entry is useful for dealing with character outlines
+were similar features on characters to not always lie at exactly the
+same coordinates, perhaps due to quantization errors in outline conversion.
+The {\tt BlueScale} entry controls the font scale 
+(in terms of pixels per quad) 
+at which `overshoot' in alignment zones is suppressed.
+(See the Adobe Type~1 booklet for more details).
+
+The remaining entries are ones that were only recently introduced to Type~1
+fonts, and are not supported by all PostScript interpreters. 
+
+The entries {\tt StdHW} and {\tt StdVW} represent the most commonly
+occuring stem widths for horizontal and vertical stems respectively.
+
+The arrays {\tt StemSnapH} and {\tt StemSnapV} elaborate on this
+information by providing a (sorted) list of common stems widths.
+Stem widths close to the ones specified in this array are treated as if
+they were equal to those in the array.  
+This helps provide some uniformity in rendering of stems even when the
+outlines have small quantization errors.
+
+The temptation here is to include too many entries (as in the given example).
+Not only does this defeat the purpose of the mechanism, but it is
+known that some PostScript `clone' printers impose a limit on the size
+of this array (and crash if the limit is exceeded).
+It is thus advisable to try and use only perhaps 2 or 3 entries.
+%
+Statistics on stem widths that is useful for designing these last few
+font-level hints are generated by HINTANAL from the character-level
+hint information.
+
+Another font-level hint is {\tt ForceBold} (set to either true or false).
+FONTONE generates this font-level hint automatically using
+information from the AFM file.  
+(There is the chance of duplication if this hint also occurs in the
+hint file).
+
+These are the most important font-level hints.  
+There are some others that apply to bar-code fonts and other languages
+(For details see the Adobe Type~1 font booklet).
+
+\vskip .1in
+
+\goodbreak
+
+\noindent{\bbf Restrictions:}
+
+\vskip .05in
+
+\bpar SHOWCHAR assumes it has a VGA display to show character outlines
+and stem information.
+This implies that there is some non-ANSI C code to draw characters and
+lines on the screen.
+
+\bpar There may be some potential confusion about the notions of {\tt .stm}
+and {\tt .hnt} files versus STM and HNT files.
+The two sets of terms refer to different properties of hint files.
+SHOWCHAR normally tries to obtain hinting information from a file with
+extension {\tt .hnt} and normally writes hinting information to a file
+with extension {\tt .stm}.
+These files may each be {\it either} STM or HNT format files.
+The difference between STM and HNT format files is just that HNT files
+include font-level hints that have been added to the front of a STM file
+that already contains character-level hints.
+Any such  font-level hints appearing in the input to SHOWCHAR are passed
+through unmolested to the output.
+
+\bpar SHOWCHAR assumes that outlines follow the rules suggested in the
+Adobe Type~1 booklet (as does FONTONE).
+That is, there are knots at all extrema in the horizontal and vertical
+position, no  {\tt curveto} turns through more than 90 degrees, and
+there are no knots outside the bounding box of an outline.
+Outlines that do not obey these rules may not have the exactly-vertical
+and exactly-horizontal separations between adjacent knots that trigger
+SHOWCHAR's mechanism for marking potential vertical and horizontal
+stroke positions.
+
+\bpar Ghost stems (Adobe Type~1 booklet page 57) have to be introduced
+manually.  
+There is presently no provision for automatically detection the need
+for a ghost stem, since a foolproof algorithm for doing this has not
+yet been discovered
+(This is more of a concern for sans serif fonts than for serifed
+fonts---it is also not very important for printer output, but apparently
+significant for use of fonts with ATM).
+Some of the features of SHOWCHAR are explicitly provided to help in
+the insertion of ghost stems.
+These include the `control-insert' key that inserts a ghost stem at a
+given location and the `control-delete' key that removes both strokes of a
+ghost stem.  
+The provision of potential strokes at all extrema makes it possible
+to exploit the above key strokes.
+
+\bpar Character-wide vertical stems.  Depending on the rendering
+algorithm, it may be useful to take the whole character outline as a
+single vertical `stem' when there are no other vertical stems.
+This despite the fact that this may make for a very wide stem,
+something usually discouraged.
+Using such a wide stem helps center characters and may be % particularly
+useful with bilaterally symmetric and centrally symmetric glyphs.  
+SHOWCHAR presently has no mechanism for detecting symmetries that might
+be used to trigger such automatic character-wide stem generation. 
+This may be a non-trivial task, 
+given inaccuracies in outlines 
+(and the fact that two different combinations of {\tt lineto}'s and 
+{\tt curveto}'s may give rise to very similar curves).
+
+\bpar SHOWCHAR has a few parameters and thresholds that have been
+tuned heuristically.  These may not be entirely appropriate when a
+really unusual font is processed (very heavy or very light, for example).
+
+\bpar SHOWCHAR adjust some parameters and thresholds according to
+whether it thinks a font is bold or not.  This may lead to less than
+optimal behavior in cases where it is mistaken. 
+This problem could perhaps be solved by having SHOWCHAR also read the
+AFM file.
+
+\bpar SHOWCHAR has quite a bit of code that is specific to Computer
+Modern fonts that could probably be excised without too much difficulty.
+
+\bpar The basic outline is not refreshed as hint editing proceeds.
+In some cases (mostly only when the ability to move strokes is used), 
+the outline may get locally `punctured' by writing and erasing strokes.
+
+\bpar Due to a historical accident (old Projective Solutions outlines),
+the notion of upstroke and downstroke is systematically reversed in the
+naming of functions in the actual program.
+
+\end
+
+% attempt to explain how hinting information is used
+
+% SHOWCHAR uses `straight parts' of curveto's

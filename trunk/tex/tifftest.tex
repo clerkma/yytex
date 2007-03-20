@@ -1,0 +1,282 @@
+% Test of ordinary TIFF file insertion - uncompressed (or PackBits) 
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=10pt
+
+% SUBSTITUTE YOUR OWN FILE NAMES & PATHS FOR THE ONES SHOWN
+
+\offheaders
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\newdimen\dwidth
+\newdimen\dheight
+
+\def\showimage#1#2#3{%
+\dwidth=#2\dheight=#3
+\edef\width{\number\dwidth} \edef\height{\number\dheight}%
+\special{insertimage: #1 \width \space \height}%
+}
+
+\def\showimagen#1#2#3#4{%
+\dwidth=#2\dheight=#3
+\edef\width{\number\dwidth} \edef\height{\number\dheight}%
+\special{insertimage: #1 \width \space \height \space #4}%
+}
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\noindent c:/tiff/none-p.tif. This is followed by a 3.6 inch gap
+
+\vskip 3.6in
+
+\centerline{\hbox to 2.45in{\showimage{c:/tiff/anchor-p.tif}{2.45in}{3.6in}\hfill}}
+
+\noindent c:/tiff/anchor-p.tif. That was an image of a pin head
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\noindent c:/tiff/ed-poole.tif. This is followed by a 2.4 inch gap
+
+\vskip 2.4in
+
+\centerline{\hbox to 1.92in{\showimage{c:/tiff/ed-poole.tif}{1.92in}{2.4in}\hfill}}
+
+\noindent c:/tiff/ed-poole.tif. That was an image of a nutcracker
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/none-p.tif. This is followed by a 3.5 inch gap
+
+\vskip 3.5in
+
+\centerline{\hbox to 2.59in{\showimage{c:/tiff/none-p.tif}{2.59in}{3.41in}\hfill}}
+
+\noindent c:/tiff/none-p.tif. That was an image of a pin head
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/mtbiker.tif. This is followed by a 4.26inch gap
+
+\vskip 4.26in
+
+% \special{insertimage: c:/tiff/mtbiker.tif}
+
+\centerline{\hbox to 3.08in{\showimage{c:/tiff/mtbiker.tif}{3.08in}{4.26in}\hfill}}
+
+\noindent c:/tiff/mtbiker.tif. That was an image of a mountain biker
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/designer/m1andm2.eps. This is a line of text followed by a 3.25inch gap
+
+\vskip 3.25in
+
+\centerline{\hbox to 1.875in{\showimage{c:/designer/m1andm2.eps}{1.875in}{3.25in}\hfill}}
+
+\noindent c:/designer/m1andm2.eps. This is a line of text preceded by a 3.25inch gap
+
+\noindent c:/designer/arrows.eps. This is a line of text followed by a 1.5inch gap
+
+\vskip 1.5in
+
+\centerline{\hbox to 2in{\showimage{c:/designer/arrows.eps}{2in}{1.5in}\hfill}}
+
+\noindent c:/designer/arrows.eps. This is a line of text preceded by a 1.5inch gap
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage % \end
+
+\noindent c:/tiff/y\&ylogo.tif. This is a line of text followed by a 2inch gap
+
+\vskip 2in
+
+\centerline{\hbox to 1.33in{\showimage{c:/tiff/y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+% \centerline{\hbox to 1.33in{\special{insertimage: c:/tiff/y&ylogo.tif 4736286 7104430}\hfill}}
+
+\noindent c:/tiff/y\&ylogo.tif. This is a line of text preceded by a 1.5inch gap
+
+\noindent c:/ps/nosmoke.eps. This is a line of text followed by a 1.33 inch gap
+
+\vskip 1.33in
+
+\centerline{\hbox to 1.33in{\showimagen{c:/ps/nosmoke.eps}{1.33in}{1.33in}{1}\hfill}\hbox to 1.33in{\showimagen{c:/ps/nosmoke.eps}{1.33in}{1.33in}{2}\hfill}}
+
+\noindent c:/ps/nosmoke.eps. This is a line of text preceded by a 1.33 inch gap
+\noindent c:/tiff/monique.tif. This is a line of test followed by a 2.13 inch gap
+
+\vskip 2.13in
+
+\centerline{\hbox to 1.60in{\showimage{c:/tiff/monique.tif}{1.60in}{2.13in}\hfill}}
+
+% \centerline{\hbox to 1.60in{\special{insertimage: c:/tiff/monique.tif 7578058 10088290}\hfill}}
+
+\noindent c:/tiff/monique.tif. This is a line of test preceded by a 2.13 inch gap
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/rankline.tif. This is a line of text followed by a 5.54 inch gap
+
+\vskip 5.54in
+
+\centerline{\hbox to 3.85in{\showimage{c:/tiff/rankline.tif}{3.85in}{5.54in}\hfill}}
+
+% \centerline{\hbox to 5.54in{\special{insertimage: c:/tiff/rankline.tif 26239028 18234704}\hfill}}
+
+\noindent c:/tiff/rankline.tif. This is a line of text preceded by a 5.54 inch gap
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/rankgrey.tif. This is a line of text followed by a 5.60 inch gap
+
+\vskip 5.60in
+
+\centerline{\hbox to 3.91in{\showimage{c:/tiff/rankgrey.tif}{3.91in}{5.60in}\hfill}}
+
+% \centerline{\hbox to 5.60in{\special{insertimage: c:/tiff/rankgrey.tif 26523206 18518881}\hfill}}
+
+\noindent c:/tiff/rankgrey.tif. This is a line of text preceded by a 5.60 inch gap
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/deimos1.tif. This is a line of text followed by a 3 inch gap
+
+\vskip 3in % \vskip 1.5in
+
+\centerline{\hbox to 3.80in{\showimage{c:/tiff/deimos1.tif}{3.80in}{3in}\hfill}}
+
+% \centerline{\hbox to 1.90in{\special{insertimage: c:/tiff/deimos1.tif 8998945 6393987}\hfill}}
+
+\noindent c:/tiff/deimos1.tif. This is a line of text preceded by a 3 inch gap
+
+\noindent c:/tiff/deimos2.tif. This is a line of test followed by a 3 inch gap
+
+\vskip 3in % \vskip 1.5in
+
+\centerline{\hbox to 3.85in{\showimage{c:/tiff/deimos2.tif}{3.85in}{3in}\hfill}}
+
+% \centerline{\hbox to 1.92in{\special{insertimage: c:/tiff/deimos2.tif 9093670 6583439}\hfill}}
+
+\noindent c:/tiff/deimos2.tif. This is a line of test preceded by a 3 inch gap
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/pmjean. This is a line of text followed by a 3.25 inch gap.
+
+\vskip 3.25in
+
+\centerline{\hbox to 5.12in{\showimage{c:/tiff/pmjean}{5.12in}{3.25in}\hfill}}
+
+% \centerline{\hbox to 5.12in{\special{insertimage: c:/tiff/pmjean.tif 24249788 15237804}\hfill}}
+
+\noindent c:/tiff/pmjean. This is a line of text preceded by a 3.25 inch gap.
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/photo. This is a line of text followed by a 4.65 inch gap.
+
+\vskip 4.65in
+
+\centerline{\hbox to 4.07in{\showimage{c:/tiff/photo}{4.07in}{4.65in}\hfill}}
+
+% \centerline{\hbox to 4.07in{\special{insertimage: c:/tiff/photo.tif 19276687 22023733}\hfill}}
+
+\noindent c:/tiff/photo. This is a line of text preceded by a 4.65 inch gap.
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\end 
+
+% following TIFF files were lost ... WINWORD
+
+\newpage
+
+\noindent c:/winword/winword.cbt/sweet.tif. This is a line of text followed by a 1 inch gap.
+
+\vskip 1in
+
+\centerline{\hbox to 1.32in{\showimage{c:/winword/winword.cbt/sweet.tif}{1.32in}{1in}\hfill}}
+
+% \centerline{\hbox to 1.32in{\special{insertimage: c:/winword/winword.cbt/sweet.tif 6251898 4073207}\hfill}}
+
+\noindent c:/winword/winword.cbt/sweet.tif. This is a line of text preceded by a 1 inch gap.
+
+\newpage
+
+\noindent c:/winword/winword.cbt/cutter.tif. This is a line of text followed by a three inch gap.
+
+\vskip 3in
+
+\centerline{\hbox to 1.76in{\showimage{c:/winword/winword.cbt/cutter.tif}{1.76in}{3in}\hfill}}
+
+% \centerline{\hbox to 1.76in{\special{insertimage: c:/winword/winword.cbt/cutter.tif 8335864 13877320}\hfill}}
+
+\noindent c:/winword/winword.cbt/cutter.tif. This is a line of text preceded by a three inch gap.
+
+\noindent c:/winword/winword.cbt/fleet.tif. This is a line of text followed by a one inch gap.
+
+\special{figurecolor: 255 0 255 0 255 0}
+
+\vskip 1in
+
+\centerline{\hbox to 2.04in{\showimage{c:/winword/winword.cbt/fleet.tif}{2.04in}{1in}\hfill}}
+
+% \centerline{\hbox to 2.04in{\special{insertimage: c:/winword/winword.cbt/fleet.tif 9662025 3504852}\hfill}}
+
+\noindent c:/winword/winword.cbt/fleet.tif. This is a line of text preceded by a one inch gap.
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/winword/winword.cbt/yawl.tif. This is a line of text followed by a 4 inch gap.
+
+\special{figurecolor: 255 255 0 0 0 255}
+
+\vskip 4in % \vskip 2in
+
+\centerline{\hbox to 2.8in{\showimage{c:/winword/winword.cbt/yawl.tif}{2.8in}{4in}\hfill}}
+
+% \centerline{\hbox to 1.38in{\special{insertimage: c:/winword/winword.cbt/yawl.tif 6536076 9093671}\hfill}}
+
+\noindent c:/winword/winword.cbt/yawl.tif. This is a line of text preceded by a 4 inch gap.
+
+\end
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+\newpage
+
+\noindent c:/tiff/spirit.tif. This is followed by a 2.7 inch gap
+
+\vskip 2.7in
+
+\centerline{\hbox to 3.6in{\showimage{c:/tiff/spirit.tif}{3.6in}{2.7in}\hfill}}
+
+% \centerline{\hbox to 3.6in{\showimage{spirit.tif}{3.6in}{2.7in}\hfill}}
+
+\noindent c:/tiff/spirit.tif. That was an image of a spirit tree
+
+% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% %%% 
+
+

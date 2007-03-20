@@ -1,0 +1,42 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% \typesize=12pt
+\typesize=10pt
+
+\noheaders
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\def\clover{
+% \special{button: 0 0 15000000 21000000 "North West"}
+% \special{button: 15000000 0 30801920 21000000 "North East"}
+% \special{button: 0 21000000 15000000 42598400 "South West"}
+% \special{button: 15000000 21000000 30801920 42598400 "South East"}
+\special{button: 0 6000000 15000000 13000000 "North West"}
+\special{button: 16000000 6000000 30801920 13000000 "North East"}
+\special{button: 0 14000000 15000000 20000000 "South West"}
+\special{button: 16000000 14000000 30801920 20000000 "South East"}
+}
+
+\special{mark: "North West"}
+Mark North-West. PAGE 1
+\clover
+
+\newpage
+\special{mark: "North East"}
+Mark North-East. PAGE 2
+\clover
+
+\newpage
+\special{mark: "South West"}
+Mark South-West. PAGE 3
+\clover
+
+\newpage
+\special{mark: "South East"}
+Mark South-East. PAGE 4
+\clover
+
+\end

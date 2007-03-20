@@ -1,0 +1,670 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=10pt
+
+\offheaders
+
+\input psadobe.tex
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\psadobesetdefault{72}{72}{72}{72}{}%	set the default sizes to 72 points
+
+% The fundamental insertion macro.  This inserts a PostScript file
+% putting the origin at (x,y) and building a TeX box whose
+% size is (w,h).  Nothing fancy is done.  x,y,w,h are TeX dimensions.
+% The magnification m is a string that should be something like 1.40.
+%
+% psfile(x,y,w,h,m,filename)
+%
+\def\psfail#1#2#3#4#5#6{%
+  \unhbox\psvoid%	switch to horizontal mode (just like a letter would)
+  \hbox to #3{%		make a box w wide
+     \kern-#1%		offset the illustration's x-pos
+     \vbox to #4{%	make a box h tall
+        \vfil%		push the special down to the bottom
+        \kern#2%	offset by the illustration's y-pos
+        \special{#6}%
+        \kern-#2}%	unoffset y
+     \kern#1\hfil%	unoffset x and push the special left
+     }}
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (I) DVIALW by Nelson Beebe.
+
+\noindent (I) DVIALW by Nelson Beebe. 
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+% \vskip 6.35in
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\special{language "PS", include "c:/designer/m1andm2.eps"}%
+\hfill}}
+
+\vskip 6.35in
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (I) DVIALW by Nelson Beebe. 
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+% \vskip 2.875in
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\special{language "PS", include "c:/designer/arrows.eps"}%
+\hfill}}
+
+\vskip 2.875in
+
+\noindent EPSF file: \verb@c:\designer\arrows.ps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (I) DVIALW by Nelson Beebe. 
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+% \vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{language "PS", include "c:/dvitest/nosmoke"}%
+\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+\vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (H) Textures by BlueSkyResearch.
+
+\noindent (H) Textures by BlueSkyResearch. 
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+\vskip 6.35in
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\special{illustration c:/designer/m1andm2.eps scaled 1000}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (H) Textures by BlueSkyResearch. 
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+\vskip 2.875in
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\special{illustration c:/designer/arrows.eps scaled 1000}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (H) Textures by BlueSkyResearch. 
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+\vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{illustration c:/dvitest/nosmoke}%
+\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+% \vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (G) DVILASER/PS by ArborText
+
+\noindent (G) DVILASER/PS by ArborText.
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+\vskip 6.35in
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\special{ps: epsfile c:/designer/m1andm2.eps 1000}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (G) DVILASER/PS by ArborText. 
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+\vskip 2.875in
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\special{ps: epsfile c:/designer/arrows.eps 1000}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (G) DVILASER/PS by ArborText.
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+\vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{ps: epsfile c:/dvitest/nosmoke}%
+\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+% \vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (F) DVITOPS James Clark
+
+\noindent (F) DVITOPS James Clark.
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+\vskip 6.35in
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\special{dvitops: import c:/designer/m1andm2.eps 4in 6.3in}%
+\hfill}}
+
+\noindent 
+EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (F) DVITOPS James Clark.
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+\vskip 2.875in
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\special{dvitops: import c:/designer/arrows.eps 3.5in 2.875in}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (F) DVITOPS James Clark
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+\vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{dvitops: import c:/dvitest/nosmoke 1.85in 1.85in}%
+\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+% \vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (E) DVI2PS Mark Senn + PSFIG
+
+\noindent (E) DVI2PS Mark Senn + PSFIG.
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+% \vskip 6.35in
+
+\catcode`\%=12
+\catcode`\~=14
+
+\psadobeextract %%BoundingBox: 0 336 291 792 %%BoundingBox:\heaven{true}{}
+
+\catcode`\%=14
+\catcode`\~=13
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\psfile{\psadobex}{\psadobey}{\psadobew}%
+        {\psadobeh}{\expandafter\floater\the\float}{c:/designer/m1andm2.eps}
+% \special{psfile=c:/designer/m1andm2.eps}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (E) DVI2PS Mark Senn + PSFIG
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+% \vskip 2.875in
+
+\catcode`\%=12
+\catcode`\~=14
+
+\psadobeextract %%BoundingBox: 0 585 252 792 %%BoundingBox:\heaven{true}{}
+
+\catcode`\%=14
+\catcode`\~=13
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\psfile{\psadobex}{\psadobey}{\psadobew}%
+        {\psadobeh}{\expandafter\floater\the\float}{c:/designer/arrows.eps}
+% \special{psfile=c:/designer/arrows.eps}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (E) DVI2PS Mark Senn + PSFIG
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+% \vskip 1.85in
+
+\catcode`\%=12
+\catcode`\~=14
+
+\psadobeextract %%BoundingBox: 197 294 330 427 %%BoundingBox:\heaven{true}{}
+
+\catcode`\%=14
+\catcode`\~=13
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\psfile{\psadobex}{\psadobey}{\psadobew}%
+        {\psadobeh}{\expandafter\floater\the\float}{c:/dvitest/nosmoke}%
+\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+% \vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (D) DVIPS  + EPSF
+
+\noindent (D) DVIPS  + EPSF.
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+\vskip 6.35in
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\special{PSfile=c:/designer/m1andm2.eps llx=0 lly=336 urx=291 ury=792 rwi=2910}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (D) DVIPS  + EPSF.
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+\vskip 2.875in
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\special{PSfile=c:/designer/arrows.eps llx=0 lly=585 urx=252 ury=792 rwi=2520}%
+\hfill}}
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (D) DVIPS  + EPSF.TEX - 
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+\vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{PSfile=c:/dvitest/nosmoke llx=197 lly=294 urx=330 ury=427 rwi=1330}%
+\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (C) A. Li's DVI2PS + PSFIG
+
+\noindent (C) A. Li's DVI2PS + PSFIG.
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4.04in{
+% \special{pstext="18874368 29727129 0 22020096 19070976 51904512 startTexFig"}%
+\special{pstext=" 19142492 29996482 0 22102671 19142492 52099153 startTexFig"}%
+\special{psfile=c:/designer/m1andm2.eps}%
+\special{pstext=endTexFig}\hfill}}
+
+\vskip 6.35in
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (C) A. Li's DVI2PS + PSFIG.
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+% \special{pstext="16515072 13565952 0 38338560 16515072 51904512 startTexFig"}%
+\special{pstext="16577003 13616824 0 38482329 16577003 52099153 startTexFig"}%
+\special{psfile=c:/designer/arrows.eps}%
+\special{pstext=endTexFig}\hfill}}
+
+\vskip 2.875in
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (C) A. Li's DVI2PS + PSFIG.
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+% \vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{pstext="8762130 8762130 12959006 19339837 21707980 28088811 startTexFig"}%
+\special{psfile=c:/dvitest/nosmoke}%
+\special{pstext=endTexFig}\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+\vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (B) S.v.B's DVI2PS + PSFIG
+
+\noindent (B) S.v.B's DVI2PS + PSFIG.
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\special{ps: psfiginit}%
+% \special{ps: literal 18874368 29727129 0 22020096 19070976 51904512 startTexFig}%
+\special{ps: literal 19142492 29996482 0 22102671 19142492 52099153 startTexFig}%
+\special{ps: include c:/designer/m1andm2.eps}%
+\special{ps: literal "endTexFig "}\hfill}}
+
+\vskip 6.35in
+
+\noindent 
+EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent  (B) S.v.B's DVI2PS + PSFIG.
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\special{ps: psfiginit}%
+% \special{ps: literal 16515072 13565952 0 38338560 16515072 51904512 startTexFig}%
+\special{ps: literal 16577003 13616824 0 38482329 16577003 52099153 startTexFig}%
+\special{ps: include c:/designer/arrows.eps}%
+\special{ps: literal "endTexFig "}\hfill}}
+
+\vskip 2.875in
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (B) S.v.B's DVI2PS + PSFIG.
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+% \vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{ps: psfiginit}%
+\special{ps: literal 8762130 8762130 12959006 19339837 21707980 28088811 startTexFig}%
+\special{ps: include c:/dvitest/nosmoke}%
+\special{ps: literal "endTexFig "}\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+\vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+\newpage
+
+%% (A) DVIPS + PSFIG
+
+\noindent (A) DVIPS + PSFIG.
+EPSF file: \verb@c:\designer\m1andm2.eps@. 
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4.04in{
+% \special{ps::[begin] 18874368 29727129 0 22020096 19070976 51904512 startTexFig}%
+\special{ps::[begin] 19142492 29996482 0 22102671 19142492 52099153 startTexFig}%
+\special{ps: plotfile c:/designer/m1andm2.eps}%
+\special{ps::[end] endTexFig}\hfill}}
+
+\vskip 6.35in
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (A) DVIPS + PSFIG.
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+% \special{ps::[begin] 16515072 13565952 0 38338560 16515072 51904512 startTexFig}%
+\special{ps::[begin] 16577003 13616824 0 38482329 16577003 52099153 startTexFig}%
+\special{ps: plotfile c:/designer/arrows.eps}%
+\special{ps::[end] endTexFig}\hfill}}
+
+\vskip 2.88in
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent  (A) DVIPS + PSFIG.
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+% \vskip 1.85in
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\special{ps::[begin] 8762130 8762130 12959006 19339837 21707980 28088811 startTexFig}%
+\special{ps: plotfile c:/dvitest/nosmoke}%
+\special{ps::[end] endTexFig}\hfill}}
+
+% \special{nosmoke.eps}%
+% \special{c:/dvitest/nosmoke}%
+
+\vskip 1.85in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%%  %%% %
+
+%% (J) Andrew Trevorrow (OzTeX and PsPrint).
+
+\noindent (J) Andrew Trevorrow (OzTeX \& PsPrint). 
+EPSF file: \verb@c:\designer\m1andm2.eps@.
+
+% \vskip 6.35in
+
+\catcode`\%=12
+\catcode`\~=14
+
+\psadobeextract %%BoundingBox: 0 336 291 792 %%BoundingBox:\heaven{true}{}
+
+\catcode`\%=14
+\catcode`\~=13
+
+% 4in = 18874368 6.3in = 29727129 % 0 336 291 792
+\centerline{\hbox to 4in{
+\psfail{\psadobex}{\psadobey}{\psadobew}%
+        {\psadobeh}{\expandafter\floater\the\float}{c:/designer/m1andm2.eps}
+% \special{psfile=c:/designer/m1andm2.eps}%
+\hfill}}
+
+% \vskip 6.35in
+
+\noindent EPSF file: \verb@c:\designer\m1andm2.eps@.
+This is a line of text.
+
+\newpage
+
+\noindent (J) Andrew Trevorrow (OzTeX \& PsPrint).
+EPSF file: \verb@c:\designer\arrows.eps@.
+
+% \vskip 2.875in
+
+\catcode`\%=12
+\catcode`\~=14
+
+\psadobeextract %%BoundingBox: 0 585 252 792 %%BoundingBox:\heaven{true}{}
+
+\catcode`\%=14
+\catcode`\~=13
+
+% 3.5in = 16515072 2.875in = 13565952 % 0 585 252 792
+\centerline{\hbox to 3.5in{
+\psfail{\psadobex}{\psadobey}{\psadobew}%
+        {\psadobeh}{\expandafter\floater\the\float}{c:/designer/arrows.eps}
+% \special{psfile=c:/designer/arrows.eps}%
+\hfill}}
+
+% \vskip 2.875in
+
+\noindent EPSF file: \verb@c:\designer\arrows.eps@.
+This is a line of text.
+
+\vskip .1in
+
+\noindent (J) Andrew Trevorrow (OzTeX and PsPrint)
+EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+
+% \vskip 1.85in
+
+\catcode`\%=12
+\catcode`\~=14
+
+\psadobeextract %%BoundingBox: 197 294 330 427 %%BoundingBox:\heaven{true}{}
+
+\catcode`\%=14
+\catcode`\~=13
+
+% 1.85in 1.85in 197 294 330 427
+\centerline{\hbox to 1.85in{
+\psfail{\psadobex}{\psadobey}{\psadobew}%
+        {\psadobeh}{\expandafter\floater\the\float}{c:/dvitest/nosmoke}%
+\hfill}}
+
+% \vskip 1.33in
+
+\noindent EPS + TIFF files: \verb@nosmoke@. % \verb@c:\dvitest\nosmoke@.
+This is a line of text.
+
+% \end
+
+\end

@@ -1,0 +1,26 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=12pt
+
+\font\bgreek=cmmib10
+
+\def\balpha{{\bgreek \char11 }}
+\def\bomega{{\bgreek \char33 }}
+
+\def\boldify#1{\hbox{\rlap{$#1$}\kern .4pt{$#1$}}} % manufacture bold letter
+
+\def\oalpha{\boldify{\alpha}}
+\def\oomega{\boldify{\omega}}
+
+\indent
+Plain omega: $\omega$, bold omega \bomega, old omega \oomega.
+
+$\omega$\bomega\oomega$\omega$\bomega\oomega$\omega$\bomega\oomega$\omega$\bomega\oomega.
+
+\indent
+Plain alpha: $\alpha$, bold alpha \balpha, old alpha \oalpha.
+
+$\alpha$\balpha\oalpha$\alpha$\balpha\oalpha$\alpha$\balpha\oalpha$\alpha$\balpha\oalpha.
+
+\end
+

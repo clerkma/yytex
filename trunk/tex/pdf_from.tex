@@ -1,0 +1,928 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\typesize=12pt
+
+\noheaders	% \nopagenumbers
+
+\vsize=5in	% Better format for on screen
+
+\input lcdplain	% Switch to Lucida Bright + Lucida New Math
+
+\input texnansi	% text fonts are encoded to TeX 'n ANSI
+
+\font\logo=logo10	% for typesetting the word METAFONT
+
+\font\smallrm=lbr at 7pt	% for & in Y&Y
+
+\font\sc=lbrsc at 10.5pt	% smallcaps for Acronyms
+
+\font\calsy=cmsy10		% calligraphic for AMS logo
+
+\font\lbma=lbma at 9.5pt
+
+\font\cmr=cmr10			% to show how `thin' CM is
+
+\font\bfhead=lbd at 16pt	% main heading font
+
+\font\tir=tir at 11.5pt
+\font\tii=tii at 11.5pt
+
+\font\lstnr=lstnr
+
+\def\MathTime{{\tii MathT\kern-1.5pt\i me}}
+
+\let\menu=\it			% how to designate menu items
+
+% following from Donald Story's dvi_help.sty
+
+\def\green{0 0.5 0}
+\def\blue{0 0 1}
+\def\colorpush#1{\special{color push rgb #1}}
+\def\colorpop{\special{color pop}}
+\def\hb#1{\colorpush\blue{#1}\colorpop}
+\def\hg#1{\colorpush\green{#1}\colorpop}
+
+%
+% Macros for hypertext - buttons and marks
+%
+\newcount\height
+\newcount\width
+%
+\def\ref#1#2{\leavevmode
+   \setbox0=\hbox{\hg{#1}}\height=\ht0\width=\wd0%
+%   \special{button: \the\width\space \the\height\space "<#2>"}%
+   \special{button: \the\width\space \the\height\space <#2>}%
+   \unhbox0}
+% \def\xref#1{\leavevmode\special{mark: \space "<#1>"}}
+\def\xref#1{\leavevmode\special{mark: \space <#1>}}
+\def\launch#1#2{\leavevmode
+   \setbox0=\hbox{\hg{#1}}\height=\ht0\width=\wd0%
+   \special{button: \the\width\space \the\height\space launch: #2}%
+   \unhbox0}
+\def\http#1{\leavevmode
+   \setbox0=\hbox{\hg{#1}}\height=\ht0\width=\wd0%
+   \special{button: \the\width\space \the\height\space #1}%
+   \unhbox0}
+\def\httpx#1#2{\leavevmode
+   \setbox0=\hbox{\hg{#1}}\height=\ht0\width=\wd0%
+   \special{button: \the\width\space \the\height\space #2}%
+   \unhbox0}
+
+\def\bfsection#1{\noindent\xref{#1}\noindent{\bf\hb{#1}}}
+\def\bfsectionx#1#2{\noindent\xref{#1}\noindent{\bf\hb{#2}}}
+
+\def\bfindex#1{\bpar\ref{#1}{#1}}
+\def\bfindexx#1#2{\bpar\ref{#2}{#1}}
+
+\def\Y&Y{Y\kern-1.5pt{\smallrm\&}\kern-1.5ptY}
+
+\def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em%
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+ 
+\def\SLiTeX{{\rm S\kern-.06em{\sc l\kern-.035emi}\kern-.06emT\kern
+   -.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\def\LaTeXe{{\LaTeX}~$2_{\textstyle\varepsilon}$}
+
+\def\METAFONT{{\logo META}\-{\logo FONT}}
+\def\AMS{{\calsy AMS}}
+\def\ATM{{\sc atm}}
+\def\PDF{{\sc pdf}}
+\def\URL{{\sc url}}
+\def\PK{{\sc pk}}
+\def\DVI{{\sc dvi}}
+\def\TFM{{\sc tfm}}
+\def\TIFF{{\sc tiff}}
+\def\PS{{\sc ps}}
+\def\CTAN{{\sc ctan}}
+\def\DVIWindo{{\sc dviw}indo}
+\def\DVIPSONE{{\sc dvipsone}}
+\def\EMERGE{{\sc emerge}}
+
+% add Keywords to PDF DocInfo
+\special{PDF: Keywords TeX, PDF, Acrobat, Mathematics, Computer Modern}%
+
+% set PDF Title
+\special{PDF: Title Acrobat PDF from TeX}%
+
+% set PDF Subject
+\special{PDF: Subject How to make quality Acrobat PDF files}%
+
+% set PDF Author
+\special{PDF: Author Louis Vosloo  SN\# 6753  1996 Mar 04 12:16:19}
+
+% set PDF CropBox
+\special{PDF: BBox 56 140 555 650}%
+
+\centerline{{\bfhead 
+\special{color push rgb 0.6 0.1 0}%
+Acrobat PDF from {\TeX}
+\special{color pop}%
+}}
+
+\vskip 0.7in
+
+\chardef\bs=92
+\chardef\lb=123
+\chardef\rb=125
+
+\def\menudown{{\lbma\char44}}
+
+\xref{logo}%
+
+\hskip1.75in\special{insertimage: y&ylogo.tif 2500000}%
+\hskip .5in \registered
+
+\vskip .1in
+
+\centerline{\httpx{{\Y&Y}, Inc.}{}
+
+\vskip .10in
+
+\bfsectionx{From TeX to Acrobat}{From {\TeX} to Acrobat}
+
+\vskip .05in
+
+\noindent 
+{\TeX} --- the typesetting language invented by Donald E.~Knuth at
+Stanford --- is widely used in the academic and research community for
+typesetting technical articles and books. {\TeX} is unsurpassed in its
+capabilities for typesetting complex math 
+(\ref{see sample at end of this article}{sample})%
+\footnote{${}^\dagger$}{Click on text in green to make hypertext jump.}
+and is well known for its
+superb dynamic programming hyphenation/line-breaking search algorithm.
+%
+Adobe Acrobat {\PDF} is a powerful platform-independent technology 
+for document interchange.  It is natural to want to 
+convert material typeset using {\TeX} to Acrobat {\PDF} format.
+
+It is easy to do this using a {\TeX} system designed from the ground
+up for scalable outline fonts such as {\ATM} compatible fonts in 
+Adobe Type~1 format (a.k.a. `Post\-Script fonts' or `{\ATM} fonts').  
+With the {\Y&Y} {\TeX} system,
+for example, you simply typeset the material using
+{\TeX}, check the result using the {\DVIWindo} previewer, then print 
+to file using the special {\PS} printer driver {\DVIPSONE}
+(which can be called % like any other printer driver 
+directly from the previewer).
+Finally, Acrobat Distiller is used to process the resulting PS
+% Post\-Script 
+file.
+
+\vskip .1in
+
+% \centerline{And that is pretty much all there is to it!}
+%  --- aside from font licensing issues, that is.
+\bfsection{And that is pretty much all there is to it!}
+
+\vskip .10in
+
+% \noindent {\bf Bitmapped Font Woes}
+\bfsection{Bitmapped Font Woes}
+
+\vskip .05in
+
+\noindent
+So what {\it is\/} the problem with Acrobat {\PDF} files made from {\TeX} output?
+
+{\TeX} has traditionally been used with % the so-called 
+`Computer Modern' fonts --- also designed by Donald E.~Knuth --- 
+in bitmapped form ({\PK} font file format).
+Converting Post\-Script files containing bitmapped fonts to {\PDF}
+format leads to unattractive (and slow) rendering in the Acrobat Reader,
+mostly because it is impossible to scale bitmapped fonts well.
+
+The solution to this problem is to use scalable outline fonts in 
+{\ATM} compatible Adobe Type~1 format.  
+The Computer Moderns fonts {\it are\/} available in Type~1 format --- 
+in both non-commercial form 
+(on {\CTAN} --- the `Comprehensive {\TeX} Archive Network')
+and commercial form (from {\Y&Y}, Inc. or Blue Sky Research).  
+For details 
+\ref{see end of this note}{contacts}
+\ (note that both non-commercial and commercial forms 
+have some restrictions on use).
+
+\vskip .10in
+
+% \noindent {\bf Font Choices}
+\bfsection{Font Choices}
+
+\vskip .05in
+
+\noindent Of course, once one uses a {\TeX} system that properly
+supports scalable outline fonts, there is no longer any neccessity to
+stick with Computer Modern.  Literally {\it thousands\/} of text
+fonts in Adobe Type~1 format can be used.  
+When it comes to math fonts, however, the choices are much more limited,
+because of % very 
+special demands made by {\TeX} on math fonts.  
+There are presently the following possibilities:
+
+\vskip .05in
+
+(1) Computer Modern (and extra {\LaTeX}, {\SLiTeX} and {\AMS} fonts);
+
+\vskip .05in
+
+(2) Lucida{\registered} Bright + Lucida New Math (and Lucida Bright Expert);
+
+\vskip .05in
+
+(3) {\MathTime} 1.1 (and {\MathTime} Plus) + Times, Helvetica, \&\ Courier;
+% (plus perhaps Adobe Math Pi);
+
+\vskip .05in
+
+(4) Adobe Lucida, Lucida Sans, and Lucida Math.
+
+\vskip .05in
+
+\noindent
+The first three font sets are available in Type~1 format from 
+\httpx{{\Y&Y}, Inc.}% {http://www.YandY.com/yyfonts.htm},
+{http://www.YandY.com/products.htm}, % #fonts
+the last one from 
+\httpx{Adobe Systems Inc.}{http://www.Adobe.com/type/main.html}
+% depends on fonts from the Adobe Type library.
+\ {\TeX} macro packages are available to make it easy to switch to these
+fonts in  (i) plain {\TeX}, (ii) {\LaTeX} 2.09, and 
+(iii) {\LaTeXe} dialects of {\TeX}.
+
+\vskip .1in
+
+\ipar
+{\cmr Some find Computer Modern a bit `thin' and prefer a 
+somewhat `heavier' face for text, such as Lucida Bright or Times-Roman.}
+
+% \vskip .1in
+
+% \ipar
+% {\times Some find Times-Roman a bit too compact
+% and prefer an face with a large x-height such as Lucida Bright.}
+
+\vskip .1in
+
+\noindent
+The generation of Acrobat {\PDF} files is particularly simple when
+using a {\TeX} system designed from the ground up for use with
+scalable outline fonts.  Such a system will produce
+Post\-Script files referring directly to the Type~1 fonts.  
+This {\PS} file can then be passed through the Acrobat Distiller.
+In this case, little preparation is needed, other than to first
+install the fonts using Adobe Type Manager 
+% ({\ATM}).
+\httpx{({\ATM})}{http://www.Adobe.com/prodindex/atm/main.html},
+
+Other {\TeX} systems require more work, including 
+(i) multiple metric files, 
+(ii) special configuration files that tell where the font files are,
+(iii) information on how to reencode the fonts, and 
+(iv) what the relationship is between the name used
+for a font in {\TeX}, the Post\-Script Fontname, and the name of the
+font file(s).  
+But this is just what it takes for such systems to use fonts in 
+Type~1 format in the first place case when making Post\-Script files.  
+There isn't anything specific to preparing for Acrobat Distiller.
+
+\vskip .10in
+
+% \noindent {\bf Some Practical Details}
+\bfsection{Some Practical Details}
+
+\vskip .05in
+
+\noindent 
+There are other issues that need to be addressed when creating {\PDF} files:
+
+\vskip .05in
+
+\ftpar{(1)}
+Distiller should be set up to {\it always\/} subset fonts (i.e. use
+`partial font downloading').  This not only reduces the size of the 
+{\PDF} file, but is {\it required\/} by some font licensing agreements.  
+%
+In Distiller~3.0 or later,
+use `Distiller \menudown\ Job Options' and click on the `Font Embedding' tab.
+Check both `Embed All Fonts' and `Subset fonts below.'
+Change the percentage to 99\% (instead of the default 35\%).
+% You need to add a file to Distiller's `{\lstnr startup}' 
+% directory/folder containing the line:
+
+\vskip .05in
+
+\noindent
+\ipar
+In older versions of Distiller the same effect can be achieved
+by adding a file to the `{\lstnr startup}' directory containing the line
+
+{\lstnr {<}{<}/SubsetFonts true /MaxSubsetPct 99 {>}{>} setdistillerparams}
+
+\vskip .05in
+
+\ftpar{(2)}
+Check that Distiller has embedded all fonts, {\it and\/} that all 
+embedded fonts are subsetted (partial).  
+% To do this, read the resulting {\PDF} file into Acrobat Reader.  
+In Acrobat Reader~3.0, open the {\PDF} file, and page through 
+the file in order to `touch' all fonts.
+Then select `File\menudown Document Info\menudown Fonts.'
+Click on `List All Fonts'  and look for `Embedded Subset' 
+in the `Used Font' column.
+
+\ipar
+In Acrobat Reader~2.1 % open the {\PDF} file, 
+% select `File\menudown Document Info\menudown Fonts.'
+% From the `{\menu File}' menu select  `{\menu Document Info}.'
+% Then select `{\menu Fonts}' and click on `{\menu List All Fonts}'. 
+% Click on `List All Fonts.'
+% All partial fonts have `Original Names' that have a six letter prefix 
+the `Original Names' of all subsetted fonts have a six letter prefix 
+followed by  `{\lstnr +}.'  
+Fonts listed {\it without\/} such a prefix are (i) not embedded at all, 
+(ii) simulated using generic Multiple Master fonts,
+or (iii) are embedded as complete fonts.
+Generally this is not what you want.
+
+\vskip .05in
+
+% \ipar
+% (Do not be confused by a `Built In' listing in the `Encoding' column.
+% This refers to the {\it encoding\/}, i.e. character layout, {\it not\/} 
+% the font itself.)
+
+% \vskip .05in
+
+\ipar
+% The `Used Font' column is important.  It should say `Embedded' if the
+% font is embedded.  
+By the way, if the font is installed on the system on which
+you are reading the PDF file, then the `Used Font' column
+may instead list the font name,
+indicating that the reader is using the locally installed font
+rather then the embedded one.
+This can lead to problems if the local version can not be
+reencoded, for example.
+% By the way, this field will be blank if you have not yet looked 
+By the way, the `Used Font' field will only be filled in 
+if you have looked at a page in the document that uses this font.
+% If it is blank, page through the file first.
+% to `touch' all fonts. % referenced.
+
+% \vskip .05in
+% \ipar
+% In Acrobat Reader 3.0, the 6 letter prefix is not shown,
+% instead check the `Used Font' column for `Embedded Subset.'
+
+\vskip .05in
+
+\ipar
+If you notice that {\it complete\/} fonts are embedded,
+then do not have Distiller's job options set up correctly.
+% the new file in
+% the `{\lstnr startup}' directory set up properly.  
+If fonts are not embedded at all, then the Acrobat Reader will try 
+to simulate them using the generic Multiple Master fonts.  
+In the case of output from {\TeX} this is almost {\it never\/} what you want. 
+You have to go back to the Distiller and tell it to always embed 
+fonts.  Then run the {\PS} file through Distiller again.
+
+% \ipar
+% Forcing the Distiller to always embed fonts may seem counter
+% to the idea of preventing complete fonts from being included,
+% but the idea is to include all fonts to ensure quality rendering,
+% yet prevent inclusion of complete fonts.
+
+\vskip .05in
+
+\ftpar{(3)}
+There may be difficulties when using fonts that use the `control
+character' range (character code 0--31).  This can be avoided by either
+using normal text fonts that do not use the control character range,
+or --- when this is not possible (as with Computer Modern fonts) ---
+use a printer driver that remaps such character codes to higher up
+(the encoding vectors for the CM fonts in Type~1 format repeat the 
+0--31 range to 161--170 and 172--195).
+% The same applies to fonts that do not have a `{\lstnr space}' character in 
+% character code position 32.
+
+\vskip .05in
+
+\ftpar{(4)}
+To exploit fonts other than Computer Modern, use a {\TeX} system that
+can {\it fully reencode\/} the fonts to provide access to all characters.
+Otherwise you may have problems getting 
+at some glyphs.
+% at glyphs that are not available on some platforms.  
+
+\vskip .05in
+
+\ipar
+For example, out of 228 `standard' characters found in
+most text fonts, 21 are not normally accessible on the Macintosh.
+In Windows, 15 are missing, including important glyphs such as 
+% `{\lstnr dotaccent}' (\.{}), `{\lstnr dotlessi}' (\i), 
+% `{\lstnr fi}' (fi), and `{\lstnr fl}' (fl).
+`\i' ({\lstnr dotlessi}), `\.{}' ({\lstnr dotaccent}), 
+and the ligatures `fi' ({\lstnr fi}) 
+and `fl' ({\lstnr fl}).\footnote{${}^\dagger$}
+{Ideally the system should also provide access to `ff' `ffi' `ffl' `\j.'}
+% and so on.}
+
+
+% and ff, ffi, ffl if the font has them
+
+\vskip .05in
+
+\ftpar{(5)}
+Different printer drivers produce very different Post\-Script code.
+Post\-Script code that works fine on a printer or image setter 
+% may % typically
+often is 
+{\it not\/} set up to work optimally with Acrobat.
+Check, for example, that equal thickness rules render equally thick
+in the Acrobat Reader, independent of where on the page they lie.
+This is not the case with some popular PS drivers.
+
+\vskip .05in
+
+\ftpar{(6)}
+Since Acrobat {\PDF} format provides strong hypertext support,
+you may want to use a {\TeX} system that itself has hypertext support,
+and that {\it also\/} translates % its own 
+hypertext links to appropriate
+Acrobat `{\lstnr pdfmarks}' embedded in the Post\-Script file
+(see \ref{Contact Information)}{Contact Information}).
+
+\vskip .05in
+
+\ftpar{(7)} Before posting PDF files 
+with embedded fonts on the InterNet,
+% on WWW or for access via anonymous FTP, 
+check with the font vendor whether any special licensing is required.
+% this is permitted by the end user license.
+
+\vskip .10in
+
+% \noindent {\bf Legacy Documents}
+\bfsection{Legacy Documents}
+
+\vskip .05in
+
+\noindent 
+The above assumes that the {\TeX} source files are available.
+% (or at least the {\DVI} files produced by {\TeX}).
+% In some cases 
+Often all that is left are Post\-Script files made some years ago.
+These typically will contain bitmapped fonts that lead to
+exactly the rendering problems described above.
+It is non-trivial to `reverse engineer' one of these files,
+since there is no information in the file on what the fonts 
+are called, and since the bitmaps for a given font are {\it not\/} 
+fixed entities, 
+depending on the printer resolution and the {\METAFONT} 
+`mode\char95def' 
+settings used when creating them.
+% However, work on a program to automate replacement of bitmapped
+% fonts in such `legacy documents' is under way.
+Look for `Converting Legacy PostScript Files' and 
+`{\lstnr FixFont}' on the 
+\httpx{emerge}
+{http://emerge.pdfzone.com/resources/texpdf.html} 
+% \noindent 
+\ web site 
+for an attempt at a solution.
+
+\vskip .10in
+
+% \noindent {\bf Sample PDF Documents}
+\bfsection{Sample PDF Documents}
+
+\vskip .05in
+
+\noindent 
+Some samples typeset using {\TeX} and converted
+to Acrobat {\PDF} format may be found at
+% {\lstnr http://www.YandY.com}.
+% {\lstnr \http{http://www.YandY.com/yyfonts.htm}}.
+{\lstnr \http{http://www.YandY.com/products.htm\#fonts}}, % #fonts
+% add specific page to this ?
+There are {\PDF} files illustrating the 
+first three font choices 
+% (CM, LB+LNM, and \MathTime)
+% (\httpx{CM}{http://www.YandY.com/chironcm.pdf},
+% \httpx{LB+LNM}{http://www.YandY.com/chironlb.pdf}, and
+% \httpx{\MathTime\/}{http://www.YandY.com/chironmt.pdf})
+% add links here direct to PDF ?
+discussed above:
+% Look under % `What's New,' 
+% `\httpx{What's New}{http://www.YandY.com/yynews.htm},' 
+% add links here direct to page ?
+% or go to the section discussing fonts.
+
+\vskip .2in  % \vskip .25in 
+
+\hskip .6in % \hskip .8in % \hskip 1in %\quad\quad % \noindent
+%\special{button: 1191116 1318735 http://www.yandy.com/chironcm.pdf}%
+\special{button: 1191116 1318735 http://www.yandy.com/download/chironcm.pdf}%
+% \special{insertimage: pdficonl.tif 1191116}% 28 x 31
+\special{insertimage: pdficonl.tif 1000000}% 28 x 31
+\hskip .3in
+\raise.05in
+% \hbox{(CM),}
+% \hbox{\httpx{CM}{http://www.YandY.com/chironcm.pdf},}
+\hbox{\httpx{CM}{http://www.YandY.com/download/chironcm.pdf},}
+\hskip .5in % \hskip .25in %\quad
+% \special{button: 1191116 1318735 http://www.yandy.com/chironlb.pdf}%
+\special{button: 1191116 1318735 http://www.yandy.com/download/chironlb.pdf}%
+% \special{insertimage: pdficonl.tif 1191116}% 28 x 31
+\special{insertimage: pdficonl.tif 1000000}% 28 x 31
+\hskip .3in
+\raise.05in
+% \hbox{(LB+LNM),}
+% \hbox{\httpx{LB+LNM}{http://www.YandY.com/chironlb.pdf},}
+\hbox{\httpx{LB+LNM}{http://www.YandY.com/download/chironlb.pdf},}
+\hskip .2in % \quad 
+% \special{button: 1191116 1318735 http://www.yandy.com/chironmt.pdf}%
+\special{button: 1191116 1318735 http://www.yandy.com/download/chironmt.pdf}%
+% \special{insertimage: pdficonl.tif 1191116}% 28 x 31
+\special{insertimage: pdficonl.tif 1000000}% 28 x 31
+\hskip .3in
+\raise.05in
+% \hbox{(\MathTime\/).}
+% \hbox{\httpx{\MathTime\/}{http://www.YandY.com/chironmt.pdf}.}
+\hbox{\httpx{\MathTime\/}{http://www.YandY.com/download/chironmt.pdf}.}
+
+% (\httpx{CM}{http://www.YandY.com/chironcm.pdf},
+% \httpx{LB+LNM}{http://www.YandY.com/chironlb.pdf}, and
+% \httpx{\MathTime\/}{http://www.YandY.com/chironmt.pdf})
+
+\vskip .10in
+
+% \noindent {\bf Additional Information}
+\bfsection{Additional Information}
+
+\vskip .05in
+
+\noindent
+For additional information on % setting 
+Distiller's parameters, check the Distiller on-line help file; 
+% as well as
+and page~127 in ``{\it Acrobat~2.1: Your Personal Consultant}'' 
+by Roy Christmann,
+Ziff-Davis Press, Emeryville, California, 1995, ISBN 1-56276-336-9.
+%
+% You may also wish to consult
+Also see page 15 in Adobe's Technical Note 5151
+``{\it Acrobat Distiller Parameters}'' 
+available from
+% \httpx{{\lstnr ftp.adobe.com}}{ftp://ftp.adobe.com}
+% \ in % directory
+% {\lstnr /pub/adobe/Documents/PDFs}
+% as file
+
+% \httpx{\lstnr 5151.distparams.pdf}
+% {ftp://ftp.adobe.com/pub/adobe/Documents/PDFs/5151/distparams.pdf}
+{\lstnr
+\http{http://www.adobe.com/supportservice/devrelations/devtechnotes.html}}.
+% {http://www.adobe.com/supportservice/devrelations/devtechnotes.html}
+% ``{\it Acrobat Distiller Parameters}.''
+% Adobe's Technical Note 5151.
+
+% \vskip .10in
+
+\vfill\eject
+
+\noindent
+\xref{contacts}%
+% \noindent {\bf Contact Information}
+\bfsection{Contact Information}
+
+\vskip .05in
+
+\noindent 
+{\CTAN} is the `Comprehensive {\TeX} Archive Network.'
+The main servers are 
+% ftp.shsu.edu
+% {\lstnr \http{ftp://ftp.shsu.edu}} % currently outdated ???
+% {\lstnr \http{ftp://tug2.cs.umb.edu}}
+{\lstnr \http{ftp://ftp.ctan.org}} %% ??
+(USA),
+% {\lstnr ftp.dante.de} 
+{\lstnr \http{ftp://ftp.dante.de}}
+\ (Germany), % and
+% {\lstnr ftp.tex.ac.uk} 
+{\lstnr \http{ftp://ftp.tex.ac.uk}}
+\ (United Kingdom).
+Look in `{\lstnr tex-archive}.'
+
+Blue Sky Research, makers of `Textures' --- 
+an integrated {\TeX} system for the Macintosh --- may be found at 
+
+\vskip .05in
+
+% {\lstnr http://www.bluesky.com}.
+{\lstnr \http{http://www.BlueSky.com}}.
+
+\vskip .05in
+
+\noindent
+{\Y&Y}, Inc. makers of the {\Y&Y} {\TeX} system for Windows ---
+% also specializes in {\ATM} compatible Type~1 fonts for use with {\TeX} ---
+may be be found at 
+
+\vskip .05in
+
+% {\lstnr http://www.YandY.com}.
+{\lstnr \http{http://www.YandY.com}}.
+
+\vskip .05in
+\noindent
+{\Y&Y} also specializes in {\ATM} compatible Type~1 fonts for use with {\TeX}.
+
+% \vskip .10in
+
+% \noindent {\bf Try this without using {\TeX}!}
+
+% \vskip .05in
+
+% \vskip .25in
+% \vskip .15in
+% \vskip .1in
+% \vskip .05in
+
+\xref{sample}%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% diagram
+
+$$\def\normalbaselines{\baselineskip20pt
+    \lineskip3pt \lineskiplimit3pt }
+  \def\mapright#1{\smash{
+      \mathop{\longrightarrow}\limits^{#1}}}
+  \def\mapdown#1{\Big\downarrow
+    \rlap{$\vcenter{\hbox{$\scriptstyle#1$}}$}}
+  \matrix{&&&&&&0\cr
+    &&&&&&\mapdown{}\cr
+    0&\mapright{}&{\cal O}_C&\mapright\iota&
+      \cal E&\mapright\rho&\cal L&\mapright{}&0\cr
+    &&\Big\Vert&&\mapdown\phi&&\mapdown\psi\cr
+    0&\mapright{}&{\cal O}_C&\mapright{}&
+      \pi_*{\cal O}_D&\mapright\delta&
+      R^1f_*{\cal O}_V(-D)&\mapright{}&0\cr
+    &&&&&&\mapdown{\theta_i\otimes\gamma^{-1}}\cr
+    &&&&&&\hidewidth R^1f_*\bigl({\cal O}
+      _V(-iM)\bigr)\otimes\gamma^{-1}\hidewidth\cr
+    &&&&&&\mapdown{}\cr
+    &&&&&&0\cr}$$
+% }
+
+% \vskip .10in
+% \vskip .05in
+
+% \noindent {\bf Try that without using {\TeX}!}
+% \bfsectionx{Try that without TeX}{Try that without {\TeX}!}
+% \bfsectionx{Typeset the above without using TeX}%
+% {Typeset the above without using {\TeX}!}
+% \bfsectionx{Try typesetting the above without using TeX}%
+% {Try typesetting the above without using {\TeX}!}
+\bfsection{Try typesetting the above without using {\TeX}!}%
+
+\vskip .10in
+
+% \vfill\eject
+
+\bfsection{Colophon}
+
+\vskip .03in
+
+% \noindent
+\bpar
+This document was typeset using the {\Y&Y} {\TeX} System 
+release 2.0 --- % release 1.2 ---
+translated to Post\-Script form by {\DVIPSONE} ---
+then to {\PDF} form by % Acrobat Distiller~2.1 for Windows.
+Acrobat Distiller~3.0.2 for Windows.
+
+\vskip .03in
+
+\bpar
+DocInfo {\lstnr pdfmark} 
+(check out `File\menudown Document Info\menudown General'
+in Acrobat Reader)
+produced automatically by {\DVIPSONE}.
+Keywords (in DocInfo {\lstnr pdfmark}) 
+supplied via {\lstnr \bs special\lb ...\rb}.
+
+\vskip .03in
+
+\bpar
+CropBox {\lstnr pdfmark} (which defines the area shown in Acrobat Reader) 
+supplied via {\lstnr \bs special\lb ...\rb}.
+
+\vskip .03in
+
+\bpar
+Hypertext links to `named destinations' 
+automatically translated by {\DVIPSONE} to appropriate {\lstnr pdfmarks}.
+Similarly, {\DVIPSONE} translated hypertext links to {\URL}s 
+to standard {\lstnr /URI /Action} annotations 
+(these require the 
+% Acrobat Web\-Link plug-in 
+(\httpx{Acrobat Web\-Link plug-in}{http://www.Adobe.com/acrobat/plugins.html})
+for proper operation).
+
+\vskip .03in
+
+\bpar
+{\TIFF} image (the 
+\ref{{\Y&Y} logo}{logo})
+% {\Y&Y} logo) 
+inserted via {\lstnr \bs special\lb insertimage ...\rb}.
+Colored text produced via {\lstnr \bs special\lb color rgb ...\rb}.
+
+\vskip .03in
+
+\bpar
+Fonts used include several from the Lucida Bright + Lucida New Math
+super family, as well as a few {\cmr Computer Modern} fonts
+and {\tii Times-Italic}
+(check out `File\menudown Document Info\menudown Fonts'
+in Acrobat Reader).
+
+\vskip .10in
+
+\bfsection{Trademark Information}
+
+\vskip .03in
+
+% \bpar
+\noindent
+{\TeX} is a registered trademark of % the American Mathematical Society
+% ({\AMS}).
+% \httpx{({\AMS\/})}{http://www.AMS.org}
+the \httpx{{\AMS\/}}{http://www.AMS.org}\ 
+(American Mathematical Society).
+Lucida is a registered trademark of Bigelow \& Holmes, Inc.
+\MathTime\ is a trademark of Publish or Perish, Inc.
+{\Y&Y} and the % {\Y&Y} 
+\ref{{\Y&Y} logo}{logo}
+\ are registered trademarks of {\Y&Y}, Inc.
+{\DVIPSONE} and {\DVIWindo} are trademarks of {\Y&Y}, Inc.
+Post\-Script, Acrobat, and Adobe Type Manager are registered
+trademarks of 
+% Adobe Systems, Inc.
+\httpx{Adobe Systems, Inc.}{http://www.Adobe.com},
+Windows is a registered trademark of 
+% Microsoft, Inc.
+\httpx{Microsoft, Inc.}{http://www.Microsoft.com} % .
+
+\vfill\eject
+
+\bfsection{Index}
+\footnote{${}^\dagger$}{Click on text in green to make hypertext jump.}
+
+\vskip .15in
+
+\bfindexx{From TeX to Acrobat}{From {\TeX} to Acrobat}
+
+\vskip .05in
+
+\bfindex{Bitmapped Font Woes}
+
+\vskip .05in
+
+\bfindex{Font Choices}
+
+\vskip .05in
+
+\bfindex{Some Practical Details}
+
+\vskip .05in
+
+\bfindex{Legacy Documents}
+
+\vskip .05in
+
+\bfindex{Sample PDF Documents}
+
+\vskip .05in
+
+\bfindex{Additional Information}
+
+\vskip .05in
+
+\bfindex{Contact Information}
+
+% \vskip .05in
+
+% \bfindex{Trademark Information}
+
+\vskip .05in
+
+\bfindex{Colophon}
+
+\vskip .05in
+
+\bfindex{Trademark Information}
+
+\end
+
+use TeX system set up from the ground up for scalable outline fonts.
+
+partial fonts: need for, setting up, checking
+
+control character range, what to do
+
+character encoding
+
+equal thickness rules
+
+hyper-text
+
+trademarks
+
+PSNFSS
+
+PREPDF
+
+http://www.adobe.com/supportservice/custsupport/SOLUTIONS/2d7a.htm
+
+add Y&Y logo
+
+add complex math (commutative diagram) at end?
+
+add reference to self, such as look in Doc Info
+
+enable http://www... links
+
+add link to http://www.adobe.com
+
+add links internal (e.g. to math example)
+
+Keywords/CropBox do internal without need to edit?
+
+Font Licensing Issues
+
+Colored fonts for headings
+
+URL's implement pdfmark
+
+`View' menu `Fit Page'
+
+No commas in Keywords?
+
+Split up that long section: Some Practical Details
+
+About this document (colophon)
+------------------------------
+
+DocInfo provided automatically by DVIPSONE
+
+Keywords supplied via \special
+
+CropBox supplied vie \special
+
+Color provided by \special
+
+TIFF image provided by \special
+
+Fonts used are Lucida Bright + Lucida New Math
+
+Hypertext links for DVIWindo automaticaly translated by DVIPSONE
+
+URL
+
+launch application
+
+add table of contents with hyper-text links
+
+need to have Acrobat WebLink plug-in for URI link (or is it URL)
+
+% trademarks
+
+Kendall Whitehorse approach via DVIPS:
+
+http://www.adobe.com/supportservice/custsupport/SOLUTIONS/2d7a.htm
+
+http://www.adobe.com/supportservice/devrelations/devtechnotes.html
+
+Hyptex hype:
+
+http://xxx.lanl.gov/hypertex/
+
+Explain about hyper-text jumps requiring (i) WebLink plugin (ii) on line 
+
+ytex pdf-from.tex
+
+Then run DVIPSONE with -k -*2 -*c on command line
+
+dvipsone -v -k -*2 -*c pdf_from
+
+Then edit PDF file for /Differences 
+
+94/circumflex	=>	39/quoteright 94/circumflex 96/quoteleft
+
+Then read into Acrobat Exchange 3.0 (Viewer32.exe)
+
+and `Save As' to get the optimization

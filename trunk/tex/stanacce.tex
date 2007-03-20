@@ -1,0 +1,239 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+% Copyright (C) 1992 - 1998 Y&Y, Inc.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+% ============================================================================
+% Accented and composite characters in fonts that do not use TeX text encoding
+% for StandardEncoding				   VERSION 2.1 (1998 Aug 1)
+% StandardEncoding is the `native' encoding of most plain vanilla text fonts.
+% ============================================================================
+
+% Plain TeX - and hence lplain TeX - have accents hard-wired to certain codes.
+
+% A non-CM font can be reencoded to TeX text encoding ---
+% in this case accents and composite character will be where TeX expects them.
+% But, quite often it is advantageous to encode a font another way.
+% This can provide access to many characters not found in TeX text encoding.
+
+% When a font is reencoded, compound characters and accents may be moved.
+% This will prevent TeX's normal handling of compound characters and accents.
+% This file indicates how to deal with this ---
+%	--- and concludes with sample code specific for `StandardEncoding'.
+
+% Changes required for math constructions that use roman font are at the end
+
+% You may wish to just \input this file in your TeX source.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% Protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"	% save catcode of quotedbl
+\catcode`\"=12			% make quotedbl what it should be
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% NOTE: plain TeX (and LaTeX) has the accent character positions hardwired to:
+
+% 16 for `dotlessi', 17 for `dotlessj',
+% 18 for `grave', 19 for `acute', 20 for `caron',
+% 21 for `breve', 22 for `macron',
+% 23 for `ring', 24 for `cedilla',
+% 25 for `germandbls', 26 for `ae', 27 for `oe',
+% 28 for `oslash', 29 for `AE', 30 for 'OE', 31 for `Oslash',
+% 94 for `circumflex', 95 for `dotaccent', 125 for `hungarumlaut',
+% 126 for `tilde', 127 for `dieresis',
+% (see page 356 of the TeX book for additional information)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% The following sample redefinitions are for `StandardEncoding':
+
+% Tell TeX where various special characters are:
+
+% \chardef\ae=241	%	ae
+% \chardef\oe=250 %	oe
+% \chardef\o=249  % 	oslash
+% \chardef\AE=225	% 	AE
+% \chardef\OE=234 % 	OE
+% \chardef\O=233  % 	Oslash
+% \chardef\i=245  % 	dotlessi
+% \chardef\ss=251	% 	germandbls
+\def\ae{^^f1}	%	ae
+\def\oe{^^fa}	%	oe
+\def\o{^^f9}	% 	oslash
+\def\AE{^^e1}	% 	AE
+\def\OE{^^ea}	% 	OE
+\def\O{^^e9}	% 	Oslash
+\def\i{^^f5}	% 	dotlessi
+\def\ss{^^f6}	% 	germandbls
+
+%  aring, Aring, ccedilla, Ccedilla, copyright	in most fonts, but not in SE
+
+\chardef\atcode=\catcode`\@	% save catcode of at sign
+\catcode`\@=11			% make at a letter
+
+% It is most unfortunate that Adobe StandardEncoding does not include 
+% Aring and aring, since proper positioning of the ring varies with font.
+% The code below is reasonable for LucidaBright regular...
+
+\def\aa{\accent202a}
+% \def\AA{\leavevmode\setbox0\hbox{h}\dimen@\ht0\advance\dimen@-1ex%
+%   \rlap{\raise.67\dimen@\hbox{\char202}}A}
+\def\AA{\leavevmode\setbox0\hbox{h}\dimen@\ht0\advance\dimen@-1ex%
+  \setbox0\hbox{A}\rlap{\raise.67\dimen@\hbox to \wd0{\hss\char202\hss}}A}
+
+\catcode`\@=\atcode		% restore original catcode of at sign
+
+% \chardef\l=248 \chardef\L=232 % lslash, Lslash
+\def\l{^^f8}	% lslash
+\def\L{^^e8}	% Lslash
+
+% \chardef\pounds=163	% sterling
+\def\pounds{^^a3}	% sterling
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% Provide for use of font with TeX's \accent:
+
+\def\H#1{{\accent205 #1}}	% hungarumlaut
+\def\u#1{{\accent198 #1}}	% breve
+\def\v#1{{\accent207 #1}}	% caron
+\def\`#1{{\accent193 #1}}	% grave
+\def\'#1{{\accent194 #1}}	% acute
+\def\^#1{{\accent195 #1}}	% circumflex
+\def\~#1{{\accent196 #1}}	% tilde
+\def\"#1{{\accent200 #1}}	% dieresis
+
+% \t --- tie is OK, it uses \char127 from math italic font
+
+% dotaccent and macron have to be treated differently in AMS TeX
+
+\chardef\atcode=\catcode`\@
+\catcode`\@=11
+\ifx\amstexloaded@\relax%
+\def\D#1{{\accent199 #1}}	% dotaccent	% not in 95
+\def\B#1{{\accent197 #1}}	% macron
+\let\graveaccent\`
+\let\acuteaccent\'
+\let\tildeaccent\~
+\let\hataccent\^
+\let\underscore\_
+\else
+\def\.#1{{\accent199 #1}}	% dotaccent	% not in 95
+\def\=#1{{\accent197 #1}}\fi	% macron
+\catcode`\@=\atcode
+
+% underline and cedilla accents (macron at 197, cedilla at 203)
+
+\def\b#1{\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char197}\vss}\hidewidth}}
+\def\c#1{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent203 #1%
+  \else{\ooalign{\hidewidth\char203\hidewidth\crcr\unhbox0}}\fi}
+
+% ogonek (using ogonek at 206)
+\def\k#1{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent206 #1
+  \else{\ooalign{\hidewidth\char206\hidewidth\crcr\unhbox0}}\fi}%
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% Changes required in math maros when roman font is reencoded to `Standard'.
+% (An alternative is to draw the accents from the math fonts)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
+
+% Make the adjustments needed when roman font reencoded to `StandardEncoding':
+
+\def\acute{\mathaccent"70C2 }	% acute
+\def\grave{\mathaccent"70C1 }	% grave
+\def\ddot{\mathaccent"70C8 }	% dieresis
+\def\tilde{\mathaccent"70C4 }	% tilde
+\def\bar{\mathaccent"70C5 }	% macron
+\def\breve{\mathaccent"70C6 }	% breve
+\def\check{\mathaccent"70CF }	% caron
+\def\hat{\mathaccent"70C3 }	% circumflex
+% \vec --- is OK, it is \char126 from math italic font
+\def\dot{\mathaccent"70C7 }	% dotaccent
+
+% **************************************************************************
+
+% 58 `standard' accented chars exist in many fonts - including BSR CM from Y&Y
+% BUT: cannot access these using StandardEncoding
+
+% **************************************************************************
+
+% To deal with \@parboxrestore kludge in LaTeX (restores grave, acute, macron)
+
+\chardef\atcode=\catcode`\@	% save catcode of at sign
+\catcode`\@=11			% make at a letter
+
+\let\@acci=\'
+\let\@accii=\`
+\let\@acciii=\=
+
+\catcode`\@=\atcode		% restore original catcode of at sign
+
+% NOTE: if grave, acute, and macron accents are lost after certain LaTeX
+% enviroments are used (such as the tabbing environment), then it is because
+% a LaTeX macro/style file is read in after this that redefines the above.
+
+% **************************************************************************
+
+% If you want to use < for `guillesinglleft' and > for `guillesingright'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=172
+% \catcode`\>=\active \chardef>=173
+
+% If you use < for `exclamdown', > for `questiondown', and | for `emdash'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=161
+% \catcode`\>=\active \chardef>=191
+% \catcode`\|=\active \chardef|=208
+
+% \chardef\lq=96 \chardef\rq=39
+\def\lq{^^60}
+\def\rq{^^27}
+
+% Note that \lq and \rq also provide access to ` and '
+
+\catcode`\"=\dblcode		% restore original catcode of quotedbl
+
+% If you use " for quotedblright then uncomment the following:
+
+% \catcode`\"=\active \chardef"=186
+
+% For proper hyphenation of words with special characters we need to let
+% TeX know how to translate words with special characters to lower case.
+% Hence define \lccode so that one can use them in \hyphenation{...}
+% Just for fun we also define \uccode, and set the \catcode to letter...
+
+\catcode225=11\catcode241=11	% AE, ae
+\lccode225=241\lccode241=241
+\uccode225=225\uccode241=225
+\catcode232=11\catcode248=11	% Lslash, lslash
+\lccode232=248\lccode248=248
+\uccode232=232\uccode248=232
+\catcode233=11\catcode249=11	% Oslash, oslash
+\lccode233=249\lccode249=249
+\uccode233=233\uccode249=233
+\catcode234=11\catcode250=11	% OE, oe
+\lccode234=250\lccode250=250
+\uccode234=234\uccode250=234
+
+\endinput
+
+% **************************************************************************
+
+% NOTE: definitions have embedded numbers that depend on the chosen encoding
+% These will need to be changed if you use an encoding other than `Standard'.
+
+% **************************************************************************
+
+% **************************************************************************
+%	Y&Y, Inc. 45 Walden Street, Concord, MA 01742 USA  (978) 371-3286
+%   http://www.YandY.com  mailto:support@YandY.com
+% **************************************************************************

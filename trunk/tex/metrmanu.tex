@@ -1,0 +1,2288 @@
+% Font Manipulation Package Manual % This is in YTeX
+% Copyright 1991-1998 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=10pt 	% for final version
+% \typesize=12pt		% for proofing
+
+% \hsize=4.66in % for letter paper version (default)
+% \hsize=5.5in % for legal paper version
+
+\font\manual=logo10
+\font\sc=cmcsc10
+\font\vt=cmvtt10
+
+% \font\eusm=eusm10
+
+\font\cal=cmsy10
+
+\def\AMS{{\cal A\kern-.15em\lower.5ex\hbox{M}\kern-.1emS}}
+
+\input memo.mac
+
+% \input lcdplain.mac
+\input lcdplain
+% \input accents.tex
+\input ansiacce
+
+\newdimen\dwidth
+\newdimen\dheight
+
+\def\showimage#1#2#3{
+\dwidth=#2 \dheight=#3 
+\edef\width{\number\dwidth} \edef\height{\number\dheight}
+\special{insertimage: #1 \width \space \height}
+}
+
+% \def\subsubsection#1{{\bf #1}}
+
+% A good way to print fractions in text when you don't want
+% to use \over (which should be most of the time), and yet
+% just `1/2' doesn't look right.  (From the TeXbook, exercise 11.6.)
+ 
+\def\frac#1/#2{\leavevmode
+   \kern-.1em \raise .5ex \hbox{\the\scriptfont0 #1}%
+   $/$%
+   \kern-.15em \lower .25ex \hbox{\the\scriptfont0 #2}%
+}%
+
+\def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\def\SliTeX{S{\sc LI}{\TeX}}
+
+% \def\Y&Y{Y\kern-.25em\hbox{{\smllsize \&}}\kern -.25em Y}
+\def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.23em Y}
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+% \def\METAFONT{{\manual META}\-{\manual FONT}}
+
+\def\DVIWindo{{\sc dvi\-w}indo}
+\def\DVIPSONE{{\sc dvi\-ps\-one}}
+\def\REENCODE{{\sc re\-encode}}
+% \def\CHARSET{{\sc char\-set}}
+\def\AFMTOPFM{{\sc afm}\-to\-{\sc pfm}}
+\def\AFMTOTFM{{\sc afm}\-to\-{\sc tfm}}
+\def\TIFFTAGS{{\sc tifft}ags}
+\def\CLEANUP{{\sc clean\-up}}
+
+\def\TWOUP{{\sc two\-up}}
+
+% \def\PKTOPS{{\sc pk\-to\-ps}}
+% \def\DOWNLOAD{{\sc down\-load}}
+% \def\MODEX{{\sc mod\-ex}}
+% \def\SERIAL{{\sc ser\-ial}}
+
+\def\ANSI{{\sc ansi}}
+\def\ASCII{{\sc ascii}}
+
+\def\UART{{\sc uart}}
+\def\FIFO{{\sc fifo}}
+
+\def\DOS{{\sc dos}}
+
+\def\PSPATH{{\sc pspath}}
+\def\VECPATH{{\sc vecpath}}
+
+% \def\BIOS{{\sc bios}}
+% \def\PATH{{\sc path}}
+
+\def\AFM{{\sc afm}}
+\def\INF{{\sc inf}}
+\def\TFM{{\sc tfm}}
+\def\PFM{{\sc pfm}}
+\def\DVI{{\sc dvi}}
+
+\def\VEC{{\sc vec}}
+
+\def\PS{{\sc ps}}
+\def\PK{{\sc pk}}
+
+\def\PFA{{\sc pfa}}
+\def\PFB{{\sc pfb}}
+
+\def\EPS{{\sc eps}}
+
+\def\EPSF{{\sc epsf}}
+\def\EPSI{{\sc epsi}}
+
+\def\PSFIG{{\sc psfig}}
+
+\def\PIF{{\sc pif}}
+
+\def\DSC{{\sc dsc}}
+
+% \def\VM{{\sc vm}}
+% \def\MS{{\sc ms}}
+
+\def\ATM{{\sc atm}}
+
+\def\ATMINI{{\tt atm.ini}}
+\def\WININI{{\tt win.ini}}
+
+\def\ATMQLC{{\tt atmfonts.qlc}}
+
+\def\PSCRIPT{{\sc pscript.drv}}
+
+\def\PFM{{\sc pfm}}
+\def\PFB{{\sc pfb}}
+
+\def\CM{{\sc cm}}
+
+% \def\COPY{{\sc copy}}
+% \def\MODE{{\sc mode}}
+% \def\PRINT{{\sc print}}
+
+% \def\XONXOFF{{\sc xon/xoff}}
+% \def\DTRDSR{{\sc dtr/dsr}}
+% \def\ETXACK{{\sc etx/ack}}
+
+\def\IBM{{\sc ibm}}
+\def\PC{{\sc pc}}
+
+% \def\COMPAQ{{\sc compaq}}
+
+\def\TUG{{\sc tug}}
+
+% \def\SMARTDRV{{\sc smart\-drv.sys}}
+\def\SMARTDRV{{\sc smart\-drv.exe}}
+\def\RAMDRV{{\sc ram\-drv.sys}}
+\def\RAM{{\sc ram}}
+
+\def\AUTOEXEC{{\tt auto\-exec.bat}}
+
+\def\UNIX{{\sc unix}}
+\def\DVIPS{{\sc dvips}}
+\def\DVITWOPS{{\sc dvi2ps}}
+\def\DVIALW{{\sc dvialw}}
+\def\DVITOPS{{\sc dvitops}}
+\def\DVILASER{{\sc dvilaser/ps}}
+
+\def\TIFF{{\sc tiff}}
+
+\newbox\boxa
+
+\setbox\boxa=\vbox{
+\hbox{{\bf WARNING:} Keep a copy of the original font metric files ({\PFM})}
+\hbox{and the font outline files ({\PFB}) in a safe place before making}
+\hbox{modifications using the utilities supplied with {DVI\-Windo}.}
+}
+
+\def\warning{\centerline{\boxit{\copy\boxa}}}
+
+% \def\registered{{\ooalign
+% 	{\hfil\raise.02ex\hbox{{\sc r}}\hfil\crcr\mathhexbox20D}}}
+
+\font\sy=sy
+
+\def\registered{{\sy \char210}}
+
+\def\TM{$^{\smlsize TM}$}
+
+% \font\twelverm=lbrx at 11.2pt
+\font\twelverm=lbr at 11.2pt
+
+% \font\eighteenbf=lbdx at 16.4pt
+\font\eighteenbf=lbd at 16.4pt
+
+\def\coverpage{
+\noheaders
+% \topglue 2in
+\topglue 1.5in
+\centerline{\bigggsize\bf Outline Font and Font Metrics}
+\vskip .1in
+% \centerline{\bigggsize\bf Manipulation Package --- Release 1.2} 
+\centerline{\bigggsize\bf Manipulation Package --- Release 1.4}
+
+\vskip 3in
+
+% This is the version for printing with the logo
+
+% \centerline{\hbox to 1.33in{\special{illustration c:/dvitest/y&ylogo.eps}\hfill}} 
+
+% \centerline{\hbox to 1.33in{\special{illustration y&ylogo.eps}\hfill}}
+
+% \centerline{\hbox to 1.33in{\special{illustration yandylogo.eps}\hfill}}
+
+\centerline{\hbox to 1.33in{\special{illustration c:/ps/y&ylogo}\hfill}}
+
+% This is the version for showing the logo on screen
+
+% \centerline{\hbox to 1.33in{\showimage{y&ylogo.tif}{1.33in}{2in}\hfill}}
+
+\vskip 1in
+
+\centerline{\bigsize {\Y&Y}, Inc. 45 Walden Street, Concord MA 01742, USA}
+
+\vskip .02in
+
+\centerline{\bigsize 
+% (800) 742--4059 --- 
+http://www.YandY.com}
+% (978) 371--3286 (voice) ---
+% (978) 371--2004 (fax)}
+
+\newpage
+\decreasepageno
+
+\noheaders
+\topglue 2in
+\hbox{ }	% to get blank page
+\newpage
+\decreasepageno
+}
+
+\coverpage  % comment out for draft version
+
+\noheaders
+
+% \versorightheader={COPYRIGHT {\copyright} 1991, 1992 {\Y&Y}}
+% \versorightheader={COPYRIGHT {\copyright} 1991 -- 1993 {\Y&Y}, Inc.}
+% \versorightheader={COPYRIGHT {\copyright} 1991 -- 1994 {\Y&Y}, Inc.}
+\versorightheader={COPYRIGHT {\copyright} 1991 -- 1998 {\Y&Y}, Inc.}
+
+\nsection{Outline Font and Font Metrics Manipulation Package}
+
+{\narrower 
+
+\noindent
+{\bf NOTICE:} \enspace
+Please ascertain whether the outline font file that you plan to
+work on has any restrictions on modifications, decompilation,
+reverse engineering, or conversion before using these utilities.  
+(Fortunately there are typically {\it no} restrictions on manipulations 
+of the {\it font metric} files).
+
+% or use on more than one platform...
+
+}
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf NO WARRANTY:}  \enspace
+No express or implied warranties, including no implied
+warranties of merchantability and fitness for use, are provided
+with respect to the software.  
+In no event shall {\Y&Y}, Inc. be
+liable for any damages, including special, indirect, incidental, 
+or consequential damages, arising out of use or inability to 
+use the software. 
+
+}
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf SUGGESTION:} \enspace
+Always keep copies of the original outline font and font 
+metric files in a safe place before making modifications. % modified versions.
+
+}
+
+% \vskip .05in
+
+% {\narrower 
+
+% \noindent
+% {\bf NOTICE:} \enspace
+% There are some % additional
+% restrictions on the use of the files produced
+% by the `invasive' utilities described in the Appendix.
+
+% }
+
+% \undosectionskip
+
+\nsubsection{Introduction --- command line interface}
+
+All of the utility programs run on IBM PC compatible computers.
+
+The utility programs have a uniform interface.  
+All take command line flags and command line arguments.  
+Command line flags stand on their own (such as `{\tt -v}' for 
+`verbose mode'), while command line arguments are followed by an argument 
+(such as `{\tt -c=textext}', which specifies an encoding vector file).  
+In most cases an `{\tt =}' is used before the argument.
+% (although some older programs require a `space' instead).  
+
+To see what command line flags and command line arguments each of the utility
+programs takes, invoke it with `{\tt -?}' as the only argument.
+For example:
+
+\vskip .05in
+
+{\tt afmtopfm -?}
+
+\vskip .05in
+
+\noindent
+See each program's usage summary for additional details. 
+
+Many of the utility programs can process multiple files on one invocation
+(when that makes sense).  The same command line flags and arguments are in
+effect for all files.  
+Wild card file names may be used 
+(i.e. file names containing `{\tt *}' and/or `{\tt ?}').
+
+The output file(s) (if any) appear in the current directory.  
+To reduce the possibility of confusion, make the current directory something
+other than the directory from which source files are read. 
+The names of output files typically are the same as those of the input files,
+but with different extensions.  
+So, for example, PFBtoPFA takes in files with extension `PFB' and 
+generates files with extension `PFA'.
+
+\nsubsection{Warning Messages}
+
+Watch the on-screen output from the utilities for error messages and warning
+messages.  Often the programs will attempt to continue despite apparent
+problems --- under the assumption that there is some special reason you
+wish to violate some constraint.  
+But a warning message may mean that the resulting file will not
+work or will not work as expected.  
+Sometimes such warning message may be buried in other voluminous output.  
+In this case it may help to redirect the output to a file
+--- using `{\tt >'} on the command line ---
+and read this file later using a text editor.
+Look for lines starting with the word `ERROR' or `WARNING'.
+
+\nsubsection{Encoding Vectors}
+
+Several of the programs allow specification of a file containing a specific
+font encoding vector.  Many sample encoding vector files may be found in the
+subdirectory `{\tt vec}'.  Each non-comment line in such a file
+contains a numeric code followed by a Post\-Script character name --- 
+for example:
+
+\vskip .05in
+
+\verb@33	exclam@
+
+\verb@65	A@
+
+\vskip .05in
+
+\noindent
+Comment lines start with `{\tt \%}'.  
+The first line of an encoding vector file is a special comment
+containing a short descriptive name of the encoding following the string
+`{\tt Encoding:}' --- for example:
+
+\vskip .05in
+
+\verb@% Encoding: Adobe StandardEncoding@
+
+\vskip .05in
+
+\noindent
+This encoding name is inserted into PFM (and TFM) files constructed using this
+encoding vector --- a convenient clue when one later wishes to determine
+exactly what encoding was used to generate a particular PFM (or TFM) file.
+This is useful since the PFM (and TFM) file format makes {\it no} provision
+for the actual encoding vector.
+
+\vskip .05in
+
+%% FOLLOWING CAN BE FLUSHED TO MAKE SPACE
+
+{\narrower
+
+\noindent
+{\bf AN ASIDE:} \enspace
+The need for reencoding arises from the limitations of the 8-bit
+character system.  With only 256 possible codes and thousands of
+recognizable different characters there is a need to map those 
+presently being used into the available slots.
+Maybe someday --- perhaps when UNICODE is adopted --- we won't have to
+play these games with encoding any longer.
+Unfortunately, the outlook at the moment is rather bleak.
+MicroSoft Windows, for example, uses UNICODE for both characters and glyphs. 
+Ligatures are not considered to be characters.
+% so there is no way to get at ligatures.
+The situation on the Macintosh is not much better, 
+with access to glyphs buried in `line layout', 
+not accessible to the typical application.
+And fine typography requires ligatures\dots
+
+}
+
+\nsection{Definition of Font File Format Terminology}
+
+\undosectionskip
+
+\nsubsection{Outline Font File Formats (PFA, PFB and Mac)}
+
+\beginbullets
+
+\atpar{PFA}
+`Printer Font ASCII' file.  Contains the actual outline
+font.  This is a verbose hexadecimal representation of 
+the outline font commonly used on Unix/NeXT systems.  
+Also useful as an intermediate format when modifying an outline font
+file, since the PFB file cannot be edited directly without disturbing
+binary segment length codes. 
+
+\vskip .05in
+
+\atpar{PFB}	
+`Printer Font Binary' file.  Contains the actual outline font.  
+Used for printing, and also for screen display 
+using Adobe Type Manager (ATM).  This is a compact binary
+representation of the outline font normally used on IBM PC compatibles.
+
+\vskip .05in
+
+\atpar{MAC}
+Abbreviation used here to denote a Macintosh outline font.
+On the Macintosh these do not have a file name extension.
+These files are useually stored in the fonts (or system) folder 
+and are the Mac's
+equivalent of PFB files.  Note that these files are binary
+and have a complex structure. 
+The outline font is stored in a sequence of `POST resources'.
+% When transferring to and from a PC, make sure to use `MacBinary' mode.
+
+\endbullets
+
+{\narrower 
+
+\noindent
+{\bf WARNING:} \enspace
+Macintosh outline font files and `screen font' files have an empty 
+data fork. All of the action is in the resource fork.  Hence these 
+files must be transferred in MacBinary form.  All will be lost if 
+only the data fork is copied!  
+
+}
+
+\nsubsection{Font Metric File Formats (AFM, PFM, TFM and FOND)}
+
+\beginbullets
+
+\atpar{AFM}
+Adobe Font Metric file.  Human readable metric file from
+which more compact binary formats can be derived.  Contains
+basic font metric information, such as character widths and
+kerning pairs.  Also contains ligature information, character
+bounding boxes, composite character information, and font
+properties.  Importantly, the encoding vector is spelled out.
+And there is complete information on unencoded characters.  This 
+is the {\it only} font metric format that provides complete information.
+
+\vskip .05in
+
+\atpar{PFM}
+MS Windows `Printer Font Metric' file.  Compact binary metric
+file used by Windows.  Contains basic font metric information
+such as character widths and kerning pairs.  Does not contain
+ligature information or full encoding vector.  Contains Windows
+`Face' name of font --- which is what is listed in font menus.
+
+\vskip .05in
+
+\atpar{TFM}
+{\TeX} Font Metric file. Compact binary metric file used by {\TeX}.
+Contains basic font metric information such as character
+widths and kerning pairs, as well as ligature information.
+Also contains character bounding box and, in the case of math
+fonts, additional information for constructing large
+delimiters.  Does not contain full encoding vector.
+
+\vskip .05in
+
+\atpar{SCR}
+Shorthand used here for Macintosh screen fonts.  On the
+Macintosh a screen font is needed so that ATM can access an
+outline font.  
+% The screen font may be installed using the Font D/A mover.  
+The screen font file contains the metric
+information in its `FOND resource'.  In this respect the
+screen font file is analogous to the PFM file on the PC.
+Difference is that on the Mac this metric information is
+usually bundled with an actual bitmapped screen font. 
+
+\endbullets
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf WARNING:} \enspace
+Macintosh outline font files and `screen font' files have an empty 
+data fork. All of the action is in the resource fork.  Hence these 
+files must be transferred in MacBinary form.  All will be lost if 
+only the data fork is copied!  
+
+}
+
+\nsection{List of Programs and their Actions}
+
+\undosectionskip
+
+\nsubsection{PFBtoPFA}
+
+Make Printer Font ASCII (PFA) file from Printer Font Binary
+(PFB) format.  The PFA file can be sent directly to the
+printer using, for example, the DOS COPY command.  
+The compact PFB format is the standard format on the PC. 
+The PFA	format is commonly used on Unix/NeXT systems.  
+The encoding (and the Post\-Script Font\-Name) can be freely edited in 
+the PFA file since it is does not contain binary section length codes.
+Most of the `invasive' utilities described in the Appendix
+work with fonts in PFA format, rather than working diectly with PFB files.
+
+\nsubsection{PFAtoPFB}
+
+Make Printer Font Binary (PFB) file from Printer Font ASCII
+(PFA) format.  The compact PFB form is used by ATM and the
+Windows Post\-Script printer driver.
+It is also what is required by PFBtoMAC for making a Macintosh 
+version of the outline font.
+% The verbose PFA format is what is required by PFAtoMAC when making the
+% Macintosh version of the outline font.
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf WARNING:} \enspace
+Do {\it not} attempt to edit a PFB file directly.  It contains 
+binary length codes, which will be invalid after editing.  
+Convert the PFB file to PFA form first --- edit the PFA file --- 
+then convert back to PFB format.   
+
+}
+
+\nsubsection{MACtoPFA}
+
+Make Printer Font ASCII (PFA) file from Macintosh outline
+font file. The outline font file is the one in the System
+folder, {\it not} the screen font suitcase. % in the System file 
+% (the latter is what is accessed via Font/DA mover). 
+
+It is assumed that the Macintosh font file has
+been transferred in MacBinary format --- that is it has the 
+128 byte file header. (It pretty much has to be in that form, 
+since the data fork in an outline font is empty, 
+so if the file is transferred in another way, nothing is left).  
+
+MACtoPFA assumes the input is in MacBinary format.  
+It will, however, {\it also\/} recognize a file that just contains the
+resource fork itself and process it correctly.
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf NOTE:} \enspace
+MACtoPFA does not assume that the POST resources are sequentially ordered 
+in the file, and will work properly with fonts that have other
+resources interspersed with the POST resources.
+
+}
+
+\vskip .05in
+
+\noindent 
+The resulting PFA file can be converted to PFB format using
+PFAtoPFB, for use with ATM and the Windows printer driver.
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf NOTE:}
+In Windows, one needs a Printer Font Metric (PFM)
+in order to access an outline font.  The PFM file is NOT
+created by MACtoPFA (because the metric information required
+is not in the Macintosh outline font file).  Use AFMtoPFM to 
+construct the PFM file if needed from the AFM file --- use
+SCRtoAFM to make the AFM file first if none is available.
+(But watch out for difference in encoding between Mac and PC).
+
+}
+
+% \vskip .05in
+
+% \noindent 
+% Some PS applications, such as DVIPSONE, do not need PFM files.
+
+\nsubsection{PFBtoMAC}
+
+Make Macintosh format outline font file from a Printer Font
+Binary file (PFB).  If you start with a PFA file, convert it
+first to PFB format using PFAtoPFB.
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf NOTE:} \enspace
+On the Macintosh, an outline font cannot be accessed
+directly by ATM, only via a screen font (which contains
+the metric information).  PFBtoMac does NOT create the 
+required screen fonts (because the PFB file does not contain
+the required metric information).  Use AFMtoSCR to create 
+a suitable `screen font' from an AFM file.  Create an AFM 
+file from a PFM file first using PFMtoAFM if none is available 
+(But watch out for difference in encoding between Mac and PC).
+
+}
+
+\vskip .05in
+
+\noindent
+It is possible to specify an icon different from the default for PFBtoMAC.
+The icon should be in the form produced by the MS Windows SDK
+icon editor.  It has a 80 byte header (which is ignored by
+PFBtoMAC)  followed by two 32 x 32 bitmaps (128 bytes each).
+The two bitmaps are used to construct the icon and the mask,
+(using XOR and AND).
+
+The output of PFBtoMAC is in MacBinary format, that is, it has a 128 byte
+header containing Finder information, followed by the (empty)
+data fork and the resource fork containing the POST resources. 
+Some methods for transferring files to a Mac require the resource fork to be
+in a separate file. Simply remove the first 128 bytes in this case.
+
+\nsubsection{AFMtoSCR}
+
+Makes % `fake' screen font from AFM file. 
+a simple `screen font' from an AFM file. 
+This creates a complete FOND resource that contains character widths,
+kern pairs, FontBBoxes and other font metric information.  
+The FOND resource is associated with a `fake' bitmap screen font ---
+an NFNT resource --- at a very small size (4pt).  This bitmap
+screen font will not be used --- rendering of all sizes will be 
+by ATM on the Macintosh.  
+The reason for creating this fake bitmap screen font is 
+that ATM cannot locate the actual outline font without a
+corresponding `screen font'.  The metric information in the
+FOND resource is moved around by moving the `screen font'.
+
+In the simplest use, AFMtoSCR deals with one font at a time. 
+% Use Font/DA mover on the Macintosh to combine several 
+% screen fonts into one file.
+Several screen fonts can be combined into one `suitcase' on 
+the Macintosh side by dragging and dropping individual font suitcases.
+
+AFMtoSCR {\it can} however combine `regular', `italic', 
+`bold' and `bold-italic' styles of one face into one `screen font'.
+Simply give it four AFM file arguments on the command line.
+%
+(Alternatively, use `Adobe Type Reunion' to bring together
+several different `styles' --- regular, italic, bold,
+bold-italic --- of a font, so that they are not listed
+separately in font menus). 
+
+AFMtoSCR tries to come up with a reasonable QuickDraw font name
+(the name shown in font menus on the Macintosh).
+The QuickDraw font name can also be set using a comment % line
+in the AFM file starting with 
+% {\tt Comment AppleName ...} % {\tt Comment MacIntoshName ...}
+{\tt Comment MacintoshName ...}
+
+The output of AFMtoSCR is in MacBinary format, that is, it has a 128 byte
+header containing Finder information, followed by the (empty)
+data fork and the resource fork. Some methods for transferring
+files to a Mac require the resource fork to be in a separate
+file.  Simply remove the first 128 bytes in this case.
+
+\nsubsection{SCRtoAFM}
+
+Make (partial) AFM file from Macintosh screen font file.  On the
+Macintosh, the font metric information is in the FOND
+resource, which is found in the screen font file. 
+If there are FOND resources for several different fonts in
+one screen font file, then metric information for each of
+these fonts will be placed in sequence in the output file.  
+% Each section is preceded by a line specifying the Post\-Script Font\-Name.
+		
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf NOTE:} \enspace
+CharMetrics sections, KernPair sections, and FontBBoxes may 
+be intermingled, but each starts with the correct Font\-Name.
+Use a text editor to make separate AFM files for each font by
+combining corresponding CharMetrics sections, KernPair
+sections, and FontBBoxes (if present in screen font).
+% Alternatively, use Font/DA mover on the Macintosh to
+% separate the screen fonts for different fonts into 
+% separate screen font files first.
+
+}
+
+\vskip .05in
+
+\noindent
+The results are much easier to interpret, however, if you {\it first\/} 
+split the screen font suitcase into screen font suitcases for individual 
+fonts on the Macintosh side.
+
+Extra information not recorded in the AFM file is shown on
+screen when the `verbose' command line flag (`{\tt -v}') is used
+(Be prepared for voluminous output, which can be redirected
+to a file using `{\tt >}').
+
+SCRtoAFM assumes the input is in MacBinary format.  It will,
+however, also recognize a file that just contains the resource fork itself
+and process it correctly.
+
+\nsubsection{AFMtoPFM}
+
+Makes Windows Printer Font Metric (PFM) files from Adobe
+font metric files (AFM).  
+
+Provides for forced used of `native' or `symbol'
+encoding as opposed to default Windows ANSI encoding.
+For non text fonts,
+use the command line flags `{\tt d}' and `{\tt s}' to suppress
+Windows ANSI reencoding by the Post\-Script printer driver.
+%
+% {\it But}, first make sure that ATM will not reencode the font to Windows
+% ANSI.  To do this, use REENCODE on the corresponding PFB file
+% with command line argument `{\tt c=standard}' 
+% to hide the fact that the outline font uses Standard Encoding. 
+
+AFMtoPFM allows for specification of arbitrary encoding vector using the
+command line argument `{\tt c}',
+overriding the automatically generated Windows Face Name
+using the command line argument `{\tt w}', and provides
+for specification of other font properties.
+The Windows Face Name is normally constructed from the PostScript FontName 
+by stripping off modifiers, such as `Bold', `Italic', `Regular' and so on.
+The command line flag `{\tt e}' instead makes AFMtoPFM use the 
+PostScript FamilyName. 
+The Windows Face Name can also be set using a comment line
+in the AFM file starting with 
+{\tt Comment MS-WindowsName ...}
+% {\tt Comment MSMenuName ...} % {\tt Comment MS-WindowsName ...}
+
+For fonts that use the `control character' range (0 through 31) add the
+command line flag `{\tt t}' to get these
+positions remapped to higher up (161 through 195), where Windows
+applications can more easily get at them. 
+
+
+\nsubsection{PFMtoAFM}
+
+Make (partial) Adobe font metric (AFM) from Windows Printer Font Metric
+file (PFM).  This is useful for analyzing existing PFM files.
+Note that the resulting AFM file is not complete,
+some values commonly found in AFM files 
+(accurate character bounding boxes for example)
+are not present in PFM files ---
+and there is no information on unencoded characters.
+Some extra information not recorded in the AFM file is shown on
+screen when the `verbose' command line flag (`{\tt -v}') is used
+(Be prepared for voluminous output, which can be redirected
+to a file using `{\tt >}').
+You may need to specify an encoding vector, when not
+dealing with a plain vanilla text font.
+For ordinary text fonts the default is Windows `ANSI' encoding.
+%
+Use PFAtoAFM to get the missing AFM file information.
+
+\nsubsection{AFMtoTFM}
+
+Make {\TeX} font metric file (TFM) from Adobe font metric file (AFM).  
+Distinguished from programs with similar names by several unique
+features, including its ability to create TFM files complete
+with ligatures and kerning without resorting to `virtual fonts.'
+% {\it arbitrary} encoding of the font, not a fixed {\it ad hoc\/} encoding.
+% There is also explicit control over `excess' kern pairs
+% that may not fit into the TFM file format limitations.
+
+The eleven standard {\TeX} `ligatures' (s.a. `{\tt ---}' => `{\tt emdash}')
+can be requested using the command line flag `{\tt a}' % .
+\footnote*{
+`{\tt f i}' $\to$ `{\tt fi}',
+`{\tt f l}' $\to$ `{\tt fl}',
+`{\tt f f}' $\to$ `{\tt ff}',
+`{\tt ff i}' $\to$ `{\tt ffi}',
+`{\tt ff l}' $\to$ `{\tt ffl}',
+`{\tt exclam quoteleft}' $\to$ `{\tt exclamdown}',
+`{\tt question quoteleft}' $\to$ `{\tt questiondown}',
+`{\tt hyphen hyphen}' $\to$ `{\tt endash}',
+`{\tt endash hyphen}' $\to$ `{\tt emdash}',
+`{\tt quoteleft quoteleft}' $\to$ `{\tt quotedblleft}',
+`{\tt quoteright quoteright}' $\to$ `{\tt quotedblright}',
+}.
+An additional five `ligatures' 
+% (s.a. `{\tt \char60\char60}' 
+(s.a. `{\tt {>}{>}}' 
+=> `{\tt guillemotleft}')
+can also be requested --- use the command line flag `{\tt d}'
+\footnote\dag{
+`{\tt less less}' $\to$ `{\tt guillemotleft}',
+`{\tt greater greater}' $\to$ `{\tt guillemotright}',
+`{\tt comma comma}' $\to$ `{\tt quotedblbase}',
+`{\tt suppress l}' $\to$ `{\tt lslash}',
+`{\tt suppress L}' $\to$ `{\tt Lslash}',
+}.
+Ligatures to access the 58 `standard' composite characters that appear in
+most text fonts in Type~1 format can also be added using the command line
+flag `{\tt j}'
+\footnote\ddag{`{\tt dieresis A}' $\to$ `{\tt Adieresis}' and so on,
+where the character `{\tt dieresis}' may be generated using \verb@\char@
+say.  The character code needed for the accent will, of course,
+depend on the chosen encoding.}.
+% `{\tt A}' follow the character `{\tt dieresis}'.}.
+Such ligatures will only be set up if the font encoding actually includes
+the accented/composite characters --- 
+this is not possible if StandardEncoding is used, for example.
+For fixed-width fonts, use the flag `{\tt n}' instead to
+{\it suppress} ligatures found in the AFM files of some fixed-width fonts.
+
+Finally, a special comment syntax is
+supported in the AFM file for specification of {\it all} information
+needed in {\TeX} math fonts.
+%  (for examples, see AFM files for some math fonts in the AFM subdirectory).  
+This comment syntax provides for
+specification of the basic font parameters required by {\TeX}, 
+as well as `ascending sequences' of related characters, 
+and `extensible' characters.
+Look at the sample AFM files in the AFM subdirectory to see how this works
+(as well as the `{\tt readme.txt}' file in that directory).
+
+Use the `{\tt t}' command line flag to hide
+additional information required by {\TeX}tures in the TFM file.
+TFM files made using this command line flag can then be processed 
+by TFMtoMET to create {\TeX}tures metric files.
+
+\nsubsection{TFMtoAFM}
+
+Makes (partial) Adobe font metric file (AFM) from {\TeX} 
+font metric file (TFM).  
+Useful for seeing what really happens in Computer Modern
+fonts for example.  Generates extra comments containing all
+of the information in {\TeX} math fonts that normally would
+{\it not} appear in an AFM file, regarding ascending sequences of
+related characters and extensible characters, as well as all
+of the font parameters used by {\TeX}.  
+Note that the resulting AFM file is not complete,
+some values commonly found in AFM files are not present in TFM files ---
+and there is no information on unencoded characters.
+Additional information is provided
+on screen when `verbose' mode (`{\tt -v}') is selected.  
+This can be redirected  to file using `{\tt >}' if desired.
+%
+Use PFAtoAFM to get the missing AFM file information.
+
+\nsubsection{TFMtoMET}
+
+Package TFM files into resources for use with {\TeX}tures.
+This can be useful when working with math fonts, since
+EdMetrics cannot create proper {\TeX} metric information	
+from AFM files of math fonts.  
+Be sure to use the `{\tt t}' command line parameter when creating the TFM
+files that are to be combined using TFMtoMET.
+Specify all of the TFM files to be included on the command line.
+This can often be done conveniently using wild card file names such as in
+`{\tt tfmtomet *.tfm}'.
+%
+If a file with extension `{\tt vf}' is found with the same name as a
+TFM file, then it will be packaged with that TFM file.
+But be careful, use of `virtual fonts' can lead to complex problems.
+
+\nsubsection{METtoTFM}
+
+Unpacks {\TeX}tures metric files into individual TFM files.
+This can be useful when checking to see how {\TeX}tures metrics files are set
+up, and for verifying output produced by TFMtoMET.
+Also helpful when a single TFM file has to be replaced in 
+a large collection of TFM files buried in a {\TeX}tures metric file.
+In this case, use METtoTFM to split up the collection, 
+replace the affected TFM file, then recombine using TFMtoMET.
+%
+Virtual fonts --- if found --- will be unpacked into separate files
+with extension `{\tt vf}'.
+
+\nsubsection{REENCODE}
+
+Allows reencoding of PFB, PFA and AFM files using an arbitrary
+encoding vector specified in encoding vector file.
+Useful for working with MS Windows and the Macintosh applications 
+that do not support on-the-fly reencoding of fonts.  
+
+Also useful to work around a `feature' of ATM, 
+% ATM~1.1, ATM~1.15 \& ATM~2.0
+which enforces Windows ANSI reencoding when the font used StandardEncoding
+(i.e. the PFB file contains the line {\tt /Encoding StandardEncoding def}).
+Specify `{\tt standard}' as the encoding vector and REENCODE will
+write the Standard Encoding out in full, which
+fools ATM into thinking the font does {\it not} use StandardEncoding:
+
+\vskip .05in
+
+\verb@ reencode -v -c=standard tir_____.pfb@
+
+\vskip .05in
+
+\noindent
+For fonts that use the `control character' range (0 through 31) add the
+command line flag `{\tt t}' to get these
+positions remapped to higher up (161 through 195), where Windows
+applications can more easily get at them. 
+
+% {\bf NOTE:} REENCODE can also be applied to AFM files.
+
+% \nsubsection{Additional Outline Font Manipulation Utilities}		
+
+% See the file `{\tt outlines.txt}' for information on utilities that
+% actually modify the encrypted part of an outline font. 
+
+% \bpar	Note that these additional utilities have some restrictions on use.
+
+\nsubsection{PFAtoAFM}	
+
+PFAtoAFM creates an AFM file complete with character bounding
+boxes and the `Composites' section.  The only thing really missing is the
+`KernPairs' section.  Kern pairs are not found in the PFB or PFA file.
+You can extract kern pairs from the corresponding PFM (or TFM) file.
+PFAtoAFM takes an extra command line argument that allows you to
+feed it a partial AFM file containing kern pairs made by PFMtoAFM.
+
+\nsubsection{SAFESEAC}
+
+As described in section~5.3 there are potential problems when reencoding
+fonts that contain ready-made accented characters.
+Use the SAFESEAC utility to expand the troublesome `{\tt seac}'
+(Standard Encoding Accented Character) instructions to get around this.
+First convert the PFB file to PFA format.
+After running SAFESEAC convert back to PFB format.
+The SAFESEAC utility will increase the PFA file size a bit.
+
+% \nsubsection{RENAMECH} % already described later
+
+% Sometimes it is neccesary to rename the glyphs in a font, particulary
+% if the glyph names are mere aliases for character code numbers ---
+% as opposed to being meaningful.  Use the RENAMECH utility to change
+% the names both in the encrypted section and in the encoding vector.
+% RENAMECH takes as a command line argument the name of a plain ASCII
+% file that has lines containing glyph name pairs.  The first name on
+% the line is the name to replace with the second name on the line.
+
+
+\nsection{Slanted, Condensed and Expanded Versions of Fonts}
+
+PFBtoPFA and PFAtoPFB make it possible to create slanted/obliqued, as well as
+condensed or expanded versions of fonts. The following steps are required:
+
+\beginbullets
+
+\atpar{(a)}	Convert the PFB (outline font file) to PFA format;
+
+\atpar{(b)}	edit the FontMatrix line;
+
+\atpar{(c)}	change the FontName, and change the file name;
+
+\atpar{(d)}	consider commenting out the UniqueID line (see notes);
+
+\atpar{(e)}	convert the PFA file back into PFB format;
+
+\atpar{(f)}	if necessary, create a new PFM (MS Windows font metric) file.
+
+\atpar{(g)}	if necessary, create a new TFM (TeX font metric) file;
+
+\endbullets
+
+For most Adobe Type~1 format font files the FontMatrix looks like this:
+
+\vskip .05in
+
+\verb@[0.001 0 0 0.001 0 0]@
+
+\vskip .05in
+
+\noindent
+To obtain a condensed version of a font, 
+scale the first entry appropriately:
+% For example:
+
+\vskip .05in
+
+\verb@[0.00082 0 0 0.001 0 0]@
+
+\vskip .05in
+
+\noindent
+This, for example, will produce a new font that has characters shrunk to 82\%
+of their original widths.  To create an expanded version of the font instead,
+us a value larger than 0.001 for the first entry.
+
+To obtain a slanted version of a font, use a non-zero value for the third
+entry. For example: 
+
+\vskip .05in
+
+\verb@[0.001 0 0.0002 0.001 0 0]@
+
+\vskip .05in
+
+\noindent
+This will produce a font which is slanted to the right by 
+11.31\degrees. % 12.4\degrees. 
+The third entry is 0.001 times the tangent of the angle of slant.
+
+To `unslant' an italic font, use a negative third entry with magnitude equal
+to the magnitude of the tangent of the ItalicAngle of the font.
+You will produce an `upright' font with the cursive 
+letter shapes characteristic of an `italic' font!
+
+\nsubsection{Notes Relating to Slanted and Condensed Versions of Fonts}
+
+\beginbullets
+
+\bpar You cannot edit the PFB file directly, since it has embedded 
+section length codes which would be invalid after the changes.  
+Convert to PFA form first.  PFA files do not contain any binary
+information and are easy to edit.
+
+\vskip .05in
+
+\bpar To avoid confusion, the new font should have a Font\-Name different 
+from the original font, and different file names should be used for the
+corresponding PFB, PFM, AFM and TFM files.  
+ATM and Windows {\it cannot} handle two fonts with the same Font\-Name 
+(even if they have different file names --- 
+contrary to the situation on the Macintosh).
+
+\vskip .05in
+
+\bpar You may want to comment out the UniqueID line in the modified version
+--- particularly if the original font and the modified version are to be used
+on the same printer. 
+The identity of entries in the font cache is based on Font\-Name, UniqueID,
+and the transformation matrix (scaling) for a font.  However, some PS
+interpreters may not distinguish between fonts with the same UniqueID,
+even if they have different Font\-Names.  Across-job font caching will be
+disabled when the UniqueID line is commented out.  
+You {\it cannot} assign a new
+UniqueID in the PFA file, since it will not match the UniqueID hidden in
+the encrypted section, and so will be ignored. 
+
+\vskip .05in
+
+\bpar For AFMtoPFM and AFMtoTFM, create a new AFM file, with the new
+Font\-Name. 
+Change the ItalicAngle if the new font has been slanted or unslanted.
+
+\vskip .05in
+
+\endbullets
+
+\noindent
+If the font has been expanded or condensed, then character widths and kerning
+information need to be changed also.  
+It can obviously be quite tedious to go through an AFM file changing all of
+the width and kerning information by hand!
+So instead, the horizontal scale factor can be
+specified in a comment before the `StartCharMetrics' section of the AFM file. 
+Both AFMtoTFM and AFMtoPFM use this comment to modify all character
+width and kerning distances  
+(Note, however that other software using the AFM file does not do anything
+when it sees this comment).
+The comment to take care of character width and kerning changes takes the form:
+
+\vskip .05in
+
+\verb@Comment Condensed 0.82@
+
+\noindent or
+
+\verb@Comment Expanded 1.22@
+
+\vskip .05in
+
+\beginbullets
+
+\bpar For use with Windows and ATM, a new PFM needs to be created if the font
+has been condensed or expanded.  
+Use AFMtoPFM to make a new PFM file after modifying the AFM file. 
+
+\vskip .05in
+
+\bpar For use with {\TeX}, a new TFM file may need to be created. 
+This is definitely required if the font is condensed or expanded.  
+Use AFMtoTFM to make a new TFM file after modifying the AFM file.
+
+\noindent 
+You may want to rebuild the AFM file by replacing the `CharMetrics' 
+section in the original AFM file with that produced by PFAtoAFM 
+when applied to your modified font.
+%  with the rest of the original AFM file.
+
+\endbullets
+
+\nsection{Notes, Comments and Limitations}
+
+\undosectionskip
+
+\nsubsection{Outline Font Files}
+
+PFA and PFB formats for outline fonts contain {\it exactly} the same
+information, so nothing is lost in converting % back and forth 
+between these formats.
+
+The Macintosh outline font format contains the same font data as a PFB file,
+with some convenient informational bits tacked on, including a font
+family icon, version, copyright, and library strings, and a resource ID
+number.  This extra information is lost in conversion to PFA format using
+MACtoPFA.  It is possible to insert the extra information, using command
+line flags, when converting a PFB file to Macintosh outline font format 
+with PFBtoMAC.  But it is {\it not} required for the font to work on the Mac.
+A file containing only the POST resources --- which contain exactly what is
+in the PFB file --- is enough.
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf NOTE:} \enspace
+Conversion between different formats of the outline font file itself
+using the above utilities 
+is {\it always safe:} all shape, metric, and hinting information is retained.
+
+}
+
+\nsubsection{Font Metric Files}
+
+The various font metric formats, on the other hand,  
+do {\it not} contain exactly the same kind of information.  
+Conversion from one format to another will not
+produce information corresponding to that missing in the source format, and
+conversely, some information for which there is no representation in the
+target format will have to discarded.  The information discarded can be shown
+if the `verbose flag' (`{\tt -v}') is used on the command line.  
+% (This output --- which in some cases can be quite voluminous --- can be
+% redirected for convenience to a file using `{\tt >}' on the command line). 
+
+\vskip .05in
+
+{\narrower 
+
+\noindent
+{\bf WARNING:} \enspace
+Converting from one metric file format to another and back will
+typically {\it not} recreate the original file exactly.  
+However, the basic character width and kerning information 
+{\it will} % always 
+be intact. 
+
+}
+
+\vskip .05in
+
+\noindent
+For example, both PFM and Mac screen font formats allow for the basic
+character width and kerning information, but do {\it not} provide for
+ligature information, which both AFM and TFM form {\it do} encode.
+
+The AFM format and (to some extend) the Mac screen font format allow for
+specification of the encoding vector, which PFM and TFM format do {\it not}. 
+The PFM file has no information on character bounding boxes (needed to 
+create TFM files).  Also, the AFM format is the {\it only} one that provides
+complete information on unencoded characters.  This information is lost
+{\it completely} in all other font metric file formats.   Hence:
+
+\vskip .05in
+
+\bpar The AFM format is the ultimate repository of metric information.
+\vskip .05in
+
+\noindent
+There is some auxiliary information that some of the metric files formats
+hold.  This can be supplied using optional comments in the AFM file.
+(Adobe's MakePFM utility instead uses yet another auxiliary file, the
+so-called `INF' file).
+
+TFM files for math fonts contain extra information linking together
+characters of similar shape, but different sizes, information on how to
+construct large delimiters out of pieces, and so on.  The utilities here
+provide an extension of the AFM Comment syntax to allow this information to
+be represented in an AFM file as well.
+
+
+\nsubsection{Potential Problems with Reencoding --- Accented Characters}
+
+When you reencode a font, keep in mind that most Adobe Post\-Script
+interpreters have a `mis-feature' that requires that accents and base
+characters called for by a composite character {\it must} be in the encoding. 
+So, for example, if your encoding contains the character `{\tt Edieresis}',
+then it better also contain the characters `{\tt E}' and `{\tt dieresis}' 
+(that is, it is not sufficient that
+these characters exist as Char\-Strings in the font --- 
+they have to actually be in the  encoding).  
+Interpreters with this `feature' respond with an `{\tt invalidfont}'
+error when you try and render a composite character so affected.
+
+This has some serious consequences when attempting to reencode to IBM OEM
+encoding for example, since this encoding does not contain any accents, but
+does contain accented characters.  This makes Adobe's `PrestigeElite' and
+`LetterGothic' basically useless for this purpose, even though they do contain
+all of the characters needed for IBM OEM encoding.  
+Use IBMExtended from Imprimatur Design Systems Inc. in Cambridge, Mass instead
+(IBMExtended uses subroutines instead of % the Type~1 operator 
+`{\tt seac}' 
+to build the accented characters, and so is not subject to this problem).
+
+You can use the SAFESEAC utility --- described in section~3.14 --- 
+on the PFA file in order to avoid these problems.
+
+
+\nsubsection{Look out for Some Special `Features' of ATM for Windows}
+
+ATM for Windows does not have the above described problem with reencoding; 
+instead it has an more serious `mis-feature': 
+in some versions of ATM, accents must be in specific positions that are 
+hard-wired!
+In others versions, ATM tries to use a character in the position that
+the accent occupies in Adobe StandardEncoding.
+This can be a major source of confusion when a font is reencoded.
+`Accents' will be pulled out from unexpected places in the font
+% rather than from where the accents actually occur in the chosen encoding
+--- with typically surprising results!
+
+Different versions of ATM for Windows have this bug to differing degrees.
+Some recent versions of ATM fix this problem for the accents used in the
+standard 58 accented characters --- but not for characters using
+accents other than those that occur in that set
+(e.g. dotaccent, macron and breve).
+The only ATM presently free of such problems is ATM Deluxe 4.0 for Windows NT.
+
+% One way to deal with this is to admit defeat % `compromise' 
+% and use the fixed positions demanded by ATM.  
+% See the vector file `{\tt texannew.vec}' 
+% for further information and a sample encoding that works with ATM.
+
+% An amusing side light on this same problem is what happens in ATM 2.0 when 
+% one attempts to reencode a font to IBM OEM encoding.
+% In IBM OEM encoding `{\tt ecircumflex}' is in position 136.  Problem is, ATM
+% 2.0 reserves 136 for `{\tt circumflex}'. 
+% When you try to render `{\tt ecircumflex}', Windows crashes, 
+% because ATM  overflows its stack trying to render `{\tt ecircumflex}', 
+% which requires rendering an `{\tt e}' and a `{\tt circumflex}', 
+% which it thinks is in code position 136, which in turn\dots % $\ldots$
+
+% What makes this whole thing even more frustrating, is that the hard-wired
+% encoding has changed between ATM~1.15 and ATM~2.0.  
+% The root cause for this appears to be that MicroSoft added some characters to
+% Windows `ANSI' when upgrading from Windows~3.0 to Windows~3.1.  
+% Some of these landed (by chance?) on top of positions
+% that ATM had hard-wired for accents, so Adobe had to shift some of these
+% hard-wired accents around.  
+% Old work-arounds to this problem no longer work\dots % $\ldots$
+
+% Even more unfortunate is that fact that part of this rearrangement has moved
+% two `accent' characters (`{\tt caron}' and `{\tt dotlessi}') 
+% to code positions~1 and~2.
+% Many fonts use the character range 0--31 (such as all of the Computer Modern
+% fonts used by {\TeX}, 
+% all of the American Mathematical Society ({\AMS}) math fonts and so on).
+
+The way to solve these problem is to use the SAFESEAC utility --- described
+earlier --- on the font's PFA file before installing the font with ATM.
+
+Speaking of the `control character' code positions, another `feature' of 
+some older versions of ATM for Windows is that a character in the encoding 
+at code position~0 may not be rendered.  
+The reason is that ATM maps all characters that
+do not appear in the encoding to code position~0 --- and whatever ends
+up there {\it last} is what will be rendered --- in some fonts this is 
+`{\tt .notdef}'.  
+So short of decrypting a font and rearranging the
+Char\-Strings, there is no way to use character code position~0 in those
+version of ATM for Windows!  
+(This problem does {\it not} occur
+if all characters actually show up in the Encoding vector, 
+so it does not normally affect the Computer Modern math fonts, for example).
+
+By the way, recent versions of ATM protect themselves from bad fonts (and
+their own bugs!) by catching `exceptions'.  That is, instead of crashing and
+burning (as older versions did!) when something goes wrong, ATM resets itself.
+This takes some time and means that on screen rendering is abandoned.
+The result is that nothing shows on screen, and that rendering is very slow.
+If you see this kind of behaviour, try rebooting.  Check that ATM works with
+some known fonts.  If that doesn't help try reinstalling ATM.
+
+% Finally, ATM for Windows has another `mis-feature' relating to encoding: 
+% it cannot handle multiply encoded characters 
+% (characters that can be accessed by more than one character code).
+% This is disastrous, for example, for ISO 
+% Latin encoding where several accents are accessible in two positions.  
+% What happens is that ATM associates a glyph with the {\it first} code
+% mentioned in the encoding vector {\it only}
+% (a special-case exception is made for `{\tt hyphen}' since this appears
+% in Windows ANSI in two places).
+% To render the glyph you want, you have to use that character code
+% (except for the special case of `hyphen' which appears twice in 
+% Windows ANSI).
+
+% In addition, if you use the alternate character code, you may corrupt
+% ATM and/or Windows.  One of the first symptoms of such problems is the 
+% so-called `invisible ink' phenomenon, where ATM suddenly refuses to render
+% anything (until it is `awakened' again by some other font choice or a change
+% in the phase of the moon or whatever).  
+
+% \vskip .05in
+
+% {\narrower 
+% 
+% \noindent
+% {\bf NOTE:} \enspace
+% The `invisible ink' part of this problem appears to have been partially
+% solved in ATM 2.02 and ATM 2.5 for Windows. 
+% Make sure you use the latest version of ATM.
+% 
+% }
+
+\vskip .05in
+
+% \noindent
+By the way, you will be happy to know that ATM for the Macintosh has 
+none of these problems\dots
+
+% \nsubsection{File Name Limitations on IBM PC compatibles}
+
+% An additional small problem at times is the constraint on file names in 
+% the PC to 8 characters plus 3 character extension (with case ignored).  
+% This means that one has to dream up short names for some files that have 
+% long file names on the Macintosh (and avoid conflict between files that 
+% have the same 8 starting characters on the Macintosh).
+
+\nsection{Five Auxiliary Utility Programs}
+
+There are additional programs included that may prove useful at times:
+
+\vskip .05in
+
+\beginbullets
+
+\ivpar{MODEX}
+Allows setting of baud rates on serial ports to higher than
+19,200 baud (38,400 and 57,600 baud).  Overcomes DOS
+limitation to 19,200.  Use as you would use DOS MODE command.
+Without arguments: displays present settings on COM1 \& COM2.
+(Note: this utility cannot be used in Windows NT since it directly 
+accesses I/O ports).
+
+\vskip .05in
+
+\ivpar{SERIAL}
+Useful for sending PS files to printers over serial lines when
+the printer does {\it not\/} support hardware handshaking (such as the
+original Apple LaserWriter).  Also useful for capturing
+information sent back by the printer over the serial line.
+Useful in conjunction with `{\tt ehandler.ps}'. % and `{\tt getafm.ps}'.
+Data from printer appears on screen and in a log file.
+(Note: this utility cannot be used in Windows NT since it directly 
+accesses I/O ports).
+
+\vskip .05in
+
+\ivpar{DOWNLOAD}
+Can be used to download fonts, to reset the printer, and to
+ask the printer to print a list of fonts that it knows about.
+Expands PFB to PFA files on the way to the printer, and can
+add code to make the font resident in the printer.
+Use `{\tt -?}' on command line to see all the options.
+
+\vskip .05in
+
+\ivpar{NAMECASE}
+Change the case of Font\-Names in PFB, PFA, and PFM files.
+Useful for the IBM PC version of the Computer Modern outline fonts, 
+which have the Font\-Names in upper case (to be compatible with the
+Macintosh versions, which suffer from the $5 + 3 + 3 \ldots$
+font-name contraction feature).
+
+\vskip .05in
+
+\ivpar{MACANAL}
+Shows data and resource fork information in Macintosh file.
+Can be useful when trying to understand what is wrong with a file that
+is not accepted by one of the other utilities (typically
+because something was lost in the transfer from Mac to PC).
+May also be useful for looking at a file before using ResEdit
+on the Macintosh.
+
+\vskip .05in
+
+\ivpar{EHANDLER.PS}
+Somewhat improved  % version of Adobe's 
+Post\-Script error handler.
+Invaluable for debugging problems with Post\-Script code.  
+Send to printer ahead of time --- 
+it stays loaded until printer is power cycled. 	
+
+\vskip .05in
+
+\noindent % \bpar 
+It is difficult to debug Post\-Script code without an error handler
+--- use it!
+
+\endbullets
+
+\newpage
+
+% \nsection{Invasive Outline Font Manipulation Utilities}
+
+\section{Appendix A: Invasive Outline Font Manipulation Utilities}
+
+The following utilities actually go into the encrypted part of an
+outline font file in PFA format and extract information about the
+outlines, and modify the outlines.  The end user license agreement of
+a font may prohibit this:
+
+%   It is your responsibility to verify that you are permitted to make such
+% modifications to the fonts you own: 
+
+{\narrower
+
+\vskip .05in
+
+\noindent
+{\bf NOTICE:} \enspace
+Please ascertain that the end user license for the outline font file 
+that you plan to modify or inspect has no restrictions on modifications, 
+decompiling, reverse enginering, or format conversion 
+before using these utilities.  
+
+\vskip .05in
+
+}
+
+% \noindent
+% These `invasive' utilities have some restrictions on use:
+%
+% \vskip .05in
+
+{\narrower
+
+\noindent
+{\bf RESTRICTIONS:} \enspace
+Modified outline fonts files that are produced by SIDEBEAR, COMPOSITE,
+SUBFONT, MERGEPFA, TRANSFRM and RENAMECH may  % {\it only\/} 
+be used to render and display typefaces for your own customary 
+business or personal purposes.  
+% The modified outline font files may {\it not\/} be sold or distributed. 
+You may not distribute modified fonts without the consent of the
+original font's copyright holder.
+
+}
+
+\vskip .05in
+
+% \noindent
+% {\bf NO WARRANTY:} \enspace
+% No express or implied warranties, including no implied
+% warranties of merchantability and fitness for use, are provided with
+% respect to the software.  In no event shall {\Y&Y} be liable for
+% any damages, including special, indirect, incidental, or consequential
+% damages, arising out of use or inability to use the software. 
+% 
+% \vskip .05in
+
+% \noindent
+% {\bf SUGGESTION:} \enspace
+% Always keep copies of the original outline font and font
+% metric files in a safe place before making modified versions.
+% 
+% \vskip .05in
+
+\noindent
+% {\bf DISK SPACE:} \enspace
+These utilities may at times need to create substantial temporary files.
+Make sure there are 500 kbytes of disk space available in the
+`temporary' file directory --- the one pointed to by the environment
+variable TEMP --- or in the current directory, if TEMP is not set.  
+Output always appears in the current directory. 
+Use of a RAM drive will speed up operations.
+% (and make the temporary files disappear automatically).
+
+% \vskip .05in
+
+% \noindent
+% {\bf FILE FORMAT:} \enspace
+% Most of 
+These utilites all work with PFA format font files.
+Use PFBtoPFA to convert to PFA format first,
+and then use PFAtoPFB to convert back to PFB format afterwards.
+
+% \vskip .05in
+
+% \noindent
+% {\bf CAVEATS:} \enspace
+
+These `invasive' outline font manipulation utilities have to deal with a wide
+variety of internal details of the encrypted section of Type~1 fonts.  
+Consequently there are some limitations: 
+
+\vskip .05in
+
+\bpar Some of the utilities may not work with so-called `synthetic fonts'.
+`Synthetic fonts' contain code that modifies the FontMatrix or
+Metrics of another Type 1 font ---
+which is included in the same file --- as if in a Kangaroo's pouch.
+Fortunately, there seem to be relatively few `synthetic fonts' these days.
+
+\bpar Some of the utilities may not work with fonts that actually use
+{\tt FlexPrc}' (as opposed to just having the code for it).
+This is quite rare (some commmercial font generation software
+includes the code for {\tt FlexPrc}, but never actually uses it!).
+
+\bpar Some of these utilities may not work with fonts that do not use the
+first four {\tt Subrs} in the standard way (i.e. that is, for hint
+replacement).  (The utilities {\it do}, however, 
+recognize the recent adoption of the fifth {\tt Subr} for 
+reducing hint replacement overhead).
+
+\bpar Some of these utilities may not work with fonts that use
+computed {\tt Subrs} calls as opposed to explicit calls
+(we don't know of any fonts that do).
+
+\bpar Some of these utilities may not work with fonts that have
+extremely large numbers of characters (> 1000), 
+or an extremely large number of compound characters (> 250).
+Most roman text fonts contain around 228 characters, 
+of which % about 
+58 are composite/accented characters
+(IBM Courier has 479 characters, including 127 composites).
+% (Adobe PrestigeElite has 358 characters, including 58 composites).
+
+% IBM Courier has 479 characters, 127 composites.
+
+\bpar Finally, some of these utilities will not work with fonts that 
+have non-horizontal character escapements
+(Most Western language fonts use horizontal escapements).
+
+\vskip .05in
+
+% }
+
+\noindent
+For a detailed example of how to use these utilities, 
+read `{\tt composit.txt}', 
+which describes in detail how to add composite characters to a font.
+For another example, look at `{\tt smallcap.bat}', a batch file that calls
+the utilities to create a smallcaps version of a font.
+(For an even more elaborate example demonstrating collaborative use of these
+utilities, look at `{\tt convmath.bat}, 
+and read `{\tt convmath.txt}' for detailed explanation).
+
+% \nsubsection{SIDEBEAR --- adjusting widths and sidebearings}
+\subsection{A.1 SIDEBEAR --- adjusting widths and sidebearings}
+
+SIDEBEAR provides for inspection and modification of character
+sidebearings and advance widths in PFA outline font file.
+
+To extract a list of characters, their left sidebearings
+and advance widths from a PFA file, give SIDEBEAR that file
+name as the single command line argument.  For example: 
+		
+\vskip .05in
+
+\verb@sidebear foo.pfa@
+
+\vskip .05in
+
+\noindent
+Output is in current directory, same file name as input,
+except that the extension is `{\tt sid}' instead of `{\tt pfa}'.
+Each line contains a character name followed by two numbers,
+representing the left sidebearing of the character and the
+advance width (in standard Adobe units of 1000 per em).
+
+\vskip .05in
+
+\bpar In some rare cases, the word `{\tt div}' may appear on this
+line.  This indicated that the previous two integers are to
+be divided.  This is a way for a font to obtain non-integer
+multiples of the basic unit (1/1000 em) for character width.
+
+\vskip .05in
+
+\bpar The numbers are normally followed by the word `{\tt hsbw}'
+(horizontal side bearing and width).  In some very rare
+cases there may be four numbers instead of two, followed by
+the word `{\tt sbw}' (x and y components of sidebearing and width).
+
+\vskip .05in
+
+\noindent 
+Actually, the main use of this program is in {\it altering\/} 
+sidebearings and character widths in a font.  
+To alter sidebearings and advance widths, specify a file
+containing new sidebearings and character widths as the second argument:
+
+\vskip .05in
+
+\verb@sidebear foo.pfa metrics.lst@
+
+\vskip .05in
+
+\noindent
+The file with sidebearing and advance width information
+should have the same format as the file produced by 
+SIDEBEAR when given a single argument.  In fact, the easiest
+way to proceed may be to first generate such a file using the
+PFA file name as the single command line argument.  
+The resulting output file can then be modified to reflect the
+desired modified metrics. 
+
+The trailing `{\tt hsbw}' on each line can be omitted.  
+If the second number is also omitted, then only the
+sidebearing is altered.  SIDEBEAR cannot alter metrics of
+fonts that use `{\tt sbw}' instead of `{\tt hsbw}' 
+(i.e. for languages written vertically instead of horizontally).
+
+It is probably a good idea to check the resulting
+font using SIDEBEAR with a single command line argument.
+
+NOTE: sidebearings and advance widths of composite
+characters (such as `{\tt Adieresis}') should not be adjusted
+independently.  They {\it must\/} match those of the base character.
+(In fact, adjustment of base or accent characters
+should be followed by adjustment of the composite characters,
+see discussion of the utility COMPOSIT below).		
+
+SIDEBEAR can also be used to `track kern' a font.  
+Use the command line argument `{\tt s}' to specify a scale factor.
+Here `{\tt -s=1.0}' means no adjustement, 
+while `{\tt -s=1.2}' requests that the character widths be
+increased to 120\% of their original values.
+The scale factor can be less than or greater than one.
+Side-bearings are adjusted symmetrically to keep the character centered.
+%
+Note that `track kerning' a font is different from adjusting the FontMatrix
+to expand or condense a font, 
+since this `track kerning' does not change the shapes of the characters
+themselves.
+
+
+% \nsubsection{COMPOSIT --- adding composite/accented characters}
+\subsection{A.2 COMPOSIT --- adding composite/accented characters}
+
+COMPOSIT provides for inspection, modification and addition of
+composite characters in PFA outline font file.
+
+To extract a list of composite characters, and the relative
+position of the accent with respect to the base character,
+give COMPOSIT the name of the PFA file as the single
+command line argument. For example:
+
+\vskip .05in
+
+\verb@composit foo.pfa@
+
+\vskip .05in
+
+\noindent
+Output appears in the current directory, with the same file name as input,
+except that the extension is `{\tt cmp}' instead of `{\tt pfa}'.
+Output is in the same format as that used in AFM files
+for composite characters.  Each line contains the name
+of the composite characters, the name of the base character,
+followed by its displacement (always 0 0), and the name of
+the accent followed by its displacement.
+
+The main use of this program is in {\it adding\/} composite characters to a
+font, or altering the positioning of an accent in an existing composite
+character 
+(COMPOSIT cannot remove composite characters, but this isn't a big handicap,
+since composite characters take up very little space in a font program
+-- also, SUBFONT can be used to remove extraneous characters if needed).
+
+To add or modify composite characters, specify a file
+containing composite character descriptions as the second
+argument when calling COMPOSIT.  For example:
+
+\vskip .05in
+
+\verb@composit foo.pfa composit.lst@
+
+\vskip .05in
+
+\noindent This file specifying the composite characters should have the same
+format as the file produced by COMPOSIT when given a single argument.  
+In fact, the easiest way to proceed may be to first generate such a file
+using the PFA file name as the single command line argument.  
+This file can then be modified to reflect the desired metrics.
+Additional composite characters may be added using the same
+format for specification of accent position.
+
+It is actually also possible to use a complete AFM
+file for the second argument.  All but the composite
+character information in the AFM file will be ignored. 
+
+It is probably a good idea to check the resulting
+font file using COMPOSIT with a single command line argument.
+
+NOTE: the character width of a composite character must
+match that of the base character, and the left
+sidebearing of a composite character must match that of the
+accent.  COMPOSIT arranges for this. % to to be true.
+
+% \nsubsection{SUBFONT --- extracting character subsets}
+\subsection{A.3 SUBFONT --- extracting character subsets}
+
+SUBFONT allows extraction of a font containing a specified subset
+of Char\-Strings.  In other words, subfont removes from
+a font all characters not listed in a subsiduary
+file.  This can	greatly reduce the size of a PFB file if only
+some subset of characters are needed.  But mainly this utility
+is used in conjunction with MERGEPFA to extract some characters
+from one font, some from another, and then to merge the result. 
+
+\vskip .05in
+
+\verb@subfont foo.pfa characte.lst@
+
+\vskip .05in
+
+\noindent The first argument is the font file to operate on.  
+The second is a file specifying which characters are
+to be retained.  Lines in this second file may contain
+the Post\-Script name of one character to be included.  
+To save file space, an abbreviated notation is also provided 
+for letters and digits.  For example, C-M is equivalent to listing 
+all characters from `C' through `M', while 0-9 is equivalent to
+listing all of the digits.
+Similarly, `Aacute-Zcaron' stands for all 29 `standard' 
+upper case accented characters,
+while  `aacute-zcaron' stands for all 29 `standard'
+lower case accented characters.
+
+%% acute-tilde => all accents AE-Thorn => all `special' characters
+
+It is also possible to specify the character set by instead {\it excluding}
+individual characters or sequences from the complete font.  
+A line specifying an excluded character or character range 
+starts with a tilde `\char126'). % `~'). 
+The first occurence of such an exclusionary line in effect 
+immediately includes all characters in the font, 
+before removing the specified character(s).
+(Therefore it does {\it not} make sense to have any inclusionary lines
+before the first exclusionary line.)
+
+Note that SUBFONT does not modify the encoding vector ---
+use REENCODE to do this if necessary.
+%
+The output file is called `{\tt subfont.pfa}' and appears
+in the current directory. 
+
+NOTE: The output font file uses the same Post\-Script Font\-Name 
+as the input file.  Be careful not to confuse the original
+% complete 
+font with the `subfont'. 
+
+% \nsubsection{MERGEPFA --- merging character sets from two fonts}
+\subsection{A.4 MERGEPFA --- merging character sets from two fonts}
+
+MERGEPFA inserts characters from one font into another.   
+It takes two arguments, the base font, and
+the auxiliary font from which characters will be taken
+and inserted into the base font.  Often SUBFONT will be
+used to prepare the auxiliary font file and/or the base
+font file.  There should be no overlap in character set between
+the base and auxiliary font (i.e. if one of them contains a CharString
+for character `A', then the other shouldn't).
+
+\vskip .05in
+
+\verb@mergepfa base.pfa auxiliar.pfa@
+
+\vskip .05in
+
+\noindent The output file is called `{\tt merged.pfa}' and 
+appears in the current directory.
+
+NOTE: All of the structures of the {\it base font} are preserved.
+Adjustements are made to Subrs and Char\-Strings
+imported from the {\it auxiliary font}. 
+Everything from the auxiliary font other than its Subrs and 
+Char\-Strings is lost. 
+Subrs from the auxiliary font are renumbered and transferred.
+Calls to these Subrs are adjusted as required.
+Characters from the auxiliary font retain their character
+level hints, but the font level hints are taken from the base font.
+% are the ones in effect in the merged font.  
+If the font-level hints in the two fonts are very different
+(vertical alignment zones, xheight, capheight, dominant stem widths etc), 
+some reduction in rendering quality of the `imported' characters 
+may occur. % may be expected. 
+
+NOTE: The output font file uses the same Post\-Script Font\-Name 
+as the first input file.  Be careful not to confuse the original
+font with the `merged' font. 
+
+MERGEPFA can also be used with a single argument. In this
+case it merely decrypts and decodes the font, performs
+some `normalizations' and reencodes and reencrypts it.  
+For example, it will detect when the UniqueID in the encrypted
+part does not match the visible UniqueID.  In this case it
+adjusts the UniqueID in the encrypted part to match that in
+the visible part (which will insure that across-job font-caching works).
+MERGEPFA can be used in this fashion to give a derived font
+a different UniqueID from the original font.
+Simply edit the `visible' UniqueID and run the PFA file through MERGEPFA.
+MERGEPFA detects and corrects some other problems as well, such as 
+for example, floating point BlueValues.
+
+
+\subsection{A.5 TRANSFRM --- coordinate system transformations} 
+
+If a coordinate system transformation, such as scaling, skewing, 
+and/or rotation is to be applied to all the characters in a font,
+then one can simply modify the FontMatrix.  First convert the font to
+PFA format, edit the FontMatrix, and convert back to PFB format.
+This approach can be used to make a slanted font, for example.
+Anisotropic scaling can also be achieved in this fashion.
+To stretch characters in the horizontal direction, for example,
+simple change the first entry in the FontMatrix.
+It is also possible to make an `unslanted' version of an italic font.
+
+Sometimes, however, characters from two fonts need to be combined when one or
+the other requires a coordinate transformation.  Changing the FontMatrix does
+not work in this case, since the {\it same} FontMatrix applies to all
+characters in the combined font.  Techniques for combining transformed
+fonts are handy, for example, for creating a `smallcaps' font, where the
+lower case characters are replaced with scaled versions of the upper case
+characters.
+
+To make a smallcaps font, create two subfonts from the original font
+using SUBFONT.
+One of these fonts should contain only the uppercase letters
+(use A-Z in the file specifying characters to include)
+and the upper case accented characters.
+The other file contains everything {\it but} the lowercase letters
+(use \char126a-z %~a-z 
+in the file specifying which characters to include)
+and the lower case accented characters.
+Apply TRANSFRM to scale the upper case letters
+(by somewhere between 0.8 and 0.9 typically).  
+Then use RENAMECH to change the names of these characters 
+(`A' becomes `a' and so on --- see `{\tt smallcap.ren}').
+Finally, combine the two subfonts using MERGEPFA.
+For additional details, see `{\tt smallcaps.bat}'.
+
+TRANSFRM transforms not only the character outlines, but the hints as well.
+Note, however, that character-level hinting will be less effective after
+coordinate transformation if the transformation involved rotation or skewing.
+In some cases it may in fact be better to remove vertical stem hints
+if the font is heavily skewed.
+And it may be better to remove both vertical and horizontal stem
+hints when the font is rotated by a large angle.
+Unslanted italic fonts are not likely to render particularly well
+at low resolution, since vertical stems really should be hinted,
+and the oblique stems they originate from will not contain hints.
+
+Coordinates in most fonts fall on integer coordinates in
+Adobe units of 1000 per em.
+Coordinate transformations will typically result in non-integer coordinates.
+TRANSFRM's default is to preserve such non-integer positions accurately,
+so as to avoid any kind of approximation in the character outline.
+There is a price to pay though, since the size of the font, as well as
+initial rendering time, will increase quite a bit.
+A command line flag can be used to force TRANSFRM to round coordinates 
+to avoid this. % increase in size.
+There may be some small loss in outline accuracy if this is done.
+
+Command line parameters provide for isotropic scaling ({\tt m}), 
+horizontal scaling ({\tt x}), vertical scaling ({\tt y}),
+skewing ({\tt s}), and rotation ({\tt r}).
+The four parameters `{\tt x}', `{\tt y}', `{\tt s}', and `{\tt r}'
+allow one to set up any arbitrary $2\times2$ transformation matrix.
+% shown when the verbose flag is used
+This transformation matrix may also be specified directly
+using the command line argument `{\tt f}'.
+
+To obtain slanted characters in a font, use the `{\tt s}'
+command line parameter with an angle between -10 and -20 degrees
+(the equivalent `ItalicAngle').
+To obtain unslanted characters of an italic font set the parameter
+equal to the negative of the ItalicAngle of that font.
+
+If characters are rotated, adjustments to sidebearing and character widths
+may be required after applying TRANSFRM.
+Corresponding metric files may need to be adjusted if the horizontal scale
+is changed using TRANSFRM.
+%
+The output file is called `{\tt transfrm.pfa}' and appears
+in the current directory. 
+
+NOTE: The output font file uses the same Post\-Script Font\-Name 
+as the input file.  Be careful not to confuse the original
+font with the `transformed' font.
+
+
+\subsection{A.6 RENAMECH --- renaming characters} 
+
+Fonts produced by some font generation applications have a hard-wired
+relationship between character code and character name.
+Ths is, the character names are used merely as
+aliases for numbers (NUL is 0, Eth is 1, eth is 2, Lslash is 3 etc)!
+The character names bear no relationship to the glyphs.  
+Just because something is called `Lslash' doesn't mean it is the Polish
+letter `l' with a short inclined stroke through it.  Just because a character
+has the name `less' doesn't mean it represents the mathematical
+relationship `less than' --- it could instead very well be `exclamdown'.  
+This is the worst possible corruption of the PostScript encoding vector idea!
+
+RENAMECH makes it possible to correct this.  
+The first argument to RENAMECH is the name of a file consisting of lines
+containing `before' and `after' name pairs.
+For example, this file might contain a line like
+
+\vskip .05in
+
+{\tt Zcaron	parenleftbig}
+
+\vskip .05in
+
+\noindent indicating that the character that is called `{\tt Zcaron}'
+should really be called `{\tt parenleftbig}' instead.
+
+Note that if the names in the PFA files are changed, 
+then so must the names in the AFM file.  
+For this reason RENAMECH has been built to also work on AFM files.
+RENAMECH can process more than one file at a time.
+
+Note that renaming the characters in a font is {\it totally} 
+different from reencoding. 
+Reencoding changes the mapping from character code number to character name.
+Renaming changes the names of characters without changing the 
+relationship between character code and glyph.
+A given sequence of numeric character codes will produce the same output
+after RENAMECH is applied, but not after REENCODE is used.
+
+RENAMECH can also be used to rename upper case letters to lower case 
+and vice versa using the command line flag `{\tt r}.'
+This renaming applies to both letters and the 58 `standard' composites 
+made from them.  This is useful when making smallcaps fonts.
+
+% \nsubsection{Important Warnings --- glyph and metric caching}
+\section{Appendix B: Warnings --- glyph and metric caching}
+
+Tools for modifying outline fonts and font metrics can be 
+tremendously useful.  Since error message output from font 
+rendering software---such as ATM and Post\-Script interpreters---is 
+typically next to worthless, % however, 
+such utilities can  also be a source of endless frustration.  
+So please proceed with caution.  Here are some things to keep in mind.
+
+\vskip .05in
+
+\atpar{(1)} When altering an outline font file, keep a copy 
+of the original outline font file in a safe place.
+
+\vskip .05in
+
+\atpar{(2)} When altering character widths in an outline font file, 
+also alter the character widths in the corresponding 
+metric files (AFM, PFM, and TFM).
+
+\vskip .05in
+
+\atpar{(3)} To avoid confusion with the original unaltered font, change
+the Post\-Script Font\-Name, as well as the outline font file name
+--- unless you are completely certainly you will never want to use the
+unaltered version of the font again.
+
+\vskip .05in
+
+\atpar{(4)} Comment out the UniqueID in the outline 
+font file to avoid possible confusion in across-job font caching
+between the original and the modified version of the font.
+(Although changing the Font\-Name should prevent this anyway).
+
+\vskip .05in
+
+% \nsubsection{Glyph Caching and Metric Caching}
+
+\noindent
+When a modified version of an outline font is installed, one has to make sure
+that there is no information about the original % version 
+cached {\it somewhere}:
+
+A printer supporting across-job font-caching, for example, will retain
+characters already  rendered and so may give the illusion that the new
+version does not differ from the old one;  this can get pretty confusing!
+Power cycle the printer, or execute the Post\-Script `{\tt quit}' command 
+(not all printers support this): 
+
+\vskip .05in
+
+\verb@systemdict /quit get exec@
+
+% is the above correct, or need more dictionary levels ?
+
+\vskip .05in
+
+\noindent
+When using Adobe Type Manager always use ATM to first `{\tt Remove}' 
+the old version and then use `{\tt Add}' to install the new version.  
+Do not simply replace the PFB and/or PFM files on disk.
+You can crash ATM or Windows if you do.
+% ATM may overwrite random parts of memory with unpredictable results.
+% Instead, always use ATM to first `{\tt Remove}' a font and then 
+% `{\tt Add}' the new version. 
+
+ATM keeps a cache of font metric information, preserved 
+in a file called ATMFONTS.QLC, usually in the Windows directory.
+This file may need to be deleted in some cases when a new version of
+a font with changed properties is installed.
+ATM will recreate ATMFONTS.QLC the next time Windows is launched
+% (Sometimes one needs to exit Windows again and launch it a second time 
+% in order to get the metric cache properly synchronized).  
+% A much better alternative is to first use the ATM control panel to 
+% `{\tt Remove}' the old version of the font, then % use the ATM control panel 
+% to `{\tt Add}' the new version. 
+
+\section{Colophon}
+
+This manual was prepared using Lugaru's Epsilon$^{\smlsize TM}$ 
+(an implementation of Richard Stallman's Emacs), 
+run through Daniel Brotsky's {\YTeX} and printed on  
+% a NewGen$^{\smlsize TM}$ TurboPS/480 printer, %% ???
+% an Apple LaserWriter II NT
+an Hewlett Packard LaserJet 4 M Plus
+from output produced by {DVI\-PS\-ONE}, reprocessed by {TWOUP}. 
+%
+% The 
+All outline fonts used were from \Y&Y. 
+
+\newpage
+
+% \offheaders
+
+\versoleftheader={}
+
+% \hbox{ } \newpage
+
+% \hbox{ } \newpage
+
+% \hbox{ } \newpage
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\leaderfill{\leaders\hbox to 1em{\hss.\hss}\hfill}
+
+\line{{\bf 1.\enspace Outline Font and Font Metrics Manipulation Package\leaderfill 1}}
+
+\vskip .02in
+
+\line{\quad 1.1\enspace Introduction --- command line interface
+\leaderfill 1}
+\line{\quad 1.2\enspace Warning Messages
+\leaderfill 2}
+\line{\quad 1.3\enspace Encoding Vectors
+\leaderfill 2}
+% \line{\quad 1.4\enspace Command Line Flags and Command Line Arguments
+% \leaderfill 3}
+
+\vskip .02in
+
+\line{{\bf 2.\enspace Definition of Font File Format Terminology\leaderfill 3}}
+
+\vskip .02in
+
+\line{\quad 2.1\enspace Outline Font File Formats (PFB, PFA and Mac)
+\leaderfill 3}
+\line{\quad 2.2\enspace Metric File Format (AFM, PFM, TFM and FOND)
+\leaderfill 3}
+
+\vskip .02in
+
+\line{{\bf 3.\enspace List of Programs and their Actions\leaderfill 4}}
+
+\vskip .02in
+
+\line{\quad 3.1\enspace PFBtoPFA
+\leaderfill 4}
+\line{\quad 3.2\enspace PFAtoPFB
+\leaderfill 5}
+\line{\quad 3.3\enspace MACtoPFA
+\leaderfill 5}
+\line{\quad 3.4\enspace PFBtoMAC
+\leaderfill 6}
+\line{\quad 3.5\enspace AFMtoSCR
+\leaderfill 6}
+\line{\quad 3.6\enspace SCRtoAFM
+\leaderfill 7}
+\line{\quad 3.7\enspace AFMtoPFM
+\leaderfill 7}
+\line{\quad 3.8\enspace PFMtoAFM
+\leaderfill 8}
+\line{\quad 3.9\enspace AFMtoTFM
+\leaderfill 8}
+\line{\quad 3.10\enspace TFMtoAFM
+\leaderfill 9}
+\line{\quad 3.11\enspace TFMtoMET
+\leaderfill 10}
+\line{\quad 3.12\enspace METtoTFM
+\leaderfill 10}
+\line{\quad 3.13\enspace REENCODE
+\leaderfill 10}
+\line{\quad 3.14\enspace PFAtoAFM
+\leaderfill 10}
+\line{\quad 3.15\enspace SAFESEAC
+\leaderfill 10}
+
+% \line{\quad 3.14\enspace Additional Outline Font Manipulation Utilities
+% \leaderfill 10}
+
+\vskip .02in
+
+\line{{\bf 4.\enspace Slanted, Condensed and Expanded Versions of Fonts\leaderfill 11}}
+
+\vskip .02in % \vskip .1in % \vskip .02in
+
+\line{\quad 4.1\enspace Notes Relating to Slanted and Condensed
+Versions of Fonts\leaderfill 11}
+
+\vskip .02in % \vskip .1in % \vskip .02in
+
+\line{{\bf 5.\enspace Notes, Comments and Limitations\leaderfill 12}}
+
+\vskip .02in % \vskip .1in % \vskip .02in
+
+\line{\quad 5.1\enspace Outline Font Files
+\leaderfill 13}
+\line{\quad 5.2\enspace Font Metric Files
+\leaderfill 13}
+% \line{\quad 5.3\enspace File Name Limitations on IBM PC Compatibles
+% \leaderfill 13}
+\line{\quad 5.3\enspace Potential Problems with Reencoding --- 
+Accented Characters
+\leaderfill 14}
+\line{\quad 5.4\enspace Look out for Some Special `Features' 
+of ATM for Windows
+\leaderfill 14}
+
+\vskip .02in % \vskip .1in % \vskip .02in
+
+\line{{\bf 6.\enspace Five Auxiliary Utility Programs\leaderfill 16}}
+
+\vskip .02in % \vskip .1in % \vskip .02in
+
+% \line{\quad 6.1\enspace MODEX --- high baud rates on serial lines
+% \leaderfill 15}
+% \line{\quad 6.2\enspace DOWNLOAD --- send fonts to printer and list fonts
+% \leaderfill 15}
+% \line{\quad 6.3\enspace SERIAL --- read serial back channel from printer
+% \leaderfill 15}
+% \line{\quad 6.4\enspace NAMECASE --- change FontName case
+% \leaderfill 16}
+% \line{\quad 6.5\enspace MACANAL --- show data and resource fork information
+% \leaderfill 16}
+ 
+\line{{\bf Appendix A: Invasive Outline Font Manipulation
+Utilities\leaderfill 18}}
+
+\vskip .02in % \vskip .1in % \vskip .02in
+
+\line{\quad A.1\enspace SIDEBEAR --- adjusting widths and sidebearings
+\leaderfill 19}
+\line{\quad A.2\enspace COMPOSIT --- adding composite/accented characters
+\leaderfill 20}
+\line{\quad A.3\enspace SUBFONT --- extracting character subsets
+\leaderfill 21}
+\line{\quad A.4\enspace MERGEPFA --- merging character sets from two fonts
+\leaderfill 22}
+\line{\quad A.5\enspace TRANSFRM --- coordinate transformations
+\leaderfill 23}
+\line{\quad A.6\enspace RENAMECH --- renaming characters
+\leaderfill 25}
+
+\vskip .02in % \vskip .1in % \vskip .02in
+
+\line{{\bf Appendix B:  Warnings --- glyph and metric caching\leaderfill 25}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end
+
+% difference between {\ATM} & {\PSCRIPT} ?
+
+% change with time in ATM ?
+
+% discuss interrupting long activities
+
+% {\ATM} problems   {\tt atm.ini} ATMFONTS.INI
+
+% modifications to ATM.INI
+
+% error messages
+
+% trouble shooting
+
+% do a `you' clean sweep
+
+% magnification steps
+
+% list all keyboard shortcuts ?
+
+% subsubsection conventions ?
+
+% install footnotes
+
+% eradicate PostScript printer terminology
+
+% `Close' ?
+
+% rule fill ?
+
+% for printer-resident fonts may need PFB files to get proper mapping!
+
+% UART = Universal Receiver and Transmitter
+
+% terminology: select versus check 
+
+% can read Textures files ...
+
+% discuss Fontname conflicts (different file names, same FontName)
+
+% discuss underscore.  why hv______.pfm versus hv.tfm ?
+
+% explain `Ignore Missing' 
+
+% Add to [Extensions] section of win.ini:
+
+% dvi=c:\dviwindo\dviwindo.exe ^.dvi
+
+% check on references to *.txt files
+
+% SHOULD LIST LIGATURES INTRODUCED...
+
+% (TWOUP -vzs -m=1.25 -x=-30 -d=PRN bsrmanua)
+
+% TWOUP -vzg -m=1.4 -c=5 -d=LPT1 bsrmanua
+% TWOUP -vzh -m=1.4 -c=5 -d=LPT1 bsrmanua
+
+% TWOUP -vzgr -m=1.45 -d=lpt1 metrmanu
+% TWOUP -vzh  -m=1.45 -d=lpt1 metrmanu
+
+% Should describe RENAMECH !
+
+% Should describe SAFESEAC !
+
+% Discuss invisible ink

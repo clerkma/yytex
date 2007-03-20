@@ -1,0 +1,26 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=10pt
+
+% Test for DVIALW and DVIJEP downloading of large characters
+% The JEP file is about 300k-byte!
+
+\font\bigfont=cminch
+
+\noindent
+This file tests a DVI driver's capability to support downloading
+of large characters.  The following uninteresting tables of the
+Roman alphabet are printed in font {\it cminch\/}:
+\bigfont
+\obeylines
+ABC
+DEF
+GHI
+JKL
+MN
+OPQ
+RST
+UVW
+XYZ
+\vfill\eject\end

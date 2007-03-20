@@ -1,0 +1,56 @@
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%% SHOWTIFF.TEX %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% A simple TeX macro for insertion of a TIFF image.
+% It also constructs a box for TeX that has the dimensions of the insert.
+% The reference point of the box is at the lower left corner.
+% This makes it easy to center the image and allow space for it.
+
+% Of course, if you do not have the TIFF file referred to in this sample file, 
+% nothing will be shown :=)
+
+\newcount\ncolumns
+\newcount\nrows
+\newdimen\dwidth
+\newdimen\dheight
+
+% Arguments to showtiff are: file-name, desired width, columns, rows.
+% The height is computed from the widths so as to preserve the aspect ratio.
+
+% The number of columns and rows in the TIFF image may be found using TIFFTAGS
+
+% TAG:  256 (ImageWidth)    TYPE: 3 (SHORT) LENGTH:  1 OFFSET:   306
+% TAG:  257 (ImageLength)   TYPE: 3 (SHORT) LENGTH:  1 OFFSET:   426
+
+\def\showtiff#1#2#3#4{
+\dwidth=#2\dheight=#2
+\ncolumns=#3\nrows=#4
+\divide\dheight by \ncolumns
+\multiply\dheight by \nrows
+\edef\width{\number\dwidth}
+\edef\height{\number\dheight}
+{\vbox to \dheight{\vfill\hbox to \dwidth{%
+\special{insertimage: #1 \width \space \height}\hfill}}}}
+
+\noindent
+Nordrum ipsum dolorum abra focilus nauticus.
+Nordrum ipsum dolorum abra focilus nauticus.
+Nordrum ipsum dolorum abra focilus nauticus.
+Nordrum ipsum dolorum abra focilus nauticus.
+
+% Of course, if you do not have the TIFF file, nothing will be shown :=)
+
+\centerline{\showtiff{c:/tiff/mtbiker.tif}{4in}{308}{426}}
+
+% Note: this particular TIFF file has 308 columns and 426 rows
+% It is centered horizontally, and positioned properly between 
+% the text above and the text below it.
+
+\noindent
+Nordrum ipsum dolorum abra focilus nauticus.
+Nordrum ipsum dolorum abra focilus nauticus.
+Nordrum ipsum dolorum abra focilus nauticus.
+Nordrum ipsum dolorum abra focilus nauticus.
+
+\end

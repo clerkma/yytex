@@ -1,0 +1,144 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=12pt		% This is for YTeX
+
+\font\xmr=xmr10	
+
+% xmr10 is BSR CMR10 outline font from Y&Y reencoded using texansi.vec
+% xmr10 is BSR CMR10 outline font from Y&Y reencoded using texannew.vec
+
+% NOTE:  The following is crude, TeX macros could make this much cleaner.
+
+% NOTE:  Many accented characters may be best dealt with using ligatures
+%        To do this, insert ligatures in the AFM file and run AFMtoTFM.
+
+% Some simple examples follow:
+
+\def\aa{\char229} 	% aring
+
+% was: \def\aa{\accent23a}
+
+\def\AA{\char197} 	% Aring
+
+% was: \def\AA{\leavevmode\setbox0\hbox{h}\dimen@\ht0\advance\dimen@-1ex%
+%        \rlap{\raise.67\dimen@\hbox{\char'27}}A}
+
+\def\cc{\char231}	% ccedilla
+
+% \def\CC{\char199}	% Ccedilla
+\def\CC{\char215}	% Ccedilla
+
+% etc etc
+
+\def\ql{\char145} % \quoteleft is actually 145 (since grave replaced it)
+
+\noheaders
+
+\xmr
+
+\noindent This is a test of xmr10, a reencoded version of cmr10 that 
+uses the upper character code range (160--255) for the 58 \ql standard'
+composite/accented characters 
+
+The accented characters are here accessed directly using {\TeX}'s 
+\ql char'.
+They could also be set up as macros (to replace existing macros for
+accented characters, such as \ql aa' etc.) --- or using ligatures 
+(simply add new ligatures to the AFM file before running AFMtoTFM).
+
+\vskip .05in
+
+\noindent
+Agrave: \char192.
+Aacute: \char193.
+Acircumflex: \char194.
+Atilde: \char195.
+Adieresis: \char196.
+Aring: \char197.
+% Ccedilla: \char199.
+Ccedilla: \char215.
+Egrave: \char200.
+Eacute: \char201.
+Ecircumflex: \char202.
+Edieresis: \char203.
+Igrave: \char204.
+% Iacute: \char205.
+Iacute: \char247.
+% Icircumflex: \char206.
+Icircumflex: \char230.
+% Idieresis: \char208.
+Idieresis: \char207.
+Ntilde: \char209.
+Ograve: \char210.
+Oacute: \char211.
+Ocircumflex: \char212.
+Otilde: \char213.
+Odieresis: \char214.
+% Scaron: \char215.
+Scaron: \char138.
+Ugrave: \char217.
+Uacute: \char218.
+Ucircumflex: \char219.
+Udieresis: \char220.
+Yacute: \char221.
+% Ydieresis: \char222.
+Ydieresis: \char159.
+Zcaron: \char223.
+
+\vskip .05in
+
+\noindent
+agrave: \char224.
+aacute: \char225.
+acircumflex: \char226.
+atilde: \char227.
+adieresis: \char228.
+aring: \char229.
+ccedilla: \char231.
+egrave: \char232.
+eacute: \char233.
+ecircumflex: \char234.
+edieresis: \char235.
+igrave: \char236.
+iacute: \char237.
+icircumflex: \char238.
+idieresis: \char240.
+ntilde: \char241.
+ograve: \char242.
+oacute: \char243.
+ocircumflex: \char244.
+otilde: \char245.
+odieresis: \char246.
+% scaron: \char247.
+scaron: \char154.
+ugrave: \char249.
+uacute: \char250.
+ucircumflex: \char251.
+udieresis: \char252.
+yacute: \char253.
+ydieresis: \char254.
+zcaron: \char255.
+
+\vskip .05in
+
+% $$\Gamma, \Gamma, \Gamma, \Gamma$$
+
+\noindent
+Note that many non-clone PS interpreters have a bug that may interfere 
+with rendering of composite characters:
+there is an \ql invalidfont' error unless the
+base characters and accent characters are present in the
+encoding (This applies for example to the ALW II NT).
+Some clone interpreters do the \ql right thing', that is,
+look up the character name in StandardEncoding and then find a
+character with that name in the fonts CharString dictionary
+(this is what is done in the NewGen Turbo 480, for example).
+
+This is one of two serious bugs in Adobe interpreters 
+(now documented in the new white-red PostScript book).
+To deal with this problem,
+DVIPSONE not only copies across the required CharStrings, 
+but also inserts the required base and accent characters in the encoding.
+
+\end

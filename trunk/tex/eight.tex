@@ -1,0 +1,40 @@
+% file eight.tex
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+
+\font\eightrm=cmr8
+\font\sevenrm=cmr7
+\font\sixrm=cmr6
+\font\fiverm=cmr5
+\font\eighti=cmmi8
+\font\sixi=cmmi6
+\font\fivei=cmmi6
+\font\eightsy=cmsy8
+\font\sixsy=cmsy6
+\font\fivesy=cmsy5
+\font\tenex=cmex10
+\font\eightit=cmti8
+\font\eightsl=cmsl8
+\font\eighttt=cmtt8
+\font\eightbf=cmbx8
+\font\sixbf=cmbx6
+\font\fivebf=cmbx5
+
+
+\def\eightpoint{\def\rm{\fam0\eightrm}% switch to 8-point type
+  \textfont0=\eightrm \scriptfont0=\sixrm \scriptscriptfont0=\fiverm
+  \textfont1=\eighti \scriptfont1=\sixi \scriptscriptfont0=\fivei
+  \textfont2=\eightsy \scriptfont2=\sixsy \scriptscriptfont2=\fivesy
+  \textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+  \textfont\itfam=\eightit  \def\it{\fam\itfam\eightit}%
+  \textfont\slfam=\eightsl  \def\sl{\fam\slfam\eightsl}%
+  \textfont\ttfam=\eighttt  \def\tt{\fam\ttfam\eighttt}%
+  \textfont\bffam=\eightbf  \scriptfont\bffam=\sixbf
+   \scriptscriptfont\bffam=\fivebf  \def\bf{\fam\bffam\eightbf}%
+  \normalbaselineskip=9pt
+  \setbox\strutbox=\hbox{\vrule height7pt depth2pt width0pt}%
+  \let\sc=\sixrm  \normalbaselines\rm}
+
+
+

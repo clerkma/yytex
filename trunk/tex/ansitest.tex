@@ -1,0 +1,161 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% This is the test file `ansitest.tex' which shows use of text fonts with
+% `Windows ANSI' encoding.
+
+% The original PFM files for typical text fonts are set up for Windows ANSI. 
+% So NO changes are required for the Windows/ATM setup.  
+% Just install the fonts using ATM.  Nothing else is required for DVIWindo.
+
+% For DVIPSONE, we need a font substitution file requestion reencoding to
+% `Windows ANSI' (containing lines like `tir *remap* ansinew'). 
+% This is the file `ansiacce.sub', shown in part at the end.
+
+% For TeX we need to make suitable TFM files based on Windows ANSI, e.g.
+% afmtotfm -vadjx -c=ansinew c:\afm\tir
+
+% Also, since plain TeX and LaTeX are hard-wired for CM's `TeX text' encoding,
+% we'll need to redefine the macros for special characters and accents.
+% The file `ansiacce.tex' takes care of this.
+
+% See end for discussion of advantages and disadvantages of `Windows ANSI'
+
+\input ansiacce		% to adjust special characters & accents for ANSI
+
+\nopagenumbers		% avoid calling CMR10 for page number ...
+
+\font\tir=tir at 12.345pt	% for main text
+
+\font\com=com at 12.345pt	% for `program fragments'
+
+\chardef\bs=92		% backslash
+
+\chardef\degree=176	% `ring' or `degree' in Windows ANSI
+
+\tir 
+
+This is the file `{\com ansitext.tex}'
+using Times-Roman reencoded to `{\com ansinew}'
+
+\bigskip
+
+We used  `{\com afmtotfm -vadjx -c=ansinew c:\bs afm\bs tir}'
+to make TFM file
+
+\bigskip	
+
+And ran DVIPSONE using `{\com dvipsone -v -s=ansiacce -d=lpt1 ansitest}'
+
+\bigskip	
+
+The PFB and PFM files used are the ones straight from Adobe
+
+(in the case of the substitution file asking for downloading).
+
+\bigskip	
+
+{\TeX} pseudo ligatures: 
+endash -- emdash --- exclamdown !` questiondown ?` 
+
+\bigskip	
+
+Lets check for extra pseudo ligatures:
+``English''  ,,German'' <<French>>
+
+\bigskip
+
+Lets check special characters:
+\ae\ \oe\ \o\ \ss\ \aa\ \cc\ \AE\ \OE\ \O\ \AA\ \CC
+
+\bigskip	
+
+Lets check on icelandic and other characters:
+\th\ \TH\ \dh\ \DH\ \pounds\ \copyright
+
+\bigskip	
+
+Lets check for real ligatures (there shouldn't be any): 
+fi fl ff ffi ffl
+
+% Altough, kerning in a font can make them almost look like ligatures!
+
+\bigskip	
+
+Now enable use of extra `ligatures' in TFM file 
+
+(to gain easy direct access to 58 pre-built accented characters in the font).
+
+\bigskip	
+
+% The following lines are commented out in `ansiacce.tex' - we can
+% uncomment them here since the TFM file DOES have the extra `ligatures'
+
+\def\`{\char96 }	% grave
+\def\'{\char180 }	% acute
+\def\v{\char141 }	% caron
+\def\={\char175 }	% macron
+\def\^{\char136 }	% circumflex
+\def\~{\char152 }	% tilde
+\def\"{\char168 }	% dieresis
+\def\c{\char184 }	% cedilla
+
+Test some of the accented characters:
+\`a \'a \^a \~a \"a \c c
+\`A \'A \^A \~A \"A \c C
+
+\bigskip
+
+The main advantage of Windows ANSI encoding use in TeX is that
+
+it harmonizes with the way all Windows applications use text fonts.
+
+No need to make up new PFM files, or to reencode the PFB files.
+
+\bigskip
+
+So what does one lose by using `Windows ANSI' encoding?
+
+\bigskip
+
+In text fonts one loses: Lslash, lslash, Zcaron, zcaron.
+
+Some accents: breve, caron, dotaccent, hungarumlaut, ogonek, dotlessi.
+
+Some math characters: fraction (and perhaps minus and degree).
+
+And ligatures: fi, fl, (most text fonts don't have ff, ffi, and ffl).
+
+\bigskip
+
+Here is (part of) the font substitution file `{\com ansiacce.sub}'
+
+\bigskip
+
+It shows three ways of achieving the desired effect.
+
+\bigskip
+
+\com
+
+(Note how thin Courier looks as a fixed width font!).
+
+\bigskip
+
+; The following calls for reencoding of a RESIDENT font:
+
+tir Times-Roman *force* *reside* *remap* ansinew
+
+\bigskip
+
+; Following calls for reencoding of a DOWNLOADABLE font:
+
+; tir *remap* ansinew
+
+\bigskip
+
+; An alternate way of reencoding a font to be downloaded:
+
+; tir tir *remap* ansinew
+
+\end

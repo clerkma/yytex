@@ -1,0 +1,30 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% The file testtfm.tex
+
+\nopagenumbers
+
+\pretolerance=10000
+% \raggedright
+
+\font\testfont=emr10	% enter the TFM file name of the font to test here
+
+\testfont
+
+% To keep the listing short, his does not show zero-width characters
+
+\noindent
+\bgroup
+\newcount\n
+\n=0
+\loop\ifnum\n<255
+\setbox0=\hbox{\char\n}%
+\ifdim0pt=\wd0\else
+\the\n~\the\wd0~\box0\ \fi
+\advance\n by1\repeat
+\egroup
+
+% Ignore the missing character messages
+
+\end

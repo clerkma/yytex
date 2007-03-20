@@ -1,0 +1,204 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+% Copyright (C) 1994 Y&Y, Inc.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+% ============================================================================
+% Code to allow plain TeX and LaTeX to fully exploit `tex&ansi.vec' encoding 
+%			VERSION 1.0 (1994 Dec 1)
+% ============================================================================
+
+% You may wish to just \input this file for `TEX&ANSI' in your TeX source.
+% A lot of code that already exists in plain.tex is commented out.
+% It is included here for reference.
+
+% NOTE: This uses accented/composite characters in the font directly, by means
+% of pseudo-ligatures.  If your TFM files do not have these, then comment
+% out the section labelled: `% USING READY-MADE ACCENTED CHARACTERS'.
+% To make TFM files with a full set of pseudo-ligatures use -vadj on the
+% command line with AFMtoTFM.
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Protect against style files that make quotedbl `active'
+
+\chardef\dblcode=\catcode`\"	% save catcode of quotedbl
+\catcode`\"=12			% make quotedbl what it should be
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% NOTE: plain TeX (and LaTeX) has the accent character positions hardwired to:
+
+% 16 for `dotlessi',	17 for `dotlessj', 
+% 18 for `grave',	19 for `acute',	20 for `caron', 
+% 21 for `breve',	22 for `macron', 
+% 23 for `ring',	24 for `cedilla',
+% 25 for `germandbls',	26 for `ae',	27 for `oe', 
+% 28 for `oslash',	29 for `AE',	30 for 'OE',	31 for `Oslash',
+% 94 for `circumflex',	95 for `dotaccent',	125 for `hungarumlaut',
+% 126 for `tilde',	127 for `dieresis',
+% The *real* troublesome ones are `dotaccent' and `hungarumlaut'
+% --- and CM fonts do not have `ogonek'
+% (see page 356 of the TeX book for additional information)
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Following are constructed from pieces in CM, but exist in most Type 1 fonts
+
+\chardef\aa=229 \chardef\AA=197	% aring, Aring
+\chardef\cc=231 \chardef\CC=199	% ccedilla, Ccedilla
+
+% NOTE: \cc may conflict with `carbon copy' in letter.sty ...
+
+\chardef\l=144 \chardef\L=128	% lslash, Lslash
+
+\chardef\pounds=163 \chardef\copyright=169
+
+\chardef\registered=174 \chardef\trademark=153
+
+\chardef\S=167 \chardef\P=182	% section and paragraph
+
+% TEX&ANSI also has the icelandic characters:
+
+\chardef\th=254 \chardef\TH=222		% thorn, Thorn
+\chardef\dh=240 \chardef\DH=208		% eth, Eth
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% For backward compatability, provide for use of font with TeX's \accent:
+% (Although it is better to use actual accented characters, since \accent
+% creates explicit kerning which breaks the hyphenation machinery)
+% NOTE: This is overridden by section: `% USING READY-MADE ACCENTED CHARACTERS'
+
+% \def\`#1{{\accent18 #1}}	% grave
+% \def\'#1{{\accent19 #1}}	% acute
+% \def\^#1{{\accent94 #1}}	% circumflex
+% \def\~#1{{\accent126 #1}}	% tilde
+% \def\"#1{{\accent127 #1}}	% dieresis
+% \def\=#1{{\accent22 #1}}	% macron
+% \def\v#1{{\accent20 #1}}	% caron
+% \def\u#1{{\accent21 #1}}	% breve
+\def\.#1{{\accent5 #1}}		% dotaccent	% not in 95
+\def\H#1{{\accent6 #1}}		% hungarumlaut	% not in 125
+\def\k#1{{\accent7 #1}}		% ogonek	% not in CM fonts
+
+% underline and cedilla accents (macron at 22, cedilla at 24)
+
+% \def\b#1{\oalign{#1\crcr\hidewidth
+%     \vbox to.2ex{\hbox{\char22}\vss}\hidewidth}}
+% \def\c#1{\setbox0\hbox{#1}\ifdim\ht0=1ex\accent24 #1%
+%   \else{\ooalign{\hidewidth\char24\hidewidth\crcr\unhbox0}}\fi}
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% USING READY-MADE ACCENTED CHARACTERS:
+% We can use pre-built accented character using pseudo ligatures --- 
+% provided the TFM files for the text fonts have them wired in.
+% Using prebuilt accented chars prevents the introduction of explicit kerning
+% by \accent --- but is limited to prebuilt accented chars in the font.
+% Plain vanilla text fonts in Type 1 format have 58 `standard' composite chars.
+% The following assumes that the TFM files have the required pseudo-ligatures.
+% Use -vadj on the command line with AFMtoTFM to set up these pseudo-ligatures.
+% If your TFM files do *not* have the pseudo ligs then comment this section out
+% Do the same if you use accented chars *other* than the 58 `standard' ones.
+
+\chardef\`=18	% grave
+\chardef\'=19	% acute
+\chardef\^=94	% circumflex
+\chardef\~=126	% tilde
+\chardef\"=127	% dieresis
+\chardef\c=24	% cedilla
+\chardef\v=20	% caron
+\chardef\r=23	% ring		% non-standard, for `Aring' and `aring'
+% \chardef\==22	% macron	% no standard accented chars use this
+% \chardef\u=21	% breve		% no standard accented chars use this
+% \chardef\.=5	% dotaccent	% no standard accented chars use this
+% \chardef\H=6	% hungarumlaut	% no standard accented chars use this
+% \chardef\k=7	% ogonek	% no standard accented chars use this
+
+% \chardef\i=16	% dotlessi
+
+% NOTE: If you use the above scheme, use \'a (not \'{a}), and \c c (not \c{c})
+
+% --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+% Changes required in math macros when roman font is reencoded to `tex&ansi'.
+% (An alternative is to draw the accents from the math fonts)
+
+% \def\grave{\mathaccent"7012 }	%  18 grave
+% \def\acute{\mathaccent"7013 }	%  19 acute
+% \def\hat{\mathaccent"705E }	%  94 circumflex
+% \def\tilde{\mathaccent"707E }	% 126 tilde
+% \def\ddot{\mathaccent"707F }	% 127 dieresis
+% \def\bar{\mathaccent"7016 }	%  22 macron
+% \def\check{\mathaccent"7014 }	%  20 caron
+% \def\breve{\mathaccent"7015 }	%  21 breve
+\def\dot{\mathaccent"7005 }	%   5 dotaccent
+
+% **************************************************************************
+
+% If you want to use < for `guilsinglleft' and > for `guilsinglright'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=139
+% \catcode`\>=\active \chardef>=155
+
+% If you use < for `exclamdown', > for `questiondown', and | for `emdash'
+% then uncomment the following lines:
+
+% \catcode`\<=\active \chardef<=161
+% \catcode`\>=\active \chardef>=191
+% \catcode`\|=\active \chardef|=151
+
+% \chardef\lq=96 \chardef\rq=39
+
+% Note that \lq and \rq also provide access to ` and '
+
+\catcode`\"=\dblcode		% restore original catcode of quotedbl
+
+% If you use " for quotedblright then uncomment the following:
+
+% \catcode`\"=\active \chardef"=148
+
+% For proper hyphenation of words with accented characters we need to let
+% TeX know how to translate words with accented characters to lower case.
+% Hence define \lccode so that one can use them in \hyphenation{...}
+% Just for fun we also define \uccode, and set the \catcode to letter...
+
+% Mostly in ANSI, accented characters (and a few special characters)
+% occur in the range 192 - 222 (upper case) and 224 - 254 (lower case)
+
+\bgroup
+\newcount\n\newcount\m\n=224\m=192
+\loop\ifnum\n<255
+\global\catcode\n=11\global\catcode\m=11
+\global\lccode\n=\n\global\lccode\m=\n
+\global\uccode\m=\m\global\uccode\n=\m
+\advance\n by1\advance\m by1\repeat
+\egroup
+
+% Then there are just a few odd ones that don't fit this pattern
+
+\catcode140=11\catcode156=11	% OE, oe
+\lccode140=156\lccode156=156
+\uccode140=140\uccode156=140
+\catcode159=11\catcode255=11	% Ydieresis, ydieresis
+\lccode159=255\lccode255=255
+\uccode159=159\uccode255=159
+\catcode138=11\catcode154=11	% Scaron, scaron
+\lccode138=154\lccode154=154
+\uccode138=138\uccode154=138
+\catcode141=11\catcode157=11	% Zcaron, zcaron
+\lccode141=157\lccode157=157
+\uccode157=141\uccode141=141
+\catcode128=11\catcode144=11	% Lslash, lslash
+\lccode128=144\lccode144=144
+\uccode144=128\uccode128=128
+
+\endinput
+
+% **************************************************************************
+
+% NOTE: definitions have embedded numbers that depend on the chosen encoding
+% These will need to be changed if you use an encoding other than `TEX&ANSI'

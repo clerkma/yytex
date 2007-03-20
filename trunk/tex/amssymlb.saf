@@ -1,0 +1,250 @@
+%  AMSSYMLB.TEX                                           June 1992
+%  version 2.0, for use with AMSTEX.TEX version 2.0 or with AMSSYM.DEF
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+%  This file contains definitions for the symbols normally found in the
+%  fonts found in MSAM* and MSBM* --- using LucidaNewMath instead.
+
+%%  Most symbols in fonts msam and msbm are defined using \newsymbol.  A few
+%%  that are delimiters or otherwise require special treatment have already
+%%  been defined as soon as the fonts were loaded.  Finally, a few symbols
+%%  that replace composites defined in plain must be undefined first.
+
+% Glyphs in LucidaNewMath have different shapes from those in msam* and msbm*.
+% Check the resulting print out for accuracy.
+
+\newsymbol\boxdot		1200	s237	ED
+\newsymbol\boxplus		1201	s234	EA
+\newsymbol\boxtimes		1202	s236	EC
+\newsymbol\square		1003	a002	02
+\newsymbol\blacksquare		1004	a003	03
+\newsymbol\circle		10??	a000	00
+\newsymbol\blackcircle		10??	a001	01
+\newsymbol\centerdot		1205	a225	E1
+\newsymbol\lozenge		1006	a008	08
+\newsymbol\blacklozenge		1007	a009	09
+\newsymbol\circlearrowright	1308	a140	8C
+\newsymbol\circlearrowleft	1309	a139	8B
+\undefine\rightleftharpoons		
+\newsymbol\rightleftharpoons	130A	a122	7A
+\newsymbol\leftrightharpoons	130B	a121	79
+\newsymbol\boxminus		120C	s235	EB
+\newsymbol\Vdash		130D	s240	F0
+\newsymbol\Vvdash		130E	i211	D3
+\newsymbol\vDash		130F	s238	EE
+\newsymbol\twoheadrightarrow	1310	a037	26
+\newsymbol\twoheadleftarrow	1311	a035	23
+\newsymbol\leftleftarrows	1312	a113	71
+\newsymbol\rightrightarrows	1313	a115	73
+\newsymbol\upuparrows		1314	a114	72
+\newsymbol\downdownarrows	1315	a116	74
+\newsymbol\upharpoonright	1316	a117	75
+	\let\restriction\upharpoonright		
+\newsymbol\downharpoonright	1317	a119	77
+\newsymbol\upharpoonleft	1318	a118	76
+\newsymbol\downharpoonleft	1319	a120	78
+\newsymbol\rightarrowtail	131A	a041	29
+\newsymbol\leftarrowtail	131B	a040	28
+\newsymbol\leftrightarrows	131C	a110	6E
+\newsymbol\rightleftarrows	131D	a109	6D
+\newsymbol\Lsh			131E	a123	7B
+\newsymbol\Rsh			131F	a125	7D
+\newsymbol\rightsquigarrow	1320	a142	8E
+\newsymbol\leftsquigarrow	1320	a141	8D
+\newsymbol\leftrightsquigarrow	1321	a145	91
+\newsymbol\looparrowleft	1322	a063	3F
+\newsymbol\looparrowright	1323	a064	40
+\newsymbol\circeq		1324	s208	D0
+\newsymbol\succsim		1325	s225	E1
+\newsymbol\gtrsim		1326	s221	DD
+\newsymbol\gtrapprox		1327	i219	DB
+\newsymbol\multimap		1328	i199	C7
+\newsymbol\image		1328	i198	C6
+\newsymbol\original		1328	i197	C5
+\newsymbol\therefore		1329	s144	90
+\newsymbol\because		132A	s145	91
+\newsymbol\doteqdot		132B	s202	CA
+	\let\Doteq\doteqdot		
+\newsymbol\triangleq		132C	s213	D5
+\newsymbol\precsim		132D	s224	E0
+\newsymbol\lesssim		132E	s220	DC
+\newsymbol\lessapprox		132F	s218	DA
+\newsymbol\eqslantless		1330	i226	E2
+\newsymbol\eqslantgtr		1331	i227	E3
+\newsymbol\curlyeqprec		1332	i230	E6
+\newsymbol\curlyeqsucc		1333	i231	E7
+\newsymbol\preccurlyeq		1334	i228	E4
+\newsymbol\leqq			1335	s218	DA
+\newsymbol\leqslant		1336	i224	E0
+\newsymbol\lessgtr		1337	s222	DE
+\newsymbol\backprime		1038	i200	C8
+	
+\newsymbol\risingdotseq		133A	s204	CC
+\newsymbol\fallingdotseq	133B	s203	CB
+\newsymbol\succcurlyeq		133C	i229	E5
+\newsymbol\geqq			133D	s219	DB
+\newsymbol\geqslant		133E	i225	E1
+\newsymbol\gtrless		133F	s223	DF
+\newsymbol\sqsubset		1340	s228	E4
+\newsymbol\sqsupset		1341	s229	E5
+\newsymbol\vartriangleright	1342	i046	2E
+\newsymbol\vartriangleleft	1343	i047	2F
+\newsymbol\trianglerighteq	1344	s245	F5
+\newsymbol\trianglelefteq	1345	s244	F4
+\newsymbol\bigstar		1046	a171	AB
+\newsymbol\between		1347	a242	F2
+\newsymbol\blacktriangledown	1048	a007	07
+\newsymbol\blacktriangleright	1349	i241	F1
+\newsymbol\blacktriangleleft	134A	i240	F0
+	
+\newsymbol\vartriangle		134D	a004	04
+\newsymbol\blacktriangle	104E	a005	05
+\newsymbol\triangledown		104F	a006	06
+\newsymbol\eqcirc		1350	s207	CF
+\newsymbol\lesseqgtr		1351	i232	E8
+\newsymbol\gtreqless		1352	i233	E9
+\newsymbol\lesseqqgtr		1353	i234	EA
+\newsymbol\gtreqqless		1354	i235	EB
+	
+\newsymbol\Rrightarrow		1356	a154	9A
+\newsymbol\Lleftarrow		1357	a152	98
+	
+\newsymbol\veebar		1259	i210	D2
+\newsymbol\barwedge		125A	s246	F6
+% \newsymbol\doublebarwedge	125B	???	
+\undefine\angle		
+\newsymbol\angle		105C	s139	8B
+\newsymbol\measuredangle	105D	s140	8C
+\newsymbol\sphericalangle	105E	s141	8D
+% \newsymbol\varpropto		135F	s047	2F ?	
+% \newsymbol\smallsmile		1360	i094 	5E ?	
+% \newsymbol\smallfrown		1361	i095 	5F ?	
+\newsymbol\Subset		1362	s248	F8
+\newsymbol\Supset		1363	s249	F9
+\newsymbol\Cup			1264	s250	FA
+	\let\doublecup\Cup		
+\newsymbol\Cap			1265	s251	FB
+	\let\doublecap\Cap		
+\newsymbol\curlywedge		1266	s132	84
+\newsymbol\curlyvee		1267	s133	85
+\newsymbol\leftthreetimes	1268	i208	D0
+\newsymbol\rightthreetimes	1269	i209	D1
+\newsymbol\subseteqq		136A	i238	EE
+\newsymbol\supseteqq		136B	i239	EF
+\newsymbol\bumpeq		136C	s200	C8
+\newsymbol\Bumpeq		136D	s199	C7
+\newsymbol\lll			136E	i222	DE
+	\let\llless\lll		
+\newsymbol\ggg			136F	i223	DF
+	\let\gggtr\ggg		
+	
+\newsymbol\circledR		10??	i201	C9
+\newsymbol\circledS		1073	i202	CA
+\newsymbol\pitchfork		1374	i243	F3
+\newsymbol\dotplus		1275	s137	89
+\newsymbol\backsim		1376	i248	F8
+\newsymbol\backsimeq		1377	i249	F9
+	
+\newsymbol\complement		107B	i148	94
+\newsymbol\intercal		127C	i217	D9
+\newsymbol\circledcirc		127D	s230	E6
+\newsymbol\circledast		127E	s231	E7
+\newsymbol\circleddash		127F	i204	CC
+		
+\newsymbol\lvertneqq		2300	a222	DD
+\newsymbol\gvertneqq		2301	a223	DE
+\newsymbol\nleq			2302	a156	9C
+\newsymbol\ngeq			2303	a157	9D
+\newsymbol\nless		2304	a154	9A
+\newsymbol\ngtr			2305	a155	9B
+\newsymbol\nprec		2306	a229	E5
+\newsymbol\nsucc		2307	a230	E6
+\newsymbol\lneqq		2308	a220	DC
+\newsymbol\gneqq		2309	a221	DD
+\newsymbol\nleqslant		230A	a214	D6
+\newsymbol\ngeqslant		230B	a215	D7
+\newsymbol\lneq			230C	a218	DA
+\newsymbol\gneq			230D	a219	DB
+\newsymbol\npreceq		230E	a231	E7
+\newsymbol\nsucceq		230F	a232	E8
+\newsymbol\precnsim		2310	a236	EC
+\newsymbol\succnsim		2311	a237	ED
+\newsymbol\lnsim		2312	a224	E0
+\newsymbol\gnsim		2313	a226	E2
+\newsymbol\nleqq		2314	a216	D8
+\newsymbol\ngeqq		2315	a217	D9
+\newsymbol\precneqq		2316	a233	E9
+\newsymbol\succneqq		2317	a234	EA
+\newsymbol\precnapprox		2318	a237	ED
+\newsymbol\succnapprox		2319	a238	EE
+\newsymbol\lnapprox		231A	a227	E3
+\newsymbol\gnapprox		231B	a228	E4
+\newsymbol\nsim			231C	a150	96
+\newsymbol\ncong		231D	a153	99
+\newsymbol\diagup		231E	a011 	0B ?	
+\newsymbol\diagdown		231F	a012 	0C ?	
+\newsymbol\varsubsetneq		2320	a208	D0
+\newsymbol\varsupsetneq		2321	a209	D1
+\newsymbol\nsubseteqq		2322	a202	CA
+\newsymbol\nsupseteqq		2323	a203	CB
+\newsymbol\subsetneqq		2324	a206	CE
+\newsymbol\supsetneqq		2325	a207	CF
+\newsymbol\varsubsetneqq	2326	a210	D2
+\newsymbol\varsupsetneqq	2327	a211	D3
+\newsymbol\subsetneq		2328	a204	CC
+\newsymbol\supsetneq		2329	a205	CD
+\newsymbol\nsubseteq		232A	a200	C8
+\newsymbol\nsupseteq		232B	a201	C9
+\newsymbol\nparallel		232C	a247	F7
+\newsymbol\nmid			232D	a206	CE
+\newsymbol\nshortmid		232E	a244	F4
+\newsymbol\nshortparallel	232F	a245	F5
+\newsymbol\nvdash		2330	a248	F8
+\newsymbol\nVdash		2331	a250	FA
+\newsymbol\nvDash		2332	a249	F9
+\newsymbol\nVDash		2333	a251	FB
+\newsymbol\ntrianglerighteq	2334	a242	F2
+\newsymbol\ntrianglelefteq	2335	a241	F1
+\newsymbol\ntriangleleft	2336	a239	EF
+\newsymbol\ntriangleright	2337	a240	F0
+\newsymbol\nleftarrow		2338	a050	32
+\newsymbol\nrightarrow		2339	a051	33
+\newsymbol\nLeftarrow		233A	a102	66
+\newsymbol\nRightarrow		233B	a104	68
+\newsymbol\nLeftrightarrow	233C	a103	67
+\newsymbol\nleftrightarrow	233D	a052	34
+\newsymbol\divideontimes	223E	i247	F7
+\newsymbol\varnothing		203F	s059 	3B ?	
+\newsymbol\nexists		2040	a032	20
+	
+\newsymbol\Finv			2060	i144	90
+\newsymbol\Game			2061	i145	91
+\newsymbol\mho			2066	i146	92
+% \newsymbol\eth		2067	
+\newsymbol\simeq		2368	s154	9A
+\newsymbol\eqsim		2368	s153	99
+\newsymbol\beth			2069	i149	95
+\newsymbol\gimel		206A	i150	96
+\newsymbol\daleth		206B	i151	97
+\newsymbol\lessdot		236C	i220	DC
+\newsymbol\gtrdot		236D	i221	DD
+\newsymbol\ltimes		226E	i206	CE
+\newsymbol\rtimes		226F	i207	CF
+\newsymbol\shortmid		2370	i244	F4
+\newsymbol\shortparallel	2371	i245	F5
+% \newsymbol\smallsetminus	2272	i216 	D8 ?	
+% \newsymbol\thicksim		2373	s024 	18 ?
+% \newsymbol\thickapprox	2374	s025 	19 ?	
+\newsymbol\approxeq		2375	s157	9D
+\newsymbol\succapprox		2376	i237	ED
+\newsymbol\precapprox		2377	i236	EC
+\newsymbol\curvearrowleft	2378	a135	87
+\newsymbol\curvearrowright	2379	a136	88
+% \newsymbol\digamma		207A		
+% \newsymbol\varkappa		207B	i020 	14 ?	
+% \newsymbol\Bbbk		207C	a107	6B
+\newsymbol\hslash		207D	i157	9D
+\undefine\hbar		
+\newsymbol\hbar			207E	a027	1B
+% \newsymbol\backepsilon	237F	i251 	FB ?	

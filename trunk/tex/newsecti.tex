@@ -1,0 +1,1093 @@
+% DVIPSONE manual % This is in YTeX
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\typesize=10pt 
+% \typesize=12pt
+
+% \hsize=4.66in % for letter paper version (default)
+% \hsize=5.5in % for legal paper version
+
+\font\manual=logo10
+\font\sc=cmcsc10
+
+\def\LaTeX{{\rm L\kern-.36em\raise.3ex\hbox{\sc a}\kern-.15em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+% \def\Y&Y{Y\kern-.25em\hbox{{\smllsize \&}}\kern -.25em Y}
+\def\Y&Y{Y\kern-.21em\hbox{{\smllsize \&}}\kern -.23em Y}
+
+\def\decreasepageno{\global\advance\pageno-1}
+\def\newpage{\vfill\eject}
+
+\def\METAFONT{{\manual META}\-{\manual FONT}}
+
+\def\DVIPSONE{{\sc dvi\-ps\-one}}
+\def\PKTOPS{{\sc pk\-to\-ps}}
+\def\AFMTOTFM{{\sc afm\-to\-tfm}}
+\def\DOWNLOAD{{\sc down\-load}}
+\def\TWOUP{{\sc two\-up}}
+\def\MODEX{{\sc mod\-ex}}
+\def\SERIAL{{\sc ser\-ial}}
+
+\def\DOS{{\sc dos}}
+\def\BIOS{{\sc bios}}
+\def\PATH{{\sc path}}
+
+\def\AFM{{\sc afm}}
+\def\TFM{{\sc tfm}}
+\def\PFM{{\sc pfm}}
+\def\DVI{{\sc dvi}}
+\def\PS{{\sc ps}}
+\def\PK{{\sc pk}}
+\def\PFA{{\sc pfa}}
+\def\PFB{{\sc pfb}}
+\def\EPS{{\sc eps}}
+\def\EPSF{{\sc epsf}}
+\def\EPSI{{\sc epsi}}
+\def\PSFIG{{\sc psfig}}
+\def\DSC{{\sc dsc}}
+
+\def\VM{{\sc vm}}
+\def\MS{{\sc ms}}
+
+\def\ATM{{\sc atm}}
+\def\CM{{\sc cm}}
+
+\def\COPY{{\sc copy}}
+\def\MODE{{\sc mode}}
+\def\PRINT{{\sc print}}
+
+\def\XONXOFF{{\sc xon/xoff}}
+\def\DTRDSR{{\sc dtr/dsr}}
+\def\ETXACK{{\sc etx/ack}}
+
+\def\IBM{{\sc ibm}}
+\def\PC{{\sc pc}}
+
+\def\COMPAQ{{\sc compaq}}
+\def\TUG{{\sc tug}}
+
+\def\UNIX{{\sc unix}}
+\def\DVIPS{{\sc dvips}}
+\def\DVITWOPS{{\sc dvi2ps}}
+\def\DVIALW{{\sc dvialw}}
+\def\DVITOPS{{\sc dvitops}}
+\def\DVILASER{{\sc dvilaser/ps}}
+
+\def\TIFF{{\sc tiff}}
+
+\def\controlc{{\tt control-C}}
+\def\controld{{\tt control-D}}
+\def\controlbreak{{\tt control-break}}
+
+\input memo.mac
+
+\noheaders
+
+\nsection{DUMMY}
+
+\nsection{DUMMY}
+
+\newpage
+
+\decreasepageno
+
+\noheaders
+
+\nsection{Inserting Encapsulated Post\-Script Files}
+
+The {\TeX} command \verb@\special@ can be used to insert illustrations
+or graphic information in text.
+Unfortunately there is no standard yet for use of \verb@\special@---every
+{\DVI}-to-{\PS} converter uses its own scheme.
+This is a major nuisance and so: % so
+
+\vskip 0.05in
+
+\beginbullets
+
+\bpar We hope that the use of \verb@\special@ for figure inclusion in
+{\TeX} will soon be standardized! 
+
+\endbullets
+
+\vskip 0.05in
+
+\nsubsection{EPS Figure Insertion Schemes Supported}
+
+Rather than inventing yet another way of using \verb@\special@
+to insert {\EPS} files, {\DVIPSONE} supports the % nine
+most popular existing protocols.
+This section is rather long since there are quite a number of these.
+% \cfootnote{The form of \verb@\special@ usage appropriate for ArborText's
+% {\DVILASER}$^{\smlsize TM}$ is not
+% supported, because it depends on insertion of % extensive 
+% verbatim Post\-Script code and references to % several 
+% functions built into the prolog used by that driver.}:
+Normally the {\TeX} user is insulated from details of the
+underlying \verb@\special@ syntax by some macro package, 
+such as {\tt psfig.tex}, {\tt epsf.tex}, or {\tt psadobe.tex}.
+But the user needs to at least ascertain that the output produced
+by the macro package is in one of the forms accepted by {\DVIPSONE}.
+One approach is to simply run a {\DVI} file through {\DVIPSONE}
+that was produced from {\TeX} source calling for insertion of illustrations.
+Typically there will be no error messages, and the figures will be
+placed correctly on the page, then:
+
+\vskip .05in
+
+\beginbullets
+
+\bpar With a bit of luck there will be no need to read the rest of this
+rather long section!
+
+\endbullets
+
+\vskip .05in
+
+The following need only be read if this simple test fails---or 
+if you % the reader 
+happen to be interested in the finer details,
+or some of the more esoteric features.
+% particular {\DVI}-to-{\PS} converter.
+% This section is rather long, as result of the fact that {\DVIPSONE}
+% supports all of the most popular schemes for figure inclusion using
+% {\TeX}'s \verb@\special@ command.
+
+If you are presently using one of the schemes supported by {\DVIPSONE}, 
+simply continue using it
+(until such time as usage of \verb@\special@ becomes standardized). 
+If you are not now using one of these schemes, 
+it is probably best to pick one of the simpler ones
+(such as (E), (F), or (G)) % (schemes (D), (E), or (F))
+and not get too attached to any of the more esoteric features
+(since these are likely to change if % when
+usage of \verb@\special@ does become standardized).
+If good control over clipping is required, then use one of the variants
+of Trevor Darrell's {\PSFIG} macro packages (such as (A), (B), and (C)).
+% or of his {\EPSF} macro package (scheme (D)).
+% His macro package provides most of the needed facilities in a
+% relatively straightforward way. 
+Of these schemes, the one more likely than the others to be close to a
+future standard is perhaps (I), the scheme used in Nelson Beebe's {\DVIALW}. 
+
+In reading the following, please we aware of the fact that,
+unfortunately, sveral programs are called {\DVITWOPS} 
+(Mark Senn {\it et al}'s, Tony Li's and Stephan v. Bechtolsheim's programs, 
+for example),
+and that more than one program is called {\DVIPS}
+(Tom Rokicki's and ArborText's programs, for example).
+Similarly, each of the % {\TeX} 
+macro packages for figure inclusion
+mentioned has a large number of variants%
+\cfootnote{If it is not obvious how a macro package uses
+%  turns out to be difficult to figure out what just 
+\verb@\special@ for figure inclusion, 
+then it may help to look at a {\DVI} file.
+% to see what exact form of \verb@\special@ usage a particular 
+% macro package employs. 
+Most of the {\DVI} file will consist of incomprehensible binary codes
+with short chunks of text and font names interposed.
+The argument to \verb@\special@, however, is placed into the {\DVI}
+file quite unadulterated, so one can find it by searching for the
+file-name specified in the figure inclusion macro.}.
+
+Each of the schemes typically also supports capabilities other than figure
+inclusion (insertion of raw Post\-Script code, for example).
+Note, however, that only the features indicated here are supported by
+{\DVIPSONE}. 
+Attempts to use unsupported features may lead to unpredictable results,
+since, for example, inserted verbatim Post\-Script code will be
+operating in a % totally 
+different environment from the intended one
+(See subsection~3.3 for warnings about user supplied prolog files 
+and the use of inserted Post\-Script code). 
+
+Now for a list of the protocols supported by {\DVIPSONE}:
+
+\vskip 0.1in
+
+\beginbullets
+
+\noindent
+(A) % was (B) % DVIPS
+One of the schemes supported by Tom Rokicki's {\DVIPS},
+% A variant on the above scheme (for Tony Li's {\DVITWOPS})
+used by one variant of Trevor Darrell's {\PSFIG} macro package:
+
+\vskip .05in
+
+\noindent
+\verb@\special{ps::[begin] <w> <h> <xll> <yll> <xur> <yur> startTexFig}@
+% \hfill\linebreak
+\verb@\special{ps: plotfile <eps-file>}@\hfill\linebreak
+\verb@\special{ps::[end] endTexFig}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+The six integer arguments preceding \verb@startTexFig@
+represent the desired width and height of the inserted figure on the page, 
+and the lower left and upper right corner of its bounding box, respectively.
+All of these quantities are given in {\DVI} units 
+(that is, `scaled' points, 65536 per printer's point - {\tt pt},
+of which there are 72.27 per inch).
+% \cfootnote{In this case, the bounding box comment in the inserted {\EPS}
+% file can be ignored by {\DVIPSONE}, since the {\TeX} macro package
+% already had to read the {\EPS} file to position the figure.}. %  extract it
+% 
+Note that letter case is significant in the words 
+`\verb@startTexFig@' and `\verb@endTexFig@.'
+
+The figure is scaled so as to map the bounding box into a rectangle of
+the specified width and height.
+% lower left corner is placed such that, when the height of the figure
+% is added to it, one reaches {\TeX}'s current point.
+The {\it upper left-hand\/} corner of this rectangle % (of the scaled figure) 
+is placed at {\TeX}'s current point. % check ???
+%
+Note that scaling may be different in the horizontal and the vertical
+direction, something that may lead to unexpected results.
+Isotropic scaling can be forced by making the aspect ratio of the
+rectangle defined by the requested width and height 
+% specified rectangle on the page 
+match the aspect ratio of the rectangle defined by the bounding box
+% in the {\EPS} file.
+(This is usually taken care of by the macro package being used).
+
+\noindent
+Clipping to the rectangle defined by the bounding box 
+may be called for by inserting the line:
+
+\vskip .05in
+
+\verb@\special{ps:: doclip}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+after the {\tt startTexFig} line.
+%
+There can be several \verb@ps: plotfile@ lines between the {\tt startTexFig}
+and {\tt endTexFig} line, making it possible to insert
+prolog and postlog files for a particular figure.
+(See section~3.3 for a way to insert a single common prolog file 
+accessible to code in all inserted figures).
+
+% \verb@\special{ps: plotfile <postlog-file>}@\hfill\linebreak
+% \verb@\special{ps: plotfile <prolog-file>}@\hfill\linebreak
+
+\vskip .1in
+
+\noindent
+(B) % was (C) % DVI2PS-SVB
+A variant on the same theme for Stephan v. Bechtolsheim's {\DVITWOPS},
+generated by another variant of Trevor Darrell's {\PSFIG} macro package:
+
+\vskip .05in
+
+\noindent
+\verb@\special{ps: psfiginit}@\hfill\linebreak
+\verb@\special{ps: literal <w> <h> <xll> <yll> <xur> <yur> startTexFig}@
+% \hfill\linebreak
+\verb@\special{ps: include <eps-file>}@\hfill\linebreak
+\verb@\special{ps: literal "endTexFig "}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+Clipping may be called for by inserting the line
+
+\vskip .05in
+
+\verb@\special{ps: literal "doclip "}@ % \hfill\linebreak
+
+\vskip .05in
+
+\noindent
+after the {\tt startTexFig} line. 
+Also, there can be several \verb@ps: include@ lines calling for Post\-Script
+files, as in the previous scheme.
+
+% \verb@\special{ps: plotfile <postlog-file>}@\hfill\linebreak
+% \verb@\special{ps: plotfile <prolog-file>}@\hfill\linebreak
+
+\vskip .1in
+
+\noindent
+(C) % was (A) % DVI2PS-LI
+The scheme of % used by % {\UNIX}$^{\smlsize TM}$'s 
+Tony Li's {\DVITWOPS}, % Tom Rokicki's {\DVIPS} 
+used by yet another variant of Trevor Darrell's {\PSFIG} macro package,
+% for example), 
+which takes the form:
+
+% Trevor Darrell ``PsfigTeX 1.2 UserGuide''
+
+\vskip .05in
+
+% \ipar
+\noindent
+\verb@\special{pstext="<w> <h> <xll> <yll> <xur> <yur> startTexFig"}@\hfill\linebreak
+\verb@\special{psfile=<eps-file>}@\hfill\linebreak
+\verb@\special{pstext=endTexFig}@
+
+\vskip .05in
+
+%% NOTE conflict between two different uses of psfile=
+
+% The six integer arguments preceding \verb@startTexFig@
+% represent the desired width and height of the
+% inserted figure on the page, 
+% and the lower left and upper right corner of its bounding box, 
+% all in {\DVI} units 
+% (that is, `scaled' points, 65536 per printer's point)%
+% \cfootnote{In this case, the bounding box comment in the inserted {\EPS}
+% file can be ignored by {\DVIPSONE}, since the {\TeX} macro package
+% already had to read the {\EPS} file to position the figure.}. 
+
+% The figure is scaled so as to map the bounding box into a rectangle of
+% the specified width and height.
+% The {\it upper left-hand\/} corner of this rectangle 
+% is placed at {\TeX}'s current point. % check ???
+
+% Note that scaling may be different in the horizontal and the vertical
+% direction, something that may lead to unexpected results.
+% Isotropic scaling can be forced by making the aspect ratio of the specified
+% rectangle on the page match the aspect ratio of the rectangle defined 
+% by the bounding box. % in the {\EPS} file.
+
+\noindent
+Clipping to the specified bounding box may be requested 
+by inserting the line:
+
+\vskip .05in
+
+\verb@\special{pstext="doclip"}@
+
+\vskip .05in
+
+\noindent
+after the \verb@startTexFig@ line. % and before \verb@endTexFig@.
+%
+As in the previous two schemes, there may be several occurrences of
+\verb@psfile=<file-name>@ specials % \verb@\special@s
+between \verb@startTexFig@ and \verb@endTexFig@.
+% This is useful for inserting prolog and postlog files for a
+% particular figure. 
+
+If several figures share the same prolog file, then it may make sense
+to read such a common prolog file once at the beginning.
+A user prolog file accessible to all included {\EPS} files
+% A prolog file 
+may be inserted using:
+
+\vskip .05in
+
+\verb@\special{header=<user-prolog-file>}@
+
+\vskip .05in
+
+\noindent 
+The user's prolog file is read once and loaded into the same 
+Post\-Script dictionary used by {\DVIPSONE}'s procedures.  
+In the Post\-Script output by {\DVIPSONE}, 
+the prolog file appears after {\DVIPSONE}'s own procedures,
+but before any of the actual pages, 
+independent of where the corresponding \verb@\special@ occurred 
+in the {\TeX} source file.
+(See subsection~3.3 for warnings about the use of user supplied prolog files).
+
+\vskip .1in
+
+\noindent
+(D) Another scheme supported by {\DVIPS}, 
+generated by Tom Rokicki's {\EPSF} macro package: 
+
+\vskip .05in
+
+{\narrower
+
+\ivpar % \noindent 
+\verb@\special{PSfile=<epsfile> llx=<xll> lly=<yll>@\hfill\linebreak
+\verb@  urx=<xur> ury=<yur> rwi=<rwidth*10>}@ % rhe=<rheight> clip=
+
+}
+
+\vskip .05in
+
+\noindent
+(Note that in this case the first two letters in the word `{\tt PSfile}' 
+are in upper case.)
+Four of the arguments specify the bounding box of the figure.
+The last argument specifies the requested width of the figure (scaled by 10).
+The coordinate system in which the parameters are specified is the
+default Post\-Script coordinate system, 
+with 72 units per inch (that is, {\TeX}'s `big points', {\tt bp})
+with the origin at the lower left-hand corner of the page. 
+The figure is scaled isotropically.
+
+% and height are optional.  
+% If both are omitted, the figure is printed at its normal size.
+% If only one is specified, then the figure will be isotropically scaled.
+% If both are given, horizontal and vertical scaling is applied to fit
+% the given bounding box into the specified rectangular space.
+
+\vskip .1in
+
+% following triggered by "=" as separator
+% no shift needed - hence no need to read file for BBox
+
+\noindent
+(E) The scheme of % used by % {\UNIX}$^{\smlsize TM}$'s 
+an older version of {\DVITWOPS}, % on Unix
+due to Mark Senn {\it et al\/}, % 
+% {\DVITWOPS} %% also supported by Tom Rokicki's {\DVIPS} - not quite
+used by Gerald Roylance's macro package \verb@psadobe@.
+% Stephan v. Bechtolsheim, Bob Brown, Richard Furuta, James Schaad,
+% Robert Wells, Neal Holtz etc. etc.
+In the simplest case this takes the form:
+
+\vskip .05in
+
+\verb@\special{psfile=<eps-file>}@
+
+\vskip .05in
+
+\noindent
+indicating that the file \verb@<eps-file>@ is to be inserted with the 
+{\it origin\/} of the coordinate system of the inserted figure at {\TeX}'s
+current point.
+% (So the bounding box given in the inserted {\EPS} file can be ignored.)
+% Which means that {\DVIPSONE} need not search for the BBox in the file...
+Additional arguments may be used to specify %  horizontal and vertical
+scaling, and offsets, as well as clipping: % rotation ?
+
+\vskip .05in
+
+{\narrower
+
+\ivpar
+\verb@\special{psfile=<eps-file>@\hfill\linebreak 
+\verb@  hscale=<x-scale>@ \verb@vscale=<y-scale>@\hfill\linebreak
+\verb@  hoffset=<x-offset>@ \verb@voffset=<y-offset>@\hfill\linebreak
+\verb@  hsize=<x-size>@ \verb@vsize=<y-size>}@
+
+% and rotation ?
+
+}
+
+%% if scale > 8.0 it is treated as a percentage and divided by 100.0
+%% if scale < 8.0 it is treated as actual scale
+
+\vskip .05in
+
+\noindent
+All key-value pairs after the first are optional.
+% If {\tt hscale} is specified, then the figure is scaled in the
+% horizontal direction, and if {\tt vscale} is specified it is scaled
+% in the vertical direction.
+Different scaling in the horizontal and vertical directions may be specified. 
+Note that in this scheme, the clipping rectangle, 
+specified by {\tt hsize} and {\tt vsize}, 
+is constrained to have its lower left-hand corner at the origin.
+%
+%% not clear whether this is implemented as it should be ???
+%
+% the lower left corner of the bounding box.
+% does not permit specification of clipping on left and bottom
+% The same scheme is apparently used by Tom Rokicki's DVIPS ?
+%% ditto for Tom Rokicki's DVIPS - except, he uses percentage scaling
+% that is, scales are multiplied by 100 in his case...
+
+\vskip 0.1in
+
+%% This asshole scheme conflicts with an earlier one using pstext= psfile=
+
+% following triggered by illustration, postscript, postscriptfile, picture
+% /* needshift > 0 if need to shift by (-xll, -yll) */  /* Textures */
+
+\noindent
+(F) The scheme for figure inclusion used by James Clark's {\DVITOPS}:
+
+\vskip .05in
+
+\verb@\special{dvitops: import <eps-file> <width> <height>}@
+
+\vskip .05in
+
+\noindent where {\tt <width>} and  {\tt <height>} are the desired
+width and height of the included illustration, specified in units 
+recognized by {\TeX} % dimensions ?
+(that is, {\tt pt}, {\tt pc}, {\tt in}, {\tt bp}, {\tt cm}, {\tt mm}, 
+{\tt dd}, {\tt cc}, {\tt sp}---see chapter~10 of the {\TeX}book). 
+The illustration is scaled so that it will fit into the specified space.
+Scaling is the same in the horizontal and vertical directions---the
+illustration is centered in the direction in which there is extra space.
+The {\it lower left-hand\/} corner of the bounding box 
+% (of the scaled figure) 
+is placed at {\TeX}'s current point. 
+
+It is also possible to insert a prolog file using
+
+\vskip .05in
+
+\verb@\special{dvitops: prolog <user-prolog-file>}@ 
+
+\vskip .05in
+
+\noindent
+The user's prolog file appears after {\DVIPSONE}'s own preamble, 
+but before anything else, 
+% independent of where in the file this \verb@\special@ occurs 
+independent of where the corresponding \verb@\special@ occurred 
+in the {\TeX} source file.
+(See subsection~3.3 for warnings about the use of prolog files).
+
+To switch the output for one page to landscape mode, 
+start the page off with:
+
+\vskip .05in
+
+\verb@\special{dvitops: landscape}@
+
+\vskip .05in
+
+\noindent
+% at the top of the page.
+In landscape mode, {\TeX}'s origin, 
+normally 1" below and 1" to the right of the top left-hand corner of the page,
+is 1" above and 1" to the right of the lower left-hand corner of the page%
+\cfootnote{Note that some dialects of {\TeX}, such as {\YTeX} center
+the page, and so move the origin---this may produce unexpected results
+when \verb@\hsize@ and \verb@\vsize@ are interchanged to match landscape
+orientation.}.
+%
+Finally, to include verbatim Post\-Script use
+
+\vskip .05in
+
+\verb@\special{dvitops: inline <PostScript fragment>}@
+
+\vskip .05in
+
+\noindent
+Note that in this case the {\DVI} coordinate system is in effect,
+using scaled points (65536 per printer's point), 
+and with the origin 
+1" below and 1" to the right of the top left corner of the page
+(See subsection~3.3 for warnings about the use of included Post\-Script). 
+%
+%% inline, prolog, landscape  DONE !
+%
+Other uses of \verb@\special@ by {\DVITOPS} are not supported.
+
+\vskip .1in
+
+\noindent
+(G) One of the schemes for figure inclusion used by ArborText's 
+{\DVILASER}$^{\smlsize TM}$:
+
+\vskip .05in
+
+\verb@\special{ps: epsfile <eps-file> <scale-number>}@
+
+\vskip .05in
+
+\noindent
+indicating that the file {\tt <eps-file>} is to be inserted with the
+{\it lower left-hand\/} corner of the figure's bounding box placed
+at {\TeX}'s current point, %% ?
+scaled by {\tt <scale-number>}/1000.
+Scaling is optional; {\tt <scale-number>} should be an integer.
+%
+% Without scaling, the user coordinate system has 72 units to the inch%
+% Note that other forms of \verb@\special@ usage appropriate for ArborText's
+% {\DVILASER}$^{\smlsize TM}$ are not supported. 
+% because they depend on insertion of % extensive 
+% verbatim Post\-Script code and references to % several 
+% functions built into the prolog used by that driver.}.
+%
+Other uses of \verb@\special@ by {\DVILASER} are not supported.
+
+\vskip .1in
+
+\noindent
+(H) The scheme used by Blue Sky Research's Textures$^{\smlsize TM}$, 
+which is:
+
+\vskip .05in
+
+\verb@\special{illustration <eps-file> scaled <scale-number>}@
+
+\vskip .05in
+
+%% If scale > 33.3 it is treated as per mille scale and divided by 1000
+%% If scale < 33.3 it is treated as the actual scale
+
+% \ipar
+\noindent
+indicating that the file {\tt <eps-file>} is to be inserted with the
+{\it lower left-hand\/} corner of the figure's bounding box placed
+at {\TeX}'s current point, %% ?
+scaled by {\tt <scale-number>}/1000.
+Scaling is optional; {\tt <scale-number>} should be an integer.
+% scaled
+% Without scaling, the user coordinate system has 72 units to the inch.
+%
+% \vskip .05in
+%
+% \noindent
+It is also possible to include Post\-Script program fragments verbatim using
+
+\vskip .05in
+
+\verb@\special{postscript <postscript-fragment>}@
+
+\vskip .05in
+
+\noindent
+or, if it is more convenient to place these program fragments in a
+file, using
+
+\vskip .05in
+
+\verb@\special{postscriptfile <postscript-file>}@
+
+\vskip .05in
+
+% \ipar
+\noindent
+In either case, the origin of the coordinate system is at {\TeX}'s
+current point. %  and the scale is 72 units per inch.
+
+\vskip .05in
+
+% \ipar
+The difference between {\tt illustration} and {\tt postscriptfile} is that 
+{\tt illustration} treats the file as an encapsulated Post\-Script file
+that is to be positioned in accordance with the bounding box specified in
+the file, while {\tt postscriptfile} treats the file as raw Post\-Script
+code to be inserted without any additional positioning.
+
+% grestore - gsave sequence not supported
+
+% "picture" not supported because it referes to images in bitmap form.
+
+\vskip 0.1in
+
+% following triggered by space (unless recognized by Textures)
+% /* needshift < 0 if need to shift by (-xll, -yur) */  /* DVIALW */
+
+\noindent
+(I) The scheme proposed by Nelson Beebe for his driver {\DVIALW},
+where %  a sequence of
+comma-separated key-value pairs appear, 
+starting with the pair {\tt language "Post\-Script"} or {\tt language "PS"}
+(Use a space between a key and the corresponding value, not `{\tt =}').
+% what macro package uses this ?
+The following
+
+\vskip .05in
+
+\verb@\special{language "PS", include "<eps-file>"}@
+
+\vskip .05in
+
+% \ipar
+\noindent
+for example,
+causes inclusion of the illustration in the file {\tt <eps-file>}.
+The included figure is positioned with the {\it upper left-hand\/} % UGH !
+corner of the figure's bounding box placed at {\TeX}'s current point. 
+If the figure is instead to be treated as an overlay
+(that is, using the default Post\-Script coordinate system), 
+then use % the form
+
+\vskip .05in
+
+\verb@\special{language "PS", overlay "<eps-file>"}@
+
+\vskip .05in
+
+\noindent
+Finally, verbatim Post\-Script fragments can be included using the form
+
+\vskip .05in
+
+\verb@\special{language "PS", literal "<program-fragment>"}@
+
+\vskip .05in
+
+% \endbullets
+
+The Post\-Script code following {\tt literal} is placed 
+{\it before} the contents of an included file if {\tt literal} occurs in a 
+\verb@\special@ that also specifies a file to be `included' or `overlayed'.
+%
+% The inserted PostScript code can refer to \verb@CurrentX@ and
+% \verb@CurrentY@ for the position of {\TeX}'s current point,
+% to \verb@PaperHeight@ and \verb@PaperWidth@ for the page dimensions,
+% and to \verb@BoxHeight@ and \verb@BoxWidth@ for the size of the
+% bounding box of the inserted figure (if any).
+% Each is measured in units of 72 per inch ({\TeX}'s big points).
+%
+The main use of the ability to include {\tt literal} 
+Post\-Script is to insert code for scaling, positioning, and clipping,
+since there are no key-value pairs for such transformations.
+%
+Other uses of \verb@\special@ by {\DVIALW} are not supported.
+
+\vskip 0.05in
+
+\noindent 
+(J) The command syntax for figure inclusion used by Andrew Trevorrow 
+in Oz{\TeX} for the Mac\-Intosh, and in Psprint for Vax VMS,
+is also supported, 
+but {\it only\/} if the command line flag `{\tt j} is used.
+
+\endbullets
+
+\vskip 0.05in
+
+After suffering through this subsection, you will probably agree that:
+% it is about time that there be a standard for usage of
+% \verb@\special@ for figure inclusion!
+
+\vskip 0.05in
+
+\beginbullets
+
+\bpar A standard protocol using \verb@\special@  for inclusion of figures in
+{\TeX} is urgently needed!
+
+\endbullets
+
+\vskip 0.05in
+
+\nsubsection{Additional Comments}
+
+In the absence of magnification, %  scaling
+the coordinate system in effect when
+the {\EPS} file is inserted has 72 units to the inch 
+({\TeX}'s `big points' - {\tt bp}).
+If a \verb@\magnification@ other than 1000 was specified in the {\TeX}
+source file, then both the text and the Post\-Script figures will be
+scaled in proportion.  %% does OzTeX screw this up ?
+% same for command line specification of magnification
+
+Note that, unfortunately, each of the above schemes has its own idea about
+where {\TeX}'s current point should be in relation to the origin of the
+coordinate system, or the specified bounding box of the illustration.
+Some schemes place the burden on the {\TeX} macros to read the {\EPS} file 
+in order to find the \verb@%%BoundingBox@ comment, 
+while others rely on the {\DVI} processing program to do this.
+Some schemes place the origin of the coordinate system 
+at {\TeX}'s current point,
+some place the {\t lower\/} left-hand corner of the rectangle defined by the
+bounding box there, yet others the {\it upper\/} left-hand corner.
+
+When {\DVIPSONE} has to search for a bounding box comment in the
+{\EPS} file, it is assumed that the file obeys the {\EPS} 
+document structuring conventions. % ({\DSC}).
+So, for example, the \verb@%%BoundingBox:@ line
+must occur before the first \verb@%%EndComments@ line, 
+and before the first line that does not start with \verb@%%@,
+since a line that does not start with \verb@%%@ signals the end of
+the header
+({\DVIPSONE} will, however, search for the bounding box comment at the
+end of the file if \verb@(at end)@ is used).
+
+%% Those that place the origin at {\TeX}'s current point belong to the former
+%% Those that supply the bounding box in the special call belong to the former
+
+%  The inclusion of verbatim Post\-Script code is not encouraged,
+% since it may lead to dependencies on the prolog file of particular
+% {\DVI}-to-{\PS} converters (see section~3.3).
+% % Also, in an attempt to guard against inadvertent modification
+% % of its own prolog, {\DVIPSONE} in some cases encloses included code in 
+% % {\tt save - restore} pairs,
+% % which makes use of raw Post\-Script code somewhat less attractive.
+% % Furthermore, 
+% The environment in which the included Post\-Script code operates is not
+% guaranteed to remain unchanged in future releases of {\DVIPSONE}.
+
+{\DVIPSONE} can handle both `real' encapsulated Post\-Script files ({\EPS})
+as well as the `augmented' encapsulated Post\-Script files ({\EPSF})
+used by some {\DOS} and MicroSoft Windows applications, where a low-resolution
+bitmap in Windows MetaFile or in {\TIFF} format is packaged with the
+Post\-Script file
+(Actually, the Post\-Script code is treated as a comment in the {\TIFF} file).
+{\DVIPSONE} recognizes this format and extracts the Post\-Script part
+of the file. %  over the header and bitmap information. 
+%
+There is also no problem using {\EPSI} files, since the bitmap image in
+such files just appear as Post\-Script comments.
+
+It is inconvenient in {\TeX} to use `\verb@\@' as a separator between
+subdirectories and file names%
+% when specifying file names for illustrations%
+% (although one may be able to use \verb@\string@ for this purpose)
+\cfootnote{One can use backslashes inside a \verb@\special@ using
+something like the following:
+\verb~{\catcode`\@=0~ 
+\verb~\catcode`\\=12~ 
+\verb~@special{ps: epsfile c:\ps\image.ps}}~. 
+This (temporarily) defines at-sign as {\TeX}'s control sequence prefix
+and redefines backslash to be an ordinary character.},
+so {\DVIPSONE} permits use %  of ordinary slashes
+of `\verb@/@' instead % actually feature of DOS
+(This is actually just an unadvertized feature of {\DOS}).
+
+If you are using the Textures version of these figure inclusion
+commands, note that on the Mac\-Intosh, `:'s are used 
+(instead of `\verb@\@'s) to separate names of folders and subfolders 
+(the Mac\-Intosh equivalent of directories and subdirectories)
+in a file name.
+Consequently {\DVIPSONE} converts colons to backslashes
+so they can be used to refer to files on the {\PC}%
+\cfootnote{When using files with Mac\-Intosh file names in them,
+one has to be alert to limitations on file names on the {\PC}.
+There should be no embedded spaces, only the first eight characters of
+filenames and subdirectory names are significant
+% cannot be more than 8 characters long,
+and letter case is ignored.}. %  not significant
+To make it convenient to use this form of the \verb@\special@ command
+directly on a {\PC}, {\DVIPSONE} does {\it not\/} performs the
+conversion to backslash if the colon is followed immediately by a
+backslash or slash, as in:
+
+\vskip .05in
+
+	\verb@c:\epsfiles\figure1.eps@
+
+\vskip .05in
+
+\noindent
+Sometimes a {\DVI} file contains many \verb@\special@'s that are not
+recognized by {\DVIPSONE}.  In this case a flood of messages will appear
+that may submerge other, more important information.  
+The `{\tt q}' command line flag can be used to suppress these messages if
+desired. % required. 
+
+\nsubsection{Dangerous Bends---Not Generally Recommended!}
+
+Some users have a desire to 
+(a) insert a prolog file that contains procedures that can be referred
+to later, or to (b) include verbatim Post\-Script code.
+There are several problems with implementation of both of these ideas.
+One of them is that different DVI processing programs have different
+coordinate systems in effect where inserted Post\-Script code appears
+(some use the default Post\-Script coordinate system, some the device
+coordinate system, while still others use the {\DVI} coordinate system
+of scaled points).
+Further, some have the origin at {\TeX}'s current point, others 
+at the origin of the default Post\-Script coordinate system, 
+yet others at one or another corner of the illustration's bounding box.
+
+Another potential problem appears when a page break occurs between two
+fragments of code meant to be interrelated.
+Since pages are supposed to be independent
+(so that pages can be printed in arbitrary order),
+definitions made on one page are necessarily lost before the code on
+the next page is interpreted.
+Finally, code referring to specific procedures defined in the prolog of
+a particular {\DVI} processing program is, of course, not portable. 
+
+%  The inclusion of verbatim Post\-Script code is not encouraged,
+% since it may lead to dependencies on the prolog file of particular
+% {\DVI}-to-{\PS} converters (see section~3.3).
+
+% The environment in which the included Post\-Script code operates is not
+% guaranteed to remain unchanged in future releases of {\DVIPSONE}.
+
+If usage of \verb@\special@ should ever become standardized,
+methods for doing these things will change
+(or more likely, be deprecated). % prohibited
+So use the following extensions with caution:
+% only if really needed,  or for experimentation:
+% In the interim, {\DVIPSONE} supports
+
+\vskip .05in
+
+\beginbullets
+
+\vskip 0.1in
+
+\noindent
+(A) Insertion of a prolog file using:
+
+\vskip .05in
+
+\verb@\special{header=<user-prolog-file>}@
+
+\vskip .05in
+
+\noindent The user's prolog file is read once and loaded into the same 
+Post\-Script dictionary used by {\DVIPSONE}'s procedures.  
+In the Post\-Script output by {\DVIPSONE}, 
+the prolog file appears after {\DVIPSONE}'s
+own procedures, but before any of the actual pages, 
+independent of where the corresponding \verb@\special@ occurred 
+in the {\TeX} source file.
+The prolog file should define a number of procedures that may be called
+later; it should {\it not\/} render anything on the page.
+Procedures in the user's prolog file can be accessed from
+inserted {\EPS} files, or verbatim Post\-Script code.
+There can be only one user prolog file. % presently
+
+Note that there is {\it no\/} protection from identifier collision with
+names used by {\DVIPSONE}. % or built-in Post\-Script procedures.
+In fact, one of the common uses of a prolog file is to redefine built-in
+Post\-Script procedures. % used by {\DVIPSONE}. % such as \verb@showpage@.
+To {\it avoid\/} potential identifier collision problems, 
+the user's prolog file should start off by constructing its own
+dictionary, and load this on the dictionary stack (using {\tt begin}), 
+{\it before\/} defining any procedures 
+(and removing it at the end of the prolog file using {\tt end}).
+This dictionary can then be referred to from inserted Post\-Script code 
+later in the file (using {\tt begin} and {\tt end}).
+
+% Be aware that {\TeX} will already have emitted some {\DVI} code for
+% positioning on the page when the \verb@\special@ calling for the prolog
+% file is inserted, {\it even\/} if this \verb@\special@ is the first item
+% in the source file.
+% So the prolog file should not change the current point, or redefine the
+% coordinate system.
+% and parameters 
+
+A user supplied prolog file can be used to reduce output file size by
+supplying commonly used procedures that would otherwise have to be
+included in several of the {\EPS} files.
+This is a good place for a suitably sanitized version of the 
+{\tt laserprep} file used by some Mac\-Intosh applications, for example%
+\cfootnote{To use a {\tt laserprep} prolog file, first excise the {\tt eexec}
+encrypted matter, including the part modifying the interpreter 
+and the part defining {\tt smooth4} and {\tt stretch}. 
+These functions are not needed, include raw code for 68,000 series
+microcomputers, and may confuse printers other than Apple Laser\-Writers.
+Also make sure that there are no lines so long that they will overflow
+the input buffer in the Post\-Script interpreter, and that lines are
+terminated with newline (control-J) instead of return (control-M).}.
+%
+When using files produced by some applications, 
+particularly older Mac\-Intosh programs, you should be
+aware that the bounding boxes specified in these files often bear no
+relation to the areas actually occupied by the included figures:
+
+\beginbullets
+
+\vskip .05in
+
+\bpar We hope that applications producing Post\-Script code
+that does not conform to the document structuring conventions
+will soon be stamped out!
+
+\vskip .05in
+
+\endbullets
+
+% Apple LaserPrep neutered to make it fairly safe to use...
+% Removed all the encrypted garbage for modifying the interpreter
+% Removed dependence on Apple Laser Writer code
+% Removed definitions of stretch and smooth4
+% Reduced incidence of long lines
+
+A prolog file may also be used to produce letter-heads and overlays.
+Consider the following prolog file, for example:
+
+\vskip .05in
+
+\ipar
+% \noindent
+\verb@/DRAFTfont /Helvetica-Bold findfont 200 scalefont def@\hfill\linebreak
+\verb@/oldshowpage /showpage load def@\hfill\linebreak
+\verb@/showpage{save 52.3 rotate 177 -62 moveto@\hfill\linebreak
+\verb@0.2 setlinewidth DRAFTfont setfont@\hfill\linebreak
+\verb@(DRAFT) true charpath stroke restore oldshowpage} bind def@
+
+\vskip .05in
+
+\noindent
+(A user prolog file may also be specified on the command line using the
+`undocumented' {\tt w} command line argument). %% ???
+
+\vskip .1in
+
+\noindent
+(B) Insertion of verbatim Post\-Script using:
+
+\vskip .05in
+
+\verb@\special{verbatim="<PS-code>"}@
+
+\vskip .05in
+
+\noindent
+Note again that there is {\it no\/} protection from identifier collision
+with names used by {\DVIPSONE}.
+When this method for inserting verbatim Post\-Script code is used,
+% In {\DVIPSONE}, 
+the inserted code operates in an environment where
+the default Post\-Script coordinate system is in effect 
+(that is, 72 units per inch, 
+with the origin at the lower left-hand corner of the page).
+% except where other drivers do something else ...
+%
+Any repositioning of the current point by the included code will
+modify were characters and rules placed later on the same page appear.
+In fact, one use for verbatim Post\-Script code is to reposition {\TeX}
+output.  Consider the following example:
+
+\vskip .05in
+
+\noindent
+\verb@This text will appear in portrait style.@\hfill\linebreak
+\verb@\special{verbatim="currentpoint 792 0 translate 90 rotate moveto"}@\hfill\linebreak
+\verb@This text will appear in landscape style.@\hfill\linebreak
+\verb@\special{verbatim="currentpoint -90 rotate -792 0 translate moveto"}@ 
+\hfill\linebreak
+\verb@Now we should be back in portrait style.@
+
+\vskip .1in
+
+\noindent
+Any Post\-Script procedure definitions introduced using this form of
+\verb@\special@ persist only for the current page.
+Permanent definitions should be placed in a user prolog file instead.
+
+\endbullets
+
+\vskip .05in
+
+\unvpar
+\indent
+It is recommended that these features be used sparingly, if at all,
+since they are typically not directly compatible with those provided by
+other {\DVI} processing programs,
+and since they lead to a number of awkward unresolved problems.
+These commands may change as better solutions are discovered
+(and support for such features may disappear once the {\DVI} driver
+standards committee discovers that there is no consistent way of
+defining some of their actions.) 
+
+Inclusion of unrecognized verbatim PostScript text 
+(that is, other than that used for figure insertion involving 
+{\tt startTexFig}, {\tt doclip} and {\tt endFigTex}) 
+following {\tt ps:}, {\tt ps::}, {\tt ps: literal} and {\tt pstext=} 
+is enabled by the `undocumented' command line flag `{\tt j}'---if
+you use this flag ,
+or any of the other methods for inserting verbatim Post\-Script,
+you are on your own!
+{\DVIPSONE} can not check for any errors in the included Post\-Script code,
+so there is no protection here against bugs.
+% in the included Post\-Script code.
+% Inclusion of buggy raw Post\-Script code is one way to kill a print job.
+Use {\tt save} and {\tt restore}, or at least
+{\tt gsave} and {\tt grestore}, % to preserve the graphics state
+whenever appropriate.
+The included Post\-Script code should not leave extra objects on the stack, 
+or remove items from the stack.  Good luck!
+
+\end

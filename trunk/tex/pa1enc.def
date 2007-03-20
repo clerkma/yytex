@@ -1,0 +1,165 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%% 
+%% This is the file `PA1enc.def'
+%%
+%% This is for fonts set up with Windows ANSI encoding
+%% (the default font encoding for text fonts in Microsoft Windows 3.1)
+%%
+%% Usage:  \usepackage[PA1]{fontenc}
+%%
+\ProvidesFile{PA1enc.def}[1994/10/15]
+\DeclareFontEncoding{PA1}
+	{\catcode`\'=\active\chardef'=146\catcode`\`=\active\chardef`=145}{}
+\DeclareTextAccent{\`}{PA1}{96}
+\DeclareTextAccent{\'}{PA1}{180}
+\DeclareTextAccent{\^}{PA1}{136}
+\DeclareTextAccent{\~}{PA1}{152}
+\DeclareTextAccent{\"}{PA1}{168}
+\DeclareTextAccent{\H}{PA1}{34}		% no hungarumlaut in ANSI
+\DeclareTextAccent{\r}{PA1}{176}	% no ring in ANSI
+\DeclareTextAccent{\v}{PA1}{12}		% no caron in ANSI - but need fake
+% \DeclareTextAccent{\u}{PA1}{5}	% no breve in ANSI
+\DeclareTextAccent{\=}{PA1}{175}
+\DeclareTextAccent{\.}{PA1}{183}	% no dotaccent in ANSI
+\DeclareTextCommand{\b}{PA1}[1]
+   {\oalign{#1\crcr\hidewidth
+    \vbox to.2ex{\hbox{\char175}\vss}\hidewidth}}
+\DeclareTextCommand{\c}{PA1}[1]
+   {\setbox\z@\hbox{#1}\ifdim\ht\z@=1ex\accent184 #1%
+     \else{\ooalign{\hidewidth\char184\hidewidth
+        \crcr\unhbox\z@}}\fi}
+\DeclareTextCommand{\d}{PA1}[1]
+   {\oalign{#1\crcr\hidewidth.\hidewidth}}
+% \DeclareTextCommand{\k}{PA1}[1]
+%    {\oalign{#1\crcr\char12\hidewidth}} % no ogonek in ANSI
+\DeclareTextSymbol{\AA}{PA1}{197}
+\DeclareTextSymbol{\AE}{PA1}{198}
+% \DeclareTextSymbol{\CC}{PA1}{199}
+% \DeclareTextSymbol{\L}{PA1}{76}	% no Lslash in ANSI
+\DeclareTextSymbol{\O}{PA1}{216}
+\DeclareTextSymbol{\OE}{PA1}{140}
+\DeclareTextSymbol{\S}{PA1}{167}	% section
+\DeclareTextSymbol{\P}{PA1}{182}	% paragraph
+\DeclareTextSymbol{\dag}{PA1}{134}	% dagger
+\DeclareTextSymbol{\ddag}{PA1}{135}	% daggerdbl
+\DeclareTextSymbol{\SS}{PA1}{223}	% no Germandbls in ANSI
+\DeclareTextSymbol{\_}{PA1}{95}
+\DeclareTextSymbol{\aa}{PA1}{229}
+\DeclareTextSymbol{\ae}{PA1}{230}
+% \DeclareTextSymbol{\cc}{PA1}{231}
+\DeclareTextSymbol{\guillemotleft}{PA1}{171}
+\DeclareTextSymbol{\guillemotright}{PA1}{187}
+\DeclareTextSymbol{\guilsinglleft}{PA1}{139}
+\DeclareTextSymbol{\guilsinglright}{PA1}{155}
+% \DeclareTextSymbol{\i}{PA1}{105}		% no dotlessi in ANSI
+% \DeclareTextSymbol{\j}{PA1}{106}		% no dotlessj in ANSI
+% \DeclareTextSymbol{\l}{PA1}{108}		% no lslash in ANSI
+\DeclareTextSymbol{\o}{PA1}{248}
+\DeclareTextSymbol{\oe}{PA1}{156}
+\DeclareTextSymbol{\pounds}{PA1}{163}
+\DeclareTextSymbol{\quotedblbase}{PA1}{132}
+\DeclareTextSymbol{\quotesinglbase}{PA1}{130}
+\DeclareTextSymbol{\ss}{PA1}{223}
+% \DeclareTextSymbol{\$}{PA1}{\char`\$}
+\DeclareTextSymbol{\$}{PA1}{36}
+\DeclareTextSymbol{\TH}{PA1}{222}
+\DeclareTextSymbol{\th}{PA1}{254}
+\DeclareTextSymbol{\DH}{PA1}{208}
+\DeclareTextSymbol{\dh}{PA1}{240}
+\DeclareTextSymbol{\DJ}{PA1}{208}	% Cork maps Dmacron to Eth!
+% \DeclareTextSymbol{\dj}{PA1}{100}	% no dmacron in ANSI
+\DeclareTextCommand{\{}{PA1}
+%    {\ifmmode\lbrace\else\char`\{\fi}
+   {\ifmmode\lbrace\else\char123\fi}
+\DeclareTextCommand{\}}{PA1}
+%   {\ifmmode\rbrace\else\char`\}\fi}
+   {\ifmmode\rbrace\else\char125\fi}
+% \DeclareTextComposite{\.}{PA1}{i}{`\i}	% ha ha
+\DeclareTextComposite{\.}{PA1}{i}{105}	% ha ha
+\DeclareTextComposite{\v}{PA1}{S}{138}  % Scaron
+\DeclareTextComposite{\"}{PA1}{Y}{159}
+\DeclareTextComposite{\.}{PA1}{I}{73}	% no Idot in ANSI
+\DeclareTextComposite{\v}{PA1}{s}{154}  % scaron
+\DeclareTextComposite{\"}{PA1}{y}{255}
+\DeclareTextComposite{\`}{PA1}{A}{192}
+\DeclareTextComposite{\'}{PA1}{A}{193}
+\DeclareTextComposite{\^}{PA1}{A}{194}
+\DeclareTextComposite{\~}{PA1}{A}{195}
+\DeclareTextComposite{\"}{PA1}{A}{196}
+\DeclareTextComposite{\r}{PA1}{A}{197}
+\DeclareTextComposite{\c}{PA1}{C}{199}
+\DeclareTextComposite{\`}{PA1}{E}{200}
+\DeclareTextComposite{\'}{PA1}{E}{201}
+\DeclareTextComposite{\^}{PA1}{E}{202}
+\DeclareTextComposite{\"}{PA1}{E}{203}
+\DeclareTextComposite{\`}{PA1}{I}{204}
+\DeclareTextComposite{\'}{PA1}{I}{205}
+\DeclareTextComposite{\^}{PA1}{I}{206}
+\DeclareTextComposite{\"}{PA1}{I}{207}
+\DeclareTextComposite{\~}{PA1}{N}{209}
+\DeclareTextComposite{\`}{PA1}{O}{210}
+\DeclareTextComposite{\'}{PA1}{O}{211}
+\DeclareTextComposite{\^}{PA1}{O}{212}
+\DeclareTextComposite{\~}{PA1}{O}{213}
+\DeclareTextComposite{\"}{PA1}{O}{214}
+\DeclareTextComposite{\`}{PA1}{U}{217}
+\DeclareTextComposite{\'}{PA1}{U}{218}
+\DeclareTextComposite{\^}{PA1}{U}{219}
+\DeclareTextComposite{\"}{PA1}{U}{220}
+\DeclareTextComposite{\'}{PA1}{Y}{221}
+% \DeclareTextComposite{\v}{PA1}{Z}{90}	% no Zcaron in ANSI
+\DeclareTextComposite{\`}{PA1}{a}{224}
+\DeclareTextComposite{\'}{PA1}{a}{225}
+\DeclareTextComposite{\^}{PA1}{a}{226}
+\DeclareTextComposite{\~}{PA1}{a}{227}
+\DeclareTextComposite{\"}{PA1}{a}{228}
+\DeclareTextComposite{\r}{PA1}{a}{229}
+\DeclareTextComposite{\c}{PA1}{c}{231}
+\DeclareTextComposite{\`}{PA1}{e}{232}
+\DeclareTextComposite{\'}{PA1}{e}{233}
+\DeclareTextComposite{\^}{PA1}{e}{234}
+\DeclareTextComposite{\"}{PA1}{e}{235}
+\DeclareTextComposite{\`}{PA1}{i}{236}
+\DeclareTextComposite{\`}{PA1}{\i}{236}
+\DeclareTextComposite{\'}{PA1}{i}{237}
+\DeclareTextComposite{\'}{PA1}{\i}{237}
+\DeclareTextComposite{\^}{PA1}{i}{238}
+\DeclareTextComposite{\^}{PA1}{\i}{238}
+\DeclareTextComposite{\"}{PA1}{i}{239}
+\DeclareTextComposite{\"}{PA1}{\i}{239}
+\DeclareTextComposite{\~}{PA1}{n}{241}
+\DeclareTextComposite{\`}{PA1}{o}{242}
+\DeclareTextComposite{\'}{PA1}{o}{243}
+\DeclareTextComposite{\^}{PA1}{o}{244}
+\DeclareTextComposite{\~}{PA1}{o}{245}
+\DeclareTextComposite{\"}{PA1}{o}{246}
+\DeclareTextComposite{\`}{PA1}{u}{249}
+\DeclareTextComposite{\'}{PA1}{u}{250}
+\DeclareTextComposite{\^}{PA1}{u}{251}
+\DeclareTextComposite{\"}{PA1}{u}{252}
+\DeclareTextComposite{\'}{PA1}{y}{253}
+% \DeclareTextComposite{\v}{PA1}{z}{122}	% no zcaron in ANSI
+
+%% Above makes 39 and 96 active since that is not `quoteleft' and `quoteright'
+% `quoteright' has moved from 39 to 146 make space for `quotesingle' in ANSI:
+% \catcode`\'=\active \chardef'=146
+% `quoteleft' has moved from 96 to 145 make space for `grave' in ANSI:
+% \catcode`\`=\active \chardef`=145
+
+% Making ` and ' active, as above, may prevent some other TeX macro
+%	from working properly when loaded after this.
+% So when loading other TeX macro packages after this:
+%	(i) first make the quotes inactive again using:
+%		\catcode39=12 \catcode96=12 
+%	(ii) then \input the TeX macro package
+%	(iii) finally reinstate the remapping by making the quotes active:
+%		\catcode39=13 \catcode96=13 
+
+% Also need to deal with prime in math mode since 39 is remapped to 146
+
+{\catcode146=\active \gdef^^92{{^\bgroup\prim@s}}}
+\mathcode146="8000 % ^\prime
+
+\endinput
+%% End of file `PA1enc.def'.

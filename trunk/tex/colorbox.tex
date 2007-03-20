@@ -1,0 +1,51 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Some examples of drawing colored text on colored background
+
+\def\colorpush{\special{color push}}% push current color
+\def\colorpop{\special{color pop}}%   revert to pushed color
+
+\def\textclr{\special{color rgb 0 1 0}}% switch to textclr (green)
+\def\boxclr{\special{color rgb 1 0 1}}%  switch to boxclr  (magenta)
+
+\newcount\height
+\newcount\width
+\newcount\depth
+            
+% Draw text on a rule  *just large enough*  for the text 
+
+\def\textonrule#1{%
+% put text in a box so we can measured width, height, and depth
+\setbox0=\hbox{#1}\height=\ht0\width=\wd0\depth=\dp0%
+% \showbox0 % debugging output
+\colorpush\boxclr% color of the background rule
+\rlap{\vrule width\width sp height\height sp depth\depth sp}%
+\textclr% color of the superimposed text
+\box0\colorpop}
+
+% Draw text centered on a rule of  *specified size*
+% First arg is text, second is width, third is height
+
+\def\textonbox#1#2#3{%
+\rlap{\colorpush\boxclr\vrule width #2 height #3}
+% \textclr\hbox to #2{\hss #1 \hss}\colorpop}
+\textclr\vbox to #3{\vss\hbox to #2{\hss #1 \hss}\vss}\colorpop}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent Watch this \textonrule{green on magenta} and...
+
+\vskip .1in
+
+\noindent Watch this \textonrule{Green On MaGenta} and...
+
+\vskip .1in
+
+\indent \textonbox{IBM PC}{1in}{0.5in}
+
+\vskip .1in
+
+\indent \textonbox{BOXED BUT TOO WIDE}{1in}{0.5in}
+
+\end

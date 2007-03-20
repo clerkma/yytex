@@ -1,0 +1,56 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\mag=\magstep1
+\hsize=7truein
+\vsize=9.5truein
+
+% \input mtmacs
+% \MTMI{10pt}{7pt}{5pt}
+% \MTSY{10pt}{7pt}{5pt}
+% \MTEX{10pt}
+% \MathRoman{tir}{10pt}{7pt}{5pt}
+
+\input lcdplaix
+
+\nopagenumbers
+
+\def\X{$$\2A\2B\2C\2D\2E\2F\2G\2H
+\2I\2J\2K\2L\2M{}$$
+$$\2N\2O\2P\2Q\2R\2S\2T\2U\2V\2W\2X\2Y\2Z{}$$}
+
+\newcount\foo
+
+\def\goo#1{\ifcase#1\or0\or1\or2\or3\or4\or5\or6\or7\or8\or9\or
+A\or B\or C\or D\or E\or F\or G\or H\or I\or J\or K\or L\or M\or N\or O\or
+P\or Q\or R\or 
+S\or T\or U\or V\or W\or X\or Y\or Z\or a\or b\or c\or d\or e\or
+f\or g\or h\or i\or j\or k\or l\or m\or n\or o\or p\or q\or r\or s\or t\or
+u\or v\or w\or x\or  y\or z\fi}
+
+\def\hoo{\def\2##1{##1^{\goo\foo}+}}
+
+
+\foo=0
+\foo=11
+\loop
+\hoo
+\X
+\ifnum\foo<62 \advance\foo1 \repeat
+
+\def\X{$$\2a\2b\2c\2d\2e\2f\2g\2h
+\2i\2j\2k\2l\2m{}$$
+$$\2n\2o\2p\2q\2r\2s\2t\2u\2v\2w\2x\2y\2z{}$$}
+
+\foo=0
+\foo=11
+\loop
+\hoo
+\X
+\ifnum\foo<62 \advance\foo1 \repeat
+
+
+\bye
+
+
+
