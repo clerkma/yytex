@@ -1,4 +1,5 @@
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 ==============================================================================
     Modifying CM text fonts for TeX 'n ANSI encoding:	 (cm-ansi.txt)

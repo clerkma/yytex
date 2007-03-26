@@ -1,4 +1,5 @@
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 % (A) One of the schemes supported by Tomas Rokicki's {\DVIPS},
 % used by one dialect of Trevor Darrell's {\PSFIG} macro package:

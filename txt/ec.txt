@@ -1,4 +1,5 @@
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 [There are what amount to Type 1 versions of the EC fonts these days,
 although the Latin Modern font collection is more recent.  See

@@ -1,6 +1,7 @@
 **************************************************************************
-	Copyright (C) 1993-1997 Y&Y, Inc.  All Rights Reserved
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright (C) 1993-1997 Y&Y, Inc.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 **************************************************************************
 
 Work-around for bug in Windows printer drivers for `narrow' characters

@@ -1,4 +1,5 @@
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 ----------------------------------------------------------------
 ATM 4.0 Light for Windows NT 4.0, and ATM 4.0 Light for Windows 95
