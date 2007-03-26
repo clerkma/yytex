@@ -2,8 +2,9 @@
      Font Licensing Issues for Acrobat PDF Files:	(file: acrobat.txt)
 =========================================================================
 
-	Copyright (C) 1995-1997 Y&Y, Inc. 
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright (C) 1995-1997 Y&Y, Inc. 
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 PS versus PDF:
 --------------

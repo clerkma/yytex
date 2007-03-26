@@ -1,4 +1,5 @@
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 THE FONT ENCODING MORASS:	(1991/June/1, revised 1992/June/1, 1993/June/1)
 =========================

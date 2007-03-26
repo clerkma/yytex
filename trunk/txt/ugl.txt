@@ -1,4 +1,5 @@
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 The UGL indexes are based upon Unicode values. In addition, the description of each character or glyph is the ISO name whenever possible. Font files for Microsoft platfoms must use Unicode indicies (given here as hexadecimal values).
 The PostScript names are given where they are known or defined. PostScript names for otherwise unknown characters should be based on their Unicode index. For example, the box drawing light character should be called `2500'. The only characters that are not presently assigned PostScript names are the forms characters from Unicode index 2500 thru 256c. Note that Adobe uses GCID's for unassigned PostScript names.

@@ -1,0 +1,218 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Using accented/composite characters in fonts that do not use ANSI encoding
+==========================================================================
+
+NOTE:	We now recommend you use SAFESEAC on the PFB files instead 
+	of using ATMFIX.  Also,
+
+***********  NOTE:	ATMFIX does not apply to ATM 2.6  **********
+
+NOTICE: before modifying any software, please make sure your 
+	software license agreement permits this.
+
+How to determine whether you need the fix or not:
+-------------------------------------------------
+
+The following ONLY applies if:
+
+(*) You use accented/composite characters; AND
+
+(*) These are accented/composite characters actually available in the font
+    (as opposed to being constructed in TeX by kerning and superposition); AND
+
+(*) The font containing these characters is NOT reencoded to Windows ANSI.
+    Remember that Windows ANSI encoding is the *default*.  
+    To avoid reencoding to Windows ANSI, a font must have a special PFM file
+    (and the PFB file may not use StandardEncoding); AND
+
+(*) You are using ATM 2.0, 2.02, or 2.5 (as opposed to say ATM 1.0 or 1.15).
+
+The above applies, for example, if the Computer Modern outline fonts 
+are reencoded to make the 58 accented/composite characters accessible, 
+but Windows ANSI is NOT used.
+
+*********** NOTE: ATMFIX does not apply to ATM 2.6 **********
+
+The accents in ATM 2.6 are in their StandardEncoding position instead of
+the odd and bizarre positions in earlier versions of ATM.  There still is
+a problem, however, when using accented characters *IF* something other
+than Windows ANSI is used as the encoding.  We recommend you use SAFESEAC
+instead on the PFB files.
+
+The problem:
+------------
+
+First of all,  ATM has hard-wired positions for accents, which in itself
+is a problem if accented characters are used, and the accents are not where
+ATM insists they should be.  But in ATM 2.0 two of the accent positions have
+actually been moved to code positions needed in TeX CM fonts.  Specifically,
+`dotlessi' appears in code position 1 and `caron' in code position 2.  
+All but one of the CM fonts use these positions (for  `Delta' and `Theta' 
+in the text fonts, for example). 
+
+Alternatives:
+-------------
+
+The problem occurs because ATM has hard-wired accent positions.  Most 
+fonts construct accented characters using a Type 1 program instruction 
+called `seac', which builds the accented character from base and accent
+character.  SAFESEAC can modify most fonts so that they instead use Type 1
+subroutine calls.  This makes the font file about 10% larger, because 
+hinting calls have to be replicated for each accented character. But this
+does make the font safe to use with ATM. 
+
+How to apply the fix:
+---------------------
+
+To deal with the problem, run the program ATMFIX, which will move the
+hard-wired positions to 157 for `dotlessi' (where it was in ATM 1.15)
+and `caron' to 141 (another open position in the `ANSI' encoding).
+The program ATMFIX may be found on the DVIWindo distribution diskette.
+It is NOT automatically copied to the hard disk during installation of
+DVIWindo. 
+
+	WARNING: copy the DLL files to a RAM disk or hard disk first. 
+	Do NOT apply ATMFIX to files that reside on a diskette.  
+	ATMFIX has to make many passes over the file to find the
+	tables it has to modify, and this can take a long time if the 
+	file is	on a diskette. 
+
+You will find the relevant ATM DDL files (dynamical link libraries) in the
+SYSTEM subdirectory of your WINDOWS directory.  ATM16.DLL is used in standard
+mode and ATM32.DLL in enhanced mode (ATM does not run in real mode).  You'll
+probably want to modify both DLLs.  Note that the output from ATMFIX appears
+in the current directory, and so will have to be moved from there back to the
+SYSTEM subdirectory of the Windows directory.  For example:
+
+	ATMFIX c:\windows\system\atm32.dll
+	copy atm32.dll c:\windows\system
+
+	ATMFIX c:\windows\system\atm16.dll
+	copy atm16.dll c:\windows\system
+
+ATMFIX checks whether the file given is really an executable file, and that
+it really has the right version number, and that the lookup tables it
+modifies have the right format.  It also recognizes a file that has already
+been fixed. No output file is produced if any of these sanity checks fail. 
+
+Do not attempt to apply ATMFIX  to a file that has already been modified.
+
+
+APPENDIX: ADVANCED USERS:
+=========================
+
+This new version of ATMFIX can actually move all of the accent characters 
+in ATM, not just `dotlessi' and `caron' (the default is to move just these 
+two as indicated above).
+
+To move other accents also (or to move `dotlessi' and `caron' to places other
+than the defaults) use the command line argument `-c=encoding', where
+`encoding.vec' contains the encoding of interest.  ATMFIX ignores everything
+in the specified encoding vector file other than entries relating to accents
+characters (and dotlessi, cedilla, ogonek).  You can use a short file here
+that only contains entries for the characters you actually want to move.
+
+Since ATM does nasty things with breve, hungarumlaut, dotaccent, and ogonek,
+there will be warning messages about these characters.  But the 58 standard
+accented characters do not refer to these four accent characters, so this
+should not be a problem.  You may want to leave these characters out of the
+`encoding vector file' to avoid the warning messages.
+
+WARNING: The changes made using ATMFIX apply to all fonts displayed using ATM.
+
+NOTE: ATM still has hard-wired accents positions after processing by ATMFIX, 
+but at least they are now where you want them...
+
+What characters to move:
+------------------------
+
+It only makes sense to move accent and base characters that may actually be
+referred to in accented/composite characters.  This includes:
+
+	grave, acute, tilde, dieresis, circumflex, caron, ring, 
+	cedilla, dotlessi,
+
+Note that the following are not used in the construction of the 58 `standard'
+accented characters:
+
+	macron, breve, hungarumlaut, dotaccent, ogonek.
+
+It is assumed that the base characters A-Z and a-z are not moved.
+
+Everything else should be `moved' by reencoding the PFB file using REENCODE,
+and making a new PFM file using AFMtoPFM (of course, changes made to ATM
+must be reflected in the encoding used there also).
+
+Where to move accent characters:
+--------------------------------
+
+Accent characters should be moved to where they do not conflict with 
+other characters in Windows ANSI encoding.  The available positions are 
+those presently not used in Windows ANSI.  This includes:
+
+	0 - 31, 127, 128, 141, 142, 143, 144, 157, 158, 
+
+Positions presently used for accents in Windows ANSI are also available:
+
+	96, 136, 152, 168, 175, 176, 180, 184.
+
+Be careful not to have two characters assigned to the same code number.
+Be careful not to have a character appear in two places in the encoding
+vector --- ATM for Windows cannot handle repeated encodings.
+
+If you do not care about proper display of fonts using Windows ANSI encoding
+then you can put the accent characters just about anywhere you like.
+
+Recommended encodings for TeX users:
+------------------------------------
+
+If you are using Windows, it may be best to just let Windows and ATM 
+reencode text fonts to Windows ANSI.  This completely *avoids* the type 
+of problem described above.
+
+Encodings based on `textext.vec' (or `textype.vec') may be reasonable, 
+since these have the accents in the control character range (0 -- 31).
+
+It may make sense to base an encoding on `textures.vec' (or `textutyp.vec').
+This is the so-called `TeX text' (or `TeX type') encoding vector using in
+TeXtures on the Macintosh.
+
+It may also make sense to base an encoding on `neonnew.vec'.  This is
+the encoding used for `actual fonts' by DVIPS (note that DVIPS requires
+use of virtual fonts, however, to exploit this encoding).
+
+Finally, it is possible that the 256 character encoding proposed at the
+1990 TUG meeting in Cork Ireland becomes more widely accepted.  The
+encoding vector for this is called `tex256'.
+
+Side effects:
+-------------
+
+Display of accented characters should work correctly for fonts using Windows
+ANSI encoding.  Display of accented characters should also work correctly for
+fonts that do not use Windows ANSI, but only if they have the accents in the
+modified positions.  Printing should not be affected.
+
+Display and printing of the accented characters themselves should also work
+for fonts using Windows ANSI. 
+
+Fonts that do not use Windows ANSI and that use composite characters will be
+affected, unless they use an encoding consistent with that used to modify ATM.
+Fortunately, composite characters are used mostly only for text fonts,
+and plain vanilla text fonts are usually reencoded to Windows ANSI.
+
+Note that portability will be affected.  Accented characters in your DVI
+files will not display correctly in Windows on a machine that has a version
+of ATM that has not been modified.
+
+Additional Quirks in ATM to look out for:
+-----------------------------------------
+
+Note that ATM uses 176 for `ring', while PSCRIPT.DRV uses 175 for `degree'.
+
+Note that Windows ANSI uses 173 as well as 45 for `hyphen'.  But ATM
+computes the metric information for 173 using the AFM entry for `minus'.
+The latter character does not appear anywhere in Windows ANSI.  This
+apparently has to do with the fact that ATM cannot handle repeat encodings.

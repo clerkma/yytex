@@ -1,6 +1,7 @@
 ****************************************************************************
-	Copyright (c) 1991 -- 1995, Y&Y, Inc. All rights reserved.
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright (c) 1991 -- 1995, Y&Y, Inc. 
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 ****************************************************************************
 
 ===========================================================================

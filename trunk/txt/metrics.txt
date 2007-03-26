@@ -1,6 +1,7 @@
 ****************************************************************************
-		COPYRIGHT (c) 1990 - 1992 Y&Y. All rights reserved.
-	Placed in the public domain in 2006 by the TeX Users Group.
+COPYRIGHT (c) 1990 - 1992 Y&Y. 
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 ****************************************************************************
 
 	NOTICE: Please ascertain whether the outline font file that you plan

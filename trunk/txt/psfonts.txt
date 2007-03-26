@@ -1,6 +1,8 @@
 ****************************************************************************
 	Using scalable outline fonts in TeX	(file: psfonts.txt)
 
+
+COPYRIGHT (C) 1991 - 1993 Y&Y, Inc.
 Copyright 2007 TeX Users Group.
 You may freely use, modify and/or distribute this file.
 ****************************************************************************
@@ -451,10 +453,6 @@ enforce their own encoding on plain vanilla text fonts.
 Note that some font generation software totally subvert PostScript's notion
 of the encoding vector, by having a fixed assignment of `character names'.
 That is, the names are merely aliases for numbers!
-
-****************************************************************************
-	COPYRIGHT (C) 1991 - 1993 Y&Y, Inc. All rights reserved.
-****************************************************************************
 
 -----------------------------------------------------
 Appendix: plain TeX, LaTeX 2.09, LaTeX 2e and PSNFSS.

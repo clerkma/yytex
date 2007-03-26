@@ -1,6 +1,7 @@
 ******************************************************************************
 	Using `on the fly' font encoding	(file: onthefly.txt)
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 ******************************************************************************
 
 Y&Y TeX System is the *only* TeX implementation (on any platform)

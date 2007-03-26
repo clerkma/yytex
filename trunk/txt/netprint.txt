@@ -2,8 +2,9 @@
 Printing to networked PS printers from DVIWindo using DVIPSONE (netprint.txt)
 =============================================================================
 
-	Copyright (C) 1998, 1999 Y&Y, Inc.
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright (C) 1998, 1999 Y&Y, Inc.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 In most cases you can print to networked PS printers just by selecting 
 them from DVIWindo's Print dialog, and checking the `Use DVIPSONE'

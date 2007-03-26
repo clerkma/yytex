@@ -1,4 +1,5 @@
-	Placed in the public domain in 2006 by the TeX Users Group.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 =============================================================================
 Installing and running the Y&Y TeX System in Windows 95/98      (win95.txt)
