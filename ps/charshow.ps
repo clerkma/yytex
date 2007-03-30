@@ -1,34 +1,36 @@
 %!
-
-fontname	% Now we expect /fontname (Times-Roman) def already defined
-
-% (AT&TGaramond-Book) % come in with name of font in string form on stack
-
-% CHARSHOW.PS utility - Copyright (C) 1990 Berthold K.P. Horn
+% Copyright (C) 1990 Y&Y, Inc.
 % Copyright 2007 TeX Users Group.
 % You may freely use, modify and/or distribute this file.
 
+% CHARTINY.PS utility - 
+
+% NOTE: come in here with name of font in string form already on stack
+
 % Print out all characters in given font with BBox outlined
-% This version places all 256 characters on four pages
+% This version places all 256 characters on FOUR pages
 
-/fontname 1 index def % name of font to analyze
-cvn /thefont exch def  % convert from string to PS name
+/fontname 1 index def	% save name of font to analyze
+cvn /thefont exch def	% convert from string to PS name
 
-% /ptsize 20 def 			% size for Math Extension
 /ptsize 48 def 			% size for font to analyse
+% /ptsize 20 def		% size for Math Extension
 
 % Is it a math extension font with large BBox ?
 
 /extension false def
 
 fontname (LucidaNewMath-Extension) eq {/extension true def} if
-fontname (MTEX) eq {/extension true def} if
-fontname (MTEXB) eq {/extension true def} if
-fontname (MTEXH) eq {/extension true def} if
 fontname (CMEX10) eq {/extension true def} if
+fontname (cmex10) eq {/extension true def} if
+fontname (MTEX) eq {/extension true def} if
 fontname (EUEX10) eq {/extension true def} if
+fontname (euex10) eq {/extension true def} if
 
 extension {/ptsize 20 def} if
+
+/shownumeric false def		% show numeric code
+/shownumeric true def		% show numeric code
 
 /usehex false def		% use octal codes
 /usehex true def		% use hexadecimal codes
@@ -36,25 +38,20 @@ extension {/ptsize 20 def} if
 /showmac true def		% show MacIntosh key chords
 /showmac false def		% show decimal code
 
-/texfont true def		% if only range 0 - 128 is needed
-/texfont false def		% 
+/texfont true def		% show only 0 - 127
+/texfont false def		% show 0 - 255
 
 /standardfont true def	% if only range 32 - 255 is needed
-/standardfont false def		% 
-
-/singlepage false def
-/singlepage true def		% if only range 0 - 63
+/standardfont false def	% 
 
 % NOTE: default (if above both false) is to show 0 - 255
-
-% /#copies 2 def
 
 /numfont /Helvetica def  % font for captions
 /capfont /Times-Roman def  % font for captions
 
 % *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
 
-% MacIntosh key chords
+% MacIntosh key chords		S- => shift		O- => option
 
 /mac 256 array def
 mac
@@ -254,35 +251,37 @@ dup 224	(S-O-&) put
 dup 225	(S-O-\() put
 dup 226	(S-O-\)) put
 dup 227	(S-O-W) put
-dup 228	(S-O-E) put
-dup 229	(S-O-R) put
-dup 230	(S-O-T) put
-dup 231	(S-O-Y) put
-dup 232	(S-O-U) put
-dup 233	(S-O-I) put
-dup 234	(S-O-S) put
-dup 235	(S-O-D) put
-dup 236	(S-O-F) put
-dup 237	(S-O-G) put
-dup 238	(S-O-H) put
-dup 239	(S-O-J) put
+dup 228	(S-O-R) put	% (S-O-E) System 6
+dup 229	(O-i A) put	% (S-O-M) System 7 or (S-O-R) System 6
+dup 230	(O-i E) put	% (S-O-T)
+dup 231 (O-e A) put	% (S-O-Y)
+dup 232	(O-u E) put	% (S-O-U)
+dup 233	(O-` E) put	% (S-O-I)
+dup 234	(O-e I) put	% (S-O-S)
+dup 235	(O-i I) put	% (S-O-D)
+dup 236 (O-u I) put	% (S-O-F)
+dup 237 (O-` I) put	% (S-O-G)
+dup 238	(O-e O) put	% (S-O-H)
+dup 239 (O-i O) put	% (S-O-J)
 dup 240	(S-O-K) put
-dup 241	(S-O-L) put
-dup 242	(S-O-:) put
-dup 243	(S-O-Z) put
-dup 244	(S-O-X) put
+dup 241	(O-` O) put	% (S-O-L)
+dup 242	(O-e U) put	% (S-O-:)
+dup 243	(O-i U) put	% (S-O-Z)
+dup 244	(O-` U) put	% (S-O-X)
 dup 245	(S-O-B) put
-dup 246	(S-O-N) put
-dup 247	(S-O-M) put
+dup 246	(S-O-I) put	% (S-O-N) System 6
+dup 247	(S-O-N) put	% (S-O-M) System 6
 dup 248	(S-O-<) put
 dup 249	(S-O->) put
 dup 250	(S-O-H) put
 dup 251	(S-O-K) put
+dup 252 (S-O-Z) put % System 7
+dup 253 (S-O-G) put % System 7
+dup 254 (S-O-X) put % System 7
+dup 255 (S-O-T) put % System 7
 pop % mac
 
 % *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
-
-% /smlsize ptsize 6 div def 	% size of font for captions
 
 /smltextsize 8 def 	% size of font for charname caption
 
@@ -290,15 +289,9 @@ pop % mac
 
 /lrgsize 12 def % size of font for font name top left
 
-% /font{findfont exch scalefont setfont} bind def % size font
-
 /font{findfont exch scalefont} bind def % size font
 
-% /bigfont {ptsize thefont font} bind def
-
 /bigfont ptsize thefont font def
-
-% /smlfont {smlsize capfont font} bind def
 
 /smlfont smlsize numfont font def
 
@@ -314,7 +307,7 @@ pop % mac
 
 /xstart .75 inch def /ystart 11 .75 sub inch def % top left
 
-/getencoding { % char specified by number
+/getencoding {			% char specified by number
 	thefont findfont /Encoding get exch get} bind def
 
 /box{ % dx dy
@@ -346,7 +339,6 @@ pop % mac
 
 /drawchar{ % char xpos ypos
   char exch 0 exch put  /ypos exch def /xpos exch def 
-%  bigfont
   bigfont setfont
   [] 0 setdash   xpos ypos moveto tick
   char stringwidth 
@@ -357,30 +349,28 @@ pop % mac
 
 /upnumdy 18 def /upworddy 8 def 
 /downnumdy -24 def /downworddy -34 def
-% /octaldx 19 def /hexdx 27 def
 /octaldx 20 def /hexdx 29 def
 
 /showchar{ % xo yo char
   /num exch def  /ypos exch def /xpos exch def 	
   xpos ypos num  drawchar % moved here
-%  smlfont
   smlfont setfont
   xpos ypos flipped{upnumdy}{downnumdy}ifelse add moveto % ptsize .5 mul 
-%  num =string cvs show
   showmac
   {mac num get show}
   {num =string cvs show}
   ifelse
-  usehex
+  shownumeric
+  {usehex
   {xpos hexdx add ypos flipped{upnumdy}{downnumdy}ifelse add moveto 
   	(") show num 16 =string cvrs show}
   {xpos octaldx add ypos flipped{upnumdy}{downnumdy}ifelse add moveto 
       	(\\) show num 8 =string cvrs show}
   ifelse
+  }if
   xpos ypos flipped{upworddy}{downworddy}ifelse add moveto % ptsize .7 mul 
   smltextfont setfont
   num getencoding dup /.notdef ne {=string cvs show}{pop} ifelse
-% xpos ypos num  drawchar
 } bind def
 
 /columns 8 def /rows 8 def
@@ -390,13 +380,9 @@ pop % mac
 
 /caption{ % insert font name at top of page
 xstart ystart .25 inch add moveto
-% smlfont 
-% smlfont setfont
 lrgfont setfont
 fontname show
 extension {( ) show ((reduced scale)) show} if
-% /familyname where { ( ) show /familyname get show } if
-/familyname where { (  \(Family: ) show /familyname get show (\)) show } if
 } bind def
 
 /page1{
@@ -505,13 +491,10 @@ page1 page2 page3 } if
 texfont{ 		 % use for TeX CM fonts (0 - 127 only)
 pagea pageb } if
 
-singlepage{
-pagea } if
-
 % pagec paged
 
-texfont not standardfont not and singlepage not and { 
-pagea pageb pagec paged		% use for full fonts (0 - 256)
+texfont not standardfont not and { % use for full fonts (0 - 256)
+pagea pageb pagec paged 
 } if
 
 

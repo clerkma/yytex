@@ -1,0 +1,61 @@
+%!PS-Adobe-2.0
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%%Title PRINTST2.PS
+
+/Helvetica findfont 20 scalefont setfont
+6 72 mul 11 1 sub 72 mul moveto (Print Test 2) show
+
+% This is a basic test of built-in font rendering.
+% All it does is show the word `Times-Roman' in the Times-Roman
+% font rotated to landscape presentation, inside a rectangular box.
+
+% If the word is shown in a sans serif font like Courier,
+% then the printer does not have the `Times-Roman' font built in.
+
+/box{ % width height
+gsave
+currentpoint newpath moveto
+1 index 0 rlineto
+0 1 index rlineto
+1 index neg 0 rlineto
+0 1 index neg rlineto
+closepath stroke
+pop pop
+grestore
+} def
+
+/quadrant{ % radius
+dup 1 index .54 mul 2 index .54 mul 3 index 0 5 index curveto
+}def
+
+/circle{ % radius
+gsave
+currentpoint translate newpath 
+dup 0 moveto quadrant
+90 rotate quadrant
+90 rotate quadrant
+90 rotate quadrant
+closepath stroke
+pop
+grestore
+} def
+
+/Times-Roman findfont 100 scalefont setfont
+
+newpath
+
+612 0 translate
+90 rotate
+100 300 moveto
+
+(Times-Roman) true charpath stroke
+
+50 200 moveto 680 250 box
+
+showpage
+
+count 0 ne {error} if
+
+%%EOF
+
