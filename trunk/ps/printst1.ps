@@ -1,0 +1,72 @@
+%!PS-Adobe-2.0
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%%Title PRINTST1.PS
+%%EndComments
+
+/Helvetica findfont 20 scalefont setfont
+6 72 mul 11 1 sub 72 mul moveto (Print Test 1) show
+
+% This is a basic test a PostScript interpreter.
+% All it does is draw a set of nested circles and 
+% nested squares in the middle of the page.
+% Any PostScript interpreter should be able to do this.
+
+% If this test fails, suspect communications problems, 
+% particularly if the printer is connected over a serial link.
+% The baud rate may be set wrong on either the computer end, or on
+% the printer end, or the two ends may not agree on handshaking
+% (that is, hardware versus software handshaking), or the printer
+% cable may not have all the wires required to transmit the
+% hardware handshaking signals (As happens with Macintosh `print' cables).
+
+/box{ % width height
+gsave
+dup add exch dup add exch
+currentpoint newpath 
+2 index 2 div sub exch 3 index 2 div sub exch moveto
+1 index 0 rlineto
+0 1 index rlineto
+1 index neg 0 rlineto
+0 1 index neg rlineto
+closepath stroke
+pop pop
+grestore
+} def
+
+/quadrant{ % radius
+dup 1 index .54 mul 2 index .54 mul 3 index 0 5 index curveto
+}def
+
+/circle{ % radius
+gsave
+currentpoint translate newpath 
+dup 0 moveto quadrant
+90 rotate quadrant
+90 rotate quadrant
+90 rotate quadrant
+closepath stroke
+pop
+grestore
+} def
+
+/nestedboxes{
+28 28 196 {
+612 2 div 792 2 div moveto dup box
+}for
+}def
+
+/nestedcircles{
+28 28 196 {
+612 2 div 792 2 div moveto circle
+}for
+}def
+
+nestedboxes nestedcircles
+
+showpage
+
+count 0 ne {error} if
+
+%%EOF
+
