@@ -29,10 +29,6 @@ a bounding box will be shown in the previewer.  The LaTeX 2e graphics package
 has no trouble with previews, and trivial changes to epsf.tex and psfig.sty
 corrects those older macro packages as well (details supplied with the system).
 
-If you do have hand generated EPS without preview you can add a preview using
-a flexible commercial PS interpreter like Transverter Pro from TechPool
-Software, or the public domain Ghostview (which is available for Windows).
-
 Also note that in some cases EPS is not the ideal format.  For example,
 images (rectangular arrays of pixels of grey level or color) are much
 more compactly represented in TIFF form than EPS.  The Y&Y TeX system

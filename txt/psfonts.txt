@@ -1,11 +1,8 @@
-****************************************************************************
 	Using scalable outline fonts in TeX	(file: psfonts.txt)
-
 
 COPYRIGHT (C) 1991 - 1993 Y&Y, Inc.
 Copyright 2007 TeX Users Group.
 You may freely use, modify and/or distribute this file.
-****************************************************************************
 
 This is a brief discussion of non-CM fonts in TeX
 (See Appendix regarding use of the New Font Selection Scheme).

@@ -1,0 +1,277 @@
+ADDITIONAL OUTLINE FONT MANIPULATION UTILITIES
+
+COPYRIGHT (c) 1992 Y&Y
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+The following utilities actually go into the encrypted part of an
+outline font file in PFA format and extract information about the
+outlines, and modify the outlines. The end user license agreement of
+a font may prohibit this.  It is your responsibility to verify that
+you are permitted to make such modifications to the fonts you own.
+
+NOTICE: Please first ascertain that the outline font file that you plan
+	to modify or inspect has no restrictions on modifications, 
+	reverse enginering, or conversion before using these utilities.  
+
+RESTRICTIONS: Modified outline fonts files produced by SIDEBEAR, COMPOSITE,
+	SUBFONT and MERGEPFA may ONLY be used to render and display
+	typefaces for your own customary business or personal purposes. 
+	The modified outline font files may NOT be sold or distributed. 
+
+NO WARRANTY:  No express or implied warranties,	including no implied
+	warranties of merchantability and fitness for use, are provided with
+	respect to the software.  In no event shall Y&Y Inc. be liable for
+	any damages, including special, indirect, incidental, or consequential
+	damages, arising out of use or inability to use the software. 
+
+SUGGESTION: Always keep copies of the original outline font and font
+	metric files in a safe place before making modified versions.
+
+CAVEATS: The following utilities may not work with so-called `compound fonts'.
+	`Compound fonts' contain code that modifies the FontMatrix or
+	Metrics of another Type 1 font - which is included in the same file.
+	There are very few `compound fonts' at this point.
+	Some of the utilities may not work with fonts that use
+	FlexPrc - which is quite rare.	Some of these utilities may
+	not work with fonts that do not use the first four Subrs in a
+	non-standard way (i.e. do not use them for hint replacement). 
+	Some of these utilities may not work with fonts that use
+	computed Subrs calls as opposed to explicit calls
+	(we don't know of any fonts that do).
+	Some of these utilities may not work with fonts that have
+	extremely large numbers of characters (> 500), 
+	or an extremely large number of compound characters (> 250)
+	(Most roman text fonts contain around 228 characters, 
+	of which about 58 are composite/accented characters).
+	Finally, some of these utilities will not work with fonts that 
+	have non-horizontal character escapements
+	(Most Western language fonts use horizontal escapements).
+
+DISK SPACE:  These utilities may at times use substantial temporary files.
+	Make sure there are 500 kbytes of disk space available in the
+	`temporary' file directory --- the one pointed to by the environment
+	variable TEMP --- or the current directory, if TEMP is not set.  
+	Output always appears in the current directory. 
+	Use of a RAM drive will speed up operations.
+
+FILE FORMAT:   Most of these utilites work with PFA format font files.
+	Use PFBtoPFA and PFAtoPFB to convert to and from PFA format.
+
+****************************************************************************
+
+SIDEBEAR	Provides for inspection and modification of character
+		sidebearings and advance widths in PFA outline font file.
+
+		To extract a list of characters and their left sidebearings
+		and advance widths from a PFA file, give SIDEBEAR that file
+		name as the single command line argument.  For example: 
+		
+			sidebear foo.pfa
+
+		Output is in current directory, same file name as input,
+		except that the extension is `sid' instead of `pfa'.
+		Each line contains a character name followed by two numbers,
+		representing the left sidebearing of the character and the
+		advance width (in standard Adobe units of 1000 per em).
+
+(*)		In some rare cases, the word `div' may appear on this
+		line.  This indicated that the previous two integers are to
+		be divided.  This is a way for a font to obtain non-integer
+		multiples of the basic unit (1/1000 em) for character width.
+
+(*)		The numbers are normally followed by the word `hsbw'
+		(horizontal side bearing and width).  In some very rare
+		cases there may be four numbers instead of two, followed by
+		the word `sbw' (x and y components of sidebearing and width).
+
+The main use of this program is in altering sidebearings and character widths
+in a font.  To alter sidebearings and advance widths, specify a file
+containing new sidebearings and character widths as the second argument:
+
+			sidebear foo.pfa metrics.lst
+
+		The file with sidebearing and advance width information
+		should have the same format as the file produced by 
+		SIDEBEAR when given a single argument.  In fact, the easiest
+		way to proceed may be to first generate such a file using the
+		PFA file name as the single command line argument.  The
+		resulting output file can then be modified to reflect the
+		desired modified metrics. 
+
+		The trailing `hsbw' on each line can be omitted.  
+		If the second number is also omitted, then only the
+		sidebearing is altered.  SIDEBEAR cannot alter metrics of
+		fonts that use `sbw' instead of `hsbw' (i.e. for
+		languages written vertically instead of horizontally).
+
+		It is probably a good idea to check the resulting
+		font using SIDEBEAR with a single command line argument.
+
+		Note that sidebearings and advance widths of composite
+		characters (such as `Adieresis') cannot be adjusted
+		independently.  They MUST match those of the base character.
+		(In fact, adjustment of base or accent characters
+		should be followed by adjustment of the composite characters,
+		see discussion of the utility COMPOSIT below).		
+
+****************************************************************************
+
+COMPOSITE	Provides for inspection, modification and addition of
+		composite characters in PFA outline font file.
+
+		To extract a list of composite characters, and the relative
+		position of the accent with respect to the base character,
+		give COMPOSIT the name of the PFA file as the single
+		command line argument. For example:
+
+			composit foo.pfa
+
+		Output is in current directory, same file name as input,
+		except that the extension is `cmp' instead of `pfa'.
+		Output is in the same format as that used in AFM files
+		for composite characters.  Each line contains the name
+		of the composite characters, the name of the base character,
+		followed by its displacement (always 0 0), and the name of
+		the accent followed by its displacement.
+
+The main use of this program is in adding composite characters to a font, or
+altering the positioning of an accent in an existing composite character
+(COMPOSIT cannot remove composite characters, but this isn't a big handicap,
+since composite characters take up very little space in a font program):
+
+		To add or modify composite characters, specify a file
+		containing composite character descriptions as the second
+		argument when calling COMPOSIT.  For example:
+
+			composit foo.pfa composit.lst
+
+		This file should have the same format as the file produced by
+		COMPOSIT when given a single argument.  In fact, the easiest
+		way to proceed may be to first generate such a file using the
+		PFA file name as the single command line argument.  This
+		file can then be modified to reflect the desired metrics.
+		Additional composite characters may be added using the same
+		format for specification of accent position.
+
+		It is actually also possible to use a complete AFM
+		file for the second argument.  All but the composite
+		character information in the AFM file will be ignored. 
+
+		It is probably a good idea to check the resulting
+		font file using COMPOSIT with a single command line argument.
+		Note that the character width of a composite character must
+		match that of the base character and that the left
+		sidebearing of a composite character must match that of the
+		accent.  COMPOSIT normally arranges for this to happen.
+
+****************************************************************************
+
+SUBFONT		Provides for extraction of a font containing a specified set
+		of CharStrings.  In other words, subfont removes from
+		a font all characters NOT listed in a subsiduary
+		file.  This can	greatly reduce the size of a PFB file if only
+		some subset of characters are needed.  But mainly this utility
+		is used in conjunction with MERGEPFA to extract some characters
+		from one font and some from another to then merge the result. 
+
+			subfont foo.pfa characte.lst
+
+		The first argument is the font file to operate on.  
+		The second is a file containing a list of the characters
+		to be retained.  Each line of this second file contains
+		one PostScript character name.  To save file space,
+		an abbreviated notation is also provided for letters and
+		digits.  For example, C-M is equivalent to listing all
+		characters from `C' through `M', while 0-9 is equivalent to
+		listing all of the digits.
+
+		The output file is called `subfont.pfa' and appears
+		in the current directory. 
+
+		NOTE: The output file uses the same FontName as the
+		input file.  Be careful not to confuse the original
+		complete font with the `subfont'. 
+
+****************************************************************************
+
+MERGEPFA	This utility inserts characters from one font into
+		another.   It takes two arguments, the base font, and
+		the auxiliary font from which characters will be extracted
+		and inserted into the base font.  Often SUBFONT will be
+		used to first prepare the auxiliary font file and/or the base
+		font file.  There should be no overlap in characters between
+		the base and auxiliary font (i.e. if one contains a CharString
+		for character `A', then the other shouldn't).
+
+			mergepfa base.pfa auxiliar.pfa
+
+		The output file is called `merged.pfa' and appears in the
+		current directory.
+
+		NOTE: All of the structures of the base font are preserved.
+		Adjustements are made to Subrs and CharStrings
+		imported from the auxiliary font.  Everything from the
+		auxiliary font other than its Subrs and CharStrings is lost.
+		Subrs from the auxiliary font are renumbered and transferred.
+		Calls to these Subrs adjusted.
+		Characters from the auxiliary font retain their character
+		level hints, but the font level hints from the base font
+		are the ones in effect in the merged font.  If the
+		font-level hints in the two fonts are very different
+		(different vertical alignment zones), some reduction in
+		rendering quality may be expected.
+
+		MERGEPFA can also be used with a single argument. In this
+		case it merely decrypts and decodes the font, performs
+		some `normalizations' and reencodes and reencrypts it.  
+		For example, it will detect when the UniqueID in the encrypted
+		part does not match the visible UniqueID.  In this case it
+		adjusts the UniqueID in the encrypted part to match that in
+		the visible part.
+
+****************************************************************************
+
+WARNINGS: (1)	When altering an outline font file, keep a copy 
+		of the original outline font file in a safe place.
+
+	  (2)	When altering character widths in an outline font file, 
+	  	also alter the character widths in the corresponding 
+		metric files (PFM, TFM and AFM).
+
+	  (3)	To avoid confusion with the original unaltered font, change
+	  	the PostScript FontName as well as the outline font file name.
+
+	  (4)	You may want to comment out the UniqueID in the outline 
+	  	font file to avoid confusion in across-job font caching
+		between the original and the modified version of the font.
+		(Although changing the FontName should prevent this anyway).
+
+For an elaborate example of using some of these utilities, look in 
+convmath.bat, and read convmath.txt for explanation.
+
+WARNING:  Glyph Caching and Metric Caching:
+------------------------------------------
+
+When a modified version of an outline font is installed, one has to make sure
+that there is no information about the original version cached somewhere.
+
+A printer supporting across-job font-caching, for example, will retain
+characters already  rendered and so may give the illusion that the new
+version does not differ from the old one.  This can get pretty confusing!
+Power cycle the printer, or execute the PostScript `quit' command (not all
+printers support this): 
+
+	systemdict /quit get exec
+
+The same goes for Adobe Type Manager, except that in addition, you may crash
+ATM or Windows if you replace the PFB (or PFM) file while Windows is active. 
+
+Futhermore, ATM keeps a cache of font metric information, preserved 
+in a file called ATMFONTS.QLC, usually in the Windows directory.
+This file must be deleted when PFM (or PFB) files are modified.
+ATM will recreate ATMFONTS.QLC the next time Windows is launched.  
+Sometimes one needs to exit Windows again and launch it a second time 
+in order to get the metric cache properly synchronized.  A safer alternative
+is to first use the ATM control panel to `Remove' the old version of the
+font, then use the ATM control panel to `Add' the new version.

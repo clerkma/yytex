@@ -1,0 +1,44 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+============================================
+To convert a Type 1 font from Mac to IBM PC:
+============================================
+
+Transport the actual outline font file and the screen font file
+to the IBM PC in MacBinary form.  If there is more than one
+font in the screen font suitcase, first separate them and send
+only the one you need (it works otherwise, but is confusing).
+
+You can use Apple MacIntosh Exchange to write to an IBM formatted
+diskette.  The parts of the files you want are in the `resource'
+directory.  Or send as BinHex attachment in email or use FTP.
+
+Then use MACtoPFA on the actual outline font.  This will work on 
+either a font file in MacBinary form, or on a file containing
+just the resource fork.
+
+If you need the font file in PFB format, use PFAtoPFB on the PFA file.
+
+If you have actual AFM files use these.  
+
+If you do not have AFM files you can reconstruct most of the 
+information using SCRtoAFM on the screen font suitcase.
+
+For use in Windows, run AFMtoPFM next to create the PFM file.
+
+For use with TeX run AFMtoTFM on the AFM file.  Unlike other methods,
+this will create a single TFM file complete with ligatures and
+kerning (no need for virtual fonts).
+
+If for some reason you need to hard-reencode the font itself or 
+the AFM file, then use REENCODE.  
+
+You can get a command line summary in most cases by using -?
+on the command line e.g. afmtotfm -?
+
+Note that you want to use different command line flags with 
+AFMtoPFM and AFMtoTFM when the font is a `pi/math/symbol/decorative'
+fonts as opposed to a plain vanilla text font.
+
+See manual for additional details.  See also *.txt files, e.g. macandpc.txt

@@ -1,0 +1,194 @@
+Copyright (C) 1993, 1994, 1995, 1996, 1997, 1998 Y&Y, Inc.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+How to move files between Mac and PC:
+=====================================
+
+If the files are plain ASCII there are few problems (except perhaps for
+conversion of line termination).  Use email, LapLink or Apple's 
+`Macintosh PC Exchange' for reading and writing PC diskettes on a Mac.
+
+Here we discuss issues that come up when the file instead has both
+resource and data forks.  Such files are best represented on the PC 
+in MacBinary format.  All of the utilities in the FMP that deal with
+Macintosh files read and write them in MacBinary format. 
+
+MacBinary format files have a 128 byte header including `finder data'
+such as File Creator and Type followed by the data and resource forks.
+
+In the case of font files, the data fork is empty -- all the action is in
+the resource fork.  Consequently, the FMP utilities that read MacBinary
+files have been modified to also read `raw' resource fork files.  This can
+be handy when using Apple's `Macintosh PC Exchange', which splits the Mac
+file into a file containing the data fork and a (hidden) file containing
+the resource fork.
+
+(1) Using the BINtoHEX and HEXtoBIN utilities in the FMP:
+---------------------------------------------------------
+
+To move a file from Mac to IBM PC:
+
+Run the Mac file through Yves Lempereur's BinHeX 4.0 to create a plain ASCII
+*.hqx file.  This can easily be moved to the PC using email, LapLink or on a
+PC diskette written by by Apple's `Macintosh PC Exchange.'
+
+Then decode it on the PC using the HEXtoBIN utility from the FMP (*not* any
+other BinHeX conversion utility, or Eudora's `BinHex' attachment mechanism).
+You will then have a file in MacBinary format ready for the utilities of the
+FMP.
+
+To move a file from IBM PC to a Mac:
+
+Run the MacBinary file through BINtoHEX from the FMP (*not* any other BinHex
+conversion utility, or Eudora's `BinHex' attachment mechanism).  You will
+then have a *.hqx file that can be decoded by BinHex 4.0 on the Mac into a
+real Mac file with resource and data forks (unlike what you would get with
+the public domain BinHex or Eudora for Windows!).
+
+Since the *.hqx file is plain ASCII, you can easily move it to the
+Mac through email, LapLink or on a PC diskette read by Apple's
+Macintosh PC Exchange.
+
+(2) Using Pierre Duhem's MacDisk utilties:
+-----------------------------------------
+
+Pierre Duhem's utilities provide for reading Mac media on IBM PC.
+They are available from http://www.macdisk.com/prospen.htm
+The DOS version is downloadable shareware.  The Windows version must be
+ordered. A bit pricey in comparison to Apple's Mac PC Exchange..
+
+See notes on MacBinary format at http://www.macdisk.com/macbinen.htm
+There are also some downloadable utilities to work with MacBinary files.
+
+
+(3) Using the EXCHANGE utility with Apple's Macintosh PC Exchange:
+------------------------------------------------------------------
+
+Things are somewhat less convenient when using Macintosh PC Exchange,
+since a Macintosh file is split into three parts on the PC diskette.
+
+Transporting text and ordinary binary files is not much of a problem,
+except that line termination translation is NOT automatic.
+
+Macintosh PC Exchange writes the `finder information', the data fork,
+and the resource fork into three separate files.  The data fork appears at
+the top level in the directory, while the resource fork appears in a
+sub-directory called `resource.frk'. The top-level file (for the data fork)
+and the file in the resource.frk directory (containing the resource fork)
+have the same DOS name, made up by using the first few characters
+of the Macintosh file name (and prefixing this with the letter '!' if 
+the name has to be truncated in the process).
+
+The `finder information' is added to the hidden file `finder.dat'
+that lives in the top-level directory.  This single file contains information
+about all Macintosh files on the diskette.
+
+The utility EXCHANGE provided with the Font Manipulation Utilities can be
+used to convert between MacIntosh PC Exchange format (split files) and
+MacBinary format (single file).
+
+To see which files are available on a Macintosh PC Exchange diskette:
+---------------------------------------------------------------------
+
+Use the following to see exactly what files are available on the diskette in
+Macintosh PC Exchange format:
+
+	exchange -s <diskette>		e.g.	exchange -s b:
+
+This will list all entries in the hidden file `finder.dat' that appear
+to refer to genuine files.
+
+To see more detail, such as the creation and modification dates, 
+add the `v' (for verbose) flag.  In this case there will be several entries
+that do not correspond to files --- such things as the Macintosh name 
+of the diskette, the desktop file, and names of `folders'.  Ignore these.
+
+To move a file from the diskette (split form) to the PC (MacBinary form):
+--------------------------------------------------------------------------
+
+Use the following:
+
+	exchange -m <diskette> <dos-file-name>	e.g.  exchange -m b: atm.scr
+
+The resulting MacBinary file appears in the current directory.
+You may wish to verify its integrity using the MACANAL utility.
+
+The file names here are the DOS file names (as listed using `-s' above).
+More than one file-name may appear, and wild-cards can be used. For example:
+
+	exchange -m b: b:*.*
+
+will attempt to convert all files found in `finder.dat' to MacBinary form
+and dump them in the current directory (NOT on the diskette).  
+
+Again, use `-v' for more verbosity.
+
+To move a MacBinary file to the MacIntosh PC Exchange diskette (split form):
+----------------------------------------------------------------------------
+
+Use the following to split a file in MacBinary format on the PC into
+the files needed on the Macintosh PC Exchange diskette:
+
+	exchange <diskette> <dos-file-name>  e.g.  exchange b: atm.scr
+
+More than one file-name may appear, and wild-cards can be used. For example:
+
+	exchange b: *.*
+
+Will convert all files in the current directory that appear to be in 
+MacBinary format and write them on the diskette. 
+
+The utility can handle a diskette that already contains a file called
+`finder.dat' written by Macintosh PC Exchange.  It is possible, however,
+that you may have to remove the `hidden' attribute of the `finder.dat' file
+in this case.  Do this as follows:
+
+	attrib -H b:
+
+Trouble Shooting Known Problems:
+--------------------------------
+
+Use MACANAL to verify the integrity of a file in MacBinary format.
+
+Macintosh PC Exchange has problems with highly fragmented disks or disks
+containing `too many' files.  Avoid working with Macintosh PC Exchange
+diskettes that contain a large number of files.  Transport one -- or a
+small number -- of files at a time if errors reported by EXCHANGE.  Use a
+completely blank diskette to start with if errors are reported by
+EXCHANGE. 
+
+(4) Using LapLink (or Kermit):
+------------------------------
+
+Another way do this is use a serial cable and LapLink for the Mac.
+There are three types of files one may wish to transfer:
+
+*	ASCII text
+*	Binary data
+*	Macintosh files with both data and resource forks.
+
+For ASCII text files, make sure that line terminations are translated.
+Check the `Convert CR/LF' box in `Copy Options...' from the `Options' menu.
+
+Make sure the `Convert CR/LF' is NOT checked when transferring binary data.
+
+When transferring a Macintosh file with data and resource fork,
+make SURE to check `MacBinary' format.
+
+Kermit is also able to transfer files in MacBinary format.
+
+MacBinary format combines in one PC file:
+
+	MacBinary header with `finder information'
+	the data fork
+	the resource fork
+
+The MacBinary header includes file name, file creation and 
+modification dates, lengths of data and resource forks, 
+and most importantly, file Creator and file Type.
+
+It is easy to move files in this format back and forth between
+platforms without losing any information.  The utilities in 
+the `Font Manipulation Package' are designed to work with this format.
+(Although many can also work with just the raw resource fork).
