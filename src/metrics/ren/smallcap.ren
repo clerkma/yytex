@@ -1,0 +1,68 @@
+% renaming table used in construction of small caps fonts
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+A	a
+B	b
+C	c
+D	d
+E	e
+F	f
+G	g
+H	h
+I	i
+J	j
+K	k
+L	l
+M	m
+N	n
+O	o
+O	o
+P	p
+Q	q
+R	r
+S	s
+T	t
+U	u
+V	v
+W	w
+X	x
+Y	y
+Z	z
+
+Aacute		aacute
+Acircumflex	acircumflex
+Adieresis	adieresis
+Agrave		agrave
+Aring		aring
+Atilde		atilde
+Ccedilla	ccedilla
+Eacute		eacute
+Ecircumflex	ecircumflex
+Edieresis	edieresis
+Egrave		egrave
+Iacute		iacute
+Icircumflex	icircumflex
+Idieresis	idieresis
+Igrave		igrave
+Ntilde		ntilde
+Oacute		oacute
+Ocircumflex	ocircumflex
+Odieresis	odieresis
+Ograve		ograve
+Otilde		otilde
+Scaron		scaron
+Uacute		uacute
+Ucircumflex	ucircumflex
+Udieresis	udieresis
+Ugrave		ugrave
+Yacute		yacute
+Ydieresis	ydieresis
+Zcaron		zcaron
+
+AE	ae
+OE	oe
+Lslash	lslash
+Oslash	oslash
+Eth	eth
+Thorn	thorn

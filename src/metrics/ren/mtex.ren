@@ -1,0 +1,261 @@
+% CharString name remapping table for MTSY
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+NUL		parenleftbig
+Eth		parenrightbig
+eth		bracketleftbig
+Lslash		bracketrightbig
+lslash		floorleftbig
+Scaron		floorrightbig
+scaron		ceilingleftbig
+Yacute		ceilingrightbig
+yacute		braceleftbig
+HT		bracerightbig
+LF		angbracketleftbig
+Thorn		angbracketrightbig
+thorn		vextendsingle
+CR		vextenddouble
+Zcaron		slashbig
+zcaron		backslashbig
+DLE		parenleftBig
+DC1		parenrightBig
+DC2		parenleftbigg
+DC3		parenrightbigg
+DC4		bracketleftbigg
+onehalf		bracketrightbigg
+onequarter	floorleftbigg
+onesuperior	floorrightbigg
+threequarters	ceilingleftbigg
+threesuperior	ceilingrightbigg
+twosuperior	braceleftbigg
+brokenbar	bracerightbigg
+minus		angbracketleftbigg
+multiply	angbracketrightbigg
+RS		slashbigg
+US		backslashbigg
+space		parenleftBigg
+exclam		parenrightBigg
+quotedbl	bracketleftBigg
+numbersign	bracketrightBigg
+dollar		floorleftBigg
+percent		floorrightBigg
+ampersand	ceilingleftBigg
+quotesingle	ceilingrightBigg
+parenleft	braceleftBigg
+parenright	bracerightBigg
+asterisk	angbracketleftBigg
+plus		angbracketrightBigg
+comma		slashBigg
+hyphen		backslashBigg
+period		slashBig
+slash		backslashBig
+zero		parenlefttp
+one		parenrighttp
+two		bracketlefttp
+three		bracketrighttp
+four		bracketleftbt
+five		bracketrightbt
+six		bracketleftex
+seven		bracketrightex
+eight		bracelefttp
+nine		bracerighttp
+colon		braceleftbt
+semicolon	bracerightbt
+less		braceleftmid
+equal		bracerightmid
+greater		braceex
+question	arrowvertex
+at		parenleftbt
+A		parenrightbt
+B		parenleftex
+C		parenrightex
+D		angbracketleftBig
+E		angbracketrightBig
+F		unionsqtext
+G		unionsqdisplay
+H		contintegraltext
+I		contintegraldisplay
+J		circledottext
+K		circledotdisplay
+L		circleplustext
+M		circleplusdisplay
+N		circlemultiplytext
+O		circlemultiplydisplay
+P		summationtext
+Q		producttext
+R		integraltext
+S		uniontext
+T		intersectiontext
+U		unionmultitext
+V		logicalandtext
+W		logicalortext
+X		summationdisplay
+Y		productdisplay
+Z		integraldisplay
+bracketleft	uniondisplay
+backslash	intersectiondisplay
+bracketright	unionmultidisplay
+asciicircum	logicalanddisplay
+underscore	logicalordisplay
+grave		coproducttext
+a		coproductdisplay
+b		hatwide
+c		hatwider
+d		hatwidest
+e		tildewide
+f		tildewider
+g		tildewidest
+h		bracketleftBig
+i		bracketrightBig
+j		floorleftBig
+k		floorrightBig
+l		ceilingleftBig
+m		ceilingrightBig
+n		braceleftBig
+o		bracerightBig
+p		radicalbig
+q		radicalBig
+r		radicalbigg
+s		radicalBigg
+t		radicalbt
+u		radicalvertex
+v		radicaltp
+w		arrowvertexdbl
+x		arrowtp
+y		arrowbt
+z		bracehtipdownleft
+braceleft	bracehtipdownright
+bar		bracehtipupleft
+braceright	bracehtipupright
+asciitilde	arrowdbltp
+DEL		arrowdblbt
+% Following do not correspond to any entries in encoding vector
+Adieresis
+Aring
+Ccedilla
+Eacute
+Ntilde
+Odieresis
+Udieresis
+aacute
+agrave
+acircumflex
+adieresis
+atilde
+aring
+ccedilla
+eacute
+egrave
+ecircumflex
+edieresis
+iacute
+igrave
+icircumflex
+idieresis
+ntilde
+oacute
+ograve
+ocircumflex
+odieresis
+otilde
+uacute
+ugrave
+ucircumflex
+udieresis
+dagger
+degree
+cent
+sterling
+section
+bullet
+paragraph
+germandbls
+registered
+copyright
+trademark
+acute
+dieresis
+notequal
+AE
+Oslash
+infinity
+plusminus
+lessequal
+greaterequal
+yen
+mu
+partialdiff
+summation
+product
+pi
+integral
+ordfeminine
+ordmasculine
+Omega
+ae
+oslash
+questiondown
+exclamdown
+logicalnot
+radical
+florin
+approxequal
+Delta
+guillemotleft
+guillemotright
+ellipsis
+nbspace
+Agrave
+Atilde
+Otilde
+OE
+oe
+endash
+emdash
+quotedblleft
+quotedblright
+quoteleft
+quoteright
+divide
+lozenge
+ydieresis
+Ydieresis
+fraction
+currency
+guilsinglleft
+guilsinglright
+fi
+fl
+daggerdbl
+periodcentered
+quotesinglbase
+quotedblbase
+perthousand
+Acircumflex
+Ecircumflex
+Aacute
+Edieresis
+Egrave
+Iacute
+Icircumflex
+Idieresis
+Igrave
+Oacute
+Ocircumflex
+apple
+Ograve
+Uacute
+Ucircumflex
+Ugrave
+dotlessi
+circumflex
+tilde
+macron
+breve
+dotaccent
+ring
+cedilla
+hungarumlaut
+ogonek
+caron

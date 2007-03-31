@@ -1,0 +1,263 @@
+% CharString name remapping table for MTSY
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+NUL		minus
+Eth		periodcentered
+eth		multiply
+Lslash		asteriskmath
+lslash		divide
+Scaron		diamondmath
+scaron		plusminus
+Yacute		minusplus
+yacute		circleplus
+HT		circleminus
+LF		circlemultiply
+Thorn		circledivide
+thorn		circledot
+CR		circlecopyrt
+Zcaron		openbullet
+zcaron		bullet
+DLE		equivasymptotic
+DC1		equivalence
+DC2		reflexsubset
+DC3		reflexsuperset
+DC4		lessequal
+onehalf		greaterequal
+onequarter	precedesequal
+onesuperior	followsequal
+threequarters	similar
+threesuperior	approxequal
+twosuperior	propersubset
+brokenbar	propersuperset
+minus		lessmuch
+multiply	greatermuch
+RS		precedes
+US		follows
+space		arrowleft
+exclam		arrowright
+quotedbl	arrowup
+numbersign	arrowdown
+dollar		arrowboth
+percent		arrownortheast
+ampersand	arrowsoutheast
+quotesingle	similarequal
+parenleft	arrowdblleft
+parenright	arrowdblright
+asterisk	arrowdblup
+plus		arrowdbldown
+comma		arrowdblboth
+hyphen		arrownorthwest
+period		arrowsouthwest
+slash		proportional
+zero		prime
+one		infinity
+two		element
+three		owner
+four		triangle
+five		triangleinv
+six		negationslash
+seven		mapsto
+eight		universal
+nine		existential
+colon		logicalnot
+semicolon	emptyset
+less		Rfractur
+equal		Ifractur
+greater		latticetop
+question	perpendicular
+at		aleph
+A		tie
+B		openbullet1
+C		plus
+D		equal
+E		vector
+F		triangleright
+G		triangleleft
+H		equal1
+I		semicolon
+J		grave
+K		acute
+L		caron
+M		breve
+N		macron
+O		circumflex
+P		dotaccent
+Q		tilde
+R		dieresis
+S		overbar
+% Following are seven unused entries
+T
+U
+V
+W
+X
+Y
+Z
+bracketleft	union
+backslash	intersection
+bracketright	unionmulti
+asciicircum	logicaland
+underscore	logicalor
+grave		turnstileleft
+a		turnstileright
+b		floorleft
+c		floorright
+d		ceilingleft
+e		ceilingright
+f		braceleft
+g		braceright
+h		angbracketleft
+i		angbracketright
+j		bar
+k		bardbl
+l		arrowbothv
+m		arrowdblbothv
+n		backslash
+o		wreathproduct
+p		radical
+q		coproduct
+r		nabla
+s		integral
+t		unionsq
+u		intersectionsq
+v		subsetsqequal
+w		supersetsqequal
+% Following four entries contain broken CharStrings - rename to avoid conflict
+x		section
+y		dagger
+z		daggerdbl
+braceleft	paragraph
+bar		club
+braceright	diamond
+asciitilde	heart
+DEL		spade
+% Following do not correspond to any entries in encoding vector
+Adieresis
+Aring
+Ccedilla
+Eacute
+Ntilde
+Odieresis
+Udieresis
+aacute
+agrave
+acircumflex
+adieresis
+atilde
+aring
+ccedilla
+eacute
+egrave
+ecircumflex
+edieresis
+iacute
+igrave
+icircumflex
+idieresis
+ntilde
+oacute
+ograve
+ocircumflex
+odieresis
+otilde
+uacute
+ugrave
+ucircumflex
+udieresis
+dagger
+degree
+cent
+sterling
+section
+bullet
+paragraph
+germandbls
+registered
+copyright
+trademark
+acute
+dieresis
+notequal
+AE
+Oslash
+infinity
+plusminus
+lessequal
+greaterequal
+yen
+mu
+partialdiff
+summation
+product
+pi
+integral
+ordfeminine
+ordmasculine
+Omega
+ae
+oslash
+questiondown
+exclamdown
+logicalnot
+radical
+florin
+approxequal
+Delta
+guillemotleft
+guillemotright
+ellipsis
+nbspace
+Agrave
+Atilde
+Otilde
+OE
+oe
+endash
+emdash
+quotedblleft
+quotedblright
+quoteleft
+quoteright
+divide
+lozenge
+ydieresis
+Ydieresis
+fraction
+currency
+guilsinglleft
+guilsinglright
+fi
+fl
+daggerdbl
+periodcentered
+quotesinglbase
+quotedblbase
+perthousand
+Acircumflex
+Ecircumflex
+Aacute
+Edieresis
+Egrave
+Iacute
+Icircumflex
+Idieresis
+Igrave
+Oacute
+Ocircumflex
+apple
+Ograve
+Uacute
+Ucircumflex
+Ugrave
+dotlessi
+circumflex
+tilde
+macron
+breve
+dotaccent
+ring
+cedilla
+hungarumlaut
+ogonek
+caron
