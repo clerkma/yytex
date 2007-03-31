@@ -1,0 +1,426 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+===========================================================================
+      Release Notes for Font Manipulation Package (1992/August/01)  
+ 	(revised September/27, October 31, December 30)
+===========================================================================
+
+***************************************************************************
+If you don't read the manual right away, please at least read the following:
+***************************************************************************
+
+1. COMMAND LINE FLAGS  AND COMMAND LINE ARGUMENTS:
+===============================================
+
+To see exactly what command line flags  and command line arguments
+each utility takes invoke it using `-?' on the command line. 
+For example: 
+
+	afmtopfm -?
+
+1.1 Verbose mode shows more detail:
+-----------------------------------
+
+Most of the utilities take the `-v' command line flag to increase
+verbosity of the output.  It's usually a good idea to use this to 
+see detailed information about what the utility is doing.
+
+
+2. TEXT FILES WITH ADDITIONAL DETAILS:
+======================================
+
+See files with extension `.txt' for more detailed information than
+that provided in the printed manual.
+
+(*) See the file `composit.txt' for detailed information on how
+    to add composite characters to a font.
+
+(*) See `morass.txt' for detailed explanation of the `encoding issue'. 
+
+(*) See `encoding.txt' for detailed instructions on how to chage the
+    encoding of a font (using `encode.bat' batch file and `decode.exe').
+
+(*) See `convmath.txt' for details about how to use the batch file
+    `convmath.bat' to convert the old `MathTime' version 1.0 fonts to 
+    ATM compatible Adobe Type 1 format.
+
+(*) See `psfonts.txt' for details about how to use Type 1 fonts 
+    (a.k.a. `PostScript Fonts') in TeX.
+
+(*) See `spacify.txt' for details on adding a space character to
+    fonts used with TeX (which normally do not have a space character).
+   
+(*) See `smallcap.bat' for an illustration of how to make a smallcaps font.
+
+
+3. WARNING - NEVER REPLACE FONT FILES WHILE WINDOWS IS RUNNING:
+===============================================================
+
+Never replace a PFB or PFM file with a new version while Windows is
+running.  You most likely will crash ATM with a General Protection
+Violation (GPS) the next time you try and display any text (not 
+necessarily in the font replaced).  ATM may end up overwritting random 
+parts of memory thus damaging Windows or DOS in unpredictable ways.  
+Such problems may not show up immediately. 
+It is best to use the ATM control panel to `Remove' and `Add' fonts.
+Otherwise, at least note the following:
+
+@ You must exit Windows before replacing a PFB or PFM file with a new version.
+
+You should also delete the file ATMFONTS.QLC where ATM caches certain
+metric information.  This file will be rebuilt the next time you launch
+Windows.  Older versions of ATM do not generate such a metric cache file.
+
+It may also be prudent to delete any metric caches maintained
+by PSCRIPT.DRV.  These files in the Windows directory have extension
+`.fsf' and names that starts with an underscore followed by the port
+(e.g. _lpt1.fsf).  Older versions of PSCRIPT.DRV do not generate such files.
+
+The safest technique for introducing new versions of a font is to use
+the ATM control panel to `Add' the fonts.  Do this after `Remove'ing
+the old versions.  Note that to `Add' a font you need both the PFB
+and the PFM file (in the same directory).  
+
+The only disadvantage of this approach is that old versions of ATM do not
+remove `softfont' entries from WIN.INI, so you will end up with duplicate
+entries that have to be edited out manually.  And remember that each
+`installed printer' has its own copy of the softfonts entries.  So if you
+have `PostScript Printer on LPT1' and `PostScript Printer on FILE' then you
+will need to edit two sections of WIN.INI.
+
+
+3.1 Watch out for character caching:
+------------------------------------
+
+At times, a change in a font appears to have no affect on the output
+produced --- which can be pretty confusing!  This phenomenan may be traced
+to caching of character bitmaps.  In the case of a PostScript printer that
+supports across-job font caching, power cycle the machine or execute the
+`quit' command before running a print job with a new version of a font.
+The following bit of code works on many (but not all) PS printers:
+
+	serverdict begin 0 exitserver % to get out of server loop
+	systemdict /quit get exec     % to reboot printer
+
+If you will be incrementally adjusting a font and printing with several
+versions as you go along, then this can become pretty tiring.
+Instead, suppress across-job font caching by taking the UniqueID out of the
+PFB file.  Simply comment out the UniqueID line in the PFA version of
+the font file. Use PFBtoPFA and PFAtoPFB to convert from and to PFA format.
+
+You can achieve the same effect by changing the visible UniqueID number
+(which can be done without altering the length of a PFB file).  The
+reason this works is that font caching is suppressed if the visible
+UniqueID does not match the hidden UniqueID in the encrypted section.
+
+ATM also caches character bitmaps. You'll have to exit Windows to
+flush out this cache.  But as stated above, you are courting disaster
+anyway if you directly replace PFB or PFM files while Windows is running!
+
+(*) MathTime is a trademark of TeXplorators.
+
+
+4. DISAGREEMENTS between ATM and PSCRIPT.DRV:
+=============================================
+
+4.1 Screen display OK, but printing in the wrong font:
+------------------------------------------------------
+
+If the first and subsequent pages come out in the wrong font (typically
+Courier), then the fonts are not being downloaded properly. This may be
+because the fonts have not been installed using ATM, or more likely, because
+the PostScript printer driver doesn't know they are there.  This can happen
+if you install the  printer driver AFTER loading the fonts using ATM.
+In this case, remove the fonts again using the ATM control panel and install
+once more.  Check that the fonts are listed in the appropriate section of
+WIN.INI for the printer of interest. 
+
+If the first page prints correctly, but subsequent pages use the wrong font
+(typically Courier), then your printer driver things there is not enough
+virtual memory in the printer.  The PostScript printer driver then tries to
+compensate by wrapping each page in a save restore pair, which does not work,
+since output from the Windows printder driver is NOT page-independent.  Fonts
+defined on one page will not be available on another if this scheme is used.
+You can check `Download fonts each page' in this, but this will slow printing
+down considerably.  It is usually better to try and increase the amount of
+virtual memory the driver thinks your printer has.
+
+4.2 Screen display OK, but some characters do not print correctly:
+------------------------------------------------------------------
+
+On screen display is handled completely by ATM, as is printing to
+non-PostScript printers.  In this case there is no way that a
+different font or different font metric information could be used for
+printing than is used for on-screen display.
+
+In the case of PostScript printers, printing is instead handled by the
+Windows PostScript printer driver, PSCRIPT.DRV.  Both ATM and PSCRIPT.DRV
+refer to the font metric file (PFM), as well as the font's actual outline
+file (PFB). But they interpret them in different ways.  This can result in
+printed results that differ from on-screen display.  The most common problem
+in this regard is usually that ATM and PSCRIPT.DRV use different criteria for
+when a font is to be reencoded to Windows ANSI, as explained elsewhere.
+
+Usually the printed result is OK, but on-screen display is not.  But it can
+also happen the other way around.  A problem occurs when the Windows
+PostScript driver (PSCRIPT.DRV) uses font metric information that is not the
+same as what ATM is using.
+
+The Windows PostScript printer driver bases its selection of a font metric
+file and an outline font to download on the Windows Face Name (not the
+PostScript FontName, or the font's file name).  This can lead to hidden
+problems, since the listing in WIN.INI does not contain any reference to the
+Windows Face Name (unlike ATM.INI, which is organized around Windows
+FaceNames).
+
+The Windows PostScript printer driver obtains the Windows Face Name and the
+PostScript FontName for a particular font file (PFB) from the Windows metric
+file (PFM).  In addition, PSCRIPT.DRV already has wired in a large number of
+PFM files for some commonly used fonts including:
+
+	AvantGarde, Arial, Arial-Narrow, Bookman, Courier, Garamond,
+	Helvetica, Helvetica-Condensed, Helvetica-Black, Helvetica-Light,
+	Helvetica-Narrow, Korinna, Korinna-Kursiv, LubalinGraph,
+	NewCenturySchlbk, Times New RomanPS, Optima, Palatino, Souvenir,
+	Symbol, Times, Times Roman, ZapfChancery, ZapfCalligraphic,
+	ZapfDingbats...
+
+Aslo, recent versions of PSCRIPT.DRV keep a cache of font metric information to
+speed up opening a `printer device context' This is a file with a name equal
+to the port to which it applies, with an underscore prefixed.  The file
+extension is `fsf'.  So for example, if there is a PostScript printer on
+LPT1:, there would be a file called `_lpt1.fsf' in the Windows directory.
+
+Here are some ways to run into trouble:
+
+(1) Two fonts with the same Windows FaceName. 
+---------------------------------------------
+
+If two `fonts' have the same Windows Face Name, tehn PSCRIPT.DRV typically
+uses the first one in its softfonts list.  Any others are ignored.  There is
+no warning.  ATM will instead be using the most reecently installed one.
+Older versions are ignored by ATM.
+
+The best way to diagnose this type of problem is to check in ATM.INI what
+association between Windows Face name and font file name is used by ATM.
+Then check in the appropiate `fsf' file to see what PSCRIPT.DRV is using.
+(This file is binary, but Windows Face names and font file names are in ASCII).
+
+ATM keeps information (in ATM.INI) organized on Windows Face Name, so it
+cannot have a listing for two different font files that happen to use the
+same Windows Face Name. PSCRIPT.DRV  instead keeps information organized on
+font file name (in softfonts sections of WIN.INI), so it can very well list
+two fonts with the same Face Name (but a different file name).
+
+How can one have two fonts with the same Face Name?
+---------------------------------------------------
+
+(A) When a font is reencoded using REENCODE, AFMtoPFM, and AFMtoTFM, the new
+font file names normally have an `x' added.  These should be installed only
+after the original version of the font has been removed.  If this is not
+done, then new softfont entries may be added to the end of the listing of
+fonts in WIN.INI. ATM will use the new version, but PSCRIPT.DRV may very well
+use the old one, since it most likely appears earlier in the list.  
+
+Solution:
+---------
+
+(i) Always remove the original fonts before installing the modified version
+(using `Remove' in the ATM control panel); or
+
+(ii) Use the same file name (that is, without the added `x') for the modified
+version (This prevents listing of both versions in WIN.INI); or
+
+(iii) Use a different Windows Face Name for the new version (either using
+the `w' command line flag in AFMtoPFM or using `Comment MS-WindowsName' in
+the AFM file for the new version).  This way both the original and the
+modified version of the font are available.
+
+Other potential sources of problems:
+-----------------------------------
+
+(B) Some font vendors supply `clones' of commonly used fonts. To save money
+on trademark royalty charges, they will use different PostScript FontNames.
+But they may use the same Windows Face Name in order to let the user know
+what this font is a clone of.  This can lead to disaster, particularly if the
+file names differ.  The reason is that when such `clone' fonts are installed,
+ATM will use the newly installed `clone' version, but PSCRIPT.DRV will most
+likely use the original if installed. 
+
+(C) There may be times when there is a conflict between a newly installed
+font with a Face Name equal to that of one of the fonts for which PSCRIPT.DRV
+has wired-in PFM files. Normally this should not be a problem, since
+PSCRIPT.DRV is supposed to refer to outside PFM files first, only resorting
+to its built-in PFM files if it can't find what it needs elsewhere.
+
+
+5. Moving outline fonts for the Macintosh:
+==========================================
+
+5.1 Installation of the fonts on the Macintosh:
+-----------------------------------------------
+
+Both Macintosh outline font files and `screen fonts' need to be moved 
+in MacBinary form, since all the action is in the resource fork.
+See the manual for information on how to move MacBinary format files
+between Macintosh and IBM PC compatibles.
+
+You need to install: (a) the outline font files and (b) the `screen fonts'.
+
+*	By the way, we strongly recommend Steve Brecher's Suitcase II 
+*	(sold by Fifth Generation Systems, Inc.).  Suitcase II greatly 
+*	simplifies font	installation (and removal) and avoids problems 
+*	arising from the fact that without Suitcase II, font installation
+*	is different on System 6, System 7.0 and yet again on System 7.1!
+
+First install the outline font files themselves.  The outline fonts are the
+files with a font icon (the default is the `slanted A' on a background of
+parallel horizontal lines) and a file name that has no extension.  Install the
+outline fonts as follows:
+
+(1a) If you are using SuitCase II, create a new folder and
+     copy the outline fonts to this new folder.  The corresponding 
+     screen fonts should be added to this folder later.
+
+If you are not using SuitCase II:
+
+(1b) For System 6, copy the outline font files themselves to your 
+     system folder; 
+
+(1c) For System 7.0, copy the outline font files to your CLOSED
+     system folder. They will then be automatically installed 
+     in the `Extensions' folder in your system folder; 
+
+(1d) For System 7.1, copy the outline fonts files to your CLOSED
+     system folder. They will then be automatically installed
+     in the `Fonts' folder in the system folder.  Old versions of ATM 
+     expect the fonts to be in the `Extensions' folder - so copy 
+     (or make aliases) for the fonts in the `Extensions' folder 
+     (Older versions of the LaserWriter printer driver will also
+     look for the fonts in the wrong place, by the way).
+
+Next install the `screen fonts' (which is where the font metric
+information is kept).  The screen fonts are files with a suitcase icon.
+
+Install the screen fonts as follows: 
+
+(2a) if you are using Suitcase II, simply copy the screen fonts to the 
+     folder created earlier for the outline fonts.  
+
+If you are not using Suitcase II:
+
+(2b) For System 6, launch Font D/A mover.  Then open the new screen font 
+     suitcases and add each of the screen fonts (Screen fonts installed this
+     way will be added to the System file in your System folder), or,  
+
+(2c) For System 6 with Adobe's FontPorter installed, simply copy the
+     screen font files to your System folder, or,
+
+(2d) if you are using System 7, copy the screen font suitcases to your
+     CLOSED system folder (they will be installed in your System file).
+
+Now, if you are using Suitcase II, select Suitcase II from the `Apple menu',
+create a new, named font set, and add the new screen
+fonts to this set.  You can `open' the fonts at this point and they will
+be available to applications (without needing to reboot the system).
+You can also elect to have this set of fonts added to those that
+will be opened automatically when the system is restarted in future.
+
+If you are not using Suitcase II, then restart your system from the
+`Special' menu.   Newly installed fonts will not be available to 
+applications until you restart if you are not using Suitcase II.
+
+5.2 There are no actual bitmap fonts:
+--------------------------------------
+
+The fonts are intended to be used with ATM --- there are no actual
+bitmap screen fonts.  All on-screen rendering will by done by ATM.  
+The `screen fonts' that are created do not contain recognizable glyphs.
+They are there only to provide a substrate for the font metric information
+(in the FOND resource), and to make it possible for ATM to find the actual
+outline font file (One cannot use an outline font on the Macintosh
+without some corresponding `screen font', since this is where the metric
+information lives).
+
+5.3 Need Fractional Widths Enabled:
+----------------------------------
+
+NOTE: Old versions of Key Caps uses the metric information from 
+the actual bitmap `screen font' rather than from the FOND resource, 
+so character spacing will be rather coarsely `quantized'.  
+Other applications normally extract metric information from the 
+FOND resource, which has accurate width and pair kerning data.
+
+*	IMPORTANT NOTE: Select `Use Fractional Widths' (in the 
+*	`Page Setup..'or `Print Setup...' dialog of most applications) 
+*	in order to get accurate spacing of printed output
+*	- as well as on screen.  
+
+In MicroSoft Word, select `Page Setup' from the `File' menu, 
+which will bring up the `LaserWriter PageSetup' dialog box. 
+Click on the `Fractional Width' box.
+
+In Quark XPress, instead follow the trail `Edit', `Preferences',
+`Typographic', then select `Fractional' (as opposed to `Integral') 
+for `Character Width'.
+
+
+5.4 Verifying font installation:
+---------------------------------
+
+The newly installed fonts should show up in application's font menus
+(such as in MicroSoft Word, Quark's QuarkXPress, Aldus's Pagemaker etc).  
+The new fonts should also show up in the font menu of the Desktop 
+Accessory called `Key Caps' (accessible from the `Apple' menu).  
+If the new fonts do not show up in font menus, then the screen fonts 
+are missing - or not installed properly.  
+
+If you are using Suitcase II, make sure you have the relevant screen
+font suitcase `open'.  If you are using FontPorter, make sure the
+screen font suitcase is in the System Folder.  And remember that
+newly installed fonts do not show up until you restart the system -
+unless you are using Suitcase II.
+
+Launch some text editing application and try typing some text after
+selecting one of the new fonts - preferrably in a large size (like
+24pt or 36pt).  After some brief disk activity, ATM should start to
+render the characters typed. If instead you get large square dots,
+then the outline font is missing, or the linkage between the screen
+font and the outline font has not been established.  
+
+5.5 Those dreaded large square dots - trouble shooting information:
+-------------------------------------------------------------------
+
+You get large square dots if ATM cannot find the outline font, since in
+this situation the characters are rendered by scaling the bitmapped
+`screen font'.  Check that the outline font files are installed.  
+Check that they have the correct names.  Do not rename the outline 
+font files --- ATM will not be able to locate them if you rename them
+since ATM constructs the outline font file name from the PostScript FontName.
+
+Rendering of large square dots will also be noted if a style is
+selected for which there is no outline font.  
+This is a convenient warning that something
+is awry --- better than being mislead by `simulated' on-screen
+rendering of italic and bold styles.  This helps prevent the type of
+problem where a selected style appears to work on-screen, yet produces
+garbage on printing (or prints in Courier).
+
+Another possible problem is on screen rendering that is blocky rather
+than smooth. This means that some small size bitmap screen font is
+being algorithmically enlarged rather than an outline font being
+rendered.  This indicates that ATM is not being called to do the
+rendering.  The cause may be improper installation of ATM, improper
+installation of the screen fonts or the outline fonts, incorrect
+naming of fonts --- or forgetting to open the corresponding screen 
+fonts using SuitCase II.
+
+6. Modifying AFM files:
+=======================
+
+Often when modifying the outline font file itself, corresponding changes need
+to be made to the AFM file.  This can be done using any text editor since the
+AFM file is in human readable ASCII format.  But this can become tedious.  
+To help out, some of the utilities can process AFM files as well.  This
+presently includes REENCODE, RENAMECH, and SIDEBEAR.

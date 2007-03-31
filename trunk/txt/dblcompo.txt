@@ -1,0 +1,69 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+EXAMPLE: Making doubly accented characters:
+-------------------------------------------
+
+Make PFA file from PFB, e.g.
+
+	pfbtopfa -v tir
+
+Modify names and Unique ID in PFA file to avoid confusion, e.g.
+
+	change file name to tirx____.pfa
+	change FontName to TimesX-Roman
+	change FullName to TimesX Roman
+	change FamilyName to TimesX
+	comment out UniqueID
+
+Reencode to final encoding (could also do later)
+
+	reencode -vx -c=myencode tirx
+
+Insert first set of new composites
+
+	composit -v -c=first.cmp tirx
+
+Expand SEAC calls for new composites.  May need -f if font not reencoded yet.
+
+	safeseac -v -f tirx
+
+Insert second set of composites.  Note use of -S flag to allow non ASE base.
+
+	composit -v -S -c=second.cmp tirx
+
+Expand SEAC calls for new composites.
+Note use of -S flag to allow non ASE base.
+Also use of -f to force processing despite comment in file.
+
+	safeseac -v -f tirx
+
+Extract AFM file:
+
+	pfatoafm -v tirx
+or
+	pfatoafm -v -a=tir_____.afm tirx
+
+Convert to PFB format:
+
+	pfatopfb -v tirx
+
+Make corresponding PFM file:
+
+	afmtopfm -vsd tirx
+
+Critical part is use of -S with COMPOSIT and SAFESEAC in second
+step, since base characters are used that are *not* in ASE
+(i.e. they are already accented characters made in first round).
+
+Also, must reencode *before* second application of COMPOSIT
+since otherwise the base characters of the second round composites
+are not in the encoding, and COMPOSIT will not know what number
+to use to refer to them.
+
+Also, must reencode font ahead of time or use -f to force SAFESEAC
+to work in the first round.  
+
+May need to use -f with SAFESEAC in second round, because
+the SAFESEAC comment is now in the font file (unless COMPOSIT
+removed it again)

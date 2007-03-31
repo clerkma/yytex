@@ -1,5 +1,296 @@
+Copyright (C) 1992-2000 Y&Y Inc. 
 Copyright 2007 TeX Users Group.
 You may freely use, modify and/or distribute this file.
+
+Adding New Composite Characters to a Font:
+==========================================
+
+As an example of use of these utilities, we describe in detail how to
+add composite characters to an existing font in Adobe Type 1 format.
+
+Introduction:
+-------------
+
+The font manipulation utilities COMPOSIT, REENCODE, and AFMTOPFM make
+it simple to add new composite/accented characters to a Type 1 font
+(you may also need the utilities SAFESEAC and PFAtoAFM).
+
+The new characters must be based on existing base characters and 
+existing accent characters.  To be concrete, assume we are interested
+in adding `Abreve' to a font called `generic'.  We can construct the
+`Abreve', since most Type 1 fonts contain the upper case letter `A'
+and the accent `breve'.
+
+To start with, we need the actual outline font itself --- the PFB file. 
+First convert this font file to PFA format using PFBtoPFA (since the
+utilities all work on font files in PFA format, and since it is not
+safe to edit files in the binary PFB format):
+
+	pfbtopfa -v generic.pfb
+
+We also need the human readable Adobe font metrics --- the AFM file.
+The binary Printer Font Metric (PFM) will not be used --- we will 
+instead construct a new PFM file from the AFM file.  Fonts in Adobe 
+Type 1 format should be supplied with AFM files, since AFM files are the
+only complete source of information about font metrics.  
+If you do not have the AFM file, then note that AFM files for Adobe
+fonts can be obtained over the InterNet from
+ps-file-server@adobe.com (send email containing the word `help')
+or possibly by anonymous FTP from ftp.adobe.com.
+
+You can also construct an (incomplete) AFM file from a PFM file using
+PFMtoAFM on the old PFM file.  But note that the PFM file only contains
+information about characters that appear in the encoding used, which
+normally would be `Windows ANSI'.  You can complete the AFM file using 
+PFAtoAFM, giving the AFM file constructed using PFMtoAFM as an argument.
+
+Changing names to avoid conflict:
+---------------------------------
+
+To avoid conflict with the original font, you should change the font's
+name, perhaps by appending an `X'.  Since there are several `names,'
+this involves more than one step:
+
+* First, the file names for PFA, AFM, and PFM files should be changed.
+
+* Second, the PostScript FontName in the PFA and AFM files should be changed.
+  You may also want to revise the name in the  first line of the PFA file.
+
+* You may also wish to change the PostScript FamilyName
+
+* Comment out the /UniqueID line in the PFA file.
+  (This prevents problems with `across the job' font caching).
+
+
+Specifying x and y offsets for accents:
+----------------------------------------
+
+Use a text editor to construct a file containing one line for each
+new composite character. For each composite character to be added to
+a font, construct a line that looks like:
+
+CC Abreve 2 ; PCC A 0 0 ; PCC breve -20 185 ;
+
+The name to be used for the new composite character follows the `CC'
+(made up by combining the base character name and the accent name).
+The `2' indicates that there are two components (the only possibility). 
+Each component of the composite characters has one `PCC' entry
+containing the name, and the x and y offsets to be used.  The x and y
+offsets of the base component - listed first - are always zero.
+
+You can get a good first estimate for a reasonable x component of the
+accent position using
+
+	(<width-of-base> - <width-of-accent>) / 2
+
+This centers the accent on the base.  You can discover the advance width
+of the base and accent characters from the AFM file (WX field).
+The above applies to symmetrical accents (like `dieresis', `circumflex' etc).
+`Grave' and `acute' accents are often placed slightly off center.  They
+may be shifted in a direction that tends to center their bottom point.
+So `grave' is typically shifted a bit to the left and `acute' shifted a bit
+to the right (although this is a matter of taste and usage).
+
+The y component of the accent component is 0 for an accent placed on a lower
+case character (since accents are normally designed in their `natural
+position' above lower case `o').  The y component is positive for an upper
+case base character.  For a consistent look, the y offset for all upper case
+characters should be the same.  It is usually close to the difference between
+`CapHeight' and `Xheight'.  For baseline `accent' like cedilla and ogonek,
+the y offset is typically zero, or near zero. 
+
+Check the original AFM file for the composite character entries to see what
+is used for other composite characters.  The composite character section is
+near the end of the AFM file, right before the kerning pairs, and has entries
+of the same form as those being constructed here.  
+
+If you do not have an AFM file, run the PFA file through the utility
+COMPOSIT (giving only one argument).   COMPOSIT will produce a list
+of all the existing composite characters in the font:
+
+	composit generic.pfa
+
+Suppose we call the text file containing the new composite character
+specifications `newchars.txt'
+
+
+Inserting new composite characters using the utility COMPOSIT:
+--------------------------------------------------------------
+
+Call the utility COMPOSIT with two arguments --- the PFA file and the
+file containing the specification for the new characters that you created:
+
+	composit -v -c=newchars.txt generic.pfa
+
+The result is a new PFA file with the new composite characters added.
+Note that the encoding is not changed in the process, and so the new
+characters are unencoded, and hence probably not yet directly accessible.   
+We will rectify this after constructing a new encoding vector. 
+
+
+Making up a new encoding vector:
+-------------------------------
+
+Next we need to decide where in the encoding vector the new composite
+characters will appear.  One approach is to use slots left open in the
+present encoding (Windows ANSI for example has 8 slots free in the 
+128 -160 range).  If this does not provide enough space, simply replace
+existing composite characters that are not needed.  
+
+There are some important considerations here though.  One is that
+Windows and ATM normally reencode a font to `Windows ANSI' encoding.
+Typically the newly constructed composite characters do not appear in
+Windows ANSI encoding.  This means that one (a) has to make up a new
+encoding and (b) stop Windows and ATM from reencoding the font.
+
+The best approach to making up a new encoding is perhaps to base it
+on an existing encoding, simply making a few changes.  For example,
+Windows ANSI might be a good base.  Look at the encoding vector file
+`ansinew.vec' to see what this encoding looks like.  But, read the next
+paragraph first...
+
+	One serious handicap in this regard results from a `mis-feature' of
+	ATM.  ATM has hard-wired positions for accents.  This is not the case
+	when a text font is reencoded to Windows ANSI, but is a serious
+	problem otherwise. For ATM to show composite characters correctly on
+	screen, the accents must be in predetermined places (currently ATM
+	assumes accents are in their StandardEncoding positions).  This is a
+	result of how ATM interprets so-called SEAC (StandardEncoding
+	Accented Character) calls used to implement composite characters.
+	Since you want to have full flexibility in character layout, and so
+	not be bound by restrictions due to ATM, we provide a utility called
+	SAFESEAC which will make a PFB font file `Safe from the SEAC but in
+	ATM.  After you are satisfied with your font, run the PFB file
+	through SAFESEAC.
+
+But first, make up an encoding vector text file, each line of which
+contains a character code number and a character name.  Suppose we
+call this file `newmap.vec' (Check out one of the sample encoding vectors  
+supplied with the FMP to see the expected format).
+
+
+Reencode PFB (Printer Font Binary) file:
+----------------------------------------
+
+Now change the encoding in the outline font file itself using REENCODE: 
+
+	reencode -v -c=newmap generic.pfa
+
+Note that REENCODE will attach an `x' to the file name to indicate
+that this is a different font (if you haven't already done so, and if
+you don't use -x on the command line).
+
+At this point run the PFA file through SAFESEAC to make it safe from ATM
+(see notes above).
+
+Finally convert the PFA file back to PFB format: 
+	
+	pfatopfb -v genericx.pfa
+
+This completes the work on the outline font itself.  
+
+For use in Windows, we also need a new metric (PFM) file.
+We first update the AFM file and then use AFMtoPFM.
+
+Make AFM file for the new font:
+-------------------------------
+
+The font with the composites requires an AFM file with information on the new
+composites added.  The easiest way to create this is to use PFAtoAFM (a
+utility in the FMP).  Note, however, that PFAtoAFM cannot create the kerning
+section of the AFM file (since this information is not in the PFA file).
+Also, some of the fields in the initial part of the AFM file (before
+StartCharMetrics) may be missing.  You can extract these two parts of the AFM
+file from the old AFM of the original font and paste them in as required. 
+Alternatively, you can use the old AFM file as a `template' when running
+PFAtoAFM using the command line argument -a=<old AFM file>.
+
+Create new PFM (Printer Font Metric) file:
+------------------------------------------
+
+We are now ready to create a new `Printer Font Metrics' (PFM) file for
+Windows.  We have to stop Windows and ATM from reencoding the font to
+Windows ANSI.  This is done using the command line flags `s' 
+(for `Symbol') and `d' (for `Decorative').  We also have to specify 
+the new encoding vector:
+
+	afmtopfm -vsd -c=newmap generic.afm
+
+The new PFM file will also have an `x' added to its name since it
+represents a reencoded version of the font.
+
+
+Install new font using ATM:
+---------------------------
+
+First double click on the ATM icon and select `Remove'.  
+Remove the old version of the font.
+
+Place the newly created PFB and PFM files in a common directory and
+launch Windows (or exit from the DOS box in Windows).  
+
+NOTE: make sure you do not have the old versions of the font still
+installed.  This can lead to great confusion, since the Windows Face
+Name may be the same in the old and the new version.
+
+Now select 'Add', and select the directory with the new PFB and
+PFM file.  ATM should show the Windows Face Name of the font (usually
+the same as the PostScript FontName without style embellishments).  
+Select this font and double click `OK' and then `Exit'.  The new version of
+the font should now be accessible in Windows applications.
+
+NOTE: Do not simply copy the new PFB and new PFM files on top of the old
+versions.  If you do this while Windows is running you invite ATM to
+overwrite random parts of memory, with very unpleasant side-effects!
+If you do this outside Windows, you will still get ATM confused, since it
+keeps a cache of font information in the file ATMFONTS.QLC (usually in
+the same directory in which it keeps the PFB files).
+
+Appendix: Making the new AFM file manually:
+===========================================
+
+If for some reason you do not want to use PFAtoAFM to extract an
+AFM file from the PFA file, then construct it manually:
+
+
+Add Composite Character(CC) lines to AFM file:
+----------------------------------------------
+
+At this point, make up a new AFM file by inserting the composite
+character (CC) lines from the file created earlier (`newchars.txt' in
+our example here).  Use a text editor to insert the new lines at the
+end of the Composite Character section of the AFM file.  Update the
+count of composite characters on the `StartComposites' line at the
+beginning of this section of the file.
+
+Add Charmetrics (C) lines to AFM file:
+--------------------------------------
+
+We also need to add lines to the `CharMetrics' section.  At the end
+of this section, just before `EndCharMetrics', one needs to add one line 
+of the form 
+
+C -1 ; WX 460 ; N Abreve ; B 20 0 573 758 ;
+
+for every new composite character. Here the `-1' indicates that this
+character is not present in StandardEncoding.  
+
+The character name should follow the letter `N'.  The character width is
+specified following the `WX' --- this MUST be the same as the width of
+the base character.  In fact, the easiest way to construct this line is
+to copy the corresponding line for the base character, change the code
+number to `-1' and change the character name.  
+
+The character bounding box follows the `B'.  Ideally it should also be
+updated, although there are very few programs that pay any attention to
+this field.  But, to be pedantic, copy the bounding box of the base
+character.  Then modify the `yur' entry (the last one of the four) as
+follows:  Take the `yur' value from the accent character, and add to it
+the y offset (if any) specified in the composite character section.
+(For `accents' that drop below the baseline, modify `yll' instead, which
+is the second of the four numbers).
+
+Finally, update the total character count in the `StartCharMetrics' line.
 
 Problems with `Synthetic' Fonts and Printer Resident Fonts:
 ---------------------------------------------------------
