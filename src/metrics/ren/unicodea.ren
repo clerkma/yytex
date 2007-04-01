@@ -1,0 +1,2470 @@
+; Copyright 2007 TeX Users Group.
+; You may freely use, modify and/or distribute this file.
+; This one derived from from maptable.c (Rick Seeler)
+; NOTE:  * indicates that this line differs from the unicodeMap from Sairus.
+; Filled in many blank areas from table in Lucida Sans Unicode TTF l_10646.ttf
+; some from Arial and Lucida Sans Console
+; **new** marks items not in maptable.c
+; comments mark alternate forms
+
+0020	space
+0021	exclam
+0022	quotedbl
+0023	numbersign
+0024	dollar
+0025	percent
+0026	ampersand
+0027	quotesingle
+0028	parenleft
+0029	parenright
+002a	asterisk
+002b	plus
+002c	comma
+002d	hyphen
+002e	period
+002f	slash
+0030	zero
+0031	one
+0032	two
+0033	three
+0034	four
+0035	five
+0036	six
+0037	seven
+0038	eight
+0039	nine
+003a	colon
+003b	semicolon
+003c	less
+003d	equal
+003e	greater
+003f	question
+0040	at
+0041	A
+0042	B
+0043	C
+0044	D
+0045	E
+0046	F
+0047	G
+0048	H
+0049	I
+004a	J
+004b	K
+004c	L
+004d	M
+004e	N
+004f	O
+0050	P
+0051	Q
+0052	R
+0053	S
+0054	T
+0055	U
+0056	V
+0057	W
+0058	X
+0059	Y
+005a	Z
+005b	bracketleft
+005c	backslash
+005d	bracketright
+005e	asciicircum
+005f	underscore
+0060	grave
+0061	a
+0062	b
+0063	c
+0064	d
+0065	e
+0066	f
+0067	g
+0068	h
+0069	i
+006a	j
+006b	k
+006c	l
+006d	m
+006e	n
+006f	o
+0070	p
+0071	q
+0072	r
+0073	s
+0074	t
+0075	u
+0076	v
+0077	w
+0078	x
+0079	y
+007a	z
+007b	braceleft
+007c	bar
+007d	braceright
+007e	asciitilde
+
+; 00a0	nbspace
+00a1	exclamdown
+00a2	cent
+00a3	sterling
+00a4	currency
+00a5	yen
+00a6	brokenbar
+00a7	section
+00a8	dieresis
+00a9	copyright
+00aa	ordfeminine
+00ab	guillemotleft
+00ac	logicalnot
+; 00ad	sfthyphen
+00ae	registered
+00af	macron		; or overscore in Arial
+00b0	degree
+00b1	plusminus
+00b2	twosuperior
+00b3	threesuperior
+00b4	acute
+00b5	mu		; or micro LConsole  - mu1 in Arial ???
+00b6	paragraph
+00b7	periodcentered	; or middot in Arial
+00b8	cedilla
+00b9	onesuperior
+00ba	ordmasculine
+00bb	guillemotright
+00bc	onequarter
+00bd	onehalf
+00be	threequarters
+00bf	questiondown
+
+00c0	Agrave
+00c1	Aacute
+00c2	Acircumflex
+00c3	Atilde
+00c4	Adieresis
+00c5	Aring
+00c6	AE
+00c7	Ccedilla
+00c8	Egrave
+00c9	Eacute
+00ca	Ecircumflex
+00cb	Edieresis
+00cc	Igrave
+00cd	Iacute
+00ce	Icircumflex
+00cf	Idieresis
+00d0	Eth
+00d1	Ntilde
+00d2	Ograve
+00d3	Oacute
+00d4	Ocircumflex
+00d5	Otilde
+00d6	Odieresis
+00d7	multiply
+00d8	Oslash
+00d9	Ugrave
+00da	Uacute
+00db	Ucircumflex
+00dc	Udieresis
+00dd	Yacute
+00de	Thorn
+00df	germandbls
+
+00e0	agrave
+00e1	aacute
+00e2	acircumflex
+00e3	atilde
+00e4	adieresis
+00e5	aring
+00e6	ae
+00e7	ccedilla
+00e8	egrave
+00e9	eacute
+00ea	ecircumflex
+00eb	edieresis
+00ec	igrave
+00ed	iacute
+00ee	icircumflex
+00ef	idieresis
+00f0	eth
+00f1	ntilde
+00f2	ograve
+00f3	oacute
+00f4	ocircumflex
+00f5	otilde
+00f6	odieresis
+00f7	divide
+00f8	oslash
+00f9	ugrave
+00fa	uacute
+00fb	ucircumflex
+00fc	udieresis
+00fd	yacute
+00fe	thorn
+00ff	ydieresis
+
+00a0	space_		; * 160 repetition of space
+00ad	hyphen_		; * 173 repetition of hyphen
+
+0100	Amacron
+0101	amacron
+0102	Abreve
+0103	abreve
+0104	Aogonek
+0105	aogonek
+0106	Cacute
+0107	cacute
+0108	Ccircumflex
+0109	ccircumflex
+010a	Cdotaccent	; or Cdot from Arial
+010b	cdotaccent	; or cdot from Arial
+010c	Ccaron
+010d	ccaron
+010e	Dcaron
+010f	dcaron
+0110	Dcroat		; or Dmacron in LConsole or Dslash in Arial
+0111	dcroat		; or dmacron in Arial
+0112	Emacron
+0113	emacron
+0114	Ebreve		; ***new***
+0115	ebreve		; ***new***
+0116	Edotaccent	; or Edot from Arial
+0117	edotaccent	; or edot from Arial
+0118	Eogonek
+0119	eogonek
+011a	Ecaron
+011b	ecaron
+011c	Gcircumflex
+011d	gcircumflex
+011e	Gbreve
+011f	gbreve
+0120	Gdotaccent	; or Gdot from Arial
+0121	gdotaccent	; or gdot from Arial
+0122	Gcommaaccent	; or Gcedilla from Arial
+0123	gcommaaccent	; or gcedilla from Arial
+0124	Hcircumflex
+0125	hcircumflex
+0126	Hbar
+0127	hbar
+0128	Itilde
+0129	itilde
+012a	Imacron
+012b	imacron
+012c	Ibreve		; ***new***
+012d	ibreve		; ***new***
+012e	Iogonek
+012f	iogonek
+0130	Idotaccent	; or Idot in Arial
+0131	dotlessi
+0132	IJ
+0133	ij
+0134	Jcircumflex
+0135	jcircumflex
+0136	Kcommaaccent	; or Kcedilla from Arial
+0137	kcommaaccent	; or kcedilla from Arial
+0138	kgreenlandic	; or kra in LConsole
+0139	Lacute
+013a	lacute
+013b	Lcommaaccent	; or Lcedilla from Arial
+013c	lcommaaccent	; or lcedilla from Arial
+013d	Lcaron
+013e	lcaron
+013f	Ldot
+0140	ldot
+0141	Lslash
+0142	lslash
+0143	Nacute
+0144	nacute
+0145	Ncommaaccent	; or Ncedilla from Arial
+0146	ncommaaccent	; or ncedilla from Arial
+0147	Ncaron
+0148	ncaron
+0149	napostrophe		; quoten
+014a	Eng
+014b	eng
+014c	Omacron
+014d	omacron
+014e	Obreve		; ***new***
+014f	obreve		; ***new***
+0150	Ohungarumlaut	; or Odblacute in Arial
+0151	ohungarumlaut	; or odblacute in Arial
+0152	OE
+0153	oe
+0154	Racute
+0155	racute
+0156	Rcommaaccent	; or Rcedilla from Arial
+0157	rcommaaccent	; or rcedilla from Arial
+0158	Rcaron
+0159	rcaron
+015a	Sacute
+015b	sacute
+015c	Scircumflex
+015d	scircumflex
+015e	Scommaaccent	; or Scedilla in Arial
+015f	scommaaccent	; or scedilla in Arial
+0160	Scaron
+0161	scaron
+0162	Tcommaaccent	; or Tcedilla in Arial
+0163	tcommaaccent	; or tcedilla in Arial
+0164	Tcaron
+0165	tcaron
+0166	Tbar
+0167	tbar
+0168	Utilde
+0169	utilde
+016a	Umacron
+016b	umacron
+016c	Ubreve
+016d	ubreve
+016e	Uring
+016f	uring
+0170	Uhungarumlaut	; or Udblacute in Arial
+0171	uhungarumlaut	; or udblacute in Arial
+0172	Uogonek
+0173	uogonek
+0174	Wcircumflex	; ***new***
+0175	wcircumflex	; ***new***
+0176	Ycircumflex	; ***new***
+0177	ycircumflex	; ***new***
+0178	Ydieresis
+0179	Zacute
+017a	zacute
+017b	Zdotaccent	; or Zdot in Arial
+017c	zdotaccent	; or zdot in Arial
+017d	Zcaron
+017e	zcaron
+017f	slong		; ***new*** or longs from Arial
+
+0180	bbar		; ***new***
+0181	Bhook		; ***new***
+0182	Btopbar		; ***new***
+0183	btopbar		; ***new***
+0184	Tonesix		; ***new***
+0185	tonesix		; ***new***
+0186	Oopen		; ***new***
+0187	Chook		; ***new***
+0188	chook		; ***new***
+0189	Dbar1		; ***new***
+018a	Dhook		; ***new***
+018b	Dtopbar		; ***new***
+018c	dtopbar		; ***new***
+018d	deltaturn	; ***new***
+018e	Eturn		; ***new***
+018f	Schwa		; ***new***
+0190	Epsilon1	; ***new***
+0191	Fhook		; ***new***
+
+0192	florin		; or fscript in LConsole
+
+0193	Ghook		; ***new***
+0194	Gamma1		; ***new***
+0195	hv		; ***new***
+0196	Iota1		; ***new***
+0197	Ibar		; ***new***
+0198	Khook		; ***new***
+0199	khook		; ***new***
+019a	lbar		; ***new***
+019b	lambdabar	; ***new***
+019c	mcapturn	; ***new***
+019d	Nhook		; ***new***
+019e	nleg		; ***new***
+019f	Obar		; ***new***
+
+01a0	Ohorn
+01a1	ohorn
+
+01a2	OI		; ***new***
+01a3	oi		; ***new***
+01a4	Phook		; ***new***
+01a5	phook		; ***new***
+01a6	YR		; ***new***
+01a7	Tonetwo		; ***new***
+01a8	tonetwo		; ***new***
+01a9	Esh		; ***new***
+01aa	eshlooprev	; ***new***
+01ab	tpalatalhook	; ***new***
+01ac	Thook		; ***new***
+01ad	thook		; ***new***
+01ae	Trthook		; ***new***
+
+01af	Uhorn
+01b0	uhorn
+
+01b1	Upsilon2	; ***new***
+01b2	Vcursive	; ***new***
+01b3	Yhook		; ***new***
+01b4	yhook		; ***new***
+01b5	Zbar		; ***new***
+01b6	zbar		; ***new***
+01b7	Yogh		; ***new***
+01b8	Yoghrev		; ***new***
+01b9	yoghrev		; ***new***
+01ba	yoghtail	; ***new***
+01bb	2bar		; ***new***
+01bc	Tonefive	; ***new***
+01bd	tonefive	; ***new***
+01be	glottalstopbarinv	; ***new***
+01bf	wynn		; ***new***
+01c0	pipe		; ***new***
+01c1	pipedbl		; ***new***
+01c2	pipedblbar	; ***new***
+01c3	exclam1		; ***new***
+01c4	DZcaron		; or DZhacek	; ***new***
+01c5	Dzcaron		; or Dzhacek	; ***new***
+01c6	dzcaron		; or dzhacek	; ***new***
+01c7	LJ		; ***new***
+01c8	Lj		; ***new***
+01c9	lj		; ***new***
+01ca	NJ		; ***new***
+01cb	Nj		; ***new***
+01cc	nj		; ***new***
+01cd	Acaron		; or Ahacek	; ***new***
+01ce	acaron		; or ahacek	; ***new***
+01cf	Icaron		; or Ihacek	; ***new***
+01d0	icaron		; or ihacek	; ***new***
+01d1	Ocaron		; or Ohacek	; ***new***
+01d2	ocaron		; or ohacek	; ***new***
+01d3	Ucaron		; or Uhacek	; ***new***
+01d4	ucaron		; or uhacek	; ***new***
+01d5	Udieresismacron	; ***new***
+01d6	udieresismacron	; ***new***
+01d7	Udieresisacute	; ***new***
+01d8	udieresisacute	; ***new***
+01d9	Udieresiscaron	; Udieresishacek	; ***new***
+01da	udieresiscaron	; udieresishacek	; ***new***
+01db	Udieresisgrave	; ***new***
+01dc	udieresisgrave	; ***new***
+01dd	eturn		; ***new***
+01de	Adieresismacron	; ***new***
+01df	adieresismacron	; ***new***
+01e0	Adotmacron	; ***new***
+01e1	adotmacron	; ***new***
+01e2	AEmacron	; ***new***
+01e3	aemacron	; ***new***
+01e4	Gbar		; ***new***
+01e5	gbar		; ***new***
+
+01e6	Gcaron		; or Ghacek
+01e7	gcaron		; or ghacek
+
+01e8	Kcaron		; or Khacek	; ***new***
+01e9	kcaron		; or khacek	; ***new***
+01ea	Oogonek		; ***new***
+01eb	oogonek		; ***new***
+01ec	Oogonekmacron	; ***new***
+01ed	oogonekmacron	; ***new***
+01ee	Yoghcaron	; or Yoghhacek	; ***new***
+01ef	yoghcaron	; or yoghhacek	; ***new***
+01f0	jcaron		; or jhacek	; ***new***
+
+01fa	Aacutering	; ***new*** or Aringacute from Arial
+01fb	aacutering	; ***new*** or aringacute from Arial
+01fc	AEacute		; ***new***
+01fd	aeacute		; ***new***
+01fe	Oslashacute	; ***new***
+01ff	oslashacute	; ***new***
+
+0250	aturn		; ***new***
+0251	ascript		; ***new***
+0252	ascriptturn	; ***new***
+0253	bhook		; ***new***
+0254	cturn		; ***new***
+0255	ccurl		; ***new***
+0256	drthook		; ***new***
+0257	dhook		; ***new***
+0258	erev		; ***new***
+0259	schwa		; ***new***
+025a	schwahook	; ***new***
+025b	epsilon1	; ***new***
+025c	epsilon1rev	; ***new***
+025d	epsilon1revhook	; ***new***
+025e	epsilon1revclosed	; ***new***
+025f	jdotlessbar	; ***new***
+0260	ghook		; ***new***
+0261	gcursive	; ***new***
+0262	Gsmallcap	; ***new***
+0263	gamma1		; ***new***
+0264	babygamma	; ***new***
+0265	hturn		; ***new***
+0266	hhook		; ***new***
+0267	henghook	; ***new***
+0268	ibar		; ***new***
+0269	iota1		; ***new***
+026a	Ismallcap	; ***new***
+026b	lmidtilde	; ***new***
+026c	lbelt		; ***new***
+026d	lrthook		; ***new***
+026e	lyogh		; ***new***
+026f	mturn		; ***new***
+0270	mturndescend	; ***new***
+0271	mhook		; ***new***
+0272	nlftlfthook	; ***new***
+0273	nrthook		; ***new***
+0274	Nsmallcap	; ***new***
+0275	obar		; ***new***
+0276	OEsmallcap	; ***new***
+; 0277	omega1		; ? omegaclosed	; ***new***
+0277	omega1_		; ? omegaclosed	; ***new***
+0278	philatin	; ***new***
+0279	rturn		; ***new***
+027a	rturnascend	; ***new***
+027b	rturnrthook	; ***new***
+027c	rdescend	; ***new***
+027d	rrthook		; ***new***
+027e	rfishhook	; ***new***
+027f	rfishhookrev	; ***new***
+0280	Rsmallcap	; ***new***
+0281	Rsmallcapinv	; ***new***
+0282	srthook		; ***new***
+0283	esh		; ***new***
+0284	jhookdblbar	; ***new***
+0285	eshshortrev	; ***new***
+0286	eshcurl		; ***new***
+0287	tturn		; ***new***
+0288	trthook		; ***new***
+0289	ubar		; ***new***
+028a	upsilonlatin	; ***new***
+028b	vscript		; ***new***
+028c	vturn		; ***new***
+028d	wturn		; ***new***
+028e	yturn		; ***new***
+028f	Ysmallcap	; ***new***
+0290	zrthook		; ***new***
+0291	zcurl		; ***new***
+0292	yogh		; ***new***
+0293	yoghcurl	; ***new***
+0294	glottalstop	; ***new***
+0295	glottalstoprevinv	; ***new***
+0296	glottalstopinv	; ***new***
+0297	cstretch	; ***new***
+0298	bullseye	; ***new***
+0299	Bsmallcap	; ***new***
+029a	epsilonclosed	; ***new***
+029b	Gsmallcaphook	; ***new***
+029c	Hsmallcap	; ***new***
+029d	jcrosstail	; ***new***
+029e	kturn		; ***new***
+029f	Lsmallcap	; ***new***
+02a0	qhook		; ***new***
+02a1	glottalstopbar	; ***new***
+02a2	glottalstopbarrev	; ***new***
+02a3	dz		; ***new***
+02a4	dyogh		; ***new***
+02a5	dzcurl		; ***new***
+02a6	ts		; ***new***
+02a7	tesh		; ***new***
+02a8	tccurl		; ***new***
+02aa	finalkaf	; NEW ???
+02ab	finalmem	; NEW ???
+02af	finalnun	; NEW ???
+02b0	hsuper		; ***new***
+02b1	hhooksuper	; ***new***
+02b2	jsuper		; ***new***
+02b3	rsuper		; finalpe ***new***
+02b4	rturnsuper	; ***new***
+02b5	rturnrthooksuper	; finaltsadi ***new***
+02b6	Rturnsuper	; ***new***
+02b7	wsuper		; ***new***
+02b8	ysuper		; ***new***
+02b9	primemod	; ***new***
+02ba	primedblmod	; ***new***
+02bb	quoteleftmod	; doublevav ***new***
+
+02bc	afii57929	; or apostrophe
+02bd	afii64937	; or apostropherev doubleyod
+
+02be	ringrighthalfsuper	; ***new***
+02bf	ringlefthalfsuper	; ***new***
+
+02c0	glottal		; newhegelsign ***new***
+02c1	glottalrev	; vavshindot ***new***
+02c2	fronted		; finalkafsheva ***new***
+02c3	backed		; finalkafqamats ***new***
+02c4	raised		; lamelholam ***new***
+02c5	lowered		; lamelholamdagesh ***new***
+
+02c6	circumflex	; altayin
+02c7	caron		; shinshindot
+
+02c8	linevert	; shinsindot ***new***
+02c9	macron_		; macron in Arial ??? overscore ***new***
+02ca	acute1		; shindageshsindot ***new***
+02cb	grave1		; alefpatah ***new***
+02cc	linevertsub	; alefqamats ***new***
+02cd	macronsub	; alefmapiq ***new***
+02ce	gravesub	; betdagesh ***new***
+02cf	acutesub	; gimeldagesh ***new***
+02d0	length		; daletdagesh ***new***
+02d1	halflength	; hedagesh ***new***
+02d2	ringrighthalfcenter	; vavdagesh ***new***
+02d3	ringlefthalfsup	; zayindagesh ***new***
+02d4	tackupmid	; tetdagesh ***new***
+02d5	tackdownmid	; yoddagesh ***new***
+02d6	plusmod		; plusmod ***new***
+02d7	minusmod	; kafdagesh ***new***
+
+02d8	breve		; lameddagesh 
+02d9	dotaccent	; memdagesh 
+02da	ring		; nundagesh 
+02db	ogonek		; samekhdagesh 
+02dc	tilde		; finalpedagesh 
+02dd	hungarumlaut	; pedagesh 
+02de	rhotichook	; tsadidagesh  ***new***
+
+; 02df	tsadidagesh	; qofdagesh
+
+02e0	gammasuper	; reshdagesh ***new***
+02e1	lsuper		; shindagesh ***new***
+02e2	ssuper		; tavdages ***new***
+02e3	xsuper		; vavholam ***new***
+02e4	glottalrevsuper	; betrafe ***new***
+02e5	toneextrahigh	; kafrafe ***new***
+02e6	tonehigh	; perafe ***new***
+02e7	tonemid		; aleflamed ***new***
+02e8	tonelow		; zerowidthnonjoiner ***new***
+02e9	toneextralow	; zerowidthjoiner ***new***
+
+; 02ea	lefttorightmark
+; 02eb	righttoleftmark
+
+
+; nosp = nospace   comb == combine
+
+0300	gravecomb	; or gravenosp
+0301	acutecomb	; or acutenosp
+0302	circumflexcomb	; or circumflexnosp
+0303	tildecomb	; or tildenosp
+
+0304	macroncomb	; macronnosp	; ***new***
+0305	overscorecomb	; overscorenosp	; ***new***
+0306	brevecomb	; brevenosp	; ***new***
+0307	dotcomb		; dotnosp	; ***new***
+0308	dieresiscomb	; dieresisnosp	; ***new***
+
+0309	hookabovecomb	; or hooknosp
+
+030a	ringnocomb		; or ringnosp ; ***new***
+030b	acutedblnocomb		; or acutedblnosp ; ***new***
+030c	caronnocomb		; or haceknosp ; ***new***
+030d	linevertnocomb		; or linevertnosp ; ***new***
+030e	linevertdblnocomb	; or linevertdblnosp ; ***new***
+030f	gravedblnocomb		; or gravedblnosp ; ***new***
+0310	candrabindunocomb	; or candrabindunosp ; ***new***
+0311	breveinvnocomb		; or breveinvnosp ; ***new***
+0312	commaturnsupnocomb	; or commaturnsupnosp ; ***new***
+0313	apostrophesupnocomb	; or apostrophesupnosp ; ***new***
+0314	commasuprevnocomb	; or commasuprevnosp ; ***new***
+0315	commasuprightnocomb	; or commasuprightnosp ; ***new***
+0316	gravesubnocomb		; or gravesubnosp ; ***new***
+0317	acutesubnocomb		; or acutesubnosp ; ***new***
+0318	tackleftsubnocomb	; or tackleftsubnosp ; ***new***
+0319	tackrightsubnocomb	; or tackrightsubnosp ; ***new***
+031a	anglesupnocomb		; or anglesupnosp ; ***new***
+031b	hornnocomb		; or hornnosp ; ***new***
+031c	ringlefthalfsubnocomb	; or ringlefthalfsubnosp ; ***new***
+031d	tackupsubnocomb		; or tackupsubnosp ; ***new***
+031e	tackdownsubnocomb	; or tackdownsubnosp ; ***new***
+031f	plussubnocomb		; or plussubnosp ; ***new***
+0320	minussubnocomb		; or minussubnosp ; ***new***
+0321	hooksubpalatnocomb	; or hooksubpalatnosp ; ***new***
+0322	hooksubretronocomb	; or hooksubretronosp ; ***new***
+
+0323	dotbelowcocomb		; or dotbelowcomb dotsubnp
+
+0324	dotdblsubnocomb		; dotdblsubnosp ; ***new***
+0325	ringsubnocomb		; ringsubnosp ; ***new***
+0326	commasubnocomb		; commasubnosp ; ***new***
+0327	cedillanocomb		; cedillanosp ; ***new***
+0328	ogoneknocomb		; ogoneknosp ; ***new***
+0329	linevertsubnocomb	; linevertsubnosp ; ***new***
+032a	bridgesubnocomb		; bridgesubnosp ; ***new***
+032b	archdblsubnocomb	; archdblsubnosp ; ***new***
+032c	caronsubnocomb		; haceksubnosp ; ***new***
+032d	circumflexsubnocomb	; circumflexsubnosp ; ***new***
+032e	brevesubnocomb		; brevesubnosp ; ***new***
+032f	breveinvsubnocomb	; breveinvsubnosp ; ***new***
+0330	tildesubnocomb		; tildesubnosp ; ***new***
+0331	macronsubnocomb		; macronsubnosp ; ***new***
+0332	underscorenocomb	; underscorenosp ; ***new***
+0333	underscoredblnocomb	; underscoredblnosp ; ***new***
+0334	tildemidnocomb		; tildemidnosp ; ***new***
+0335	barmidshortnocomb	; barmidshortnosp ; ***new***
+0336	barmidlongnocomb	; barmidlongnosp ; ***new***
+0337	slashshortnocomb	; slashshortnosp ; ***new***
+0338	slashlongnocomb		; slashlongnosp ; ***new***
+0339	ringrighthalfsubnocomb	; ringrighthalfsubnosp ; ***new***
+033a	bridgeinvsubnocomb	; bridgeinvsubnosp ; ***new***
+033b	squaresubnocomb		; squaresubnosp ; ***new***
+033c	seagullsubnocomb	; seagullsubnosp ; ***new***
+033d	xsupnocomb		; xsupnosp ; ***new***
+033e	tildevertsupnocomb	; tildevertsupnosp ; ***new***
+033f	overscoredblnocomb	; overscoredblnosp ; ***new***
+0340	graveleftnocomb		; graveleftnosp ; ***new***
+0341	acuterightnocomb	; acuterightnosp ; ***new***
+
+0344	dieresistonoscomb	; diaeresistonosp ? ; diaeresistonosnosp ; diaeresistonosp ? ; ***new***
+0345	iotasubnocomb		; iotasubnosp ; ***new***
+
+; 0371, 0372
+
+0374	numeralgreek
+0375	numeralgreeksub
+037a	iotasub
+037e	questiongreek		; (semicolon)
+
+0384	tonos
+0385	dieresistonos	; or diaeresistonos greekacutedieresis
+0386	Alphatonos		; Alphaacute
+0387	anoteleia	; ***new*** from Arial
+0388	Epsilontonos	; Epsilonacute
+0389	Etatonos		; Etaacute
+038a	Iotatonos		; Iotaacute
+038c	Omicrontonos	; Omicronacute
+038e	Upsilontonos	; Upsilonacute
+038f	Omegatonos		; Omegaacute
+
+0390	iotadieresistonos ; or iotadiaeresistonos iotaacutedieresis
+0391	Alpha
+0392	Beta
+0393	Gamma
+0394	Delta_		; * should be the real Delta as in Arial ???
+0395	Epsilon
+0396	Zeta
+0397	Eta
+0398	Theta
+0399	Iota
+039a	Kappa
+039b	Lambda
+039c	Mu
+039d	Nu
+039e	Xi
+039f	Omicron
+03a0	Pi
+03a1	Rho
+03a3	Sigma
+03a4	Tau
+03a5	Upsilon
+03a6	Phi
+03a7	Chi
+03a8	Psi
+03a9	Omega_		; should be the real Omega as in Arial ???
+
+03aa	Iotadieresis	; or Iotadiaeresis
+03ab	Upsilondieresis	; or Upsilondiaeresis
+03ac	alphatonos		; alphaacute
+03ad	epsilontonos	; epsilonacute
+03ae	etatonos		; etaacute
+03af	iotatonos		; iotaacute
+
+03b0	upsilondieresistonos ; or upsilondiaeresistonos upsilonacutedieresis
+03b1	alpha
+03b2	beta
+03b3	gamma
+03b4	delta
+03b5	epsilon
+03b6	zeta
+03b7	eta
+03b8	theta
+03b9	iota
+03ba	kappa
+03bb	lambda
+03bc	mu_ 		; * should this be the real mu as in Arial ??? greekmu
+03bd	nu
+03be	xi
+03bf	omicron
+03c0	pi
+03c1	rho
+03c2	sigma1		; or sigmafinal in LConsole sigmalt
+03c3	sigma
+03c4	tau
+03c5	upsilon
+03c6	phi
+03c7	chi
+03c8	psi
+03c9	omega
+03ca	iotadieresis	; or iotadiaeresis
+03cb	upsilondieresis	; or upsilondiaeresis
+03cc	omicrontonos
+03cd	upsilontonos
+03ce	omegatonos	; omegaacute
+03d0	beta1		; ***new***
+03d1	theta1
+03d2	Upsilon1
+03d3	Upsilon1tonos	; ***new***
+03d4	Upsilon1dieresis ; Upsilon1diaeresis	; ***new***
+03d5	phi1
+; 03d6	pi
+03d6	omega1		; actually pi1 !!!
+
+; 03a9	Omega_ 		; * should this be the real Omega ???
+; 03bc	mu_ 		; * should this be the real mu ???
+
+03da	Stigma		; ***new***
+03dc	Digamma		; ***new***
+03de	Koppa		; ***new***
+03e0	Sampi		; ***new***
+03ee	Dei		; ***new***
+03ef	dei		; ***new***
+03f0	kappa1		; ***new***
+03f1	rho1		; ***new***
+03f2	sigma1_		; ? sigmalunate		; ***new***
+
+; 03f3
+
+0401	afii10023	; Io
+0402	afii10051	; Dje
+0403	afii10052	; Gje
+0404	afii10053	; Ecyril
+0405	afii10054	; Dze
+0406	afii10055	; Icyril
+0407	afii10056	; Yi
+0408	afii10057	; Je
+0409	afii10058	; Lje
+040a	afii10059	; Nje
+040b	afii10060	; Tshe
+040c	afii10061	; Kje
+
+040e	afii10062	; Ucyrilbreve
+040f	afii10145	; Dzhe
+0410	afii10017	; Acyril
+0411	afii10018	; Be
+0412	afii10019	; Ve
+0413	afii10020	; Ge
+0414	afii10021	; De
+0415	afii10022	; Ie
+0416	afii10024	; Zhe
+0417	afii10025	; Ze
+0418	afii10026	; Ii
+0419	afii10027	; Iibreve
+041a	afii10028	; Ka
+041b	afii10029	; El
+041c	afii10030	; Em
+041d	afii10031	; En
+041e	afii10032	; Ocyril
+041f	afii10033	; Pecyril
+0420	afii10034	; Er
+0421	afii10035	; Es
+0422	afii10036	; Te
+0423	afii10037	; Ucyril
+0424	afii10038	; Ef
+0425	afii10039	; Kha
+0426	afii10040	; Tse
+0427	afii10041	; Che
+0428	afii10042	; Sha
+0429	afii10043	; Shcha
+042a	afii10044	; Hard
+042b	afii10045	; Yeri
+042c	afii10046	; Soft
+042d	afii10047	; Ecyrilrev
+042e	afii10048	; Iu
+042f	afii10049	; Ia
+0430	afii10065	; acyril
+0431	afii10066	; be
+0432	afii10067	; ve
+0433	afii10068	; ge
+0434	afii10069	; de
+0435	afii10070	; ie
+0436	afii10072	; zhe
+0437	afii10073	; ze
+0438	afii10074	; ii
+0439	afii10075	; iibreve
+043a	afii10076	; ka
+043b	afii10077	; el
+043c	afii10078	; em
+043d	afii10079	; en
+043e	afii10080	; ocyril
+043f	afii10081	; pecyril
+0440	afii10082	; er
+0441	afii10083	; es
+0442	afii10084	; te
+0443	afii10085	; ucyril
+0444	afii10086	; ef
+0445	afii10087	; kha
+0446	afii10088	; tse
+0447	afii10089	; che
+0448	afii10090	; sha
+0449	afii10091	; shcha
+044a	afii10092	; hard
+044b	afii10093	; yeri
+044c	afii10094	; soft
+044d	afii10095	; ecyrilrev
+044e	afii10096	; iu
+044f	afii10097	; ia
+0451	afii10071	; io
+0452	afii10099	; dje
+0453	afii10100	; gje
+0454	afii10101	; ecyril
+0455	afii10102	; dze
+0456	afii10103	; icyril
+0457	afii10104	; yi
+0458	afii10105	; je
+0459	afii10106	; lje
+045a	afii10107	; nje
+045b	afii10108	; tshe
+045c	afii10109	; kje
+045e	afii10110	; ucyrilbreve
+045f	afii10193	; dzhe
+
+0462	afii10146	; Yat
+0463	afii10194	; yat
+
+046a	Yusbig		; ***new***
+046b	yusbig		; ***new***
+
+0472	afii10147
+0473	afii10195
+0474	afii10148
+0475	afii10196
+
+0490	afii10050	; Geupturn
+0491	afii10098	; geupturn
+
+0492	Gebar		; ***new***
+0493	gebar		; ***new***
+0494	Gehook		; ***new***
+0495	gehook		; ***new***
+0496	Zhertdes	; ***new***
+0497	zhertdes	; ***new***
+0498	Zecedill	; ***new***
+0499	zecedill	; ***new***
+049a	Kartdes		; ***new***
+049b	kartdes		; ***new***
+049c	Kavertbar	; ***new***
+049d	kavertbar	; ***new***
+049e	Kabar		; ***new***
+049f	kabar		; ***new***
+04a0	GeKarev		; ***new***
+04a1	gekarev		; ***new***
+04a2	Enrtdes		; ***new***
+04a3	enrtdes		; ***new***
+04a4	EnGe		; ***new***
+04a5	enge		; ***new***
+04a6	Pehook		; ***new***
+04a7	pehook		; ***new***
+04a8	Ohook		; ***new***
+04a9	ohook		; ***new***
+04aa	Escedilla	; ***new***
+04ab	escedilla	; ***new***
+04ac	Tertdes		; ***new***
+04ad	tertdes		; ***new***
+04ae	Ustrt		; ***new***
+04af	ustrt		; ***new***
+04b0	Ustrtbar	; ***new***
+04b1	ustrtbar	; ***new***
+04b2	Khartdes	; ***new***
+04b3	khartdes	; ***new***
+04b4	TeTse		; ***new***
+04b5	tetse		; ***new***
+04b6	Chertdes	; ***new***
+04b7	chertdes	; ***new***
+04b8	Chevertbar	; ***new***
+04b9	chevertbar	; ***new***
+04ba	Hcyril		; ***new***
+04bb	hcyril		; ***new***
+04bc	Iehook		; ***new***
+04bd	iehook		; ***new***
+04be	Iehookogonek	; ***new***
+04bf	iehookogonek	; ***new***
+04c0	Icyril1		; ***new***
+04c1	Zhebreve	; ***new***
+04c2	zhebreve	; ***new***
+04c3	Kahook		; ***new***
+04c4	kahook		; ***new***
+
+; 04c5, 04c6
+
+04c7	Enhook		; ***new***
+04c8	enhook		; ***new***
+
+; 04c9, 04ca
+
+04cb	Cheleftdes	; ***new***
+04cc	cheleftdes	; ***new***
+
+04d9	afii10846
+
+05b0	afii57799	; sheva
+05b1	afii57801	; hatafsegol
+05b2	afii57800	; hatafpatah
+05b3	afii57802	; hatafqamats
+05b4	afii57793	; hiriq
+05b5	afii57794	; tsere
+05b6	afii57795	; segol
+05b7	afii57798	; patah
+05b8	afii57797	; qamats
+05b9	afii57806	; holam
+05bb	afii57796	; qubuts
+05bc	afii57807	; dagesh
+05bd	afii57839	; meteg
+05be	afii57645	; maqaf
+05bf	afii57841	; rafe
+05c0	afii57842	; paseq
+05c1	afii57804	; shindot
+05c2	afii57803	; sindot
+05c3	afii57658	; sofpasuq
+05d0	afii57664	; alef
+05d1	afii57665	; bet
+05d2	afii57666	; gimel
+05d3	afii57667	; dalet
+05d4	afii57668	; he
+05d5	afii57669	; vav
+05d6	afii57670	; zayin
+05d7	afii57671	; het
+05d8	afii57672	; tet
+05d9	afii57673	; yod
+05da	afii57674	; kaffinal
+05db	afii57675	; kaf
+05dc	afii57676	; lamed
+05dd	afii57677	; memfinal
+05de	afii57678	; mem
+05df	afii57679	; nunfinal
+05e0	afii57680	; nun
+05e1	afii57681	; samekh
+05e2	afii57682	; ayin
+05e3	afii57683	; pefinal
+05e4	afii57684	; pe
+05e5	afii57685	; tsadifinal
+05e6	afii57686	; tsadi
+05e7	afii57687	; qof
+05e8	afii57688	; resh
+05e9	afii57689	; shin
+05ea	afii57690	; tav
+05f0	afii57716	; vavdbl
+05f1	afii57717	; vavyod
+05f2	afii57718	; yoddbl
+
+05f3	geresh		; ***new***
+05f4	gershayim	; ***new***
+; 05f5	varika		; ???
+
+060c	afii57388	; c19466
+061b	afii57403	; c19467
+061f	afii57407	; c19470
+0621	afii57409
+0622	afii57410	; c19542
+0623	afii57411	; c19446
+0624	afii57412
+0625	afii57413	; c19447
+0626	afii57414
+0627	afii57415	; c19379
+0628	afii57416	; c19381
+0629	afii57417	; c19443
+062a	afii57418	; c19383
+062b	afii57419	; c19385
+062c	afii57420	; c19388
+062d	afii57421	; c19391
+062e	afii57422	; c19394
+062f	afii57423	; c19395
+0630	afii57424	; c19396
+0631	afii57425	; c19397
+0632	afii57426	; c19398
+0633	afii57427	; c19400
+0634	afii57428	; c19402
+0635	afii57429	; c19404
+0636	afii57430	; c19406
+0637	afii57431	; c19407
+0638	afii57432	; c19408
+0639	afii57433	; c19412
+063a	afii57434	; c19416
+0640	afii57440	; c20156
+0641	afii57441	; c19420
+0642	afii57442	; c19423
+0643	afii57443	; c19425
+0644	afii57444	; c19427
+0645	afii57445	; c19429
+0646	afii57446	; c19431
+0647	afii57470	; c19435
+0648	afii57448	; c19436
+0649	afii57449	; c19441
+064a	afii57450	; c19439
+064b	afii57451
+064c	afii57452
+064d	afii57453
+064e	afii57454
+064f	afii57455
+0650	afii57456
+0651	afii57457
+0652	afii57458
+
+0660	afii57392	; c19463
+0661	afii57393	; c19454
+0662	afii57394	; c19455
+0663	afii57395	; c19456
+0664	afii57396	; c19457
+0665	afii57397	; c19458
+0666	afii57398	; c19459
+0667	afii57399	; c19460
+0668	afii57400	; c19461
+0669	afii57401	; c19462
+; 066a	; c19464
+; 066c	; c21121
+
+067e	afii57506
+0686	afii57507
+0698	afii57508
+06af	afii57509
+
+0E01 afii59681
+0E02 afii59682
+0E03 afii59683
+0E04 afii59684
+0E05 afii59685
+0E06 afii59686
+0E07 afii59687
+0E08 afii59688
+0E09 afii59689
+0E0A afii59690
+0E0B afii59691
+0E0C afii59692
+0E0D afii59693
+0E0E afii59694
+0E0F afii59695
+0E10 afii59696
+0E11 afii59697
+0E12 afii59698
+0E13 afii59699
+0E14 afii59700
+0E15 afii59701
+0E16 afii59702
+0E17 afii59703
+0E18 afii59704
+0E19 afii59705
+0E1A afii59706
+0E1B afii59707
+0E1C afii59708
+0E1D afii59709
+0E1E afii59710
+0E1F afii59711
+0E20 afii59712
+0E21 afii59713
+0E22 afii59714
+0E23 afii59715
+0E24 afii59716
+0E25 afii59717
+0E26 afii59718
+0E27 afii59719
+0E28 afii59720
+0E29 afii59721
+0E2A afii59722
+0E2B afii59723
+0E2C afii59724
+0E2D afii59725
+0E2E afii59726
+0E2F afii59727
+0E30 afii59728
+0E31 afii59729
+0E32 afii59730
+0E33 afii59731
+0E34 afii59732
+0E35 afii59733
+0E36 afii59734
+0E37 afii59735
+0E38 afii59736
+0E39 afii59737
+0E3A afii59738
+0E3F afii59743
+0E40 afii59744
+0E41 afii59745
+0E42 afii59746
+0E43 afii59747
+0E44 afii59748
+0E45 afii59749
+0E46 afii59750
+0E47 afii59751
+0E48 afii59752
+0E49 afii59753
+0E4A afii59754
+0E4B afii59755
+0E4C afii59756
+0E4D afii59757
+0E4E afii59758
+0E4F afii59759
+0E50 afii59760
+0E51 afii59761
+0E52 afii59762
+0E53 afii59763
+0E54 afii59764
+0E55 afii59765
+0E56 afii59766
+0E57 afii59767
+0E58 afii59768
+0E59 afii59769
+0E5A afii59770
+0E5B afii59771
+
+1e80	Wgrave		; ***new***
+1e81	wgrave		; ***new***
+1e82	Wacute		; ***new***
+1e83	wacute		; ***new***
+1e84	Wdieresis	; ***new***
+1e85	wdieresis	; ***new***
+1ef2	Ygrave		; ***new***
+1ef3	ygrave		; ***new***
+
+2000	enquad		; ***new***
+2001	emquad		; ***new***
+2002	enspace		; ***new***
+2003	emspace		; ***new***
+2004	threeperemspace	; ***new***
+2005	fourperemspace	; ***new***
+2006	sixperemspace	; ***new***
+2007	figurespace	; ***new***
+2008	punctuationspace	; ***new***
+2009	thinspace	; ***new***
+200a	hairspace	; ***new***
+200b	zerospace	; ***new***
+200c	afii61664	; or zeronojoin	C24083
+200d	afii57598	; or zerojoin	C24084
+200e	afii57596	; or lefttoright	C24085
+200f	afii57597	; or rightoleft		C24086
+
+2010	hyphen__	; * yet another hyphen ; hyphen1 ?
+2011	hyphennobreak	; ***new***
+2012	figuredash
+2013	endash
+2014	emdash
+2015	afii00208	; quotedash in LConsole longdash
+2016	verticalbardbl	; ***new***
+2017	underscoredbl
+2018	quoteleft
+2019	quoteright
+201a	quotesinglbase
+201b	quotesinglrev	; ***new*** or quotereversed from Arial
+201c	quotedblleft
+201d	quotedblright
+201e	quotedblbase
+201f	quotedblrev	; ***new***
+2020	dagger
+2021	daggerdbl
+2022	bullet
+2023	trianglebullet	; ***new***
+2024	onedotenleader	; or onedotlead
+2025	twodotenleader	; or twodotlead
+2026	ellipsis
+
+2027	hyphendot	; ***new***
+2028	lineseparator	; ***new***
+2029	paragraphseparator	; ***new***
+202a	lre		; ***new***
+202b	rle		; ***new***
+202c	pdf		; ***new***
+202d	lro		; ***new***
+202e	rlo		; ***new***
+
+2030	perthousand
+2031	pertenthousand	; ***new***
+2032	minute		; or prime1
+2033	second		; or primedbl1
+
+2034	primetripl1	; ***new***
+2035	primerev1	; ***new***
+2036	primedblrev1	; ***new***
+2037	primetriplerev1	; ***new***
+2038	caret		; ***new***
+
+2039	guilsinglleft
+203a	guilsinglright
+203b	refmark		; ***new***
+203c	exclamdbl
+203d	interrobang	; ***new***
+203e	radicalex	; or overscore1 in LConsole
+
+2040	tie1		; ***new***
+2041	caretinsert	; ***new***
+2042	asterism	; ***new***
+2043	hyphenbullet	; ***new***
+	
+2044	fraction	; fraction1 in LConsole
+
+; 2045
+
+2070	zerosuperior
+; 00b9	onesuperior
+; 00b2	twosuperior
+; 00b3	threesuperior
+2074	foursuperior
+2075	fivesuperior
+2076	sixsuperior
+2077	sevensuperior
+2078	eightsuperior
+2079	ninesuperior
+207a	plussuperior	; ***new***
+207b	minussuperior	; ***new***
+207c	equalsuperior	; ***new***
+207d	parenleftsuperior
+207e	parenrightsuperior
+207f	nsuperior
+
+2080	zeroinferior	; or zerosub
+2081	oneinferior	; or onesub
+2082	twoinferior	; or twosub
+2083	threeinferior	; or threesub
+2084	fourinferior	; or foursub
+2085	fiveinferior	; or fivesub
+2086	sixinferior	; or sixsub
+2087	seveninferior	; or sevensub
+2088	eightinferior	; or eightsub
+2089	nineinferior	; or ninesub
+
+; 208a	; plussub
+; 208b	; minussub
+; 208c	; equalsub
+
+208d	parenleftinferior	; or plussub?
+208e	parenrightinferior	; or minussub?
+
+20a0	eurocurrency	; ***new***
+20a1	colonmonetary	; coloncurrency
+20a2	cruzeiro	; ***new***
+20a3	franc
+20a4	lira		; or afii08941 from Arial
+20a5	mill		; ***new***
+20a6	naira		; ***new***
+20a7	Pts		; or peseta in Arial pesetas
+
+; 20a8	ruppee
+; 20a9	won
+
+20aa	afii57636	; or newsheqel
+20ab	dong		; ???
+
+2100	accountof	; ***new***
+2101	addresssubject	; ***new***
+2102	Cbb		; ***new***
+2103	degreecentigrade	; ***new***
+2104	CL		; ***new***
+2105	careof		; ***new*** or afii61248 from Arial
+2106	cadauna		; ***new***
+2107	Euler		; ***new***
+2108	scruple		; ***new***
+2109	degreefahrenheit	; or degreefarenheit	; ***new***
+210a	gscript		; gscriptmath	; ***new***
+210b	Hscript		; ***new***
+210c	Hblackletter	; ***new***
+210d	Hbb		; ***new***
+210e	planck		; ***new***
+210f	planckover2pi	; ***new***
+2110	Iscript		; ***new***
+
+2111	Ifraktur	; or Ifractur
+
+2112	Lscript		; ***new***
+2113	lscript		; ***new*** or afii61289 from Arial litre
+2114	lbbar		; ***new***
+2115	Nbb		; ***new***
+
+2116	afii61352	; or numero
+2117	recordright	; ***new***
+2118	weierstrass
+2119	Pbb		; ***new***
+211a	Qbb		; ***new***
+211b	Rscript		; ***new***
+
+211c	Rfraktur	; or Rfractur
+
+; 211d	Rbb
+
+211e	prescription	; or Rx
+
+211f	response	; ***new***
+2120	servicemark	; ***new***
+2121	tel		; ***new***
+
+2122	trademark
+
+2123	versicle	; ***new***
+2124	Zbb		; ***new***
+2125	ounce		; ***new***
+
+2126	Omega		; Ohm in Arial - otherwise repetition of Omega ??? ohm
+
+2127	mho		; ***new***
+2128	Zblackletter	; ***new***
+2129	iotaturn	; ***new***
+212a	degreekelvin	; ***new***
+212b	angstrom	; ***new*** Angstrom
+212c	Bscript		; ***new***
+212d	Cblackletter	; ***new***
+212e	estimated	; ***new***
+212f	escript		; ***new***
+2130	Escript		; ***new***
+2131	Fscript		; ***new***
+2132	Fturn		; ***new***
+2133	Mscript		; ***new***
+2134	0script		; ***new***
+
+2135	aleph		; or alephmath
+2136	beth		; or bethmath	***new***
+2137	gimel		; or gimelmath ***new***
+2138	daleth		; or dalethmath ***new***
+
+2153	onethird
+2154	twothirds
+
+215b	oneeighth
+215c	threeeighths
+215d	fiveeighths
+215e	seveneighths
+
+2190	arrowleft
+2191	arrowup
+2192	arrowright
+2193	arrowdown
+2194	arrowboth	; or arrowlongboth
+
+2195	arrowlongbothv		; ***new*** or arrowupdn in Arial
+2196	arrownorthwest		; ***new***
+2197	arrownortheast		; ***new***
+2198	arrowsoutheast		; ***new***
+2199	arrowsouthwest		; ***new***
+219a	arrowleftnot		; ***new***
+219b	arrowrightnot		; ***new***
+219c	arrowwaveleft		; ***new***
+219d	arrowwaveright		; ***new***
+219e	dblarrowheadleft	; ***new***
+219f	dblarrowheadup		; ***new***
+21a0	dblarrowheadright	; ***new***
+21a1	dblarrowheaddown	; ***new***
+21a2	arrowtailleft		; ***new***
+21a3	arrowtailright		; ***new***
+21a4	arrowbarleft		; ***new***
+21a5	arrowbarup		; ***new***
+21a6	arrowbarright		; ***new***
+21a7	arrowbardown		; ***new***
+21a8	arrowbothvbase		; ***new*** or arrowupdnbse in Arial
+21a9	arrowhookleft		; ***new***
+21aa	arrowhookright		; ***new***
+21ab	arrowloopleft		; ***new***
+21ac	arrowloopright		; ***new***
+21ad	arrowwaveboth		; ***new***
+21ae	arrowlongbothnot	; ***new***
+21af	arrowzigzag		; ***new***
+21b0	arrowupleft		; ***new***
+21b1	arrowupright		; ***new***
+21b2	arrowdownleft		; ***new***
+21b3	arrowdownright		; ***new***
+21b4	arrowrightdown		; ***new***
+
+21b5	carriagereturn
+
+21b6	arrowsemanticlockw	; ***new***
+21b7	arrowsemclockw		; ***new***
+21b8	home			; ***new***
+21b9	tableftright		; ***new***
+21ba	arrowanticlockw		; ***new***
+21bb	arrowclockw		; ***new***
+21bc	arrowlefttophalf	; ***new***
+21bd	arrowleftbothalf	; ***new***
+21be	harpoonupright		; ***new***
+21bf	harpoonupleft		; ***new***
+21c0	arrowrighttophalf	; ***new***
+21c1	arrowrightbothalf	; ***new***
+21c2	harpoondownright	; ***new***
+21c3	harpoondownleft		; ***new***
+21c4	arrowparrrightleft	; ***new***
+21c5	dblarrowupdown		; ***new***
+21c6	arrowparrleftright	; ***new***
+21c7	dblarrowleft		; ***new***
+21c8	dblarrowup		; ***new***
+21c9	dblarrowright		; ***new***
+21ca	dblarrowdown		; ***new***
+21cb	harpoonleftright	; ***new***
+21cc	harpoonrightleft	; ***new***
+21cd	arrowdblleftnot		; ***new***
+21ce	arrowdbllongbothnot	; ***new***
+21cf	arrowdblrightnot	; ***new***
+
+21d0	arrowdblleft
+21d1	arrowdblup
+21d2	arrowdblright
+21d3	arrowdbldown
+21d4	arrowdblboth		; or arrowdbllongboth
+
+21d5	arrowdbllongbothv	; ***new***
+21d6	arrowdblnw		; ***new***
+21d7	arrowdblne		; ***new***
+21d8	arrowdblse		; ***new***
+21d9	arrowdblsw		; ***new***
+21da	arrowtripleleft		; ***new***
+21db	arrowtripleright	; ***new***
+21dc	arrowsquiggleleft	; ***new***
+21dd	arrowsquiggleright	; ***new***
+21de	pageup			; ***new***
+21df	pagedown		; ***new***
+21e0	arrowdashleft		; ***new***
+21e1	arrowdashup		; ***new***
+21e2	arrowdashright		; ***new***
+21e3	arrowdashdown		; ***new***
+21e4	arrowtableft		; ***new***
+21e5	arrowtabright		; ***new***
+21e6	arrowopenleft		; ***new***
+21e7	arrowopenup		; ***new***
+21e8	arrowopenright		; ***new***
+21e9	arrowopendown		; ***new***
+21ea	capslock		; ***new***
+
+2200	universal
+2201	complement	; ***new***
+2202	partialdiff
+2203	existential
+2204	notexistential	; ***new***
+2205	emptyset
+2206	Delta		; or increment in Arial ???
+2207	gradient	; or nabla
+2208	element
+2209	notelement
+220a	elementsmall	; ***new***
+220b	suchthat	; or owner
+
+220c	notowner	; ***new ***
+220d	ownersmall	; ***new ***
+220e	eop		; ***new ***
+
+220f	product
+2210	coproduct	; ***new***
+2211	summation
+2212	minus
+	
+2213	minusplus	; ***new***
+2214	dotplus		; ***new***
+2215	slashmath	; ? fraction	; ***new***
+2216	backslashmath	; ***new***
+
+2217	asteriskmath
+2218	openbullet	; ***new***
+2219	bulletmath	; periodcentered in Arial ??? ***new*** middot
+221a	radical
+221b	cuberoot	; ***new***
+221c	fourthroot	; ***new***
+221d	proportional
+221e	infinity
+221f	rightangle	; ***new*** or orthogonal in Arial
+2220	angle
+2221	measuredangle	; ***new***
+2222	sphericalangle	; ***new***
+2223	bar1		; ***new***
+2224	notbar		; ***new***
+2225	bardbl2		; ***new***
+2226	notbardbl	; ***new***
+2227	logicaland
+2228	logicalor
+2229	intersection
+222a	union
+222b	integral
+
+222c	integraldbl	; ***new***
+222d	integraltrpl	; ***new***
+222e	contintegral	; ***new***
+222f	surfintegral	; ***new***
+2230	volintegral	; ***new***
+2231	clwintegral	; ***new***
+2232	clwcontintegral	; ***new***
+2233	cclwcontintegral	; ***new***
+
+2234	therefore
+
+2235	because		; ***new***
+2236	ratio		; ***new***
+2237	proportion	; ***new***
+2238	dotminus	; ***new***
+2239	excess		; ***new***
+223a	geomproportion	; ***new***
+223b	homothetic	; ***new***
+
+223c	similar
+
+223d	revsimilar	; ***new***
+223e	lazysinv	; ***new***
+223f	sine		; ***new***
+2240	wreathproduct	; ***new***
+2241	notsimilar	; ***new***
+2242	minustilde	; ***new***
+2243	asymptequal	; ***new***
+2244	notasymptequal	; ***new***
+
+2245	congruent	; or approxorequal
+2246	approxnotequal	; ***new***
+2247	notapproxequal	; ***new***
+2248	approxequal	; or almostequal in LConsole
+
+2249	notalmostequal	; ?	***new***
+224a	almostorequal	; ?	***new***
+224b	tildetrpl	; ***new***
+224c	allequal	; ***new***
+224d	equivasymptotic	; ***new***
+224e	geomequivalent	; ***new***
+224f	difference	; ***new***
+2250	approachlimit	; ***new***
+2251	geomequal	; ***new***
+2252	approxequalorimage	; ***new***
+2253	imageorapproxequal	; ***new***
+2254	colonequal	; ***new***
+2255	equalcolon	; ***new***
+2256	ringinequal	; ***new***
+2257	ringequal	; ***new***
+2258	corresponds	; ***new***
+2259	estimates	; ***new***
+225a	equiangular	; ***new***
+225b	starequal	; ***new***
+225c	deltaequal	; ***new***
+225d	definequal	; ***new***
+225e	measurequal	; ***new***
+225f	questionequal	; ***new***
+
+2260	notequal
+2261	equivalence
+2262	notequivalence		; ***new***
+2263	strictequivalence	; *new*
+2264	lessequal
+2265	greaterequal
+
+2266	lessdblequal		; ***new***
+2267	greaterdblequal		; ***new***
+2268	lessnotdblequal		; ***new***
+2269	greaternotdblequal	; ***new***
+226a	lessmuch		; ***new***
+226b	greatermuch		; ***new***
+226c	between			; ***new***
+226d	notequivasymptotic	; ***new***
+226e	notless			; ***new***
+226f	notgreater		; ***new***
+2270	notlessequal1		; ***new***
+2271	notgreaterequal1	; ***new***
+2272	lessequivlnt		; ***new***
+2273	greaterequivlnt		; ***new***
+2274	notlessequivlnt		; ***new***
+2275	notgreaterequivlnt	; ***new***
+2276	lessorgreater		; ***new***
+2277	greaterorless		; ***new***
+2278	notlessgreater		; ***new***
+2279	notgreaterless		; ***new***
+227a	precedes		; ***new***
+227b	follows			; ***new***
+227c	precedesequal1		; ***new***
+227d	followsequal1		; ***new***
+227e	precedequivlnt		; ***new***
+227f	followsequivlnt		; ***new***
+
+2280	notpreceeds		; ***new***
+2281	notfollows		; ***new***
+
+2282	propersubset
+2283	propersuperset
+2284	notsubset		; or notpropersubset
+2285	notsupset		; or notpropersuperset
+2286	reflexsubset
+2287	reflexsuperset
+
+2288	notreflexsubset		; ***new***
+2289	notreflexsuperset	; ***new***
+228a	subsetnotequal		; ***new***
+228b	supersetnotequal	; ***new***
+228c	multiset		; ***new***
+228d	multiplymultiset	; ***new***
+228e	unionmulti		; ***new***
+228f	squareimage		; ***new***
+2290	squareoriginal		; ***new***
+2291	subsetsqequal		; ***new***
+2292	supersetsqequal		; ***new***
+2293	intersectionsq		; ***new***
+2294	unionsq			; ***new***
+
+2295	circleplus
+2296	circleminus	; ***new***
+2297	circlemultiply
+2298	circledivide	; ***new***
+
+2299	circledot	; ***new***
+229a	circlering	; ***new***
+229b	circleasterisk	; ***new***
+229c	circleequal	; ***new***
+229d	circleminus1	; ***new***
+229e	squareplus	; ***new***
+229f	squareminus	; ***new***
+22a0	squaremultiply	; ***new***
+22a1	squaredot	; ***new***
+22a2	turnstileleft	; ***new***
+22a3	turnstileright	; ***new***
+22a4	latticetop	; ***new***
+
+22a5	perpendicular
+
+22a6	assertion	; ***new***
+22a7	truestate	; ***new***
+22a8	satisfy		; ***new***
+22a9	force		; ***new***
+22aa	tacktrpl	; ***new***
+22ab	forceextr	; ***new***
+22ac	notturnstileleft	; ***new***
+22ad	notsatisfy	; ***new***
+22ae	notforce	; ***new***
+22af	notforceextr	; ***new***
+22b0	lowerrank	; ***new***
+22b1	higherrank	; ***new***
+22b2	triangleright	; triangleleft ?	; ***new***
+22b3	triangleleft	; triangleright ?	; ***new***
+22b4	triangleftequal	; ***new***
+22b5	triangrightequal	; ***new***
+22b6	original	; ***new***
+22b7	image		; ***new***
+22b8	multimap	; ***new***
+22b9	hermitconjmatrix	; ***new***
+22ba	intercal	; ***new***
+22bb	xor		; orunderscore	; ***new***
+22bc	nand		; ***new***
+22bd	nor		; ***new***
+22be	rightanglearc	; ***new***
+22bf	righttriangle	; ***new***
+22c0	narylogicaland	; ***new***
+22c1	narylogicalor	; ***new***
+22c2	naryintersection	; ***new***
+22c3	naryunion	; ***new***
+22c4	diamondmath	; ***new***
+
+22c5	dotmath		; or periodcentered
+
+22c6	star		; ***new***
+22c7	divideonmultiply	; ***new***
+22c8	bowtie		; ***new***
+22c9	multicloseleft	; ***new***
+22ca	multicloseright	; ***new***
+22cb	multiopenleft	; ***new***
+22cc	multiopenright	; ***new***
+22cd	revasymptequal	; ***new***
+22ce	curlor		; ***new***
+22cf	curland		; ***new***
+22d0	subsetdbl	; ***new***
+22d1	supersetdbl	; ***new***
+22d2	uniondbl	; ***new***
+22d3	intersectiondbl	; ***new***
+22d4	fork		; ***new***
+22d5	equalparallel	; ***new***
+22d6	lessdot		; ***new***
+22d7	greaterdot	; ***new***
+22d8	verymuchless	; ***new***
+22d9	verymuchgreater	; ***new***
+22da	lessequalgreater	; ***new***
+22db	greaterequalless	; ***new***
+22dc	equalless	; ***new***
+22dd	equalgreater	; ***new***
+22de	equalprecedes1	; ***new***
+22df	equalfollows1	; ***new***
+22e0	preceedsnotequal	; ***new***
+22e1	followsnotequal	; ***new***
+22e2	notsubsetsqequal	; ***new***
+22e3	notsupersetsqequal	; ***new***
+22e4	sqimageornotequal	; ***new***
+22e5	sqoriginornotequal	; ***new***
+22e6	lessnotequivlnt		; ***new***
+22e7	greaternotequivlnt	; ***new***
+22e8	preceedsnotsimilar	; ***new***
+22e9	followsnotequivlnt	; ***new***
+22ea	nottriangleleft		; ***new***
+22eb	nottriangleright	; ***new***
+22ec	nottriangleleftequal	; ***new***
+22ed	nottrianglerightequal	; ***new***
+22ee	vertellipsis		; ***new***
+22ef	midhorizellipsis	; ***new***
+22f0	upslopeellipsis		; ***new***
+22f1	downslopeellipsis	; ***new***
+
+2302	house		; ***new***
+2306	perspcorrespond	; ***new***
+2308	ceilingleft	; ***new***
+2309	ceilingright	; ***new***
+230a	floorleft	; ***new***
+230b	floorright	; ***new***
+
+2310	revlogicalnot	; ***new*** from Arial
+2320	integraltp
+2321	integralbt
+2322	slurabove	; ***new***
+2323	slurbelow	; ***new***
+
+2329	angleleft
+232a	angleright
+
+2400	null		; ***new***
+2401	startofhead	; ***new***
+2402	starttext	; ***new***
+2403	endtext		; ***new***
+2404	endtrans	; ***new***
+2405	enquiry		; ***new***
+2406	acknowledge	; ***new***
+2407	bell		; ***new***
+2408	backspace	; ***new***
+2409	horiztab	; ***new***
+240a	linefeed	; ***new***
+240b	verttab		; ***new***
+240c	formfeed	; ***new***
+240d	carriagereturn_	; ***new***
+240e	shiftout	; ***new***
+240f	shiftin		; ***new***
+2410	datalinkescape	; ***new***
+2411	devcon1		; ***new***
+2412	devcon2		; ***new***
+2413	devcon3		; ***new***
+2414	devcon4		; ***new***
+2415	negacknowledge	; ***new***
+2416	synch		; ***new***
+2417	endtransblock	; ***new***
+2418	cancel		; ***new***
+2419	endmedium	; ***new***
+241a	substitute	; ***new***
+241b	escape		; ***new***
+241c	fileseparator	; ***new***
+241d	groupseparator	; ***new***
+241e	recordseparator	; ***new***
+241f	unitseparator	; ***new***
+2420	spaceliteral	; ***new***
+2421	delete		; ***new***
+2422	blankb		; ***new***
+2423	spaceopenbox	; ***new***
+2424	newline		; ***new***
+
+; 2500 - 257f ???
+
+2500	SF100000	; ***new*** from ARIAL.TTF
+2502	SF110000	; ***new*** from ARIAL.TTF
+250c	SF010000	; ***new*** from ARIAL.TTF
+2510	SF030000	; ***new*** from ARIAL.TTF
+2514	SF020000	; ***new*** from ARIAL.TTF
+2518	SF040000	; ***new*** from ARIAL.TTF
+251c	SF080000	; ***new*** from ARIAL.TTF
+2524	SF090000	; ***new*** from ARIAL.TTF
+252c	SF060000	; ***new*** from ARIAL.TTF
+2534	SF070000	; ***new*** from ARIAL.TTF
+253c	SF050000	; ***new*** from ARIAL.TTF
+2550	SF430000	; ***new*** from ARIAL.TTF
+2551	SF240000	; ***new*** from ARIAL.TTF
+2552	SF510000	; ***new*** from ARIAL.TTF
+2553	SF520000	; ***new*** from ARIAL.TTF
+2554	SF390000	; ***new*** from ARIAL.TTF
+2555	SF220000	; ***new*** from ARIAL.TTF
+2556	SF210000	; ***new*** from ARIAL.TTF
+2557	SF250000	; ***new*** from ARIAL.TTF
+2558	SF500000	; ***new*** from ARIAL.TTF
+2559	SF490000	; ***new*** from ARIAL.TTF
+255a	SF380000	; ***new*** from ARIAL.TTF
+255b	SF280000	; ***new*** from ARIAL.TTF
+255c	SF270000	; ***new*** from ARIAL.TTF
+255d	SF260000	; ***new*** from ARIAL.TTF
+255e	SF360000	; ***new*** from ARIAL.TTF
+255f	SF370000	; ***new*** from ARIAL.TTF
+2560	SF420000	; ***new*** from ARIAL.TTF
+2561	SF190000	; ***new*** from ARIAL.TTF
+2562	SF200000	; ***new*** from ARIAL.TTF
+2563	SF230000	; ***new*** from ARIAL.TTF
+2564	SF470000	; ***new*** from ARIAL.TTF
+2565	SF480000	; ***new*** from ARIAL.TTF
+2566	SF410000	; ***new*** from ARIAL.TTF
+2567	SF450000	; ***new*** from ARIAL.TTF
+2568	SF460000	; ***new*** from ARIAL.TTF
+2569	SF400000	; ***new*** from ARIAL.TTF
+256a	SF540000	; ***new*** from ARIAL.TTF
+256b	SF530000	; ***new*** from ARIAL.TTF
+256c	SF440000	; ***new*** from ARIAL.TTF
+
+2580	upblock		; ***new*** from ARIAL.TTF
+; 2582 dnquarterblock
+; 2583 dnthreeeighthblock
+2584	dnblock		; ***new*** from ARIAL.TTF
+; 2585 dnfiveeighthblock
+; 2586 dnthreequarterblock
+; 2587 dnseveneighthblock
+2588	block		; ***new*** from ARIAL.TTF
+; 2589 lfseveneighthblock
+; 258A lfthreequarterblock
+; 258B lffiveeighthblock
+258c	lfblock		; ***new*** from ARIAL.TTF
+; 258D lfthreeeighthblock
+; 258E lfquarterblock
+; 258F lfeighthblock
+2590	rtblock		; ***new*** from ARIAL.TTF
+2591	ltshade		; ***new*** from ARIAL.TTF
+2592	shade		; ***new*** from ARIAL.TTF
+2593	dkshade		; ***new*** from ARIAL.TTF
+; 2594 upeighthblock
+; 2595 rteighthblock
+
+25a0	filledbox	; ***new***
+25a1	box		; ***new*** or H22073 from Arial
+25a2	boxrounded	; ***new***
+25a3	boxnested	; ***new***
+25a4	boxhorizhatch	; ***new***
+25a5	boxverthatch	; ***new***
+25a6	boxcrosshatch	; ***new***
+25a7	boxleftdiaghatch	; ***new***
+25a8	boxrtdiaghatch	; ***new***
+25a9	boxcrossdiaghatch	; ***new***
+25aa	smallboxfilled	; ***new*** or H18543 from Arial
+25ab	smallbox	; ***new*** or H18551 from Arial
+25ac	filledrect	; ***new***
+25ad	rectangle	; ***new***
+25ae	filledvertrect	; ***new***
+25af	vertrectangle	; ***new***
+
+25b0	filledparallelogram	; ***new***
+25b1	parallelogram	; ***new***
+25b2	triagup		; ***new***
+25b3	triangle	; ***new***
+25b4	smalltrianglesld	; ***new***
+25b5	smalltriangle	; ***new***
+25b6	trianglerightsld1	; ***new***
+25b7	triangleright1	; ***new***
+25b8	smalltrianglerightsld	; ***new***
+25b9	smalltriangleright	; ***new***
+25ba	triagrt		; ***new***
+25bb	triagrtopen	; ***new***
+25bc	triagdn		; ***new***
+25bd	triangleinv	; ***new***
+25be	smalltriangleinvsld	; ***new***
+25bf	smalltriangleinv	; ***new***
+25c0	triangleleftsld1	; ***new***
+25c1	triangleleft1	; ***new***
+25c2	smalltriangleleftsld	; ***new***
+25c3	smalltriangleleft	; ***new***
+25c4	triaglf		; ***new***
+25c5	triaglfopen	; ***new***
+25c6	diamondrhombsolid	; ***new***
+25c7	diamondrhomb	; ***new***
+25c8	diamondrhombnested	; ***new***
+25c9	fisheye		; ***new***
+
+25ca	lozenge
+
+25cb	circle		; ***new***
+25cc	circledash	; ***new***
+25cd	circleverthatch	; ***new***
+25ce	bullseye1	; ***new***
+25cf	circlesolid	; ***new*** or H18533 from Arial
+25d0	circleleftsld	; ***new***
+25d1	circlerightsld	; ***new***
+25d2	circlebottomsld	; ***new***
+25d3	circletopsld	; ***new***
+25d4	circlenesld	; ***new***
+25d5	circlenwopen	; ***new***
+25d6	semicircleleftsld	; ***new***
+25d7	semicirclelertsld	; ***new***
+25d8	invbullet	; ***new***
+25d9	invcircle	; ***new***
+25da	invsemicircleup	; ***new***
+25db	invsemicircledn	; ***new***
+25dc	nwquadarc	; ***new***
+25dd	nequadarc	; ***new***
+25de	sequadarc	; ***new***
+25df	swquadarc	; ***new***
+25e0	toparc		; ***new***
+25e1	bottomarc	; ***new***
+25e2	trianglesesld	; ***new***
+25e3	triangleswsld	; ***new***
+25e4	tranglenwsld	; ***new***
+25e5	trianglenesld	; ***new***
+25e6	openbullet_	; ***new*** openbullet1 or openbullet from Arial
+25e7	squareleftsld	; ***new***
+25e8	squarerightsld	; ***new***
+25e9	squarenwsld	; ***new***
+25ea	squaresesld	; ***new***
+25eb	squarevertbisect	; ***new***
+25ec	triangledot	; ***new***
+25ed	triangleleftsld	; ***new***
+25ee	trianglerightsld	; ***new***
+25ef	donought	; ***new*** doughnot
+
+263a	smileface	; ***new***
+263b	invsmileface	; ***new***
+263c	sun		; ***new***
+2640	female		; ***new***
+2642	male		; ***new***
+
+2660	spade
+2663	club
+2665	heart
+2666	diamond
+
+266a	musicalnote	; ***new***
+266b	musicalnotedbl	; ***new***
+266d	flat	; ***new***
+266e	natural	; ***new***
+266f	sharp	; ***new***
+
+; E802 c8580
+; E803 c8581
+; E804 c8576
+; E805 c8577
+; E820 c24051
+; E821 c24052
+; E822 c24056
+; E823 c24053
+; E825 c24057
+; E826 c19480
+; E827 c19483
+; E828 c24058
+; E829 c24060
+; E82A c24061
+; E82B c24062
+; E82C c24059
+
+; Some old stuff from Arial:
+
+; f001	fi
+; f002	fl
+; f003	ff ?
+; f004	commaccent
+; f005	undercommaaccent
+
+; some old stuff from LConsole
+
+; f003	circumflex1
+; f004	tilde1
+; f005	dieresis1
+; f006	breve1
+; f007	ring1
+; f008	cedilla1
+; f009	hungarumlaut1
+; f00a	caron1
+; f00b	acute1
+; f00c	grave1
+; f00d	cedilla2
+
+f7a6	LL
+f7a7	ll
+f7a8	Scedilla
+f7a9	scedilla
+f7aa	commaaccent	; was f004 in Arial
+f7ab	afii10063
+f7ac	afii10064
+f7ad	afii10192
+f7ae	afii10831
+f7af	afii10832
+f7b0	Acute
+f7b1	Caron
+f7b2	Dieresis
+f7b3	DieresisAcute
+f7b4	DieresisGrave
+f7b5	Grave
+f7b6	Hungarumlaut
+f7b7	Macron
+f7b8	cyrBreve
+f7b9	cyrFlex
+f7ba	dblGrave
+f7bb	cyrbreve
+f7bc	cyrflex
+f7bd	dblgrave
+f7be	dieresisacute
+f7bf	dieresisgrave
+
+f7c0	arrowhorizex
+f7c1	arrowvertex
+f7c2	braceex
+f7c3	braceleftbt
+f7c4	braceleftmid
+f7c5	bracelefttp
+f7c6	bracerightbt
+f7c7	bracerightmid
+f7c8	bracerighttp
+f7c9	bracketleftbt
+f7ca	bracketleftex
+f7cb	bracketlefttp
+f7cc	bracketrightbt
+f7cd	bracketrightex
+f7ce	bracketrighttp
+f7cf	copyrightsans
+
+f7d0	copyrightserif
+f7d1	integralex
+f7d2	parenleftbt
+f7d3	parenleftex
+f7d4	parenlefttp
+f7d5	parenrightbt
+f7d6	parenrightex
+f7d7	parenrighttp
+f7d8	registersans
+f7d9	registerserif
+f7da	trademarksans
+f7db	trademarkserif
+f7dc	onefitted
+f7dd	rupiah
+f7de	threequartersemdash
+f7df	centinferior
+f7e0	centsuperior
+f7e1	commainferior
+f7e2	commasuperior
+f7e3	dollarinferior
+f7e4	dollarsuperior
+f7e5	hypheninferior
+f7e6	hyphensuperior
+f7e7	periodinferior
+f7e8	periodsuperior
+f7e9	asuperior
+f7ea	bsuperior
+f7eb	dsuperior
+f7ec	esuperior
+f7ed	isuperior
+f7ee	lsuperior
+f7ef	msuperior
+f7f0	osuperior
+f7f1	rsuperior
+f7f2	ssuperior
+f7f3	tsuperior
+
+f7f4	Brevesmall
+f7f5	Caronsmall
+f7f6	Circumflexsmall
+f7f7	Dotaccentsmall
+f7f8	Hungarumlautsmall
+f7f9	Lslashsmall
+f7fa	OEsmall
+f7fb	Ogoneksmall
+f7fc	Ringsmall
+f7fd	Scaronsmall
+f7fe	Tildesmall
+f7ff	Zcaronsmall
+
+; f810, f811, f812, f813, f814, f815, f816, f817, f818, f819, 
+; f81a, f81b, f81c, f81d, f81e, f81f, f820
+
+; F810 Dcaron1
+; F811 dcaron1
+; F812 Lcaron1
+; F813 lcaron1
+; F814 Tcaron1
+; F815 tcaron1
+; F816 Scedilla1
+; F817 scedilla1
+; F818 Tcedilla1
+; F819 tcedilla1
+; F81A gcedilla1
+; F81B peso1
+; F820 dotcircle1
+; F821 ltshade1
+; F822 shade1
+; F823 dkshade1
+
+; some old stuff from LConsole
+
+; f818	Kcedilla1
+; f819	kcedilla1
+; f81a	Lcedilla1
+; f81b	lcedilla1
+; f81c	Ncedilla1
+; f81d	ncedilla1
+; f81e	Rcedilla1
+; f81f	rcedilla1
+; f820	Scedilla1
+; f821	scedilla1
+; f822	Tcedilla1
+; f823	tcedilla1
+ 
+f821	exclamsmall
+ 
+; f822, f823
+ 
+f824	dollaroldstyle
+f826	ampersandsmall
+f830	zerooldstyle
+f831	oneoldstyle
+f832	twooldstyle
+f833	threeoldstyle
+f834	fouroldstyle
+f835	fiveoldstyle
+f836	sixoldstyle
+f837	sevenoldstyle
+f838	eightoldstyle
+f839	nineoldstyle
+f83f	questionsmall
+f860	Gravesmall
+f861	Asmall
+f862	Bsmall
+f863	Csmall
+f864	Dsmall
+f865	Esmall
+f866	Fsmall
+f867	Gsmall
+f868	Hsmall
+f869	Ismall
+f86a	Jsmall
+f86b	Ksmall
+f86c	Lsmall
+f86d	Msmall
+f86e	Nsmall
+f86f	Osmall
+f870	Psmall
+f871	Qsmall
+f872	Rsmall
+f873	Ssmall
+f874	Tsmall
+f875	Usmall
+f876	Vsmall
+f877	Wsmall
+f878	Xsmall
+f879	Ysmall
+f87a	Zsmall
+f8a1	exclamdownsmall
+f8a2	centoldstyle
+f8a8	Dieresissmall
+f8af	Macronsmall
+f8b4	Acutesmall
+f8b8	Cedillasmall
+f8bf	questiondownsmall
+f8e0	Agravesmall
+f8e1	Aacutesmall
+f8e2	Acircumflexsmall
+f8e3	Atildesmall
+f8e4	Adieresissmall
+f8e5	Aringsmall
+f8e6	AEsmall
+f8e7	Ccedillasmall
+f8e8	Egravesmall
+f8e9	Eacutesmall
+f8ea	Ecircumflexsmall
+f8eb	Edieresissmall
+f8ec	Igravesmall
+f8ed	Iacutesmall
+f8ee	Icircumflexsmall
+f8ef	Idieresissmall
+f8f0	Ethsmall
+f8f1	Ntildesmall
+f8f2	Ogravesmall
+f8f3	Oacutesmall
+f8f4	Ocircumflexsmall
+f8f5	Otildesmall
+f8f6	Odieresissmall
+f8f8	Oslashsmall
+f8f9	Ugravesmall
+f8fa	Uacutesmall
+f8fb	Ucircumflexsmall
+f8fc	Udieresissmall
+f8fd	Yacutesmall
+f8fe	Thornsmall
+f8ff	Ydieresissmall
+
+fb00	ff
+fb01	fi		% was f001 in Arial
+fb02	fl		% was f002 in Arial
+fb03	ffi
+fb04	ffd
+
+fb1e	varika	; ***new***
+
+; FB2A afii57694
+; FB2B afii57695
+; FB2C afii57696
+; FB2D afii57697
+; FB31 afii57691
+; FB32 afii57720
+; FB33 afii57721
+; FB34 afii57722
+; FB35 afii57723
+; FB36 afii57724
+; FB38 afii57725
+; FB39 afii57726
+; FB3A afii57761
+; FB3B c8564
+; FB3C afii57762
+; FB3E afii57763
+; FB40 afii57764
+; FB41 afii57765
+; FB44 afii57766
+; FB46 afii57767
+; FB47 afii57768
+; FB49 afii57770
+; FB4A afii57771
+; FB4B afii57700
+; FB90 c19424
+; FBFD c19440
+; FC08 c24065
+; FC0E c24066
+; FC32 c20220
+; FC3F c24069
+; FC40 c24070
+; FC41 c24071
+; FC42 c20631
+; FC43 c20224
+; FC44 c20222
+; FC4E c24068
+; FC5E c19498
+; FC5F c19497
+; FC60 c19493
+; FC61 c19495
+; FC62 c19494
+; FC6A c20622
+; FC6D c24081
+; FC6F c24074
+; FC70 c20650
+; FC73 c24082
+; FC75 c20652
+; FC8F c20641
+; FC91 c20254
+; FC94 c20255
+; FC9C c24075
+; FC9D c24076
+; FC9E c24077
+; FC9F c20621
+; FCA1 c20646
+; FCA2 c20644
+; FCA3 c20647
+; FCA4 c20648
+; FCA6 c24067
+; FCA8 c20626
+; FCAA c20624
+; FCAC c20627
+; FCB0 c24072
+; FCC9 c20251
+; FCCA c20252
+; FCCB c20253
+; FCCC c20250
+; FCCD c20630
+; FCCE c20633
+; FCCF c20632
+; FCD0 c20634
+; FCD1 c20635
+; FCD2 c24078
+; FCD3 c24079
+; FCD4 c24080
+; FCD5 c20639
+; FCDA c20656
+; FCDB c20654
+; FCDC c20657
+; FCDD c20658
+; FD30 c24073
+; FD3E c21128
+; FD3F c21129
+; FD88 c24091
+; FDF2 c20182
+; FE70 c19482
+; FE72 c19484
+; FE74 c24054
+; FE76 c19479
+; FE78 c19481
+; FE7A c19999
+; FE7C c19492
+; FE7E c19491
+; FE80 c24189
+; FE81 c20174
+; FE82 c20175
+; FE83 c24198
+; FE84 c24199
+; FE85 c24194
+; FE86 c24195
+; FE87 c24200
+; FE88 c24201
+; FE89 c24190
+; FE8A c24193
+; FE8B c24191
+; FE8C c24192
+; FE8D c20051
+; FE8E c20052
+; FE8F c20053
+; FE90 c20056
+; FE91 c20054
+; FE92 c20055
+; FE93 c20153
+; FE94 c20154
+; FE95 c20057
+; FE96 c20060
+; FE97 c20058
+; FE98 c20059
+; FE99 c20061
+; FE9A c20064
+; FE9B c20062
+; FE9C c20063
+; FE9D c20065
+; FE9E c20068
+; FE9F c20066
+; FEA0 c20067
+; FEA1 c20069
+; FEA2 c20072
+; FEA3 c20070
+; FEA4 c20071
+; FEA5 c20073
+; FEA6 c20076
+; FEA7 c20074
+; FEA8 c20075
+; FEA9 c20077
+; FEAA c20078
+; FEAB c20079
+; FEAC c20080
+; FEAD c20081
+; FEAE c20082
+; FEAF c20083
+; FEB0 c20084
+; FEB1 c20085
+; FEB2 c20088
+; FEB3 c20086
+; FEB4 c20087
+; FEB5 c20089
+; FEB6 c20092
+; FEB7 c20090
+; FEB8 c20091
+; FEB9 c20093
+; FEBA c20096
+; FEBB c20094
+; FEBC c20095
+; FEBD c20097
+; FEBE c20100
+; FEBF c20098
+; FEC0 c20099
+; FEC1 c20101
+; FEC2 c20104
+; FEC3 c20102
+; FEC4 c20103
+; FEC5 c20105
+; FEC6 c20108
+; FEC7 c20106
+; FEC8 c20107
+; FEC9 c20109
+; FECA c20112
+; FECB c20110
+; FECC c20111
+; FECD c20113
+; FECE c20116
+; FECF c20114
+; FED0 c20115
+; FED1 c20117
+; FED2 c20120
+; FED3 c20118
+; FED4 c20119
+; FED5 c20121
+; FED6 c20124
+; FED7 c20122
+; FED8 c20123
+; FED9 c20125
+; FEDA c20128
+; FEDB c20126
+; FEDC c20127
+; FEDD c20129
+; FEDE c20132
+; FEDF c20130
+; FEE0 c20131
+; FEE1 c20133
+; FEE2 c20136
+; FEE3 c20134
+; FEE4 c20135
+; FEE5 c20137
+; FEE6 c20140
+; FEE7 c20138
+; FEE8 c20139
+; FEE9 c20141
+; FEEA c20144
+; FEEB c20142
+; FEEC c20143
+; FEED c20145
+; FEEE c20147
+; FEEF c20256
+; FEF0 c20257
+; FEF1 c20148
+; FEF2 c20151
+; FEF3 c20149
+; FEF4 c20150
+; FEF5 c20214
+; FEF6 c20215
+; FEF7 c24202
+; FEF8 c24203
+; FEF9 c24206
+; FEFA c24207
+; FEFB c20208
+; FEFC c20209
+
+feff	bom	; zeronobreakspace ***new***
+
+; ffe6 .null
