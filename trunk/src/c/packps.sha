@@ -1,0 +1,451 @@
+#! /bin/sh
+# This is a shell archive, meaning:
+# 1. Remove everything above the #! /bin/sh line.
+# 2. Save the resulting text in a file.
+# 3. Execute the file with /bin/sh (not csh) to create the files:
+#	makefile
+#	packPS.c
+#	packPS.man
+#	History
+#	version.h
+# This archive created: Fri Mar 16 14:14:37 1990
+export PATH; PATH=/bin:$PATH
+if test -f 'makefile'
+then
+	echo shar: will not over-write existing file "'makefile'"
+else
+cat << \SHAR_EOF > 'makefile'
+#
+# makefile for PStrip program
+
+packPS: packPS.o makefile
+	cc -g -o packPS packPS.o
+
+packPS.o:
+	@echo "Compiling edition `awk '{print $$3+1; exit}' version.h` at `date` ..." >> History;tail -1 History
+
+# increment current version number in version.h and compile...
+	@echo "#define EDIT `awk '{print $$3+1; exit}' version.h` /* `date` */" > make.tmp
+	@tail -1 version.h >> make.tmp
+	@mv make.tmp version.h
+
+	cc -c packPS.c
+
+manpage:
+	cp man.page /usr/man/manl/packPS.l
+
+all:	packPS
+
+lint:
+	lint -hvxa packPS.c
+
+install:
+	strip ./packPS
+	cp ./packPS /usr/local/bin/packPS
+SHAR_EOF
+fi # end of overwriting check
+if test -f 'packPS.c'
+then
+	echo shar: will not over-write existing file "'packPS.c'"
+else
+cat << \SHAR_EOF > 'packPS.c'
+#include <stdio.h>
+#include "version.h"
+
+/*
+ * (C) 1986 by Adobe Systems Incorporated. All rights reserved.
+ *
+ * This file may be freely copied and redistributed as long as:
+ *   1) This entire notice continues to be included in the file, 
+ *   2) If the file has been modified in any way, a notice of such
+ *      modification is conspicuously indicated.
+ *
+ * PostScript, Display PostScript, and Adobe are registered trademarks of
+ * Adobe Systems Incorporated.
+ * 
+ * ************************************************************************
+ * THE INFORMATION BELOW IS FURNISHED AS IS, IS SUBJECT TO CHANGE WITHOUT
+ * NOTICE, AND SHOULD NOT BE CONSTRUED AS A COMMITMENT BY ADOBE SYSTEMS
+ * INCORPORATED. ADOBE SYSTEMS INCORPORATED ASSUMES NO RESPONSIBILITY OR 
+ * LIABILITY FOR ANY ERRORS OR INACCURACIES, MAKES NO WARRANTY OF ANY 
+ * KIND (EXPRESS, IMPLIED OR STATUTORY) WITH RESPECT TO THIS INFORMATION, 
+ * AND EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR PARTICULAR PURPOSES AND NONINFINGEMENT OF THIRD PARTY RIGHTS.
+ * ************************************************************************
+ */
+ 
+/*************************************************************************
+ **									**
+ **	packPS							**
+ **									**
+ **	filter to compress PostScript source files into minimal space.	**
+ **									**
+ **									**
+Edit History:
+	Glenn Reid Wed Tue Sep  3 14:10:17 1986 created
+	greid Thu Oct 23 12:38:13 1986 fixed bug:  packPS was
+		inserting spaces ahead of / inside strings.
+	greid Fri May  8 14:18:32 1987 break lines at 256 maximum
+ **									**
+ *************************************************************************/
+
+
+/* constants */
+
+#define LEFTPAREN '('		/* delimeter for PasteUp operators */
+#define RIGHTPAREN ')'		/* delimeter for PasteUp operators */
+
+/* your basic constants */
+#define TRUE 1
+#define FALSE 0
+#define MAXCOUNT 128		/* max characters on one line */
+
+#define SPACE ' '		/* another WHITE character */
+#define WHITE_CHAR '\n'		/* for separating tokens */
+#define FILENAME_MAX 256	/* max characters in pathname */
+#define STRING_MAX 256		/* max for input strings */
+#define TEXT 4			/* verbatim text, unparsed */
+
+
+/* boolean switches */
+short	messages;	/* print messages or not? (boolean) */
+
+/* other Globals */
+int	sp;		/* for indenting the messages */
+int	whitecount,
+	charcount;	/* for 'condense' mode */
+char  pstring[STRING_MAX];
+
+/**
+ ** beginning of procedure definitions
+ **/
+
+InitGlobals()
+{
+    int     i;
+
+    printf ("%%! Adobe packPS Version %s (%d)\n", VERSION, EDIT );
+
+    messages = FALSE;
+    whitecount = 0;
+    charcount = 0;
+}				/* InitGlobals */
+
+
+
+FILE *openfile ( filename, newtype ) char *filename; int newtype;
+/*
+ * This is a separate function for better portability, since this is
+ * the most machine-dependent part of the system.  Returns
+ */
+{
+    FILE *newfile;
+
+    if ( 0 >= strlen(filename) ) {
+	newfile = (FILE *)-1;
+    }
+    newfile = fopen(filename, "r" );
+    if ( newfile <= 0 ) {
+	printf ("%%%% CAN'T FIND: %s\n", filename );
+	fprintf ( stderr, "CAN'T FIND: %s\n", filename );
+	newfile = (FILE *)-1;
+    }
+    return ( newfile );
+} /* openfile */
+
+
+
+char *mainfilter ( stream ) FILE *stream;
+/*
+ * copies current input file to current output file char by char
+ * removing unnecessary white space and comments.
+ */
+{
+    char   *curr_token;
+    register int    ch, lastch;
+    int	    parenlevel;			/* parentheses counter */
+    long    spacecount;			/* for breaking long lines */
+    short   backslash;			/* boolean */
+    short   spaceFLAG;
+    short   happy;
+    short   allowspace;
+
+    int	    readcount, writecount, in_fd, out_fd;
+
+    happy = FALSE;
+    parenlevel = 0;
+    backslash = FALSE;
+    spacecount = 0;
+    spaceFLAG = FALSE;
+
+ /* copy text to standard out, looking for comments or EOF.  Collapse
+    consecutive white space characters into one.
+  */
+    while ( !happy ) {
+	while (((ch = fgetc (stream)) != EOF) && ch != '%' ) {
+	    if ( parenlevel<=0 && (ch==' ' || ch=='\t' || ch=='\n') ) {
+		whitecount++;
+	    } /* whitespace */
+	    else if ( parenlevel ) {
+		putchar(ch);
+		charcount++;
+	    }
+	    else {
+		if ( whitecount ) {
+		    putchar ( WHITE_CHAR );
+		    charcount = 0;
+		}		/* if whitecount */
+		putchar(ch);
+		lastch = ch;
+		charcount++;
+		whitecount = 0;
+	    } /* regular char */
+	    if ( ch==LEFTPAREN && !backslash ) parenlevel++;
+	    else if ( ch==RIGHTPAREN && !backslash ) parenlevel--;
+	    if ( (ch=='\\') && !backslash )	/* allow '\\' */
+	        backslash = TRUE;
+	    else
+		backslash = FALSE;
+	} /* while */
+
+       /* handle COMMENTS here */
+	if ( ch == '%' ) {
+	    if ( parenlevel > 0 ) putchar ( ch );
+	    else {	/* read through end of line */
+		while ((ch = fgetc (stream)) != '\n' && ch != EOF ) {
+		    ;
+		} /* while comment text */
+		if ( ch == EOF ) putchar ( WHITE_CHAR );
+		if ( !whitecount ) whitecount++;
+		charcount = 0;
+	    }		/* else all other cases */
+	    backslash = FALSE;
+	}			/* if this is a comment line */
+
+       /* handle END-OF-FILE here */
+	else if (ch == EOF) {
+	    putchar (WHITE_CHAR);
+	    return ((char *) EOF);
+	} /* if EOF */
+    } /* while not happy */
+} /* mainfilter */
+    
+
+
+/************************************************************************
+**
+**	main program
+**
+*************************************************************************/
+
+main(argc, argv)
+int argc;
+char *argv[];
+{
+    FILE *inputfd;
+    char initfilename[FILENAME_MAX], *operator;
+    int argument, filetype;
+    short flags,			/* boolean */
+	  keyboard,			/* read from stdin? */
+	  morefiles;
+
+    InitGlobals();
+
+    argument = 1;
+    if ( argc <= 1 )  {
+	keyboard = TRUE;
+    } else {
+	keyboard = FALSE;
+    }
+    morefiles = TRUE;
+    while ( morefiles ) {
+	if ( keyboard ) {
+	    keyboard = FALSE;
+	    inputfd = stdin;
+	}
+	else {
+	    inputfd = openfile (argv[argument], TEXT);
+	}
+
+     /* here is where the main processing goes on */
+
+	if ( inputfd > 0 ) {
+	    mainfilter ( inputfd );
+	    fclose (inputfd);
+	}
+
+	argument++;
+	if (argument >= argc && !keyboard )
+	    morefiles = FALSE;
+    }				/* while morefiles */
+} /* main */
+SHAR_EOF
+fi # end of overwriting check
+if test -f 'packPS.man'
+then
+	echo shar: will not over-write existing file "'packPS.man'"
+else
+cat << \SHAR_EOF > 'packPS.man'
+.TH PACKPS 1 "1 Sep 1986" "Adobe Systems, Inc."
+.ds PS P\s-2OST\s+2S\s-2CRIPT\s+2
+.SH NAME
+.B packPS
+\- preprocessor for \*(PS file compression.
+.SH SYNOPSIS
+.br
+.B packPS
+[
+.B \-c \-s \-v
+] [
+.B \-
+] [
+.I files ...
+]
+.br
+.SH DESCRIPTION
+.PP
+.B packPS
+will take a \*(PS source file and remove all unnecessary white space
+(defined to be spaces, tabs, or newlines) and remove any comment lines.
+.PP
+In the simplest case,
+.B packPS
+will copy standard input to
+standard output,
+removing unnecessary white space and comments (comments are defined to be any
+text from a percent-sign '%' through end of line.
+.PP
+The default mode of operation will optimize the output for the
+PostScript scanner.  That is, it will delimit valid \*(PS tokens by a single
+white-space character where necessary.  Note that single-character tokens,
+like '(', '[', '{', '<', can be scanned efficiently without having
+white space immediately after it (since the scanner will read exactly
+one character from the
+input and will not have to back up or use 
+.I ungetc
+(3) ).
+.PP
+Any number of files
+may be specified on the command line, and may be interspersed with option
+flags which will be evaluated as encountered in a left-to-right fashion.
+The options may be in effect for some of the files on the command line
+but not others.
+.br
+.sp!
+.SH OPTIONS
+.TP
+.B \-c
+Condense mode.  Removes all syntactically unnecessary white space
+from the resulting text and strips comments.  Note that the normal
+mode of operation will occasionally
+.I insert
+white space between the special characters / [ ] { } ( ) < > and
+surrounding text, so that the PostScript scanner/interpreter will
+not have to back up while tokenizing the input stream.
+The \-c option is designed
+to turn this feature off, so that all the above special characters
+are packed as tightly as possible, to use the least amount of space.
+.TP
+.B \-
+Special case.  When encountered on the command line,
+.B packPS
+will read from standard input until EOF, then continue parsing
+the command line.
+
+.SH SEE\ ALSO
+pasteup(1), enscript(1), \*(PS Language Reference Manual.
+
+.SH BUGS
+If
+.B packPS
+cannot find a named file, it announces the problem on
+.I stderr
+and places a comment in the standard output
+stream (set off with a "%" character) to the same effect.
+.B packPS
+does not quit when or because it cannot find a
+file.
+.PP
+.PP
+Options are not parsed according to
+.I getopt
+(3), which means 
+they cannot be blocked together (like
+.B \-cvn
+) but they can be interspersed with filenames
+without ill effect.
+
+.SH AUTHOR
+Glenn Reid
+.br
+Adobe Systems Incorporated, Palo Alto, CA
+
+.SH NOTES
+\*(PS is a registered trademark of Adobe Systems, Incorporated.
+.br
+SHAR_EOF
+fi # end of overwriting check
+if test -f 'History'
+then
+	echo shar: will not over-write existing file "'History'"
+else
+cat << \SHAR_EOF > 'History'
+Compiling edition 3 at Wed Sep  3 12:16:31 PDT 1986 ...
+Compiling edition 4 at Wed Sep  3 14:02:39 PDT 1986 ...
+Compiling edition 5 at Wed Sep  3 14:06:30 PDT 1986 ...
+Compiling edition 6 at Wed Sep  3 14:10:08 PDT 1986 ...
+Compiling edition 7 at Wed Sep  3 15:10:20 PDT 1986 ...
+Compiling edition 8 at Wed Sep  3 15:13:43 PDT 1986 ...
+Compiling edition 9 at Wed Sep  3 15:18:06 PDT 1986 ...
+Compiling edition 10 at Wed Sep  3 15:58:16 PDT 1986 ...
+Compiling edition 11 at Wed Sep  3 16:02:14 PDT 1986 ...
+Compiling edition 12 at Wed Sep  3 17:18:23 PDT 1986 ...
+Compiling edition 13 at Wed Sep  3 17:23:51 PDT 1986 ...
+Compiling edition 14 at Tue Oct  7 09:03:03 PDT 1986 ...
+Compiling edition 15 at Tue Oct  7 09:05:19 PDT 1986 ...
+Compiling edition 16 at Tue Oct  7 09:12:57 PDT 1986 ...
+Compiling edition 17 at Tue Oct  7 09:30:23 PDT 1986 ...
+Compiling edition 18 at Tue Oct  7 09:46:11 PDT 1986 ...
+Compiling edition 19 at Tue Oct  7 10:11:09 PDT 1986 ...
+Compiling edition 20 at Tue Oct  7 10:19:16 PDT 1986 ...
+Compiling edition 21 at Tue Oct  7 10:37:59 PDT 1986 ...
+Compiling edition 22 at Tue Oct  7 10:44:19 PDT 1986 ...
+Compiling edition 23 at Tue Oct  7 10:53:29 PDT 1986 ...
+Compiling edition 24 at Tue Oct  7 11:05:46 PDT 1986 ...
+Compiling edition 25 at Tue Oct  7 11:25:44 PDT 1986 ...
+Compiling edition 26 at Tue Oct  7 13:10:39 PDT 1986 ...
+Compiling edition 27 at Tue Oct  7 13:20:38 PDT 1986 ...
+Compiling edition 28 at Tue Oct  7 14:12:41 PDT 1986 ...
+Compiling edition 29 at Fri Oct 10 10:05:02 PDT 1986 ...
+Compiling edition 30 at Fri Oct 24 16:08:46 PDT 1986 ...
+Compiling edition 31 at Fri May  8 14:38:25 PDT 1987 ...
+Compiling edition 32 at Fri May  8 14:41:47 PDT 1987 ...
+Compiling edition 33 at Fri May  8 14:47:58 PDT 1987 ...
+Compiling edition 34 at Fri May  8 14:49:35 PDT 1987 ...
+Compiling edition 35 at Fri May  8 15:10:21 PDT 1987 ...
+Compiling edition 36 at Fri May  8 15:15:12 PDT 1987 ...
+Compiling edition 37 at Fri May  8 15:18:09 PDT 1987 ...
+Compiling edition 38 at Fri May  8 15:19:43 PDT 1987 ...
+Compiling edition 39 at Fri May  8 15:22:24 PDT 1987 ...
+Compiling edition 40 at Sat Jul 18 20:32:49 PDT 1987 ...
+Compiling edition 2 at Sat Jul 18 20:34:55 PDT 1987 ...
+Compiling edition 3 at Sat Jul 18 21:35:20 PDT 1987 ...
+Compiling edition 4 at Sat Jul 18 21:40:05 PDT 1987 ...
+Compiling edition 5 at Sat Jul 18 21:47:09 PDT 1987 ...
+Compiling edition 6 at Sat Jul 18 21:49:14 PDT 1987 ...
+Compiling edition 7 at Wed Aug  9 15:11:42 PDT 1989 ...
+Compiling edition 8 at Wed Aug  9 15:14:42 PDT 1989 ...
+SHAR_EOF
+fi # end of overwriting check
+if test -f 'version.h'
+then
+	echo shar: will not over-write existing file "'version.h'"
+else
+cat << \SHAR_EOF > 'version.h'
+#define EDIT 8 /* Wed Aug  9 15:14:44 PDT 1989 */
+#define VERSION "2.0"  /* Sat Jul 18 20:34:03 1987 */
+SHAR_EOF
+fi # end of overwriting check
+#	End of shell archive
+exit 0
+
