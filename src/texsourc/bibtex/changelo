@@ -1,0 +1,234 @@
+Wed Feb  2 11:00:09 1994  Karl Berry  (karl@cs.umb.edu)
+
+        * Version 6.1.
+
+Mon Jan 24 07:33:17 1994  Karl Berry  (karl@cs.umb.edu)
+
+        * Version 6.0.
+
+Sun Nov  7 14:26:23 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* convert: Remove call to sync.
+
+Fri Nov  5 15:50:55 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* bibtex.ch (option_index): Declare as int.
+
+Tue Oct 12 14:07:15 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* bibtex.ch (verbose): Declare as int.
+
+Sun Oct  3 12:41:46 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (cbibtex.ch): Don't chmod 444.
+	(commonh): paths.h is in kpathsea.
+	(commono): kpathsea.a has its own variable now.
+	(*clean): Include standard targets.
+        (program): New variable.
+
+Sun May 23 06:17:53 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* bibtex.ch (max_bib_files): Increase to 1000.
+
+Sun May  9 10:10:01 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (commonh): Remove $(srcdir) for paths.h.
+	(commono): Add kpathsea library.
+
+Fri Apr 30 15:07:24 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (commonh): Add paths.h.
+
+Sat Apr 10 16:41:18 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* convert: Don't sync unless /bin/sync exists.
+
+Fri Apr  9 16:07:24 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (commonh): Define as config.h.
+
+Thu Mar 25 16:59:08 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (openinout.c): Remove the file before making the link.
+
+Sat Mar 13 11:44:46 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (CPPFLAGS): Add @DEFS@, for -DHAVE_CONFIG_H.
+
+	* convert: Use cpascal.h instead of pascal.h.
+
+Sun Feb 21 08:27:23 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Version 5.851d.
+
+Fri Feb 19 13:21:01 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* small.sed (max_ent_strs): Restore to 3000.
+
+Tue Feb 16 17:53:06 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (install-exec, install-data): New targets.
+
+Mon Feb 15 12:06:14 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* bibtex.ch (27): Allow any character as input.
+
+Tue Jan 26 17:09:10 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* bibtex.ch (banner): Use version_string.
+
+Sun Jan  3 13:28:45 1993  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (distclean): Remove Makefile.
+
+Thu Dec 17 07:36:44 1992  Karl Berry  (karl@cs.umb.edu)
+
+	* bibtex.ch (198): @d int == `the_int', instead of doing the
+	substitution ourselves.
+
+	* bibtex.ch: Move command-line processing to the existing section
+	that handles it.
+
+	* Makefile.in (libs): $(fileio) => $(fileioo).
+
+Wed Dec 16 18:03:32 1992  Karl Berry  (karl@cs.umb.edu)
+
+	* bibtex.ch: Put in option parsing; make min_crossrefs a variable,
+	instead of a constant.
+
+Sun Dec 13 14:24:35 1992  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in (c-sources): New target.
+
+Sat Dec 12 14:07:37 1992  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile.in: Rewrite from Makefile.
+
+	* small.sed: New file to replace small.diff.
+
+Mon Nov 16 08:09:07 1992  Karl Berry  (karl@cs.umb.edu)
+
+	* Makefile (cbibtex.ch): New target.  (Copy from bibtex.ch.)
+
+	* bibtex.ch (lex_class): Make RET be white_space.
+
+Sun Nov  1 16:20:05 1992  Kathy Hargreaves  (letters@red.cs.umb.edu)
+
+	* bibtex.ch (max_bib_files): increase to 100.
+
+Thu Sep 24 11:04:03 1992  Karl Berry  (karl@cs.umb.edu)
+
+        * Makefile (openinout.c): avoid use of $<.
+
+Fri Sep  4 08:58:58 1992  Karl Berry  (karl@hayley)
+
+        * Makefile (extraclean): new target.
+        (distclean): don't remove backup files etc. here.
+
+Wed Aug 19 08:39:55 1992  Karl Berry  (karl@hayley)
+
+        * Makefile (openinout.c): new target.
+        (clean): remove it.
+
+Wed Aug 12 16:16:28 1992  Karl Berry  (karl@hayley)
+
+        * Makefile (fileioo): use the default compilation rule.
+
+Wed Jul 15 11:52:40 1992  Karl Berry  (karl@hayley)
+
+        * bibtex.ch, small.diff: don't change the value of min_crossrefs.
+
+Sun Jul  5 07:23:23 1992  Karl Berry  (karl@hayley)
+
+        * convert (sed): change `/bin/sed' to `sed'.
+
+        * bibtex.ch: avoid lines >= 80 chars.
+
+Fri Jul  3 11:59:50 1992  Karl Berry  (karl@hayley)
+
+        * Makefile (bibtex.p): depend on cbibtex.ch, not bibtex.ch.
+
+Thu Jul  2 16:04:37 1992  Karl Berry  (karl@hayley)
+
+        * Makefile (CPPFLAGS): new variable
+        (.c.o): use it.
+        (cflags): change to CFLAGS.
+
+Thu May 14 19:21:10 1992  Karl Berry  (karl@claude.cs.umb.edu)
+
+        * Version 5.851c.
+
+Sat Apr 25 09:18:17 1992  Karl Berry  (karl@hayley)
+
+        * convert: sync after the pipe.
+
+        * Makefile (libs): new var to abbreviate `../libs.a $(LIBS)'.
+        (bibtex): use it.
+
+        * Makefile (distclean): new target.
+
+Thu Apr 23 12:07:32 1992  Karl Berry  (karl@hayley)
+
+        * Makefile: fix clean targets (from Andreas).
+
+Thu Apr 16 13:49:36 1992  Karl Berry  (karl@ra.cs.umb.edu)
+
+        * Version 5.851b.
+
+Sun Apr 12 11:46:24 1992  Karl Berry  (karl@hayley)
+
+        * bibtex.ch: use BSTINPUTS to look for the BST file instead of
+          TEXINPUTS.
+
+Sat Apr 11 10:31:57 1992  Karl Berry  (karl@hayley)
+
+        * bibtex.ch (388): remove mutually exclusive test, instead of
+          fixing it.
+
+Fri Apr 10 17:26:30 1992  Karl Berry  (karl@hayley)
+
+        * small.diff: remake this so it works properly.
+
+        * Makefile (mostlyclean): remove cbibtex.ch.
+        (.ch.p): tangle with cbibtex.ch.
+
+Fri Apr  3 09:53:25 1992  Karl Berry  (karl at hayley)
+
+        * Version 5.851a.
+
+Mon Mar 30 11:20:11 1992  Karl Berry  (karl at hayley)
+
+        * bibtex.ch (388): fix mutually exclusive tests.
+
+Fri Mar 20 16:14:05 1992  Karl Berry  (karl at hayley)
+
+        * Makefile (mostlyclean): new name for `clean'.
+        (clean): what `realclean' used to be.
+        (realclean): nothing to do anymore.
+        (install): install the program.
+
+Fri Jan 24 09:08:31 1992  Karl Berry  (karl at hayley)
+
+        * Makefile (cflags): don't include -I../config.
+
+        * bibtex.ch (max_ent_strs): reduce to 10000, as the previous value
+          allocated 2.5MB (even this allocates 1MB).
+
+Sun Jan 12 09:16:54 1992  Karl Berry  (karl at hayley)
+
+        * Makefile (bibtex.o): remove -Dbswap=bswapp.  Why did I do this?
+
+        * Makefile (fileioh): no longer exists.
+
+        * convert (../common): now ../lib.
+
+Sat Jan 11 16:53:05 1992  Karl Berry  (karl at hayley)
+
+        * bibtex.ch (FILENAMESIZE): rename to `PATH_MAX'.
+
+        * Makefile: redo for new configuration.
+
+Tue Jan  7 16:09:55 1992  Karl Berry  (karl at hayley)
+
+        * bibtex.ch (10/main program): exit with bad status if history >
+          warning_message.

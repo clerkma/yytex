@@ -1,0 +1,129 @@
+# Copyright 2007 TeX Users Group.
+# You may freely use, modify and/or distribute this file.
+
+# Makefile for Y&YTeX
+
+# TO SET UP DEBUGGING INFO:
+# (1) add -Zi to CFLAGS for CL
+# (2) add /MAP /DEBUG /PDB:yandytex.pdb for LINK
+
+# NOTE: full optimization causes some problems especially in TEX5.C & TEX6.C
+# NOTE: assuming no aliasing causes some problems especially in TEXMF.C
+
+CC = cl
+
+LINK = link
+
+# -Gf saves about 7k bytes in EXE file
+
+# For production (-Bd show compiler passes)
+# ASSUMING WE WORK WITH MS COMPILER AND LINKER ONLY use -Gy and -Gf
+# CFLAGS=-c -DDOS -DMSDOS -DPHARLAP -DTeX -DMYDEBUG -Ilib -Ox -Gy -Gf -W3
+# CFLAGS=-c -DDOS -DMSDOS -DPHARLAP -DTeX -DMYDEBUG -Ilib -YX -Ox -Ge -Gy -Gf -W4
+# Release version
+CFLAGS=/c /MT /W4 /GX /Ox /O2 /DMT /DMSDOS /DTeX /DPHARLAP /DNDEBUG /D_X86=1 /DWIN32 /D_WIN32 /DNDEBUG /D_WINDOWS /Ilib /YX
+# Debugging version
+# CFLAGS=/c /MT /W4 /GX /Od /Zi /DMT /DMSDOS /DTeX /DPHARLAP  /D_X86=1 /DWIN32 /D_WIN32 /D_WINDOWS /Ilib /YX 
+
+# NOTE: -Ox => -Ogityb1 -Gs
+
+# Link with MS LINK
+# LFLAGS=@yandytex.nt /MAP lib\libdos.lib
+# Release version
+# LFLAGS=/MAP lib\libdos.lib
+LFLAGS=/RELEASE /MAP:yandytexdll.map /DLL /subsystem:windows kernel32.lib gdi32.lib user32.lib 
+# debugging version
+# LFLAGS=/DEBUG /MAP:yandytexdll.map /PDB:yandytexdll.pdb /DLL /subsystem:windows kernel32.lib gdi32.lib user32.lib 
+# LFLAGS=/DEBUG /MAP:yandytexdll.map /DLL /subsystem:windows kernel32.lib gdi32.lib user32.lib 
+
+# objs = cextra.obj citex.obj openinou.obj local.obj \
+objs = 	texmf.obj itex.obj openinou.obj subroute.obj local.obj \
+		tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
+		tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj
+
+# ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+# yandytex.exe: $(objs) lib/libdos.lib
+# texmf.exe: $(objs) lib/libdos.lib
+texmf.dll: $(objs) 
+   	$(LINK) $(LFLAGS) texmf itex openinou subroute local \
+	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9
+#	copy texmf.exe yandytex.exe
+	copy texmf.dll yandytex.dll
+#	copy yandytex.dll c:\winsourc /y
+	copy yandytex.dll d:\winsourc /y
+
+# ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
+# cextra.obj: texd.h ..\texmf.c
+# cextra.obj: texmf.c texd.h
+texmf.obj: texmf.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+	$(CC) /DINITEX /DINI $(CFLAGS) texmf.c
+#	copy texmf.obj cextra.obj
+
+# citex.obj: itex.c texd.h 
+itex.obj: itex.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+#	$(CC) -focitex -DINITEX $(CFLAGS) -c itex.c
+#	$(CC) -Focitex -DINITEX $(CFLAGS) itex.c
+	$(CC) /DINITEX $(CFLAGS) itex.c
+#	copy itex.obj citex.obj
+
+# openinout.obj: texd.h ..\openinout.c 
+openinou.obj: openinou.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+	$(CC) $(CFLAGS) openinou.c
+
+subroute.obj: subroute.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+	$(CC) $(CFLAGS) subroute.c	
+
+local.obj: local.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+	$(CC) /DINITEX $(CFLAGS) local.c
+
+# NOTE: cannot compile tex5.c and tex6.c with full optimizations ...
+
+tex0.obj: tex0.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+tex1.obj: tex1.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+tex2.obj: tex2.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+tex3.obj: tex3.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+tex4.obj: tex4.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+# tex5.obj: tex5.c texd.h texmf.h coerce.h
+
+tex5.obj: tex5.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+#	$(CC) $(CFLAGSAFE) tex5.c
+
+# tex6.obj: tex6.c texd.h texmf.h coerce.h
+
+tex6.obj: tex6.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+#	$(CC) $(CFLAGSAFE) tex6.c
+
+tex7.obj: tex7.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+tex8.obj: tex8.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+tex9.obj: tex9.c \
+	texd.h texmf.h texmfmem.h coerce.h lib.h config.h common.h
+
+.SUFFIXES:
+.SUFFIXES: .obj .c
+
+c..obj:
+	$(CC) $(CFLAGS) $*.c
+
