@@ -1,0 +1,36 @@
+/* Copyright 1993 Y&Y, Inc.
+   Copyright 2007 TeX Users Group
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+   02110-1301 USA.  */
+
+unsigned char wintodos[] = {
+0, 0, 0, 159, 0, 0, 0, 0, 
+94, 0, 0, 0, 0, 0, 0, 0, 
+0, 96, 39, 0, 0, 7, 0, 0,1
+26, 0, 0, 0, 0, 0, 0, 0, 
+0, 173, 189, 156, 207, 190, 221, 21, 
+0, 184, 166,174, 170, 45, 169, 0, 
+248, 241, 253, 252, 0, 230, 20, 250, 
+0, 251, 167, 175, 172, 171, 243, 168, 
+183, 181, 182, 199, 142, 143, 146, 128, 
+212, 144, 210, 211, 222, 214, 215, 216, 
+209, 165, 227, 224, 226, 229, 153, 158, 
+157, 235, 233, 234, 154, 237, 232, 225, 
+133, 160, 131, 198, 132, 134, 145, 135, 
+138, 130, 136, 137, 141, 161, 140, 139, 
+208, 164, 149, 162, 147, 228, 148, 246,
+155, 151, 163, 150, 129, 236, 231, 152
+};	/* mapping from Windows ANSI to DOS code page 850 */

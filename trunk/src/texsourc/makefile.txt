@@ -1,0 +1,16 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+  makefile         9945   1-09-95   8:20a current selected 
+  makefile.ms      9843   1-09-95   7:42a MS LINK
+  makefile.dbg    10449   1-09-95   8:11a debugging version MS LINK WINICE
+  makefile.tnt     9262   1-08-95   9:49a 386 | LINK
+
+Note: WINICE DBG2MAP only works on NT style PE files
+
+Note: WINICE MSYM needs loads of memory
+
+Note: MS LINK needs /DEBUG and /DEBUGSTYLE{CV|COFF|BOTH} for debugging info
+
+Note: Can't run as NT style because if INT 21h calls (_dos_find...)
+      or maybe other reasons also... (pharlap.h, pldos32.h)
