@@ -1,0 +1,438 @@
+#! /bin/sh
+# This is a shell archive, meaning:
+# 1. Remove everything above the #! /bin/sh line.
+# 2. Save the resulting text in a file.
+# 3. Execute the file with /bin/sh (not csh) to create the files:
+#	README
+#	makefile
+#	prettyprint.c
+#	ps.lex
+# This archive created: Fri Mar 16 14:47:08 1990
+export PATH; PATH=/bin:$PATH
+if test -f 'README'
+then
+	echo shar: will not over-write existing file "'README'"
+else
+cat << \SHAR_EOF > 'README'
+README
+
+The "psformat" program parses PostScript files and rearranges them based
+on reasonable syntactic and indentation rules.  Its primary purpose in
+life is to take miserably formatted (or compacted) PostScript files and
+make them tolerable.
+
+USAGE:
+	psformat < infile > outfile
+
+"psformat" reads from stdin and writes to stdout.
+
+"psformat" basically leaves line breaks alone, except where they affect
+the indentation of { }.  This means, among other things, that output
+with lots of newlines (or newlines in funny places, as appear in DEC
+Document output, for example) do not get fixed.  It is too hard to
+figure out where newlines should go heuristically.
+
+The "psformat" program also pulls out any comments that start with
+%%! %%+ or %%A-Z and writes them to the stderr channel.  This is the
+rudimentary beginnings of a program to check the comments and report
+which of them are bogus, mal-formed, out of order, or whatever.
+Unfortunately, just recognizing them syntactically is, of course, merely
+the tip of the iceberg, and the issues of parsing them have not yet
+been addressed.
+
+In order to save the comments in a file, you can use a shell hack
+something like this:
+
+	(psformat < infile > outfile) >& comments.out
+
+Since the only thing that will come out of the (subshell) is the stderr
+output, this will trap the comments into the file called comments.out.
+In general, this isn't worth it.  It is nice to see the comments go by
+on stderr so you can monitor the progress of the program.
+
+SHAR_EOF
+fi # end of overwriting check
+if test -f 'makefile'
+then
+	echo shar: will not over-write existing file "'makefile'"
+else
+cat << \SHAR_EOF > 'makefile'
+#
+# makefile for "psformat" program
+#
+# greid Mon May 30 21:43:44 1988
+
+
+psformat:	lex.yy.c prettyprint.c
+	cc -g -o psformat lex.yy.c prettyprint.c -ll
+
+lex.yy.c:	ps.lex
+	lex ps.lex
+
+SHAR_EOF
+fi # end of overwriting check
+if test -f 'prettyprint.c'
+then
+	echo shar: will not over-write existing file "'prettyprint.c'"
+else
+cat << \SHAR_EOF > 'prettyprint.c'
+/*
+ * (C) 1988 by Adobe Systems Incorporated. All rights reserved.
+ *
+ * This file may be freely copied and redistributed as long as:
+ *   1) This entire notice continues to be included in the file, 
+ *   2) If the file has been modified in any way, a notice of such
+ *      modification is conspicuously indicated.
+ *
+ * PostScript, Display PostScript, and Adobe are registered trademarks of
+ * Adobe Systems Incorporated.
+ * 
+ * ************************************************************************
+ * THE INFORMATION BELOW IS FURNISHED AS IS, IS SUBJECT TO CHANGE WITHOUT
+ * NOTICE, AND SHOULD NOT BE CONSTRUED AS A COMMITMENT BY ADOBE SYSTEMS
+ * INCORPORATED. ADOBE SYSTEMS INCORPORATED ASSUMES NO RESPONSIBILITY OR 
+ * LIABILITY FOR ANY ERRORS OR INACCURACIES, MAKES NO WARRANTY OF ANY 
+ * KIND (EXPRESS, IMPLIED OR STATUTORY) WITH RESPECT TO THIS INFORMATION, 
+ * AND EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR PARTICULAR PURPOSES AND NONINFINGEMENT OF THIRD PARTY RIGHTS.
+ * ************************************************************************
+ */
+
+/*
+ prettyprint.c				greid Tue Feb 16 23:09:47 1988
+
+ uses "lex(1)" output to construct a pretty-printer for PostScript
+ program syntax
+
+ */
+
+#include <stdio.h>
+#define TRUE 1
+#define FALSE 0
+#define TAFTVERSION 0
+
+char	buff[256];
+int	level;
+short	lastopen, lastnewline, lastcomment;
+
+initialize () {
+	level = 0;
+	lastopen = FALSE;
+	lastnewline = TRUE;
+	lastcomment = FALSE;
+}
+
+/*
+    setlast() is just a maintenance proc for resetting
+    a bunch of state variables that probably shouldn't exist
+*/
+setlast () {
+	lastopen = FALSE;
+	lastnewline = FALSE;
+	lastcomment = FALSE;
+}
+
+structurecomment ( token ) {
+	printf ("%s", token );
+	fprintf ( stderr, "%s\n", token );
+	setlast();
+	lastcomment = TRUE;
+}
+firstcolcomment ( token ) {
+	printf ("%s", token );
+	setlast();
+	lastcomment = TRUE;
+}
+comment ( token ) {
+	printf ("\t%s", token );
+	setlast();
+	lastcomment = TRUE;
+}
+
+newline () {
+	int i;
+	printf("\n", level);
+	for ( i=0; i<level; i++ ) {
+		printf("    ");
+	}
+	lastnewline = TRUE;
+}
+
+opencurly () {
+	if ( lastcomment || lastopen ) {
+		newline();
+	} else {
+#if TAFTVERSION
+		newline();
+#endif TAFTVERSION
+	}
+	if ( !lastnewline ) printf(" ");
+	sprintf (buff, "{") ;
+	printf(buff);
+	level++;
+	setlast();
+	lastopen = TRUE;
+}
+
+closecurly () {
+	level--;
+	if ( !lastnewline && !lastopen ) newline();
+	sprintf (buff, "}");
+	printf(buff);
+	lastnewline = FALSE;
+	lastopen = FALSE;
+}
+
+litname ( token ) {
+	if ( lastopen ) newline();
+	if ( lastnewline == FALSE ) printf(" ");
+	sprintf(buff,"%s",token);
+	printf(buff);
+	setlast();
+}
+
+exname ( token ) {
+	if (!lastnewline) printf(" ");
+	lastnewline = FALSE;
+	if (lastopen) newline();
+	sprintf(buff, "%s",token);
+	printf(buff);
+	setlast();
+}
+
+/*
+  This routine is special in order to be able to put newlines in after
+  some keywords like "def" and "begin".  It's just to improve readability.
+ */
+specialexname ( token ) {
+	if (!lastnewline) printf(" ");
+	if (lastopen) newline();
+	sprintf(buff, "%s",token);
+	printf(buff);
+	setlast();
+	newline();
+}
+
+string ( token ) {
+	if (lastopen) newline();
+	if (!lastnewline) printf(" ");
+	printf("%s", token);
+	setlast();
+}
+
+hexstring ( token ) {
+	if (lastopen) newline();
+	if (!lastnewline) printf(" ");
+	sprintf(buff, "%s", token);
+	printf(buff);
+	setlast();
+}
+
+integer ( token ) {
+	if (!lastnewline) printf(" ");
+	if (lastopen) newline();
+	sprintf(buff, "%s",token);
+	printf(buff);
+	setlast();
+}
+radix ( token ) {
+	if (!lastnewline) printf(" ");
+	if (lastopen) newline();
+	sprintf(buff, "%s",token);
+	printf(buff);
+	setlast();
+}
+
+SHAR_EOF
+fi # end of overwriting check
+if test -f 'ps.lex'
+then
+	echo shar: will not over-write existing file "'ps.lex'"
+else
+cat << \SHAR_EOF > 'ps.lex'
+
+%{
+/*
+ * (C) 1988 by Adobe Systems Incorporated. All rights reserved.
+ *
+ * This file may be freely copied and redistributed as long as:
+ *   1) This entire notice continues to be included in the file, 
+ *   2) If the file has been modified in any way, a notice of such
+ *      modification is conspicuously indicated.
+ *
+ * PostScript, Display PostScript, and Adobe are registered trademarks of
+ * Adobe Systems Incorporated.
+ * 
+ * ************************************************************************
+ * THE INFORMATION BELOW IS FURNISHED AS IS, IS SUBJECT TO CHANGE WITHOUT
+ * NOTICE, AND SHOULD NOT BE CONSTRUED AS A COMMITMENT BY ADOBE SYSTEMS
+ * INCORPORATED. ADOBE SYSTEMS INCORPORATED ASSUMES NO RESPONSIBILITY OR 
+ * LIABILITY FOR ANY ERRORS OR INACCURACIES, MAKES NO WARRANTY OF ANY 
+ * KIND (EXPRESS, IMPLIED OR STATUTORY) WITH RESPECT TO THIS INFORMATION, 
+ * AND EXPRESSLY DISCLAIMS ANY AND ALL WARRANTIES OF MERCHANTABILITY, 
+ * FITNESS FOR PARTICULAR PURPOSES AND NONINFINGEMENT OF THIRD PARTY RIGHTS.
+ * ************************************************************************
+ */
+
+/*
+	This is a "lex" source file for PostScript language syntax.
+	the #include statement points to a file of C definitions for
+	actions related to the PostScript data types as recognized
+	by the scanner:
+		strings		integers
+		radixnumbers	curlybraces
+		names		/literalnames
+		comments	hexstrings
+
+	There is one procedure call for each of these types recognized.
+	the "prettyprint.c" file will reformat the PostScript file
+	according to some stylistic constraints which are primarily
+	indentation rules for procedure bodies.  This can be expanded
+	for other purposes as well.
+
+	BUGS:
+	  * Strings with newlines are not handled correctly.
+	  * Radix notation is too hard for things like 19#12defghi3.
+	    It's too hard to tell them from executable names with
+	    just regular expressions.  This should be second-checked
+	    by the C program.
+	  * <hex strings> are treated specially by the PostScript
+	    scanner and a "syntaxerror" is raised if there is anything
+	    but legal hexadecimal characters inside the <> brackets.
+	    The regular expression rules in this file cannot deal
+	    correctly with that yet.
+	  * Scientific notation for numbers has not yet been tackled.
+	  * Handling numbers in light of the radix notation is quite
+	    sticky; I think it works correctly, but the PostScript
+	    scanner is tolerant of a lot of weirdnesses relating to
+	    numeric formats, and this should be checked as a possible
+	    source of bugs.
+*/
+
+/*
+    These routines are defined externally.  For the "psformat" program,
+    they are defined in "prettyprint.c".
+ */
+extern	structurecomment();
+extern	firstcolcomment();
+extern	comment();
+extern	opencurly();
+extern	closecurly();
+extern	integer();
+extern	radix();
+extern	exname();
+extern	litname();
+extern	newline();
+extern	exname();
+
+/*
+    LEX rules start here.
+ */
+%}
+
+/* NAMECHARS [!-$&'*-.0-9:;=?@A-Z^-z|~] */
+NAMECHARS [!"#$&'*+,\-.0-9:;=?@A-Z^_`a-z|~]
+MINIMALNAMECHARS [a-zA-Z0-9_\-]
+HEXCHARS [0-9a-fA-F \t\n]
+W [ \n\t]
+SELFDELIMITING [)\]} \n\t]
+T [([{/ \t\n]
+
+%%
+
+\(.*\)		|
+\<.*\>		{
+	/* STRINGS are the most crucial part; they come first! */
+	/* [currently does not deal with strings with newlines in them] */
+	string(yytext);
+ }
+
+^%"!".*		|
+^%%"+".*	|
+^%%[A-Z]+.*	{
+	/* COMMENTS */
+	structurecomment(yytext);
+}
+^\%.*		{
+	firstcolcomment(yytext);
+}
+\%.*		{
+	comment(yytext);
+ }
+
+{W}*\{{W}	|
+\{		{
+	/* PROCEDURES */
+	opencurly();
+ }
+
+{W}*\}		|
+\}		{
+	closecurly();
+}
+
+-[0-9]+/{T}+	|
+[0-9]+/{T}+	{
+	/* INTEGERS */
+	integer(yytext);
+ }
+
+"1"[0-6]#{HEXCHARS}+/{T}+	{
+	/* RADIX NUMBERS */
+	/* special case for 16#12345abcdef, etc. */
+	radix(yytext);
+}
+
+[0-9]#[0-9]+/{T}+	{
+	/* radix numbers in range 1#whatever to 9#whatever */
+	radix(yytext);
+ }
+
+\[		{
+	/* ARRAYS */
+	/* for most purposes, these can be treated as executable names */
+	exname(yytext);
+ }
+
+\]		{
+	exname(yytext);
+ }
+
+\/{NAMECHARS}+	{
+	/* LITERAL NAMES */
+	litname(yytext);
+ }
+
+"def"		{
+	/* SPECIAL CASE FOR "def" to add NEWLINE */
+	/* It is rare that you want a line to continue after a "def".
+	   Typically this is only done when a program is compacted to
+	   remove unnecessary white space, and the "psformat" program
+	   tries to undo all that kind of stuff.
+	*/
+	specialexname(yytext);
+ }
+
+{NAMECHARS}+	{
+	exname(yytext);
+ }
+
+\n		{
+	/* NEWLINE */
+	newline();
+ }
+
+[ \t]	;
+
+%%
+
+main() {
+	initialize();
+	yylex();
+	exit(0);
+}
+SHAR_EOF
+fi # end of overwriting check
+#	End of shell archive
+exit 0
+
