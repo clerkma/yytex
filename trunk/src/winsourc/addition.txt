@@ -1,0 +1,30 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+\special{...} changes:
+----------------------
+
+\special{comment: ...}	is ignored by DVIPSONE and DVIWIndo
+
+\special{message: ...}	shows what follows colon on screen in DVIPSONE
+
+\special{color: ...}	now is alternate form of \special{color ...}
+
+TeX Menu pattern replacement:
+-----------------------------
+
+$Page		current DVI page number (physical page from start of file)
+
+$Counter[n]	TeX's counter[n] (counter[0] is usually logical page number)
+
+$Last		Number of pages in DVI file
+
+$Comment	Comment passed by TeX in DVI file (date and time of run)
+
+$Magnification	Magnification of DVI file (default 1000).
+
+$Width		Page width passed by TeX in DVI file
+
+$Height		Page height + depths passed by TeX in DVI file
+
+$Fonts		Number of fonts referred to in DVI file

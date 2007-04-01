@@ -1,0 +1,148 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Some of the following may be worth adding in order to provide for WGL4 coverage:
+
+0114	Ebreve
+0115	ebreve
+012c	Ibreve
+012d	ibreve
+014e	Obreve
+014f	obreve
+
+0174	Wcircumflex
+0175	wcircumflex
+0176	Ycircumflex
+0177	ycircumflex
+
+017f	longs ? slong ?
+
+01fa	Aringacute
+01fb	aringacute
+01fc	AEacute
+01fd	aeacute
+01fe	Oslashacute
+01ff	oslashacute
+
+02c9	macron ? overscore ?
+
+0387	anoteleia ?
+
+1e80	Wgrave
+1e81	wgrave
+1e82	Wacute
+1e83	wacute
+1e84	Wdieresis
+1e85	wdieresis
+1ef2	Ygrave
+1ef3	ygrave
+
+% General punctuation
+
+201b	quotereversed
+
+% Letterlike symbols
+
+2105	careof		afii61248 c/o  
+2113	lscript		afii61289 small script l
+212e	estimated
+
+% Arrows
+
+2195	arrowupdn
+21a8	arrowupdnbse
+
+% Mathematical operators
+
+2219	cdot		mathdot ? middot ? periodcentered ? 
+221f	rightangle	orthogonal ? perpendicular ? 
+
+% Miscellaneous technical
+
+2302	house
+2310	revlogicalnot	reversed logicalnot
+
+% Dingbats
+
+263a	smileface
+263b	invsmileface
+263c	sun
+2640	female		venus ?
+2642	male		mars ?
+
+266a	musicalnote
+266b	musicalnotedbl
+
+% Linedraw characters (DOS code page - IBM OEM)
+
+2500	SF100000
+2502	SF110000
+250c	SF010000
+2510	SF030000
+2514	SF020000
+2518	SF040000
+251c	SF080000
+2524	SF090000
+252c	SF060000
+2534	SF070000
+253c	SF050000
+2550	SF430000
+2551	SF240000
+2552	SF510000
+2553	SF520000
+2554	SF390000
+2555	SF220000
+2556	SF210000
+2557	SF250000
+2558	SF500000
+2559	SF490000
+255a	SF380000
+255b	SF280000
+255c	SF270000
+255d	SF260000
+255e	SF360000
+255f	SF370000
+2560	SF420000
+2561	SF190000
+2562	SF200000
+2563	SF230000
+2564	SF470000
+2565	SF480000
+2566	SF410000
+2567	SF450000
+2568	SF460000
+2569	SF400000
+256a	SF540000
+256b	SF530000
+256c	SF440000
+
+% Blocks
+
+2580	upblock
+2584	dnblock
+2588	block
+258c	lfblock
+2590	rtblock
+2591	ltshade
+2592	shade
+2593	dkshade
+
+% Geometric Shapes
+
+% Geometric Shapes
+
+25a0	filledbox
+25a1	H22073
+25aa	H18543
+25ab	H18551
+25ac	filledrect
+25b2	triagup
+25ba	triagrt
+25bc	triagdn
+25c4	triaglf
+
+25cb	circle		white circle ? open circle ? enclosing circle ?
+25cf	H18533 ?	black circle ? filled circle ? disk ?
+25d8	invbullet
+25d9	invcircle
+25e6	openbullet	white bullet ?

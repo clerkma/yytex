@@ -1,0 +1,27 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+No ATM.INI in Windows NT 4.0
+
+TTF:
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts
+
+key: FullName (TrueType)  value: string "filename.ttf"
+
+Type 1:
+
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\
+	Type 1 Installer\Type 1 Fonts
+
+key: Name	value: hex data
+
+Name is FontName with `-' replaced with ` '
+
+Hex Data is:
+
+T null c:\psfonts\foo_____.pfm null c:\psfonts\foo_____.pfb null
+
+But the registry data is basically useless because it does not
+give the Windows Face Name  --- or the fonts Full Name --- rather
+some meaningless derived name...

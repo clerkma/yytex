@@ -1,0 +1,504 @@
+DLGINCLUDE RCDATA DISCARDABLE
+BEGIN
+    "DVIWINDO.H\0"
+END
+
+#ifndef WIN32
+#define DS_3DLOOK           0x0004L		// Windows 95
+#define DS_CONTEXTHELP      0x2000L		// Windows 95
+#define LBS_DISABLENOSCROLL   0x1000L		// Windows 95
+#endif
+
+DVIPRINTDLG DIALOG 20, 20, 133, 64
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "DVIWindo Print"
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "Cancel", IDCANCEL, 52, 43, 32, 14, WS_GROUP
+    CTEXT           "text", IDC_SOURCE, 3, 6, 127, 8, SS_NOPREFIX
+    CTEXT           "text", IDC_FILENAME, 3, 17, 127, 8, SS_NOPREFIX
+    CTEXT           "text", IDC_DESTINATION, 2, 28, 128, 8, SS_NOPREFIX
+END
+
+ABOUTBOX DIALOG 24, 20, 134, 126
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "About DVIWindo"
+FONT 8, "Helv"
+BEGIN
+    CTEXT           "DVIWindo", IDM_VERSION, 0, 3, 134, 9
+    DEFPUSHBUTTON   "OK", IDOK, 52, 78, 32, 14, WS_GROUP
+    CTEXT           "Copyright © 1991--1995 Y&Y, Inc.", 
+			IDM_COPYRIGHT, 0, 12, 134, 9, SS_NOPREFIX
+    ICON            "DviIcon", -1, 60, 23, 16, 16
+    CTEXT           "45 Walden Street", -1, 0, 44, 134, 9, NOT WS_GROUP
+    CTEXT           "Concord, MA 01742  USA", -1, 0, 53, 129, 9, NOT 
+                    WS_GROUP
+    CTEXT           "(508) 371-3286", -1, 0, 62, 134, 9, NOT WS_GROUP
+    CTEXT           "name serial", IDM_USER, 0, 101, 134, 9, SS_NOPREFIX | 
+                    NOT WS_GROUP
+    CTEXT           "date time", IDM_DATE, 0, 110, 134, 9, SS_NOPREFIX | NOT 
+                    WS_GROUP
+END
+
+DVIMETRICBOX DIALOG 49, 22, 127, 102
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "Pages", -1, 2, 2, 68, 8
+    RTEXT           "", IDMB_PAGES, 70, 2, 55, 8
+    LTEXT           "Fonts", -1, 2, 12, 68, 8
+    RTEXT           "", IDMB_FONTS, 70, 12, 55, 8
+    LTEXT           "Bytes", -1, 2, 22, 68, 8
+    RTEXT           "", IDMB_BYTES, 70, 22, 55, 8
+    LTEXT           "Magnification", -1, 2, 32, 68, 8
+    RTEXT           "", IDMB_MAG, 70, 32, 55, 8
+    LTEXT           "Max Height + Depth", -1, 2, 42, 72, 8
+    RTEXT           "", IDMB_HPLUSD, 70, 42, 55, 8
+    LTEXT           "Max Width", -1, 2, 52, 68, 8
+    RTEXT           "", IDMB_WIDTH, 70, 52, 55, 8
+    LTEXT           "Max Stack Depth", -1, 2, 62, 68, 8
+    RTEXT           "", IDMB_STACK, 70, 62, 55, 8
+    LTEXT           "DVI Version", -1, 2, 72, 68, 8
+    RTEXT           "", IDMB_VERSION, 70, 72, 55, 8
+    LTEXT           "Scale Numerator", -1, 2, 82, 68, 8
+    RTEXT           "", IDMB_NUM, 70, 82, 55, 8
+    LTEXT           "Scale Denominator", -1, 2, 92, 68, 8
+    RTEXT           "", IDMB_DEN, 70, 92, 55, 8
+END
+
+PAGESELECT DIALOG 17, 32, 88, 49
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Select Page"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "Page:", -1, 6, 8, 22, 10
+    EDITTEXT        IPC_EDIT, 33, 6, 50, 12, ES_AUTOHSCROLL
+    DEFPUSHBUTTON   "OK", IDOK, 6, 26, 34, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 48, 26, 34, 14
+END
+
+FONTSUSED DIALOG 202, 41, 125, 190
+STYLE WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Fonts Used"
+FONT 8, "Helv"
+BEGIN
+    LISTBOX         IDC_USEDLIST, 0, 0, 125, 190, LBS_SORT | 
+                    LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | WS_VSCROLL
+END
+
+SELECTFONT DIALOG 82, 31, 206, 170
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Select Font"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "Typeface:", -1, 4, 6, 54, 8
+    LISTBOX         ID_TYPEFACE, 4, 18, 144, 129, LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LTEXT           "Size:", ID_SPINTEXT, 154, 21, 17, 8, NOT WS_GROUP
+    LTEXT           "", ID_ENCONAME, 167, 114, 48, 8, NOT WS_GROUP
+    EDITTEXT        ID_SPINVALUE, 173, 19, 18, 12, ES_AUTOHSCROLL
+    CONTROL         "&Regular", ID_REGULAR, "Button", BS_AUTORADIOBUTTON, 
+                    156, 40, 39, 10
+    CONTROL         "&Italic", ID_ITALIC, "Button", BS_AUTORADIOBUTTON, 
+		    156, 52, 39, 10
+    CONTROL         "&Bold", ID_BOLD, "Button", BS_AUTORADIOBUTTON, 
+		    156, 64, 39, 10
+    CONTROL         "B&oldItalic", ID_BOLDITALIC, "Button", 
+                    BS_AUTORADIOBUTTON, 156, 76, 48, 10
+    CONTROL         "&Encoded", ID_ENCODED, "Button", BS_AUTOCHECKBOX | 
+                    WS_TABSTOP, 156, 100, 58, 12
+    CONTROL         "&Show Bounding Boxes", ID_SHOWBOXES, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 4, 154, 104, 12
+    DEFPUSHBUTTON   "OK", IDOK, 157, 130, 35, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 157, 150, 35, 14
+END
+
+SEARCHTEXT DIALOG 22, 28, 134, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Search String"
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDOK, 95, 29, 34, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 95, 50, 33, 14
+    LTEXT           "String:", -1, 4, 10, 26, 10, WS_TABSTOP
+    EDITTEXT        IPS_EDIT, 30, 7, 98, 12, ES_AUTOHSCROLL
+    CONTROL         "&Wrap Around", IPS_WRAP, "Button", BS_AUTOCHECKBOX | 
+                    WS_TABSTOP, 8, 30, 68, 12
+    CONTROL         "Case &Sensitive", IPS_CASE, "Button", BS_AUTOCHECKBOX | 
+                    WS_TABSTOP, 8, 52, 68, 12
+END
+
+FILESELECT DIALOG 22, 28, 205, 50
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Print to File"
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDOK, 157, 6, 34, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 158, 26, 33, 14
+    LTEXT           "&File Name:", IPS_FILE, 8, 13, 87, 10, WS_TABSTOP
+    EDITTEXT        IPS_EDIT, 8, 27, 130, 12, ES_AUTOHSCROLL
+END
+
+ENCODINGSELECT DIALOG 22, 28, 134, 71
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Encoding Select"
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDOK, 95, 29, 34, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 95, 50, 33, 14
+    LTEXT           "Encoding:", -1, 4, 10, 36, 10, WS_TABSTOP
+    EDITTEXT        IPS_EDIT, 50, 7, 78, 12, ES_AUTOHSCROLL
+    LTEXT	    "Type 1", IPS_COMMENT, 4, 50, 36, 10
+END
+
+PRINTSETUPDLG DIALOG 20, 35, 177, 94
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Printer Setup"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "&Printer:", IDD_TEXT1, 7, 3, 31, 8, NOT WS_GROUP
+    LISTBOX         IDD_PRINTERS, 6, 17, 119, 73, LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "OK", IDOK, 132, 6, 40, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 132, 25, 40, 14
+    PUSHBUTTON      "&Setup...", IDD_SETUP, 131, 67, 40, 14
+END
+
+OPEN DIALOG 17, 32, 150, 168
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "Open"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "Open File Name:", -1, 4, 4, 65, 10
+    EDITTEXT        IDC_EDIT, 4, 15, 140, 12, ES_AUTOHSCROLL | ES_OEMCONVERT
+    LTEXT           "Files in:", -1, 5, 30, 30, 10
+    LTEXT           "", IDC_PATH, 35, 30, 110, 10, SS_NOPREFIX
+    LISTBOX         IDC_LISTBOX, 4, 43, 67, 121, LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    LISTBOX         IDC_DIRECTORY, 79, 43, 65, 81, LBS_SORT | WS_VSCROLL | 
+                    WS_TABSTOP
+    DEFPUSHBUTTON   "&Open", IDOK, 114, 129, 30, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 114, 149, 30, 14
+END
+
+PRINTRANGE DIALOG 9, 29, 156, 146
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK
+CAPTION "DVIWindo Print"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "From:", -1, 5, 12, 20, 10
+    EDITTEXT        IPR_FROM, 41, 10, 32, 12, ES_AUTOHSCROLL
+    LTEXT           "To:", -1, 99, 12, 14, 10
+    EDITTEXT        IPR_TO, 113, 10, 32, 12, ES_AUTOHSCROLL
+    CONTROL         "&Reverse Order", IPR_REVERSE, "Button", BS_AUTOCHECKBOX | 
+                    WS_TABSTOP, 5, 29, 63, 10
+    CONTROL         "&Alternate Pages", IPR_ALTERNATE, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 5, 42, 64, 10
+    CONTROL         "&Odd Pages Only", IPR_ODDONLY, "Button", 
+                    BS_AUTOCHECKBOX | WS_GROUP | WS_TABSTOP, 69, 29, 69, 10
+    CONTROL         "&Even Pages (Reverse)", IPR_EVENONLY, "Button", 
+                    BS_AUTOCHECKBOX | WS_TABSTOP, 69, 42, 85, 10
+    LTEXT           "&Copies:", -1, 6, 62, 31, 11
+    EDITTEXT        IPR_COPIES, 41, 61, 32, 12, ES_AUTOHSCROLL
+    PUSHBUTTON      "&Setup", IPR_PRINTSETUP, 101, 61, 46, 14
+    EDITTEXT        IPR_PORTSPEC, 6, 83, 141, 12, ES_AUTOHSCROLL | NOT 
+                    WS_TABSTOP
+    CONTROL         "&Use DVIPSONE", IPR_USEPSONE, "Button", BS_AUTOCHECKBOX | 
+                    WS_TABSTOP, 5, 105, 68, 12
+//  CONTROL         "Run &Minimized", IPR_RUNMIN, "Button", BS_AUTOCHECKBOX | 
+//                  WS_TABSTOP, 5, 125, 66, 12
+    CONTROL         "Print to &File", IPR_PRINTFILE, "Button",
+		    BS_AUTOCHECKBOX | WS_TABSTOP, 5, 125, 66, 12
+    PUSHBUTTON      "&Cancel", IDCANCEL, 101, 104, 46, 14
+    DEFPUSHBUTTON   "OK", IDOK, 101, 126, 46, 14
+END
+
+// The following is modified from MS's CommDlg (d:\winsourc\commdlg.rc)
+// Refer to c:\msvcnt\include\dlgs.h OR c:\msvcnr\include\font.dlg for WIN95
+
+// msvcnt\include\winuser.h
+
+FORMATDLGORD31 DIALOG DISCARDABLE  13, 54, 275, 187
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU | DS_3DLOOK 
+		 | DS_CONTEXTHELP
+// | DS_COMMONDIALOG
+CAPTION "Font"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "&Font:",stc1,7,7,40,9
+    COMBOBOX        cmb1,7,16,112,84,CBS_SIMPLE | CBS_OWNERDRAWFIXED |
+                    CBS_AUTOHSCROLL | CBS_SORT | CBS_HASSTRINGS |
+                    CBS_DISABLENOSCROLL | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Font st&yle:",stc2,124,7,44,9
+#ifdef WIN32
+    COMBOBOX        cmb2,124,16,62,84,CBS_SIMPLE | CBS_DISABLENOSCROLL |
+                    WS_VSCROLL | WS_TABSTOP
+#else
+    COMBOBOX        cmb2,124,16,62,90,CBS_SIMPLE | CBS_DISABLENOSCROLL |
+                    WS_VSCROLL | WS_TABSTOP
+#endif
+    LTEXT           "&Size:",stc3,191,7,30,9
+    COMBOBOX        cmb3,191,16,27,84,CBS_SIMPLE | CBS_OWNERDRAWFIXED |
+                    CBS_SORT | CBS_HASSTRINGS | CBS_DISABLENOSCROLL |
+                    WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK",IDOK,224,16,45,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,224,32,45,14,WS_GROUP
+    PUSHBUTTON      "&Apply",psh3,220,48,45,14,WS_GROUP
+    PUSHBUTTON      "&Help",pshHelp,220,64,45,14,WS_GROUP
+    GROUPBOX        "Effects",grp1,7,97,98,72,WS_GROUP
+    CONTROL         "Stri&keout",chx1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    13,110,49,10
+    CONTROL         "&Show Bounding Boxes",ID_SHOWBOXES,"Button",
+			BS_AUTOCHECKBOX | WS_TABSTOP, 10,112,79,10
+    CONTROL         "&Underline",chx2,"Button",BS_AUTOCHECKBOX,13,123,51,10
+    CONTROL         "&Encoded",ID_ENCODED,"Button",BS_AUTOCHECKBOX,
+		     10,127,53,10
+    LTEXT           "&Color:",stc4,13,136,30,9
+    LTEXT           "texnansi",ID_ENCONAME,23,138,30,9
+    COMBOBOX        cmb4,13,146,82,100,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED |
+                    CBS_AUTOHSCROLL | CBS_HASSTRINGS | WS_BORDER | 
+                    WS_VSCROLL | WS_TABSTOP
+    GROUPBOX        "Sample",grp2,116,110,153,59,WS_GROUP
+    CTEXT           "",stc6,116,143,147,20,SS_NOPREFIX | NOT WS_GROUP
+    CTEXT           "AaBbYyZz",stc5,120,120,146,47,SS_NOPREFIX | NOT
+		    WS_VISIBLE
+    LTEXT           "Sc&ript:",stc7,20,187,30,9, NOT WS_VISIBLE 
+    COMBOBOX        cmb5,20,197,84,20,CBS_DROPDOWNLIST | CBS_OWNERDRAWFIXED |
+                    CBS_AUTOHSCROLL | CBS_HASSTRINGS | WS_BORDER |
+                    WS_VSCROLL | WS_TABSTOP | NOT WS_VISIBLE 
+END
+  
+// The following are modified from MS's CommDlg 
+// Look for *.dlg files in c:\msvc32s\include - they refer to dlgs.h
+
+//---------------------------------------------------------------------------
+// FileOpen.dlg :  File Open and Save As dialog descriptions
+//
+// Copyright (c) Microsoft Corporation, 1990-
+//---------------------------------------------------------------------------
+
+FILEOPENORD DIALOG LOADONCALL MOVEABLE DISCARDABLE 36, 24, 264, 193
+CAPTION "Open"
+STYLE WS_CAPTION | WS_SYSMENU | WS_POPUP | DS_MODALFRAME | DS_3DLOOK 
+FONT 8, "Helv"
+BEGIN
+    LTEXT "File &Name:", stc3,    6,    6,  76,  9
+    CONTROL "", edt1, "edit", ES_LEFT | ES_AUTOHSCROLL | WS_BORDER |
+            WS_TABSTOP | WS_CHILD | ES_OEMCONVERT,
+            6,    16,  90,  12
+    CONTROL "", lst1, "listbox",
+            LBS_SORT | LBS_HASSTRINGS | LBS_NOTIFY | LBS_DISABLENOSCROLL
+            | WS_VSCROLL | WS_CHILD | WS_BORDER | WS_TABSTOP
+            | LBS_OWNERDRAWFIXED,
+            6,   32,  90,  128
+
+    LTEXT "&Directories:", -1, 110,   6,  92,   9
+    LTEXT "", stc1, 110,  18,  92,   9, SS_NOPREFIX
+    CONTROL "", lst2, "listbox",
+            LBS_SORT | LBS_HASSTRINGS | LBS_NOTIFY | LBS_DISABLENOSCROLL
+            | WS_VSCROLL | WS_CHILD | WS_BORDER | WS_TABSTOP
+            | LBS_OWNERDRAWFIXED,
+            110,  32,  92,  128
+
+    LTEXT "List Files of &Type:", stc2, 6,  164,  90,   9
+    CONTROL "", cmb1, "combobox", CBS_DROPDOWNLIST | CBS_AUTOHSCROLL |
+            WS_BORDER | WS_VSCROLL | WS_TABSTOP | WS_CHILD,
+            6,  175,  90,  52
+
+    LTEXT "Dri&ves:", stc4, 110, 164,  92,  9
+    CONTROL "", cmb2, "combobox",
+            CBS_SORT | CBS_HASSTRINGS | CBS_OWNERDRAWFIXED | CBS_DROPDOWNLIST
+            | WS_CHILD | CBS_AUTOHSCROLL | WS_BORDER | WS_VSCROLL
+            | WS_TABSTOP,
+            110, 175,  92, 68
+
+    DEFPUSHBUTTON "OK", IDOK,      208,   6,  50,  14, WS_GROUP
+    PUSHBUTTON "Cancel", IDCANCEL, 208,  24,  50,  14, WS_GROUP
+
+    PUSHBUTTON "&Help", pshHelp,   208,  46,  50,  14, WS_GROUP
+
+    PUSHBUTTON "&Read Only", chx1, 68, 50, 12, 3, NOT WS_TABSTOP | 
+                    0x00D0
+
+    PUSHBUTTON "Net&work...", psh14,   208,  173, 50,  14, WS_GROUP
+END
+
+FINDDLGORD DIALOG LOADONCALL MOVEABLE DISCARDABLE 30, 72, 189, 60
+CAPTION "Find"
+STYLE WS_BORDER | WS_CAPTION | DS_MODALFRAME | WS_POPUP | WS_SYSMENU | DS_3DLOOK 
+FONT 8, "Helv"
+BEGIN
+    CONTROL "Fi&nd What:", -1, "static", SS_LEFT | WS_CHILD,
+        4, 8, 42, 8
+    CONTROL "", edt1, "edit", ES_LEFT | ES_AUTOHSCROLL | WS_BORDER | WS_GROUP |
+            WS_TABSTOP | WS_CHILD | WS_BORDER,
+        47, 7, 77, 12
+
+    CONTROL "&Wrap Around", chx1, "button", BS_AUTOCHECKBOX |
+            WS_TABSTOP | WS_CHILD | WS_GROUP,
+        4, 26, 50, 12
+    CONTROL "Match &Case", chx2, "button", BS_AUTOCHECKBOX |
+            WS_TABSTOP | WS_CHILD,
+        4, 42, 52, 12
+
+    CONTROL "Direction", grp1, "button", BS_GROUPBOX | WS_CHILD,
+        56, 26, 68, 28
+    CONTROL "&Up", rad1, "button", BS_AUTORADIOBUTTON |
+            WS_TABSTOP | WS_CHILD | WS_GROUP,
+         63, 38, 25, 12
+    CONTROL "&Down", rad2, "button", BS_AUTORADIOBUTTON | WS_TABSTOP |
+            WS_CHILD,
+         90, 38, 30, 12
+
+    CONTROL "&Find Next", IDOK, "button", BS_DEFPUSHBUTTON | WS_CHILD |
+            WS_TABSTOP | WS_GROUP,
+       134, 5, 50, 14
+    CONTROL "Cancel", IDCANCEL, "button", BS_PUSHBUTTON | WS_CHILD |
+            WS_TABSTOP | WS_GROUP,
+       134, 23, 50, 14
+    CONTROL "&Help", pshHelp, "button", BS_PUSHBUTTON | WS_CHILD |
+            WS_TABSTOP | WS_GROUP,
+       134, 45, 50, 14
+END
+
+EDITITEM DIALOG 58, 51, 198, 133
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_3DLOOK 
+CAPTION "Edit Menu Item"
+FONT 8, "Helv"
+BEGIN
+    EDITTEXT        IAI_KEY, 8, 22, 86, 12, ES_AUTOHSCROLL
+    EDITTEXT        IAI_VALUE, 8, 58, 180, 12, ES_AUTOHSCROLL
+    LTEXT           "Menu Item Name (key):", -1, 9, 10, 107, 8
+    LTEXT           "Application Call Pattern (value):", -1, 7, 45, 131, 10
+    PUSHBUTTON      "&Cancel", IDCANCEL, 145, 21, 40, 14
+    DEFPUSHBUTTON   "&Replace", IAI_REPLACE, 9, 82, 40, 14
+    PUSHBUTTON      "&Add", IAI_ADD, 65, 82, 40, 14
+    PUSHBUTTON      "&Delete", IAI_DELETE, 148, 82, 40, 14
+    PUSHBUTTON      "&Separator", IAI_SEPARATOR, 8, 107, 40, 14
+    PUSHBUTTON      "Delete &Next", IAI_NEXT, 129, 107, 60, 14
+END
+
+TFMMAKE DIALOG 49, 74, 156, 153
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_3DLOOK 
+CAPTION "Make TFMs for Text Fonts"
+FONT 8, "Helv"
+BEGIN
+    LTEXT           "Select font format type(s) to be processed.", -1, 3, 9, 
+                    149, 12
+    DEFPUSHBUTTON   "OK", IDOK, 112, 31, 40, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 112, 59, 40, 14
+    GROUPBOX        "Font Format", grp1, 3, 26, 94, 47, WS_GROUP
+    CONTROL         "Adobe Type 1 (ATM)", ID_TYPE1, "Button", 
+                    BS_AUTORADIOBUTTON | WS_GROUP | WS_TABSTOP, 7, 40, 82, 
+                    10
+    CONTROL         "TrueType", ID_TRUETYPE, "Button", BS_AUTORADIOBUTTON | 
+                    WS_TABSTOP, 7, 54, 84, 10
+    CONTROL         "New Fonts Only", ID_NEWONLY, "Button", BS_AUTOCHECKBOX | 
+                    WS_TABSTOP, 3, 138, 147, 10
+    GROUPBOX        "Font CharSet", grp2, 3, 81, 149, 47, WS_GROUP
+    CONTROL         "Text Fonts", ID_TEXTFONT, "Button", BS_AUTORADIOBUTTON, 
+                    7, 96, 140, 10
+    CONTROL         "Symbol/Decorative/Math", ID_SYMBOL, "Button", 
+                    BS_AUTORADIOBUTTON, 7, 109, 140, 10
+END
+
+TFMASK DIALOG 51, 45, 195, 181
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_3DLOOK 
+CAPTION "Make TFM File"
+FONT 8, "Helv"
+BEGIN
+    DEFPUSHBUTTON   "OK", IDYES, 152, 27, 40, 14
+    PUSHBUTTON      "&Skip", IDNO, 152, 46, 40, 14
+    PUSHBUTTON      "&Cancel", IDCANCEL, 152, 66, 40, 14
+    LTEXT           "Face Name:", -1, 5, 13, 45, 8
+    LTEXT           "File Name:", -1, 5, 30, 45, 8
+    LTEXT           "Encoding:", -1, 5, 47, 45, 8
+    LTEXT           "Windows Face Name", ID_TYPEFACE, 53, 13, 138, 11
+    LTEXT           "TFM File Name", ID_FILENAME, 53, 30, 92, 11
+    LTEXT           "Encoding", ID_ENCODING, 53, 47, 92, 11
+    CONTROL         "Regular", ID_REGULAR, "Button", BS_AUTORADIOBUTTON |
+                    WS_DISABLED, 129, 87, 64, 10
+    CONTROL         "Italic", ID_ITALIC, "Button", BS_AUTORADIOBUTTON |
+                    WS_DISABLED, 129, 98, 65, 10
+    CONTROL         "Bold", ID_BOLD, "Button", BS_AUTORADIOBUTTON | 
+                    WS_DISABLED, 129, 109, 62, 10
+    CONTROL         "BoldItalic", ID_BOLDITALIC, "Button", 
+                    BS_AUTORADIOBUTTON | WS_DISABLED, 129, 120, 66, 10
+    GROUPBOX        "Font Format", grp1, 2, 88, 114, 41
+    CONTROL         "Adobe Type 1 (ATM)", ID_TYPE1, "Button", 
+                    BS_AUTORADIOBUTTON | WS_DISABLED | WS_GROUP, 7, 101, 100, 
+                    10
+    CONTROL         "TrueType", ID_TRUETYPE, "Button", BS_AUTORADIOBUTTON | 
+                    WS_DISABLED, 7, 114, 100, 10
+    GROUPBOX        "Font CharSet", grp2, 2, 135, 191, 42
+    CONTROL         "Text Font", ID_TEXTFONT, "Button", BS_AUTORADIOBUTTON | 
+                    WS_DISABLED, 6, 147, 180, 10
+    CONTROL         "Symbol/Decorative/Math", ID_SYMBOL, "Button", 
+                    BS_AUTORADIOBUTTON | WS_DISABLED, 6, 161, 180, 10
+END
+
+#ifdef NEWPRINTDLG
+
+/* following needed only if we use the Comm Print Dialog NEWPRINTDLG */
+
+#ifndef WIN32
+#define ES_NUMBER           0x2000L
+#define SS_CENTERIMAGE      0x00000200L
+#endif
+
+/* From commdlg.dlg, or actually rather from prnsetup.dlg */
+
+PRINTDLGORD DIALOG DISCARDABLE  32, 32, 288, 212
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU |
+      DS_CONTEXTHELP | DS_3DLOOK
+CAPTION "Print"
+FONT 8, "Helv"
+BEGIN
+    GROUPBOX        "Printer",grp4,8,4,272,84,WS_GROUP
+    LTEXT           "&Name:",stc6,16,20,36,8
+    COMBOBOX        cmb4,52,18,152,152,CBS_DROPDOWNLIST | CBS_SORT |
+                    WS_VSCROLL | WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "&Properties",psh2,212,17,60,14,WS_GROUP
+    LTEXT           "Status:",stc8,16,36,36,10,SS_NOPREFIX
+    LTEXT           "",stc12,52,36,224,10,SS_NOPREFIX | SS_LEFTNOWORDWRAP
+    LTEXT           "Type:",stc7,16,48,36,10,SS_NOPREFIX
+//    LTEXT           "",stc11,52,48,224,10,SS_NOPREFIX | SS_LEFTNOWORDWRAP
+    LTEXT           "",stc11,52,48,152,10,SS_NOPREFIX | SS_LEFTNOWORDWRAP    
+    LTEXT           "Where:",stc10,16,60,36,10,SS_NOPREFIX
+    LTEXT           "",stc14,52,60,224,10,SS_NOPREFIX | SS_LEFTNOWORDWRAP
+    LTEXT           "Comment:",stc9,16,72,36,10,SS_NOPREFIX
+    LTEXT           "",stc13,52,72,152,10,SS_NOPREFIX | SS_LEFTNOWORDWRAP
+    CONTROL         "Print to fi&le",chx1,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,212,48,64,12
+    CONTROL         "&Use DVIPSONE",IPR_USEPSONE,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,212,70,64,12
+    GROUPBOX        "Print range",grp1,8,92,144,64,WS_GROUP
+    CONTROL         "&All",rad1,"Button",BS_AUTORADIOBUTTON | WS_GROUP |
+                    WS_TABSTOP,16,106,64,12
+    CONTROL         "Pa&ges",rad3,"Button",BS_AUTORADIOBUTTON,16,122,36,12
+    CONTROL         "&Selection",rad2,"Button",BS_AUTORADIOBUTTON,16,138,64,
+                    12
+    RTEXT           "&from:",stc2,52,124,20,8
+    EDITTEXT        edt1,74,122,26,12,WS_GROUP | ES_NUMBER
+    RTEXT           "&to:",stc3,100,124,16,8
+    EDITTEXT        edt2,118,122,26,12,WS_GROUP | ES_NUMBER
+    GROUPBOX        "Copies",grp2,160,92,120,64,WS_GROUP
+    LTEXT           "Number of &copies:",stc5,168,108,68,8
+    EDITTEXT        edt3,240,106,32,12,WS_GROUP | ES_NUMBER
+    ICON            "",ico3,162,124,76,24,WS_GROUP | SS_CENTERIMAGE
+    CONTROL         "C&ollate",chx2,"Button",BS_AUTOCHECKBOX | WS_GROUP |
+                    WS_TABSTOP,240,130,36,12
+//    GROUPBOX        "Print order",grp3,8,160,160,40,WS_GROUP
+//    GROUPBOX        "Print order",grp3,8,160,160,42,WS_GROUP
+    GROUPBOX        "Print order",grp3,8,160,160,44,WS_GROUP
+    CONTROL         "&Reverse Order",IPR_REVERSE,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,16,170,60,12
+    CONTROL         "&Odd Pages Only",IPR_ODDONLY,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,80,170,74,12
+    CONTROL         "&Even Pages (Reverse)",IPR_EVENONLY,"Button",BS_AUTOCHECKBOX |
+                    WS_GROUP | WS_TABSTOP,80,186,78,12
+    DEFPUSHBUTTON   "OK",IDOK,180,164,48,14,WS_GROUP
+    PUSHBUTTON      "Cancel",IDCANCEL,232,164,48,14
+END
+
+#endif
