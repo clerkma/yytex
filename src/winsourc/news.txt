@@ -1,0 +1,599 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Features in DVIWindo not noted in manual or `readme.txt' (1995/March/1)
+=======================================================================
+
+(*) DVIWindo can now reencode text fonts `on the fly' (without permanent
+    modifications to the fonts PFB and PFM files).  The name of the encoding
+    vector is specified by the ENCODING environment variable. If you  
+    are using the encoding vector `texnansi.vec,' for example, then set
+    ENCODING=texnansi.  
+
+    We recommend the `TeX n ANSI' encoding vector (texnansi.vec) since it
+    makes all 228 glyphs found in most text fonts accessible.
+
+    Only plain vanilla text fonts are reencoded.  Math fonts and fonts not
+    set up with standard encoding are not reencoded (this means the CM fonts,
+    AMS fonts etc. will not be reencoded). 
+
+    If you prefer to use Windows ANSI encoding, then do not set the
+    ENCODING variable at all, but set TEXANSI=1 so that DVIPSONE will
+    know that it should reencode text fonts to Windows ANSI also when printing.
+
+(*) ENVIRONMENT VARIABLES:  The Y&Y TeX System now refers to the new
+    [Environment] section of the `dviwindo.ini' file for `environment
+    variables' (such as TEXINPUTS, TEXFONTS, VECPATH, PSFONTS etc).  
+    Only if a variable is not defined here will the corresponding DOS
+    environment variable be used.  
+
+    The advantage of this scheme is that it is no longer neccessary to
+    exit from Windows in order to change an environment variable setting. 
+    It also makes it easier for the installation procedure to set up
+    the initial environment.
+
+    WARNING: If a variable is defined in the [Environment] section of
+    dviwindo.ini, then changes to the corresponding DOS environment 
+    variable will have no effect.
+
+    NOTE: Some of the DOS utilities also refer to DOS environment variables
+    (such as VECPATH).  These have been modified to look in the [Environment]
+    section of dviwindo.ini also if the DOS environmental variables have not
+    been set.
+
+(*) NEW ABBREVIATION IN TEX MENU:  the single character @ in a TeX Menu
+    item value is now treated as if it was replaced by  %TEXINPUTS%#*.
+    So @.tex, for example, refers to a TeX source file with the same
+    name as the DVI file currently being viewed, but in one of the
+    directories on the list of directories specified by the environment
+    variable TEXINPUTS.  This shorthand makes the TeX Menu easier to edit.
+    Typical entry:   LaTeX2e=tex.bat &latex @.tex
+
+(*) TRANSFERRING THE `INPUT FOCUS' TO ANOTHER WINDOW:
+    A TeX Menu entry normally starts up a new Windows or DOS program.
+    A TeX Menu entry can also be used to transfer control to an
+    existing Window, based on the title bar of the Window. For example:
+
+    -> Notepad|C-F2=$Window(Notepad...)
+
+    Here $Window( ) transfers input focus to a Window with a specified 
+    title bar.  Some applications have a variable title bar (that may
+    for example include the name of the open file).  The ellipses
+    (three dots) allow a match based on just the beginning of the title.
+    The -> in the above example is not required, just a convenient
+    mnemonic device to remind you that this will transfer control to
+    an existing window rather than starting up a new one.
+
+(*) CALLING THE EDITOR WITHOUT REFERRING TO AN EXISTING FILE:
+
+    When you are presented with a `File Open' dialog after selecting
+    an application from the `TeX Menu', you cannot just leave the file
+    name blank.  If you want to use the editor to create a new file,
+    for example, enter the name of that file.  Most editors will then
+    allow you to create a file of that name.  
+
+    If you really want to call an application that normally requires a file
+    name without one, then enter `!' instead of a file name.  This is a new
+    feature that makes it possible to call an application that normally
+    requires a file name without specifying a file name.  This may be useful
+    when calling an editor to start working on a new TeX source file.  Just
+    remember that if you do it this way, DVIWindo will not know what you have
+    called the file when writing it from within the editor.  So when you
+    later TeX the file you will need to specify the file name in the `File
+    Open' dialog for TeX.  Note: if the PIF file for the editor (or other
+    program) has a ? on the `Optional Parameters' line, you may still be
+    asked for `Parameters'.   Just type `Enter' if this happens.
+
+(*) TRUETYPE CM FONTS SUPPLIED WITH PC-TEX FOR WINDOWS:  
+
+    If you have installed PC-TeX for Windows, then you *must* disable the CM
+    fonts in TrueType form supplied with that product before running DVIWindo
+    (on the other hand, PC-TeX for Windows *can* use the BSR CM fonts in Type
+    1 format --- which provide better rendering on screen and when printing). 
+
+    While DVIWindo has no problem with properly constructed CM fonts in
+    TrueType form (such as those from BSR), it does assume that at least the
+    character widths are correct (and that the glyphs have the correct size).
+    In the CM fonts in TrueType form supplied with PC-TeX for Windows, 
+    the character width are wrong (in fact, in all but CMR10, the character
+    width of all characters in any one of these font are the *same*).
+
+    To see the effect, bring up some Windows editor like `MS Write,' 
+    `MS Word,' `Pagemaker' or whatever, and select some font like CMBX10 at 
+    a large size and start typing.  PC-TeX for Windows gets around this bug
+    in the fonts by positioning every character separately, by the way.  
+    A problem of somewhat lesser magnitude is that the glyphs in different
+    fonts are anywhere from 5% too small to 5% too large. 
+
+    Buggy TrueType fonts with the same name as Type 1 fonts will interfere
+    with proper display, since Windows somewhat randomly picks either the 
+    TT or the T1 font.
+
+    If you happen to have such a TT font set installed, then make sure that
+    (i) ATM is `On', and (ii) TrueType is `Off'.  To check that ATM is on,
+    double click on the ATM icon in the `Main' program group.  To turn
+    TrueType fonts off, double click on the `Control Panel' in the `Main'
+    prgram group, select `Fonts', select `TrueType'.  Then verify that the
+    `Enable True Type Fonts' check box is *not* checked.
+
+    Note that  StringLimit=1 does *not* solve the problem, since our
+    software (like most) assumes that fonts at least know their own metrics!
+
+    By the way, even if you have ATM turned off and TrueType fonts enabled,
+    printing to PostScript printers will *still* use the Type 1 fonts if 
+    you have them installled.  Which is great, since you get better quality
+    output that way than you would using the TrueType versions.
+
+(*) OLD EPSILON: Note to Epsilon users: If you do not have Epsilon 6.5 or
+    later (which include mouse support), then please remove the `-kc1 -km1' 
+    from the line:
+
+	Epsilon|F4=c:\epsilon\bin\epsilon.exe -kc1 -km1 @.tex
+
+   in your `dviwindo.ini' after installation (or edit from within DVIWindo).
+
+(*) NEW EPSILONE: Note to Epsilon users: if you have Epsilon 7.0 you may
+    find that there isn't a whole lot of memory available in a `process
+    buffer'.  You can maximize the amount of memory available for DOS
+    applications run in the process buffer by using -m0 on the command line.
+
+(*) COMPRESSED FILES: To fit everything on one diskette, we have had to
+    compress many files on the DVIWindo distribution diskette.  Run the
+    installation procedure to uncompress them.  You can select which files
+    you want to `install': (i) executables, (ii) text files, (iii) TeX files.
+
+(*) WARNING ABOUT INCONSISTENT ENCODING :
+
+Encoding problems may arise when using fonts other than Computer Modern.
+DVIPSONE and DVIWindo provide complete flexibility in font encoding via the
+batch file `encoding.bat'. This ensures that TFM, PFM, and PFB file all agree
+on the same user selected encoding scheme (see `encoding.txt' and
+`morass.txt').  In addition, you may have to compensate for plain TeX and
+LaTeX's hard-wired assumptions about fonts using `\input ansiacce' (for
+Windows ANSI encoding) or `\input stanacce' (for Adobe StandardEncoding).
+
+DVIWindo tries to detect one simple inconsistency: if you are using Windows
+ANSI encoding, then no characters in the range 0 - 31 should appear.  If
+characters in that range *do* appear, then it is most probably because you
+forgot to use `\input ansiacce' --- or you may have forgotten to reencode the
+font to whatever encoding scheme you wish to use.  Specifically, the message
+tells you that a font is set up for Windows ANSI encoding, yet the DVI file
+contains characters for this font that are *not* in Windows ANSI encoding.
+
+The message is issued only once per DVI file.  The error may apply to more
+than just the single font listed in the error message.
+
+If you don't care about accurate on-screen display, and find this 
+message bothersome, then you can turn this warning off by adding
+`IgnoreBadEncoding=1' to your `dviwindo.ini' file.
+
+(*) MEASUREMENT TOOL:
+
+DVIWindo now has a tool for measuring horizontal and vertical distances
+in the document.  To activate it, hold down the shift key and press the
+left mouse button.  Dragging the mouse creates a rectangle, the width 
+and height of which are indicated in user selected units. 
+
+The rectangle can be moved - instead of resized - by also holding down the
+right mouse button - just as with the rectangle used to define a zoom area
+and the rectangle used to define an area to be copied to the clipboard.
+
+Choose the desired units from TeX's standard list of two-letter abbreviations
+in the `Ruler Units' sub-menu of `Preferences'.  Measurements can be given
+either in terms of the original TeX source document or in the final (`true')
+version - as affected by TeX's magnification.  Check the `Ruler Dimensions
+True' in the `Preferences' menu to get the magnified measurements.
+
+The measurement tool is disabled when the dialog box showing the DVI file
+fonts is active, since the left mouse button with the shift key held down 
+then is used to tag the font of a selected character.
+
+(*) SUPPORT FOR FONT NAME ALIASING:
+
+Some easily available style files are set up for font names other than
+the actual font file names. A font substitution file can be used to deal
+with this. But, it may be more convenient to use a simple name aliasing
+file, like the one used by Y&YTeX.  If a font file cannot be found,
+DVIWindo will now try to find an alias in the file `texfonts.map' ---
+found in  one of the directories on the list given in the environment 
+variable TEXFONTS.  This is convenient because that is where Y&YTeX
+looks for `texfonts.map' also.  The name found does *not* replace the
+name in the DVI file -- it is only used for opening the font file.
+
+You can turn this aliasing behavior off using `FontMap=0' in the
+[Window] section of `dviwindo.ini'.
+
+(*) DETAILED CHARACTER INFORMATION:
+
+Select `DVI Font Info' from the `Font' menu.  This puts up a modeless
+dialog box listing the fonts used in the DVI file.  Now hold down `Shift'
+and `Ctrl' and click on a character.  A dialog box will appear listing
+character code, TFM font name, Windows Face Name and style, point size,
+character width and so on.  If you only hold down `Shift' you get instead
+all text in reverse video that uses the font of the selected character.
+
+(*) ZOOM RECTANGLE ASPECT RATIO:
+
+When defining the region to be expanded to (more or less) full screen,
+the rectangle is now constrained to have the same shape as the screen.
+This makes it easier to select an area to be enlarged.  You can revert
+to the old behaviour by adding `Aspect=0' to `dviwindo.ini'.  Remember
+that you can move (instead of growing or shrinking) the rectangle by
+holding down the right mouse button (while holding down the left).
+
+(*) UNDOING ZOOMING 
+
+You can zoom in by holding the `Ctrl' key and outlining a rectangular region
+to be magnified with the mouse.  You can return to the previous view by
+typing control V --- *or* by clicking the right mouse button (that is what
+is new).   A limited stack of viewing parameters is kept so you can back
+out from several levels of zooming.
+
+The right mouse button cannot be used for this purpose when using hyper text
+linkages, because the right mouse button is needed then to pop up a level
+in the hyper text save stack.
+
+(*) TYPING IN A PAGE NUMBER:
+
+You can go to a specified page number using `Select Page' from the `File'
+menu, or by typing `*' on the numeric key pad, and filling in the page number
+in the dialog box offered up. 
+
+Now you can *also* type the number directly on the numeric key pad --- 
+with `NumLock' on.  Use the `Enter' key after typing the number.
+
+(*) PAGE TOP AND PAGE BOTTOM WHEN MOVING FORWARD AND BACKWARD IN FILE:
+
+The default now is to go to the top of the page when selecting the
+`Next', and to go to the bottom of the page when selecting `Previous'.  
+This behavior can be controlled using `Reset Scale each Page' 
+in `Preferences'.  What is considered the appropriate position for 
+the top of the page now is determined by the positioning in force
+when `Set New Page Scale' was last invoked.  The position for the
+bottom of the page, on the other hand, is determined by the page 
+depth specified in the DVI file (which may not be accurate).
+
+Selecting `Next' on the last page of a document moves to the bottom 
+of the page, while selecting `Previous' on the first page moves to 
+the top of the page.
+
+To go to the next page WITHOUT changing scale and page view at all, 
+simply press `space'.  To go to the previous page WITHOUT changing 
+scale and page view at all, press `backspace'.
+
+(*)  PRINTING ODD AND EVEN PAGES:
+
+The `Alternate Pages' check box has been replaced with `Odd Page Only'
+and `Even Page (Reverse)' check boxes.  These make it easier to arrange
+for proper two-sided printing, and correspond *exactly* to DVIPSONE's
+`-g' and `-h' command line flags.  The `Reverse Order' check box 
+corresponds to DVIPSONE's `-r' command line flag.
+
+To revert to the old way of doing this, add the line `Alternate=1'
+to DVIWINDO.INI  (You might want to do this to be compatible with calls 
+to DVIWindo generated by Scientific Word).
+
+(*) New Alternate `Find Text' Dialog Box:
+
+If you add CommFind=1 to the [Window] section of your `dviwindo.ini' file
+(and you have CommDlg=1) then DVIWindo will use Window's `Common Dialog
+Boxes' for `Find Text'.  This `Find Text' dialog box works a little
+differently from DVIWindo's original one.  For one thing, it is a modeless
+dialog box, meaning it stays around after you do the first search, ready for
+addtional searches.  It also reacts differently to `return', `space' and
+`rubout' --- which is why we retained the original version as default.  
+
+We recommend that you use the short-cut keys Ctrl-S or Ctrl-R after you have
+set up the word to search for.  That way you don't have to use the mouse to
+click on `Find Next' (and loose the cursor position in the process).  Note
+that `Ctrl-R' and `Ctrl-S' work even after you have dismissed the `Find Text'
+dialog box by clicking cancel.  This is useful because it gets the dialog box
+out of the way.
+
+(*) ADOBE ACROBAT:
+
+Note that the Acrobat Reader Package does not contain the PDF writer, which
+is part of the Acrobat Exchange package.  If you do have the PDF writer, you
+can write PDF files directly from DVIWindo In fact DVIWindo is presently the
+*only* application that can write PDF files directly from DVI files!.  The
+PDF Writer shows up as just another printer in `Printer Setup'.  PDF files
+can be viewed on other machines, even Macintosh and Unix.  Note however that
+PDF files are much larger than DVI files, and viewing a PDF file in Acrobat
+Reader is slower than viewing a DVI file in DVIWindo. 
+
+Also, watch out for inadvertent `font leakage'!  The PDF writer will package
+fonts that do not use Windows ANSI encoding (i.e. fonts that do not have
+the line `/Encoding StandardEncoding def' in their PFB file) in the PDF file.
+Most fonts traditionally used with TeX use specialized encoding and so are
+always packaged in the PDF files (in ASCII85 / LZW encoded form). Giving
+someone such a PDF file may violate your font license agreement.  The same
+thing applies to PostScript files, of course, but everyone is aware that
+*those* may contain fonts (in PFA format).
+
+You can create even better Acrobat PDF files using DVIPSONE first to create
+a PostScript file and then using Acrobat Distiller to make a PDF file.
+
+(*) ATM 2.6:
+
+ATM 2.6 supports Multiple Master fonts, and appears have very few bugs
+compared to ATM 2.5 for Windows.  For example, ATM 2.6 does *not* have a
+problem with repeated encoding, and does *not* have a problem with use of
+character code zero.  When you use ATM 2.6 you can add Remap=0 to your
+DVIWINDO.INI file to remove the remapping previously required to work around
+bugs in older versions of ATM.
+
+ATM 2.6 --- like earlier versions of ATM --- does still has a problem with
+hard-wired accent character positions, however.  Unfortunately the positions
+have changed!  Now, when a font does *not* use Windows ANSI encoding, the
+accents for accented characters are pulled from their StandardEncoding
+position (instead of ATM specific positions that partially match Windows
+ANSI).  Use SAFESEAC to process PFB files to make them safe from ATM (The
+batch file `encode.bat' does this automatically for you).  Also, due to the
+change in this bug in ATM we can no longer recommend `texannew' encoding.
+
+One minor new bug in ATM 2.6 is that it does not tolerate `return' followed
+by `newline' before `eexec', it insists on just a `return'.  Some very old CM
+fonts used `return' followed by `newline'.  ATM 2.6 cannot handle these.  To
+solve the problem, simply run such PFB files through PFBtoPFA and then run
+the resulting PFA files back through PFAtoaPFB.
+
+(*) Small sizes of Courier appear too large on screen.
+
+If you have this problem, then comment out the line `Courier=Yes' in the
+[OldScreenFonts] section of ATM.IN  (This mis-feature used to be controlled
+by adding or removing the line `Courier=Courier' in the [Aliases] section).
+
+(*) Arvind Borde and Tom Rokicki's `TEX HELP'
+
+You can link to `TeX Help' (Academic Press Professional ISBN 0-12-117640-1)
+from the `TeX Menu'.   The installation procedure for `TeX Help' asks you
+to specify how to call TeX, and how to call a pinter driver or previewer.
+As a DOS application, `TeX Help' cannot call DVIWindo, so specify any
+random program here.  Then, after installation, edit `texhelpv.bat' in the
+`texhelp' directory and remove the call to this program.  If you installed
+`TeX Help' before DVIWindo, then the installation of DVIWindo
+will set up a `TeX Menu' item to link to `TeX Help'.  Otherwise you can
+edit the `TeX Menu' to add a link.  Use `TeX Help' as key and something
+like `F12=c:\texhelp\texhelp.exe' as value.
+
+You may want to use the PIF file supplied with DVIWindo for `TeX Help'.
+This is set up to run `TeX Help' in windowed mode.  Note that many
+items in `TeX Help' have a `View' option called by typing `V' which
+sets up a TeX source file and calls TeX.  After TeX has processed the 
+file, select `Preview' from the `TeX Menu' (or type `Ctrl-F1').
+
+(*) CENTERING PAGE ON SCREEN:
+
+The arrow keys can be used to move the page on the screen. 
+If you hold down the `Shift' key the step size of movement is increased.
+If you hold down the `Ctrl' key the page is centered on the screen instead.
+
+(*) MORE PAGE SIZES:
+
+We have greatly increased the possible selections for page sizes.  
+This is mostly because the full implementation of scroll bars uses the 
+page size to determine where the ends of the scroll bar range are.  
+And sometimes crop marks and such may get clipped off with a particular 
+page size.  Choosing a larger page size will make it possible to scroll 
+to the items of interest.
+
+(*) System Resource Usage Level Tool 
+
+SYSSEG is a little utility that shows how much of the Windows `system
+resources' are in use.  When invoked (by double clicking), SYSSEG brings up
+two icons in the lower left corner of your screen that show the percentage of
+the resources used in the USER and GDI segments respectively.  These are 64k
+byte segments shared by all Windows applications.  Windows cannot continue
+operating when it runs out of space in either the USER or the GDI segment
+(even if there is plenty of memory available). 
+
+SYSSEG is useful to detect `memory leakage' - something that occurs when an
+application allocates resources but does not free them.  You may wish to move
+the SYSSEG icon to your `Start Up' group so it automatically appears when
+Windows is launched. 
+
+(*) ESCAPE KEY
+
+The `Escape' key can be used to exit DVIWindo.
+Use `Escape=0' in dviwindo.ini to suppress this behavior.
+If the focus is on one of the modeless dialog boxes --- 
+`DVI File Info' or `DVI File Fonts' then that window is removed instead.
+If you are currently using `Show Fonts' then `Escape' merely terminates
+the font display (equivalent of selecting `Close').
+If you had a DVI file open before using `Show Fonts' then
+that DVI file will be shown again after pressing `Escape'.
+
+(*) Passing Parameters to DVIPSONE from DVIWindo:
+
+DVIWindo sets up page range and printer destination parameter when it
+calls DVIPSONE from the `Print' dialog box.  You can also pass other
+command line parameters to DVIPSONE by adding an entry with key DVIPSONE
+to the [Window] section of `dviwindo.ini.'  For example,
+
+	DVIPSONE=-j
+
+forces DVIPSONE to pass through verbatim PostScript \specials
+(which would normally be ignored).  This an alternative to setting up 
+a `dvipsone.cmd' file with such extra command line flags and parameters.
+
+Note that command line flags *toggle* the state of variables in DVIPSONE.
+If you want to be sure to force them on or off, prefix 1 or 0.  For example
+
+	DVIPSONE=-1v
+
+will force verbose mode on.
+
+(*) Passing Parameters to Y&YTeX from DVIWindo:
+
+When Y&YTeX is called from DVIWindo's TeX Menu, it is sometimes convenient 
+to pass additional command line arguments and flags.  These can be inserted 
+in the TeX Menu replacement text, or in the batch file `tex.bat'.  Yet 
+another method is to add an entry with key `TeX' to the [Window] section 
+of `dviwindo.ini' For example:
+
+	TeX=-H=8
+
+which asks Y&YTeX to expand tabs into spaces with intervals of eight columns
+between `tab stops.'
+
+(*) Force `Accurate Character Position' Mode:
+
+When rendering characters on any device of finite resolution, some
+compromises are neccessary.  There have been various ways to control
+the trade-off in some operating systems and some applications.
+
+The width of a character when mapped to the finite raster will typically not
+be an integral number of pixels.  The rasterized version of the characters,
+however, will be an integral number of pixels wide.
+
+Consequently, when a number of rasterized characters are placed next to one
+another, the total number of pixels covered is typically not the rounded
+value of the sum of the true widths of the characters.  At some point it
+becomes neccessary to remove the accumulated error - that is, the difference
+between the rounded sum of the widths and the sum of the rounded widths.  
+It is convenient to do this between words, where there is some white space
+that can be shrunk or stretched as needed.  
+
+Most of the time this works out quite well, since errors in different
+characters are random and positive errors tend to cancel with negative
+errors.  Problems occur when either (a) a single letter is repeated several
+times or when (b) a fixed width font is used. In these situations there is no
+opportunity for small errors of opposite sign to more or less cancel each
+other - instead they relentlessly add up.  Then, at certain resolutions,
+there may not be enough white space to absorb the error between words and
+letters may collide (or large gaps form, although these tend to be less
+objectionable).
+
+The alternative is to position each character separately by rounding the
+accumulated sum of true character widths. While this avoids the problem
+described above, it does not lead to as pleasing results on normal text,
+since there will be adjustements between adjacent characters by one pixel
+that do not occur in the other scheme.  Also, this alternate scheme is
+inherently slower. 
+
+The tradeoff is perhaps illustrated best by a simple example.
+Suppose we repeat one character many times, a period say.
+The simple scheme used the same number of pixels for every `.'
+and so may have a substantial error in position at the right end:
+
+`.   .   .   .   .   .   .   .   .   .   .   .'
+^					  ^	correct overall width
+
+The scheme were every character is positioned individually, will not
+have such an accumulated error, but will lead to irregular spacing
+between dots, since it has to adjust the position every so often to
+remove the accumulating error:
+
+`.   .  .   .  .   .  .   .  .   .   .   .'
+^					  ^	correct overall width
+
+In DVIWindo you now have a choice between the two schemes using the
+`Favour Position' menu item in the `Fonts' pull-down menu:
+
+(*)	`Favour Position' checked:
+	In this mode each character is placed individually on the page.
+	Positional offsets cannot accumulate.  Output is slowed somewhat.
+	Spacing between characters may be slightly irregular.
+
+(*)	`Favour Position' NOT checked:
+	Sequences of characters are placed on the page as a group.
+	Positional offsets may accumulate.  Offsets are absorbed
+	between words (and where there is explicit kerning within a word).
+
+(*)	In ATM.INI, look for [Mono], list any fixed width fonts you have.
+
+NOTE:   The setting of this flag is ignored for output to printers.
+	Positioning of characters in printed output is dealt with differently.
+
+Some additional options controlled by entries in `DVIWINDO.INI'
+--------------------------------------------------------------
+
+Remap=0		undo the remapping presently used to get around the multiple 
+		encoding bug in ATM 2.5 and earlier 
+		You can use this setting if you have ATM 2.6 - that is,
+		the ATM that comes with Adobe Acrobat.
+
+Remap=1		default (needed for ATM 2.5 and earlier versions)
+
+Remap=2		force remapping on ALL fonts
+
+Remap=3		use modified rules for deciding when to remap (old CM fonts)
+
+TTRemap=1	Remap 0 -- 31 to 161 -- 195 in all TrueType fonts. 
+		Possibly useful when using MicroSoft TrueType Lucida fonts,
+		or some low quality Computer Modern font look-alikes made in
+		TrueType format. 
+
+TTOnly=1	Use only TT fonts (just a debugging tool)
+
+Share=0		stops DVIWindo's resampling of the DVI file to note changes -
+		use this to avoid `sharing violations' - if that is a problem.
+
+Offset=0	use default `Top Of Page' instead of position set by	
+		`Set New Page Scale' (i.e. revert to old behavior).
+
+ShowName=0	suppress placement of file name when inserted EPS file
+		does not have a preview - useful if `EPS' file has a large
+		bounding box covering the whole page (as for crop marks)
+
+Screen=1	Use special elliptical screen for half-tones - better than
+		built-in screen on laser printers - do not use for image
+		setters, which _do_ have well designed built-in screens.
+
+Frequency=53	Control screen frequency in half-tones (see `Screen=1')
+
+Angle=45	Control angle of screen in half-tones (see `Screen=1')
+
+BGR=1		flip from BGR to RGB order in 24 bit color TIFFs to
+		compensate for byte order error in some old TIFF files.
+
+UseRect=1	use alternate rectangle filling mode - possibly useful on 
+		some buggy display drivers that do not show one-pixel lines.
+		Also useful on some clone PS interpreters that show rules
+		as outlines instead of filled.
+
+UseRect=2	draw rules as lines.  This is required for the Acrobat Reader
+		to show equally thick lines equally thick on screen.
+
+StringLimit=1	limits the number of characters drawn on screen at one time. 
+		may be useful for dealing with numeric overflow in Windows
+		and ATM when using large point sizes and viewing at large
+		magnifications - particularly when using fixed width fonts.
+		(Present default is 8).  See also `Favor Position' and
+		[Mono] section of ATM.INI.
+
+Escape=0	Suppress program exit when `Escape' is hit.
+
+Alternate=1	Use the old alternate page printing scheme (backward
+		compatability, and perhaps for linkage from Scientific Word)
+
+Aspect=0	Do not constrain zoom rectangle aspect ratio to match screen
+
+BorderColor=<r> <g> <b>	Color of paper size border lines
+
+LinerColor=<r> <g> <b>	Color of text area lines
+
+FigureColor=<r> <g> <b>	Color of box for EPS figure without preview
+
+		The above control of colors may be useful on a monochrome
+		display were lines in lighter colors are mapped to white.
+
+MapBase=<mag>	set base magnification, default 1000.  Possibly useful when
+		finite size magnification steps to not provide good match
+		with screen size on low resolution displays.  Try 950 or 1050. 
+
+IgnoreBadEncoding=1	Suppresses the `... use \input ansiacce' message,
+		even if you are using characters in the 0 - 31 range in an
+		ANSI encoded font.
+
+CommDlg=1	Use the Windows 3.1 common dialog procedure for opening files
+		(for screen resolutions above VGA, a large dialog box is used).
+
+WorkingDirectory=d:	Where you want TeX to deposit DVI files when called
+		from TeX Menu.  Omit, or set to `nul' to have TeX work in
+		the directory of the source file instead.
+
+PreviewHotKey=F1	Allows you to set the `hot key' for the `Preview'
+		item in the TeX Menu.  The default hot-key is C-F1.
+
+SmallStep=1	Decrease magnification jumps from 20% to 10%

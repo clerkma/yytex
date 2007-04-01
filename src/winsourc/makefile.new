@@ -1,0 +1,94 @@
+# define APPVER = [3.50 | 3.51 | 4.0] ?
+# define TARGETOS = [WIN95 | WINNT | BOTH]
+# nmake nodebug=1
+# nmake tune=1
+# nmake profile=1
+
+# nmake macros for building Windows 32-bit apps
+
+!include <win32.mak>
+
+MODULE = dviwindo
+
+# all: dviwindo.exe
+
+ALL: $(MODULE).exe
+
+# object modules to build
+
+OBJECTS = dviwindo.obj winpslog.obj winanal.obj winprint.obj \
+	 winfonts.obj winsearc.obj winspeci.obj
+
+ETC = dviwindo.res dviwindo.def makefile
+
+RESOURCES = dviwindo.rc dviwindo.ico \
+	dviblank.cur dvihand.cur dvisciss.cur dvizoom.cur
+
+# Gs disable stack checking calls
+# Gf enable string pooling
+# Ow assume cross-function aliasing
+# YX automatic .PCH
+# Fm name map file ?
+# Zp pack structures
+# Ze enable extensions (default)
+# CFLAGSw = -c -YX -Fm -W4 -AM -G2 -GA -Gs -Gf -Ow -Zpe -DSTRICT
+# CFLAGSw = -c -YX -Gs -Gf -Ow -W3 -DNT -DSTRICT
+# CFLAGSw = -c -YX -Gs -Gf -Ow -W3 -DWIN32 -DSTRICT
+# CFLAGSW = -c -YX -Gs -Gf -Ow -W3 -DWIN32 -DSTRICT
+
+# /NOD		NODEFAULTLIB
+# /AL:16	align
+# /MAP		make mapfile
+# LFLAGS =  /map/line/align:16/NOD
+# LFLAGS =  /map/li/al:16/NOD
+# LFLAGS =  /map/li/al:16/NOD
+LFLAGS =  /map
+
+# Use MicroSoft LINK
+
+# LINK = link
+
+# Following is new attempt  93/Oct/4 (added in dviwindo.res, removed ::
+
+# dviwindo.exe: dviwindo.obj winpslog.obj winanal.obj winprint.obj winfonts.obj winsearc.obj winspeci.obj dviwindo.res dviwindo.def
+#    LINK $(LFLAGS) dviwindo winpslog winanal winprint winfonts winsearc winspeci dviwindo.res
+#    rc -v dviwindo.res
+
+# dviwindo.res: dviwindo.rc dviwindo.dlg dviwindo.h dvihand.cur dvizoom.cur dvisciss.cur dviwindo.ico 
+#   rc -r dviwindo.rc
+
+$(MODULE).res: $(RESOURCES)
+	rc -r -fo $(MODULE).res $(MODULE).rc
+	cvtres -$(CPU) $(MODULE).res -o $(MODULE).rbj
+	del $(MODULE).res
+
+$(OBJECTS): $*.C dviwindo.h winbased.h winhead.h winextra.h
+	$(cc) -nologo $(cflags) $(cdebug) $(cvars) $*.c
+
+$(MODULE)exe: $(OBJECTS) dviwindo.res dviwindo.def
+_	$(link) $(guiflags) $(linkdebug) -out:$(MODULE).exe \
+	$(OBJECTS) dviwindo.rbj $(guilibs)
+
+# dviwindo.obj: dviwindo.c dviwindo.h winbased.h winextra.h winhead.h
+#    $(CL) $(CFLAGSw) dviwindo.c
+
+# winprint.obj: winprint.c dviwindo.h winbased.h winhead.h winextra.h
+#    $(CL) $(CFLAGSw) winprint.c
+
+# winfonts.obj: winfonts.c dviwindo.h winbased.h winhead.h winextra.h
+#    $(CL) $(CFLAGSw) winfonts.c
+
+# winpslog.obj: winpslog.c dviwindo.h winbased.h winhead.h winextra.h
+#    $(CL) $(CFLAGSW) winpslog.c
+
+# winanal.obj: winanal.c winbased.h winhead.h winextra.h
+#    $(CL) $(CFLAGSW) winanal.c
+
+# winsearc.obj: winsearc.c winbased.h winhead.h winextra.h
+#    $(CL) $(CFLAGSW) winsearc.c
+
+# winspeci.obj: winspeci.c winbased.h winhead.h winextra.h winspeci.h
+#    $(CL) $(CFLAGSw) winspeci.c
+
+
+

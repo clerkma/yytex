@@ -1,0 +1,660 @@
+; Copyright 2007 TeX Users Group.
+; You may freely use, modify and/or distribute this file.
+; C <n> are numbers in Macintosh standard roman encoding vector
+
+0020	space		; C 32
+0021	exclam		; C 33
+0022	quotedbl	; C 34
+0023	numbersign	; C 35
+0024	dollar		; C 36
+0025	percent		; C 37
+0026	ampersand	; C 38
+0027	quotesingle	; C 39
+0028	parenleft	; C 40
+0029	parenright	; C 41
+002a	asterisk	; C 42
+002b	plus		; C 43
+002c	comma		; C 44
+002d	hyphen		; C 45
+002e	period		; C 46
+002f	slash		; C 47
+0030	zero		; C 48
+0031	one		; C 49
+0032	two		; C 50
+0033	three		; C 51
+0034	four		; C 52
+0035	five		; C 53
+0036	six		; C 54
+0037	seven		; C 55
+0038	eight		; C 56
+0039	nine		; C 57
+003a	colon		; C 58
+003b	semicolon	; C 59
+003c	less		; C 60
+003d	equal		; C 61
+003e	greater		; C 62
+003f	question	; C 63
+0040	at		; C 64
+0041	A		; C 65
+0042	B		; C 66
+0043	C		; C 67
+0044	D		; C 68
+0045	E		; C 69
+0046	F		; C 70
+0047	G		; C 71
+0048	H		; C 72
+0049	I		; C 73
+004a	J		; C 74
+004b	K		; C 75
+004c	L		; C 76
+004d	M		; C 77
+004e	N		; C 78
+004f	O		; C 79
+0050	P		; C 80
+0051	Q		; C 81
+0052	R		; C 82
+0053	S		; C 83
+0054	T		; C 84
+0055	U		; C 85
+0056	V		; C 86
+0057	W		; C 87
+0058	X		; C 88
+0059	Y		; C 89
+005a	Z		; C 90
+005b	bracketleft	; C 91
+005c	backslash	; C 92
+005d	bracketright	; C 93
+005e	asciicircum	; C 94
+005f	underscore	; C 95
+0060	grave		; C 96
+0061	a		; C 97
+0062	b		; C 98
+0063	c		; C 99
+0064	d		; C 100
+0065	e		; C 101
+0066	f		; C 102
+0067	g		; C 103
+0068	h		; C 104
+0069	i		; C 105
+006a	j		; C 106
+006b	k		; C 107
+006c	l		; C 108
+006d	m		; C 109
+006e	n		; C 110
+006f	o		; C 111
+0070	p		; C 112
+0071	q		; C 113
+0072	r		; C 114
+0073	s		; C 115
+0074	t		; C 116
+0075	u		; C 117
+0076	v		; C 118
+0077	w		; C 119
+0078	x		; C 120
+0079	y		; C 121
+007a	z		; C 122
+007b	braceleft	; C 123
+007c	bar		; C 124
+007d	braceright	; C 125
+007e	asciitilde	; C 126
+00a1	exclamdown	; C 193
+00a2	cent		; C 162
+00a3	sterling	; C 163
+00a4	currency	; C 219
+00a5	yen		; C 180
+00a6	brokenbar
+00a7	section		; C 164
+00a8	dieresis	; C 172
+00a9	copyright	; C 169
+00aa	ordfeminine	; C 187
+00ab	guillemotleft	; C 199
+00ac	logicalnot	; C 194
+00ae	registered	; C 168
+00af	overscore
+00b0	degree		; C 161
+00b1	plusminus	; C 177
+00b2	twosuperior
+00b3	threesuperior
+00b4	acute		; C 171
+00b5	mu1		; C 181
+00b6	paragraph	; C 166
+00b7	middot	
+00b8	cedilla		; C 252
+00b9	onesuperior
+00ba	ordmasculine	; C 188
+00bb	guillemotright	; C 200
+00bc	onequarter
+00bd	onehalf	
+00be	threequarters
+00bf	questiondown	; C 192
+00c0	Agrave		; C 203
+00c1	Aacute		; C 231
+00c2	Acircumflex	; C 229
+00c3	Atilde		; C 204
+00c4	Adieresis	; C 128
+00c5	Aring		; C 129
+00c6	AE		; C 174
+00c7	Ccedilla	; C 130
+00c8	Egrave		; C 233
+00c9	Eacute		; C 131
+00ca	Ecircumflex	; C 230
+00cb	Edieresis	; C 232
+00cc	Igrave		; C 237
+00cd	Iacute		; C 234
+00ce	Icircumflex	; C 235
+00cf	Idieresis	; C 236
+00d0	Eth
+00d1	Ntilde		; C 132
+00d2	Ograve		; C 241
+00d3	Oacute		; C 238
+00d4	Ocircumflex	; C 239
+00d5	Otilde		; C 205
+00d6	Odieresis	; C 133
+00d7	multiply
+00d8	Oslash		; C 175
+00d9	Ugrave		; C 244
+00da	Uacute		; C 242
+00db	Ucircumflex	; C 243
+00dc	Udieresis	; C 134
+00dd	Yacute
+00de	Thorn
+00df	germandbls	; C 167
+00e0	agrave		; C 136
+00e1	aacute		; C 135
+00e2	acircumflex	; C 137
+00e3	atilde		; C 139
+00e4	adieresis	; C 138
+00e5	aring		; C 140
+00e6	ae		; C 190
+00e7	ccedilla	; C 141
+00e8	egrave		; C 143
+00e9	eacute		; C 142
+00ea	ecircumflex	; C 144
+00eb	edieresis	; C 145
+00ec	igrave		; C 147
+00ed	iacute		; C 146
+00ee	icircumflex	; C 148
+00ef	idieresis	; C 149
+00f0	eth
+00f1	ntilde		; C 150
+00f2	ograve		; C 152
+00f3	oacute		; C 151
+00f4	ocircumflex	; C 153
+00f5	otilde		; C 155
+00f6	odieresis	; C 154
+00f7	divide		; C 214
+00f8	oslash		; C 191
+00f9	ugrave		; C 157
+00fa	uacute		; C 156
+00fb	ucircumflex	; C 158
+00fc	udieresis	; C 159
+00fd	yacute
+00fe	thorn
+00ff	ydieresis	; C 216
+0100	Amacron
+0101	amacron
+0102	Abreve
+0103	abreve
+0104	Aogonek
+0105	aogonek
+0106	Cacute
+0107	cacute
+0108	Ccircumflex
+0109	ccircumflex
+010a	Cdot
+010b	cdot
+010c	Ccaron
+010d	ccaron
+010e	Dcaron
+010f	dcaron
+0110	Dslash
+0111	dmacron
+0112	Emacron
+0113	emacron
+0114	Ebreve
+0115	ebreve
+0116	Edot
+0117	edot
+0118	Eogonek
+0119	eogonek
+011a	Ecaron
+011b	ecaron
+011c	Gcircumflex
+011d	gcircumflex
+011e	Gbreve
+011f	gbreve
+0120	Gdot
+0121	gdot
+0122	Gcedilla
+0123	gcedilla
+0124	Hcircumflex
+0125	hcircumflex
+0126	Hbar
+0127	hbar
+0128	Itilde
+0129	itilde
+012a	Imacron
+012b	imacron
+012c	Ibreve
+012d	ibreve
+012e	Iogonek
+012f	iogonek
+0130	Idot
+0131	dotlessi	; C 245
+0132	IJ
+0133	ij
+0134	Jcircumflex
+0135	jcircumflex
+0136	Kcedilla
+0137	kcedilla
+0138	kgreenlandic
+0139	Lacute
+013a	lacute
+013b	Lcedilla
+013c	lcedilla
+013d	Lcaron
+013e	lcaron
+013f	Ldot
+0140	ldot
+0141	Lslash
+0142	lslash
+0143	Nacute
+0144	nacute
+0145	Ncedilla
+0146	ncedilla
+0147	Ncaron
+0148	ncaron
+0149	napostrophe
+014a	Eng
+014b	eng
+014c	Omacron
+014d	omacron
+014e	Obreve
+014f	obreve
+0150	Odblacute
+0151	odblacute
+0152	OE		; C 206
+0153	oe		; C 207
+0154	Racute
+0155	racute
+0156	Rcedilla
+0157	rcedilla
+0158	Rcaron
+0159	rcaron
+015a	Sacute
+015b	sacute
+015c	Scircumflex
+015d	scircumflex
+015e	Scedilla
+015f	scedilla
+0160	Scaron
+0161	scaron
+0162	Tcedilla
+0163	tcedilla
+0164	Tcaron
+0165	tcaron
+0166	Tbar
+0167	tbar
+0168	Utilde
+0169	utilde
+016a	Umacron
+016b	umacron
+016c	Ubreve
+016d	ubreve
+016e	Uring
+016f	uring
+0170	Udblacute
+0171	udblacute
+0172	Uogonek
+0173	uogonek
+0174	Wcircumflex
+0175	wcircumflex
+0176	Ycircumflex
+0177	ycircumflex
+0178	Ydieresis	; C 217
+0179	Zacute
+017a	zacute
+017b	Zdot
+017c	zdot
+017d	Zcaron
+017e	zcaron
+017f	longs
+0192	florin		; C 196
+01fa	Aringacute
+01fb	aringacute
+01fc	AEacute
+01fd	aeacute
+01fe	Oslashacute
+01ff	oslashacute
+02c6	circumflex	; C 246
+02c7	caron		; C 255
+02c9	macron		; C 248
+02d8	breve		; C 249
+02d9	dotaccent	; C 250
+02da	ring		; C 251
+02db	ogonek		; C 254
+02dc	tilde		; C 247
+02dd	hungarumlaut	; C 253
+0384	tonos
+0385	dieresistonos
+0386	Alphatonos
+0387	anoteleia
+0388	Epsilontonos
+0389	Etatonos
+038a	Iotatonos
+038c	Omicrontonos
+038e	Upsilontonos
+038f	Omegatonos
+0390	iotadieresistonos
+0391	Alpha
+0392	Beta
+0393	Gamma
+0394	Delta
+0395	Epsilon
+0396	Zeta
+0397	Eta
+0398	Theta
+0399	Iota
+039a	Kappa
+039b	Lambda
+039c	Mu
+039d	Nu
+039e	Xi
+039f	Omicron
+03a0	Pi
+03a1	Rho
+03a3	Sigma
+03a4	Tau
+03a5	Upsilon
+03a6	Phi
+03a7	Chi
+03a8	Psi
+03a9	Omega
+03aa	Iotadieresis
+03ab	Upsilondieresis
+03ac	alphatonos
+03ad	epsilontonos
+03ae	etatonos
+03af	iotatonos
+03b0	upsilondieresistonos
+03b1	alpha
+03b2	beta
+03b3	gamma
+03b4	delta
+03b5	epsilon
+03b6	zeta
+03b7	eta
+03b8	theta
+03b9	iota
+03ba	kappa
+03bb	lambda
+03bc	mu
+03bd	nu
+03be	xi
+03bf	omicron
+03c0	pi
+03c1	rho
+03c2	sigma1
+03c3	sigma
+03c4	tau
+03c5	upsilon
+03c6	phi
+03c7	chi
+03c8	psi
+03c9	omega
+03ca	iotadieresis
+03cb	upsilondieresis
+03cc	omicrontonos
+03cd	upsilontonos
+03ce	omegatonos
+0401	afii10023
+0402	afii10051
+0403	afii10052
+0404	afii10053
+0405	afii10054
+0406	afii10055
+0407	afii10056
+0408	afii10057
+0409	afii10058
+040a	afii10059
+040b	afii10060
+040c	afii10061
+040e	afii10062
+040f	afii10145
+0410	afii10017
+0411	afii10018
+0412	afii10019
+0413	afii10020
+0414	afii10021
+0415	afii10022
+0416	afii10024
+0417	afii10025
+0418	afii10026
+0419	afii10027
+041a	afii10028
+041b	afii10029
+041c	afii10030
+041d	afii10031
+041e	afii10032
+041f	afii10033
+0420	afii10034
+0421	afii10035
+0422	afii10036
+0423	afii10037
+0424	afii10038
+0425	afii10039
+0426	afii10040
+0427	afii10041
+0428	afii10042
+0429	afii10043
+042a	afii10044
+042b	afii10045
+042c	afii10046
+042d	afii10047
+042e	afii10048
+042f	afii10049
+0430	afii10065
+0431	afii10066
+0432	afii10067
+0433	afii10068
+0434	afii10069
+0435	afii10070
+0436	afii10072
+0437	afii10073
+0438	afii10074
+0439	afii10075
+043a	afii10076
+043b	afii10077
+043c	afii10078
+043d	afii10079
+043e	afii10080
+043f	afii10081
+0440	afii10082
+0441	afii10083
+0442	afii10084
+0443	afii10085
+0444	afii10086
+0445	afii10087
+0446	afii10088
+0447	afii10089
+0448	afii10090
+0449	afii10091
+044a	afii10092
+044b	afii10093
+044c	afii10094
+044d	afii10095
+044e	afii10096
+044f	afii10097
+0451	afii10071
+0452	afii10099
+0453	afii10100
+0454	afii10101
+0455	afii10102
+0456	afii10103
+0457	afii10104
+0458	afii10105
+0459	afii10106
+045a	afii10107
+045b	afii10108
+045c	afii10109
+045e	afii10110
+045f	afii10193
+0490	afii10050
+0491	afii10098
+1e80	Wgrave
+1e81	wgrave
+1e82	Wacute
+1e83	wacute
+1e84	Wdieresis
+1e85	wdieresis
+1ef2	Ygrave
+1ef3	ygrave
+2013	endash		; C 208
+2014	emdash		; C 209
+2015	afii00208
+2017	underscoredbl
+2018	quoteleft	; C 212
+2019	quoteright	; C 213
+201a	quotesinglbase	; C 226
+201b	quotereversed
+201c	quotedblleft	; C 210
+201d	quotedblright	; C 211
+201e	quotedblbase	; C 227
+2020	dagger		; C 160
+2021	daggerdbl	; C 224
+2022	bullet		; C 165
+2026	ellipsis	; C 201
+2030	perthousand	; C 228
+2032	minute
+2033	second
+2039	guilsinglleft	; C 220
+203a	guilsinglright	; C 221
+203c	exclamdbl
+203e	radicalex
+2044	fraction	; C 218
+207f	nsuperior
+20a3	franc
+20a4	afii08941
+20a7	peseta
+2105	afii61248
+2113	afii61289
+2116	afii61352
+2122	trademark	; C 170
+2126	Ohm		; C 189
+212e	estimated
+215b	oneeighth
+215c	threeeighths
+215d	fiveeighths
+215e	seveneighths
+2190	arrowleft
+2191	arrowup
+2192	arrowright
+2193	arrowdown
+2194	arrowboth
+2195	arrowupdn
+21a8	arrowupdnbse
+2202	partialdiff	; C 182
+2206	increment	; C 198
+220f	product		; C 184
+2211	summation	; C 183
+2212	minus
+2219	periodcentered	; C 225
+221a	radical		; C 195
+221e	infinity	; C 176
+221f	orthogonal
+2229	intersection
+222b	integral	; C 186
+2248	approxequal	; C 197
+2260	notequal	; C 173
+2261	equivalence
+2264	lessequal	; C 178
+2265	greaterequal	; C 179
+2302	house
+2310	revlogicalnot
+2320	integraltp
+2321	integralbt
+2500	SF100000
+2502	SF110000
+250c	SF010000
+2510	SF030000
+2514	SF020000
+2518	SF040000
+251c	SF080000
+2524	SF090000
+252c	SF060000
+2534	SF070000
+253c	SF050000
+2550	SF430000
+2551	SF240000
+2552	SF510000
+2553	SF520000
+2554	SF390000
+2555	SF220000
+2556	SF210000
+2557	SF250000
+2558	SF500000
+2559	SF490000
+255a	SF380000
+255b	SF280000
+255c	SF270000
+255d	SF260000
+255e	SF360000
+255f	SF370000
+2560	SF420000
+2561	SF190000
+2562	SF200000
+2563	SF230000
+2564	SF470000
+2565	SF480000
+2566	SF410000
+2567	SF450000
+2568	SF460000
+2569	SF400000
+256a	SF540000
+256b	SF530000
+256c	SF440000
+2580	upblock
+2584	dnblock
+2588	block
+258c	lfblock
+2590	rtblock
+2591	ltshade
+2592	shade
+2593	dkshade
+25a0	filledbox
+25a1	H22073
+25aa	H18543
+25ab	H18551
+25ac	filledrect
+25b2	triagup
+25ba	triagrt
+25bc	triagdn
+25c4	triaglf
+25ca	lozenge		; C 215
+25cb	circle
+25cf	H18533
+25d8	invbullet
+25d9	invcircle
+25e6	openbullet
+263a	smileface
+263b	invsmileface
+263c	sun
+2640	female
+2642	male
+2660	spade
+2663	club
+2665	heart
+2666	diamond
+266a	musicalnote
+266b	musicalnotedbl
+????	pi1		; C 185
+
+f001	fi		; C 222
+f002	fl		; C 223
+f004	commaaccent
+f005	undercommaaccent
+
+P 0 ; C 1 ; B 256 0 1280 1280 ; WX 1536 ; L 256 ;
+P 1 ; C 0 ; WX 0 ; L 0 ; N .null ;
+P 2 ; C 9 ; WX 569 ; L 0 ; N nonmarkingreturn ;
+

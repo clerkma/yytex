@@ -1,0 +1,108 @@
+NAME	     DviWindo
+
+DESCRIPTION  'DVI previewer for MS Windows'
+
+EXETYPE      WINDOWS
+
+STUB	     'WINSTUB.EXE'
+
+; DATA	     MOVEABLE MULTIPLE 
+
+DATA	     MOVEABLE MULTIPLE PRELOAD
+
+CODE	     MOVEABLE DISCARDABLE
+
+SEGMENTS
+	DVIWINDO_TEXT	MOVEABLE DISCARDABLE PRELOAD
+	WINPSLOG_TEXT	MOVEABLE DISCARDABLE
+	WINANAL_TEXT	MOVEABLE DISCARDABLE
+	WINFONTS_TEXT	MOVEABLE DISCARDABLE
+	WINPRINT_TEXT	MOVEABLE DISCARDABLE
+	WINSEARC_TEXT	MOVEABLE DISCARDABLE
+	WINSPECI_TEXT	MOVEABLE DISCARDABLE
+;	_TEXT		MOVEABLE DISCARDABLE
+
+; Doesn't the heap grow anyway to use up unused space in the gap?
+; HEAPSIZE     512	increased 1994/July/7 since now use strdup ?
+; HEAPSIZE     1024	increased 1995/July/15 since now use strdup more ?
+HEAPSIZE     2048
+; HEAPSIZE     8192	doesn't seem to be needed ...
+
+; STACKSIZE    4000	somehow this is increased to 5000 anyway ?
+; STACKSIZE    5000	increased 1994/July/6 since reports heavy use ?
+; STACKSIZE    6144
+; STACKSIZE    6400	increased again 1995/April/22 Write All TFMs...?
+; STACKSIZE    7168	increased again 1995/July/15  Write All TFMs...?
+STACKSIZE    8192
+; STACKSIZE    10000	doesn't seem to be needed
+
+; NOTE: data segment 38,698 bytes 1995/July/20
+
+EXPORTS
+    MainWndProc     @1
+    About           @2
+    OpenDlg         @3
+    PageDlg         @4
+    FontDlg         @5
+    EnumFunc	    @6
+    DVIMetric	    @7
+    FontsUsed	    @8
+    PrintDlgProc    @9
+    AbortProc	    @10
+    PrSetupDialog   @11
+    SearchDlg       @12
+    SpinWndFn	    @13
+    RangeDlg	    @14
+    FileDlg         @15
+    CopyLineFun	    @16
+    EncodingDlg	    @17
+; do we really need to do this now that we have _export ???
+;    EnumItemsProc	@18
+    GetGlyphProc	@18
+    EnumSwitchProc	@19
+    EnumWndProc		@20
+    EditItemDlg		@21
+    MyMoveTo		@22
+    MyLineTo		@23
+    MyCurveTo		@24
+    MyClosePath		@25
+    FontEnumProc	@26
+    ChooseFontHook	@27
+    SearchHook		@28
+    EnumMetaFileProc	@29
+    CommandDlg		@30
+
+;   following do not exist in WIN16 version
+    PrintDlgHook	@31
+    EnumWindowsProc	@32
+;   OpenFileHook	@33
+    EnumFuncEx		@33
+    FontEnumProcEx	@34
+	DdeCallBack		@35
+
+; WARNING: Remember to compile modules that have exports with -Gw (not -GW) !
+
+; Following needed if importing explicitly at link time
+; not used if importing dynamically at run time
+
+; IMPORTS
+; 	TIFFREAD.OpenTiffFile	  ; TIFFREAD.DLL library functions ...	
+; 	TIFFREAD.CloseTiffFile
+; 	TIFFREAD.DropTiffImage
+; 	TIFFREAD.GetTiffImage
+; 	TIFFREAD.GetTiffImageInfoBuffer
+; 	TIFFREAD.GetTiffImageInfo
+; 	TIFFREAD.GetTiffDimensions
+; 	TIFFREAD.GetTiffRGBQuad
+; 	TIFFREAD.DecodeTiffImage
+; 	TIFFREAD.DefineTiffImage
+; 	TIFFREAD.DefineTiffImageInfoBuffer
+; 	TIFFREAD.DefineTiffImageInfo 
+; 	TIFFREAD.EncodeTiffImage
+; 	TIFFREAD.DefineGeneralTags
+; 	TIFFREAD.ModiTiffFileInfo
+; 	TIFFREAD.GetTiffFileInfo
+; 	TIFFREAD.NumberOfTiffImages
+; 	TIFFREAD.TiffErrorString
+; 	TIFFREAD.TiffError
+; 	TIFFREAD.SetTiffError

@@ -1,0 +1,64 @@
+/* Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.  */
+
+#include "wslib\sulib.h"
+#include "wslib\gauge.h"
+#include "install.h" 
+/* #include "wslib\install.h" */
+
+#include "install.dlg"
+
+ID_APP  ICON   install.ico
+
+/*
+ *  random strings used in the code
+ */
+STRINGTABLE PRELOAD FIXED
+BEGIN
+   IDS_NOINF	      ,"Cannot find the DVISETUP.INF file necessary to run Install; check to ensure that the file is on the default path." 
+/*  IDS_NOINF	      ,"Cannot find the APPSETUP.INF file necessary to run Install; check to ensure that the file is on the default path." */
+/*  IDS_NOINF	      ,"Cannot find the SETUP.INF file necessary to run Install; check to ensure that the file is on the default path." */
+   IDS_NOINFMEM	      ,"Insufficient memory to run Install; close one or more Windows applications to increase available memory and try again."
+   IDS_APPNAME        ,"Application Install Template"
+   IDS_WAITCOPY       ,"Install is copying files..."
+   IDS_COPYING 	      ,"Copying    %s"
+   IDS_READ	      ,"Read       %s"
+/*   IDS_COMPRESS      ,"Decompress" */
+   IDS_COMPRESS	      ," (compressed)"
+   IDS_WINCOPY        ,"app.copy.appstuff"
+   IDS_OUTOFDISK      ,"Insufficient disk space; exit Install and delete one or more files to increase available disk space.\n"
+   IDS_BUILDPMG       ,"Building Program Manager Groups..."
+   IDS_PROGMAN_GROUP  ,"progman.groups"
+   IDS_DISKS          ,"disks"
+   IDS_INFNAME        ,"dvisetup.inf" 
+/*   IDS_INFNAME        ,"appsetup.inf"  */
+ /*  IDS_INFNAME        ,"setup.inf"  */
+   IDS_DISKSPACE      ,"needed.space.minspace"
+   IDS_DEFAULT_DIR    ,"data.defdir"
+   IDS_EXITMSG        ,"DVIWindo installation is not yet complete.\nAre you sure you want to exit Install ?"
+   IDS_EXITCAPTION    ,"Install Error"
+   IDS_NEEDROOM       ,"Insufficent disk space on\nspecified destination drive."
+   IDS_FINISHED       ,"DVIWindo installation complete.\n(Note: `Save Settings on Exit' has been checked.)"
+   IDS_DONE           ,"DVIWindo installation complete!"
+   IDS_NOLZ	      ,"Copy LZEXPAND.DLL to you WINDOWS\SYSTEM directory first (or use Windows 3.1)"
+END
+
+/* \nPlease resize and position the Y&Y program group as desired */
+
+/*
+ *  DOS error names
+ */
+STRINGTABLE PRELOAD FIXED
+BEGIN
+    IDS_ERROR                       ,"DOS Error #%d"
+    IDS_ERROR + ERROR_FILENOTFOUND  ,"File not found; unable to copy file"
+    IDS_ERROR + ERROR_PATHNOTFOUND  ,"Path not found; unable to copy file"
+    IDS_ERROR + ERROR_NOFILEHANDLES ,"Too many open files"
+    IDS_ERROR + ERROR_ACCESSDENIED  ,"Access denied; unable to copy file"
+    IDS_ERROR + ERROR_NOMEMORY      ,"Insufficient memory"
+    IDS_ERROR + ERROR_DISKINVALID   ,"Disk drive invalid"
+    IDS_ERROR + ERROR_WRITE         ,"Write error; unable to copy file"
+    IDS_ERROR + ERROR_SHARE         ,"Network error; unable to copy file"
+END
+
+
