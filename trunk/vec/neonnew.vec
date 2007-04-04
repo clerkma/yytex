@@ -1,0 +1,268 @@
+% Encoding: DVIPS new
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% New DVIPS (Thomas Rokicki) virtual font reencoding ----
+% for ordinary outline text fonts.
+
+% Bottom half is a mix of something like textype.vec and standard.vec --
+% -- top half is a mix of standard.vec and random arrangment of accented chars
+
+% WARNING: this only applies to new versions of DVIPS --- see neon.vec
+
+% WARNING: the accented character positions are filled in sequence from AFM,
+%	   hence do NOT have a fixed order.  This is merely an example.
+
+% NOTE: The upright uppercase Greek letters are borrowed from Adobe Symbol,
+%	   as is `arrowup' and `arrowdown'
+
+0	Gamma
+1	Delta
+2	Theta
+3	Lambda
+4	Xi
+5	Pi
+6	Sigma
+7	Upsilon
+8	Phi
+9	Psi
+10	Omega
+11	arrowup
+12	arrowdown
+13	quotesingle
+14	exclamdown
+15	questiondown
+16	dotlessi
+17	dotlessj	% ?
+18	grave
+19	acute
+20	caron
+21	breve
+22	macron
+23	ring
+24	cedilla
+25	germandbls
+26	ae
+27	oe
+28	oslash
+29	AE
+30	OE
+31	Oslash
+32	space		% suppress
+33	exclam
+34	quotedbl	% quotedblright
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash 	% quotedblleft
+93	bracketright
+94	circumflex
+95	underscore 	% dotaccent
+96	quoteleft
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft	% endash
+124	bar		% emdash
+125	braceright	% hungarumlaut
+126	tilde
+127	dieresis
+
+% NOTE: following starts with characters forced out from the above
+% NOTE: the accented/composite characters are filled in sequence from AFM file
+%	the filling is into slots not used in StandardEncoding and slots
+%	for those characters in StandardEncoding that were moved down below 127
+
+128	asciicircum	% random
+129	asciitilde	% random
+130	Zcaron		% random
+131	ccedilla	% random
+132	ydieresis	% random
+133	atilde		% random
+134	icircumflex	% random
+135	ecircumflex	% random
+136	egrave		% random
+137	eacute		% random
+138	otilde		% random
+139	Aacute		% random
+140	ocircumflex	% random
+141	yacute		% random
+142	udieresis	% random
+143	acircumflex	% random
+144	edieresis	% random
+145	ugrave		% random
+146	ograve		% random
+147	scaron		% random
+148	Idieresis	% random
+149	uacute		% random
+150	agrave		% random
+151	ntilde		% random
+152	aring		% random
+153	zcaron		% random
+154	Icircumflex	% random
+155	Ntilde		% random
+156	ucircumflex	% random
+157	Ecircumflex	% random
+158	Iacute		% random
+159	Ccedilla	% random
+
+160	Odieresis	% random
+161	Scaron		% random
+162	cent
+163	sterling
+164	fraction
+165	yen
+166	florin
+167	section
+168	currency
+169	Edieresis	% random
+170	quotedblleft
+171	guillemotleft
+172	guilsinglleft
+173	guilsinglright
+174	fi
+175	fl
+176	Igrave		% random
+177	endash
+178	dagger
+179	daggerdbl
+180	periodcentered
+181	adieresis	% random
+182	paragraph
+183	bullet
+184	quotesinglbase
+185	quotedblbase
+186	quotedblright
+187	guillemotright
+188	ellipsis
+189	perthousand
+190	Ograve		% random
+191	Egrave		% random
+192	Ydieresis	% random
+193	Otilde		% random
+194	Ugrave		% random
+195	Ucircumflex	% random
+196	Atilde		% random
+197	Uacute		% random
+198	Ocircumflex	% random
+199	dotaccent
+200	Aring		% random
+201	idieresis	% random
+202	iacute		% random
+203	aacute		% random
+204	Udieresis	% random
+205	hungarumlaut
+206	ogonek
+207	Eacute		% random
+208	emdash
+209	Acircumflex	% random
+210 	Agrave		% random
+211	odieresis	% random
+212	oacute		% random
+213	igrave		% random
+214	Oacute		% random
+215	Adieresis	% random
+216	Yacute		% random
+%
+%	225	AE
+227	ordfeminine
+232	Lslash
+%	233	Oslash
+% 	234	OE
+235	ordmasculine
+%	241	ae
+%	245	dotlessi
+248	lslash
+%	249	oslash
+%	250	oe
+%	251	germandbls
+
+% MISSING: characters not in Adobe StandardEncoding and not accented, 
+%	   including the following from the isoadobe set of characters:
+
+%	Eth, eth, Thorn, thorn,
+%	trademark, registered, copyright, brokenbar, 
+%	divide, multiply, minus, plusminus, logicalnot, degree, mu,
+%	onequarter, onehalf, threequarters,
+%	onesuperior, twosuperior, threesuperior, 
+
+%	nbspace, lozenge, radical, integral, partialdiff, infinity, pi, 
+%	notequal, approxequal, lessequal, greaterequal, summation, 
+

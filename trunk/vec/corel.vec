@@ -1,0 +1,153 @@
+% Encoding: CorelDraw
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% built on top of StandardEncoding presumably ?
+
+0	grave		% 16#0/grave 
+5	breve		% 16#5/breve 
+6	dotaccent	% 16#6/dotaccent 
+8	ring		% 16#8/ring
+10	hungarumlaut	% 16#A/hungarumlaut 
+11	ogonek		% 16#B/ogonek 
+12	caron		% 16#C/caron 
+13	dotlessi	% 16#D/dotlessi 
+39	quotesingle	% 16#27/quotesingle
+96	grave		% 16#60/grave 
+124	bar		% 16#7C/bar
+% 16#82/quotesinglbase/florin/quotedblbase/ellipsis/dagger/daggerdbl
+130	quotesinglbase
+131	florin
+132	quotedblbase
+133	ellipsis
+134	dagger
+135	daggerdbl
+% 16#88/circumflex/perthousand/Scaron/guilsinglleft/OE
+136	circumflex
+137	perthousand
+138	Scaron
+139	guilsinglleft
+140	OE
+% 16#91/quoteleft/quoteright/quotedblleft/quotedblright/bullet/endash/emdash
+145	quoteleft
+146	quoteright
+147	quotedblleft
+148	quotedblright
+149	bullet
+150	endash
+151	emdash
+% 16#98/tilde/trademark/scaron/guilsinglright/oe
+152	tilde
+153	trademark
+154	scaron
+155	guilsinglright
+156	oe
+159	Ydieresis	% 16#9F/Ydieresis
+% 16#A1/exclamdown/cent/sterling/currency/yen/brokenbar/section
+161	exclamdown
+162	cent
+163	sterling
+164	currency
+165	yen
+166	brokenbar
+167	section
+% 16#a8/dieresis/copyright/ordfeminine/guillemotleft/logicalnot/minus/registered/macron
+168	dieresis
+169	copyright
+170	ordfeminine
+171	guillemotleft
+172	logicalnot
+173	hyphen
+174	registered
+175	macron
+% 16#b0/degree/plusminus/twosuperior/threesuperior/acute/mu/paragraph/periodcentered
+176	degree
+177	plusminus
+178	twosuperior
+179	threesuperior
+180	acute
+181	mu
+182	paragraph
+183	periodcentered
+% 16#b8/cedilla/onesuperior/ordmasculine/guillemotright/onequarter/onehalf/threequarters/questiondown
+184	cedilla
+185	onesuperior
+186	ordmasculine
+187	guillemotright
+188	onequarter
+189	onehalf
+190	threequarters
+191	questiondown
+% 16#c0/Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
+192	Agrave
+193	Aacute
+194	Acircumflex
+195	Atilde
+196	Adieresis
+197	Aring
+198	AE
+199	Ccedilla
+% 16#c8/Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex/Idieresis
+200	Egrave
+201	Eacute
+202	Ecircumflex
+203	Edieresis
+204	Igrave
+205	Iacute
+206	Icircumflex
+207	Idieresis
+% 16#d0/Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis/multiply
+208	Eth
+209	Ntilde
+210	Ograve
+211	Oacute
+212	Ocircumflex
+213	Otilde
+214	Odieresis
+215	multiply
+% 16#d8/Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute/Thorn/germandbls
+216	Oslash
+217	Ugrave
+218	Uacute
+219	Ucircumflex
+220	Udieresis
+221	Yacute
+222	Thorn
+223	germandbls
+% 16#e0/agrave/aacute/acircumflex/atilde/adieresis/aring/ae/ccedilla
+224	agrave
+225	aacute
+226	acircumflex
+227	atilde
+228	adieresis
+229	aring
+230	ae
+231	ccedilla
+% 16#e8/egrave/eacute/ecircumflex/edieresis/igrave/iacute/icircumflex/idieresis
+232	egrave
+233	eacute
+234	ecircumflex
+235	edieresis
+236	igrave
+237	iacute
+238	icircumflex
+239	idieresis
+% 16#f0/eth/ntilde/ograve/oacute/ocircumflex/otilde/odieresis/divide
+240	eth
+241	ntilde
+242	ograve
+243	oacute
+244	ocircumflex
+245	otilde
+246	odieresis
+247	divide
+% 16#f8/oslash/ugrave/uacute/ucircumflex/udieresis/yacute/thorn/ydieresis
+248	oslash
+249	ugrave
+250	uacute
+251	ucircumflex
+252	udieresis
+253	yacute
+254	thorn
+255	ydieresis
+% ]def

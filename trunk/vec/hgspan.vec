@@ -1,0 +1,165 @@
+% Encoding: Harvard Graphics
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% First part is just StandardEncoding
+
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright 	% quotesingle in ANSI / Mac
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	asciicircum
+95	underscore
+96	quoteleft	% grave in ANSI / Mac
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	bar
+125	braceright
+126	asciitilde
+% 	127	rubout
+
+% plus the following
+
+128	/Ccedilla	% 8#200 
+129	/udieresis	% 8#201 
+130	/eacute		% 8#202 
+131	/acircumflex	% 8#203 
+132	/adieresis	% 8#204 
+133	/agrave		% 8#205 
+134	/aring		% 8#206 
+135	/ccedilla	% 8#207 
+136	/ecircumflex	% 8#210 
+137	/edieresis	% 8#211 
+138	/egrave		% 8#212 
+139	/idieresis	% 8#213 
+140	/icircumflex	% 8#214 
+141	/igrave		% 8#215 
+142	/Adieresis	% 8#216 
+143	/Aring		% 8#217 
+144	/Eacute		% 8#220 
+145	/ae		% 8#221 
+146	/AE		% 8#222 
+147	/ocircumflex	% 8#223 
+148	/odieresis	% 8#224 
+149	/ograve		% 8#225 
+150	/ucircumflex	% 8#226 
+151	/ugrave		% 8#227 
+152	/ydieresis	% 8#230 
+153	/Odieresis	% 8#231 
+154	/Udieresis	% 8#232 
+155	/oslash		% 8#233 
+156	/sterling	% 8#234 
+157	/Oslash		% 8#235 
+
+160	/aacute		% 8#240 
+161	/iacute		% 8#241 
+162	/oacute		% 8#242 
+163	/uacute		% 8#243 
+164	/ntilde		% 8#244 
+165	/Nacute		% 8#245 
+166	/ordfeminine	% 8#246 
+167	/ordmasculine	% 8#247 
+168	/questiondown	% 8#250 
+169	/endash		% 8#251 
+
+173	/exclamdown	% 8#255 
+174	/guillemotleft	% 8#256 
+175	/guillemotright		% 8#257 
+
+225	/germandbls	% 8#341 
+
+229	/space	% 8#345 
+230	/u	% 8#346 
+231	/space	% 8#347 
+232	/space	% 8#350 
+233	/space	% 8#351 
+
+% 245	/section	% 8#365 
+
+248	/ring	% 8#370 
+
+254	/endash	% 8#376 
+	

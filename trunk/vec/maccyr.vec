@@ -1,0 +1,244 @@
+% Encoding: Macintosh Cyrillic
+
+% MacDraw Cyrillic encoding - used by most applications on MacIntosh computers
+
+% Copyright (C) 1993 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Adobe publication 5013 `Adobe Standard Cyrillic Font Specification'
+
+% Comments indicate key-strokes on MacIntosh to generate that character
+% NOTE: some characters can be reached by more than one key chord on Mac
+% NOTE: in some cases the key chords are different in System 6 and System 7
+
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quotesingle 	% quoteright in StandardEncoding
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	asciicircum	% use ^ key  (or  option-i space)
+95	underscore
+96	grave		% quoteleft in StandardEncoding
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	bar
+125	braceright
+126	asciitilde	% use ~ key  or  (option-n space)
+%	127 	DEL 	% not accessible from keyboard
+
+128	afii10017	% option-u A
+129	afii10018	% shift-option-A
+130	afii10019	% shift-option-C
+131	afii10020	% option-e E
+132	afii10021	% option-n N
+133	afii10022	% option-u O
+134	afii10024	% option-u U
+135	afii10025	% option-e a
+136	afii10026	% option-` a
+137	afii10027	% option-i a
+138	afii10028	% option-u a
+139	afii10029	% option-n a
+140	afii10030	% option-a
+141	afii10031	% option-c
+142	afii10032	% option-e e
+143	afii10033	% option-` e
+144	afii10034	% option-i e
+145	afii10035	% option-u e
+146	afii10036	% option-e i
+147	afii10037	% option-` i
+148	afii10038	% option-i i
+149	afii10039	% option-u i
+150	afii10040	% option-n n
+151	afii10041	% option-e o
+152	afii10042	% option-` o
+153	afii10043	% option-i o
+154	afii10044	% option-u o
+155	afii10045	% option-n o
+156	afii10046	% option-e u
+157	afii10047	% option-` u
+158	afii10048	% option-i u
+159	afii10049	% option-u u
+
+160	dagger		% option-t
+161	degree		% afii10064? shift-option-*		Symbol 176 (A)
+162	afii10050	% option-4	% as in StandardEncoding
+163	sterling	% afii10098? option-3	% as in StandardEncoding
+164	section		% option-6
+165	periodcentered	% option-8 % bullet ?
+166	paragraph	% option-7
+167	afii10055	% option-s
+168	registered	% option-r
+169	copyright	% option-g
+170	trademark	% option-2
+171	afii10051	% option-e space % (not in Lucida math remap)
+172	afii10099	% option-u space % (not in Lucida math remap)
+173	notequal	% option-=			Symbol 185
+174	afii10052	% shift-option-'
+175	afii10100	% shift-option-O
+176	infinity	% Acute? option-5			Symbol 165
+177	plusminus	% acute? shift-option-+		Symbol 177 (A)
+178	lessequal	% Grave? option-,			Symbol 163
+179	greaterequal	% grave? option-.			Symbol 179
+180	afii10103	% option-y
+181	mu		% option-m			Symbol 77  (A)
+182	afii10098	% partialdiff? option-d			Symbol 182
+183	afii10057	% option-w			Symbol 229
+184	afii10053	% shift-option-P		Symbol 213
+185	afii10101	% option-p			Symbol 112
+186	afii10056	% option-b			Symbol 242
+187	afii10104	% option-9
+188	afii10058	% option-0
+189	afii10106	% option-z			Symbol 87
+190	afii10059	% option-'		
+191	afii10107	% option-o
+192	afii10105	% shift-option-?
+193	afii10054	% option-1
+194	logicalnot	% Caron? option-l			Symbol 216 (A)
+195	radical		% caron? option-v			Symbol 214
+196	florin		% option-f
+197	approxequal	% option-x			Symbol 187
+198	Delta		% option-j			Symbol 68
+199	guillemotleft	% option-\
+200	guillemotright	% shift-option-|
+201	ellipsis	% option-;
+202	nbspace		% option-space			space
+203	afii10060	% option-` A
+204	afii10108	% option-n A
+205	afii10061	% option-n O
+206	afii10109	% shift-option-Q
+207	afii10102	% option-q
+208	endash		% option--
+209	emdash		% shift-option-_
+210	quotedblleft	% option-[
+211	quotedblright	% shift-option-{
+212	quoteleft	% option-]
+213	quoteright	% shift-option-}
+214	divide		% option-/			Symbol 184 (A)
+215	quotedblbase	% shift-option-V		Symbol 224
+216	afii10062	% option-u y
+217	afii10110	% opyion-u Y  or  shift-option-~
+218	afii10145	% shift-option-!		Symbol 164 (A)
+219	afii10193	% shift-option-@
+220	afii61352	% shift-option-#
+221	afii10023	% shift-option-$
+222	afii10071	% shift-option-%
+223	afii10097	% shift-option-^
+224	afii10065	% shift-option-&
+225	afii10066	% shift-option-(
+226	afii10067	% shift-option-)
+227	afii10068	% shift-option-W
+228	afii10069	% shift-option-E (6) --- shift-option-R (7) 
+229	afii10070	% option-i A  or  shift-option-R (6) shift-option-M (7)
+230	afii10072	% option-i E  or  shift-option-T
+231	afii10073	% option-e A  or  shift-option-Y
+232	afii10074	% option-u E  or  shift-option-U
+233	afii10075	% option-` E  or  shift-option-I
+234	afii10076	% option-e I  or  shift-option-S
+235	afii10077	% option-i I  or  shift-option-D
+236	afii10078	% option-u I  or  shift-option-F
+237	afii10079	% option-` I  or  shift-option-G
+238	afii10080	% option-e O  or  shift-option-H
+239	afii10081	% option-i O  or  shift-option-J
+240	afii10082	% shift-option-K		Symbol 240
+241	afii10083	% option-` O  or  shift-option-L
+242	afii10084	% option-e U  or  shift-option-:
+243	afii10085	% option-i U  or  shift-option-Z
+244	afii10086	% option-` U  or  shift-option-X
+245	afii10087	% shift-option-B	% as in StandardEncoding
+246	afii10088	% shift-option-N (6) --- shift-option-I (7)
+247	afii10089	% shift-option-M (6) --- shift-option-N (7)
+248	afii10090	% shift-option-<
+249	afii10091	% shift-option->
+250	afii10092	% shift-option-H
+251	afii10093	% shift-option-K
+252	afii10094	% no keychord (6) --- shift-option-Z (7)
+253	afii10095	% no keychord (6) --- shift-option-G (7)
+254	afii10096	% no keychord (6) --- shift-option-X (7)
+255	currency	% no keychord (6) --- shift-option-T (7)
+
+% (6) indicates key chord on System 6 --- (7) indicates key chord on System 7
+
+% (A) indicates that Adobe fonts these days DO have these `math' glyphs

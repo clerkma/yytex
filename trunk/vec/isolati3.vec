@@ -1,0 +1,250 @@
+% Encoding: ISO Latin 3 (SUN)
+
+% Latin 3, corresponding to ISO 8859-3
+
+% Copyright (c) 1993 -- 1995 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% NOTE: 0 - 31	  (C0) is supposed to be reserved for `control characters'
+% NOTE: 32 - 127  (G0) is just `USA ASCII' common to all ISO 8859-x
+% NOTE: 128 - 159 (C1) is supposed to be reserved for `control characters'
+% NOTE: 160 - 255 (G1) is where different ISO 8859-x standards differ
+
+% It is designed for at least the following `Mediterranean' languages:
+% Afrikaans, Catalan, Dutch, English, Esperanto, Galician, German,
+% Italian, Maltese, Spanish and Turkish.
+
+% NOTE: Accented/composite characters may not be built by overprinting.
+
+%  NU SH SX EX ET EQ AK BL
+%  BS HT LF VT FF CR SO SI
+%  DL D1 D2 D3 D4 NK SY EB
+%  CN EM SB EC FS GS RS US
+
+32	space
+33	exclam
+34	quotedbl	% quotation mark
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright	% quotesingle ISO ? apostrophe ISO ? quoteright Adobe
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen		% minus Adobe ? minus sign ISO ? hyphen (ASCII/ANSI)
+46	period		% full stop
+47	slash		% solidus
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at		% commercial at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft	% left square bracket
+92	backslash	% reverse solidus
+93	bracketright	% right square bracket
+94	asciicircum	% circumflex accent ISO ? asciicircum Adobe
+95	underscore	% low line
+96	quoteleft	% grave ISO ? quoteleft (ASCII/ANSI) quoteleft Adobe
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft	% left curly bracket
+124	bar		% vertical line
+125	braceright	% right curly bracket
+126	asciitilde	% tilde accent ISO ? asciitilde Adobe 
+%	127	delete ?
+
+%  PA HO BH NH IN NL SA ES
+%  HS HJ VS PD PU RI S2 S3
+%  DC P1 P2 TS CC MW SG EG
+%  SS GC SC CI ST OC PM AC
+
+%	C1 is used by PostScript as a convenient place to hide accents
+%	This is required because of a bug in most non-clone PS level I printers
+
+%	THE FOLLOWING UP TO 160 IT IS *NOT* PART OF THE ISO 8859 STANDARD
+
+144	dotlessi
+145	grave
+146	acute
+147	circumflex
+148	tilde
+149	macron
+150	breve
+151	dotaccent
+152	dieresis
+
+154	ring
+155	cedilla
+
+156	commadilla	% specific to Latin fonts
+
+157	hungarumlaut
+158	ogonek
+159	caron
+
+160	space		% nbspace ISO ? space Adobe
+161	Hbar		% Hslash ? H with stroke
+162	breve
+163	sterling	% pound sign
+164	currency
+165	bullet		% .notdef
+166	Hcircumflex
+167	section		% paragraph sign, section sign ISO ?
+168	dieresis
+169	Idotaccent	% Idot
+170	Scedilla	% Scommaaccent ?
+171	Gbreve
+172	Jcircumflex
+173	hyphen		% sfthyphen ISO ? % minus % soft hyphen
+174	bullet		% .notdef
+175	Zdot
+176	degree		% degree sign, ring above ISO ?
+177	hbar		% hslash ? % h with stroke
+178	twosuperior	% superscript two
+179	threesuperior	% superscript three
+180	acute
+181	mu		% micro sign
+182	hcircumflex
+183	periodcentered	% middle dot
+184	cedilla		% commaaccent ?
+185	dotlessi
+186	scedilla	% scommaaccent ?
+187	gbreve
+188	jcircumflex
+189	onehalf
+190	bullet		% .notdef
+191	zdotaccent	% zdot
+192	Agrave
+193	Aacute
+194	Acircumflex
+195	bullet		% .notdef
+196	Adieresis
+197	Cdotaccent	% Cdot
+198	Ccircumflex
+199	Ccedilla
+200	Egrave
+201	Eacute
+202	Ecircumflex
+203	Edieresis
+204	Igrave
+205	Iacute
+206	Icircumflex
+207	Idieresis
+208	bullet		% .notdef
+209	Ntilde
+210	Ograve
+211	Oacute
+212	Ocircumflex
+213	Gdotaccent	% Gdot
+214	Odieresis
+215	multiply
+216	Gcircumflex
+217	Ugrave
+218	Uacute
+219	Ucircumflex
+220	Udieresis
+221	Ubreve
+222	Scircumflex
+223	germandbls	% German letter sharp s
+224	agrave
+225	aacute
+226	acircumflex
+227	bullet		% .notdef
+228	adieresis
+229	cdotaccent	% cdot
+230	ccircumflex
+231	ccedilla
+232	egrave
+233	eacute
+234	ecircumflex
+235	edieresis
+236	igrave
+237	iacute
+238	icircumflex
+239	idieresis
+240	bullet		% .notdef
+241	ntilde
+242	ograve
+243	oacute
+244	ocircumflex
+245	gdot
+246	odieresis
+247	divide
+248	gcircumflex
+249	ugrave
+250	uacute
+251	ucircumflex
+252	udieresis
+253	ubreve
+254	scircumflex
+255	dotaccent	% dot above
+
+%% NOTE: `cedilla' probably should be called `commaaccent' in second cedilla
+%% (184), Scedilla (170), scedilla (186), Tcedilla (222), tcedilla (254)
+%% --- but not in first cedilla (155), Ccedilla (199), ccedilla (231)

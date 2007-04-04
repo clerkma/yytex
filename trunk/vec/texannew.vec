@@ -1,0 +1,293 @@
+% Encoding: TeX ANSI Windows 3.1
+
+% TeX Roman encoding (ligs = 2) for roman, bold, slanted TeX fonts ---
+% --- extended with part of modified ANSI vector above 127.
+
+% This makes it possibly to access the extra 58 accented characters that
+% normally appear unencoded in the Blue Sky Research CM fonts from Y&Y.
+
+% Copyright (c) 1992 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% NOTE: ATM places some restrictions on character layout:
+% 	(*) all accents MUST be in the positions shown here (see below)
+% 	(*) all base characters (A-Z, a-z) must be in their normal positions
+% 	(*) other characters can be moved around freely
+
+% NOTE: For composite (accented) characters to work with PC ATM:
+
+% grave, acute, dieresis, cedilla, ring, macron must be ANSI positions;
+% dotlessi, caron, circumflex, tilde must be in special defined ATM positions;
+% breve, hungarumlaut, ogonek must be in StandardEncoding positions;
+% other (user defined) accents must be where they are supposed to be, BUT:
+
+% NB: Composite characters using accents other than those in StandardEncoding
+% work with PC ATM, but yield `invalidfont' on Adobe printer interpreters.
+
+% PS: In ATM 2.0 Adobe tried to fix a problem resulting from a change in 
+%     Windows `ANSI', which has a major impact here, namely:
+% 	`dotlessi' displaces `Delta' and `caron' displaces `Theta'
+%     run ATMFIX to move these to more useful positions
+
+% Char names marked `extra' do not occur in CM, but do occur in Adobe fonts
+
+0	Gamma
+1	Delta	% dotlessi in ATM 2.0  --- sigh
+2	Theta	% caron	   in ATM 2.0  --- sigh
+3	Lambda
+4	Xi
+5	Pi
+6	Sigma
+7	Upsilon
+8	Phi
+9	Psi
+10	Omega
+11	ff
+12	fi		% or at 174
+13	fl		% or at 175
+14	ffi
+15	ffl
+% 16	dotlessi	% moved => special `ATM' position
+17	dotlessj
+% 18	grave		% moved => ANSI position
+% 19	acute		% moved => ANSI position
+% 20	caron		% moved => StandardEncoding position
+% 21	breve		% moved => StandardEncoding position
+% 22	macron		% moved => ANSI position
+% 23	ring		% moved => ANSI position
+% 24	cedilla		% moved => ANSI position
+% 25	germandbls	% MOVED UP
+% 26	ae		% MOVED UP
+% 27	oe		% MOVED UP
+% 28	oslash		% MOVED UP
+% 29	AE		% MOVED UP
+% 30	OE		% MOVED UP
+% 31	Oslash		% MOVED UP
+
+32	space		% suppress (stupidity)
+33	exclam
+34	quotedbl	% extra 34	quotedblright	% or at 148
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright	%
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen		%
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less		% extra 60	exclamdown	% or at 161
+61	equal
+62	greater		% extra 62	questiondown	% or at 191
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash	% extra 92	quotedblleft % or at 147
+93	bracketright
+94	asciicircum	% extra 94	circumflex % moved => ANSI position
+95	underscore	% extra 95	dotaccent % moved to 199 
+96	grave	 	% <= for ATM. Note conflict with TeX text `quoteleft'
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft	% extra 123	endash 		% or at 150
+124	bar		% extra 124	emdash		% or at 151
+125	braceright	% extra 125	hungarumlaut	% to SE position (205)
+126	asciitilde	% extra 126	tilde		% moved => `ATM' posit
+% 127	dieresis	% moved => special ATM position
+
+% 128	Delta		% moved up to make space for dotlessi
+% 129	Theta		% moved up to make space for caron
+
+130	quotesinglbase	% new ansi consistent
+
+136	circumflex	% NEW POSITION --- NOT pscript.drv 
+
+137	perthousand	% new ansi consistent
+
+138	Scaron		% new ansi consistent ...
+140	OE		% new ansi consistent ...
+141	caron		% only in MODIFIED ATM 2.0 - (run ATMFIX)
+
+145	quoteleft	% needed because `grave' displaced it lower down
+
+% 146	quoteright
+147	quotedblleft	% or at 92
+148	quotedblright	% or at 34
+% 149	bullet
+150	endash		% or at 123
+151	emdash		% or at 124
+
+152	tilde		% NEW POSITION --- NOT pscript.drv
+
+153	trademark	% new ansi consistent
+
+154	scaron		% new ansi consistent ...
+156	oe		% new ansi consistent ...
+
+157	dotlessi	% repeat - only in MODIFIED ATM 2.0  - (run ATMFIX)
+% 158	tilde		% repeat - in ATM 1.1  - NOT ANY MORE
+% 159	circumflex	% repeat - in ATM 1.1  - NOT ANY MORE
+
+159	Ydieresis	% new ansi consistent ...
+
+160	suppress	% space		% nbspace ?
+161	exclamdown	% or at 60
+162	cent		% extra
+163	sterling	% extra
+164	fraction	% extra
+165	yen		% extra
+166	florin		% extra
+167	section		% extra
+168	dieresis	% 168 	currency 
+169	copyright	% extra
+171	guillemotleft	% extra
+172	guilsinglleft	% extra
+173	guilsinglright	% extra % 173	hyphen 	% sfthyphen % minus % endash 
+% 174	fi		% 12
+% 175	fl		% 13
+175	macron		% overscore
+176	ring		% degree (alternate) <= needed here by ATM
+178	dagger		% extra
+179	daggerdbl	% extra
+180	acute
+182	paragraph	% extra
+183	bullet		% extra
+184	cedilla
+186	quotedblbase	% extra
+187	guillemotright	% extra
+188	ellipsis	% extra
+189	lslash		% arbitrary
+190	Lslash		% arbitrary
+191	questiondown	% or at  62
+192	Agrave
+193	Aacute
+194	Acircumflex
+195	Atilde
+196	Adieresis
+197	Aring
+198	breve		% NEW 	% 198	AE
+199	dotaccent	% Ccedilla
+200	Egrave
+201	Eacute
+202	Ecircumflex
+203	Edieresis
+204	Igrave
+205	hungarumlaut 	% Iacute % 205 insert hungarumlaut here
+206	ogonek		% Icircumflex % 206 insert ogonek here 
+207	Idieresis	% 207	caron 		% 
+208	AE		% 208	Eth		% 208 	Idieresis ^
+209	Ntilde
+210	Ograve
+211	Oacute
+212	Ocircumflex
+213	Otilde
+214	Odieresis
+215	Ccedilla	% multiply	% 215	Scaron  	% circumflex
+216	Oslash		% 216 	Lslash ?
+217	Ugrave
+218	Uacute
+219	Ucircumflex
+220	Udieresis
+221	Yacute
+222	germandbls	% 222	Ydieresis	% NEW % 223	germandbls
+223	Zcaron		% NEW % 222	Thorn
+224	agrave
+225	aacute
+226	acircumflex
+227	atilde
+228	adieresis
+229	aring
+230	Icircumflex	% moved here 
+% 230	ae		% move here ?
+231	ccedilla
+232	egrave
+233	eacute
+234	ecircumflex
+235	edieresis
+236	igrave
+237	iacute
+238	icircumflex
+239	idieresis	%
+240	ae		% 240	eth		% 240 idierisis ^	
+241	ntilde
+242	ograve
+243	oacute
+244	ocircumflex
+245	otilde
+246	odieresis
+247	Iacute 		% divide % 247	scaron	%  tilde
+248	oslash		% 248	lslash ?
+249	ugrave
+250	uacute
+251	ucircumflex
+252	udieresis
+253	yacute
+254	ydieresis	% MOVED from 255 % was: 254	thorn
+255	zcaron		% NEW	

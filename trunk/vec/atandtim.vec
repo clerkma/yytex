@@ -1,0 +1,270 @@
+% Encoding: AT&T smallcaps/expert
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% AT&T smallcaps/expert font vector suggested by Ian Morrison
+
+% 1	dotlessi	% for Windows ATM
+% 2	caron		% for Windows ATM
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quotesingle
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen	%	minus
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	asciicircum
+95	underscore
+96	grave		% quoteleft
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	bar
+125	braceright
+126	asciitilde
+% 127	rubout
+
+128	ampersandITCbig
+% 129	quoterightbig		% ???
+130	Ccedilla	% Macintosh encoding
+132	Ntilde		% Macintosh encoding
+% 133	quotedblleftalt		% ???
+% 134	quotedblrightalt	% ???
+% 135	daggerdbl	% ATT repeat (for Windows) ???
+% 136	circumflex	% for Windows ATM
+138	ampersandITC
+% 139	thinspace
+% 140	negspace	% avoid: this screws PopChar ...
+141	ccedilla	% Macintosh encoding
+142	CC		% smallcaps ligature
+143	CO		% smallcaps ligature
+144	OO		% smallcaps ligature
+145	SS		% smallcaps ligature
+146	ST		% smallcaps ligature
+147	TH		% smallcaps ligature
+148	TT		% smallcaps ligature
+% 149	oneroman
+150	ntilde		% Macintosh encoding
+151	oneroman
+% 151	tworoman
+152	tworoman
+% 152	tilde		% for Windows ATM (Ntilde)
+153	threeroman
+154	fourroman
+155	fiveroman
+156	sixroman
+157	sevenroman
+158	eightroman
+159	nineroman
+
+160	tenroman
+162	cent		% Macintosh encoding
+163	sterling	% Macintosh encoding
+164	section		% Macintosh encoding
+165	bullet		% Macintosh encoding
+166	paragraph	% Macintosh encoding
+% 167	germandbls	% Macintosh encoding --- not in smallcaps
+168	registered	% Macintosh encoding
+% 168	dieresis	% for Windows ATM
+169	copyright	% Macintosh encoding
+170	trademark	% Macintosh encoding
+171	acute		% Macintosh encoding
+172	dieresis	% Macintosh encoding
+% 173	ATT		% old position
+174	AE		% Macintosh encoding
+175	Oslash		% Macintosh encoding
+% 175	macron		% for Windows ATM
+% 176	ring		% for Windows ATM
+177	minus
+% 178	commasmall	% ???
+% 179	periodsmall	% ???
+180	yen		% Macintosh encoding
+% 180	acute		% for Windows ATM
+181	mswash
+182	eth
+184	Thorn
+% 184	cedilla		% for Windows ATM
+185	thorn
+% 186	Th
+% 187	Vi
+% 188	Wh
+% 189	Wi
+190	ae		% Macintosh encoding
+191	oslash		% Macintosh encoding
+192	questiondown	% Macintosh encoding
+193	exclamdown	% Macintosh encoding
+194	lslash
+196	florin		% Macintosh encoding
+% 198	breve		% for Windows ATM
+199	guillemotleft	% Macintosh encoding
+% 199	dotaccent	% for Windows ATM
+200	guillemotright	% Macintosh encoding
+201	hswash
+% 202	nbspace		% Macintosh encoding
+203	nswash
+204	Thswash
+205	Whswash
+% 205	hungarumlaut	% for Windows ATM
+206	OE		% Macintosh encoding
+% 206	ogonek		% for Windows ATM
+207	oe		% Macintosh encoding
+208	endash		% Macintosh encoding
+209	emdash		% Macintosh encoding
+210	quotedblleft	% Macintosh encoding
+211	quotedblright	% Macintosh encoding
+212	quoteleft	% Macintosh encoding
+213	quoteright	% Macintosh encoding
+% 214	ee
+% 215	ff
+% 216	fr
+% 217	ft
+% 218	gg
+% 219	gr
+% 220	gt
+% 222	fi		% Macintosh encoding --- not in smallcaps
+% 223	fl		% Macintosh encoding --- not in smallcaps
+224	daggerdbl	% ATT
+225	periodcentered	% Macintosh encoding
+226	quotesinglbase	% Macintosh encoding
+227	quotedblbase	% Macintosh encoding
+% 228	ll	% fr
+% 229	oo	% ft
+% 230	qu	% gg
+% 231	ri	% gr
+% 232	st	% gt
+% 233	th	% ll
+% 234	ti	% oo
+235	Eth
+% 236	tr	% ri
+% 237	tt	% st
+% 238	ty	% th
+% 239	wh	% ti
+% 240	wi	% tr
+241	Lslash
+245	dotlessi	% Macintosh encoding 
+246	circumflex	% Macintosh encoding
+247	tilde		% Macintosh encoding
+249	breve		% Macintosh encoding
+250	dotaccent	% Macintosh encoding
+251	ring		% Macintosh encoding
+252	cedilla		% Macintosh encoding
+255	caron		% Macintosh encoding
+
+%% NOTES:
+
+% ATT => daggerdbl 224 AND 135	(so in same place as in regular fonts)
+
+% NEW: questiondown, exclamdown --> OK 192, 193
+
+% NEW: quotesinglbase, quotedblbase --> OK 226, 227
+
+% NEW: dotlessi - OK 245 (needed for accented `i')
+
+% hyphen versus minus => minus (put at 177 where plusminus usually is)
+
+% grave (Mac and ANSI) versus quoteleft (StandardEncoding)
+
+% small caps OO ST TH TT were missing
+
+% thinspace negspace ? still desired ? DROP
+
+% DROPPING THE FOLLOWING 15 `MAVERICKS':
+
+% asteriskbig quoterightbig cedillabig
+
+% colonbig semicolonbig periodcenteredbig
+
+% quotedblleftalt quotedblrightalt Ring
+
+% commasmall periodsmall
+
+% centsmall centsmalllow dollarsmall dollarsmalllow
+
+% MAJOR BUG IN Windows ATM requires hard-wired positions for accents IF:
+% font is not reencoded to Windows ANSI AND accented characters used.
+
+% 1 dotlessi, 2 caron, 96 grave, 136 circumflex,
+% 152 tilde, 168 dieresis, 175 macron, 176 ring, 180 acute, 184 cedilla,
+% 198 breve, 199 dotaccent, 205 hungarumlaut, 206 ogonek
+
+% BUT, we don't have any of the composites in the encoding here...
+% EXCEPT for Ntilde - so need tilde in 152...

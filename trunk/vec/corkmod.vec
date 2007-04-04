@@ -1,0 +1,392 @@
+% Encoding: Cork Modified
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+%% Leaves out accented characters made by composing base and accent (SEAC)
+
+0	grave
+1	acute
+2	circumflex
+3	tilde
+4	dieresis
+5	hungarumlaut
+6	ring
+7	caron
+8	breve
+9	macron
+10	dotaccent
+11	cedilla
+12	ogonek
+13	quotesinglbase
+14	guilsinglleft
+15	guilsinglright
+
+16	quotedblleft
+17	quotedblright
+18	quotedblbase
+19	guillemotleft
+20	guillemotright
+21	endash
+22	emdash
+23	cwm
+24	perthousand
+25	dotlessi
+26	dotlessj
+27	ff
+28	fi
+29	fl
+30	ffi
+31	ffl
+
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	asciicircum
+95	underscore
+
+96	quoteleft
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	bar
+125	braceright
+126	asciitilde
+127	sfthyphen
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+128	nbspace
+129	visiblespace
+130	suppress
+
+131	exclamdown
+132	questiondown
+
+133	quotesingle
+134	quotereversed
+135	quotedblreversed
+
+136	perzero
+137	commaaccent
+138	underline
+139	brokenbar
+
+140	bullet
+141	periodcentered
+142	ellipsis
+
+143	section
+145	sterling
+144	paragraph
+146	dagger
+147	daggerdbl
+
+148	multiply
+149	divide
+150	minus
+151	logicalnot
+152	plusminus
+
+153	AE
+154	ae
+155	OE
+156	oe
+157	Oslash
+158	oslash
+
+159	Eng
+160	eng
+161	IJ
+162	ij
+163	SS
+164	germandbls
+
+165	Eth
+166	eth
+167	Thorn
+168	thorn
+169	Dcroat		% same as Eth
+170	dcroat
+
+171	Aogonek
+172	Aring		% sometimes composite sometimes not ?
+173	Ccedilla
+174	Dcaron		% sometimes composite sometimes not ?
+175	Eogonek
+176	Lcaron
+177	Lslash
+178	Scedilla
+179	Scommaaccent
+180	Tcaron		% sometimes composite sometimes not ?
+181	Tcedilla
+182	Tcommaaccent
+
+183	aogonek
+184	aring		% sometimes composite sometimes not
+185	ccedilla
+186	dcaron		% sometimes composite sometimes not ?
+187	eogonek
+188	lcaron
+189	lslash
+190	scedilla
+191	scommaaccent
+192	tcaron		% sometimes composite sometimes not ?
+193	tcedilla
+194	tcommaaccent
+
+% following in CMCSC and CMR5
+
+195	arrowdown
+196	arrowup
+
+197	arrowleft
+198	arrowright
+199	arrowboth
+
+200	Gamma
+201	Delta
+202	Theta
+203	Lambda
+204	Xi
+205	Pi
+206	Sigma
+207	Upsilon
+208	Phi
+209	Psi
+210	Omega
+
+% following only occur in CMTEX
+
+211	alpha
+212	beta
+213	delta
+214	gamma
+215	lambda
+216	pi
+
+217	circleplus
+218	circlemultiply
+219	dotmath
+220	element
+221	equivalence
+222	notequal
+223	greaterequal
+224	lessequal
+225	infinity
+226	integral
+227	partialdiff
+228	intersection
+229	union
+230	logicaland
+231	logicalor
+232	existential
+233	universal
+234	lozenge
+235	propersubset
+236	propersuperset
+
+% following added for LY1 completion
+
+237 cent
+238 yen
+239 florin
+240 currency
+241 copyright
+242 registered
+243 trademark
+244 degree
+245 fraction
+246 mu
+247 onehalf
+248 onequarter
+249 threequarters
+250 onesuperior
+251 twosuperior
+252 threesuperior
+253 ordfeminine
+254 ordmasculine
+
+%	128	Abreve
+%	130	Cacute
+%	131	Ccaron
+%	132	Dcaron
+%	133	Ecaron
+%	135	Gbreve
+%	157	Idotaccent
+%	136	Lacute
+%	139	Nacute
+%	140	Ncaron
+%	142	Ohungarumlaut
+%	143	Racute
+%	144	Rcaron
+%	145	Sacute
+%	146	Scaron
+%	148	Tcaron
+%	150	Uhungarumlaut
+%	151	Uring
+%	152	Ydieresis
+%	153	Zacute
+%	154	Zcaron
+%	155	Zdotaccent
+
+%	160	abreve
+%	162	cacute
+%	163	ccaron
+%	165	ecaron
+%	167	gbreve
+%	168	lacute
+%	171	nacute
+%	172	ncaron
+%	174	ohungarumlaut
+%	175	racute
+%	176	rcaron
+%	177	sacute
+%	178	scaron
+%	182	uhungarumlaut
+%	183	uring
+%	184	ydieresis
+%	185	zacute
+%	186	zcaron
+%	187	zdotaccent
+
+%	192	Agrave
+%	193	Aacute
+%	194	Acircumflex
+%	195	Atilde
+%	196	Adieresis
+%	200	Egrave
+%	201	Eacute
+%	202	Ecircumflex
+%	203	Edieresis
+%	204	Igrave
+%	205	Iacute
+%	206	Icircumflex
+%	207	Idieresis
+
+%	209	Ntilde
+%	210	Ograve
+%	211	Oacute
+%	212	Ocircumflex
+%	213	Otilde
+%	214	Odieresis
+%	217	Ugrave
+%	218	Uacute
+
+%	219	Ucircumflex
+%	220	Udieresis
+%	221	Yacute
+
+%	224	agrave
+%	225	aacute
+%	226	acircumflex
+%	227	atilde
+%	228	adieresis
+%	232	egrave
+%	233	eacute
+%	234	ecircumflex
+%	235	edieresis
+%	236	igrave
+%	237	iacute
+%	238	icircumflex
+%	239	idieresis
+
+%	241	ntilde
+%	242	ograve
+%	243	oacute
+%	244	ocircumflex
+%	245	otilde
+%	246	odieresis
+%	249	ugrave
+%	250	uacute
+%	251	ucircumflex
+%	252	udieresis
+%	253	yacute
+
+%	This	has	been	modified	to	not	include	the	composites	made	via	SEAC

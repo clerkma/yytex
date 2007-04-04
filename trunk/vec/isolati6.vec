@@ -1,0 +1,151 @@
+% Encoding: ISO 8859-6 Arabic
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+32	space
+33	exclam
+34	quotedbl	% quotation mark
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright	% quotesingle ISO ? apostrophe ISO ? quoteright Adobe
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen		% minus Adobe ? minus sign ISO ? hyphen (ASCII/ANSI)
+46	period		% full stop
+47	slash		% solidus
+48	arabiczero
+49	arabicone
+50	arabictwo
+51	arabicthree
+52	arabicfour
+53	arabicfive
+54	arabicsix
+55	arabicseven
+56	arabiceight
+57	arabicnine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at		% commercial at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft	% left square bracket
+92	backslash	% reverse solidus
+93	bracketright	% right square bracket
+94	asciicircum	% circumflex accent ISO ? asciicircum Adobe
+95	underscore	% low line
+96	quoteleft	% grave ISO ? quoteleft (ASCII/ANSI) quoteleft Adobe
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft	% left curly bracket
+124	bar		% vertical line
+125	braceright	% right curly bracket
+126	asciitilde	% tilde accent ISO ? asciitilde Adobe 
+
+160	space		% nbspace ISO ? space Adobe
+164	currency
+172	commaarabic	% ARABIC COMMA
+173	hyphen		% sfthyphen ISO ? % minus % soft hyphen ? hyphen Adobe
+187	semicolonarabic	% ARABIC SEMICOLON
+191	questionmarkarabic	% ARABIC QUESTION MARK
+193	hamza		% ARABIC LETTER HAMZA
+194	alefmadda	% ARABIC LETTER ALEF WITH MADDA ABOVE
+195	alefhamza 	% ARABIC LETTER ALEF WITH HAMZA ABOVE
+196	wawhamza	% ARABIC LETTER WAW WITH HAMZA ABOVE
+197	alefhamza	% ARABIC LETTER ALEF WITH HAMZA BELOW
+198	yehhamza	% ARABIC LETTER YEH WITH HAMZA ABOVE
+199	alef		% ARABIC LETTER ALEF
+200	beh		% ARABIC LETTER BEH
+201	tehmarbuta	% ARABIC LETTER TEH MARBUTA
+202	teh		% ARABIC LETTER TEH
+203	theh		% ARABIC LETTER THEH
+204	jeem		% ARABIC LETTER JEEM
+205	hah		% ARABIC LETTER HAH
+206	khah		% ARABIC LETTER KHAH
+207	dal		% ARABIC LETTER DAL
+208	thal		% ARABIC LETTER THAL
+209	reh		% ARABIC LETTER REH
+210	zain		% ARABIC LETTER ZAIN
+211	seen		% ARABIC LETTER SEEN
+212	sheen		% ARABIC LETTER SHEEN
+213	sad		% ARABIC LETTER SAD
+214	dad		% ARABIC LETTER DAD
+215	tah		% ARABIC LETTER TAH
+216	zah		% ARABIC LETTER ZAH
+217	ain		% ARABIC LETTER AIN
+218	ghain		% ARABIC LETTER GHAIN
+224	tatweel		% ARABIC TATWEEL
+225	feh		% ARABIC LETTER FEH
+226	qaf		% ARABIC LETTER QAF
+227	kaf		% ARABIC LETTER KAF
+228	lam		% ARABIC LETTER LAM
+229	meem		% ARABIC LETTER MEEM
+230	noon		% ARABIC LETTER NOON
+231	heh		% ARABIC LETTER HEH
+232	waw		% ARABIC LETTER WAW
+233	alefmaksura	% ARABIC LETTER ALEF MAKSURA
+234	yeh		% ARABIC LETTER YEH
+235	fathatan	% ARABIC FATHATAN
+236	dammatan	% ARABIC DAMMATAN
+237	kasratan	% ARABIC KASRATAN
+238	fatha		% ARABIC FATHA
+239	damma		% ARABIC DAMMA
+240	kasra		% ARABIC KASRA
+241	shadda		% ARABIC SHADDA
+242	sukun		% ARABIC SUKUN

@@ -1,0 +1,59 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%
+% @psencodingfile{
+%   author = "Y&Y, Inc.",
+%   version = "1.0",
+%   date = "1 April 1995",
+%   filename = "standard.enc",
+%   codetable = "ISO/ASCII",
+%   checksum = "xx",
+%   docstring = "Encoding for fonts in Adobe Type 1 format for use with TeX."
+% }
+%
+% Character code assignments are those in Adobe StandardEncoding
+%
+% SAMPLE USAGE (in `psfonts.map' file for DVIPS):
+% 
+% lbr LucidaBright "StandardEncoding ReEncodeFont" <standard.enc <lbr.pfb
+%
+% This tells DVIPS that the font called `lbr' in TeX has PostScript 
+% FontName `LucidaBright.'  It asks DVIPS to expand the file `lbr.pfb'
+% into PFA form, to include the attached `standard.enc' encoding vector,
+% and to actually reencode the font based on that encoding vector.
+%
+/StandardEncoding[
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/space/exclam/quotedbl/numbersign/dollar/percent/ampersand/quoteright
+/parenleft/parenright/asterisk/plus/comma/hyphen/period/slash
+/zero/one/two/three/four/five/six/seven
+/eight/nine/colon/semicolon/less/equal/greater/question
+/at/A/B/C/D/E/F/G
+/H/I/J/K/L/M/N/O
+/P/Q/R/S/T/U/V/W
+/X/Y/Z/bracketleft/backslash/bracketright/asciicircum/underscore
+/quoteleft/a/b/c/d/e/f/g
+/h/i/j/k/l/m/n/o
+/p/q/r/s/t/u/v/w
+/x/y/z/braceleft/bar/braceright/asciitilde/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/nbspace/exclamdown/cent/sterling/fraction/yen/florin/section
+/currency/quotesingle/quotedblleft/guillemotleft/guilsinglleft/guilsinglright/fi/fl
+/.notdef/endash/dagger/daggerdbl/periodcentered/.notdef/paragraph/bullet
+/quotesinglbase/quotedblbase/quotedblright/guillemotright/ellipsis/perthousand/.notdef/questiondown
+/.notdef/grave/acute/circumflex/tilde/macron/breve/dotaccent
+/dieresis/.notdef/ring/cedilla/.notdef/hungarumlaut/ogonek/caron
+/emdash/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/AE/.notdef/ordfeminine/.notdef/.notdef/.notdef/.notdef
+/Lslash/Oslash/OE/ordmasculine/.notdef/.notdef/.notdef/.notdef
+/.notdef/ae/.notdef/.notdef/.notdef/dotlessi/.notdef/.notdef
+/lslash/oslash/oe/germandbls/.notdef/.notdef/.notdef/.notdef
+]def
+

@@ -1,0 +1,158 @@
+% Encoding: AMS Cyrillic
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding vector for AMS Washington WNCYR `CM' Cyrillic fonts
+
+% Shown also are the AFII numbers for the Cyrillic glyphs
+
+0	Nj		% afii10059 Serbian soft N (looks like Hb)
+1	Lj		% afii10058 Serbian soft L (looks like Jb)
+2	Dzh		% afii10145 Serbian hard DJ
+3	Ze		% afii10047 Russian ZE (looks like mirrored E)
+4	Iroman		% afii10055 Ukranian I
+5	Ye		% afii10053 Ukranian YE
+6	Dj		% afii10051 Serbian soft DJ (looks like Th with tail)
+7	Tsoft		% afii10060 Serbian soft T (looks like Th)
+
+8	nj		% afii10107 Serbian soft n
+9	lj		% afii10106 Serbian soft l
+10	dzh		% afii10193 Serbian hard dj
+11	ze		% afii10095 Russian ze
+12	iroman		% afii10103 Ukranian i
+13	ye		% afii10101 Ukranian ye
+14	dj		% afii10099 Serbian soft dj (looks like barred h with tail)
+15	tsoft		% afii10108 Serbian soft t (looks like barred h)
+
+16	Yu		% afii10048 Russian YU (looks like IO)
+17	Zhe		% afii10024 Russian ZHE or ZH (looks like mirrored K plus K)
+18	Ishort		% afii10027 Russian short EE (I with cyrillic breve)
+19	Yo		% afii10023 Russan YO (looks like Edieresis)
+20	Izhitsa		% afii10148 Old Russian IZHITSA (looks like V)
+21	Fita		% afii10147 Old Russian FITA (looks like Theta)
+22	Zelo		% afii10054 Macedonian ZELO DZ (looks like S)
+23	Ya		% afii10049 Russian YA (looks like mirrored R)
+
+24	yu		% afii10096 Russan yu
+25	zhe		% afii10072 Russian zhe or zh
+26	ishort		% afii10075 Russian short ee
+27	yo		% afii10071 Russian yo
+28	izhitsa		% afii10196 Old Russian izhitsa
+29	fita		% afii10195 Old Russian fita
+30	zelo		% afii10102 Macedonian zelo dz
+31	ya		% afii10097 Russian ya
+
+32	dieresis
+33	exclam		
+34	quotedblright
+35	Yatz		% afii10046 Old Russian letter YATZ
+36	breve		% CyrBreve --- cyrillic breve
+37	percent		
+38	acute		
+39	quoteright	% apostrophe
+40	parenleft
+41	parenright
+42	asterisk
+43	yatz		% afii10194 Old Russian letter yatz
+44	comma
+45	hyphen
+46	period
+47	slash		% virgule
+
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+
+58	colon
+59	semicolon
+60	guillemotleft	% open Cyrillic quote
+61	dotlessi
+62	guillemotright	% close Cyrillic quote
+63	question
+
+64	breve
+
+65	A	% afii10017 Russian AH
+66	B	% afii10018 Russian BE
+67	C	% afii10040 Russian TSE
+68	D	% afii10021 Russian DE
+69	E	% afii10022 Russian YE
+70	F	% afii10038 Russian EFF	(looks like Phi)
+71	G	% afii10020 Russian GHE	(looks like Gamma)
+72	H	% afii10039 Russian HHA or KHA	(looks like X)
+73	I	% afii10026 Russian EE	(looks like mirrored N)
+74	J	% afii10057 Serbian JE
+75	K	% afii10028 Russian KA
+76	L	% afii10029 Russian EL
+77	M	% afii10030 Russian EM
+78	N	% afii10031 Russian EN	(looks like H)
+79	O	% afii10032 Russian O
+80	P	% afii10033 Russian PE	(looks like Pi)
+81	Q	% afii10041 Russian CHE
+82	R	% afii10034 Russian ERR	(looks like P)
+83	S	% afii10035 Russian ESS	(looks like C)
+84	T	% afii10036 Russian TE
+85	U	% afii10037 Russian OO or U	(looks like Y)
+86	V	% afii10019 Russian VE	(looks like B)
+87	W	% afii10043 Russian SHCHA
+88	X	% afii10042 Russian SHA
+89	Y	% afii10045 Russian YERREE or ERY
+90	Z	% afii10025 Russian ZE	(looks like 3)
+
+91	bracketleft
+92	quotedblleft
+93	bracketright
+94	Soft	% afii10046 Russian Soft Sign (applies to consonant preceding)
+95	Hard	% afii10044 Russian Hard Sign (applies to consonant preceding)
+
+96	quoteleft
+
+97	a	% afii10065 Russian ah
+98	b	% afii10066 Russian be
+99	c	% afii10088 Russian tse
+100	d	% afii10069 Russian de
+101	e	% afii10070 Russian ye
+102	f	% afii10086 Russian eff
+103	g	% afii10068 Russian ghe
+104	h	% afii10087 Russian hha or kha
+105	i	% afii10074 Russian ee
+106	j	% afii10105 Serbian je
+107	k	% afii10076 Russian ka
+108	l	% afii10077 Russian el
+109	m	% afii10078 Russian em
+110	n	% afii10079 Russian en
+111	o	% afii10080 Russian o
+112	p	% afii10081 Russian pe
+113	q	% afii10089 Russian che
+114	r	% afii10082 Russian err
+115	s	% afii10083 Russian ess
+116	t	% afii10084 Russian te
+117	u	% afii10085 Russian oo or u
+118	v	% afii10067 Russian ve
+119	w	% afii10091 Russian shcha
+120	x	% afii10090 Russian sha
+121	y	% afii10093 Russian yerree or ery
+122	z	% afii10073 Russian ze
+
+123	endash
+124	emdash
+125	numero	% afii61352 ---  No. (number sign)
+126	soft	% afii10094 Russian Soft Sign (applies to consonant preceding)
+127	hard	% afii10092 Russian Hard Sign (applies to consonant preceding)
+
+% 149	Ghard	% afii10050 Ukranian Hard G (looks like Gamma)
+%	ghard	% afii10098
+% 173	Amod		% Letter A modified
+% 210	YUS		% Old Bulgarian YUS
+
+% commonly used accented characters:
+%	zeacute (11), yuacute (24), yaacute (31), 
+%	aacute (97), eacute (101), iacute (105), oacute (111), 
+%	uacute (117), yacute (121)

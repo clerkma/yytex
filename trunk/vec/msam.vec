@@ -1,0 +1,135 @@
+% Encoding: AMS math symbols A
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% revised to reflect MSAM10 (rather than MSAM5 and MSAM7)
+
+0	squaredot
+1	squareplus
+2	squaremultiply
+3	square
+4	squaresolid
+5	squaresmallsolid
+6	diamond
+7	diamondsolid
+8	clockwise
+9	anticlockwise
+10	harpoonleftright
+11	harpoonrightleft
+12	squareminus
+13	forces
+14	forcesbar
+15	satisfies
+16	dblarrowheadright
+17	dblarrowheadleft
+18	dblarrowleft
+19	dblarrowright
+20	dblarrowup
+21	dblarrowdwn
+22	harpoonupright
+23	harpoondownright
+24	harpoonupleft
+25	harpoondownleft
+26	arrowtailright
+27	arrowtailleft
+28	arrowparrleftright
+29	arrowparrrightleft
+30	shiftleft
+31	shiftright
+32	squiggleright
+33	squiggleleftright
+34	curlyleft
+35	curlyright
+36	circleequal
+37	followsorequal	% succeedsorequal
+38	greaterorsimilar
+39	greaterorapproxeql
+40	multimap
+41	therefore
+42	because
+43	equalsdots
+44	defines
+45	precedesorequal
+46	lessorsimilar
+47	lessorapproxeql
+48	equalorless
+49	equalorgreater
+50	equalorprecedes	% equalorpreceeds
+51	equalorfollows	% equalorsucceeds
+52	precedesorcurly
+53	lessdblequal
+54	lessorequalslant
+55	lessorgreater
+56	primereverse
+57	axisshort
+58	equaldotrightleft
+59	equaldotleftright
+60	followsorcurly	% succeedsorcurly
+61	greaterdblequal
+62	greaterorequalslant
+63	greaterorless
+64	squareimage
+65	squareoriginal
+66	triangleright
+67	triangleleft
+68	trianglerightequal
+69	triangleleftequal
+70	star
+71	between
+72	triangledownsld
+73	trianglerightsld
+74	triangleleftsld
+75	arrowaxisright
+76	arrowaxisleft
+77	triangle
+78	trianglesolid
+79	triangleinv
+80	ringinequal
+81	lessequalgreater
+82	greaterlessequal
+83	lessdbleqlgreater
+84	greaterdbleqlless
+85	Yen
+86	arrowtripleright
+87	arrowtripleleft
+88	check
+89	orunderscore
+90	nand
+91	perpcorrespond
+92	angle
+93	measuredangle
+94	sphericalangle
+95	proportional
+96	smile
+97	frown
+98	subsetdbl
+99	supersetdbl
+100	uniondbl
+101	intersectiondbl
+102	uprise
+103	downfall
+104	multiopenleft
+105	multiopenright
+106	subsetdblequal
+107	supersetdblequal
+108	difference
+109	geomequivalent
+110	muchless
+111	muchgreater
+112	rightanglenw
+113	rightanglene
+114	circleR
+115	circleS
+116	fork
+117	dotplus
+118	revsimilar
+119	revasymptequal
+120	rightanglesw
+121	rightanglese
+122	maltesecross	% ironcross
+123	complement
+124	intercal
+125	circlering
+126	circleasterisk
+127	circleminus
+

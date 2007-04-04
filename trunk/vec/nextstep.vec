@@ -1,0 +1,233 @@
+% Encoding: NeXTSTEP
+
+% Copyright (c) 1993 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Somewhat like Adobe StandardEncoding with accented characters etc added
+
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	asciicircum
+95	underscore
+96	quoteleft
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	bar
+125	braceright
+126	asciitilde
+% 	127	rubout
+
+128	nbspace		% nextstep
+129	Agrave		% nextstep
+130	Aacute		% nextstep
+131	Acircumflex	% nextstep
+132	Atilde		% nextstep
+133	Adieresis	% nextstep
+134	Aring		% nextstep
+135	Ccedilla	% nextstep
+136	Egrave		% nextstep
+137	Eacute		% nextstep
+138	Ecircumflex	% nextstep
+139	Edieresis	% nextstep
+140	Igrave		% nextstep
+141	Iacute		% nextstep
+142	Icircumflex	% nextstep
+143	Idieresis	% nextstep
+144	Eth		% nextstep
+145	Ntilde		% nextstep
+146	Ograve		% nextstep
+147	Oacute		% nextstep
+148	Ocircumflex	% nextstep
+149	Otilde		% nextstep
+150	Odieresis	% nextstep
+151	Ugrave		% nextstep
+152	Uacute		% nextstep
+153	Ucircumflex	% nextstep
+154	Udieresis	% nextstep
+155	Yacute		% nextstep
+156	Thorn		% nextstep
+157	mu		% nextstep
+158	multiply	% nextstep
+159	divide		% nextstep
+160	copyright	% nextstep % nbspace
+161	exclamdown
+162	cent
+163	sterling
+164	fraction
+165	yen
+166	florin
+167	section
+168	currency
+169	quotesingle
+170	quotedblleft
+171	guillemotleft
+172	guilsinglleft
+173	guilsinglright
+174	fi
+175	fl
+176	registered	% nextstep
+177	sfthyphen	% endash
+178	dagger
+179	daggerdbl
+180	periodcentered
+181	brokenbar	% nextstep
+182	paragraph
+183	bullet
+184	quotesinglbase
+185	quotedblbase
+186	quotedblright
+187	guillemotright
+188	ellipsis
+189	perthousand
+190	logicalnot	% nextstep
+191	questiondown
+192	onesuperior	% nextstep
+193	grave
+194	acute
+195	circumflex
+196	tilde
+197	macron
+198	breve
+199	dotaccent
+200	dieresis
+201	twosuperior	% nextstep
+202	degree		% ring
+203	cedilla
+204	threesuperior	% nextstep
+205	hungarumlaut
+206	ogonek
+207	caron
+208	emdash
+209	plusminus	% nextstep
+210	onequarter	% nextstep
+211	onehalf		% nextstep
+212	threequarters	% nextstep
+213	agrave		% nextstep
+214	aacute		% nextstep
+215	acircumflex	% nextstep
+216	atilde		% nextstep
+217	adieresis	% nextstep
+218	aring		% nextstep
+219	ccedilla	% nextstep
+220	egrave		% nextstep
+221	eacute		% nextstep
+222	ecircumflex	% nextstep
+223	edieresis	% nextstep
+224	igrave		% nextstep
+225	AE
+226	iacute		% nextstep
+227	ordfeminine
+228	icircumflex	% nextstep
+229	idieresis	% nextstep
+230	eth		% nextstep
+231	ntilde		% nextstep
+232	Lslash
+233	Oslash
+234	OE
+235	ordmasculine
+236	ograve		% nextstep
+237	oacute		% nextstep
+238	ocircumflex	% nextstep
+239	otilde		% nextstep
+240	odieresis	% nextstep
+241	ae
+242	ugrave		% nextstep
+243	uacute		% nextstep
+244	ucircumflex	% nextstep
+245	dotlessi
+246	udieresis	% nextstep
+247	yacute		% nextstep
+248	lslash
+249	oslash
+250	oe
+251	germandbls
+252	thorn		% nextstep
+253	ydieresis	% nextstep
+% 254
+% 255

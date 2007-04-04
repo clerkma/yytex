@@ -1,0 +1,70 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% http://www.willamette.edu/~tjones/interesting.html
+
+128	bulletsquare
+129	trademark
+130	notequal
+131	infinity
+132	greateroreq
+133	sum (sigma?)
+134	integral
+135	Omega
+136	checkmark
+137	approxeq
+138	ellipsis
+139	endash  ? % bar, like a "-" but longer
+140	stylized apostrophe
+142	bar
+143	weird lowercase "a"
+144	delta, triangle
+147	quotedblbase
+148	perthousand
+149	apple
+150	circumflex
+152	caron	% hacek
+153	dotaccent
+154	ring % degree?
+156	cedilla		% ogonek ?
+158	weird "1"
+159	florin
+161	exclamdown
+162	cent
+163	sterling
+164	currency
+165	Yen
+; 166	brokenbar ?
+167	section
+168	dieresis
+169	copyright
+170	ordfeminine
+171	guillemotleft
+172	logicalnot
+; 173	hyphen
+174	registered
+175	macron
+176	degree ? small square dot, W: ring accent/degree symbol
+177	plusminus
+178	quotedblleft ?		W:superscripted 2
+179	quotedblright ?		W:superscripted 3
+180	acute
+181	mu
+182	paragraph
+183	periodcentered
+184	cedilla			% ogonek
+; 185	onesuperior ?
+186	ordmasculine
+187	guillemotright
+188	pi ?			W:1/4
+189	Pi ? Product ?		W:1/2
+190	lessoreq ?		W:3/4
+191	questiondown
+215	multiply ?	(I don't know)
+221	dagger		Yacute ?
+222	I don't know, "fi"?, 	W:I don't know Thorn
+223	germandbls
+247	divide
+253	daggerdbl	yacute ?
+254	I don't know, "fl"?, 	W:I don't know thorn
+

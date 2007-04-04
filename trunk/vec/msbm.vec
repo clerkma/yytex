@@ -1,0 +1,130 @@
+% Encoding: AMS math symbols B
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% revised to reflect MSBM10 (rather than MSBM5 and MSBM7)
+
+0	lessornotequal
+1	greaterornotequal
+2	notlessequal
+3	notgreaterequal
+4	notless
+5	notgreater
+6	notprecedes
+7	notfollows	% notsucceeds
+8	lessornotdbleql
+9	greaterornotdbleql
+10	notlessorslnteql
+11	notgreaterorslnteql
+12	lessnotequal
+13	greaternotequal
+14	notprecedesoreql
+15	notfollowsoreql	% notsucceedsoreql
+16	precedeornoteqvlnt % preceedornoteqlvnt
+17	followornoteqvlnt % succeedornoteqlvnt
+18	lessornotsimilar
+19	greaterornotsimilar
+20	notlessdblequal
+21	notgreaterdblequal
+22	precedenotslnteql % preceednotslnteql
+23	follownotslnteql % succeednotslnteql
+24	precedenotdbleqv % preceednotdbleqv
+25	follownotdbleqv % succeednotdbleqv
+26	lessnotdblequal
+27	greaternotdblequal
+28	notsimilar
+29	notapproxequal
+30	upslope
+31	downslope
+32	notsubsetoreql
+33	notsupersetoreql
+34	notsubsetordbleql
+35	notsupersetordbleql
+36	subsetornotdbleql
+37	supersetornotdbleql
+38	subsetornoteql
+39	supersetornoteql
+40	subsetnoteql
+41	supersetnoteql
+42	notsubseteql
+43	notsuperseteql
+44	notparallel
+45	notbar
+46	notshortbar
+47	notshortparallel
+48	notturnstile
+49	notforces
+50	notsatisfies
+51	notforcesextra
+52	nottriangeqlright
+53	nottriangeqlleft
+54	nottriangleleft
+55	nottriangleright
+56	notarrowleft
+57	notarrowright
+58	notdblarrowleft
+59	notdblarrowright
+60	notdblarrowboth
+61	notarrowboth
+62	dividemultiply
+63	emptyset
+64	notexistential
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	hatwide
+92	hatwider
+93	tildewide
+94	tildewider
+96	Finv
+97	Gmir
+102	Omegainv
+103	eth
+104	equalorsimilar
+105	beth
+106	gimel
+107	daleth
+108	lessdot
+109	greaterdot
+110	multicloseleft
+111	multicloseright
+112	barshort
+113	parallelshort
+114	integerdivide
+115	similar
+116	approxequal
+117	approxorequal
+118	followsorequal	% succeedsorequal
+119	precedesorequal	% preceedsorequal
+120	archleftdown
+121	archrightdown
+122	Digamma % Fstyle
+123	kappa
+124	k
+125	planckover2pi
+126	planckover2pi1
+127	epsiloninv
+

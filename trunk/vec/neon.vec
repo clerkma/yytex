@@ -1,0 +1,253 @@
+% Encoding: DVIPS old
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Old DVIPS (Thomas Rokicki) virtual font reencoding ----
+% for ordinary outline text fonts.
+
+% Bottom half is a mix of textype.vec and standard.vec --
+% -- top half is a mix of standard.vec and random arrangment of accented chars
+
+% WARNING: this only applies to old versions of DVIPS --- see neonnew.vec
+
+% WARNING: the accent positions are filled in sequence from AFM file
+%	   hence do NOT have a fixed order.  This is merely an example.
+
+% NOTE: The upright uppercase Greek letters are borrowed from Adobe Symbol font,
+%	   as is arrowup and arrowdown
+
+0	Gamma	
+1	Delta	
+2	Theta	
+3	Lambda	
+4	Xi	
+5	Pi	
+6	Sigma	
+7	Upsilon	
+8	Phi	
+9	Psi	
+10	Omega	
+11	arrowup
+12	arrowdown
+13	quotesingle
+14	exclamdown
+15	questiondown
+16	dotlessi	
+17	dotlessj	% ?
+18	grave	
+19	acute	
+20	caron	
+21	breve	
+22	macron	
+23	ring	
+24	cedilla	
+25	germandbls	
+26	ae	
+27	oe	
+28	oslash	
+29	AE	
+30	OE	
+31	Oslash	
+32	suppress
+33	exclam	
+34	quotedbl	% quotedblright	
+35	numbersign	
+36	dollar	
+37	percent	
+38	ampersand	
+39	quoteright	
+40	parenleft	
+41	parenright	
+42	asterisk	
+43	plus	
+44	comma	
+45	hyphen	
+46	period	
+47	slash	
+48	zero	
+49	one	
+50	two	
+51	three	
+52	four	
+53	five	
+54	six	
+55	seven	
+56	eight	
+57	nine	
+58	colon	
+59	semicolon	
+60	less	
+61	equal	
+62	greater	
+63	question	
+64	at	
+65	A	
+66	B	
+67	C	
+68	D	
+69	E	
+70	F	
+71	G	
+72	H	
+73	I	
+74	J	
+75	K	
+76	L	
+77	M	
+78	N	
+79	O	
+80	P	
+81	Q	
+82	R	
+83	S	
+84	T	
+85	U	
+86	V	
+87	W	
+88	X	
+89	Y	
+90	Z	
+91	bracketleft	
+92	backslash 	% quotedblleft	
+93	bracketright	
+94	circumflex
+95	underscore 	% dotaccent	
+96	quoteleft	
+97	a	
+98	b	
+99	c	
+100	d	
+101	e	
+102	f	
+103	g	
+104	h	
+105	i	
+106	j	
+107	k	
+108	l	
+109	m	
+110	n	
+111	o	
+112	p	
+113	q	
+114	r	
+115	s	
+116	t	
+117	u	
+118	v	
+119	w	
+120	x	
+121	y	
+122	z	
+123	braceleft	% endash	
+124	bar		% emdash	
+125	braceright	% hungarumlaut
+126	tilde
+127	dieresis
+
+% NOTE: following are accented characters in reverse alphabetical order,
+%	filled in to empty slots (not in StandardEncoding and not used below)
+
+128	zcaron		%
+129	ydieresis	%
+130	ugrave		%
+131	udieresis	%
+132	ucircum		%
+133	uacute		%
+134	scaron		%
+135	otilde		%
+136	ograve		%
+137	odieresis	%
+138	ocircum		%
+139	oacute		%
+140	ntilde		%
+141	igrave		%
+142	idieresis	%
+143	icircum		%
+144	iacute		%
+145	egrave		%
+146	edieresis	%
+147	ecircum		%
+148	eacute		%
+149	ccedilla	%
+150	atilde		%
+151	aring		%
+152	agrave		%
+153	adieresis	%
+154	acircum		%
+155	aacute		%
+156	Zcaron		%
+157	Ydieresis	%
+158	Ugrave		%
+159	Udieresis	%
+
+160	Ucircum		%
+161	Uacute		% exclamdown
+162	cent
+163	sterling
+164	fraction
+165	yen
+166	florin
+167	section
+168	currency
+169	Scaron		% quotesingle
+170	quotedblleft
+171	guillemotleft
+172	guilsinglleft
+173	guilsinglright
+174	fi
+175	fl
+176	Otilde		%
+177	endash
+178	dagger
+179	daggerdbl
+180	periodcentered
+181	Ograve		% 
+182	paragraph
+183	bullet
+184	quotesinglbase
+185	quotedblbase
+186	quotedblright
+187	guillemotright
+188	ellipsis
+189	perthousand
+190	Odieresis	%
+191	Ocircum		% questiondown
+192	Oacute		%
+193	Ntilde		% grave
+194	Igrave		% acute
+195	Idieresis	% circumflex
+196	Icircum		% tilde
+197	Iacute		% macron
+198	Egrave		% breve
+199	dotaccent
+200	Edieresis	% dieresis
+201	Ecircum		%
+202	Eacute		% ring
+203	Ccedilla	% cedilla
+204	Atilde		%
+205	hungarumlaut
+206	ogonek
+207	Aring		% caron
+208	emdash
+209	Agrave		% 
+210 	Adieresis 	%
+211	Acircum		%
+212	Aacute		%
+213	asciicircum	%
+214	asciitilde	%
+%
+%	225	AE
+227	ordfeminine
+232	Lslash
+%	233	Oslash
+% 	234	OE
+235	ordmasculine
+%	241	ae
+%	245	dotlessi
+248	lslash
+%	249	oslash
+%	250	oe
+%	251	germandbls
+
+

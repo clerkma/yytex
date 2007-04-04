@@ -1,0 +1,227 @@
+% Encoding: EBCDIC
+
+% Copyright (c) 1993 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% 5	control I
+% 7	fraction
+% 11
+% 12
+% 13
+% 14
+% 15
+% 16
+% 17
+% 18
+% 19
+% 22	control H
+% 24
+% 25
+% 28
+% 29
+% 30
+% 31
+% 37	control J
+% 38	control X
+% 39	control [
+% 45	control E
+% 46	control F
+% 47	control G
+% 50	control W
+% 55	control D
+% 60	control U
+% 61	control V
+% 63	control Z
+
+64	space
+65	nbspace
+66	acircumflex
+67	adieresis
+68	agrave
+69	aacute
+70	atilde
+71	aring
+72	ccedilla
+73	ntilde
+74	cent
+75	period
+76	less
+77	parenleft
+78	plus
+79	bar
+80	ampersand
+81	eacute
+82	ecircumflex
+83	edieresis
+84	egrave
+85	iacute
+86	icircumflex
+87	idieresis
+88	igrave
+89	germandbls
+90	exclam
+91	dollar
+92	asterisk
+93	parenright
+94	semicolon
+95	logicalnot
+96	minus
+97	slash
+98	Acircumflex
+99	Adieresis
+100	Agrave
+101	Aacute
+102	Atilde
+103	Aring
+104	Ccedilla
+105	Ntilde
+106	brokenbar
+107	comma
+108	percent
+109	underscore
+110	greater
+111	question
+112	oslash
+113	Eacute
+114	Ecircumflex
+115	Edieresis
+116	Egrave
+117	Iacute
+118	Icircumflex
+119	Idieresis
+120	Igrave
+121	quoteleft
+122	colon
+123	numbersign
+124	at
+125	quoteright
+126	equal
+127	quotedbl
+128	Oslash
+129	a
+130	b
+131	c
+132	d
+133	e
+134	f
+135	g
+136	h
+137	i
+138	guillemotleft
+139	guillemotright
+141	yacute
+142	thorn
+143	plusminus
+144	degree
+145	j
+146	k
+147	l
+148	m
+149	n
+150	o
+151	p
+152	q
+153	r
+154	ordfeminine
+155	ordmasculine
+156	ae
+156	eth
+157	cedilla
+158	AE
+159	currency
+160	mu
+161	asciitilde
+162	s
+163	t
+164	u
+165	v
+166	w
+167	x
+168	y
+169	z
+170	exclamdown
+171	questiondown
+172	Eth
+173	Yacute
+174	Thorn
+175	registered
+176	asciicircum
+177	sterling
+178	yen
+179	periodcentered
+180	copyright
+181	section
+182	paragraph
+183	onequarter
+184	onehalf
+185	threequarters
+186	bracketleft
+187	bracketright
+188	macron
+189	dieresis
+190	acute
+191	multiply
+192	braceleft
+193	A
+194	B
+195	C
+196	D
+197	E
+198	F
+199	G
+200	H
+201	I
+202	sfthyphen
+203	ocircumflex
+204	odieresis
+205	ograve
+206	oacute
+207	otilde
+208	braceright
+209	J
+210	K
+211	L
+212	M
+213	N
+214	O
+215	P
+216	Q
+217	R
+218	onesuperior
+219	ucircumflex
+220	udieresis
+221	ugrave
+222	uacute
+223	ydieresis
+224	backslash
+225	divide
+226	S
+227	T
+228	U
+229	V
+230	W
+231	X
+232	Y
+233	Z
+234	twosuperior
+235	Ocircumflex
+236	Odieresis
+237	Ograve
+238	Oacute
+239	Otilde
+240	zero
+241	one
+242	two
+243	three
+244	four
+245	five
+246	six
+247	seven
+248	eight
+249	nine
+250	threesuperior
+251	Ucircumflex
+252	Udieresis
+253	Ugrave
+254	Uacute

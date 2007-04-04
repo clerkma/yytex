@@ -1,0 +1,139 @@
+% Encoding: TeX math extension
+
+% TeX Math extended encoding vector.
+% Used by Computer Modern cmex10 and Adobe LucidaMath-Extended, for example.
+% Note: LucidaMath reencodes 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Copyright (c) 1990, 1991 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+0	parenleftbig		% => 161 a0		 
+1	parenrightbig		% => 162 a1
+2	bracketleftbig		% => 163 a2
+3	bracketrightbig		% => 164 a3
+4	floorleftbig		% => 165 a4
+5	floorrightbig		% => 166 a5
+6	ceilingleftbig		% => 167 a6
+7	ceilingrightbig		% => 168 a7
+8	braceleftbig		% => 169 a8
+9	bracerightbig		% => 170 a9
+10	angbracketleftbig	% angleleftbig ? => 173 a10
+11	angbracketrightbig	% anglerightbig ? => 174 a11
+12	vextendsingle		% => 175 a12
+13	vextenddouble		% => 176 a13
+14	slashbig		% => 177 a14
+15	backslashbig		% => 178 a15
+16	parenleftBig		% => 179 a16
+17	parenrightBig		% => 180 a17
+18	parenleftbigg		% => 181 a18
+19	parenrightbigg		% => 182 a19
+20	bracketleftbigg		% => 183 a20
+21	bracketrightbigg	% => 184 a21
+22	floorleftbigg		% => 185 a22
+23	floorrightbigg		% => 186 a23
+24	ceilingleftbigg		% => 187 a24
+25	ceilingrightbigg	% => 188 a25
+26	braceleftbigg		% => 189 a26
+27	bracerightbigg		% => 190 a27
+28	angbracketleftbigg	% angleleftbigg ? a28
+29	angbracketrightbigg	% anglerightbigg ? a29
+30	slashbigg		% => 193 a30
+31	backslashbigg		% => 194 a31
+
+32	parenleftBigg		% => 195 space a32
+33	parenrightBigg		% a33
+34	bracketleftBigg		% a34
+35	bracketrightBigg	% a35
+36	floorleftBigg		% a36
+37	floorrightBigg		% a37
+38	ceilingleftBigg		% a38
+39	ceilingrightBigg	% a39
+40	braceleftBigg		% a40
+41	bracerightBigg		% a41
+42	angbracketleftBigg	% angleleftBigg ? a42
+43	angbracketrightBigg	% anglerightBigg ? a43
+44	slashBigg		% a44
+45	backslashBigg		% a45
+46	slashBig		% a46
+47	backslashBig		% a47
+48	parenlefttp		% a48
+49	parenrighttp		% a49
+50	bracketlefttp		% a50
+51	bracketrighttp		% a51
+52	bracketleftbt		% a52
+53	bracketrightbt		% a53
+54	bracketleftex		% a54
+55	bracketrightex		% a55
+56	bracelefttp		% a56
+57	bracerighttp		% a57
+58	braceleftbt		% a58
+59	bracerightbt		% a59
+60	braceleftmid		% a60
+61	bracerightmid		% a61
+62	braceex			% a62
+63	arrowvertex		% a63
+64	parenleftbt		% a64
+65	parenrightbt		% a65
+66	parenleftex		% a66
+67	parenrightex		% a67
+68	angbracketleftBig	% angleleftBig ? a68
+69	angbracketrightBig	% anglerightBig ? a69
+70	unionsqtext		% unionsq ? a70
+71	unionsqdisplay		% a71
+72	contintegraltext	% contintegral ? a72
+73	contintegraldisplay	% a73
+74	circledottext		% circledot ?  ? a74
+75	circledotdisplay	% a75
+76	circleplustext		% circleplus ? a76
+77	circleplusdisplay	% a77
+78	circlemultiplytext	% circlemultiply ? a78
+79	circlemultiplydisplay	% a79
+80	summationtext		% summation ? a80
+81	producttext		% product ? a81
+82	integraltext		% integral ?  a82
+83	uniontext		% union ?  a83
+84	intersectiontext	% intersection ? a84
+85	unionmultitext		% unionmulti ? a85
+86	logicalandtext		% logicaland ? a86
+87	logicalortext		% logicalor ? a87
+88	summationdisplay	% a88
+89	productdisplay		% a89
+90	integraldisplay		% a90
+91	uniondisplay		% a91
+92	intersectiondisplay	% a92
+93	unionmultidisplay	% a93
+94	logicalanddisplay	% a94
+95	logicalordisplay	% a95
+96	coproducttext		% coproduct ? a96
+97	coproductdisplay	% a97
+98	hatwide			% a98
+99	hatwider		% a99
+100	hatwidest		% a100
+101	tildewide		% a101
+102	tildewider		% a102
+103	tildewidest		% a103
+104	bracketleftBig		% a104
+105	bracketrightBig		% a105
+106	floorleftBig		% a106
+107	floorrightBig		% a107
+108	ceilingleftBig		% a108
+109	ceilingrightBig		% a109
+110	braceleftBig		% a110
+111	bracerightBig		% a111
+112	radicalbig		% a112
+113	radicalBig		% a113
+114	radicalbigg		% a114
+115	radicalBigg		% a115
+116	radicalbt		% a116
+117	radicalvertex		% a117
+118	radicaltp		% a118
+119	arrowvertexdbl		% a119
+120	arrowtp			% a120
+121	arrowbt			% a121
+122	bracehtipdownleft	% a122
+123	bracehtipdownright	% a123
+124	bracehtipupleft		% a124
+125	bracehtipupright	% a125
+126	arrowdbltp		% a126
+127	arrowdblbt		% => 196 a127

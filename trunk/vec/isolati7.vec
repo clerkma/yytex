@@ -1,0 +1,251 @@
+% Encoding: ISO Greek (SUN)
+
+% Corresponding to ISO 8859-7
+
+% Copyright (c) 1994 -- 1999 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% NOTE: 0 - 31	  (C0) is supposed to be reserved for `control characters'
+% NOTE: 32 - 127  (G0) is just `USA ASCII' common to all ISO 8859-x
+% NOTE: 128 - 159 (C1) is supposed to be reserved for `control characters'
+% NOTE: 160 - 255 (G1) is where different ISO 8859-x standards differ
+
+% Greek
+
+% NOTE: Accented/composite characters may not be built by overprinting.
+
+%  NU SH SX EX ET EQ AK BL
+%  BS HT LF VT FF CR SO SI
+%  DL D1 D2 D3 D4 NK SY EB
+%  CN EM SB EC FS GS RS US
+
+32	space
+33	exclam
+34	quotedbl	% quotation mark
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright	% quotesingle ISO ? apostrophe ISO ? quoteright Adobe
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen		% minus Adobe ? minus sign ISO ? hyphen (ASCII/ANSI)
+46	period		% full stop
+47	slash		% solidus
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at		% commercial at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft	% left square bracket
+92	backslash	% reverse solidus
+93	bracketright	% right square bracket
+94	asciicircum	% circumflex accent ISO ? asciicircum Adobe
+95	underscore	% low line
+96	quoteleft	% grave ISO ? quoteleft (ASCII/ANSI) quoteleft Adobe
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft	% left curly bracket
+124	bar		% vertical line
+125	braceright	% right curly bracket
+126	asciitilde	% tilde accent ISO ? asciitilde Adobe 
+%	127	delete ?
+
+%  PA HO BH NH IN NL SA ES
+%  HS HJ VS PD PU RI S2 S3
+%  DC P1 P2 TS CC MW SG EG
+%  SS GC SC CI ST OC PM AC
+
+%	C1 is used by PostScript as a convenient place to hide accents
+%	This is required because of a bug in most non-clone PS level I printers
+
+%	THE FOLLOWING UP TO 160 IT IS *NOT* PART OF THE ISO 8859 STANDARD
+
+144	dotlessi
+145	grave
+146	acute
+147	circumflex
+148	tilde
+149	macron
+150	breve
+151	dotaccent
+152	dieresis
+
+154	ring
+155	cedilla
+
+156	commadilla	% specific to Latin fonts
+
+157	hungarumlaut
+158	ogonek
+159	caron
+
+160	space		% nbspace ISO ? space Adobe
+161	quoteleft	% modifier reversed comma
+162	quoteright	% modifier apostrophe
+163	sterling	% pound sign
+% 164	.notdef
+% 165	.notdef
+166	brokenbar
+167	section		% paragraph sign, section sign ISO ?
+168	dieresis	% dialytika
+169	copyright
+% 170	.notdef
+171	guillemotleft	% left angle quotation mark
+172	logicalnot	% not sign
+173	hyphen		% sfthyphen ? ISO ? % minus % soft hyphen
+% 174	.notdef
+175	barhorizontal	% Parenthetiki pavia
+176	degree
+177	plusminus
+178	twosuperior	% superscript two
+179	threesuperior	% superscript three
+180	tonos		% accent
+181	dieresistonos	% dialytika and tonos
+
+182	Atonos		% Alpha with accent
+183	middot		% ano teleia	periodcentered
+184	Etonos		% Epsilon with accent
+185	Ntonos		% Eta with accent
+186	Itonos		% Iota with accent
+187	guillemotright	% right angle quotation mark
+188	Otonos		% Omicron with accent
+189	onehalf
+190	Utonos		% Upsilon with accent
+191	Wtonos		% Omega with accent
+192	idieresistonos	% iota with dieresis and accent 
+
+193	Alpha
+194	Beta
+195	Gamma
+196	Delta
+197	Epsilon
+198	Zeta
+199	Eta
+200	Theta
+201	Iota
+202	Kappa
+203	Lambda
+204	Mu
+205	Nu
+206	Xi
+207	Omicron
+208	Pi
+209	Rho
+% 210	.notdef
+211	Sigma
+212	Tau
+213	Upsilon
+214	Phi
+215	Chi
+216	Psi
+217	Omega
+
+218	Idieresis	% Iota with dieresis
+219	Udieresis	% Upsilon with dieresis
+
+220	atonos		% alpha with accent
+221	etonos		% epsilon with accent
+222	ntonos		% eta with accent
+223	itonos		% iota with accent
+224	udieresistonos	% upsilon with dieresis and accent
+
+225	alpha
+226	beta
+227	gamma
+228	delta
+229	epsilon
+230	zeta
+231	eta
+232	theta
+233	iota
+234	kappa
+235	lambda
+236	mu
+237	nu
+238	xi
+239	omicron
+240	pi
+241	rho
+242	sigma1		% sigmafinal / sfinal
+243	sigma
+244	tau
+245	upsilon
+246	phi
+247	chi
+248	psi
+249	omega
+250	idieresis	% iota with dieresis
+251	udieresis	% upsilon with dieresis
+252	otonos		% omicron with accent
+253	utonos		% upsilon with accent
+254	wtonos		% omega with accent
+% 255	.notdef
+
+
