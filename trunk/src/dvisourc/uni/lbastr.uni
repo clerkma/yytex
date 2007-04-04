@@ -1,0 +1,46 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: Lucida Bright Astro
+
+% As used in Y&Y Lucida Bright Astro (lbastr)
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+32	0020	space
+
+49	260C	Conjunction
+50	2206	Trine
+51	260A	Ascending
+52	2610	Quadrature
+53	2641	Earth
+54	2297	RoundStamp
+55	22A0	RectangleStamp
+56	260D	Opposition
+57	FFFF	Star
+59	260B	Descending
+60	FFFF	New
+61	263D	FirstQuarter
+62	FFFF	Full
+63	263E	ThirdQuarter
+
+65	2648	Aries
+66	264E	Libra
+67	2651	Capricorn
+69	2640	Venus
+71	2650	Sagittarius
+73	264A	Gemini
+74	2643	Jupiter
+75	264F	Scorpio
+76	264C	Leo
+77	2642	Mars
+78	264B	Cancer
+79	263E	Moon
+80	2653	Pisces
+81	2652	Aquarius
+82	2644	Saturn
+83	263C	Sun
+84	2649	Taurus
+86	264D	Virgo
+89	263F	Mercury
+

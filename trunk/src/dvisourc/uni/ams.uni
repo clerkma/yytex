@@ -1,0 +1,457 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: AMS math symbols A
+
+% Use by Y&Y AMS math symbol A fonts:
+% MSAM10, MSAM9, MSAM8, MSAM7, MSAM6, MSAM5
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+0	22A1	squaredot
+1	229E	squareplus
+2	22A0	squaremultiply
+3	25A1	square
+4	25A0	squaresolid
+5	25AA	squaresmallsolid
+6	25C7	diamond
+7	25C6	diamondsolid		solid lozenge ?
+8	21BB	clockwise		arrowclockw
+9	21BA	anticlockwise		arrowanticlockw
+10	21CC	harpoonleftright
+11	21CB	harpoonrightleft
+12	229F	squareminus
+13	22A9	forces			force
+14	22AA	forcesbar
+15	22A8	satisfies		satisfy
+16	21A0	dblarrowheadright
+17	219E	dblarrowheadleft
+18	21C7	dblarrowleft
+19	21C9	dblarrowright
+20	21C8	dblarrowup
+21	21CA	dblarrowdwn		dblarrowdown
+22	21BE	harpoonupright
+23	21C2	harpoondownright
+24	21BF	harpoonupleft
+25	21C3	harpoondownleft
+26	21A3	arrowtailright
+27	21A2	arrowtailleft
+28	21C6	arrowparrleftright
+29	21C4	arrowparrrightleft
+30	21B0	shiftleft
+31	21B1	shiftright
+32	21DD	squiggleright		arrowsquiggleright
+33	21AD	squiggleleftright	arrowsquiggleboth
+34	21AB	curlyleft
+35	21AC	curlyright
+36	2257	circleequal		not 229C
+37	227F	followsorequal
+38	2273	greaterorsimilar
+39	FFFF	greaterorapproxeql ??
+40	22B8	multimap
+41	2234	therefore
+42	2235	because
+43	2251	equalsdots
+44	225C	defines			not 225D
+45	227E	precedesorequal		precedesequal1 227C
+46	2272	lessorsimilar
+47	FFFF	lessorapproxeql	  FFFF
+48	22DC	equalorless		lessequal ? 2264
+49	22DD	equalorgreater		greaterequal ? 2265
+50	22DE	equalorprecedes		equalprecedes1
+51	22DF	equalorfollows		equalfollows1
+52	227C	precedesorcurly
+53	2266	lessdblequal
+54	FFFF	lessorequalslant  FFFF
+55	2276	lessorgreater
+56	2035	primereverse
+57	FFFF	axisshort	extender for arrows
+58	2253	equaldotrightleft
+59	2252	equaldotleftright
+60	227D	followsorcurly
+61	2267	greaterdblequal
+62	FFFF	greaterorequalslant ??
+63	2277	greaterorless
+64	228F	squareimage
+65	2290	squareoriginal
+66	22B3	triangleright		25B7
+67	22B2	triangleleft		25C1
+68	22B5	trianglerightequal	triangrightequal
+69	22B4	triangleleftequal	triangleftequal
+70	22C6	star
+71	226C	between
+72	25BC	triangledownsld		triagdn ?
+73	25B6	trianglerightsld	trianglerightsld1
+74	25C0	triangleleftsld		triangleleftsld1
+75	FFFF	arrowaxisright	right arrow head for extensible
+76	FFFF	arrowaxisleft	left arrow head for extensible
+77	25B3	triangle
+78	25B2	trianglesolid		triangle
+79	25BD	triangleinv		triagdn
+80	2256	ringinequal
+81	22DA	lessequalgreater
+82	22DB	greaterlessequal
+83	FFFF	lessdbleqlgreater ??
+84	FFFF	greaterdbleqlless ??
+85	00A5	Yen
+86	21DB	arrowtripleright
+87	21DA	arrowtripleleft
+88	2713	check
+89	22BB	xor	orunderscore
+90	22BC	nand		2305
+91	2306	perpcorrespond	2306
+92	2220	angle
+93	2221	measuredangle
+94	2222	sphericalangle
+95	221D	proportional
+96	FFFF	smile		not 263A
+97	FFFF	frown		not 2639
+98	22D0	subsetdbl
+99	22D1	supersetdbl
+100	22D3	uniondbl
+101	22D2	intersectiondbl
+102	22CF	uprise		curly logical and
+103	22CE	downfall	curly logical or
+104	22CB	multiopenleft
+105	22CC	multiopenright
+106	FFFF	subsetdblequal	 ???
+107	FFFF	supersetdblequal ???
+108	224F	difference	difference between
+109	224E	geomequivalent
+110	22D8	muchless	lessmuch	not 226A
+111	22D9	muchgreater	greatermuch	not 226B
+112	231C	rightanglenw
+113	231D	rightanglene
+114	24C7	circleR		registered trademark ? 00AE
+115	24C8	circleS		registered servicemark	not 2120
+116	22D4	fork		pitchfork proper insertion not 2443
+117	2214	dotplus
+118	223D	revsimilar
+119	22CD	revasymptequal
+120	231E	rightanglesw
+121	231F	rightanglese
+122	2720	maltesecross
+123	2201	complement
+124	22BA	intercal
+125	229A	circlering
+126	229B	circleasterisk
+127	2296	circleminus
+
+% DUPLICATES of 0 - 31
+
+161	22A1	squaredot
+162	229E	squareplus
+163	22A0	squaremultiply
+164	25A1	square
+165	25A0	squaresolid
+166	25AA	squaresmallsolid
+167	25C7	diamond
+168	25C6	diamondsolid		solid lozenge ?
+169	21BB	clockwise		arrowclockw
+170	21BA	anticlockwise		arrowanticlockw
+173	21CC	harpoonleftright
+174	21CB	harpoonrightleft
+175	229F	squareminus
+176	22A9	forces			force
+177	22AA	forcesbar
+178	22A8	satisfies		satisfy
+179	21A0	dblarrowheadright
+180	219E	dblarrowheadleft
+181	21C7	dblarrowleft
+182	21C9	dblarrowright
+183	21C8	dblarrowup
+184	21CA	dblarrowdwn		dblarrowdown
+185	21BE	harpoonupright
+186	21C2	harpoondownright
+187	21BF	harpoonupleft
+188	21C3	harpoondownleft
+189	21A3	arrowtailright
+190	21A2	arrowtailleft
+191	21C6	arrowparrleftright
+192	21C4	arrowparrrightleft
+193	21B0	shiftleft
+194	21B1	shiftright
+195	21DD	squiggleright		arrowsquiggleright
+
+196	2296	circleminus
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Encoding: AMS math symbols B
+
+% Use by Y&Y AMS math symbol B fonts:
+% MSBM10, MSBM9, MSBM8, MSBM7, MSBM6, MSBM5
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Note: This has many negated relations (obviates overprinting with slash)
+% Note: This has many variants not found in UNICODE 
+
+% Note: Alphabet A-Z is Blackboard bold or `open face'
+% But only a few of these letters have UNICODE numbers (C, H, N, P, Q, R, Z)
+
+0	FFFF	lessornotequal
+1	FFFF	greaterornotequal
+2	FFFF	notlessequal			2270
+3	FFFF	notgreaterequal			2271
+4	226E	notless
+5	226F	notgreater
+6	FFFF	notprecedes			2280
+7	FFFF	notfollows	% notsucceeds	2281
+8	2268	lessornotdbleql
+9	2269	greaterornotdbleql
+10	2270	notlessorslnteql
+11	2271	notgreaterorslnteql
+12	FFFF	lessnotequal
+13	FFFF	greaternotequal
+14	FFFF	notprecedesoreql	22E0	but slanted
+15	FFFF	notfollowsoreql		22E1	but slanted
+16	22E8	precedeornoteqvlnt	% preceedornoteqlvnt
+17	22E9	followornoteqvlnt	% succeedornoteqlvnt
+18	22E6	lessornotsimilar
+19	22E7	greaterornotsimilar
+20	FFFF	notlessdblequal
+21	FFFF	notgreaterdblequal
+22	FFFF	precedenotslnteql	% preceednotslnteql
+23	FFFF	follownotslnteql	% succeednotslnteql
+24	FFFF	precedenotdbleqv	% preceednotdbleqv
+25	FFFF	follownotdbleqv		% succeednotdbleqv
+26	FFFF	lessnotdblequal
+27	FFFF	greaternotdblequal
+28	2241	notsimilar		notsimilar
+29	2247	notapproxequal		notapproxequal
+30	FFFF	upslope			2215
+31	FFFF	downslope		2216
+32	22E2	notsubsetoreql	notsubsetsqequal
+33	22E3	notsupersetoreql	notsupersetsqequal
+34	FFFF	notsubsetordbleql
+35	FFFF	notsupersetordbleql
+36	FFFF	subsetornotdbleql
+37	FFFF	supersetornotdbleql
+38	FFFF	subsetornoteql
+39	FFFF	supersetornoteql
+40	228A	subsetnoteql
+41	228B	supersetnoteql
+42	2288	notsubseteql
+43	2289	notsuperseteql
+44	2226	notparallel
+45	2224	notbar
+46	FFFF	notshortbar
+47	FFFF	notshortparallel
+48	22AC	notturnstile
+49	22AE	notforces		notforce
+50	22AD	notsatisfies		notsatisfy
+51	22AF	notforcesextra		notforceextr
+52	22ED	nottriangeqlright
+53	22EC	nottriangeqlleft
+54	22EA	nottriangleleft
+55	22EB	nottriangleright
+56	219A	notarrowleft		arrowleftnot
+57	219B	notarrowright	arrowrightnot
+58	21CD	notdblarrowleft
+59	21CF	notdblarrowright
+60	21CE	notdblarrowboth
+61	21AE	notarrowboth
+62	22C7	dividemultiply	divideonmultiply
+63	2205	emptyset
+64	2204	notexistential
+
+65	FFFF	A	0041
+66	FFFF	B	0042
+67	2102	C	0043
+68	FFFF	D	0044
+69	FFFF	E	0045
+70	FFFF	F	0046
+71	FFFF	G	0047
+72	210D	H	0048
+73	FFFF	I	0049
+74	FFFF	J	004A
+75	FFFF	K	004B
+76	FFFF	L	004C
+77	FFFF	M	004D
+78	2115	N	004E
+79	FFFF	O	004F
+80	2119	P	0050
+81	211A	Q	0051
+82	211D	R	0052
+83	FFFF	S	0053
+84	FFFF	T	0054
+85	FFFF	U	0055
+86	FFFF	V	0056
+87	FFFF	W	0057
+88	FFFF	X	0058
+89	FFFF	Y	0059
+90	2124	Z	005A
+
+91	FFFF	hatwide
+92	FFFF	hatwider
+93	FFFF	tildewide
+94	FFFF	tildewider
+96	2132	Finv
+97	FFFF	Gmir
+102	2127	Omegainv	mho
+103	00F0	eth
+104	2242	equalorsimilar
+105	2136	beth		bethmath
+106	2137	gimel		gimelmath
+107	2138	daleth		dalethmath
+108	22D6	lessdot
+109	22D7	greaterdot
+110	22C9	multicloseleft
+111	22CA	multicloseright
+112	FFFF	barshort
+113	FFFF	parallelshort
+114	FFFF	integerdivide	setdifference ? 2216
+115	223C	similar
+116	2248	approxequal
+117	2245	approxorequal
+118	FFFF	followsorequal		followsequal1
+119	FFFF	precedesorequal		precedesequal1
+120	21B6	archleftdown	anticlockwise semi arrow
+121	21B7	archrightdown	clockwise semi arrow
+122	03DC	Digamma	% Fstyle
+123	03F0	kappa varkappa		not 039A
+124	FFFF	k		004B
+125	210F	planckover2pi	slanted bar
+126	210F	planckover2pi1	straight bar
+127	220D	epsiloninv	?
+
+% DUPLICATES of 0 - 31
+
+161	FFFF	lessornotequal
+162	FFFF	greaterornotequal
+163	FFFF	notlessequal			2270
+164	FFFF	notgreaterequal			2271
+165	226E	notless
+166	226F	notgreater
+167	FFFF	notprecedes			2280
+168	FFFF	notfollows	% notsucceeds	2281
+169	2268	lessornotdbleql
+170	2269	greaterornotdbleql
+173	2270	notlessorslnteql
+174	2271	notgreaterorslnteql
+175	FFFF	lessnotequal
+176	FFFF	greaternotequal
+177	FFFF	notprecedesoreql	22E0	but slanted
+178	FFFF	notfollowsoreql		22E1	but slanted
+179	22E8	precedeornoteqvlnt	% preceedornoteqlvnt
+180	22E9	followornoteqvlnt	% succeedornoteqlvnt
+181	22E6	lessornotsimilar
+182	22E7	greaterornotsimilar
+183	FFFF	notlessdblequal
+184	FFFF	notgreaterdblequal
+185	FFFF	precedenotslnteql	% preceednotslnteql
+186	FFFF	follownotslnteql	% succeednotslnteql
+187	FFFF	precedenotdbleqv	% preceednotdbleqv
+188	FFFF	follownotdbleqv		% succeednotdbleqv
+189	FFFF	lessnotdblequal
+190	FFFF	greaternotdblequal
+191	2241	notsimilar		notsimilar
+192	2247	notapproxequal		notapproxequal
+193	FFFF	upslope			2215
+194	FFFF	downslope		2216
+195	22E2	notsubsetoreql	notsubsetsqequal
+
+196	220D	epsiloninv	?
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Encoding: Euler math extension
+
+% Used by Y&Y AMS Euler math extension font:	EUEX10
+
+% Note: Large delimiters and operators all hang off baseline
+% Large delimiters occur in several sizes including an extensible version
+% None of these have UNICODE code numbers.
+
+% Note: Large operators occur in two sizes: `text' and `display'
+% We arbitrarily assign UNICODE numbers to the text version, not display
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+8	FFFF	braceleftbig
+9	FFFF	bracerightbig
+10	FFFF	angbracketleftbig	% angleleftbig ?
+11	FFFF	angbracketrightbig	% anglerightbig ?
+12	FFFF	vextendsingle
+13	FFFF	vextenddouble
+14	FFFF	slashbig
+15	FFFF	backslashbig
+
+24	21BC	arrowlefttophalf
+25	21BD	arrowleftbothalf
+26	21C0	arrowrighttophalf
+27	21C1	arrowrightbothalf
+
+32	2190	arrowleft
+33	2192	arrowright
+34	2191	arrowup
+35	2193	arrowdown
+36	2194	arrowboth
+37	2197	arrownortheast
+38	2198	arrowsoutheast
+
+40	21D0	arrowdblleft
+41	21D2	arrowdblright
+42	21D1	arrowdblup
+43	21D3	arrowdbldown
+44	21D4	arrowdblboth
+45	2196	arrownorthwest
+46	2199	arrowsouthwest
+
+49	221E	infinity
+
+55	FFFF	bracketrightex
+56	FFFF	bracelefttp
+57	FFFF	bracerighttp
+58	FFFF	braceleftbt
+59	FFFF	bracerightbt
+60	FFFF	braceleftmid
+61	FFFF	bracerightmid
+62	FFFF	braceex
+
+72	222E	contintegraltext	% contintegral ?
+73	FFFF	contintegraldisplay	% large 222E
+
+80	2211	summationtext		% summation ?
+81	220F	producttext		% product ?
+82	222B	integraltext		% integral ?
+
+88	FFFF	summationdisplay	% large 2211
+89	FFFF	productdisplay		% large 220F
+90	FFFF	integraldisplay		% large 222B
+
+96	2210	coproducttext		% coproduct ?
+97	FFFF	coproductdisplay	% large 2210
+
+108	2195	arrowbothv
+109	21D5	arrowdblbothv
+
+122	FFFF	bracehtipdownleft
+123	FFFF	bracehtipdownright
+124	FFFF	bracehtipupleft
+125	FFFF	bracehtipupright
+
+% DUPLICATES of 0 - 31 follow
+
+169	FFFF	braceleftbig
+170	FFFF	bracerightbig
+
+173	FFFF	angbracketleftbig	% angleleftbig ?
+174	FFFF	angbracketrightbig	% anglerightbig ?
+175	FFFF	vextendsingle
+176	FFFF	vextenddouble
+177	FFFF	slashbig
+178	FFFF	backslashbig
+
+187	21BC	arrowlefttophalf
+188	21BD	arrowleftbothalf
+189	21C0	arrowrighttophalf
+190	21C1	arrowrightbothalf
+
+195	2190	arrowleft
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

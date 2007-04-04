@@ -1,0 +1,210 @@
+% Copyright 1990,1991,1992,1993,1994,1995,1996 Y&Y, Inc.
+% Copyright 2007 TeX Users Group
+% You may freely use, modify and/or distribute this file.
+
+% DVIPSONE preamble version 2.0.0 (1996 September 1)
+
+currentdict systemdict eq{end systemdict begin}if	% Publisher's Prism
+
+dvidict begin
+systemdict/currentpacking known {currentpacking true setpacking} if
+/hashversion{3 1 roll 100 mul 3 1 roll add 100 mul add}def
+/checkversion{2 0 0 hashversion 4 1 roll hashversion ne
+	{errstart (DVIPSONE:  Wrong preamble version) show showpage stop}if}def
+/bd{bind def}bind def /xd{exch def}bd /ld{load def}bd
+/num 0 def /den 0 def /mag 0 def /dviscl 0 def
+/PageHeight 0 def /PageWidth 0 def
+/xoffset 0 def /yoffset 0 def /rotation 0 def /xmagnif 0 def /ymagnif 0 def
+/dviw 0 def /dvix 0 def /dviy 0 def /dviz 0 def /dvisave 0 def
+/dvistate 0 def /dvistack 0 def /dvidictcount 0 def /dvicount 0 def
+/Distiller false def	% product operator is level 2 ...
+systemdict /product known {product (Distiller) search
+	{pop pop pop /Distiller true def}{pop}ifelse} if
+/checkfonts false def /landscape false def	% default
+/forscl{72 PageHeight 72 sub translate dviscl dup neg scale}bd
+/undscl{1 dviscl div dup neg scale currentpoint translate}bd
+/revscl{1 dviscl div dup neg scale 72 neg PageHeight 72 sub neg translate}bd
+/settrn{/dvimatrix 6 array currentmatrix def	% new hook
+	/dviscl num den div 72 254000 div mul def
+	landscape {PageHeight 0 translate 90 rotate} if
+	xoffset yoffset neg translate
+	PageWidth 2 div PageHeight 2 div 2 copy translate
+	rotation rotate	xmagnif ymagnif scale
+	neg exch neg exch translate forscl
+	mag 1000 div dup scale	% w.r.t. TeX origin
+}bd
+/u{currentpoint 6 copy pop pop}bd
+/U{currentpoint 6 copy 6 copy pop pop}bd
+/o{pop pop pop pop moveto}bd
+/O{10{pop}repeat moveto}bd
+/M{o u}bd
+/snaptoold{currentpoint transform round exch round exch itransform moveto}bd
+/snapto{currentpoint transform
+	0.25 sub round 0.25 add exch 0.25 sub round 0.25 add exch
+	itransform moveto}bd	% 96/Jan/31
+/fixsize{dtransform truncate exch truncate exch idtransform}bd
+/boxold{currentpoint	% h,  w
+	4 -2 roll
+	Distiller not {snaptoold exch fixsize exch} if
+	dup 0 rlineto 0 2 index neg rlineto neg 0 rlineto 0 exch rlineto
+	closepath fill
+	moveto
+}bd
+/box{	gsave		% h,  w
+	0 setlinecap
+	Distiller not {exch fixsize exch} if
+	2 copy lt {	% h < w
+		exch dup setlinewidth
+		neg 2 div 0 exch rmoveto
+		Distiller not {snapto} if
+		0 rlineto
+	}{		% h > w
+		dup setlinewidth
+		2 div 0 rmoveto
+		Distiller not {snapto} if
+		0 exch neg rlineto
+	} ifelse
+	stroke
+	grestore
+}bd
+/bphook{}def/ephook{}def
+% /bp{/dvisave save def bphook gsave settrn 0 0 0 0 0 0 moveto}def
+/bp{/dvisave save def bphook bindall gsave settrn 0 0 0 0 0 0 moveto}def
+/bop{/PhysicalPage xd /LogicalPage xd bp}bd	% 95/Mar/25
+/ep{pop pop pop pop grestore ephook dvisave restore showpage}def
+/eop{ep}bd	% /eop/ep ld
+/s{show}def	% bd	% /s/show ld
+/S{show dup 0 rmoveto}def	% bd
+/T{show 2 index 0 rmoveto}def	% bd
+/p{currentpoint 3 -1 roll show moveto}def	% bd
+/pr{2 copy 0 gt exch 0 gt and{box}{pop pop}ifelse}bd
+/sr{2 copy pr exch pop 0 rmoveto}bd
+/r{0 rmoveto}bd
+/w{dup 0 rmoveto}bd
+/W{dup 0 rmoveto exch pop}bd
+/x{2 index 0 rmoveto}bd
+/X{dup 0 rmoveto 4 -1 roll pop 3 1 roll}bd
+/d{0 exch rmoveto}bd
+/y{0 2 index rmoveto}bd
+/Y{dup 0 exch rmoveto 3 -1 roll pop exch}bd
+/z{0 4 index rmoveto}bd
+/Z{dup 0 exch rmoveto 5 -1 roll pop 4 1 roll}bd
+/sf{setfont}def	% bd	% /sf/setfont ld
+%
+/errposx 72 def /errposy 72 def
+/errstart{/Helvetica-Bold findfont 12 scalefont setfont
+	errposx PageHeight errposy sub moveto}bd
+/fstart{/badfont false def checkfonts{errstart}if}bd
+/fend{badfont {showpage stop}if}bd
+/findfonx{checkfonts{dup findfont exch dup FontDirectory exch known {pop}
+{errstart (DVIPSONE:  Font ) show 64 string cvs show ( not found!) show
+/errposy errposy 15 add def /badfont true def}ifelse}{findfont}ifelse}bd
+%
+/mf{exch findfonx exch [ exch 0 0 2 index neg 0 0 ] makefont def}bd
+/fs{findfonx dup length 1 add dict exch
+	{1 index/FID ne 1 index/UniqueID ne and
+	{2 index 3 1 roll put}{pop pop}ifelse}forall}bd
+/fa{dict 1 index/Metrics 2 index put 1 index/Encoding get}bd
+/fm{1048576 div 1000 mul exch
+	2 index exch get 3 index exch 3 -1 roll put}bd
+/fb{pop pop}bd
+/fe{exch definefont pop}bd
+/rmf{findfonx dup length dict exch
+	{1 index/FID ne{2 index 3 1 roll put}{pop pop}ifelse}forall
+	dup /Encoding 3 index put exch pop definefont pop}bd
+/amf{dup findfont /Encoding get dup StandardEncoding ne
+	{3 1 roll exch}if pop rmf}bd
+/clipfig{newpath
+	3 index 3 index moveto
+	1 index 3 index lineto
+	2 copy lineto
+	3 index 1 index lineto
+	pop pop pop pop
+	closepath clip newpath}bd
+/pushstack{/dviz xd /dviy xd /dvix xd /dviw xd
+	dviw dvix dviy dviz
+	count array astore
+	currentpoint dviw dvix dviy dviz}bd
+/popstack{pop pop pop pop moveto aload pop}bd
+/dvispsav{/dvistate save def}bd
+/dvispbeg{
+	count array astore /dvistack xd
+	countdictstack /dvidictcount xd
+	count /dvicount xd
+	userdict begin
+	/showpage{}def/erasepage{}def/copypage{}def
+	/initgraphics{}def/initmatrix{}def	% /initclip{}def
+	/setpagedevice{pop}def	% level 2 96/Aug/1
+	/letter{}def/legal{}def/a4{}def/b5{}def
+	0 setgray 0 setlinecap 1 setlinewidth
+	0 setlinejoin 10 setmiterlimit [] 0 setdash newpath
+	}bd
+/dvispend{end	% userdict
+	count dvicount sub {pop} repeat
+	countdictstack dvidictcount sub {end} repeat
+	dvistack aload pop
+	dvistate restore}bd
+/startTexFig{
+	/psury xd /psurx xd /pslly xd /psllx xd /psheight xd /pswidth xd
+	dvispsav undscl
+	0 psheight dviscl mul neg translate
+	pswidth psurx psllx sub div
+	psheight psury pslly sub div scale
+	psllx dviscl mul neg pslly dviscl mul neg translate
+	dvispbeg
+}bd
+/doclip{
+	psllx dviscl mul pslly dviscl mul
+	psurx dviscl mul psury dviscl mul clipfig
+}bd
+/endTexFig{dvispend}bd % /endTexFig/dvispend ld
+/Texlandscape{
+	currentpoint PageHeight 0 translate 90 rotate moveto
+}bd
+/emlinecap 0 def /emxpos 0 def /emypos 0 def /emwidth 26214 def
+/emw{/emwidth xd}bd
+/emm{currentpoint /emypos xd /emxpos xd}bd
+/eml{save emwidth setlinewidth emlinecap setlinecap
+	currentpoint newpath moveto emxpos emypos lineto stroke restore emm}bd
+/n/.notdef def
+/notdef{{/.notdef}repeat}bd
+/pdfmark where	% if not defined, define as cleartomark in userdict
+{pop}{userdict /pdfmark /cleartomark load put} ifelse	% 95/Jun/15
+/setpagesize{	% width height 0 1
+	[ 5 1 roll			% bury the mark
+	statusdict /setpageparams known
+	{statusdict begin {setpageparams} stopped pop end}if
+%	{pop pop pop pop}ifelse}bd	% 96/Feb/10
+	cleartomark}bd			% 96/May/12
+/invert{[{1 exch sub} /exec load currenttransfer /exec load] cvx settransfer}bd
+/dviscreen{	% currentscreen pop
+	{1 add 180 mul cos 1 0.08 add mul exch 2 add 180 mul cos 1 0.08 sub
+	mul add 2 div} bind setscreen	% Copyright (C) Y&Y 1989
+}bd
+/gray{setgray}def	% bd	% /gray/setgray ld
+/setrgbcolor where {pop} {
+	/setrgbcolor {.11 mul exch .59 mul add exch .30 mul add
+	dup 1 gt {pop 1} if gray}bd	% setgray
+} ifelse
+/rgb{setrgbcolor}def	% bd	% /rgb/setrgbcolor ld
+/setcmykcolor where {pop} {
+	/setcmykcolor {/kcomponent exch def
+	3 {1 exch sub kcomponent sub dup 0 lt {pop 0} if 3 1 roll} repeat
+	rgb}bd	% setrgbcolor
+} ifelse
+/cmyk{setcmykcolor}def	% bd	% /cmyk/setcmykcolor ld
+/black{0 0 0 rgb}bd
+/white{1 1 1 rgb}bd
+/bindall{	% bind and load for speed 96/July/11
+	/s/show ld
+	/S{show dup 0 rmoveto}bd
+	/T{show 2 index 0 rmoveto}bd
+	/p{currentpoint 3 -1 roll show moveto}bd
+	/sf/setfont ld
+	/gray/setgray ld
+	/rgb/setrgbcolor ld
+	/cmyk/setcmykcolor ld
+}def
+% /bphook{bindall}def
+systemdict/currentpacking known{setpacking} if
+end

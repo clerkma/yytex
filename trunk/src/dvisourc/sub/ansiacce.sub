@@ -1,0 +1,31 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+; This is the font substitution file `ansiacce.sub' for DVIPSONE
+; The following calls for reencoding of RESIDENT fonts to Windows ANSI:
+
+tir	Times-Roman			*force* *reside* *remap* ansinew
+tii	Times-Italic			*force* *reside* *remap* ansinew
+tib	Times-Bold			*force* *reside* *remap* ansinew
+tibi	Times-BoldItalic		*force* *reside* *remap* ansinew
+
+com	Courier				*force* *reside* *remap* ansinew
+coo	Courier-Oblique			*force* *reside* *remap* ansinew
+cob	Courier-Bold			*force* *reside* *remap* ansinew
+cobo	Courier-BoldOblique		*force* *reside* *remap* ansinew
+
+hv	Helvetica			*force* *reside* *remap* ansinew
+hvo	Helvetica-Oblique		*force* *reside* *remap* ansinew
+hvb	Helvetica-Bold			*force* *reside* *remap* ansinew
+hvbo	Helvetica-BoldOblique		*force* *reside* *remap* ansinew
+
+sy	Symbol				*force* *reside*
+
+; The following instead calls for reencoding of a DOWNLOADED font:
+; tir *remap* ansinew
+
+; An alternate way of calling for reencoding of a DOWNLOADED font:
+; tir tir *remap* ansinew
+
+; NOTE: You can achieve the same effect using `-X' on the command line
+;       Or set TEXANSI=1

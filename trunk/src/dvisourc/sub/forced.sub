@@ -1,0 +1,95 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Sample FORCED font substitution table:
+% The comment lines (starting with '%') can be removed
+% Listed are the 75 fonts of plain TeX - 
+% 	substitution is used to reduce this to the `plain' 40 fonts
+
+% cmb10		.
+% cmbsy10	.
+% cmbx5		.
+cmbx6		cmbx7		*force*	
+% cmbx7		.
+cmbx8		cmbx7		*force*	
+cmbx9		cmbx10		*force*	
+% cmbx10	.
+% cmbx12	.
+% cmbxsl10	.
+% cmbxti10	.
+% cmcsc10	.
+% cmdunh10	none		% Vaguely like vertically stretched cmr10 
+% cmex10	.
+% cmff10	none		% Funky roman party invitation font 
+% cmfi10	none		% Funky italic font 
+% cmfib8	none		% Fibonacci ratio font 
+% cminch	cmssbx10 	% partial cmssbx10, but scaled by 15.3 
+% cmitt10	.
+% cmmi5		.
+cmmi6		cmmi7		*force*	
+% cmmi7		.
+cmmi8		cmmi7		*force*	
+cmmi9		cmmi10		*force*	
+% cmmi10	.
+% cmmi12	.
+% cmmib10	.
+% cmr5		.
+cmr6		cmr7		*force*	
+% cmr7		.
+cmr8		cmr7		*force*	
+cmr9		cmr10		*force*	
+% cmr10		.
+% cmr12		.
+% cmr17		.
+cmsl8		cmsl10		*force*	
+cmsl9		cmsl10		*force*	
+% cmsl10	.
+% cmsl12	.
+% cmsltt10	none		% slanted Typewriter font 
+cmss8		cmss10		*force*	
+cmss9		cmss10		*force*	
+% cmss10	.
+% cmss12	.
+% cmss17	.
+% cmssbx10	.
+% cmssdc10	.
+cmssi8		cmssi10		*force*	
+cmssi9		cmssi10		*force*	
+% cmssi10	.
+% cmssi12	.
+% cmssi17	.
+% cmssq8	.
+% cmssqi8	.
+% cmsy5		.
+cmsy6		cmsy7		*force*	
+% cmsy7		.
+cmsy8		cmsy7		*force*	
+cmsy9		cmsy10		*force*	
+% cmsy10	.
+% cmtcsc10	none		% Typewriter Caps and Small Caps 
+cmtex8		cmtex10		*force*	
+cmtex9		cmtex10		*force*	
+% cmtex10	.
+cmti7		cmti10		*force*	
+cmti8		cmti10		*force*	
+cmti9		cmti10		*force*	
+% cmti10	.
+% cmti12	.
+cmtt8		cmtt10		*force*	
+cmtt9		cmtt10		*force*	
+% cmtt10	.
+cmtt12		cmtt10		*force*	
+% cmu10		none		% Unslanted Text Italic 
+% cmvtt10	none 		% Variable Width Typewriter 
+% manfnt	logo10		*alias*
+
+% In order to deal with LaTeX 2e misfeatures:
+
+cmmib6		cmmib7	*force*
+cmmib8		cmmib7	*force*
+cmmib9		cmmib10	*force*
+
+cmbsy6		cmbsy7	*force*
+cmbsy8		cmbsy7	*force*
+cmbsy9		cmbsy10	*force*
+

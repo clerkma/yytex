@@ -1,0 +1,1831 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Unicode `ASCII' + `Latin 1' 
+
+% Used in Y&Y font lsunr00
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+32	0020	space
+33	0021	exclam
+34	0022	quotedbl
+35	0023	numbersign
+36	0024	dollar
+37	0025	percent
+38	0026	ampersand
+39	0027	quotesingle
+40	0028	parenleft
+41	0029	parenright
+42	002a	asterisk
+43	002b	plus
+44	002c	comma
+45	002d	hyphen
+46	002e	period
+47	002f	slash
+48	0030	zero
+49	0031	one
+50	0032	two
+51	0033	three
+52	0034	four
+53	0035	five
+54	0036	six
+55	0037	seven
+56	0038	eight
+57	0039	nine
+58	003a	colon
+59	003b	semicolon
+60	003c	less
+61	003d	equal
+62	003e	greater
+63	003f	question
+64	0040	at
+65	0041	A
+66	0042	B
+67	0043	C
+68	0044	D
+69	0045	E
+70	0046	F
+71	0047	G
+72	0048	H
+73	0049	I
+74	004a	J
+75	004b	K
+76	004c	L
+77	004d	M
+78	004e	N
+79	004f	O
+80	0050	P
+81	0051	Q
+82	0052	R
+83	0053	S
+84	0054	T
+85	0055	U
+86	0056	V
+87	0057	W
+88	0058	X
+89	0059	Y
+90	005a	Z
+91	005b	bracketleft
+92	005c	backslash
+93	005d	bracketright
+94	005e	asciicircum
+95	005f	underscore
+96	0060	grave
+97	0061	a
+98	0062	b
+99	0063	c
+100	0064	d
+101	0065	e
+102	0066	f
+103	0067	g
+104	0068	h
+105	0069	i
+106	006a	j
+107	006b	k
+108	006c	l
+109	006d	m
+110	006e	n
+111	006f	o
+112	0070	p
+113	0071	q
+114	0072	r
+115	0073	s
+116	0074	t
+117	0075	u
+118	0076	v
+119	0077	w
+120	0078	x
+121	0079	y
+122	007a	z
+123	007b	braceleft
+124	007c	bar
+125	007d	braceright
+126	007e	asciitilde
+
+% OFFSET 128
+
+160	00a0	nbspace
+161	00a1	exclamdown
+162	00a2	cent
+163	00a3	sterling
+164	00a4	currency
+165	00a5	yen
+166	00a6	brokenbar
+167	00a7	section
+168	00a8	dieresis
+169	00a9	copyright
+170	00aa	ordfeminine
+171	00ab	guillemotleft
+172	00ac	logicalnot
+173	00ad	sfthyphen
+174	00ae	registered
+175	00af	overscore
+176	00b0	degree
+177	00b1	plusminus
+178	00b2	twosuperior
+179	00b3	threesuperior
+180	00b4	acute
+181	00b5	micro
+182	00b6	paragraph
+183	00b7	middot
+184	00b8	cedilla
+185	00b9	onesuperior
+186	00ba	ordmasculine
+187	00bb	guillemotright
+188	00bc	onequarter
+189	00bd	onehalf
+190	00be	threequarters
+191	00bf	questiondown
+192	00c0	Agrave
+193	00c1	Aacute
+194	00c2	Acircumflex
+195	00c3	Atilde
+196	00c4	Adieresis
+197	00c5	Aring
+198	00c6	AE
+199	00c7	Ccedilla
+200	00c8	Egrave
+201	00c9	Eacute
+202	00ca	Ecircumflex
+203	00cb	Edieresis
+204	00cc	Igrave
+205	00cd	Iacute
+206	00ce	Icircumflex
+207	00cf	Idieresis
+208	00d0	Eth
+209	00d1	Ntilde
+210	00d2	Ograve
+211	00d3	Oacute
+212	00d4	Ocircumflex
+213	00d5	Otilde
+214	00d6	Odieresis
+215	00d7	multiply
+216	00d8	Oslash
+217	00d9	Ugrave
+218	00da	Uacute
+219	00db	Ucircumflex
+220	00dc	Udieresis
+221	00dd	Yacute
+222	00de	Thorn
+223	00df	germandbls
+224	00e0	agrave
+225	00e1	aacute
+226	00e2	acircumflex
+227	00e3	atilde
+228	00e4	adieresis
+229	00e5	aring
+230	00e6	ae
+231	00e7	ccedilla
+232	00e8	egrave
+233	00e9	eacute
+234	00ea	ecircumflex
+235	00eb	edieresis
+236	00ec	igrave
+237	00ed	iacute
+238	00ee	icircumflex
+239	00ef	idieresis
+240	00f0	eth
+241	00f1	ntilde
+242	00f2	ograve
+243	00f3	oacute
+244	00f4	ocircumflex
+245	00f5	otilde
+246	00f6	odieresis
+247	00f7	divide
+248	00f8	oslash
+249	00f9	ugrave
+250	00fa	uacute
+251	00fb	ucircumflex
+252	00fc	udieresis
+253	00fd	yacute
+254	00fe	thorn
+255	00ff	ydieresis
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `European Latin' + `Extended Latin'
+
+% Used in Y&Y font lsunr01
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+0	0100	Amacron
+1	0101	amacron
+2	0102	Abreve
+3	0103	abreve
+4	0104	Aogonek
+5	0105	aogonek
+6	0106	Cacute
+7	0107	cacute
+8	0108	Ccircumflex
+9	0109	ccircumflex
+10	010a	Cdot
+11	010b	cdot
+12	010c	Ccaron
+13	010d	ccaron
+14	010e	Dcaron
+15	010f	dcaron
+16	0110	Dmacron
+17	0111	dmacron
+18	0112	Emacron
+19	0113	emacron
+20	0114	Ebreve
+21	0115	ebreve
+22	0116	Edot
+23	0117	edot
+24	0118	Eogonek
+25	0119	eogonek
+26	011a	Ecaron
+27	011b	ecaron
+28	011c	Gcircumflex
+29	011d	gcircumflex
+30	011e	Gbreve
+31	011f	gbreve
+32	0120	Gdot
+33	0121	gdot
+34	0122	Gcedilla
+35	0123	gcedilla
+36	0124	Hcircumflex
+37	0125	hcircumflex
+38	0126	Hbar
+39	0127	hbar
+40	0128	Itilde
+41	0129	itilde
+42	012a	Imacron
+43	012b	imacron
+44	012c	Ibreve
+45	012d	ibreve
+46	012e	Iogonek
+47	012f	iogonek
+48	0130	Idot
+49	0131	dotlessi
+50	0132	IJ
+51	0133	ij
+52	0134	Jcircumflex
+53	0135	jcircumflex
+54	0136	Kcedilla
+55	0137	kcedilla
+56	0138	kra
+57	0139	Lacute
+58	013a	lacute
+59	013b	Lcedilla
+60	013c	lcedilla
+61	013d	Lcaron
+62	013e	lcaron
+63	013f	Ldot
+64	0140	ldot
+65	0141	Lslash
+66	0142	lslash
+67	0143	Nacute
+68	0144	nacute
+69	0145	Ncedilla
+70	0146	ncedilla
+71	0147	Ncaron
+72	0148	ncaron
+73	0149	napostrophe
+74	014a	Eng
+75	014b	eng
+76	014c	Omacron
+77	014d	omacron
+78	014e	Obreve
+79	014f	obreve
+80	0150	Odblacute
+81	0151	odblacute
+82	0152	OE
+83	0153	oe
+84	0154	Racute
+85	0155	racute
+86	0156	Rcedilla
+87	0157	rcedilla
+88	0158	Rcaron
+89	0159	rcaron
+90	015a	Sacute
+91	015b	sacute
+92	015c	Scircumflex
+93	015d	scircumflex
+94	015e	Scedilla
+95	015f	scedilla
+96	0160	Scaron
+97	0161	scaron
+98	0162	Tcedilla
+99	0163	tcedilla
+100	0164	Tcaron
+101	0165	tcaron
+102	0166	Tbar
+103	0167	tbar
+104	0168	Utilde
+105	0169	utilde
+106	016a	Umacron
+107	016b	umacron
+108	016c	Ubreve
+109	016d	ubreve
+110	016e	Uring
+111	016f	uring
+112	0170	Udblacute
+113	0171	udblacute
+114	0172	Uogonek
+115	0173	uogonek
+116	0174	Wcircumflex
+117	0175	wcircumflex
+118	0176	Ycircumflex
+119	0177	ycircumflex
+120	0178	Ydieresis
+121	0179	Zacute
+122	017a	zacute
+123	017b	Zdot
+124	017c	zdot
+125	017d	Zcaron
+126	017e	zcaron
+
+128	0180	bbar
+129	0181	Bhook
+130	0182	Btopbar
+131	0183	btopbar
+132	0184	Tonesix
+133	0185	tonesix
+134	0186	Oopen
+135	0187	Chook
+136	0188	chook
+137	0189	Dbar1
+138	018a	Dhook
+139	018b	Dtopbar
+140	018c	dtopbar
+141	018d	deltaturn
+142	018e	Eturn
+143	018f	Schwa
+144	0190	Epsilon1
+145	0191	Fhook
+146	0192	fscript
+147	0193	Ghook
+148	0194	Gamma1
+149	0195	hv
+150	0196	Iota1
+151	0197	Ibar
+152	0198	Khook
+153	0199	khook
+154	019a	lbar
+155	019b	lambdabar
+156	019c	mcapturn
+157	019d	Nhook
+158	019e	nleg
+159	019f	Obar
+160	01a0	Ohorn
+161	01a1	ohorn
+162	01a2	OI
+163	01a3	oi
+164	01a4	Phook
+165	01a5	phook
+166	01a6	YR
+167	01a7	Tonetwo
+168	01a8	tonetwo
+169	01a9	Esh
+170	01aa	eshlooprev
+171	01ab	tpalatalhook
+172	01ac	Thook
+173	01ad	thook
+174	01ae	Trthook
+175	01af	Uhorn
+176	01b0	uhorn
+177	01b1	Upsilon2
+178	01b2	Vcursive
+179	01b3	Yhook
+180	01b4	yhook
+181	01b5	Zbar
+182	01b6	zbar
+183	01b7	Yogh
+184	01b8	Yoghrev
+185	01b9	yoghrev
+186	01ba	yoghtail
+187	01bb	2bar
+188	01bc	Tonefive
+189	01bd	tonefive
+190	01be	glottalstopbarinv
+191	01bf	wynn
+192	01c0	pipe
+193	01c1	pipedbl
+194	01c2	pipedblbar
+195	01c3	exclam1
+196	01c4	DZhacek
+197	01c5	Dzhacek
+198	01c6	dzhacek
+199	01c7	LJ
+200	01c8	Lj
+201	01c9	lj
+202	01ca	NJ
+203	01cb	Nj
+204	01cc	nj
+205	01cd	Ahacek
+206	01ce	ahacek
+207	01cf	Ihacek
+208	01d0	ihacek
+209	01d1	Ohacek
+210	01d2	ohacek
+211	01d3	Uhacek
+212	01d4	uhacek
+213	01d5	Udieresismacron
+214	01d6	udieresismacron
+215	01d7	Udieresisacute
+216	01d8	udieresisacute
+217	01d9	Udieresishacek
+218	01da	udieresishacek
+219	01db	Udieresisgrave
+220	01dc	udieresisgrave
+221	01dd	eturn
+222	01de	Adieresismacron
+223	01df	adieresismacron
+224	01e0	Adotmacron
+225	01e1	adotmacron
+226	01e2	AEmacron
+227	01e3	aemacron
+228	01e4	Gbar
+229	01e5	gbar
+230	01e6	Ghacek
+231	01e7	ghacek
+232	01e8	Khacek
+233	01e9	khacek
+234	01ea	Oogonek
+235	01eb	oogonek
+236	01ec	Oogonekmacron
+237	01ed	oogonekmacron
+238	01ee	Yoghhacek
+239	01ef	yoghhacek
+240	01f0	jhacek
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Standard Phonetic' + `Modifier Letters'
+
+% Used in Y&Y font lsunr02
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+80	0250	aturn
+81	0251	ascript
+82	0252	ascriptturn
+83	0253	bhook
+84	0254	cturn
+85	0255	ccurl
+86	0256	drthook
+87	0257	dhook
+88	0258	erev
+89	0259	schwa
+90	025a	schwahook
+91	025b	epsilon1
+92	025c	epsilon1rev
+93	025d	epsilon1revhook
+94	025e	epsilon1revclosed
+95	025f	jdotlessbar
+96	0260	ghook
+97	0261	gcursive
+98	0262	Gsmallcap
+99	0263	gamma1
+100	0264	babygamma
+101	0265	hturn
+102	0266	hhook
+103	0267	henghook
+104	0268	ibar
+105	0269	iota1
+106	026a	Ismallcap
+107	026b	lmidtilde
+108	026c	lbelt
+109	026d	lrthook
+110	026e	lyogh
+111	026f	mturn
+112	0270	mturndescend
+113	0271	mhook
+114	0272	nlftlfthook
+115	0273	nrthook
+116	0274	Nsmallcap
+117	0275	obar
+118	0276	OEsmallcap
+119	0277	omegaclosed
+120	0278	philatin
+121	0279	rturn
+122	027a	rturnascend
+123	027b	rturnrthook
+124	027c	rdescend
+125	027d	rrthook
+126	027e	rfishhook
+127	027f	rfishhookrev
+128	0280	Rsmallcap
+129	0281	Rsmallcapinv
+130	0282	srthook
+131	0283	esh
+132	0284	jhookdblbar
+133	0285	eshshortrev
+134	0286	eshcurl
+135	0287	tturn
+136	0288	trthook
+137	0289	ubar
+138	028a	upsilonlatin
+139	028b	vscript
+140	028c	vturn
+141	028d	wturn
+142	028e	yturn
+143	028f	Ysmallcap
+144	0290	zrthook
+145	0291	zcurl
+146	0292	yogh
+147	0293	yoghcurl
+148	0294	glottalstop
+149	0295	glottalstoprevinv
+150	0296	glottalstopinv
+151	0297	cstretch
+152	0298	bullseye
+153	0299	Bsmallcap
+154	029a	epsilonclosed
+155	029b	Gsmallcaphook
+156	029c	Hsmallcap
+157	029d	jcrosstail
+158	029e	kturn
+159	029f	Lsmallcap
+160	02a0	qhook
+161	02a1	glottalstopbar
+162	02a2	glottalstopbarrev
+163	02a3	dz
+164	02a4	dyogh
+165	02a5	dzcurl
+166	02a6	ts
+167	02a7	tesh
+168	02a8	tccurl
+176	02b0	hsuper
+177	02b1	hhooksuper
+178	02b2	jsuper
+179	02b3	rsuper
+180	02b4	rturnsuper
+181	02b5	rturnrthooksuper
+182	02b6	Rturnsuper
+183	02b7	wsuper
+184	02b8	ysuper
+185	02b9	primemod
+186	02ba	primedblmod
+187	02bb	quoteleftmod
+188	02bc	apostrophe
+189	02bd	apostropherev
+190	02be	ringrighthalfsuper
+191	02bf	ringlefthalfsuper
+192	02c0	glottal
+193	02c1	glottalrev
+194	02c2	fronted
+195	02c3	backed
+196	02c4	raised
+197	02c5	lowered
+198	02c6	circumflex
+199	02c7	caron
+200	02c8	linevert
+201	02c9	macron
+202	02ca	acute1
+203	02cb	grave1
+204	02cc	linevertsub
+205	02cd	macronsub
+206	02ce	gravesub
+207	02cf	acutesub
+208	02d0	length
+209	02d1	halflength
+210	02d2	ringrighthalfcenter
+211	02d3	ringlefthalfsup
+212	02d4	tackupmid
+213	02d5	tackdownmid
+214	02d6	plusmod
+215	02d7	minusmod
+216	02d8	breve
+217	02d9	dotaccent
+218	02da	ring
+219	02db	ogonek
+220	02dc	tilde
+221	02dd	hungarumlaut
+222	02de	rhotichook
+223	02df	foobar
+224	02e0	gammasuper
+225	02e1	lsuper
+226	02e2	ssuper
+227	02e3	xsuper
+228	02e4	glottalrevsuper
+229	02e5	toneextrahigh
+230	02e6	tonehigh
+231	02e7	tonemid
+232	02e8	tonelow
+233	02e9	toneextralow
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Generic Diacritical Marks' + `Greek'
+
+% Used in Y&Y font lsunr03
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+0	0300	gravenosp
+1	0301	acutenosp
+2	0302	circumflexnosp
+3	0303	tildenosp
+4	0304	macronnosp
+5	0305	overscorenosp
+6	0306	brevenosp
+7	0307	dotnosp
+8	0308	dieresisnosp
+9	0309	hooksupnosp
+10	030a	ringnosp
+11	030b	acutedblnosp
+12	030c	haceknosp
+13	030d	linevertnosp
+14	030e	linevertdblnosp
+15	030f	gravedblnosp
+16	0310	candrabindunosp
+17	0311	breveinvnosp
+18	0312	commaturnsupnosp
+19	0313	apostrophesupnosp
+20	0314	commasuprevnosp
+21	0315	commasuprightnosp
+22	0316	gravesubnosp
+23	0317	acutesubnosp
+24	0318	tackleftsubnosp
+25	0319	tackrightsubnosp
+26	031a	anglesupnosp
+27	031b	hornnosp
+28	031c	ringlefthalfsubnosp
+29	031d	tackupsubnosp
+30	031e	tackdownsubnosp
+31	031f	plussubnosp
+32	0320	minussubnosp
+33	0321	hooksubpalatnosp
+34	0322	hooksubretronosp
+35	0323	dotsubnosp
+36	0324	dotdblsubnosp
+37	0325	ringsubnosp
+38	0326	commasubnosp
+39	0327	cedillanosp
+40	0328	ogoneknosp
+41	0329	linevertsubnosp
+42	032a	bridgesubnosp
+43	032b	archdblsubnosp
+44	032c	haceksubnosp
+45	032d	circumflexsubnosp
+46	032e	brevesubnosp
+47	032f	breveinvsubnosp
+48	0330	tildesubnosp
+49	0331	macronsubnosp
+50	0332	underscorenosp
+51	0333	underscoredblnosp
+52	0334	tildemidnosp
+53	0335	barmidshortnosp
+54	0336	barmidlongnosp
+55	0337	slashshortnosp
+56	0338	slashlongnosp
+57	0339	ringrighthalfsubnosp
+58	033a	bridgeinvsubnosp
+59	033b	squaresubnosp
+60	033c	seagullsubnosp
+61	033d	xsupnosp
+62	033e	tildevertsupnosp
+63	033f	overscoredblnosp
+64	0340	graveleftnosp
+65	0341	acuterightnosp
+
+68	0344	diaeresistonosp		WAS	0385
+69	0345	iotasubnosp		WAS	0370
+
+116	0374	numeralgreek
+117	0375	numeralgreeksub
+122	037a	iotasub
+126	037e	questiongreek
+132	0384	tonos
+133	0385	diaeresistonos
+
+134	0386	Alphatonos
+136	0388	Epsilontonos
+137	0389	Etatonos
+138	038a	Iotatonos
+140	038c	Omicrontonos
+142	038e	Upsilontonos
+143	038f	Omegatonos
+144	0390	iotadiaeresistonos
+145	0391	Alpha
+146	0392	Beta
+147	0393	Gamma
+148	0394	Delta
+149	0395	Epsilon
+150	0396	Zeta
+151	0397	Eta
+152	0398	Theta
+153	0399	Iota
+154	039a	Kappa
+155	039b	Lambda
+156	039c	Mu
+157	039d	Nu
+158	039e	Xi
+159	039f	Omicron
+160	03a0	Pi
+161	03a1	Rho
+163	03a3	Sigma
+164	03a4	Tau
+165	03a5	Upsilon
+166	03a6	Phi
+167	03a7	Chi
+168	03a8	Psi
+169	03a9	Omega
+170	03aa	Iotadiaeresis
+171	03ab	Upsilondiaeresis
+172	03ac	alphatonos
+173	03ad	epsilontonos
+174	03ae	etatonos
+175	03af	iotatonos
+176	03b0	upsilondiaeresistonos
+177	03b1	alpha
+178	03b2	beta
+179	03b3	gamma
+180	03b4	delta
+181	03b5	epsilon
+182	03b6	zeta
+183	03b7	eta
+184	03b8	theta
+185	03b9	iota
+186	03ba	kappa
+187	03bb	lambda
+188	03bc	mu
+189	03bd	nu
+190	03be	xi
+191	03bf	omicron
+192	03c0	pi
+193	03c1	rho
+194	03c2	sigmafinal
+195	03c3	sigma
+196	03c4	tau
+197	03c5	upsilon
+198	03c6	phi
+199	03c7	chi
+200	03c8	psi
+201	03c9	omega
+202	03ca	iotadiaeresis
+203	03cb	upsilondiaeresis
+204	03cc	omicrontonos
+205	03cd	upsilontonos
+206	03ce	omegatonos
+208	03d0	beta1
+209	03d1	theta1
+210	03d2	Upsilon1
+211	03d3	Upsilon1tonos
+212	03d4	Upsilon1diaeresis
+213	03d5	phi1
+214	03d6	pi1
+
+218	03da	Stigma
+220	03dc	Digamma
+222	03de	Koppa
+224	03e0	Sampi
+238	03ee	Dei
+239	03ef	dei
+240	03f0	kappa1
+241	03f1	rho1
+242	03f2	sigmalunate
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Cyrillic'
+
+% Used in Y&Y font lsunr04
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+1	0401	afii10023
+2	0402	afii10051
+3	0403	afii10052
+4	0404	afii10053
+5	0405	afii10054
+6	0406	afii10055
+7	0407	afii10056
+8	0408	afii10057
+9	0409	afii10058
+10	040a	afii10059
+11	040b	afii10060
+12	040c	afii10061
+
+14	040e	afii10062
+15	040f	afii10145
+16	0410	afii10017
+17	0411	afii10018
+18	0412	afii10019
+19	0413	afii10020
+20	0414	afii10021
+21	0415	afii10022
+22	0416	afii10024
+23	0417	afii10025
+24	0418	afii10026
+25	0419	afii10027
+26	041a	afii10028
+27	041b	afii10029
+28	041c	afii10030
+29	041d	afii10031
+30	041e	afii10032
+31	041f	afii10033
+32	0420	afii10034
+33	0421	afii10035
+34	0422	afii10036
+35	0423	afii10037
+36	0424	afii10038
+37	0425	afii10039
+38	0426	afii10040
+39	0427	afii10041
+40	0428	afii10042
+41	0429	afii10043
+42	042a	afii10044
+43	042b	afii10045
+44	042c	afii10046
+45	042d	afii10047
+46	042e	afii10048
+47	042f	afii10049
+48	0430	afii10065
+49	0431	afii10066
+50	0432	afii10067
+51	0433	afii10068
+52	0434	afii10069
+53	0435	afii10070
+54	0436	afii10072
+55	0437	afii10073
+56	0438	afii10074
+57	0439	afii10075
+58	043a	afii10076
+59	043b	afii10077
+60	043c	afii10078
+61	043d	afii10079
+62	043e	afii10080
+63	043f	afii10081
+64	0440	afii10082
+65	0441	afii10083
+66	0442	afii10084
+67	0443	afii10085
+68	0444	afii10086
+69	0445	afii10087
+70	0446	afii10088
+71	0447	afii10089
+72	0448	afii10090
+73	0449	afii10091
+74	044a	afii10092
+75	044b	afii10093
+76	044c	afii10094
+77	044d	afii10095
+78	044e	afii10096
+79	044f	afii10097
+81	0451	afii10071
+82	0452	afii10099
+83	0453	afii10100
+84	0454	afii10101
+85	0455	afii10102
+86	0456	afii10103
+87	0457	afii10104
+88	0458	afii10105
+89	0459	afii10106
+90	045a	afii10107
+91	045b	afii10108
+92	045c	afii10109
+94	045e	afii10110
+95	045f	afii10193
+98	0462	afii10146
+99	0463	afii10194
+106	046a	046a
+107	046b	046b
+
+144	0490	afii10050
+145	0491	afii10098
+146	0492	0492
+147	0493	0493
+148	0494	0494
+149	0495	0495
+150	0496	0496
+151	0497	0497
+152	0498	0498
+153	0499	0499
+154	049a	049a
+155	049b	049b
+156	049c	049c
+157	049d	049d
+158	049e	049e
+159	049f	049f
+160	04a0	04a0
+161	04a1	04a1
+162	04a2	04a2
+163	04a3	04a3
+164	04a4	04a4
+165	04a5	04a5
+166	04a6	04a6
+167	04a7	04a7
+168	04a8	04a8
+169	04a9	04a9
+170	04aa	04aa
+171	04ab	04ab
+172	04ac	04ac
+173	04ad	04ad
+174	04ae	04ae
+175	04af	04af
+176	04b0	04b0
+177	04b1	04b1
+178	04b2	04b2
+179	04b3	04b3
+180	04b4	04b4
+181	04b5	04b5
+182	04b6	04b6
+183	04b7	04b7
+184	04b8	04b8
+185	04b9	04b9
+186	04ba	04ba
+187	04bb	04bb
+188	04bc	04bc
+189	04bd	04bd
+190	04be	04be
+191	04bf	04bf
+192	04c0	04c0
+193	04c1	04c1
+194	04c2	04c2
+195	04c3	04c3
+196	04c4	04c4
+197	04c5	04c5
+198	04c6	04c6
+199	04c7	04c7
+200	04c8	04c8
+201	04c9	04c9
+202	04ca	04ca
+203	04cb	04cb
+204	04cc	04cc
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Hebrew'
+
+% Used in Y&Y font lsunr05
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+176	05b0	sheva
+177	05b1	hatafsegol
+178	05b2	hatafpatah
+179	05b3	hatafqamats
+180	05b4	hiriq
+181	05b5	tsere
+182	05b6	segol
+183	05b7	patah
+184	05b8	qamats
+185	05b9	holam
+187	05bb	qubuts
+188	05bc	dagesh
+189	05bd	meteg
+190	05be	maqaf
+191	05bf	rafe
+192	05c0	paseq
+193	05c1	shindot
+194	05c2	sindot
+195	05c3	sofpasuq
+208	05d0	alef
+209	05d1	bet
+210	05d2	gimel
+211	05d3	dalet
+212	05d4	he
+213	05d5	vav
+214	05d6	zayin
+215	05d7	het
+216	05d8	tet
+217	05d9	yod
+218	05da	kaffinal
+219	05db	kaf
+220	05dc	lamed
+221	05dd	memfinal
+222	05de	mem
+223	05df	nunfinal
+224	05e0	nun
+225	05e1	samekh
+226	05e2	ayin
+227	05e3	pefinal
+228	05e4	pe
+229	05e5	tsadifinal
+230	05e6	tsadi
+231	05e7	qof
+232	05e8	resh
+233	05e9	shin
+234	05ea	tav
+240	05f0	vavdbl
+241	05f1	vavyod
+242	05f2	yoddbl
+243	05f3	geresh
+244	05f4	gershayim
+245	05f5	varika
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `General Punctuation' + `Subs & Sups' + `Currency'
+
+% Use in Y&Y font lsunr20
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+0	2000	enquad
+1	2001	emquad
+2	2002	enspace
+3	2003	emspace
+4	2004	threeperemspace
+5	2005	fourperemspace
+6	2006	sixperemspace
+7	2007	figurespace
+8	2008	punctuationspace
+9	2009	thinspace
+10	200a	hairspace
+11	200b	zerospace
+12	200c	zeronojoin
+13	200d	zerojoin
+14	200e	lefttoright
+15	200f	righttoleft
+16	2010	hyphen1
+17	2011	hyphennobreak
+18	2012	figuredash
+19	2013	endash
+20	2014	emdash
+21	2015	quotedash
+22	2016	verticalbardbl
+23	2017	underscoredbl
+24	2018	quoteleft
+25	2019	quoteright
+26	201a	quotesinglbase
+27	201b	quotesinglrev
+28	201c	quotedblleft
+29	201d	quotedblright
+30	201e	quotedblbase
+31	201f	quotedblrev
+32	2020	dagger
+33	2021	daggerdbl
+34	2022	bullet
+35	2023	trianglebullet
+36	2024	onedotlead
+37	2025	twodotlead
+38	2026	ellipsis
+39	2027	hyphendot
+40	2028	lineseparator
+41	2029	paragraphseparator
+42	202a	lre
+43	202b	rle
+44	202c	pdf
+45	202d	lro
+46	202e	rlo
+47	feff	zeronobreakspace
+48	2030	perthousand
+49	2031	pertenthousand
+50	2032	prime1
+51	2033	primedbl1
+52	2034	primetripl1
+53	2035	primerev1
+54	2036	primedblrev1
+55	2037	primetriplerev1
+56	2038	caret
+57	2039	guilsinglleft
+58	203a	guilsinglright
+59	203b	refmark
+60	203c	exclamdbl
+61	203d	interrobang
+62	203e	overscore1
+64	2040	tie1
+65	2041	caretinsert
+66	2042	asterism
+67	2043	hyphenbullet
+68	2044	fraction1
+69	2045	mystery
+
+112	2070	zerosuperior
+113	00b9	onesuperior
+114	00b2	twosuperior
+115	00b3	threesuperior
+116	2074	foursuperior
+117	2075	fivesuperior
+118	2076	sixsuperior
+119	2077	sevensuperior
+120	2078	eightsuperior
+121	2079	ninesuperior
+122	207a	plussuperior
+123	207b	minussuperior
+124	207c	equalsuperior
+125	207d	parenleftsuperior
+126	207e	parenrightsuperior
+127	207f	nsuperior
+128	2080	zerosub
+129	2081	onesub
+130	2082	twosub
+131	2083	threesub
+132	2084	foursub
+133	2085	fivesub
+134	2086	sixsub
+135	2087	sevensub
+136	2088	eightsub
+137	2089	ninesub
+138	208a	plussub
+139	208b	minussub
+140	208c	equalsub
+141	208d	parenleftsub
+142	208e	parenrightsub
+
+160	20a0	eurocurrency
+161	20a1	coloncurrency
+162	20a2	cruzeiro
+163	20a3	franc
+164	20a4	lira
+165	20a5	mill
+166	20a6	naira
+167	20a7	pesetas
+168	20a8	rupee
+169	20a9	won
+170	20aa	newsheqel
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Letterlike Symbols' + `Number Forms' + `Arrows'
+
+% Used in Y&Y font lsunr21
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+0	2100	accountof
+1	2101	addresssubject
+2	2102	Cbb
+3	2103	degreecentigrade
+4	2104	CL
+5	2105	careof
+6	2106	cadauna
+7	2107	Euler
+8	2108	scruple
+9	2109	degreefahrenheit
+10	210a	gscriptmath
+11	210b	Hscript
+12	210c	Hblackletter
+13	210d	Hbb
+14	210e	planck
+15	210f	planckover2pi
+16	2110	Iscript
+17	2111	Ifraktur
+18	2112	Lscript
+19	2113	lscript
+20	2114	lbbar
+21	2115	Nbb
+22	2116	numero
+23	2117	recordright
+24	2118	weierstrass
+25	2119	Pbb
+26	211a	Qbb
+27	211b	Rscript
+28	211c	Rfraktur
+29	211d	Rbb
+30	211e	Rx
+31	211f	response
+32	2120	servicemark
+33	2121	tel
+34	2122	trademark
+35	2123	versicle
+36	2124	Zbb
+37	2125	ounce
+38	2126	ohm
+39	2127	mho
+40	2128	Zblackletter
+41	2129	iotaturn
+42	212a	degreekelvin
+43	212b	angstrom
+44	212c	Bscript
+45	212d	Cblackletter
+46	212e	estimated
+47	212f	escript
+48	2130	Escript
+49	2131	Fscript
+50	2132	Fturn
+51	2133	Mscript
+52	2134	0script
+53	2135	alephmath
+54	2136	bethmath
+55	2137	gimelmath
+56	2138	dalethmath
+
+144	2190	arrowleft
+145	2191	arrowup
+146	2192	arrowright
+147	2193	arrowdown
+148	2194	arrowlongboth
+149	2195	arrowlongbothv
+150	2196	arrownorthwest
+151	2197	arrownortheast
+152	2198	arrowsoutheast
+153	2199	arrowsouthwest
+154	219a	arrowleftnot
+155	219b	arrowrightnot
+156	219c	arrowwaveleft
+157	219d	arrowwaveright
+158	219e	dblarrowheadleft
+159	219f	dblarrowheadup
+160	21a0	dblarrowheadright
+161	21a1	dblarrowheaddown
+162	21a2	arrowtailleft
+163	21a3	arrowtailright
+164	21a4	arrowbarleft
+165	21a5	arrowbarup
+166	21a6	arrowbarright
+167	21a7	arrowbardown
+168	21a8	arrowbothvbase
+169	21a9	arrowhookleft
+170	21aa	arrowhookright
+171	21ab	arrowloopleft
+172	21ac	arrowloopright
+173	21ad	arrowwaveboth
+174	21ae	arrowlongbothnot
+175	21af	arrowzigzag
+176	21b0	arrowupleft
+177	21b1	arrowupright
+178	21b2	arrowdownleft
+179	21b3	arrowdownright
+180	21b4	arrowrightdown
+181	21b5	carriagerreturn
+182	21b6	arrowsemanticlockw
+183	21b7	arrowsemclockw
+184	21b8	home
+185	21b9	tableftright
+186	21ba	arrowanticlockw
+187	21bb	arrowclockw
+188	21bc	arrowlefttophalf
+189	21bd	arrowleftbothalf
+190	21be	harpoonupright
+191	21bf	harpoonupleft
+192	21c0	arrowrighttophalf
+193	21c1	arrowrightbothalf
+194	21c2	harpoondownright
+195	21c3	harpoondownleft
+196	21c4	arrowparrrightleft
+197	21c5	dblarrowupdown
+198	21c6	arrowparrleftright
+199	21c7	dblarrowleft
+200	21c8	dblarrowup
+201	21c9	dblarrowright
+202	21ca	dblarrowdown
+203	21cb	harpoonleftright
+204	21cc	harpoonrightleft
+205	21cd	arrowdblleftnot
+206	21ce	arrowdbllongbothnot
+207	21cf	arrowdblrightnot
+208	21d0	arrowdblleft
+209	21d1	arrowdblup
+210	21d2	arrowdblright
+211	21d3	arrowdbldown
+212	21d4	arrowdbllongboth
+213	21d5	arrowdbllongbothv
+214	21d6	arrowdblnw
+215	21d7	arrowdblne
+216	21d8	arrowdblse
+217	21d9	arrowdblsw
+218	21da	arrowtripleleft
+219	21db	arrowtripleright
+220	21dc	arrowsquiggleleft
+221	21dd	arrowsquiggleright
+222	21de	pageup
+223	21df	pagedown
+224	21e0	arrowdashleft
+225	21e1	arrowdashup
+226	21e2	arrowdashright
+227	21e3	arrowdashdown
+228	21e4	arrowtableft
+229	21e5	arrowtabright
+230	21e6	arrowopenleft
+231	21e7	arrowopenup
+232	21e8	arrowopenright
+233	21e9	arrowopendown
+234	21ea	capslock
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Mathematical Operators'
+
+% Used in Y&Y font lsunr22
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+0	2200	universal
+1	2201	complement
+2	2202	partialdiff
+3	2203	existential
+4	2204	notexistential
+5	2205	emptyset
+6	2206	increment
+7	2207	nabla
+8	2208	element
+9	2209	notelement
+10	220a	elementsmall
+11	220b	owner
+12	220c	notowner
+13	220d	ownersmall
+14	220e	eop
+15	220f	product
+16	2210	coproduct
+17	2211	summation
+18	2212	minus
+19	2213	minusplus
+20	2214	dotplus
+21	2215	slashmath
+22	2216	backslashmath
+23	2217	asteriskmath
+24	2218	openbullet
+25	2219	bulletmath
+26	221a	radical
+27	221b	cuberoot
+28	221c	fourthroot
+29	221d	proportional
+30	221e	infinity
+31	221f	rightangle
+32	2220	angle
+33	2221	measuredangle
+34	2222	sphericalangle
+35	2223	bar1
+36	2224	notbar
+37	2225	bardbl2
+38	2226	notbardbl
+39	2227	logicaland
+40	2228	logicalor
+41	2229	intersection
+42	222a	union
+43	222b	integral
+44	222c	integraldbl
+45	222d	integraltrpl
+46	222e	contintegral
+47	222f	surfintegral
+48	2230	volintegral
+49	2231	clwintegral
+50	2232	clwcontintegral
+51	2233	cclwcontintegral
+52	2234	therefore
+53	2235	because
+54	2236	ratio
+55	2237	proportion
+56	2238	dotminus
+57	2239	excess
+58	223a	geomproportion
+59	223b	homothetic
+60	223c	similar
+61	223d	revsimilar
+62	223e	lazysinv
+63	223f	sine
+64	2240	wreathproduct
+65	2241	notsimilar
+66	2242	minustilde
+67	2243	asymptequal
+68	2244	notasymptequal
+69	2245	approxorequal
+70	2246	approxnotequal
+71	2247	notapproxequal
+72	2248	almostequal
+73	2249	notalmostequal
+74	224a	almostorequal
+75	224b	tildetrpl
+76	224c	allequal
+77	224d	equivasymptotic
+78	224e	geomequivalent
+79	224f	difference
+80	2250	approachlimit
+81	2251	geomequal
+82	2252	approxequalorimage
+83	2253	imageorapproxequal
+84	2254	colonequal
+85	2255	equalcolon
+86	2256	ringinequal
+87	2257	ringequal
+88	2258	corresponds
+89	2259	estimates
+90	225a	equiangular
+91	225b	starequal
+92	225c	deltaequal
+93	225d	definequal
+94	225e	measurequal
+95	225f	questionequal
+96	2260	notequal
+97	2261	equivalence
+98	2262	notequivalence
+99	2263	strictequivalence
+100	2264	lessequal
+101	2265	greaterequal
+102	2266	lessdblequal
+103	2267	greaterdblequal
+104	2268	lessnotdblequal
+105	2269	greaternotdblequal
+106	226a	lessmuch
+107	226b	greatermuch
+108	226c	between
+109	226d	notequivasymptotic
+110	226e	notless
+111	226f	notgreater
+112	2270	notlessequal1
+113	2271	notgreaterequal1
+114	2272	lessequivlnt
+115	2273	greaterequivlnt
+116	2274	notlessequivlnt
+117	2275	notgreaterequivlnt
+118	2276	lessorgreater
+119	2277	greaterorless
+120	2278	notlessgreater
+121	2279	notgreaterless
+122	227a	precedes
+123	227b	follows
+124	227c	precedesequal1
+125	227d	followsequal1
+126	227e	precedequivlnt
+127	227f	followsequivlnt
+
+128	2280	notpreceeds
+129	2281	notfollows
+130	2282	propersubset
+131	2283	propersuperset
+132	2284	notpropersubset
+133	2285	notpropersuperset
+134	2286	reflexsubset
+135	2287	reflexsuperset
+136	2288	notreflexsubset
+137	2289	notreflexsuperset
+138	228a	subsetnotequal
+139	228b	supersetnotequal
+140	228c	multiset
+141	228d	multiplymultiset
+142	228e	unionmulti
+143	228f	squareimage
+144	2290	squareoriginal
+145	2291	subsetsqequal
+146	2292	supersetsqequal
+147	2293	intersectionsq
+148	2294	unionsq
+149	2295	circleplus
+150	2296	circleminus
+151	2297	circlemultiply
+152	2298	circledivide
+153	2299	circledot
+154	229a	circlering
+155	229b	circleasterisk
+156	229c	circleequal
+157	229d	circleminus1
+158	229e	squareplus
+159	229f	squareminus
+160	22a0	squaremultiply
+161	22a1	squaredot
+162	22a2	turnstileleft
+163	22a3	turnstileright
+164	22a4	latticetop
+165	22a5	perpendicular
+166	22a6	assertion
+167	22a7	truestate
+168	22a8	satisfy
+169	22a9	force
+170	22aa	tacktrpl
+171	22ab	forceextr
+172	22ac	notturnstileleft
+173	22ad	notsatisfy
+174	22ae	notforce
+175	22af	notforceextr
+176	22b0	lowerrank
+177	22b1	higherrank
+178	22b2	triangleleft
+179	22b3	triangleright
+180	22b4	triangleftequal
+181	22b5	triangrightequal
+182	22b6	original
+183	22b7	image
+184	22b8	multimap
+185	22b9	hermitconjmatrix
+186	22ba	intercal
+187	22bb	orunderscore
+188	22bc	nand
+189	22bd	nor
+190	22be	rightanglearc
+191	22bf	righttriangle
+192	22c0	narylogicaland
+193	22c1	narylogicalor
+194	22c2	naryintersection
+195	22c3	naryunion
+196	22c4	diamondmath
+197	22c5	periodcentered
+198	22c6	star
+199	22c7	divideonmultiply
+200	22c8	bowtie
+201	22c9	multicloseleft
+202	22ca	multicloseright
+203	22cb	multiopenleft
+204	22cc	multiopenright
+205	22cd	revasymptequal
+206	22ce	curlor
+207	22cf	curland
+208	22d0	subsetdbl
+209	22d1	supersetdbl
+210	22d2	uniondbl
+211	22d3	intersectiondbl
+212	22d4	fork
+213	22d5	equalparallel
+214	22d6	lessdot
+215	22d7	greaterdot
+216	22d8	verymuchless
+217	22d9	verymuchgreater
+218	22da	lessequalgreater
+219	22db	greaterequalless
+220	22dc	equalless
+221	22dd	equalgreater
+222	22de	equalprecedes1
+223	22df	equalfollows1
+224	22e0	preceedsnotequal
+225	22e1	followsnotequal
+226	22e2	notsubsetsqequal
+227	22e3	notsupersetsqequal
+228	22e4	sqimageornotequal
+229	22e5	sqoriginornotequal
+230	22e6	lessnotequivlnt
+231	22e7	greaternotequivlnt
+232	22e8	preceedsnotsimilar
+233	22e9	followsnotequivlnt
+234	22ea	nottriangleleft
+235	22eb	nottriangleright
+236	22ec	nottriangleleftequal
+237	22ed	nottrianglerightequal
+238	22ee	vertellipsis
+239	22ef	midhorizellipsis
+240	22f0	upslopeellipsis
+241	22f1	downslopeellipsis
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Control Codes'
+
+% Used in Y&Y font lsunr24
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+0	2400	null
+1	2401	startofhead
+2	2402	starttext
+3	2403	endtext
+4	2404	endtrans
+5	2405	enquiry
+6	2406	acknowledge
+7	2407	bell
+8	2408	backspace
+9	2409	horiztab
+10	240a	linefeed
+11	240b	verttab
+12	240c	formfeed
+13	240d	carriagereturn
+14	240e	shiftout
+15	240f	shiftin
+16	2410	datalinkescape
+17	2411	devcon1
+18	2412	devcon2
+19	2413	devcon3
+20	2414	devcon4
+21	2415	negacknowledge
+22	2416	synch
+23	2417	endtransblock
+24	2418	cancel
+25	2419	endmedium
+26	241a	substitute
+27	241b	escape
+28	241c	fileseparator
+29	241d	groupseparator
+30	241e	recordseparator
+31	241f	unitseparator
+32	2420	spaceliteral
+33	2421	delete
+34	2422	blankb
+35	2423	spaceopenbox
+36	2424	newline
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Unicode `Forms and Chart Components' + `Blocks' + `Geometric Shapes'
+
+% Used in Y&Y font lsunr25
+
+% <ASCII position in this font> <Unicode code point> <PostScript name>
+
+0	2500
+1	2501
+2	2502
+3	2503
+4	2504
+5	2505
+6	2506
+7	2507
+8	2508
+9	2509
+10	250a
+11	250b
+12	250c
+13	250d
+14	250e
+15	250f
+16	2510
+17	2511
+18	2512
+19	2513
+20	2514
+21	2515
+22	2516
+23	2517
+24	2518
+25	2519
+26	251a
+27	251b
+28	251c
+29	251d
+30	251e
+31	251f
+32	2520
+33	2521
+34	2522
+35	2523
+36	2524
+37	2525
+38	2526
+39	2527
+40	2528
+41	2529
+42	252a
+43	252b
+44	252c
+45	252d
+46	252e
+47	252f
+48	2530
+49	2531
+50	2532
+51	2533
+52	2534
+53	2535
+54	2536
+55	2537
+56	2538
+57	2539
+58	253a
+59	253b
+60	253c
+61	253d
+62	253e
+63	253f
+64	2540
+65	2541
+66	2542
+67	2543
+68	2544
+69	2545
+70	2546
+71	2547
+72	2548
+73	2549
+74	254a
+75	254b
+76	254c
+77	254d
+78	254e
+79	254f
+80	2550
+81	2551
+82	2552
+83	2553
+84	2554
+85	2555
+86	2556
+87	2557
+88	2558
+89	2559
+90	255a
+91	255b
+92	255c
+93	255d
+94	255e
+95	255f
+96	2560
+97	2561
+98	2562
+99	2563
+100	2564
+101	2565
+102	2566
+103	2567
+104	2568
+105	2569
+106	256a
+107	256b
+108	256c
+109	256d
+110	256e
+111	256f
+112	2570
+113	2571
+114	2572
+115	2573
+116	2574
+117	2575
+118	2576
+119	2577
+120	2578
+121	2579
+122	257a
+123	257b
+124	257c
+125	257d
+126	257e
+127	257f
+
+128	2580	upblock
+129	2581	dneighthblock
+130	2582	dnquarterblock
+131	2583	dnthreeeighthblock
+132	2584	dnblock
+133	2585	dnfiveeighthblock
+134	2586	dnthreequarterblock
+135	2587	dnseveneighthblock
+136	2588	block
+137	2589	lfseveneighthblock
+138	258a	lfthreequarterblock
+139	258b	lffiveeighthblock
+140	258c	lfblock
+141	258d	lfthreeeighthblock
+142	258e	lfquarterblock
+143	258f	lfeighthblock
+144	2590	rtblock
+145	2591	ltshade
+146	2592	shade
+147	2593	dkshade
+148	2594	upeighthblock
+149	2595	rteighthblock
+
+160	25a0	filledbox
+161	25a1	box
+162	25a2	boxrounded
+163	25a3	boxnested
+164	25a4	boxhorizhatch
+165	25a5	boxverthatch
+166	25a6	boxcrosshatch
+167	25a7	boxleftdiaghatch
+168	25a8	boxrtdiaghatch
+169	25a9	boxcrossdiaghatch
+170	25aa	smallboxfilled
+171	25ab	smallbox
+172	25ac	filledrect
+173	25ad	rectangle
+174	25ae	filledvertrect
+175	25af	vertrectangle
+176	25b0	filledparallelogram
+177	25b1	parallelogram
+178	25b2	triagup
+179	25b3	triangle
+180	25b4	smalltrianglesld
+181	25b5	smalltriangle
+182	25b6	trianglerightsld1
+183	25b7	triangleright1
+184	25b8	smalltrianglerightsld
+185	25b9	smalltriangleright
+186	25ba	triagrt
+187	25bb	triagrtopen
+188	25bc	triagdn
+189	25bd	triangleinv
+190	25be	smalltriangleinvsld
+191	25bf	smalltriangleinv
+192	25c0	triangleleftsld1
+193	25c1	triangleleft1
+194	25c2	smalltriangleleftsld
+195	25c3	smalltriangleleft
+196	25c4	triaglf
+197	25c5	triaglfopen
+198	25c6	diamondrhombsolid
+199	25c7	diamondrhomb
+200	25c8	diamondrhombnested
+201	25c9	fisheye
+202	25ca	lozenge
+203	25cb	circle
+204	25cc	circledash
+205	25cd	circleverthatch
+206	25ce	bullseye1
+207	25cf	circlesolid
+208	25d0	circleleftsld
+209	25d1	circlerightsld
+210	25d2	circlebottomsld
+211	25d3	circletopsld
+212	25d4	circlenesld
+213	25d5	circlenwopen
+214	25d6	semicircleleftsld
+215	25d7	semicirclelertsld
+216	25d8	invbullet
+217	25d9	invcircle
+218	25da	invsemicircleup
+219	25db	invsemicircledn
+220	25dc	nwquadarc
+221	25dd	nequadarc
+222	25de	sequadarc
+223	25df	swquadarc
+224	25e0	toparc
+225	25e1	bottomarc
+226	25e2	trianglesesld
+227	25e3	triangleswsld
+228	25e4	tranglenwsld
+229	25e5	trianglenesld
+230	25e6	openbullet1
+231	25e7	squareleftsld
+232	25e8	squarerightsld
+233	25e9	squarenwsld
+234	25ea	squaresesld
+235	25eb	squarevertbisect
+236	25ec	triangledot
+237	25ed	triangleleftsld
+238	25ee	trianglerightsld
+239	25ef	donought
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

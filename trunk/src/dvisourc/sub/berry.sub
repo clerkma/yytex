@@ -1,0 +1,46 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% The 35 `standard' printer resident fonts:
+% According to the http://tug.org/fontname naming convention
+
+% The following are unremapped versions. If your fonts need to be 
+% remapped by DVIPSONE then add *remap* followed by the encoding vector name.
+
+pagkg	AvantGarde-Book			*reside*
+pagko	AvantGarde-BookOblique		*reside*
+pagd	AvantGarde-Demi			*reside*
+pagdo	AvantGarde-DemiOblique		*reside*
+pbkd	Bookman-Demi			*reside*
+pbkdi	Bookman-DemiItalic		*reside*
+pbkl	Bookman-Light			*reside*
+pbkli	Bookman-LightItalic		*reside*
+pcrr	Courier				*reside*
+pcrb	Courier-Bold			*reside*
+pcrbo	Courier-BoldOblique		*reside*
+pcrro	Courier-Oblique			*reside*
+phvr	Helvetica			*reside*
+phvb	Helvetica-Bold			*reside*
+phvbo	Helvetica-BoldOblique		*reside*
+phvro	Helvetica-Oblique		*reside*
+phvrrn	Helvetica-Narrow		*reside*
+phvbrn	Helvetica-Narrow-Bold		*reside*
+phvbon	Helvetica-Narrow-BoldOblique	*reside*
+phvron	Helvetica-Narrow-Oblique	*reside*
+phvro	Helvetica-Oblique		*reside*
+pncb	NewCenturySchlbk-Bold		*reside*
+pncbi	NewCenturySchlbk-BoldItalic	*reside*
+pncri	NewCenturySchlbk-Italic		*reside*
+pncr	NewCenturySchlbk-Roman		*reside*
+pplb	Palatino-Bold			*reside*
+pplbi	Palatino-BoldItalic		*reside*
+pplri	Palatino-Italic			*reside*
+pplr	Palatino-Roman			*reside*
+psyr	Symbol				*reside*
+ptmb	Times-Bold			*reside*
+ptmbi	Times-BoldItalic		*reside*
+ptmri	Times-Italic			*reside*
+ptmr	Times-Roman			*reside*
+pzdmi	ZapfChancery-MediumItalic	*reside*
+pzdr	ZapfDingbats			*reside*
+

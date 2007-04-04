@@ -1,0 +1,90 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Font substitution table for AMS fonts for use by DVIPSONE:
+% This maps 9 point to 10 point, 8 point to 7 point, 6 point to 7 point etc.
+
+% Lines that are commented out are for fonts that ARE in the AMS Type 1 set.
+
+% This substitution file should NOT normally be needed, since in the files:
+%	ams/amstex/amsppt.sty
+%	ams/amstex/doc/amsppt.doc
+%	ams/amsfonts/doc/userdoc.cyr
+% \def\PSAMSFonts{TT} should be uncommented and 
+% \def\PSAMSFonts{TF} should be commented out.
+
+% eufb10
+eufb9		eufb10
+eufb8		eufb7
+% eufb7
+eufb6		eufb7
+% eufb5
+
+% eufm10
+eufm9		eufm10
+eufm8		eufm7
+% eufm7
+eufm6		eufm7
+% eufm5
+
+% eurb10
+eurb9		eurb10
+eurb8		eurb7
+% eurb7
+eurb6		eurb7
+% eurb5
+
+% eurm10
+eurm9		eurm10
+eurm8		eurm7
+% eurm7
+eurm6		eurm7
+% eurm5
+
+% eusb10
+eusb9		eusb10
+eusb8		eusb7
+% eusb7
+eusb6		eusb7
+% eusb5
+
+% eusm10
+eusm9		eusm10
+eusm8		eusm7
+% eusm7
+eusm6		eusm7
+% eusm5
+
+% msam10
+msam9	msam10
+msam8	msam7
+% msam7
+msam6	msam7
+% msam5
+
+% msbm10
+msbm9	msbm10
+msbm8	msbm7
+% msbm7
+msbm6 msbm7
+% msbm5
+
+% In order to deal with LaTeX 2e misfeature:
+
+cmbsy9	cmbsy10
+cmbsy8	cmbsy7
+% cmbsy7
+cmbsy6	cmbsy7
+% cmbsy5
+
+cmmib9	cmmib10
+cmmib8	cmmib7
+% cmmib7
+cmmib6	cmmib7
+% cmmib5
+
+% euex10
+euex9	euex10
+
+% cmcsc9
+cmcsc8	cmcsc9

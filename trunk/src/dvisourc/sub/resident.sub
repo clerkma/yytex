@@ -1,0 +1,108 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% The 35 `standard' fonts resident in the Apple LaserWriter II NT:
+% This table uses the same naming convention as in subdirectory TFM.
+
+% <...>x are the remapped versions of <...>
+
+% NOTE: This file FORCES DVIPSONE to use the printer-resident versions,
+%	even when a PFB file for a font exists.
+%	If you want DVIPSONE to use the PFB file for a font when found,
+%	then remove *force* before *reside* for the font in question
+
+% The remapped versions come first:
+
+agwx	AvantGarde-Book			*force* *reside*  *remap* 
+agwox	AvantGarde-BookOblique		*force* *reside*  *remap* texital
+agdx	AvantGarde-Demi			*force* *reside*  *remap* 
+agdox	AvantGarde-DemiOblique		*force* *reside*  *remap* texital
+
+bklx	Bookman-Light			*force* *reside*  *remap* 
+bklix	Bookman-LightItalic		*force* *reside*  *remap* texital
+bkdx	Bookman-Demi			*force* *reside*  *remap* 
+bkdix	Bookman-DemiItalic		*force* *reside*  *remap* texital
+
+comx	Courier				*force* *reside*  *remap* typewrit
+coox	Courier-Oblique			*force* *reside*  *remap* typeital
+cobx	Courier-Bold			*force* *reside*  *remap* typewrit
+cobox	Courier-BoldOblique		*force* *reside*  *remap* typeital
+
+hvx	Helvetica			*force* *reside*  *remap* 
+hvox	Helvetica-Oblique		*force* *reside*  *remap* texital
+hvbx	Helvetica-Bold			*force* *reside*  *remap* 
+hvbox	Helvetica-BoldOblique		*force* *reside*  *remap* texital
+
+hvnx	Helvetica-Narrow		*force* *reside*  *remap* 
+hvnox	Helvetica-Narrow-Oblique	*force* *reside*  *remap* texital
+hvnbx	Helvetica-Narrow-Bold		*force* *reside*  *remap* 
+hvnbox	Helvetica-Narrow-BoldOblique	*force* *reside*  *remap* texital
+
+ncrx	NewCenturySchlbk-Roman		*force* *reside*  *remap* 
+ncix	NewCenturySchlbk-Italic		*force* *reside*  *remap* texital
+ncbx	NewCenturySchlbk-Bold		*force* *reside*  *remap* 
+ncbix	NewCenturySchlbk-BoldItalic	*force* *reside*  *remap* texital
+
+porx	Palatino-Roman			*force* *reside*  *remap* 
+poix	Palatino-Italic			*force* *reside*  *remap* texital
+pobx	Palatino-Bold			*force* *reside*  *remap* 
+pobix	Palatino-BoldItalic		*force* *reside*  *remap* texital
+
+tirx	Times-Roman			*force* *reside*  *remap* 
+tiix	Times-Italic			*force* *reside*  *remap* texital
+tibx	Times-Bold			*force* *reside*  *remap* 
+tibix	Times-BoldItalic		*force* *reside*  *remap* texital
+
+syx	Symbol				*force* *reside*  *remap* mathsy
+
+zcmix	ZapfChancery-MediumItalic	*force* *reside*  *remap* texital
+
+% zdx	ZapfDingbats			doesn't make sense to remap
+
+% Following are the non-remapped versions of the above:
+
+agw	AvantGarde-Book			*force* *reside*
+agwo	AvantGarde-BookOblique		*force* *reside*
+agd	AvantGarde-Demi			*force* *reside*
+agdo	AvantGarde-DemiOblique		*force* *reside*
+
+bkl	Bookman-Light			*force* *reside*
+bkli	Bookman-LightItalic		*force* *reside*
+bkd	Bookman-Demi			*force* *reside*
+bkdi	Bookman-DemiItalic		*force* *reside*
+
+com	Courier				*force* *reside*
+coo	Courier-Oblique			*force* *reside*
+cob	Courier-Bold			*force* *reside*
+cobo	Courier-BoldOblique		*force* *reside*
+
+hv	Helvetica			*force* *reside*
+hvo	Helvetica-Oblique		*force* *reside*
+hvb	Helvetica-Bold			*force* *reside*
+hvbo	Helvetica-BoldOblique		*force* *reside*
+
+hvn	Helvetica-Narrow		*force* *reside*
+hvno	Helvetica-Narrow-Oblique	*force* *reside*
+hvnb	Helvetica-Narrow-Bold		*force* *reside*
+hvnbo	Helvetica-Narrow-BoldOblique	*force* *reside*
+
+ncr	NewCenturySchlbk-Roman		*force* *reside*
+nci	NewCenturySchlbk-Italic		*force* *reside*
+ncb	NewCenturySchlbk-Bold		*force* *reside*
+ncbi	NewCenturySchlbk-BoldItalic	*force* *reside*
+
+por	Palatino-Roman			*force* *reside*
+poi	Palatino-Italic			*force* *reside*
+pob	Palatino-Bold			*force* *reside*
+pobi	Palatino-BoldItalic		*force* *reside*
+
+sy	Symbol				*force* *reside*
+
+tir	Times-Roman			*force* *reside*
+tii	Times-Italic			*force* *reside*
+tib	Times-Bold			*force* *reside*
+tibi	Times-BoldItalic		*force* *reside*
+
+zcmi	ZapfChancery-MediumItalic	*force* *reside*
+
+zd	ZapfDingbats			*force* *reside*

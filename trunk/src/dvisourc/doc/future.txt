@@ -1,0 +1,116 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+---------------------------------------------------------------------
+	%%IncludeResource: font ...   (and %%IncludeFont: ...):
+---------------------------------------------------------------------
+
+DVIPSONE 1.1 will insert fonts where called for in EPS files by the
+`%%Include...'  DSC (Document Structuring Conventions) comments (both the
+current DSC 3.0 and the older DSC 2.0 version).  DVIPSONE will expand PFB
+font files to PFA format as required (and just copy PFA format files `as is')
+if it can find them (DVIPSONE complains if it can't find the fonts).
+
+DVIPSONE will list the font file names as it processes them.  
+So you should see (in verbose mode) the name of the inserted 
+EPS file followed by the names of the font files that it calls for.
+
+DVIPSONE needs to translate from PostScript FontName (which is what
+is given in the %%Include comment) to DOS font file name (needed to
+find the PFB file to unpack).  It is best to set up a file called
+`ATMFONTS.MAP' (but see potential short-cut below) and place it in
+the same directory as the PFB files (actually any directory in the
+semi-colon separated list of directories specified by the environment
+variable PSFONTS).  The file `ATMFONTS.MAP' should contain lines of
+the form
+
+	<PostScript FontName>=<PFB file name>
+
+e.g.	LucidaCalligraphic-Italic=lbc
+
+Lines starting with `%' or `;' are treated as comments. Note that the
+font file name need not be fully qualified if the corresponding PFB
+(or PFA) file is in a directory in the list of directories specified
+by the environment variable PSFONTS.
+
+If you use Adobe Type Manager (ATM), then you may be able to avoid
+the need to set up an ATMFONTS.MAP file. If DVIPSONE cannot find
+ATMFONTS.MAP, then it tries to find the Windows directory and
+ATM.INI in order to translate from PostScript FontName to DOS font
+file name.  This is not always completely reliable, because ATM.INI
+lists Windows Face Names with styles, rather than PostScript
+FontNames.  So instead of `Times-Bold', you will see `Times,BOLD' and
+instead of `Helvetica-Oblique' you will see `Helvetica,ITALIC'.  
+Most of the time DVIPSONE will find the correct file despite this.  
+You can verify that it is picking up the right files by using verbose
+mode (-v) and noting what font files are listed after each included EPS file.
+If DVIPSONE makes an error, then you can add a line for that particular
+font to ATMFONTS.MAP and let it resort to ATM.INI for the rest.
+If it is critical then please set up a complete ATMFONTS.MAP file.
+
+Note that, as recommended by Adobe, the font is inserted where it is
+called for, and is inserted again later (possible in another
+save/restore context) when another EPS file calls for it.  No attempt
+is made to separate out all fonts called for and load them ahead of
+time.  This avoids any problems where the EPS file calls for a font
+that the main document also uses (but which may have been modified
+by partial font downloading and reencoding).
+
+Also, since DVIPSONE does not include a PostScript interpreter, it
+cannot tell which characters are used from the inserted fonts. So
+no attempt is made to use `partial font downloading' on such fonts.
+Which means files calling for lots of fonts may get quite large.
+
+
+-----------------------------------------------------------------
+	CHECKING FOR PRESENCE OF FONTS ON PRINTER:  
+-----------------------------------------------------------------
+
+Normally DVIPSONE downloads all fonts called for --- and complains if
+it cannot find a font.  Such a font check is not possible if DVIPSONE
+is told that a font is printer resident (either in a font
+substitution file or using the `-k' command line flag).  If the font
+does not exist on the output device, then the PS interpreter
+typically quietly substitutes Courier --- *without* any error indication.  
+
+Using the `-4' command line flag activates code that will print a
+page with a list of `missing' fonts if any of the fonts cannot be
+found.  The code for doing this tries to take into account the fact
+that font retrieval is quite different on an image setter with a hard
+drive than it is on a laser printer, but it is *not* guaranteed to work
+with all devices, exactly because this aspect of PS interpretation is
+somewhat device dependent.
+
+
+
+--------------------------------------------------------------
+Multiple user supplied header files specified on command line:
+--------------------------------------------------------------
+
+The -w=... command line argument can now be used more than once to
+include more than one user supplied PostScript header file.
+
+
+--------------------------------------------------------------
+Multiple user supplied header files specified using \special:
+-------------------------------------------------------------
+
+The \special{header=...} construct can now be used more than once to
+include more than one user supplied PostScript header file.  
+In addition, the argument within *one* such special may be a comma
+separated list of header files.
+
+
+--------------------------------
+Verbatim PostScript for header:
+--------------------------------
+
+The construct
+
+\special{headertext=....}
+
+inserts the specified text into the prolog, after all header files
+specified on the command line using '-w' and after all header files
+included using \special{header=...}  This \special may occur anywhere
+in the DVI file, and may be repeated.  Several chunks of verbatim
+PostScript code can be inserted this way.

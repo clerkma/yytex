@@ -1,0 +1,283 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: Lucida New Math math arrows
+
+% Used by Y&Y:
+% LucidaNewMath-Arrows (lbma)
+% LucidaNewMath-Arrows-Demi (lbmad)
+
+% Note: Alphabet A-Z is Blackboard bold or `open face'
+% But only a few of these letters have UNICODE numbers (C, H, N, P, Q, R, Z)
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	25CB	circle
+1	25CF	circlesolid
+2	25A1	square
+3	25A0	squaresolid
+4	25B3	triangle
+5	25B2	trianglesolid
+6	25BD	triangleinv
+7	25BC	triangleinvsolid
+8	25CA	diamond
+9	FFFF	diamondsolid 25CA filled
+10	25C6	diamondmathsolid
+11	2215	upslope
+12	2216	downslope
+13	22E4	sqimageornotequal	% lessmuch1
+14	22E5	sqoriginornotequal	% greatermuch1
+15	FFFF	unionsqdbl squared up 22D3
+16	FFFF	intersectionsqdbl squared up 22D2
+17	FFFF	domsubtract
+18	FFFF	rngsubtract
+19	22EE	vertellipsis
+20	22EF	midhorizellipsis
+21	22F0	upslopeellipsis
+22	22F1	downslopeellipsis
+23	22D5	equalparallel
+24	2246	approxnotequal	% xor
+25	FFFF	pibond
+26	225B	starequal	% plimsol
+27	210F	planckover2pi1	% planckover2pi
+28	FFFF	elementmacron
+29	2209	notelement
+30	FFFF	ownermacron
+31	220C	notowner
+32	2204	notexistential
+
+33	2194	arrowlongboth
+34	2195	arrowlongbothv
+35	219E	dblarrowheadleft
+36	219F	dblarrowheadup
+37	21A0	dblarrowheadright
+38	0026	ampersand	% ampersandmath
+39	21A1	dblarrowheaddown
+40	21A2	arrowtailleft
+41	21A3	arrowtailright
+42	21A4	arrowbarleft
+43	21A5	arrowbarup
+44	21A6	arrowbarright
+45	FFFF	arrowext	% extension for the arrows 2190 2192
+46	21A7	arrowbardown
+47	21E4	arrowtableft
+48	21E5	arrowtabright
+49	21A8	arrowbothvbase
+50	219A	arrowleftnot
+51	219B	arrowrightnot
+52	21AE	arrowbothnot
+53	FFFF	arrowlongbothnot	long 21AE
+54	FFFF	headleft	% 2190	head
+55	FFFF	headright	% 2192  head
+56	21E0	arrowdashleft
+57	21E1	arrowdashup
+58	21E2	arrowdashright
+59	21E3	arrowdashdown
+60	21A9	arrowhookleft
+61	FFFF	arrowdblext	% extension for double arrows
+62	21AA	arrowhookright
+63	21AB	arrowloopleft
+64	21AC	arrowloopright
+
+65	FFFF	A	0041
+66	FFFF	B	0042
+67	2102	C	0043
+68	FFFF	D	0044
+69	FFFF	E	0045
+70	FFFF	F	0046
+71	FFFF	G	0047
+72	210D	H	0048
+73	FFFF	I	0049
+74	FFFF	J	004A
+75	FFFF	K	004B
+76	FFFF	L	004C
+77	FFFF	M	004D
+78	2115	N	004E
+79	FFFF	O	004F
+80	2119	P	0050
+81	211A	Q	0051
+82	211D	R	0052
+83	FFFF	S	0053
+84	FFFF	T	0054
+85	FFFF	U	0055
+86	FFFF	V	0056
+87	FFFF	W	0057
+88	FFFF	X	0058
+89	FFFF	Y	0059
+90	2124	Z	005A
+
+91	231C	brackettopnw
+92	231D	brackettopne
+93	231E	bracketbotsw
+94	231F	bracketbotse
+95	2225	arrowdblvext
+96	21D5	arrowdbllongbothv
+97	21D4	arrowdbllongboth
+98	21D6	arrowdblnw
+99	21D7	arrowdblne
+100	21D9	arrowdblsw
+101	21D8	arrowdblse
+102	21CD	arrowdblleftnot
+103	21CE	arrowdblbothnot
+104	21CF	arrowdblrightnot
+105	FFFF	arrowdbllongbothnot	long 21CE
+106	21DA	arrowtripleleft
+107	FFFF	k	006B blackboard bold k
+108	21DB	arrowtripleright
+109	21C4	arrowparrrightleft
+110	21C6	arrowparrleftright
+111	21C5	dblarrowupdown
+112	FFFF	dblarrowdownup	flipped 21C5
+113	21C7	dblarrowleft
+114	21C8	dblarrowup
+115	21C9	dblarrowright
+116	21CA	dblarrowdown
+117	21BE	harpoonupright
+118	21BF	harpoonupleft
+119	21C2	harpoondownright
+120	21C3	harpoondownleft
+121	21CB	harpoonleftright
+122	21CC	harpoonrightleft
+123	21B0	arrowupleft
+124	2223	arrowvext
+125	21B1	arrowupright
+126	FFFF	vectorleft	reversed 20D6
+127	2278	notlessgreater
+
+129	21B2	arrowdownleft
+130	21B3	arrowdownright
+131	21B4	arrowrightdown
+132	FFFF	arrowleftdown
+133	FFFF	arrowrightup
+134	FFFF	arrowleftup
+135	21B6	arrowsemanticlockw
+136	21B7	arrowsemclockw
+137	FFFF	arrowsemanticlockwplus
+138	FFFF	arrowsemclockwminus
+139	21BA	arrowanticlockw
+140	21BB	arrowclockw
+141	21DC	arrowsquiggleleft
+142	21DD	arrowsquiggleright
+143	219C	arrowwaveleft
+144	219D	arrowwaveright
+145	21AD	arrowwaveboth
+146	FFFF	arrowmidbarright negated 21A3
+147	21AF	arrowzigzag
+148	2260	notequal
+149	2262	notequivalence
+150	2241	notsimilar
+151	2244	notasymptequal
+152	2249	notalmostequal
+153	2247	notapproxequal
+154	226E	notless
+155	226F	notgreater
+156	2270	notlessequal flat bottom stroke ???
+157	2271	notgreaterequal flat bottom stroke ???
+158	2274	notlessequivlnt
+159	2275	notgreaterequivlnt
+
+171	22C6	star1
+172	2713	checkmark
+
+196	2278	notlessgreater
+197	2279	notgreaterless
+198	2284	notpropersubset
+199	2285	notpropersuperset
+200	2288	notreflexsubset
+201	2289	notreflexsuperset
+202	FFFF	notsubsetdblequal
+203	FFFF	notsupersetdblequal
+204	228A	subsetnotequal
+205	228B	supersetnotequal
+206	FFFF	subsetornotequal1
+207	FFFF	supersetornotequal1
+208	FFFF	notsubsetorequal
+209	FFFF	notsupersetorequal
+210	FFFF	subsetornotequal
+211	FFFF	supersetornotequal
+212	22E2	notsubsetsqequal
+213	22E3	notsupersetsqequal
+214	2270	notlessequal1
+215	2271	notgreaterequal1
+216	FFFF	notlessdblequal
+217	FFFF	notgreaterdblequal
+218	FFFF	lessnotequal
+219	FFFF	greaternotequal
+220	2268	lessnotdblequal
+221	2269	greaternotdblequal
+222	FFFF	lessnotdblequal1
+223	FFFF	greaternotdblequal1
+224	22E6	lessnotequivlnt
+225	22C5	periodcenteredbold
+226	22E7	greaternotequivlnt
+227	FFFF	lessnotdblequivlnt
+228	FFFF	greaternotdblequivlnt
+229	2280	notprecedes
+230	2281	notfollows
+231	FFFF	notprecedesequal 22E0
+232	FFFF	notfollowsequal 22E1
+233	FFFF	precedesnotequal
+234	FFFF	followsnotequal
+235	22E8	precedesnotsimilar
+236	22E9	followsnotsimilar
+237	FFFF	precedesnotequivlnt
+238	FFFF	followsnotequivlnt
+239	22EA	nottriangleleft
+240	22EB	nottriangleright
+241	22EC	nottriangleleftequal
+242	22ED	nottrianglerightequal 
+243	226D	notequivasymptotic	but vertical bar
+244	FFFF	notbarshort		short 2224
+245	FFFF	notparallelshort	short 2226
+246	2224	notbar
+247	2226	notbardbl
+248	22AC	notturnstileleft
+249	22AD	notsatisfies
+250	22AE	notforces
+251	22AF	notforcesextra
+252	FFFF	negeighteenthem
+253	FFFF	eighteenthem
+254	FFFF	eighthem
+255	FFFF	tenthem
+
+% DUPLICATES of 0 - 31
+
+161	25CB	circle
+162	25CF	circlesolid
+163	25A1	square
+164	25A0	squaresolid
+165	25B3	triangle
+166	25B2	trianglesolid
+167	25BD	triangleinv
+168	25BC	triangleinvsolid
+169	25CA	diamond
+170	FFFF	diamondsolid 25CA filled
+173	25C6	diamondmathsolid
+174	2215	upslope
+175	2216	downslope
+176	22E4	sqimageornotequal	% lessmuch1
+177	22E5	sqoriginornotequal	% greatermuch1
+178	FFFF	unionsqdbl squared up 22D3
+179	FFFF	intersectionsqdbl squared up 22D2
+180	FFFF	domsubtract
+181	FFFF	rngsubtract
+182	22EE	vertellipsis
+183	22EF	midhorizellipsis
+184	22F0	upslopeellipsis
+185	22F1	downslopeellipsis
+186	22D5	equalparallel
+187	2246	approxnotequal	% xor
+188	FFFF	pibond
+189	225B	starequal	% plimsol
+190	210F	planckover2pi1	% planckover2pi
+191	FFFF	elementmacron
+192	2209	notelement
+193	FFFF	ownermacron
+194	220C	notowner
+195	2204	notexistential
+
+196	2278	notlessgreater
+

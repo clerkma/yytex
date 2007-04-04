@@ -1,0 +1,64 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% This file contains CM substitutes for AM fonts.
+% It is assumed here that all 75 of the  CM fonts are available.
+% If only the `plain' 40 CM fonts exist, change the lines with comments,
+% 	by interchanging the names before and after the `%'
+
+amb10		cmb10
+ambi10		cmbi10
+ambsy10		cmbsy10
+ambx10		cmbx10
+ambx5		cmbx5
+ambx6		cmbx6	% cmbx5
+ambx7		cmbx7
+ambx8		cmbx8	% cmbx7
+ambx9		cmbx9	% cmbx10
+ambxsl10	cmbxsl10
+amcsc10		cmcsc10
+amdunh10	cmdunh10
+amex10		cmex10
+aminch		cminch
+amitt10		cmitt10
+ammi10		cmmi10
+ammi5		cmmi5
+ammi6		cmmi6	% cmmi5
+ammi7		cmmi7
+ammi8		cmmi8	% cmmi7
+ammi9		cmmi9	% cmmi10
+amr10		cmr10
+amr5		cmr5
+amr6		cmr6	% cmr5
+amr7		cmr7
+amr8		cmr8	% cmr7
+amr9		cmr9	% cmr10
+amsl10		cmsl10
+amsl8		cmsl8
+amsl9		cmsl9	% cmsl10
+amsltt10	cmsltt10
+amss10		cmss10
+amssbx10	cmssbx10
+amssi10		cmssi10
+amssmc10	cmssmc10
+amssmc40	cmssmc40
+amssq8		cmssq8
+amssqi8		cmssqi8
+amsy10		cmsy10
+amsy5		cmsy5
+amsy6		cmsy6	% cmsy5
+amsy7		cmsy7
+amsy8		cmsy8	% cmsy7
+amsy9		cmsy9	% cmsy10
+amtex10		cmtex10
+amti10		cmti10
+amti7		cmti7
+amti8		cmti8	% cmti7
+amti9		cmti9	% cmti10
+amtt10		cmtt10
+amtt8		cmtt8
+amtt9		cmtt9	% cmtt10
+amu10		cmu10
+
+circle10	lcircle1	*alias*
+circlew1	lcirclew	*alias*

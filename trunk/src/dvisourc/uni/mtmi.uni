@@ -1,0 +1,199 @@
+% Encoding: MTMI
+
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Used by Y&Y MathTime math italic fonts: MTMI
+% Used by Y&Y MathTime Plus bold math italic fonts MTMIB, MTMIH
+% Used by Y&Y MathTime Plus bold upright math italic fonts: MTMUB, MTMUH
+
+% Note: Alphabet is italic (math italic --- for variables x, y, z, X, Y, Z)
+
+% Note: this is somewhat similar to math italic for CM fonts
+
+% Italic upper case Greek 0 - 10
+% Upright upper case Greek 48 - 57
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Note: First set of upper case Greek are upright
+% Note: Second set of upper case Greek are upright
+
+0	0393	Gamma
+1	0394	Delta
+2	0398	Theta
+3	039B	Lambda
+4	039E	Xi
+5	03A0	Pi
+6	03A3	Sigma
+7	03A5	Upsilon
+8	03A6	Phi
+9	03A8	Psi
+10	03A9	Omega
+
+11	03B1	alpha
+12	03B2	beta
+13	03B3	gamma
+14	03B4	delta
+15	03B5	epsilon1
+16	03B6	zeta
+17	03B7	eta
+18	03B8	theta
+19	03B9	iota
+20	03BA	kappa
+21	03BB	lambda
+22	03BC	mu
+23	03BD	nu
+24	03BE	xi
+25	03C0	pi
+26	03C1	rho
+27	03C3	sigma
+28	03C4	tau
+29	03C5	upsilon
+30	03C6	phi
+31	03C7	chi
+32	03C8	psi
+33	03C9	omega
+
+34	FFFF	epsilon 0395
+35	03D1	theta1
+36	03D6	pi1
+37	03F1	rho1
+38	03C2	sigma1 ?
+39	03D5	phi1
+
+40	21BC	arrowlefttophalf
+41	21BD	arrowleftbothalf
+42	21C0	arrowrighttophalf
+43	21C1	arrowrightbothalf
+44	FFFF	arrowhookleft	21A9
+45	FFFF	arrowhookright	21AA
+
+46	0028	parenleft
+47	0029	parenright
+
+48	0393	Gamma1
+49	0394	Delta1
+50	0398	Theta1
+51	039B	Lambda1
+52	039E	Xi1
+53	03A0	Pi1
+54	03A3	Sigma1
+55	03A5	Upsilon1
+56	03A6	Phi1
+57	03A8	Psi1
+
+58	002E	period
+59	002C	comma
+60	003C	less
+61	002F	slash
+62	003E	greater
+63	22C6	star
+64	2202	partialdiff
+
+65	0041	A
+66	0042	B
+67	0043	C
+68	0044	D
+69	0045	E
+70	0046	F
+71	0047	G
+72	0048	H
+73	0049	I
+74	004A	J
+75	004B	K
+76	004C	L
+77	004D	M
+78	004E	N
+79	004F	O
+80	0050	P
+81	0051	Q
+82	0052	R
+83	0053	S
+84	0054	T
+85	0055	U
+86	0056	V
+87	0057	W
+88	0058	X
+89	0059	Y
+90	005A	Z
+
+91	266D	flat
+92	266E	natural
+93	266F	sharp
+94	FFFF	slurbelow
+95	FFFF	slurabove
+
+96	2113	lscript
+97	0061	a
+98	0062	b
+99	0063	c
+100	0064	d
+101	0065	e
+102	0066	f
+103	0067	g
+104	0068	h
+105	0069	i
+106	006A	j
+107	006B	k
+108	006C	l
+109	006D	m
+110	006E	n
+111	006F	o
+112	0070	p
+113	0071	q
+114	0072	r
+115	0073	s
+116	0074	t
+117	0075	u
+118	0076	v
+119	0077	w
+120	0078	x
+121	0079	y
+122	007A	z
+
+123	0131	dotlessi
+124	FFFF	dotlessj
+125	2118	weierstrass
+126	03F0	kappa1
+127	03A9	Omega1
+
+% DUPLICATES of 0 - 31
+
+161	0393	Gamma
+162	0394	Delta
+163	0398	Theta
+164	039B	Lambda
+165	039E	Xi
+166	03A0	Pi
+167	03A3	Sigma
+168	03A5	Upsilon
+169	03A6	Phi
+170	03A8	Psi
+173	03A9	Omega
+174	03B1	alpha
+175	03B2	beta
+176	03B3	gamma
+177	03B4	delta
+178	03B5	epsilon1
+179	03B6	zeta
+180	03B7	eta
+181	03B8	theta
+182	03B9	iota
+183	03BA	kappa
+184	03BB	lambda
+185	03BC	mu
+186	03BD	nu
+187	03BE	xi
+188	03C0	pi
+189	03C1	rho
+190	03C3	sigma
+191	03C4	tau
+192	03C5	upsilon
+193	03C6	phi
+194	03C7	chi
+195	03C8	psi
+
+196	03A9	Omega1
+
