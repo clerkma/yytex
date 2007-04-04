@@ -1,0 +1,320 @@
+% Encoding: ISO Cyrillic (SUN)
+
+% Corresponding to ISO 8859-5
+
+% Copyright (c) 1991 -- 1995 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% NOTE: 0 - 31	  (C0) is supposed to be reserved for `control characters'
+% NOTE: 32 - 127  (G0) is just `USA ASCII' common to all ISO 8859-x
+% NOTE: 128 - 159 (C1) is supposed to be reserved for `control characters'
+% NOTE: 160 - 255 (G1) is where different ISO 8859-x standards differ
+
+% This set is designed for multiple-language applications involving
+% the Latin and the Cyrillic scripts for Bulgarian, Byelorussian,
+% English, Macedonian, Russian, Serbocroation, and Ukrainian.
+% (Although Ukranians read the letter ghe with downstroke as heh and 
+% so would need a ghe with upstroke to write a correct ghe).
+
+% In Russia the KOI8-R character layout is preferred. KOI8-R has 
+% US ASCII below and mostly uses only 192 - 255 for Cyrillic.
+
+% NOTE: Accented/composite characters may not be built by overprinting.
+
+%  NU SH SX EX ET EQ AK BL
+%  BS HT LF VT FF CR SO SI
+%  DL D1 D2 D3 D4 NK SY EB
+%  CN EM SB EC FS GS RS US
+
+32	space
+33	exclam
+34	quotedbl	% quotation mark
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright	% quotesingle ISO ? apostrophe ISO ? quoteright Adobe
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen		% minus Adobe ? minus sign ISO ? hyphen (ASCII/ANSI)
+46	period		% full stop
+47	slash		% solidus
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at		% commercial at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft	% left square bracket
+92	backslash	% reverse solidus
+93	bracketright	% right square bracket
+94	asciicircum	% circumflex accent ISO ? asciicircum Adobe
+95	underscore	% low line
+96	quoteleft	% grave ISO ? quoteleft (ASCII/ANSI) quoteleft Adobe
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft	% left curly bracket
+124	bar		% vertical line
+125	braceright	% right curly bracket
+126	asciitilde	% tilde accent ISO ? asciitilde Adobe 
+%	127	delete ?
+
+%  PA HO BH NH IN NL SA ES
+%  HS HJ VS PD PU RI S2 S3
+%  DC P1 P2 TS CC MW SG EG
+%  SS GC SC CI ST OC PM AC
+
+%	C1 is used by PostScript as a convenient place to hide accents
+%	This is required because of a bug in most non-clone PS level I printers
+
+%	THE FOLLOWING UP TO 160 IT IS *NOT* PART OF THE ISO 8859 STANDARD
+
+144	dotlessi
+145	grave
+146	acute
+147	circumflex
+148	tilde
+149	macron
+150	breve
+151	dotaccent
+152	dieresis
+
+154	ring
+155	cedilla
+
+156	commadilla	% specific to Latin fonts
+
+157	hungarumlaut
+158	ogonek
+159	caron
+
+% code	AFII number	UNICODE	description comments
+
+160	space		% 00A0	% nbspace ISO ?
+161	afii10023	% 0401	Io
+162	afii10051	% 0402	Dje	Serbocroatian
+163	afii10052	% 0403	Gje	Macedonian
+164	afii10053	% 0404	Ecyril	Ukranian Ie ?
+165	afii10054	% 0405	Dze	Macedonian
+166	afii10055	% 0406	Icyril	Byelorussian/Ukranian I
+167	afii10056	% 0407	Yi	Ukranian
+168	afii10057	% 0408	Je
+169	afii10058	% 0409	Lje
+170	afii10059	% 040a	Nje
+171	afii10060	% 040b	Tshe	Serbocroatian
+172	afii10061	% 040c	Kje	Macedonian
+173	afii10050	% 0490	sfthyphen
+174	afii10062	% 040e	Ucyrilbreve Byelorussian U short
+175	afii10145	% 040f	Dzhe
+176	afii10017	% 0410	Acyril
+177	afii10018	% 0411	Be
+178	afii10019	% 0412	Ve
+179	afii10020	% 0413	Ge	Ghe
+180	afii10021	% 0414	De
+181	afii10022	% 0415	Ie
+182	afii10024	% 0416	Zhe
+183	afii10025	% 0417	Ze
+184	afii10026	% 0418	Ii
+185	afii10027	% 0419	Iibreve I short
+186	afii10028	% 041a	Ka
+187	afii10029	% 041b	El
+188	afii10030	% 041c	Em
+189	afii10031	% 041d	En
+190	afii10032	% 041e	Ocyril
+191	afii10033	% 041f	Pecyril Pe
+192	afii10034	% 0420	Er
+193	afii10035	% 0421	Es
+194	afii10036	% 0422	Te
+195	afii10037	% 0423	Ucyril
+196	afii10038	% 0424	Ef
+197	afii10039	% 0425	Kha	Ha
+198	afii10040	% 0426	Tse
+199	afii10041	% 0427	Che
+200	afii10042	% 0428	Sha
+201	afii10043	% 0429	Shcha
+202	afii10044	% 042a	Hard	Hard Sign
+203	afii10045	% 042b	Yeri	Yeru
+204	afii10046	% 042c	Soft	Soft Sign
+205	afii10047	% 042d	Ecyrilrev E
+206	afii10048	% 042e	Iu	Yu
+207	afii10049	% 042f	Ia	Ya
+
+208	afii10065	% 0430	acyril
+209	afii10066	% 0431	be
+210	afii10067	% 0432	ve
+211	afii10068	% 0433	ge	ghe
+212	afii10069	% 0434	de
+213	afii10070	% 0435	ie
+214	afii10072	% 0436	zhe
+215	afii10073	% 0437	ze
+216	afii10074	% 0438	ii
+217	afii10075	% 0439	iibreve i short
+218	afii10076	% 043a	ka
+219	afii10077	% 043b	el
+220	afii10078	% 043c	em
+221	afii10079	% 043d	en
+222	afii10080	% 043e	ocyril
+223	afii10081	% 043f	pecyril pe
+224	afii10082	% 0440	er
+225	afii10083	% 0441	es
+226	afii10084	% 0442	te
+227	afii10085	% 0443	ucyril
+228	afii10086	% 0444	ef
+229	afii10087	% 0445	kha	ha
+230	afii10088	% 0446	tse
+231	afii10089	% 0447	che
+232	afii10090	% 0448	sha
+233	afii10091	% 0449	shcha
+234	afii10092	% 044a	hard	hard sign
+235	afii10093	% 044b	yeri	yeru
+236	afii10094	% 044c	soft	soft sign
+237	afii10095	% 044d	ecyrilrev  e
+238	afii10096	% 044e	iu	yu
+239	afii10097	% 044f	ia	ya
+
+240	afii61352	% 2116	numero	number acronym
+241	afii10071	% 0451	io
+242	afii10099	% 0452	dje	Serbocroatian ?
+243	afii10100	% 0453	gje	Macedonian ?
+244	afii10101	% 0454	ecyril	Ukranian ie ?
+245	afii10102	% 0455	dze	Macedonian
+246	afii10103	% 0456	icyril	Byeolorusian/Ukranian I
+247	afii10104	% 0457	yi	Ukranian
+248	afii10105	% 0458	je
+249	afii10106	% 0459	lje
+250	afii10107	% 045a	nje
+251	afii10108	% 045b	tshe	Serbocroatian
+252	afii10109	% 045c	kje	Macedonian
+253	afii10098	% 0491	section, paragraph sign ISO
+254	afii10110	% 045e	ucyrilbreve Byeolorussian u short
+255	afii10193	% 045f	dzhe
+
+% Related glyphs left unencoded
+
+% 146	0462	Yat
+% 147	0463	yat
+% 154	046a	Yusbig
+% 155	046b	yusbig
+% 192	0490	Geupturn
+% 193	0491	geupturn
+% 194	0492	Gebar
+% 195	0493	gebar
+% 196	0494	Gehook
+% 197	0495	gehook
+% 198	0496	Zhertdes
+% 199	0497	zhertdes
+% 200	0498	Zecedilla
+% 201	0499	zecedilla
+% 202	049a	Kartdes
+% 203	049b	kartdes
+% 204	049c	Kavertbar
+% 205	049d	kavertbar
+% 206	049e	Kabar
+% 207	049f	kabar
+% 208	04a0	GeKarev
+% 209	04a1	gekarev
+% 210	04a2	Enrtdes
+% 211	04a3	enrtdes
+% 212	04a4	EnGe
+% 213	04a5	enge
+% 214	04a6	Pehook
+% 215	04a7	pehook
+% 216	04a8	Ohook
+% 217	04a9	ohook
+% 218	04aa	Escedilla
+% 219	04ab	escedilla
+% 220	04ac	Tertdes
+% 221	04ad	tertdes
+% 222	04ae	Ustrt
+% 223	04af	ustrt
+% 224	04b0	Ustrtbar
+% 225	04b1	ustrtbar
+% 226	04b2	Khartdes
+% 227	04b3	khartdes
+% 228	04b4	TeTse
+% 229	04b5	tetse
+% 230	04b6	Chertdes
+% 231	04b7	chertdes
+% 232	04b8	Chevertbar
+% 233	04b9	chevertbar
+% 234	04ba	Hcyril
+% 235	04bb	hcyril
+% 236	04bc	Iehook
+% 237	04bd	iehook
+% 238	04be	Iehookogonek
+% 239	04bf	iehookogonek
+% 240	04c0	Icyril1
+% 241	04c1	Zhebreve
+% 242	04c2	zhebreve
+% 243	04c3	Kahook
+% 244	04c4	kahook
+% 247	04c7	Enhook
+% 248	04c8	enhook
+% 251	04cb	Cheleftdes
+% 252	04cc	cheleftdes
+% 253	2116	numero

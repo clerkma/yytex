@@ -1,0 +1,81 @@
+% Encoding: BaKoMa
+% Basil K. Malyshev's layout for `CM' Cyrillic fonts
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+25	afii61352		% No. 188
+29	guillemotleft	% << 192
+30	guillemotright	% >> 193
+
+32	space
+60	afii10071		% io (Russian indicator)
+62	afii10023		% Io
+64	afii10096		% iu
+65	afii10065		% acyril
+66	afii10066		% be
+67	afii10088		% tse 
+68	afii10069		% de
+69	afii10070		% ie
+70	afii10086		% ef
+71	afii10068		% ge
+72	afii10087		% kha
+73	afii10074		% ii
+74	afii10075		% iibreve
+75	afii10076		% ka
+76	afii10077		% el
+77	afii10078		% em
+78	afii10079		% en
+79	afii10080		% ocyril
+80	afii10081		% pecyril
+81	afii10097		% ia
+82	afii10082		% er
+83	afii10083		% es
+84	afii10084		% te
+85	afii10085		% ucyril
+86	afii10072		% zhe
+87	afii10067		% ve
+88	afii10094		% soft
+89	afii10093		% yeri
+90	afii10073		% ze
+91	afii10090		% sha
+92	afii10095		% ecyrilrev
+93	afii10091		% shcha
+94	afii10089		% che
+95	afii10092		% hard
+96	afii10048		% Iu
+97	afii10017		% Acyril
+98	afii10018		% Be
+99	afii10040		% Tse
+100	afii10021		% De
+101	afii10022		% Ie
+102	afii10038		% Ef
+103	afii10020		% Ge
+104	afii10039		% Kha
+105	afii10026		% Ii
+106	afii10027		% Iibreve
+107	afii10028		% Ka
+108	afii10029		% El
+109	afii10030		% Em
+110	afii10031		% En
+111	afii10032		% Ocyril
+112	afii10033		% Pecyril
+113	afii10049		% Ia
+114	afii10034		% Er
+115	afii10035		% Es
+116	afii10036		% Te
+117	afii10037		% Ucyril
+118	afii10024		% Zhe
+119	afii10019		% Ve
+120	afii10046		% Soft
+121	afii10045		% Yeri
+122	afii10025		% Ze
+123	afii10042		% Sha
+124	afii10047		% Ecyrilrev
+125	afii10043		% Shcha
+126	afii10041		% Che
+127	afii10044		% Hard sign 196
+
+% 188	afii61352
+% 192	guillemotleft
+% 193	guillemotright
+% 196	afii10044

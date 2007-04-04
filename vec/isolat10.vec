@@ -1,0 +1,255 @@
+% Encoding: ISO Latin 10 (SUN)
+
+% Latin 6, corresponding to ISO 8859-10 (similar to ISO 8859-4)
+
+% Copyright (c) 1995 -- 1996 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% NOTE: 0 - 31	  (C0) is supposed to be reserved for `control characters'
+% NOTE: 32 - 127  (G0) is just `USA ASCII' common to all ISO 8859-x
+% NOTE: 128 - 159 (C1) is supposed to be reserved for `control characters'
+% NOTE: 160 - 255 (G1) is where different ISO 8859-x standards differ
+
+% It is designed for `Nordic' Scandinavian/Inuit/Sami languages:
+% Danish, English, Estonioan, Finnish, German, Greenlandic, 
+% Lappish, Latvian, Lithuanian, Swedish and Norwegian.
+
+% Latin 5 extends Latin 4 with Inuit (Greenlandic) and Sami (Lappish)
+% characters.
+
+% NOTE: Accented/composite characters may not be built by overprinting.
+
+%  NU SH SX EX ET EQ AK BL
+%  BS HT LF VT FF CR SO SI
+%  DL D1 D2 D3 D4 NK SY EB
+%  CN EM SB EC FS GS RS US
+
+32	space
+33	exclam
+34	quotedbl	% quotation mark
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright	% quotesingle ISO ? apostrophe ISO ? quoteright Adobe
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen		% minus Adobe ? minus sign ISO ? hyphen (ASCII/ANSI)
+46	period		% full stop
+47	slash		% solidus
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at		% commercial at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft	% left square bracket
+92	backslash	% reverse solidus
+93	bracketright	% right square bracket
+94	asciicircum	% circumflex accent ISO ? asciicircum Adobe
+95	underscore	% low line
+96	quoteleft	% grave ISO ? quoteleft (ASCII/ANSI) quoteleft Adobe
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft	% left curly bracket
+124	bar		% vertical line
+125	braceright	% right curly bracket
+126	asciitilde	% tilde accent ISO ? asciitilde Adobe 
+%	127	delete ?
+
+%  PA HO BH NH IN NL SA ES
+%  HS HJ VS PD PU RI S2 S3
+%  DC P1 P2 TS CC MW SG EG
+%  SS GC SC CI ST OC PM AC
+
+%	C1 is used by PostScript as a convenient place to hide accents
+%	This is required because of a bug in most non-clone PS level I printers
+
+%	THE FOLLOWING UP TO 160 IT IS *NOT* PART OF THE ISO 8859 STANDARD
+
+144	dotlessi
+145	grave
+146	acute
+147	circumflex
+148	tilde
+149	macron
+150	breve
+151	dotaccent
+152	dieresis
+
+154	ring
+155	cedilla
+
+156	commadilla	% specific to Latin fonts
+
+157	hungarumlaut
+158	ogonek
+159	caron
+
+160	space		% nbspace ISO ? space Adobe
+161	Aogonek
+162	Emacron
+163	Gcedilla	% Gcommaaccent ?
+164	Imacron
+165	Itilde
+166	Kcedilla	% Kcommaaccent ?
+167	section		% paragraph sign, section sign ISO ?
+168	Lcedilla	% Lcommaaccent ?
+169	Dmacron		% Dbar ?
+170	Scaron
+171	Tbar		% Tslash ?
+172	Zcaron
+173	hyphen		% sfthyphen ISO ? % minus % soft hyphen
+174	Umacron
+175	Eng		% Nj ?
+
+176	degree		% degree sign, ring above ISO ?
+177	aogonek
+178	emacron
+179	gcedilla	% gcommaaccent ?
+180	imacron
+181	itilde
+182	kcedilla	% kcommaaccent ?
+183	periodcentered	% middot
+184	lcedilla	% lcommaaccent ?
+185	dmacron		% dbar ?
+186	scaron
+187	tbar		% tslash ?
+188	zcaron
+189	minus		% emdash ?
+190	umacron
+191	eng		% nj ?
+
+192	Amacron
+193	Aacute
+194	Acircumflex
+195	Atilde
+196	Adieresis
+197	Aring
+198	AE		% diphthong A with E
+199	Iogonek
+200	Ccaron
+201	Eacute
+202	Eogonek
+203	Edieresis
+204	Edot
+205	Iacute
+206	Icircumflex
+207	Idieresis	% Imacron ?
+208	Eth		% Dmacron ?
+209	Ncedilla	% Ncommaaccent ?
+210	Omacron
+211	Oacute
+212	Ocircumflex
+213	Otilde
+214	Odieresis
+215	Utilde		% multiply
+216	Oslash		% O with oblique stroke ?
+217	Uogonek
+218	Uacute
+219	Ucircumflex
+220	Udieresis
+221	Yacute		% Utilde ?
+222	Thorn		% Umacron ?
+223	germandbls	% German letter sharp s
+
+224	amacron
+225	aacute
+226	acircumflex
+227	atilde
+228	adieresis
+229	aring
+230	ae		% diphthong a with e
+231	iogonek		% icedilla icommaaccent
+232	ccaron
+233	eacute
+234	eogonek
+235	edieresis
+236	edot
+237	iacute
+238	icircumflex
+239	idieresis	% imacron ?
+240	eth		% dmacron dbar ? 
+241	ncedilla	% ncommaaccent ?
+242	omacron
+243	oacute		% kcedilla ?
+244	ocircumflex
+245	otilde
+246	odieresis
+247	utilde		% divide ?
+248	oslash		% o with oblique stroke
+249	uogonek
+250	uacute
+251	ucircumflex
+252	udieresis
+253	yacute		% utilde ?
+254	thorn		% umacron ?
+255	kra		% kah kappa
+
+%% NOTE: controversy over name `cedilla' versus `commaaccent'
+

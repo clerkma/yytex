@@ -1,0 +1,262 @@
+% Encoding: Adobe fonts fully encoded
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% All 228 characters in Adobe fonts appear in this encoding 
+
+% Useful when performing manipulations that should touch ALL characters
+
+% The arrangement of characters in the code space is basically random
+
+26	mu		% no longer borrowed from Symbol 
+27	plusminus	% no longer borrowed from Symbol 
+28	divide		% no longer borrowed from Symbol 
+29	fraction	% no longer borrowed from Symbol 
+30	logicalnot	% no longer borrowed from Symbol 
+31	degree		% no longer borrowed from Symbol 
+
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	asciicircum
+95	underscore
+96	quoteleft
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	bar
+125	braceright
+126	asciitilde
+
+128	exclamdown
+129	cent
+130	sterling
+131	brokenbar
+132	yen
+133	florin
+134	section
+135	currency
+136	quotesingle
+137	quotedblleft
+138	guillemotleft
+139	guilsinglleft
+140	guilsinglright
+141	fi
+142	fl
+143	endash
+144	dagger
+145	daggerdbl
+146	periodcentered
+147	paragraph
+148	bullet
+149	quotesinglbase
+150	quotedblbase
+151	quotedblright
+152	guillemotright
+153	ellipsis
+154	perthousand
+155	questiondown
+156	grave
+157	acute
+158	circumflex
+159	tilde
+160	macron
+161	breve
+162	dotaccent
+163	dieresis
+164	ring
+165	cedilla
+166	hungarumlaut
+167	ogonek
+168	caron
+169	emdash
+170	AE
+171	ordfeminine
+172	Lslash
+173	Oslash
+174	OE
+175	ordmasculine
+176	ae
+177	dotlessi
+178	lslash
+179	oslash
+180	oe
+181	germandbls
+182	eth
+183	thorn
+184	trademark
+185	multiply
+186	onequarter
+187	Thorn
+188	Eth
+189	registered
+190	minus
+191	onehalf
+192	threequarters
+193	onesuperior
+194	twosuperior
+195	threesuperior
+196
+197	copyright
+198	Ccedilla
+199	ccedilla
+200	Aacute
+201	Acircumflex
+202	Adieresis
+203	Agrave
+204	Aring
+205	Atilde
+206	Eacute
+207	Ecircumflex
+208	Edieresis
+209	Egrave
+210	Iacute
+211	Icircumflex
+212	Idieresis
+213	Igrave
+214	Ntilde
+215	Oacute
+216	Ocircumflex
+217	Odieresis
+218	Ograve
+219	Otilde
+220	Scaron
+221	Uacute
+222	Ucircumflex
+223	Udieresis
+224	Ugrave
+225	Yacute
+226	Ydieresis
+227	Zcaron
+228	aacute
+229	acircumflex
+230	adieresis
+231	agrave
+232	aring
+233	atilde
+234	eacute
+235	ecircumflex
+236	edieresis
+237	egrave
+238	iacute
+239	icircumflex
+240	idieresis
+241	igrave
+242	ntilde
+243	oacute
+244	ocircumflex
+245	odieresis
+246	ograve
+247	otilde
+248	scaron
+249	uacute
+250	ucircumflex
+251	udieresis
+252	ugrave
+253	yacute
+254	ydieresis
+255	zcaron
+
+% some extras... not found in most Adobe fonts (faked on Macintosh)
+
+1	radical		% borrowed from Symbol 
+2	notequal	% borrowed from Symbol 
+3	infinity
+4	lessequal	% borrowed from Symbol 
+5	greaterequal	% borrowed from Symbol 
+6	approxequal	% borrowed from Symbol 
+7	Delta		% borrowed from Symbol 
+8	lozenge		% borrowed from Symbol 
+9	apple		% borrowed from Symbol 
+10	Omega		% borrowed from Symbol 
+11	product		% borrowed from Symbol 
+12	summation	% borrowed from Symbol 
+13	partialdiff	% borrowed from Symbol 
+14	pi		% borrowed from Symbol 
+15	integral	% borrowed from Symbol 
+16	nbspace		% not in most Adobe fonts
+
+

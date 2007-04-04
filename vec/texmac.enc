@@ -1,0 +1,297 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%
+% @psencodingfile{
+%   author = "Y&Y, Inc.",
+%   version = "1.1",
+%   date = "1 April 1997",
+%   filename = "texmac.enc",
+%   codetable = "ISO/ASCII",
+%   checksum = "xx",
+%   docstring = "Encoding for fonts in Adobe Type 1 format for use with Textures."
+% }
+%
+% Character code assignments are those in Textures (LM1) encoding
+%
+% SAMPLE USAGE (in `psfonts.map' file for DVIPS):
+% 
+% lbr LucidaBright "Textures ReEncodeFont" <texmac.enc <lbr.pfb
+%
+% This tells DVIPS that the font called `lbr' in TeX has PostScript 
+% FontName `LucidaBright.'  It asks DVIPS to expand the file `lbr.pfb'
+% into PFA form, to include the attached `texmac.enc' encoding vector,
+% and to actually reencode the font based on that encoding vector.
+%
+/Textures [
+/.nodef		% 0	OT1 Gamma
+/Delta		% Mac 198	increment
+/.nodef		% 2	OT1 Theta
+/.nodef		% 3	OT1 Lambda
+/.nodef		% 4	OT1 Xi
+/.nodef		% 5	OT1 Pi
+/.nodef		% 6	OT1 Sigma
+/.nodef		% 7	OT1 Upsilon
+/.nodef		% 8	OT1 Phi
+/.nodef		% 9	OT1 Psi
+/Omega		% Mac 189	Ohm
+/.nodef		% 11	OT1 ff
+/fi		% Mac 222
+/fl		% Mac 223
+/.nodef		% 14	OT1 ffi
+/.nodef		% 15	OT1 ffl
+
+/dotlessi 	% 245
+/.nodef		% 17	OT1 dotlessj
+/grave		% 96
+/acute		% 171
+/caron		% 255
+/breve		% 249
+/macron		% 248
+/ring		% 251
+/cedilla	% 252
+/germandbls 	% 167
+/ae		% 190
+/oe		% 207
+/oslash		% 191
+/AE		% 174
+/OE		% 206
+/Oslash		% 175
+
+/space		% 32	OT1 suppress
+/exclam
+/quotedblright	% Mac 211
+/numbersign
+/dollar
+/percent
+/ampersand
+/quoteright	% Mac 213
+/parenleft
+/parenright
+/asterisk
+/plus
+/comma
+/hyphen
+/period
+/slash
+
+/zero
+/one
+/two
+/three
+/four
+/five
+/six
+/seven
+/eight
+/nine
+/colon
+/semicolon
+/less		% OT1 exclamdown
+/equal
+/greater	% OT1 questiondown
+/question
+
+/at
+/A
+/B
+/C
+/D
+/E
+/F
+/G
+/H
+/I
+/J
+/K
+/L
+/M
+/N
+/O
+
+/P
+/Q
+/R
+/S
+/T
+/U
+/V
+/W
+/X
+/Y
+/Z
+/bracketleft
+/backslash	% OT1 quotedblleft
+/bracketright
+/circumflex	% Mac 246
+/dotaccent	% Mac 250
+
+/quoteleft	% Mac 212
+/a
+/b
+/c
+/d
+/e
+/f
+/g
+/h
+/i
+/j
+/k
+/l
+/m
+/n
+/o
+
+/p
+/q
+/r
+/s
+/t
+/u
+/v
+/w
+/x
+/y
+/z
+/braceleft	% OT1 endash
+/braceright	% OT1 emdash
+/hungarumlaut	% Mac 253
+/tilde		% Mac 247
+/dieresis	% Mac 172
+
+/Adieresis
+/Aring
+/Ccedilla
+/Eacute
+/Ntilde
+/Odieresis
+/Udieresis
+/aacute
+/agrave
+/acircumflex
+/adieresis
+/atilde
+/aring
+/ccedilla
+/eacute
+/egrave
+
+/ecircumflex
+/edieresis
+/iacute
+/igrave
+/icircumflex
+/idieresis
+/ntilde
+/oacute
+/ograve
+/ocircumflex
+/odieresis
+/otilde
+/uacute
+/ugrave
+/ucircumflex
+/udieresis
+
+/dagger
+/degree
+/cent
+/sterling
+/section
+/bullet
+/paragraph
+/germandbls	% ? repeat
+/registered
+/copyright
+/trademark
+/acute		% ? repeat
+/dieresis	% ? repeat
+/notequal	% ? Symbol font
+/AE		% ? repeat
+/Oslash		% ? repeat
+
+/infinity	% ? Symbol font
+/plusminus
+/lessequal	% ? Symbol font
+/greaterequal	% ? Symbol font
+/yen
+/mu
+/partialdiff	% ? Symbol font
+/summation	% ? Symbol font
+/product	% ? Symbol font
+/pi		% ? Symbol font
+/integral	% ? Symbol font
+/ordfeminine
+/ordmasculine
+/Omega		% ? Symbol font
+/ae		% ? repeat
+/oslash		% ? repeat
+
+/questiondown
+/exclamdown
+/logicalnot
+/radical	% ? Symbol font
+/florin
+/approxequal	% ? Symbol font
+/Delta		% ? Symbol font
+/guillemotleft	
+/guillemotright
+/ellipsis
+/space		% 202 nbspace ?
+/Agrave
+/Atilde
+/Otilde
+/OE		% ? repeat
+/oe		% ? repeat
+
+/endash
+/emdash
+/quotedblleft
+/quotedblright	% ? repeat
+/quoteleft	% ? repeat
+/quoteright	% ? repeat
+/divide		% ? Symbol font
+/lozenge	% ? Symbol font
+/ydieresis
+/Ydieresis
+/fraction
+/currency
+/guilsinglleft
+/guilsinglright
+/fi		% in OT1 12
+/fl		% in OT1 13
+
+/daggerdbl
+/periodcentered
+/quotesinglbase
+/quotedblbase
+/perthousand
+/Acircumflex
+/Ecircumflex
+/Aacute
+/Edieresis
+/Egrave
+/Iacute
+/Icircumflex
+/Idieresis
+/Igrave
+/Oacute
+/Ocircumflex
+
+/apple		% ? Symbol font (TM)
+/Ograve
+/Uacute
+/Ucircumflex
+/Ugrave
+/dotlessi	% ? repeat
+/circumflex	% ? repeat
+/tilde		% ? repeat
+/macron		% ? repeat
+/breve		% ? repeat
+/dotaccent	% ? repeat
+/ring		% ? repeat
+/cedilla	% ? repeat
+/hungarumlaut	% ? repeat
+/ogonek
+/caron		% ? repeat
+] def

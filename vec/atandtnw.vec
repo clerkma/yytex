@@ -1,0 +1,354 @@
+% Full AT&T Garamond encoding vector (based on Adobe StandardEncoding)
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%
+% Mostly StandardEncoding plus extra characters to fill the holes
+%
+% Used only during font manufacture - font reencoded before export
+
+% try and avoid 0, 1, 2 if possible because of bugs in Windows ATM
+
+2	Ring		% 209
+3	registered	% 176
+4	copyright	% 181
+5	trademark	% 190
+6	minus		% 201
+7	thorn		% 252
+8	eth		% 253
+9	Thorn		% 254
+10	Eth		% 255
+11	quoterightbig	% 221
+12	asteriskbig	% 222 
+13	cedillabig	% 223
+14	centsmalllow	% 224
+15	centsmall	% 226
+16	colonbig	% 228
+17	commasmall	% 229
+18	dollarsmalllow	% 230
+19	dollarsmall	% 231
+20	periodsmall	% 236
+21	periodcenteredbig % 237
+22	quotedblleftalt % 238
+23	quotedblrightalt % 239
+24	semicolonbig	% 240
+25	hswash		% 242
+26	mswash		% 243
+27	nswash		% 244
+28	Thswash		% 246
+29	Whswash		% 247
+30	thinspace	% 192
+31	negspace	% 204
+
+% 32 - 127 is StandardEncoding
+
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at		% was ampersandITC ?
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	asciicircum
+95	underscore
+96	quoteleft
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	bar
+125	braceright
+126	asciitilde 
+% 127	rubout
+
+%% extra stuff for AT&T Garamond 128 - 159
+
+128	ampersandITC	% new position
+129	daggerdbl	% used for ATT ligature (179)
+% 129	cc		% small caps only
+% 130	co		% small caps only
+131	ee
+132	ff
+133	fr
+134	ft
+135	gg
+136	gr
+137	gt
+138	ll
+139	oo
+140	qu
+141	ri
+% 142	ss		% small caps only
+143	st
+144	th
+145	ti
+146	tr
+147	tt
+148	ty
+149	wh
+150	wi
+151	ampersandITCbig	% new position
+152	Th
+153	Vi
+154	Wh
+155	Wi
+156	ccedilla	% ccedillax
+157	Ccedilla	% Ccedillax
+% 158	ntilde		% ntildex
+% 159	Ntilde		% Ntildex
+
+% 160 - 255 is StandardEncoding with some characters missing 
+
+% 160	nbspace
+161	exclamdown
+162	cent
+163	sterling
+% 164	fraction	% not in AT&T
+165	yen
+166	florin
+167	section		% paragraph...
+% 168	currency	% not in AT&T
+169	quotesingle	% quoteleft...
+170	quotedblleft
+171	guillemotleft
+% 172	guilsingleft	% not in AT&T
+% 173	guilsingright	% not in AT&T
+174	fi
+175	fl
+% 176	registered	%% was here
+177	endash
+% 178	dagger		% not in AT&T
+% 179	daggerdbl	% used for ATT ligature
+180	periodcentered
+% 181	copyright	%% was here
+182	paragraph
+183	bullet
+184	quotesinglbase
+185	quotedblbase
+186	quotedblright
+187	guillemotright
+% 188	ellipses	% not in AT&T
+% 189	perthousand	% not in AT&T
+% 190	trademark	%% was here
+% 191	questiondown	% not in AT&T
+% 192	thinspace	% was: ampersandITCbig
+193	grave
+194	acute
+195	circumflex
+196	tilde
+% 197	macron		% not in AT&T
+198	breve
+199	dotaccent
+200	dieresis
+% 201	minus		% was thinspace ? - added here
+202	ring
+203	cedilla
+% 204	negspace	% was here
+% 205 	hungarumlaut	% not in AT&T
+% 206 	ogonek		% not in AT&T
+207 	caron
+208	emdash
+% 209	Ring		%% was here
+210	ATT		% => daggerdbl 224
+%
+% no space for following ten AT&T characters lower down...
+%
+211	oneroman	%% added here
+212	tworoman	%% added here
+213	threeroman	%% added here
+214	fourroman	%% added here
+215	fiveroman	%% added here
+216	sixroman	%% added here
+217	sevenroman	%% added here
+218	eightroman	%% added here
+219	nineroman	%% added here
+220	tenroman	%% added here
+%
+% 221	quoterightbig	%% was here
+% 222	asteriskbig	%% was here
+% 223	cedillabig	%% was here
+% 224	centsmalllow	%% was here
+225	AE
+% 226	centsmall	%% was here
+% 227	ordfeminine	% not in AT&T
+% 228	colonbig	%% was here
+% 229	commasmall	% commabig - was here
+% 230	dollarsmalllow	%% was here
+% 231	dollarsmall	%% was here
+%
+229	CC	% small caps
+230	CO	% small caps
+231	OO	% small caps
+%
+232	Lslash
+233	Oslash
+234	OE
+% 235	ordmasculine	% not in ATT
+% 236	periodsmall	% periodbig - was here
+% 237	periodcenteredbig %% was here
+% 238	quotedblleftalt % quotedblleftbig
+% 239	quotedblrightalt % quotedblrightbig
+% 240	semicolonbig	%% was here
+241	ae
+% 242	hswash		%% was here
+% 243	mswash		%% was here
+% 244	nswash		%% was here
+245	dotlessi	% not in ATT
+% 246	Thswash		% was 245 - was here
+% 247	Whswash		% was 246 - was here
+%
+243	SS	% small caps
+244	ST	% small caps
+246	TH	% small caps
+247	TT	% small caps
+%
+248	lslash
+249	oslash
+250	oe
+251	germandbls
+% 252	thorn		%% was here
+% 253	eth		%% was here
+% 254	Thorn		%% was here
+% 255	Eth		%% was here
+
+% Unencoded composites:
+
+% Aacute
+% Agrave
+% Aring
+% Acircumflex
+% Atilde
+% Adieresis
+% 
+% Ccedilla
+% 
+% Eacute
+% Egrave
+% Ecircumflex
+% Edieresis
+% 
+% Ntilde
+% 
+% Oacute
+% Ograve
+% Ocircumflex
+% Otilde
+% Odieresis
+% 
+% Uacute
+% Ugrave
+% Ucircumflex
+% Udieresis
+% 
+% Ydieresis
+
+% aacute
+% agrave
+% aring
+% acircumflex
+% atilde
+% adieresis
+% 
+% ccedilla
+% 
+% eacute
+% egrave
+% ecircumflex
+% edieresis
+% 
+% ntilde
+% 
+% oacute
+% ograve
+% ocircumflex
+% otilde
+% odieresis
+% 
+% uacute
+% ugrave
+% ucircumflex
+% udieresis
+% 
+% ydieresis
+
+% ampersandITC  ampersandITCbig % ???
+
+% thinspace  negspace ???
+

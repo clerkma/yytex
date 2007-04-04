@@ -1,0 +1,284 @@
+% Encoding: IBM OEM
+
+% IBM PC fixed-width characters and symbols  (code page 437) (United States)
+
+% use with Adobe PrestigeElite, Adobe LetterGothic, Adobe Orator, for example
+
+% NOTE: there is a bug in non-clone interpreters which yields `invalidfont' 
+% errors when the base character or the accent of an accented character 
+% is not in the encoding.
+
+% IBMOEM encoding has accented characters - but does not have accents!
+
+% One workaround is to insert the accents in unused positions (smiley faces?).
+% Needed: grave, acute, circumflex, tilde, dieresis, ring, cedilla, dotlessi.
+% By the way:  Most clone interpreters do the right thing.
+
+% Copyright (c) 1990, 1991 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Adobe's `pcencoding.ps' file differs in places marked.
+
+% 0	.notdef		% zeroslash ?
+1	SS000000	% smileface
+2	SS010000	% invsmileface
+3	heart
+4	diamond
+5	club
+6	spade
+7	bullet		% SM580000 ?
+8	SM570001	% invbullet
+9	SM750000	% circle
+10	SM750002	% invcircle
+11	male
+12	female
+13	musicalnote
+14	musicalnotedbl
+15	SM690000	% sun
+16	SM590000	% triagrt
+17	SM630000	% triaglf
+18	SM760000	% arrowupdn
+19	exclamdbl
+20	paragraph
+21	section
+22	SM700000	% filledrect
+23	SM770000	% arrowupdnbse
+24	arrowup
+25	arrowdown
+26	arrowright
+27	arrowleft
+28	SA420000	% rightangle % orthogonal
+29	arrowboth
+30	SM600000	% triagup
+31	SV040000	% triagdn
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright 	% quotesingle (Adobe)
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	circumflex	% asciicircum ?
+95	underscore
+96	quoteleft	% grave (Adobe) 
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	brokenbar	% bar (Adobe)
+125	braceright
+126	tilde		% asciitilde ?
+127	SM790000	% house
+128	Ccedilla
+129	udieresis
+130	eacute
+131	acircumflex
+132	adieresis
+133	agrave
+134	aring
+135	ccedilla
+136	ecircumflex
+137	edieresis
+138	egrave
+139	idieresis
+140	icircumflex
+141	igrave
+142	Adieresis
+143	Aring
+144	Eacute
+145	ae
+146	AE
+147	ocircumflex
+148	odieresis
+149	ograve
+150	ucircumflex
+151	ugrave
+152	ydieresis
+153	Odieresis
+154	Udieresis
+155	cent
+156	sterling
+157	yen
+158	Pts
+159	florin
+160	aacute
+161	iacute
+162	oacute
+163	uacute
+164	ntilde
+165	Ntilde
+166	ordfeminine
+167	ordmasculine
+168	questiondown
+169	SM680000	% revlogicalnot
+170	logicalnot
+171	onehalf
+172	onequarter
+173	exclamdown
+174	guillemotleft
+175	guillemotright
+% shaded blocks
+176	SF140000	% ltshade
+177	SF150000	% shade
+178	SF160000	% dkshade
+% line draw characters
+179	SF110000	% 2502
+180	SF090000	% 2524
+181	SF190000	% 2561
+182	SF200000	% 2562
+183	SF210000	% 2556
+184	SF220000	% 2555
+185	SF230000	% 2563
+186	SF240000	% 2551
+187	SF250000	% 2557
+188	SF260000	% 255d
+189	SF270000	% 255c
+190	SF280000	% 255b
+191	SF030000	% 2510
+192	SF020000	% 2514
+193	SF070000	% 2534
+194	SF060000	% 252c
+195	SF080000	% 251c
+196	SF100000	% 2500
+197	SF050000	% 253c
+198	SF360000	% 255e
+199	SF370000	% 255f
+200	SF380000	% 255a
+201	SF390000	% 2554
+202	SF400000	% 2569
+203	SF410000	% 2566
+204	SF420000	% 2560
+205	SF430000	% 2550
+206	SF440000	% 256c
+207	SF450000	% 2567
+208	SF460000	% 2568
+209	SF470000	% 2564
+210	SF480000	% 2565
+211	SF490000	% 2559
+212	SF500000	% 2558
+213	SF510000	% 2552
+214	SF520000	% 2553
+215	SF530000	% 256b
+216	SF540000	% 256a
+217	SF040000	% 2518
+218	SF010000	% 250c
+% filled blocks
+219	SF610000	% block
+220	SF570000	% dnblock
+221	SF580000	% lfblock
+222	SF590000	% rtblock
+223	SF600000	% upblock
+% greek and math
+224	alpha
+225	germandbls
+226	Gamma
+227	pi
+228	Sigma
+229	sigma
+230	mu
+231	tau
+232	Phi
+233	Theta
+234	Omega
+235	delta
+236	infinity
+237	phi
+238	epsilon
+239	intersection
+240	equivalence
+241	plusminus
+242	greaterequal
+243	lessequal
+244	SS260000	% integraltp
+245	SS270000	% integralbt
+246	divide
+247	approxequal
+248	degree
+249	SD630000	% bullet ? % SP320000 ? 
+250	SP320000	% periodcentered ? % SD630000 ?
+251	radical
+252	nsuperior
+253	twosuperior
+254	filledbox
+255	nbspace		% space % .notdef
+
+

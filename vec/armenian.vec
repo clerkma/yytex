@@ -1,0 +1,227 @@
+% Encoding: AdobeStandardEncoding modified for Armenian Times
+
+% Copyright (c) 1992 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+32	space
+% 33	exclam
+33	Emacron
+34	quotedbl
+% 35	numbersign
+35	Tquote
+% 36	dollar
+36	Zcaron
+% 37	percent
+37	Hdot
+% 38	ampersand
+% 38	DZ
+38	Dz
+39	quoteright 	% quotesingle (ansi)
+% 40	parenleft
+% 40	CH
+40	Ch
+% 41	parenright
+41	Rdot
+% 42	asterisk
+42	Scaron
+% 43	plus
+43	Pquote
+44	comma
+% 45	hyphen
+45	ts
+46	period
+47	slash
+% 48	zero
+48	rdot
+% 49	one
+49	emacron
+% 50	two
+50	ecaron
+% 51	three
+51	tquote
+% 52	four
+52	zcaron
+% 53	five
+53	hdot
+% 54	six
+54	tz
+% 55	seven
+55	dz
+% 56	eight
+56	scaron
+% 57	nine
+57	ch
+58	colon
+59	semicolon
+60	less
+% 61	equal
+61	pquote
+62	greater
+63	question
+% 64	at
+64	Ecaron
+65	A
+66	B
+% 67	C
+67	Ccaron
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+% 81	Q
+81	Kquote
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+% 88	X
+88	Lslash
+89	Y
+90	Z
+91	bracketleft
+% 92	backslash
+92	omacron
+93	bracketright
+% 94	asciicircum
+% 94	TZ
+94	Tz
+% 95	underscore
+% 95	TS
+95	Ts
+96	quoteleft	% grave (ansi)
+97	a
+98	b
+% 99	c
+99	ccaron
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+% 113	q
+113	kquote
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+% 120	x
+120	lslash
+121	y
+122	z
+123	braceleft
+% 124	bar
+124	Omacron
+125	braceright
+126	asciitilde
+
+161	exclamdown
+162	cent
+163	sterling
+164	fraction
+165	yen
+166	florin
+167	section
+168	currency
+169	quotesingle
+170	quotedblleft
+171	guillemotleft
+172	guilsinglleft
+173	guilsinglright
+174	fi
+175	fl
+177	endash
+178	dagger
+179	daggerdbl
+180	periodcentered
+182	paragraph
+183	bullet
+184	quotesinglbase
+185	quotedblbase
+186	quotedblright
+187	guillemotright
+188	ellipsis
+189	perthousand
+191	questiondown
+193	grave
+194	acute
+195	circumflex
+196	tilde
+197	macron
+198	breve
+199	dotaccent
+200	dieresis
+201	C
+202	ring
+203	cedilla
+205	hungarumlaut
+206	ogonek
+207	caron
+208	emdash
+209	c
+
+210	zero
+211	one
+212	two
+213	three
+214	four
+215	five
+216	six
+217	seven
+218	eight
+219	nine
+220	exclam
+221	at
+222	numbersign
+223	dollar
+224	Q
+225	AE
+226	X
+227	ordfeminine
+228	percent
+229	asciicircum
+230	ampersand
+231	asterisk
+% 232	Lslash
+233	Oslash
+234	OE
+235	ordmasculine
+236	parenleft
+237	parenright
+238	underscore
+239	plus
+240	q
+241	ae
+242	x
+243	backslash
+244	bar
+245	dotlessi
+246	hyphen
+247	equal
+% 248	lslash
+249	oslash
+250	oe
+251	germandbls
+% 252	C
+% 253	c

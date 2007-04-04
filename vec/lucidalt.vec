@@ -1,0 +1,239 @@
+% Encoding: Mac encoding modified for B & H mathematical fonts
+% Using positions 128 - 159, 160 for space
+% gap in 161 - 192 for remapping 0 - 31
+% alternate form used for LucidBozoMath-Italic
+
+% Copyright (C) 1991 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+33	exclam		% 0
+34	quotedbl	% 1
+35	numbersign	% 2
+36	dollar		% 3
+37	percent		% 4
+38	ampersand	% 5
+39	quotesingle 	% quoteright		% 6
+40	parenleft	% 7
+41	parenright	% 8
+42	asterisk	% 9
+43	plus		% 10
+44	comma		% 11
+45	hyphen		% 12
+46	period		% 13
+47	slash		% 14
+48	zero		% 15
+49	one		% 16
+50	two		% 17
+51	three		% 18
+52	four		% 19
+53	five		% 20
+54	six		% 21
+55	seven		% 22
+56	eight		% 23
+57	nine		% 24
+58	colon		% 25
+59	semicolon	% 26
+60	less		% 27
+61	equal		% 28
+62	greater		% 29
+63	question	% 30
+64	at		% 31
+65	A		% 32
+66	B		% 33
+67	C		% 34
+68	D		% 35
+69	E		% 36
+70	F		% 37
+71	G		% 38
+72	H		% 39
+73	I		% 40
+74	J		% 41
+75	K		% 42
+76	L		% 43
+77	M		% 44
+78	N		% 45
+79	O		% 46
+80	P		% 47
+81	Q		% 48
+82	R		% 49
+83	S		% 50
+84	T		% 51
+85	U		% 52
+86	V		% 53
+87	W		% 54
+88	X		% 55
+89	Y		% 56
+90	Z		% 57
+91	bracketleft	% 58
+92	backslash	% 59
+93	bracketright	% 60
+94	asciicircum	% 61
+95	underscore	% 62
+96	grave		% quoteleft		% 63
+97	a		% 64
+98	b		% 65
+99	c		% 66
+100	d		% 67
+101	e		% 68
+102	f		% 69
+103	g		% 70
+104	h		% 71
+105	i		% 72
+106	j		% 73
+107	k		% 74
+108	l		% 75
+109	m		% 76
+110	n		% 77
+111	o		% 78
+112	p		% 79
+113	q		% 80
+114	r		% 81
+115	s		% 82
+116	t		% 83
+117	u		% 84
+118	v		% 85
+119	w		% 86
+120	x		% 87
+121	y		% 88
+122	z		% 89
+123	braceleft	% 90
+124	bar		% 91
+125	braceright	% 92
+126	asciitilde      % 93
+127	DEL 		% 	
+128	Adieresis	% 94
+129	Aring		% 95
+130	Ccedilla	% 96
+131	Eacute		% 97
+132	Ntilde		% 98
+133	Odieresis	% 99
+134	Udieresis	% 100
+135	aacute		% 101
+136	agrave		% 102
+137	acircumflex	% 103
+138	adieresis	% 104
+139	atilde		% 105
+140	aring		% 106
+141	ccedilla	% 107
+142	eacute		% 108
+143	egrave		% 109
+144	ecircumflex	% 110
+145	edieresis	% 111
+146	iacute		% 112
+147	igrave		% 113
+148	icircumflex	% 114
+149	idieresis	% 115
+150	ntilde		% 116
+151	oacute		% 117
+152	ograve		% 118
+153	ocircumflex	% 119
+154	odieresis	% 120
+155	otilde		% 121
+156	uacute		% 122
+157	ugrave		% 123
+158	ucircumflex	% 124
+159	udieresis	% 125
+160	dagger		% 126
+%
+0	degree		% 127 161
+% may want to use original codes for what is above here ?
+1	cent		% 128 162
+2	sterling	% 129 163
+3	section		% 130 164
+4	bullet		% 131 165
+5	paragraph	% 132 166
+6	germandbls	% 133 167
+7	registered	% 134 168
+8	copyright	% 135 169
+9	trademark	% 136 170
+171	acute		% 137
+172	dieresis	% 138
+10	notequal	% 139 173
+11	AE		% 140 174
+12	Oslash		% 141 175
+13	infinity	% 142 176
+14	plusminus	% 143 177
+15	lessequal	% 144 178
+16	greaterequal	% 145 179
+17	yen		% 146 180
+18	mu		% 147 181
+19	partialdiff	% 148 182
+20	summation	% 149 183
+21	product		% 150 184
+22	pi		% 151 185
+23	integral	% 152 186 
+24	ordfeminine	% 153 187
+25	ordmasculine	% 154 188
+26	Omega		% 155 189
+27	ae		% 156 190
+28	oslash		% 157 191
+29	questiondown	% 158 192 
+30	exclamdown	% 159 193
+
+172	space		% just for fun 160 32
+% gap for remapping 0 - 31
+% may want to use original codes for what is above here ?
+31	logicalnot	% 161 194
+32	radical		% 162 195
+127	florin		% 163 196
+
+197	approxequal	% 164
+198	Delta		% 165
+199	guillemotleft	% 166
+200	guillemotright	% 167
+201	ellipsis	% 168
+202	nbspace		% 169
+203	Agrave		% 170
+204	Atilde		% 171
+205	Otilde		% 172
+206	OE		% 173
+207	oe		% 174
+208	endash		% 175
+209	emdash		% 176
+210	quotedblleft	% 177
+211	quotedblright	% 178
+212	quoteleft	% 179
+213	quoteright	% 180
+214	divide		% 181
+215	lozenge		% 182
+216	ydieresis	% 183
+217	Ydieresis	% 184
+218	fraction	% 185
+219	currency	% 186
+220	guilsinglleft	% 187
+221	guilsinglright	% 188
+222	fi		% 189
+223	fl		% 190
+224	daggerdbl	% 191
+225	periodcentered	% 192
+226	quotesinglbase	% 193
+227	quotedblbase	% 194
+228	perthousand	% 195
+229	Acircumflex	% 196
+230	Ecircumflex	% 197
+231	Aacute		% 198
+232	Edieresis	% 199
+233	Egrave		% 200
+234	Iacute		% 201
+235	Icircumflex	% 202
+236	Idieresis	% 203
+237	Igrave		% 204 <= last used position in lbme
+238	Oacute		% 205
+239	Ocircumflex	% 206
+240	apple		% 207
+241	Ograve		% 208
+242	Uacute		% 209
+243	Ucircumflex	% 210
+244	Ugrave		% 211
+245	dotlessi	% 212
+246	circumflex	% 213
+247	tilde		% 214
+248	macron		% 215
+249	breve		% 216
+250	dotaccent	% 217
+251	ring		% 218
+252	cedilla		% 219
+253	hungarumlaut	% 220
+254	ogonek		% 221
+255	caron		% 222 <= last used position in lbms & lbmi

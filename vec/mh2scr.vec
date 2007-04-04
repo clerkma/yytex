@@ -1,0 +1,87 @@
+% Encoding: MH2SCR
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Reencoding of Adobe Math Pi 2 to put upper case Script in A-Z positions
+
+% Adobe Math Pi 2 has a Fraktur face in the A-Z and a-z positions.
+
+% For LaTeX 2e PSNFSS support (mathtime.dtx/mathtime.ins) it is convenient
+% to make a reencoded copy of the font in order to make it easier to access 
+% the script face.  
+
+% Note that since MathTime Plus includes both regular and bold MathScript
+% fonts there may be little call for Adobe's more ornate interpretation...
+
+% To hard reencode the Math Pi 2 font you need mh2_____.pfb and mh2_____.afm.
+%
+%	pfbtopfa -v mh2	
+%	reencode -v -c=mh2scr -r=MathematicalPi-TwoScr mh2.pfa
+%	pfatopfb -v mh2x
+%	afmtopfm -vsd -c=mh2scr -w=MathematicalPi-TwoScr mh2.afm
+%
+% rename the resulting mh2x____.pfb and mh2x____.pfm files
+% mh2scr__.pfb and mh2scr__.pfm and install them using Adobe Type Manager.
+
+32	space
+65	H5101	% was 33  A
+66	H5102	% was 64  B
+67	H5103	% was 35  C
+68	H5104	% was 36  D
+69	H5105	% was 37  E
+70	H5106	% was 94  F
+71	H5107	% was 38  G
+72	H5108	% was 42  H
+73	H5109	% was 40  I
+74	H5110	% was 41  J
+75	H5111	% was 95  K
+76	H5112	% was 43  L
+77	H5113	% was 125  M
+78	H5114	% was 49  N
+79	H5115	% was 50  O
+80	H5116	% was 51  P
+81	H5117	% was 52  Q
+82	H5118	% was 53  R
+83	H5119	% was 54  S
+84	H5120	% was 55  T
+85	H5121	% was 56  U
+86	H5122	% was 57  V
+87	H5123	% was 48  W
+88	H5124	% was 45  X
+89	H5125	% was 61  Y
+90	H5126	% was 93  Z
+
+39	H5131	% was 59 bold g
+40	H5132	% was 34 bold h
+44	H5133	% was 60 bold l
+58	H5134	% was 63 bold z
+62	H5177	% was 62 bold lscript bar
+
+103	H5127	% was 59 g
+104	H5128	% was 39 h
+108	H5129	% was 44 l
+122	H5130	% was 63 z
+126	H5143	% was 46 lscript bar
+
+% Gather the arc arrows in one place
+
+128	H21740	% anticlockwise half arc
+129	H21741	% clockwise half arc
+130	H21749	% anti clockwise half arc plus
+131	H21748	% clockwise half arc minus
+132	H21751	% anticlockwise diagonal half arc
+133	H21750	% clockwise diagonal half arc
+
+% Gather the dotted lines in one place
+
+136	H21752	% vertical dotted line
+137	H21753	% horizontal dotted line
+138	H21754	% SWtoNE diagonal dotted line
+139	H21755	% SEtoNW diagonal dotted line
+
+144	H11433	% Complement
+145	H21739	% mapsto right arrow
+
+150	H33358	% was 248 alternate bold l
+151	H33359	% was 249 alternate bold lscript bar
+

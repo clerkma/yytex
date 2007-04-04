@@ -1,0 +1,162 @@
+% Encoding: TeX text companion symbols 1---TS1
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% As of 1997/Oct/1 anyway ...
+
+% Accents for capital letters
+
+% 0	grave		% bad idea to use char code 0...
+% 1	acute
+% 2	circumflex
+% 3	tilde
+% 4	dieresis	% umlaut
+% 5	hungarumlaut	% doubleacute
+% 6	ring
+% 7	caron		% hacek
+% 8	breve
+% 9	macron		% bad idea to use char code 9...
+% 10	dotaccent	% bad idea to use char code 10...
+% 11	cedilla
+
+12	ogonek
+13	quotesinglbase	% base single straight quote
+
+18	quotedblbase	% base double straight quotes
+
+21	twelveudash		% twelve u dash
+22	threequartersemdash	% three quarters emdash	
+23	CWM			% capital height cwm
+24	arrowleft		% left pointing arrow
+25	arrowright		% right pointing arrow
+26	tieaccentlowercase	% tie accent
+% 27	tieaccentuppercase	% tie accent capital
+28	tieaccent1		% new tie accent
+% 29	a29			% ???
+31	Cwm			% acender height CWM
+32	space			% blank
+
+36	dollar
+
+39	quotesingle	% straight quote
+
+42	asteriskmath	% centered star
+
+44	comma
+45	equalshort	% hyphendbl shortequals
+46	period		% full stop
+47	fraction
+
+48	zerooldstyle
+49	oneoldstyle
+50	twooldstyle
+51	threeoldstyle
+52	fouroldstyle
+53	fiveoldstyle
+54	sixoldstyle
+55	sevenoldstyle
+56	eightoldstyle
+57	nineoldstyle
+
+60	anglebrackteleft
+61	minus
+62	angelbrackterright
+
+77	Omegainv	% mho
+
+79	bigcircle
+
+87	Ohm		% ohm
+
+91	semanticbracketleft
+93	semanticbracketright
+
+94	arrowup		% arrow up
+95	arrowdown	% arrow down
+96	grave		% backtick
+
+98	born		% five pointed star
+99	divorced	% divided rings
+100	died		% cross
+
+108	leaf
+109	married		% rings
+110	musicalnote	% one eight note
+
+126	tilde		% low tilde
+127	equalshort	% hypendbl shortequals hyphenchar
+
+128	breve
+129	caron
+130	inch		% double tick quotedbl
+131	dblacuterev	% doublebacktick
+132	dagger
+133	daggerdbl
+134	doublevert	% norm cardinality
+135	perthousand	% per mill
+136	bullet
+137	centigrade
+138	dollaroldstyle
+139	centoldstyle
+140	florin
+141	colon		% colon monetary Cedi sign
+142	won
+143	naira
+
+144	guarani
+145	peso
+146	lira
+147	recipe
+148	interrobang
+149	gnaborretni
+150	dong		% vietnamese
+151	trademark
+152	pertenthousand
+153	pilcrow		% alternate pilcrow
+154	baht
+155	numero
+156	abzueglich
+157	estimated	% big e
+158	bulletopen
+159	servicemark
+
+160	bracketquillleft
+161	bracketquillright
+162	cent
+163	sterling
+164	currency
+165	yen
+166	brokenbar	% broken vertical bar
+167	section
+168	dieresis	% umlaut
+169	copyright
+
+170	ordfeminine
+171	copyleft
+172	logicalnot
+173	circledP	% circled P
+174	registered	% circled R
+175	macron		% high bar
+
+176	degree
+177	plusminus
+178	twosuperior
+179	threesuperior
+180	acute		% tick
+181	mu		% micro
+182	paragraph	% pilcrow
+183	periodcentered	% middot
+184	referencemark
+185	onesuperior
+186	ordmasculine
+187	radical		% root sign
+188	onequarter
+189	onehalf
+190	threequarters
+191	Euro		% Euro currency sign
+
+214	multiply	% times
+% 215	multiply
+
+246	divide
+% 247	divide

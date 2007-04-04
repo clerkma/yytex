@@ -1,0 +1,148 @@
+% Encoding: accents only
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% MacDraw encoding vector - used by most applications on MacIntosh computers
+
+% 64	at
+65	A
+% 66	B
+67	C
+% 68	D
+69	E
+% 70	F
+% 71	G
+% 72	H
+73	I
+% 74	J
+% 75	K
+% 76	L
+% 77	M
+78	N
+79	O
+% 80	P
+% 81	Q
+% 82	R
+83	S
+% 84	T
+85	U
+% 86	V
+% 87	W
+% 88	X
+89	Y
+90	Z
+% 91	bracketleft
+% 92	backslash
+% 93	bracketright
+% 94	asciicircum
+% 95	underscore
+% 96	quoteleft
+97	a
+% 98	b
+99	c
+% 100	d
+101	e
+% 102	f
+% 103	g
+% 104	h
+105	i
+% 106	j
+% 107	k
+% 108	l
+% 109	m
+110	n
+111	o
+% 112	p
+% 113	q
+% 114	r
+115	s
+% 116	t
+117	u
+% 118	v
+% 119	w
+% 120	x
+121	y
+122	z
+% 123	braceleft
+% 124	bar
+% 125	braceright
+% 126	asciitilde	% use ~ key  or  (option-n space)
+%	127 	DEL 	% not accessible from keyboard
+
+128	Aacute
+129	Acircumflex
+130	Adieresis
+131	Agrave
+132	Aring
+133	Atilde
+134	Ccedilla
+135	Eacute
+136	Ecircumflex
+137	Edieresis
+138	Egrave
+139	Iacute
+140	Icircumflex
+141	Idieresis
+142	Igrave
+143	Ntilde
+144	Oacute
+145	Ocircumflex
+146	Odieresis
+147	Ograve
+148	Otilde
+149	Scaron
+150	Uacute
+151	Ucircumflex
+152	Udieresis
+153	Ugrave
+154	Yacute
+155	Ydieresis
+156	Zcaron
+
+160	aacute
+161	acircumflex
+162	adieresis
+163	agrave
+164	aring
+165	atilde
+166	ccedilla
+167	eacute
+168	ecircumflex
+169	edieresis
+170	egrave
+171	iacute
+172	icircumflex
+173	idieresis
+174	igrave
+175	ntilde
+176	oacute
+177	ocircumflex
+178	odieresis
+179	ograve
+180	otilde
+181	scaron
+182	uacute
+183	ucircumflex
+184	udieresis
+185	ugrave
+186	yacute
+187	ydieresis
+188	zcaron
+
+193	grave
+194	acute
+195	circumflex
+196	tilde
+197	macron
+198	breve
+199	dotaccent
+200	dieresis
+
+202	ring
+203	cedilla
+
+205	hungarumlaut
+206	ogonek
+207	caron
+
+245	dotlessi

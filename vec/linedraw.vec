@@ -1,0 +1,276 @@
+% Encoding: Line Draw
+
+% IBM PC fixed-width characters and symbols  (code page 437) (United States)
+
+% NOTE: there is a bug in non-clone interpreters which yields `invalidfont' 
+% errors when the base character or the accent of an accented character 
+% is not in the encoding.
+
+% Line Draw encoding has accented characters - but does not have accents!
+
+% Copyright (c) 1993 Y&Y.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% 0	.notdef 
+1	smileface	% SS000000
+2	invsmileface	% SS010000
+3	heart
+4	diamond
+5	club
+6	spade
+7	bullet
+8	invbullet	% SM570001
+9	circle		% SM750000
+10	invcircle	% SM750002
+11	male
+12	female
+13	musicalnote
+14	musicalnotedbl
+15	sun		% SM690000
+16	triagrt		% SM590000
+17	triaglf		% SM630000
+18	arrowupdn	% SM760000
+19	exclamdbl
+20	paragraph
+21	section
+22	filledrect	% SM700000
+23	arrowupdnbse	% SM770000
+24	arrowup
+25	arrowdown
+26	arrowright
+27	arrowleft
+28	orthogonal	% SA420000
+29	arrowboth
+30	triagup		% SM600000
+31	triagdn		% SV040000
+32	space
+33	exclam
+34	quotedbl
+35	numbersign
+36	dollar
+37	percent
+38	ampersand
+39	quoteright 	% quotesingle ?
+40	parenleft
+41	parenright
+42	asterisk
+43	plus
+44	comma
+45	hyphen
+46	period
+47	slash
+48	zero
+49	one
+50	two
+51	three
+52	four
+53	five
+54	six
+55	seven
+56	eight
+57	nine
+58	colon
+59	semicolon
+60	less
+61	equal
+62	greater
+63	question
+64	at
+65	A
+66	B
+67	C
+68	D
+69	E
+70	F
+71	G
+72	H
+73	I
+74	J
+75	K
+76	L
+77	M
+78	N
+79	O
+80	P
+81	Q
+82	R
+83	S
+84	T
+85	U
+86	V
+87	W
+88	X
+89	Y
+90	Z
+91	bracketleft
+92	backslash
+93	bracketright
+94	circumflex	% asciicircum ?
+95	underscore
+96	quoteleft	% grave ?
+97	a
+98	b
+99	c
+100	d
+101	e
+102	f
+103	g
+104	h
+105	i
+106	j
+107	k
+108	l
+109	m
+110	n
+111	o
+112	p
+113	q
+114	r
+115	s
+116	t
+117	u
+118	v
+119	w
+120	x
+121	y
+122	z
+123	braceleft
+124	brokenbar
+125	braceright
+126	tilde		% asciitilde ?
+127	house		% SM790000
+128	Ccedilla
+129	udieresis
+130	eacute
+131	acircumflex
+132	adieresis
+133	agrave
+134	aring
+135	ccedilla
+136	ecircumflex
+137	edieresis
+138	egrave
+139	idieresis
+140	icircumflex
+141	igrave
+142	Adieresis
+143	Aring
+144	Eacute
+145	ae
+146	AE
+147	ocircumflex
+148	odieresis
+149	ograve
+150	ucircumflex
+151	ugrave
+152	ydieresis
+153	Odieresis
+154	Udieresis
+155	cent
+156	sterling
+157	yen
+158	peseta		% Pts ?
+159	florin		% franc ?
+160	aacute
+161	iacute
+162	oacute
+163	uacute
+164	ntilde
+165	Ntilde
+166	ordfeminine
+167	ordmasculine
+168	questiondown
+169	revlogicalnot	% SM680000
+170	logicalnot
+171	onehalf
+172	onequarter
+173	exclamdown
+174	guillemotleft
+175	guillemotright
+% shaded blocks
+176	ltshade		% SF140000
+177	shade		% SF150000
+178	dkshade		% SF160000
+% line draw characters
+179	2502		% SF110000
+180	2524		% SF090000
+181	2561		% SF190000
+182	2562		% SF200000
+183	2556		% SF210000
+184	2555		% SF220000
+185	2563		% SF230000
+186	2551		% SF240000
+187	2557		% SF250000
+188	255d		% SF260000
+189	255c		% SF270000
+190	255b		% SF280000
+191	2510		% SF030000
+192	2514		% SF020000
+193	2534		% SF070000
+194	252c		% SF060000
+195	251c		% SF080000
+196	2500		% SF100000
+197	253c		% SF050000
+198	255e		% SF360000
+199	255f		% SF370000
+200	255a		% SF380000
+201	2554		% SF390000
+202	2569		% SF400000
+203	2566		% SF410000
+204	2560		% SF420000
+205	2550		% SF430000
+206	256c		% SF440000
+207	2567		% SF450000
+208	2568		% SF460000
+209	2564		% SF470000
+210	2565		% SF480000
+211	2559		% SF490000
+212	2558		% SF500000
+213	2552		% SF510000
+214	2553		% SF520000
+215	256b		% SF530000
+216	256a		% SF540000
+217	2518		% SF040000
+218	250c		% SF010000
+% filled blocks
+219	block		% SF610000
+220	dnblock		% SF570000
+221	lfblock		% SF580000
+222	rtblock		% SF590000
+223	upblock		% SF600000
+% greek and math
+224	alpha
+225	germandbls	% beta
+226	Gamma
+227	pi
+228	summation	% Sigma
+229	sigma
+230	mu
+231	tau
+232	Phi
+233	Theta
+234	Omega
+235	delta
+236	infinity
+237	phi
+238	epsilon
+239	intersection
+240	equivalence
+241	plusminus
+242	greaterequal
+243	lessequal
+244	integraltp	% SS260000
+245	integralbt	% SS270000
+246	divide
+247	approxequal
+248	degree
+249	middot		% SD630000
+250	bulletsml	% SP320000
+251	radical
+252	nsuperior
+253	twosuperior
+254	filledbox
+% 255	.notdef
+
+
