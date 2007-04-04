@@ -1,0 +1,66 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% These are the `standard' 35 printer resident fonts plus a couple more
+% Here the names used are the abbreviations advocated by Adobe
+
+agw     AvantGarde-Book			*force* *reside*
+ago     AvantGarde-BookOblique		*force* *reside*
+agd     AvantGarde-Demi			*force* *reside*
+agdo    AvantGarde-DemiOblique		*force* *reside*
+
+bkl     Bookman-Light			*force* *reside*
+bkli    Bookman-LightItalic		*force* *reside*
+bkd     Bookman-Demi			*force* *reside*
+bkdi    Bookman-DemiItalic		*force* *reside*
+
+% cll     Clarendon-Light		
+% cl      Clarendon		
+% clb     Clarendon-Bold		
+
+com     Courier				*force* *reside*
+coo     Courier-Oblique			*force* *reside*
+cobo    Courier-BoldOblique		*force* *reside*
+cob     Courier-Bold			*force* *reside*
+
+hv      Helvetica			*force* *reside*
+hvo     Helvetica-Oblique		*force* *reside*
+hvb     Helvetica-Bold			*force* *reside*
+hvbo    Helvetica-BoldOblique		*force* *reside*
+
+% hvc     Helvetica-Condensed		
+% hvco    Helvetica-Condensed-Oblique	
+% hvcb    Helvetica-Condensed-Bold	
+% hvcbo   Helvetica-Condensed-BoldObl	
+
+% lumi     LucidaMath-Italic	
+% lums     LucidaMath-Symbol	
+% lume     LucidaMath-Extension	
+
+% nbr     NewBaskerville-Roman	
+% nbi     NewBaskerville-Italic	
+% nbb     NewBaskerville-Bold	
+% nbbi    NewBaskerville-BoldItalic
+
+ncr     NewCenturySchlbk-Roman		*force* *reside*
+nci     NewCenturySchlbk-Italic		*force* *reside*
+ncb     NewCenturySchlbk-Bold		*force* *reside*
+ncbi    NewCenturySchlbk-BoldItalic	*force* *reside*
+
+% new     NeuzeitS-Book	
+% newh    NeuzeitS-BookHeavy
+
+por     Palatino-Roman			*force* *reside*
+poi     Palatino-Italic			*force* *reside*
+pob     Palatino-Bold			*force* *reside*
+pobi    Palatino-BoldItalic		*force* *reside*
+
+sy      Symbol				*force* *reside*
+
+tir     Times-Roman			*force* *reside*
+tii     Times-Italic			*force* *reside*
+tib     Times-Bold			*force* *reside*
+tibi    Times-BoldItalic		*force* *reside*
+
+zcmi    ZapfChancery-MediumItalic	*force* *reside*
+
+zd      ZapfDingbats			*force* *reside*

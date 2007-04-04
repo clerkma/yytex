@@ -1,0 +1,59 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Naming of TFM and PFM metric files:
+==================================
+
+It is useful to be able to distinguish between metric files created using
+different encoding vectors.  When naming a font metric file, tagging the
+letter `x' on to the end of a font name to indicate that it is remapped is
+helpful, but not entirely unambiguous.  The main problem is that Windows
+reencodes a font that uses StandardEncoding to Windows ANSI.  So the 
+`normal' encoding is StandardEncoding when such a font is used with
+non-Windows applications, but it is Windows ANSI when used with Windows.
+There is not much of a problem if DVIPSONE or DVIWindo are used alone.  But
+when they are used together then there is a confusion about what encoding
+should apply when the name does not have the `x' tagged on at the end.
+
+It is hard to come up with a consistent scheme that will satisfy everyone and
+is suitable for use with both DVIPSONE and DVIWindo.  To reduce confusion, we
+recommend the following slightly more refined scheme (which is now used for
+TFM and PFM files supplied with DVIPSONE and DVIWindo): 
+
+(*) `n' is tagged on to the end of the name for the font's `native' encoding.
+(*) `w' is tagged on to the end of the name for Windows ANSI encoding.
+(*) `t' is tagged on to the end of the name for TeX text encoding.
+(*) `a' is tagged on to the end of the name for `TeX ANSI' encoding.
+
+The `native' encoding for most commercial text fonts is Adobe
+StandardEncoding, while for Computer Modern text fonts it is `TeX text'.
+So most TFM files that come with TeX would strictly speaking have a `t'
+tagged on at the end it the above scheme was followed consistently.
+
+Similarly, the PFM files that come with ATM (which have no letter tagged on)
+would have the letter `w' tagged on according to the above scheme. And the
+metric files previously supplied with DVIPSONE and DVIWindo without a letter
+tagged on, now have an `n'.
+
+Of course, you are free to rename these files to best suit your own system
+setup.  However, the font file name used in TeX (used to find the metric
+file) must be connected to the name of the actual outline font file itself
+(accesses by DVIPSONE and DVIWindo).  
+
+In DVIPSONE, if the font is not remapped, then the metric file and the
+outline file should use the same name.  If the font is remapped, then the
+font substitution file has an entry indicating the required remapping, and
+making the connection between the metric file name (with the tagged on
+letter) and the name of the outline font itself (presumably without a letter
+tagged on).  Note that because of this arrangement, the same outline font can
+be used with several different encodings if required.
+
+For use with DVIWindo, the names of the TFM, PFM and PFB files should match.
+Because of limitations of Windows and ATM, it is not possible to reencode a
+font on-the-fly and so the outline font itself has to be reencoded ahead of
+time if required.  Also, there can be only one outline font associated with a
+particular Windows font face name, so it is not possible to access one font
+with several different encodings. 
+
+This may all seem a bit confusing, but most users end up standardizing on
+one particular encoding scheme and use the same font names from then on.

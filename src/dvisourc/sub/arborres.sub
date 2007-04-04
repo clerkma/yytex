@@ -1,0 +1,84 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% The 35 `standard' printer resident fonts:
+% Here TeX font names use the prefix `ps' (for Adobe foundry)
+
+% psm<...> are the remapped forms of ps<...>
+
+psmavgb		AvantGarde-Book			*reside*  *remap* 
+psmavgbo	AvantGarde-BookOblique		*reside*  *remap* texital
+psmavgd		AvantGarde-Demi			*reside*  *remap* 
+psmavgdo	AvantGarde-DemiOblique		*reside*  *remap* texital
+psmbkmd		Bookman-Demi			*reside*  *remap* 
+psmbkmdi	Bookman-DemiItalic		*reside*  *remap* texital
+psmbkml		Bookman-Light			*reside*  *remap* 
+psmbkmli	Bookman-LightItalic		*reside*  *remap* texital
+psmcou		Courier				*reside*  *remap* typewrit
+psmcoub		Courier-Bold			*reside*  *remap* typewrit
+psmcoubo	Courier-BoldOblique		*reside*  *remap* typeital
+psmcouo		Courier-Oblique			*reside*  *remap* typeital
+psmhlv		Helvetica			*reside*  *remap* 
+psmhlvb		Helvetica-Bold			*reside*  *remap* 
+psmhlvbo	Helvetica-BoldOblique		*reside*  *remap* texital
+psmhlvo		Helvetica-Oblique		*reside*  *remap* texital
+psmhvn		Helvetica-Narrow		*reside*  *remap* 
+psmhvnb		Helvetica-Narrow-Bold		*reside*  *remap* 
+psmhvnbo	Helvetica-Narrow-BoldOblique	*reside*  *remap* texital
+psmhvno		Helvetica-Narrow-Oblique	*reside*  *remap* texital
+psmhvo		Helvetica-Oblique		*reside*  *remap* texital
+psmncsb		NewCenturySchlbk-Bold		*reside*  *remap* 
+psmncsbi	NewCenturySchlbk-BoldItalic	*reside*  *remap* texital
+psmncsi		NewCenturySchlbk-Italic		*reside*  *remap* texital
+psmncsr		NewCenturySchlbk-Roman		*reside*  *remap* 
+psmpalb		Palatino-Bold			*reside*  *remap* 
+psmpalbi	Palatino-BoldItalic		*reside*  *remap* texital
+psmpali		Palatino-Italic			*reside*  *remap* texital
+psmpalr		Palatino-Roman			*reside*  *remap* 
+psmtimb		Times-Bold			*reside*  *remap* 
+psmtimbi	Times-BoldItalic		*reside*  *remap* texital
+psmtimi		Times-Italic			*reside*  *remap* texital
+psmtimr		Times-Roman			*reside*  *remap* 
+psmsym		Symbol				*reside*  *remap* mathsy
+psmzchmi	ZapfChancery-MediumItalic	*reside*  *remap* texital
+% psmzdb	ZapfDingbats			doesn't make sense to remap
+
+% The following are the unremapped versions
+
+psavgb	AvantGarde-Book			*reside*
+psavgbo	AvantGarde-BookOblique		*reside*
+psavgd	AvantGarde-Demi			*reside*
+psavgdo	AvantGarde-DemiOblique		*reside*
+psbkmd	Bookman-Demi			*reside*
+psbkmdi	Bookman-DemiItalic		*reside*
+psbkml	Bookman-Light			*reside*
+psbkmli	Bookman-LightItalic		*reside*
+pscou	Courier				*reside*
+pscoub	Courier-Bold			*reside*
+pscoubo	Courier-BoldOblique		*reside*
+pscouo	Courier-Oblique			*reside*
+pshlv	Helvetica			*reside*
+pshlvb	Helvetica-Bold			*reside*
+pshlvbo	Helvetica-BoldOblique		*reside*
+pshlvo	Helvetica-Oblique		*reside*
+pshvn	Helvetica-Narrow		*reside*
+pshvnb	Helvetica-Narrow-Bold		*reside*
+pshvnbo	Helvetica-Narrow-BoldOblique	*reside*
+pshvno	Helvetica-Narrow-Oblique	*reside*
+pshvo	Helvetica-Oblique		*reside*
+psncsb	NewCenturySchlbk-Bold		*reside*
+psncsbi	NewCenturySchlbk-BoldItalic	*reside*
+psncsi	NewCenturySchlbk-Italic		*reside*
+psncsr	NewCenturySchlbk-Roman		*reside*
+pspalb	Palatino-Bold			*reside*
+pspalbi	Palatino-BoldItalic		*reside*
+pspali	Palatino-Italic			*reside*
+pspalr	Palatino-Roman			*reside*
+pssym	Symbol				*reside*
+pstimb	Times-Bold			*reside*
+pstimbi	Times-BoldItalic		*reside*
+pstimi	Times-Italic			*reside*
+pstimr	Times-Roman			*reside*
+pszchmi	ZapfChancery-MediumItalic	*reside*
+pszdb	ZapfDingbats			*reside*
+

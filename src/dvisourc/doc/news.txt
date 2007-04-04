@@ -1,0 +1,424 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+==============================================================================
+List of recent changes and additions (file: news.txt)  (last updated 95/Mar/1)
+==============================================================================
+
+OTHER PEOPLES BUGS:
+
+(*) PASSING THROUGH COMMENTS IN EPS FILES, and ADOBE ILLUSTRATOR 5 problems:
+    The default for passing comments in EPS files has been changed (-Z).
+    This is because the latest version of Adobe Illustrator produces
+    PostScript code that depends on these comments (!!!).
+    One can no longer safely strip out the PS comments when inserting AI EPS.
+    But if you don't use AI EPS files, you can use -Z to strip out comments.
+
+(*) `CONTROL CHARACTERS' and ADOBE ILLUSTRATOR and ACROBAT:
+    Adobe Illustrator (and some other applications) have problems with EPS
+    files made from DVI files by DVIPSONE, since `TeX fonts' use the control
+    character range 0--31 (and 127).  A typical symptom is that `minus'
+    will disappear (it has character code 0 in CMSY10).  The ligatures
+    `fi' and `fl' may also be problematic.  A work-around is to use the new
+    command line flag -*R, which will make use of the fact that the Computer
+    Modern fonts, the extra LaTeX + SliTeX fonts, the AMS fonts, the
+    LucidaNewMath fonts, and the MathTime fonts use repeated encoding, 
+    with the range 0--9 appearing again in 161--170, the range 10--31
+    appearing again in 172--194 (and 127 in 196). 
+
+    Do *not* use this command line flag if you are using fonts that contain
+    a full 256 element encoding vector that is populated in the 0 -- 31 
+    range (such as a font encoded for DOS CODE pages --- ibmoem.vec).    
+
+(*) EMERALD-BASED RIP BUGS (LINOTRONICS RIP 50, AGFA VIPER):
+    These new RIPs have a problem with `scalefont' and `makefont' when the
+    coordinates are large (unlike true Adobe RIPs, which worked correctly).
+    You can work around this bug using -*A=10000 on the command line, which
+    reduces the scale of the coordinate system used in PostScript output.
+    The file size will increase slightly, but everything will still be
+    positioned correctly.
+
+(*) QMS 1660-2 PS PRINTERS AND A4 FORMAT:   Rules near the top of the 
+    page are placed too low.  This is an artihmetic overflow bug.  
+    For work-around, refer to previous item (use -*A=10000).
+
+(*) MORE ON PROBLEMS WITH CLONE INTERPRETERS:
+    DVIPSONE, DVIWindo and our font sets contain more work-arounds for bugs
+    in clone PS interpreters than we care to remember!  We had to give up
+    numerous desirable optimizations simply because many PS interpreters make
+    unwarranted assumptions about PostScript and Type 1 font format.  If you
+    have problems printing with some non-Adobe interpreter, check out the test
+    files in the PS subdirectory on the DVIPSONE distribution diskette.
+
+    Also, do not use any of the optional optimization (J, R, N, Z, n, *o, *l),
+    and turn off all remaining optimizations (O, L, Y).  Some clones cannot
+    even handle the partial font downloading --- use -P on the command line
+    for these.  In an extreme case, you may have to download the fonts ahead
+    of time and then tell DVIPSONE they are all printer resident (using -k).
+    Of course, while downloading you may find that the clone interpreter
+    cannot handle some fonts (download `ehandler.ps' first) at all.
+
+(*) SUPPRESSING PARTIAL FONT DOWNLOADING:
+    a new command line flag `-P' suppresses partial font downloading.  We
+    weren't quite sure why anyone would ever want to do this, until we
+    discovered that this suppresses the font cache jumbling bug on
+    LaserMaster printers and on some other clone interpreters. It's also a
+    wonderful way of demonstrating just how large PS files get if partial
+    font downloading is not used!
+
+(*) IMPROVED APPLE LASERWRITER POSTSCRIPT PRINTER DRIVER ON THE MACINTOSH:
+    The LaserWriter printer driver has been *enormouosly* improved (by Adobe)
+    and the current version produces PostScript code that can be ported to
+    other machines.  We recommend that you use LaserWriter 8.1 or later when
+    producing PS or EPS files on a Macintosh.  You can then ignore all the
+    notes in the Technical Reference Manual about how to massage PostScript
+    produced on the Mac before it can be used in inserted figures!
+
+    The new LaserWriter PostScript printer driver for the Macintosh is
+    available from your Apple dealer, and by anonynmous FTP from ftp.apple.com
+  
+	/dts/mac/sys.soft/imaging/laserwriter.8.1/lw-8-1-install-image-1440.hqx
+
+    This file is a `disk image'. You'll need `DiskCopy' to use it.
+    If you do not have `DiskCopy' installed on your Mac, look for
+
+	/dts/utils/disk-copy-4-2.hqx
+
+NEW FEATURES:
+
+(*) INSERTING IMAGES IN TIFF FORMAT:
+    DVIPSONE now supports the `insertimage' \special for insertion of TIFF
+    images.  For details of how this works, please consult the DVIWindo
+    secton of the Y&Y TeX System Manual.  Also look at `showtiff.tex', which
+    gives an example of use and defines a useful TeX macro called showtiff.
+    You can use the utility TIFFTAGS (supplied with DVIWindo) to
+    get useful information about the TIFF file such as the number of
+    rows and columns.  For bi-level/monochrome TIFF files you may also
+    wish to use the `figurecolor' \special, which controls the `foreground'
+    and `background' (`1' and `0') colors.
+
+(*) PASSING COMMAND LINE PARAMETERS FROM DVIWINDO.
+    You can specify additional command line parameters to pass to DVIPSONE
+    when it is called from DVIWindo by adding a line of the form
+
+    DVIPSONE=...
+
+    to the [Window] section of your `dviwindo.ini' file.  This may be more
+    convenient than placing these command line flags and arguments in a file
+    called `dvipsone.cmd' in the DVIPSONE directory --- particularly if these
+    added command line flags are only relevant when DVIPSONE is called from
+    DVIWindo.
+
+(*) SUPPORT FOR FONT NAME ALIASING:
+    Some easily available style files are set up for font names other than
+    the actual font file names. A font substitution file can be used to deal
+    with this. But, it may be more convenient to use a simple name aliasing
+    file, like the one used by Y&YTeX.  If a font file cannot be found,
+    DVIPSONE will now try to find an alias in the file `texfonts.map' ---
+    found in  one of the directories on the list given in the environment
+    variable TEXFONTS.  This is convenient because that is where Y&YTeX
+    looks for `texfonts.map' also.  The name found does *not* replace the
+    name in the DVI file -- it is only used for opening the font file
+    (So in this case, if a font substitution table is *also* used, it should
+    use names that appear in the DVI file, *not* the actual font file names).
+
+    You can turn this aliasing behavior off using the command line flag `*m'.
+
+(*) MORE THAN ONE FONT SUBSTITUTION FILE CAN BE USED:
+    You can now use -s=... more than once on the command line
+    (You can also use a comma-separated list of substitution files).
+    The effect is as if the substitution files referred to were
+    combined into one long file.
+
+(*) FONT SUBSTITUTION TABLE ENLARGED AGAIN:
+    You can now have 512 items in the font substitution table.
+
+(*) INTERNAL FONT NUMBERS CAN BE LARGER THAN 255.
+    Since Y&YTeX can handle internal font number larger than 255
+    (the only TeX that can!) we had to make sure DVIPSONE & DVIWIndo can also.
+
+(*) MAXIMUM NUMBER OF FONTS IN ONE DOCUMENT INCREASED:
+    You can now use up to 128 fonts in one document.
+
+(*) EXPANSION OF %%IncludeResoure: font DSC COMMENTS IN EPS FILES:
+    DVIPSONE now will include fonts when called for by %%IncludeFont:
+    (DSC 2.0) or %%IncludeResource: font (DSC 3.0) in inserted EPS files.
+
+    DVIPSONE will, however, not include fonts that are marked `printer
+    resident' in the font substitution file.
+
+    For `font expansion' to work reliably, you may have to set up a file
+    called ATMFONTS.MAP --- in the PSFONTS directory --- to provide DVIPSONE
+    with the accurate mapping from PS FontName (used in the %%IncludeFont
+    comment) and the PFB file name. Each line in the file has the form
+
+    <PS FontName>=<PFB File Name>	e.g.     TimesRoman=tir.pfb
+
+    If DVIPSONE cannot find such a file, it will use ATM.INI, although,
+    this can be somewhat risky, since ATM.INI lists Windows Face Name,
+    not PS FontName.  So it is safer to make up an ATMFONTS.MAP file.
+
+    You can turn off `font expansion' using -*i.
+
+(*) MIRRORING PAGE IMAGE (INVERTING).
+    DVIPSONE has command line flags for scaling, offseting, and rotating the
+    page.  Now the `m' (magnify) command line argument can be used also to
+    achieve mirroring. If it appears more than once, the first value is used
+    for scaling in `x' and the second for scaling in `y'.  To reflect the
+    page about a *vertical* axis through the middle of the page, simply use
+    `-m=-1 -m=1' and to reflect it about a *horizontal* axis through the
+    middle use `-m=1 -m=-1'.  This is useful when producing output on film,
+    where one has to be able to control whether it is `right reading emulsion
+    side up' or `right reading emulsion side down.'
+
+(*) USING ROTATE.STY
+    There are many (La)TeX macro packages floating around that are tuned
+    to particular DVI printer drivers such as DVIPS.  We have made some
+    effort to support these, despite the fact that most depend on raw
+    PostScript.  In some cases the \specials they emit work with DVISPONE
+    even though they operate in a quite different environment.  On other
+    cases some adjustments need to be made.  In the case of `rotate.sty'
+    one needs to take account of the fact that DVIPS uses a left-handed
+    coordinate system, so rotations will come out in the wrong direction.
+    This can be dealt with by changing the 90 to a 270 and the 270
+    to a 90 in the file `rotate.sty' --- or using ps:: instead of ps:
+    \def\@vspec#1{\special{ps::#1}}%  passes #1 verbatim to the output
+
+(*) AUTOMATIC REENCODING OF TEXT FONTS:
+    Text fonts (using StandardEncoding) can be automatically reencoded to
+    any encoding you choose by setting the environment variable ENCODING to
+    the name of the desired encoding vector.  This environment variable
+    control `on the fly reencoding' in both DVIPSONE and DVIWindo. Note
+    that `environment variables' are setup in the [Environment] section
+    of `dviwindo.ini' (or if not found there in the DOS environment).
+
+    Note that the TFM files must also be set up for the same encoding.
+
+    Fonts that do not have the line `/Encoding StandardEncoding def' in their
+    PFB file are *not* affected (e.g. math fonts, `expert' fonts, decorative
+    fonts, and any font explicitly reencoded using the REENCODE utility).
+    If a plain text font fails to be reencoded by DVIPSONE it may be because
+    it does not contain the line `/Encoding StandardEncoding def'
+    (use the REENCODE utility to fix this if necessary).
+    Like all encoding changes in DVIPSONE, this one works for both printer
+    resident and downloadable fonts.
+
+    We recommend the `texnansi' encoding vector, which makes all 228 glyphs
+    in most text fonts accessible.  If you want to use Windows ANSI encoding
+    instead, then please read the next item.
+
+(*) AUTOMATIC REENCODING TO WINDOWS ANSI:
+    Text fonts using StandardEncoding can be automatically reencoded to
+    Windows ANSI encoding (see `ansinew.vec') by setting the environment
+    variable TEXANSI to 1.
+
+    Note that Adobe Type Manager (ATM) reencodes all fonts with the line
+    `/Encoding StandardEncoding def' in the PFB file to Windows ANSI
+    encoding. So if you install text fonts simply using ATM, and do *not*
+    reencode them (using the `encode.bat' batch file say), then these fonts
+    will use Windows ANSI, both on screen and when printing from DVIWindo.
+
+    Use TEXANSI=1 to ensure consistent results when printing
+    using DVIPSONE --- either directly, or when called from DVIWindo.
+    Note that the TFM files must also be set up for Windows ANSI, of course.
+
+(*) CHECKING THAT FONTS CALLED FOR ARE PRESENT ON THE PRINTER:
+    When a PostScript file calls for a font that is not printer resident,
+    and has not been included in the PS file itself, then Courier is
+    quietly substituted --- no error flag is raised.  This may be just
+    what you want if you know the font is not there, but it can also
+    be disastrous if you are producing final output on an image setter.
+    Use the -*f command line flag to ask DVIPSONE to emit code that forces
+    the PS interpreter to check whether the font is in fact present.
+    An error page is produced and the PS job terminated if fonts are missing.
+
+(*) FORCING DVIPSONE NOT TO INCLUDE *ANY* FONTS IN THE POSTSCRIPT OUTPUT:
+    The `-k' command line flag forces DVIPSONE to assume that all fonts
+    are printer resident.
+
+    This is useful if your service bureau insists that you *must* submit the
+    fonts separately for their image setter (There is normally no really
+    good reason for this other than inertia on their part, but it is
+    sometimes harder to argue with them about the virtues of partial font
+    downloading than to send them the fonts separately).  Note that most font
+    end user license agreements allow sending a copy of a font to a service
+    bureau, provided the service bureau uses the fonts only for the job they
+    were submitted with.  In some rare cases, service bureaus with clone
+    interpreter do in fact need to have the fonts separately because of
+    `mis-features' of their intrepreter.
+
+    If you normally have DVIPSONE include fonts in the PS file
+    (which is the default) then use the new `-k' command line flag.
+    This saves the effort required to create a font substitution file
+    with one *force* *reside* line for each font used.  HOWEVER: for this to
+    work properly, DVIPSONE needs to know the PS FontName of all fonts.
+    For the CM fonts, the PS FontName is the same as the file name,
+    just all in upper case, so use the `U' command line flag for that.
+
+    DVIPSONE tries to read the FontName from the corresponding PFB or PFM
+    file --- if it can find it.  So there is no problem if DVIPSONE can
+    find all the required PFB (or PFM) files.  Otherwise you will need to
+    set up a font substitution file for use with the `-k' flag which
+    lists the font file names followed by the PS FontName.
+
+    When using the -k flag it may be wise to also use -*f (described above).
+
+(*) Interaction of the command line flag 'k' --- which forces DVIPSONE to
+    treat all fonts as resident --- with font substitution tables has been
+    improved.  It now acts as if all fonts in the table had the flags
+    *reside* and *force* added.  As before, any font NOT listed in a
+    font substitution table is assumed to also be printer-resident,
+    but with FontName equal to the `font name' used in TeX, unless DVIPSONE
+    can find the PFB or PFM file and read the PS FontName in there (see above).
+
+(*) CONVERT FONT NAMES TO ALL UPPER CASE:
+    The new command line flag `U' forces CM, AMS, LaTeX, SliTeX
+    and LOGO font names to be converted to upper case.  This may be
+    useful in conjunction with the new `k' command line flag, since
+    the PostScript FontNames in these fonts are just the file names
+    in upper case form.
+
+(*) INDIRECT COMMAND LINE FILES:
+    A file name preceded by `@' on the command line signifies an indirect
+    command line file.  Such a file contains command line flags and
+    arguments.  This is read much the same way as the file `dvipsone.cmd'
+    (if it exists).  Everything but command line flags and command line
+    arguments (i.e. stuff that starts with `-') is ignored. More than one
+    indirect command line file may be specified. If the file name is not
+    fully qualified, it is searched for  first in the current directory and
+    then in the DVIPSONE home directory.  Indirect command line files are
+    useful when a project require a large  number of command line flags and
+    arguments (perhaps too long to fit on one line), or when working on
+    several different TeX projects that need different command line flags and
+    arguments. 
+
+(*) SPECIFY FREQUENCY OF HALFTONE SCREEN:
+    You can now specify the frequency of the halftone screen used in
+    rendering gray tones using command the line argument -*h=...
+    (Note that the output device will actually chose the nearest frequency
+    in its discrete reportoire of frequencies to the one you specified).
+    If you do not specify the screen frequency, then the output device's
+    default screen frequency will be used.
+
+    If you add a `+' after the number, then the *larger* of the specified
+    frequency and the default frequency of the device will be used.
+
+    If you add a `-' after the number, then the *smaller* of the specified
+    frequency and the default frequency of the device will be used.
+
+    You can also control the screen angle by appending a colon followed
+    by the screen angle in degrees (default 45).  For example: -*h=100:30
+    You can also use `-' or `+' as described above in place of the colon.
+    For example -*h=100+30 means use the greater of 100 dpi and the device's
+    default frequency, and set the angle of the screen to 30 degrees.
+
+    If you do specify the frequency, the device's default screen spot
+    function (of rather dubious quality on some printers) is also replaced by
+    a halftone spot function designed by us at Y&Y in 1989.  If you want to
+    use this halftone spot function, but do not want to change the default
+    screen frequency, then specify zero for the frequency, that is -*h=0.
+
+    (Remember also that `textcolor' and `rulecolor' specials have no effect
+    if you use the command line flag `-*b' --- everything then is just black
+    or white).
+
+(*) PREAMBLE FILES ARE NOW IN BINARY FORMAT:
+    To save space, and to speed up creating the PostScript output, all
+    preamble files (*.enc) are now in the compact binary form.  If you need
+    to work with the more verbose hexadecimal form (for example, to make your
+    own additions at the end of the file), please use PFBtoPFA on the file
+    and rename the result (i.e. change the extension from .pfa back to .enc).
+
+(*) PRINTING ONLY PAGES THAT HAVE CHANGED:
+    A new utility called `changed' compares two PS files produced by
+    DVIPSONE and copies the pages with differences to the output file,
+    called `changed.ps', which is deposited in the current directory.
+    For this to be useful, you need to keep the PS files produced by
+    DVIPSONE, and use the same command line flags in the two runs.
+  
+    The utility `changed' can be used on PS files produced by programs
+    other than DVIPSONE, *but* it assumes that (i) the PS file is DSC
+    (Document Structuring Convention) compliant, and (ii) the PS file
+    is page independent (no font definitions in the middle of the file).
+
+(*) CASE SENSITIVITY IN FONT SUBSTITUTION FILES:
+    Note that in DOS, TFM file names are not case sensitive in TeX.
+    However, in dealing with font substitution files, things ARE case
+    sensitive, so it is possible to get confused because a font is found by
+    TeX but *not* matched in substitution table...
+
+(*) TPIC \SPECIALS SUPPORTED:
+    In response to popular demand, we have added support for the \specials
+    created by the TeX TPIC macros used for constructing simple diagrams
+    containing polygonal lines, arcs, dotted and dashed curves, quadratic
+    splines and so on.  See the file `tpicspec.txt' and `tpictest.tex' for
+    examples.
+
+(*) emTeX `linewidth', `moveto', and `lineto' \specials supported:
+    Note that TPIC \specials provide a much reaches reportoire of
+    graphics primitives (see above).
+
+(*) DVITPS figure insertion \specials supported (bringing the total to 11!)
+
+(*) It is now possible to specify different x and y offsets for even and
+    odd pages.  If `x' and `y' are used twice on the command line,
+    then the first set of offsets applies to even pages,
+    while the second set applies to odd pages.  Whether a page is
+    considered even or odd depends on whether count[0] is even or odd ---
+    plain TeX and its derivatives use count[0] for the page number.
+    If the command line arguments `x' and `y' are used only once, then
+    they apply to all pages, whether the page number is even or odd.
+
+(*) DVIPSONE now complains if there is an item in a substitution file that
+    it doesn't understand (in the past it just ignored it).
+
+(*) A new command line flag (S) shows the font substitution table.
+    This can be a useful debugging tool when substitutions don't work in
+    the expected way, as sometimes happens when there is a typo in the
+    substitution file.  Conervsely, if a substitution isn't happening that
+    you expect to happen, then it may be that *force* is required.
+
+(*) New warning about synthetic fonts:  So-called synthetic fonts have
+    a complex structure that makes partial font downloading risky.
+    Synthetic fonts are relatively rare, and usually DVIPSONE figures
+    out ahead of time that a font is synthetic.  If DVIPSONE complains
+    `use *synthetic*' then it is because it didn't notice early enough
+    that the font was synthetic.  In this case, use the *synthetic* flag
+    in a font substitution file to alert DVIPSONE to the font's special
+    structure. Or use the printer resident version of the font, if available.
+
+(*) A new command line flag (J) allows DVIPSONE to use short font
+    encoding vectors if possible (this used to be the default).
+    Making encoding arrays with the full 256 entries is wasteful, but
+    some clone interpreters (such as Hyphen and LaserMaster) can't handle
+    short vectors.  Use the `J' command line flag if you want to save space
+    and if you don't have to deal with a buggy PS interpreter.
+
+ADDITIONAL NOTES:
+
+(*) SENDING OUTPUT TO A SERVICE BUREAU
+    You basically have three choices (in decreasing order of desirability):
+
+	(1) Let DVIPSONE produce its PS file in the normal way
+            (which includes the fonts in `partial down loaded' form);
+
+	(2) Use the `-P' command line flag with DVIPSONE
+	    (which will cause it to include complete fonts ---
+	    suppressing the `partial font downloading');
+
+	(3) Send the fonts separately, and tell DVIPSONE that they are
+	    printer resident (use `-k' on the command line, or set up
+	    font substitution file with lots of *force* and *reside*).
+
+     A small number of service bureaus have trouble with (1) because of
+     bugs in their clone PS interpreters.  Some cannot even handle (2).
+     In which case you will be forced to resort to (3).  Conversely,
+     some image setter font downloaders can only handle plain vanilla
+     text fonts and so in most cases you best bet is option number 1.
+
+     Also note that some Adobe font downloaders can handle only font files
+     with names that have extended with underscores to a full 8 letters,
+     and that have at least 2 trailing underscores.  You may need to
+     temporarily rename your font files to work around this bug.
+     Use DOWNLOAD supplied with DVIPSONE instead if at all possible.
+

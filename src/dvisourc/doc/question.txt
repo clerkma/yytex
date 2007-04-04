@@ -1,0 +1,262 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Frequently asked questions relating to DVIPSONE:
+------------------------------------------------
+
+Q: What is DVIPSONE?
+
+A: DVIPSONE is a program that converts device-independent (DVI) files
+   (commonly produced by TeX) into resolution-independent PostScript
+   (PS) files that can be sent to any PostScript printer.  
+   The PostScript file produced conforms to Adobe's Document Structuring
+   Conventions (DSC) level 3.0, and implements full page-independence.
+   DVIPSONE is built from the ground up to work with fonts in Adobe
+   Type 1 format.  Support for outline fonts is not an afterthought
+   added to a basically bitmap oriented architecture.
+   DVIPSONE is the only program of any kind that uses partial font
+   downloading of fonts in Adobe Type 1 format.
+   DVIPSONE runs on any IBM PC or compatible.
+
+
+Q: Can DVIPSONE use bit-map fonts?
+
+A: DVIPSONE normally uses outline fonts.  DVI-to-PS converters that use
+   bitmap fonts cannot produce resolution-independent output.  However,
+   the utility PKTOPS supplied with DVIPSONE can be used to convert a PK
+   bitmap font into Type 3 PS format, and DVIPSONE can use such a
+   bitmapped font. 
+
+
+Q: Are the extra LaTeX & SliTeX fonts available in outline form?
+
+A: Yes, Y&Y supplies them also.  These are not normally needed to
+   work with DVI files produced using LaTeX.  But are handy for
+   working with `picture environments' and for making overhead
+   transparencies. 
+
+
+Q: Are the AMS fonts available in outline form?
+
+A: The AMS font set from Y&Y includes the 35 most commonly used fonts
+   in the AMS font set, including the math symbol fonts (black board
+   bold letters, for example), Cyrillic and Euler fonts.
+
+
+Q: Are there alternatives to Computer Modern for mathematical text?
+
+A: Yes, the LucidaBright + LucidaNewMath font set provides a complete
+   replacement for Computer Modern, even for complex mathematical material.
+   It is easy to use, since the LucidaNewMath fonts are set up to work
+   just the way the Computer Modern math fonts work. Available from Y&Y.
+
+
+Q: Are outline fonts as high in quality of rendering as bitmap fonts?
+
+A: Yes, they are arguably truer to the original design of the fonts.
+   And, of course, they are scalable and can be printed in any size and
+   orientation on printers of differing resolution.  It must be said,
+   however, that there are also many outline fonts of inferior
+   quality.  Such fonts have given some TeX users a bad impression of
+   what outline fonts can do. Note that commercial quality fonts
+   cannot be made using commercially available tools such as Fontographer.
+
+
+Q: Is DVIPSONE available on Unix systems? Is DVIPSONE available on Macintosh?
+
+A: NO.  DVIPSONE is currently only available for IBM PC compatible computers.
+
+
+Q: What printers can be used to print the output of DVIPSONE?
+
+A: Any PostScript printer, such as Apple LaserWriter, QMS, Varityper,
+   Linotronics, Autologic etc.  Note that some PostScript `clones' do
+   not have a true Adobe PostScript interpretor and are not able to deal
+   correctly with all varieties of Type 1 fonts.  DVIPSONE contains 
+   work-arounds for bugs in these interpreters. Specify the printer(s) 
+   you will use when you order in case we have information pertaining
+   to that particular printer.
+
+
+Q: What are the minimum requirements for DVIPSONE?
+
+A: Enough hard-disk space to store the DVIPSONE files 
+   (less than one megabyte), plus space for whatever outline fonts are
+   to be used (the complete set of CM fonts takes about 2 Mbyte).
+   DOS 3.0 operating system or later.
+   DVIPSONE can run in a couple of hundred kilobytes of free memory.
+   Also, a diskette drive is needed to read the DVIPSONE files.
+   Specify whether you prefer 3 1/2" or 5 1/4" format when ordering.
+
+
+Q: How many fonts can DVIPSONE handle?  
+
+A: In a given DVI file, DVIPSONE allows for as many as 72 fonts.  The
+   ultimate limitation is usually the printer memory, rather than any
+   limitation on the part of DVIPSONE.  With the advanced font
+   management techniques used by DVIPSONE, such as partial font downloading,
+   even printers with relatively small virtual memory can print files 
+   calling for 30 fonts or more.  The exact limit is a complicated function
+   of how the fonts are actually used in the DVI file and how the PostScript
+   interpreter on the printer deals with them.  Jobs calling for as many
+   as 50 fonts (much more than the typical TeX job) have been run on an
+   Apple LaserWriter II NT.
+
+
+Q: How fast is DVIPSONE?
+
+A: The time taken by DVIPSONE to process a DVI file can be broken into
+   two parts: (a) the time to decompress the compact binary outline fonts
+   into hexadecimal format suitable for sending to the printer and 
+   (b) the time taken to process individual pages. 
+   On an old AT class computer (i.e. with Intel 286 microprocessor) - without
+   coprocessor - DVIPSONE takes about 3 seconds to decompress a font file
+   and about 1 second to process a typical DVI page.
+   On a 486/5o computer processing is over an order of magnitude faster.
+   If printer resident fonts are used, processing is faster yet,
+   since there is then no need to decompress binary font files.
+   Either way, a complete text book of five hundred pages in DVI form can be
+   processed in just one minute on a 486/25. 
+
+
+Q: How fast does the PS output execute on a printer?
+
+A: Straightforward print jobs usually run close to the rated speed of
+   the print engine, after some initial overhead when the printer's font
+   cache is empty.  
+   On a printer that supports across-job font caching (as many do), this
+   initial overhead will be significantly lower after the first print job.
+   In material containing graphic images, 
+   included EPS files are typically what limits printing speed.
+   We recommend parallel printer connections when available, 
+   rather than serial, as well as print spoolers and RAM caches.
+   When serial connections are used, it is desireable to operate at a
+   high baud rate.  The utility MODEX, supplied with DVIPSONE makes it
+   possible to set the baud rate higher than the DOS (and Windows 3.0)
+   imposed limit of 19,200 baud.  Many printers support 38400 or
+   57600 baud on their serial ports.
+
+
+Q: Does DVIPSONE support inclusion of EPS figures?
+
+A: Yes, DVIPSONE presently supports all ten of the most commonly used styles
+   of usage for \special to include EPS figures.  This includes output 
+   generated by several different dialects of PSFIG.TEX, EPSF.TEX, and
+   PSADOBE.TEX macros packages and protocols understood by DVI2PS, DVIPS, and
+   DVITOPS.  DVIPSONE does not support usage of \special that depends on
+   internal details of particular DVI-to-PS converters.  We wish
+   there was a standard for this!
+
+
+Q: Can DVIPSONE process files produced by Textures on the Macintosh?
+
+A: Yes, DVIPSONE recognizes the format of Textures files and can
+   process these as well as ordinary DVI files.  (Alternatively you can use
+   DVItool supplied with Textures to convert the files to normal DVI format).
+
+
+Q: Will upgrades of DVIPSONE be available?
+
+A: Yes.  The version of DVIPSONE now available is release 0.9.
+   Owners of release 0.9 will be able to obtain major upgrades, up to
+   release 1.0, for a nominal fee (cost of media, handling and shipping).
+
+
+Q: Does DVIPSONE support font substitution?
+
+A: Yes, substitutes can be specified in a font substitution file.
+   A variety of options can be specified in the font substitution file.
+   This includes on-the-fly reencoding of fonts.
+   On-the-fly reencoding does more than merely permute the character
+   code numbers --- it can make unencoded characters accessible.
+   Standard substitution files are included with DVIPSONE for convenience.
+
+
+Q: Can fonts that do not use TeX's character encoding be remapped? 
+
+A: Yes, the remapping is specified in a separate file for maximum flexibility.
+   Standard remapping files are included with DVIPSONE for convenience.
+
+
+Q: Does DVIPSONE support printer resident fonts?
+
+A: Yes.  Printer resident fonts can be used - as is, or remapped.
+   A command line flag can tell DVIPSONE that all fonts called for
+   are printer resident.
+
+
+Q: Does DVIPSONE support fonts in the Adobe font library?  
+
+A: Yes.  Any of the over 1300 Adobe Type 1 font in the Adobe font
+   library can be used - as is, or remapped. Also, any of over 13,000
+   fonts available in this format from over 30 vendors can be used.
+
+
+Q: Can DVIPSONE use font files in MacIntosh format?
+
+A: Yes, DVIPSONE recognizes the special format used for outline font
+   files on the MacIntosh and decodes them correctly.  All you need to
+   do is find some way of transferring the font file from the MacIntosh
+   to your PC.
+
+
+Q: What font metric information is required by DVIPSONE?
+
+A: Normally, DVIPSONE gets all the metric information it needs from
+   the font file itself.  This is a great advantage, since it avoids
+   the kind of disasters that can strike when the TFM file used by TeX
+   does not agree with the TFM file used by the DVI processing program.
+
+   If a font file cannot be found, and a
+   substitution is called for, then DVIPSONE can use metric information
+   in a variety of formats, including Adobe font metric (AFM) files.
+   DVIPSONE can also use TeX metric files (TFM), and even MicroSoft
+   Windows printer font metric files (PFM).
+   A utility is provided with DVIPSONE that converts AFM files to TFM
+   format, for use by TeX.
+
+
+Q: Can DVIPSONE permanently download fonts?
+
+A: The utility DOWNLOAD supplied with DVIPSONE can be used to
+   downloads fonts to the printers virtual memory (VM).  
+   Usually it is best, however,  to let DVIPSONE manage fonts
+   directly. But if many jobs call for the same set of fonts, it may
+   make sense to download them and tell DVIPSONE that they are now
+   printer resident (by modifying the font substitution file suitably).
+
+
+Q: Does Y&Y offer educational discounts on their products?
+
+A: No, since our market is mostly in the educational field - 
+   our products are already priced accordingly.
+
+
+GLOSSARY & NOTES:
+----------------
+
+TeX is the typesetting language used for technical papers and books.
+
+DVI stands for device-independent file format.  This is produced by TeX.
+
+PS stands for PostScript language.  This is what the printer understands.
+
+DVI-to-PS conversion.  Converting TeX output files into printer input files.
+
+CM stands for Computer Modern.  These are the fonts that TeX users often use.
+
+BSR stands for Blue Sky Research - they sell CM outline fonts.
+
+Bitmap fonts.  Contain pixel data - made for particular resolution and size.
+
+Outline fonts.  Contain curves - can be scaled to any size (and rotated).
+
+DOS - operating system normally used on IBM PC compatible computers.
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 
+
+Y&Y, Inc., Tuttle's Livery #2F, 45 Walden Street, Concord, MA 01742
+
+(800) 742-4059 --- (508) 371-3286 (voice) --- (508) 371-2004 (fax)
+
+*** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** 

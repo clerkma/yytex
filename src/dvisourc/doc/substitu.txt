@@ -1,0 +1,33 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Some detailed comments on font substitution:
+============================================
+
+Normally there is no need for font substitution.  But when it is
+needed the following information may be helpful.
+
+Normal substitutions:
+when a font file is not found, a substitute font name found in the font 
+substitution table is used instead.  DVIPSONE has a default font substitution
+table built-in that it resorts to if no substitution file is specified.
+
+Forced substitutions (*force*):
+a substitute font name found in the table is used if this flag appears
+(whether or not the font file called for originally actually exists).
+
+Remapped substitutions (*remap*):
+an existing font file (or printer resident font) is used, but the
+characters are remapped to TeX text positions (or other specified encoding).
+
+Resident substitutions (*reside*):
+a printer resident font is used (it may also have to be remapped).
+
+Aliasing (*alias*):
+the font name is assumed to be just an alias for the substitute font name
+found in the table. The same metrics are assumed to apply.
+
+Multiple magnifications:
+when the same font is used at several different magnifications,
+it only needs to be loaded once, of course.
+

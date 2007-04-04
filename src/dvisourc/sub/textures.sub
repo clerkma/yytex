@@ -1,0 +1,29 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Set up for Textures names of Times fonts
+
+TimesB		Times-Bold		*force* *reside*
+TimesBI		Times-BoldItalic	*force* *reside*
+TimesI		Times-Italic		*force* *reside*
+Times		Times-Roman		*force* *reside*
+
+Helvetica	Helvetica		*force* *reside*
+HelveticaO	Helvetica-Oblique	*force* *reside*
+HelveticaB	Helvetica-Bold		*force* *reside*
+HelveticaBO	Helvetica-BoldOblique	*force* *reside*
+
+Courier		Courier			*force* *reside*
+CourierO	Courier-Oblique		*force* *reside*
+CourierB	Courier-Bold		*force* *reside*
+CourierBO	Courier-BoldOblique	*force* *reside*
+
+Symbol		Symbol			*force* *reside*
+
+MathPi1		mh1			*alias*
+MathPi2		mh2			*alias*
+MathPi3		mh3			*alias*
+MathPi4		mh4			*alias*
+MathPi5		mh5			*alias*
+MathPi6		mh6			*alias*
+

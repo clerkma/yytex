@@ -1,0 +1,291 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: Lucida New Math math italic
+
+% Used by Y&Y:
+% LucidaNewMath-Italic (lbmi)
+% LucidaNewMath-AltItalic (lbmo)
+% LucidaNewMath-DemiItalic (lbmdi)
+% LucidaNewMath-AltDemiItalic (lbmdo)
+% LucidaNewMath-Roman (lbmr)
+% LucidaNewMath-Demibold (lbmd)
+
+% Note: the lower half (0 - 127) is the same as `math italic' for CM fonts
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	0393	Gamma
+1	0394	Delta
+2	0398	Theta
+3	039B	Lambda
+4	039E	Xi
+5	03A0	Pi
+6	03A3	Sigma
+7	03A5	Upsilon
+8	03A6	Phi
+9	03A8	Psi
+10	03A9	Omega
+
+11	03B1	alpha
+12	03B2	beta
+13	03B3	gamma
+14	03B4	delta
+15	03B5	epsilon1
+16	03B6	zeta
+17	03B7	eta
+18	03B8	theta
+19	03B9	iota
+20	03BA	kappa
+21	03BB	lambda
+22	03BC	mu
+23	03BD	nu
+24	03BE	xi
+25	03C0	pi
+26	03C1	rho
+27	03C3	sigma
+28	03C4	tau
+29	03C5	upsilon
+30	03C6	phi
+31	03C7	chi
+32	03C8	psi
+33	03C9	omega
+
+34	FFFF	epsilon		% \varepsilon 03B5 ?
+35	03D1	theta1		% \vartheta
+36	03D6	pi1		% \varpi (Adobe Symbol calls this omega1!)
+37	03F1	rho1		% \varrho
+38	03C2	sigma1		% \varsigma
+39	03D5	phi1		% \varphi
+
+40	21BC	arrowlefttophalf
+41	21BD	arrowleftbothalf
+42	21C0	arrowrighttophalf
+43	21C1	arrowrightbothalf
+44	FFFF	arrowhookleft	21AA ?
+45	FFFF	arrowhookright	21A9 ?
+46	22B3	triangleright	25B7
+47	22B2	triangleleft	25C1
+
+48	0030	zero		% zerooldstyle
+49	0031	one		% oneoldstyle
+50	0032	two		% twooldstyle
+51	0033	three		% threeoldstyle
+52	0034	four		% fouroldstyle
+53	0035	five		% fiveoldstyle
+54	0036	six		% sixoldstyle
+55	0037	seven		% sevenoldstyle
+56	0038	eight		% eightoldstyle
+57	0039	nine		% nineoldstyle
+
+58	002E	period
+59	002C	comma
+60	003C	less
+61	002F	slash
+62	003E	greater
+63	22C6	star		% asterisk ?
+64	2202	partialdiff
+
+65	0041	A
+66	0042	B
+67	0043	C
+68	0044	D
+69	0045	E
+70	0046	F
+71	0047	G
+72	0048	H
+73	0049	I
+74	004A	J
+75	004B	K
+76	004C	L
+77	004D	M
+78	004E	N
+79	004F	O
+80	0050	P
+81	0051	Q
+82	0052	R
+83	0053	S
+84	0054	T
+85	0055	U
+86	0056	V
+87	0057	W
+88	0058	X
+89	0059	Y
+90	005A	Z
+
+91	266D	flat
+92	266E	natural
+93	266F	sharp
+94	FFFF	slurbelow ?
+95	FFFF	slurabove ?
+
+96	2113	lscript
+97	0061	a
+98	0062	b
+99	0063	c
+100	0064	d
+101	0065	e
+102	0066	f
+103	0067	g
+104	0068	h
+105	0069	i
+106	006A	j
+107	006B	k
+108	006C	l
+109	006D	m
+110	006E	n
+111	006F	o
+112	0070	p
+113	0071	q
+114	0072	r
+115	0073	s
+116	0074	t
+117	0075	u
+118	0076	v
+119	0077	w
+120	0078	x
+121	0079	y
+122	007A	z
+
+123	0131	dotlessi
+124	FFFF	dotlessj	not 0284 or 025F
+125	2118	weierstrass
+126	20D6	vector
+127	2040	tie
+
+129	03BF	omicron		not 006F
+130	301A	openbracketleft		% new
+131	301B	openbracketright	% new
+132	002B	parenleft
+133	002C	parenright
+134	005B	bracketleft
+135	005D	bracketright
+136	222C	integraldbl
+137	222D	integraltrpl
+138	222E	contintegral		conintegral
+139	222F	surfintegral  ???
+140	2230	volintegral ???
+141	2231	clwintegral
+142	2233	cclwcontintegral	cclwconintegral
+143	2232	clwcontintegral		clwconintegral
+144	2132	Finv	F inverted
+145	????	Gmir	G mirrored
+146	2127	Omegainv	Mho
+147	2107	Euler
+148	2201	complement
+149	2136	beth	bethmath	05D1
+150	2137	gimel	gimelmath	05D2
+151	2138	daleth	delethmath	05D3
+152	210A	gscript
+153	210E	hscript ???
+154	2125	zscript ???
+155	03F0	kappa1
+156	????	zeroslash (not emptyset)
+157	210F	planckover2pi
+158	019B	lambdabar ?
+159	019A	lscriptbar ?
+160	0020	space
+
+171	2035	primereverse1
+172	22AB	forcesextra
+
+197	22B6	original
+198	22B7	image
+199	22BB	multimap
+200	2035	primereverse
+201	24C7	circleR		% 00AE
+202	24C8	circleS
+203	2720	maltesecross
+204	229D	circleminus1
+205	2215	shortsolidus
+206	22C9	multicloseleft
+207	22CA	multicloseright
+208	22CB	multiopenleft
+209	22CC	multiopenright
+210	22BB	xor		% orunderscore
+211	22AA	tacktrpl
+212	22A6	assertion	22A2 ?
+213	????	notassertion	22A3 ?
+214	22A7	truestate
+215	????	falsestate	22A7 flipped
+216	2216	shortsolidusback % shortsolidus
+217	22BA	intercal
+218	????	lessdblequivlnt
+219	????	greaterdblequivlnt
+220	22D6	lessdot
+221	22D7	greaterdot
+222	22D8	verymuchless
+223	22D9	verymuchgreater
+224	????	lessequal1
+225	????	greaterequal1
+226	22DC	equalless
+227	22DD	equalgreater
+228	227C	precedesequal1
+229	227D	followsequal1
+230	22DE	equalprecedes1
+231	22DF	equalfollows1
+232	22DA	lessequalgreater
+233	22DB	greaterequalless
+234	????	lessdbleqlgreater
+235	????	greaterdbleqlless
+236	????	precedesequivlnt
+237	????	followsequivlnt
+238	????	subsetdblequal
+239	????	supersetdblequal
+240	25C0	triangleleftsld
+241	25B6	trianglerightsld
+242	226C	between
+243	2443	fork
+244	????	barshort
+245	????	parallelshort
+246	22CB	bowtie
+247	227C	divideonmultiply
+248	223C	revsimilar
+249	2243	revasymptequal
+250	220B	element
+251	220B	owner
+252	????	negeighteenthem
+253	????	eighteenthem
+254	????	eighthem
+255	????	tenthem
+
+% DUPLICATES of 0 - 31
+
+161	0393	Gamma
+162	0394	Delta
+163	0398	Theta
+164	039B	Lambda
+165	039E	Xi
+166	03A0	Pi
+167	03A3	Sigma
+168	03A5	Upsilon
+169	03A6	Phi
+170	03A8	Psi
+173	03A9	Omega
+174	03B1	alpha
+175	03B2	beta
+176	03B3	gamma
+177	03B4	delta
+178	03B5	epsilon1
+179	03B6	zeta
+180	03B7	eta
+181	03B8	theta
+182	03B9	iota
+183	03BA	kappa
+184	03BB	lambda
+185	03BC	mu
+186	03BD	nu
+187	03BE	xi
+188	03C0	pi
+189	03C1	rho
+190	03C3	sigma
+191	03C4	tau
+192	03C5	upsilon
+193	03C6	phi
+194	03C7	chi
+195	03C8	psi
+
+196	2040	tie

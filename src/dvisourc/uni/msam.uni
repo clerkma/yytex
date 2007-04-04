@@ -1,0 +1,178 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: AMS math symbols A
+
+% Use by Y&Y AMS math symbol A fonts:
+% MSAM10, MSAM9, MSAM8, MSAM7, MSAM6, MSAM5
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+0	22A1	squaredot
+1	229E	squareplus
+2	22A0	squaremultiply
+3	25A1	square
+4	25A0	squaresolid
+5	25AA	squaresmallsolid
+6	25C7	diamond
+7	25C6	diamondsolid		solid lozenge ?
+8	21BB	clockwise		arrowclockw
+9	21BA	anticlockwise		arrowanticlockw
+10	21CC	harpoonleftright
+11	21CB	harpoonrightleft
+12	229F	squareminus
+13	22A9	forces			force
+14	22AA	forcesbar
+15	22A8	satisfies		satisfy
+16	21A0	dblarrowheadright
+17	219E	dblarrowheadleft
+18	21C7	dblarrowleft
+19	21C9	dblarrowright
+20	21C8	dblarrowup
+21	21CA	dblarrowdwn		dblarrowdown
+22	21BE	harpoonupright
+23	21C2	harpoondownright
+24	21BF	harpoonupleft
+25	21C3	harpoondownleft
+26	21A3	arrowtailright
+27	21A2	arrowtailleft
+28	21C6	arrowparrleftright
+29	21C4	arrowparrrightleft
+30	21B0	shiftleft
+31	21B1	shiftright
+32	21DD	squiggleright		arrowsquiggleright
+33	21AD	squiggleleftright	arrowsquiggleboth
+34	21AB	curlyleft
+35	21AC	curlyright
+36	2257	circleequal		not 229C
+37	227F	followsorequal
+38	2273	greaterorsimilar
+39	FFFF	greaterorapproxeql ??
+40	22B8	multimap
+41	2234	therefore
+42	2235	because
+43	2251	equalsdots
+44	225C	defines			not 225D
+45	227E	precedesorequal		precedesequal1 227C
+46	2272	lessorsimilar
+47	FFFF	lessorapproxeql	  FFFF
+48	22DC	equalorless		lessequal ? 2264
+49	22DD	equalorgreater		greaterequal ? 2265
+50	22DE	equalorprecedes		equalprecedes1
+51	22DF	equalorfollows		equalfollows1
+52	227C	precedesorcurly
+53	2266	lessdblequal
+54	FFFF	lessorequalslant  FFFF
+55	2276	lessorgreater
+56	2035	primereverse
+57	FFFF	axisshort	extender for arrows
+58	2253	equaldotrightleft
+59	2252	equaldotleftright
+60	227D	followsorcurly
+61	2267	greaterdblequal
+62	FFFF	greaterorequalslant ??
+63	2277	greaterorless
+64	228F	squareimage
+65	2290	squareoriginal
+66	22B3	triangleright		25B7
+67	22B2	triangleleft		25C1
+68	22B5	trianglerightequal	triangrightequal
+69	22B4	triangleleftequal	triangleftequal
+70	22C6	star
+71	226C	between
+72	25BC	triangledownsld		triagdn ?
+73	25B6	trianglerightsld	trianglerightsld1
+74	25C0	triangleleftsld		triangleleftsld1
+75	FFFF	arrowaxisright	right arrow head for extensible
+76	FFFF	arrowaxisleft	left arrow head for extensible
+77	25B3	triangle
+78	25B2	trianglesolid		triangle
+79	25BD	triangleinv		triagdn
+80	2256	ringinequal
+81	22DA	lessequalgreater
+82	22DB	greaterlessequal
+83	FFFF	lessdbleqlgreater ??
+84	FFFF	greaterdbleqlless ??
+85	00A5	Yen
+86	21DB	arrowtripleright
+87	21DA	arrowtripleleft
+88	2713	check
+89	22BB	xor	orunderscore
+90	22BC	nand		2305
+91	2306	perpcorrespond	2306
+92	2220	angle
+93	2221	measuredangle
+94	2222	sphericalangle
+95	221D	proportional
+96	FFFF	smile		not 263A
+97	FFFF	frown		not 2639
+98	22D0	subsetdbl
+99	22D1	supersetdbl
+100	22D3	uniondbl
+101	22D2	intersectiondbl
+102	22CF	uprise		curly logical and
+103	22CE	downfall	curly logical or
+104	22CB	multiopenleft
+105	22CC	multiopenright
+106	FFFF	subsetdblequal	 ???
+107	FFFF	supersetdblequal ???
+108	224F	difference	difference between
+109	224E	geomequivalent
+110	22D8	muchless	lessmuch	not 226A
+111	22D9	muchgreater	greatermuch	not 226B
+112	231C	rightanglenw
+113	231D	rightanglene
+114	24C7	circleR		registered trademark ? 00AE
+115	24C8	circleS		registered servicemark	not 2120
+116	22D4	fork		pitchfork proper insertion not 2443
+117	2214	dotplus
+118	223D	revsimilar
+119	22CD	revasymptequal
+120	231E	rightanglesw
+121	231F	rightanglese
+122	2720	maltesecross
+123	2201	complement
+124	22BA	intercal
+125	229A	circlering
+126	229B	circleasterisk
+127	2296	circleminus
+
+% DUPLICATES of 0 - 31
+
+161	22A1	squaredot
+162	229E	squareplus
+163	22A0	squaremultiply
+164	25A1	square
+165	25A0	squaresolid
+166	25AA	squaresmallsolid
+167	25C7	diamond
+168	25C6	diamondsolid		solid lozenge ?
+169	21BB	clockwise		arrowclockw
+170	21BA	anticlockwise		arrowanticlockw
+173	21CC	harpoonleftright
+174	21CB	harpoonrightleft
+175	229F	squareminus
+176	22A9	forces			force
+177	22AA	forcesbar
+178	22A8	satisfies		satisfy
+179	21A0	dblarrowheadright
+180	219E	dblarrowheadleft
+181	21C7	dblarrowleft
+182	21C9	dblarrowright
+183	21C8	dblarrowup
+184	21CA	dblarrowdwn		dblarrowdown
+185	21BE	harpoonupright
+186	21C2	harpoondownright
+187	21BF	harpoonupleft
+188	21C3	harpoondownleft
+189	21A3	arrowtailright
+190	21A2	arrowtailleft
+191	21C6	arrowparrleftright
+192	21C4	arrowparrrightleft
+193	21B0	shiftleft
+194	21B1	shiftright
+195	21DD	squiggleright		arrowsquiggleright
+
+196	2296	circleminus
+

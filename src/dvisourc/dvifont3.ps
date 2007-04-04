@@ -1,0 +1,44 @@
+% Copyright 1990,1991,1992,1993 Y&Y, Inc.
+% Copyright 2007 TeX Users Group
+% You may freely use, modify and/or distribute this file.
+
+dup begin
+
+/FontType 3 def
+/FontMatrix [1 hppp div ptsize div 0 0 1 vppp div ptsize div 0 0] def
+
+/Encoding 256 array def
+0 1 255 {Encoding exch /.notdef put} for
+
+/CharWidth numchar array def
+/CharW numchar array def
+/CharH numchar array def
+/CharHoff numchar array def
+/CharVoff numchar array def
+/CharBitmap numchar array def
+
+/makechar{ % name, width, w, h, hoff, voff, bitmap, chr
+	/chr exch def
+	CharBitmap chr 3 -1 roll put
+	CharVoff chr 3 -1 roll put
+	CharHoff chr 3 -1 roll put
+	CharH chr 3 -1 roll put
+	CharW chr 3 -1 roll put
+	1000 div ptsize mul hppp mul
+	CharWidth chr 3 -1 roll put
+	Encoding chr 3 -1 roll put
+}def
+
+/BuildChar{ % dict chr
+	exch begin 16 dict begin /chr exch def
+	Encoding chr get /.notdef ne {
+	/w CharW chr get def /h CharH chr get def
+	/hoff CharHoff chr get def /voff CharVoff chr get def
+	CharWidth chr get 0
+	hoff neg voff h sub w hoff sub voff setcachedevice
+	w h scale w h true [w 0 0 h neg hoff voff]
+	{CharBitmap chr get} imagemask
+   } if end end
+}def
+
+end % avoid invalidaccess bug !

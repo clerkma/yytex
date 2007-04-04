@@ -1,0 +1,2010 @@
+/* Copyright 1990,1991,1992,1993,1994,1995,1996,1997,1998,1999 Y&Y, Inc.
+   Copyright 2007 TeX Users Group
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+   02110-1301 USA.  */
+
+
+/**********************************************************************
+*
+* DVI to PS convertor for Adobe Type 1 (ATM compatible) fonts
+* Copyright (C) 1990 - 1999 Y&Y. All Rights Reserved
+* This is the part that actually converts DVI commands to PS
+*
+**********************************************************************/
+
+/* Revised 1999 June 13 to run in DLL form */
+
+#ifdef _WINDOWS
+#define NOCOMM
+#define NOSOUND
+#define NODRIVERS
+#define STRICT
+#include <windows.h>
+#endif
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+#include <setjmp.h>
+
+#ifdef _WINDOWS
+// We must define MYLIBAPI as __declspec(dllexport) before including
+// dvipsone.h, then dvipsone.h will see that we have already
+// defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
+#define MYLIBAPI __declspec(dllexport)
+// #include "dvipsone.h"
+#endif
+
+#include "dvipsone.h"
+
+#ifdef _WINDOWS
+#pragma warning(disable:4100)	// unreferenced formal variable 
+#endif
+
+#pragma warning(disable:4127)	// conditional expression is constant
+
+#pragma hdrstop
+
+/* malloc.h not really needed */ 
+
+/* NOTE: S = s w, T = s x, W = w<n>, X = x<n>, Y = y<n>, Z = z<n> */
+/* bp = bop, ep = eop, pr = put_rule, sr = set_rule */
+
+int firstpage=0;		/* non-zero when nothing has been output yet */
+/* int evenlast=0;	*/		/* last non-skipped page was even */
+/* int oddlast=0;	*/		/* last non-skipped page was odd */
+int skiptoend=0;		/* non-zero => still need to skip to last page */
+int finish=0;			/* non-zero => have hit end of DVI file */
+int showcount=0;		/* on when last sent out "set" or "put" */
+int freshflag=0;		/* on after fresh line is started (\n) */
+
+int stinx;				/* stack index - to avoid overflow */ 
+int maxstinx;			/* max stack index seen  - not used here */
+
+long currentpagestart;		/* 95/Aug/27 */
+
+/* int escapecode[14] = {'b', 't', 'n', 'v', 'f', 'r'}; */
+
+char *escapecode = "btnvfr";  /* special codes for 8, 9, 10, 12, and 13 */
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+/* we don't have to worry about sign extension here - no need for short int */
+
+/* static unsigned int ureadone (FILE *input) {
+	return getc(input);
+} */
+
+static unsigned int ureadtwo (FILE *input) {
+	return (getc(input) << 8) | getc(input); 
+}
+
+static unsigned long ureadthree (FILE *input) {
+	int c, d, e;
+/*	unsigned int c, d, e; */
+	c = getc(input);	d = getc(input);	e = getc(input);
+	return ((((unsigned long) c << 8) | d) << 8) | e;
+}
+
+static unsigned long ureadfour (FILE *input) {
+	int c, d, e, f;
+	c = getc(input);	d = getc(input);
+	e = getc(input);    f = getc(input);
+	return ((((((unsigned long) c << 8) | (unsigned long) d) << 8) | e) << 8) | f;
+}
+
+/* we do have to worry about sign extension here - use short int if needed */
+
+static int sreadone (FILE *input) {
+	int c;
+	c = getc(input);
+	if (c > 127) return (c - 256);
+	else return c;
+}
+
+#ifdef IGNORED
+/* static short int sreadtwo (FILE *infile) { */	/* ??? */
+static int sreadtwo (FILE *input) {
+	short int result;
+/*	return (getc(input) << 8) | getc(input); */ /* 1995/Nov/15 */
+/*	result = (getc(input) << 8) | getc(input); */
+	result = ((short int) getc(input) << 8) | (short int) getc(input);
+	return result;
+}
+#endif
+
+/* possible compiler optimization bug worked around 98/Feb/8 */
+
+static int sreadtwo (FILE *input) {
+	int c, d;
+	c = getc(input);	d = getc(input);
+	if (c > 127) c = c - 256;
+	return c << 8 | d;
+}
+
+static long sreadthree (FILE *input) {
+	int c, d, e;
+	c = getc(input);	d = getc(input);	e = getc(input);
+	if (c > 127) c = c - 256; 
+	return ((((long) c << 8) | d) << 8) | e;
+}
+
+static long sreadfour (FILE *input) {
+	int c, d, e, f;
+	c = getc(input);	d = getc(input);
+	e = getc(input);	f = getc(input);
+	return ((((((long) c << 8) | (long) d) << 8) | e) << 8) | f;
+} 
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+/* don't need to optimize `push pop' since doesn't happen ever? */
+
+void do_push(FILE *output, FILE *input) {
+	int c;
+	if (skipflag == 0) {
+/*		push (h, v, w, x, y, z) on stack */
+/*		fprintf(output, " %% %d\n", stinx); */
+		stinx++;
+		if (stinx % 64 == 0) {		/* see if stack is getting full */
+//			fputs(" pushstack\n", output);
+			PSputs(" pushstack\n", output);
+			showcount = 0; 
+			return;
+		}
+		c = getc(input);
+		if (c == (int) push && ((stinx + 1) % 64 != 0)) {
+			stinx++;
+//			fputs(" U", output);	/* u u */
+			PSputs(" U", output);	/* u u */
+		}
+		else {
+			(void) ungetc(c, input);
+//			fputs(" u", output); 	/* statepush */
+			PSputs(" u", output); 	/* statepush */
+		}
+		showcount = 0;
+	}
+}
+
+/* Are we sure the `O' = `o o' works when at edge of 64 size stack ? */
+
+void do_pop(FILE *output, FILE *input) {
+	int c;
+	if (skipflag == 0)  {
+/*		fprintf(output, " %% %d\n", stinx); */
+		if (stinx % 64 == 0) {			/* time to retrieve saved stack ? */
+			stinx--;
+//			fputs(" popstack\n", output);
+			PSputs(" popstack\n", output);
+			showcount = 0; 
+			return;
+		}
+		stinx--;
+		c = getc(input);
+		if (c == (int) pop && (stinx % 64 != 0)) {
+			stinx--;
+//			fputs(" O", output); 	/* o o */
+			PSputs(" O", output); 	/* o o */
+		}
+/*		following is WRONG in some rare cases!  Removed 1993/Aug/2 */
+		else if (c == (int) push) {
+			stinx++; 
+//			fputs(" M", output);
+			PSputs(" M", output);
+		}  	/* o u - OK if M defined as `o u' */
+		else {
+			(void) ungetc(c, input);
+//			fputs(" o", output);	/* statepop */
+			PSputs(" o", output);	/* statepop */
+		}
+		showcount = 0;
+/*		pop (h, v, w, x, y, z) off stack */
+	}
+}
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+void complaincharcode(unsigned long c) {		/* 1993/Dec/11 */
+	sprintf(logline, " Character code %lu > 255\n", c);
+	showline(logline, 1);
+}
+
+/* come here either with character code 0 - 127 --- or from set1 */
+/* in the case of set1 we need to read the next byte, which likely is > 127 */
+
+void normalchar (FILE *output, FILE *input, int c) {
+	int d;
+	if (skipflag == 0) {
+		if (showcount > MAXSHOWONLINE) {		/* too much on one line ? */
+			PSputc('\n', output);
+			showcount = 0;	/* first go to new line */
+		} 
+		PSputc('(', output);
+	}
+	while (c < 128 || c == (int) set1) {		/* changed ! */
+		if (c == (int) set1) c = getc(input);	/* new ! read next byte */
+		if (skipflag == 0) {
+/*			if (bRemapControl && c < MAXREMAP) c = remaptable[c]; */
+			if (bRemapControl || bRemapFont) {
+				if (c < MAXREMAP) c = remaptable[c];
+#if MAXREMAP < 128
+				else if (c == 32) c = 195;
+				else if (c == 127) c = 196;
+#endif
+			}
+/* NOTE: this must match corresponding code in DVIPSLOG.C */
+			else if (bRemapSpace && c <= 32) {			/* 1995/Oct/17 */
+				if (c == 32) c = 195;		/* not 160 */
+				else if (c == 13) c = 176; 	/* 1996/June/4 */
+				else if (c == 10) c = 173; 	/* 1996/June/4 */
+				else if (c == 9) c = 170; 	/* 1996/June/4 */
+				else if (c == 0) c = 161;
+			}
+/*			if (c < 32 || c >= 127)	{ */		/* control characters */
+/* added test for percent 1992/Dec/21 to avoid % in string ... */
+			if (c < 32 || c >= 127 || c == 37)	{	/* control chars and % */
+/*				if (bForwardFlag != 0 && c <= 13 && c >= 8 && c != 11)  */
+				if (c <= 13 && c >= 8 && c != 11 && bForwardFlag != 0) {
+/* use special escape \b \t \n ... \f \r for 8 ... 13 1993/Sep/29 */
+					PSputc('\\', output);
+					PSputc(escapecode[c-8], output);
+				}
+/*				if (backwardflag == 1)  */ /* backward compatible with old ALW */
+				else if (bBackWardFlag == 1) { /* compatibility with old ALW */
+					d = getc(input); (void) ungetc(d, input);	/* peek  */
+					if ((d >= 32 && d <= 127) || d == (int) set1) {
+//						fprintf(output, "\\%03o", c);  /* just to be safe */
+						sprintf(logline, "\\%03o", c);  /* just to be safe */
+					}
+					else {
+						sprintf(logline, "\\%o", c);
+					}
+					PSputs(logline, output);
+				}
+				else {		/* following not always safe for old ALW ... */
+					d = getc(input); (void) ungetc(d, input);	/* peek  */
+					if ((d >= '0' && d <= '7') || d == (int) set1) {
+//						fprintf(output, "\\%03o", c);  /* just to be safe */
+						sprintf(logline, "\\%03o", c);  /* just to be safe */
+					}
+					else {
+						sprintf(logline, "\\%o", c);
+					}
+					PSputs(logline, output);					
+				}
+			}
+			else {							/* not control characters */
+				if (c == '\\' || c == '(' || c == ')') {
+//					putc('\\', output);
+					PSputc('\\', output);
+				}
+/*				if (c == '%') fprintf(output, "\045"); */
+/*				else putc(c, output); */
+//				putc(c, output);
+				PSputc(c, output);
+			}
+		}
+		c = getc(input);		/* get the next byte in DVI file */
+		if (c < 0) break;		/* trap EOF - avoid loop */
+	}	/* end of while (c < 128 ... ) loop */
+
+/* analyze next DVI command to see whether can combine with above */
+	if (skipflag != 0) (void) ungetc(c, input);
+	else {
+		if (c == (int) w0) {
+//			fputs(")S", output);
+			PSputs(")S", output);
+		}
+		else if (c == (int) x0) {
+//			fputs(")T", output);
+			PSputs(")T", output);
+		}
+		else {
+//			fputs(")s", output);
+			PSputs(")s", output);
+			(void) ungetc(c, input);	/* can't use it, put it back */
+		}
+		showcount++;
+	}
+/*	also need to increase h by total width */
+/*	fprintf(output, "currentpoint pop /h exch def\n"); */
+}
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+/* Following need *not* be efficient since it is rarely used */
+/* Put single character - called by put1/put2/put3/put4 */
+/* Set single character - also called by set2/set3/set4 */
+/* duplicates a lot of code form normalchar() above */
+
+/* separated out 1995/June/30 */	/* third arg is `s' or `p' */
+
+void do_charsub (FILE *output, unsigned long c, char code) {
+
+	if (skipflag == 0) {
+/*		if (bRemapControl && c < MAXREMAP) c = remaptable[c]; */
+		if (bRemapControl || bRemapFont) {
+			if (c < MAXREMAP) c = remaptable[c];
+#if MAXREMAP < 128
+			else if (c == 32) c = 195;
+			else if (c == 127) c = 196;
+#endif
+		}
+		else if (bRemapSpace && c <= 32) {				/* 1995/Oct/17 */
+			if (c == 32) c = 195;		/* not 160 */
+			else if (c == 13) c = 176; 	/* 1996/June/4 */
+			else if (c == 10) c = 173; 	/* 1996/June/4 */
+			else if (c == 9) c = 170; 	/* 1996/June/4 */
+			else if (c == 0) c = 161;
+		}
+		if (c >= 256) {
+			complaincharcode(c);
+			return;				/* ignore it - should never happen */
+		}
+/*		if (f < 0) {
+			showline("Setting char %d without font", c);
+			tellwhere(1); 	errcount(0);
+		} */
+//		putc('(', output); 
+		PSputc('(', output); 
+/*		the following code copied from normachar() --- 1995/June/30 */
+/*		if (bRemapControl && c < MAXREMAP)
+			c = remaptable[c];	*/				/* 1994/Jun/20 */
+/*		if (c < 32 || c >= 127) */
+		if (c < 32 || c >= 127 || c == 37) {	/* 1995/June/30 fix */
+/*			fprintf(output, "(\\%o)p", c); */		/* put1 */
+			if (c <= 13 && c >= 8 && c != 11 && bForwardFlag != 0) {
+/* use special escape \b \t \n ... \f \r for 8 ... 13 1993/Sep/29 */
+//				putc('\\', output);
+				PSputc('\\', output);
+//				putc(escapecode[c-8], output);
+				PSputc(escapecode[c-8], output);
+			}
+			else if (bBackWardFlag == 1) {  /* compatibility with old ALW */
+				sprintf(logline, "\\%03o", (unsigned int) c);
+				PSputs(logline, output);
+			}
+			else { 		/* following not always safe for old ALW ... */
+				sprintf(logline, "\\%o", (unsigned int) c);
+				PSputs(logline, output);
+			}
+		}
+/*		else fprintf(output, "(%c)p", c); */	/* 1995/June/30 fixed */
+		else {
+				if (c == '\\' || c == '(' || c == ')') {
+//					putc('\\', output);
+					PSputc('\\', output);
+				}
+/*				if (c == '%') fprintf(output, "\045"); */
+/*				else putc(c, output); */
+//				putc((unsigned int) c, output);
+				PSputc((unsigned int) c, output);
+		}
+//		putc(')', output); 
+		PSputc(')', output); 
+//		putc(code, output);			/* 'p' or 's' */
+		PSputc(code, output);			/* 'p' or 's' */
+		showcount++;
+	}
+}
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+/* could be more efficient here if we ever see several in a row OK */
+/* model on "normalchar" if needed OK */
+		
+void do_set1(FILE *output, FILE *input) { /* new version */
+/*	unsigned int c;
+   	c = ureadone(input); */
+	if (skipflag == 0) {
+		normalchar(output, input, (int) set1);		/* new ! */
+/*		if (c < 32 || c >= 127)	fprintf(output, "(\\%o)s", c);
+		else fprintf(output, "(%c)s", c); 
+		showcount++; */
+	}
+	else (void) getc(input);	/* read following byte and throw it away */
+/* set character c and increase h by width of character */
+/* used (normally only) for characters in range 128 to 255 */
+}	
+
+/* don't bother making this efficient, since it should never happen */
+
+void do_set2(FILE *output, FILE *input) { /* NOT REALLY NEEDED ! */
+	do_charsub(output, ureadtwo(input), 's');
+}
+
+void do_set3(FILE *output, FILE *input) { /* NOT REALLY NEEDED ! */
+	do_charsub(output, ureadthree(input), 's');
+}
+
+void do_set4(FILE *output, FILE *input) { /* NOT REALLY NEEDED ! */
+	do_charsub(output, ureadfour(input), 's');
+}
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+/* set character c and DO NOT increase h by width of character */
+
+void do_put1(FILE *output, FILE *input) {	/* rewritten 1995/June/30 */
+/*	unsigned int c; */
+
+/*	c = ureadone(input); */
+/*	c = getc(input); */
+	do_charsub(output, getc(input), 'p');
+}
+
+void do_put2(FILE *output, FILE *input) { /* NOT NEEDED */
+/*	unsigned int c; */
+
+/*	c = ureadtwo(input); */
+	do_charsub(output, ureadtwo(input), 'p');
+}
+
+void do_put3(FILE *output, FILE *input) { /* NOT NEEDED */
+	do_charsub(output, ureadthree(input), 'p');
+}
+
+void do_put4(FILE *output, FILE *input) { 
+	do_charsub(output, ureadfour(input), 'p');
+}
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+/* For PDF problems we adjust height of horizontal rule 95/Oct/15 */
+/* but we don't adjust the position of the rule ... and */
+/* if we were to adjust width of vertical rules we'd need to adjust position */
+
+void do_common_rule (FILE *output, FILE *input, char *s) {
+	long a, b;										/* height, width */
+
+	a = sreadfour(input);
+	b = sreadfour(input);
+	if (skipflag == 0) {
+		if (nMinRule != 0 && a > 0) {				/* 1995/Oct/10 */
+/*			Make sure we don't get zero width rules in PDF output... */
+			if (a < nMinRule) a = nMinRule;
+/*			... compensate for truncating down instead of rounding in PDF */
+			else if (a > nMinRule) a = a + nMinRule/2;
+		}
+		if (bRuleColor)	{
+			if (! freshflag) PSputc('\n', output);
+			sprintf(logline, "%lg %lg %lg rgb ", 
+					rulered, rulegreen, ruleblue);
+			PSputs(logline, output);
+			freshflag = 0;
+		}
+		else if (bTextColor) {
+			if (! freshflag) PSputc('\n', output);
+			PSputs("black ", output);
+			freshflag = 0;
+		}
+
+/*		some silly nonsense about using a height = -2^31 in set_rule */
+/*		if (bDVICopyReduce && -a == 2147483648L) a = 0; */	/* 1995/Sep/16 */
+		if (bDVICopyReduce && -a == 2147483648L) {	/* 1995/Sep/16 */
+/*			need to do nothing for pr, no output, no motion */
+			if (strcmp (s, "sr") == 0) {
+				if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+				if (outscaleflag) {
+					sprintf(logline, "%.9lg r", (double) b / outscale);
+				}
+				else
+#endif
+				{
+					sprintf(logline, "%ld r", b); /* setrule => right */
+				}
+				PSputs(logline, output);
+				freshflag = 0;
+			}
+		}
+		else {
+			if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+			if (outscaleflag) {
+				sprintf(logline, "%.9lg %.9lg %s",
+						(double) a / outscale, (double) b / outscale, s);
+			}
+			else
+#endif
+			{
+				sprintf(logline, "%ld %ld %s", a, b, s); /* setrule or putrule */
+			}
+			PSputs(logline, output);
+			freshflag = 0;
+		}
+
+		if (bTextColor) {
+			if (! freshflag) PSputc('\n', output);
+			sprintf(logline, 				/* 1993/Oct/22 */
+			"%lg %lg %lg rgb ", textred, textgreen, textblue);
+			PSputs(logline, output);
+			freshflag = 0;
+		}
+		else if (bRuleColor) {
+			if (! freshflag) PSputc('\n', output);
+			PSputs("black ", output);
+			freshflag = 0;
+		}
+		showcount = 0;
+	}
+}
+
+void do_set_rule(FILE *output, FILE *input) {
+/*	long a, b; */
+	do_common_rule (output, input, "sr");
+/*	a = sreadfour(input); */
+/*	b = sreadfour(input); */
+/*	if (skipflag == 0) { */
+/*		fprintf(output, "\n%ld %ld sr", a, b); */	/* setrule */
+/* set black rectangle of height a and width b, then h <- h + b */
+/* nothing is shown unless a > 0 and b > 0 */
+/*		showcount = 0; */
+/*	} */
+}
+
+void do_put_rule(FILE *output, FILE *input) {
+/*	long a, b; */
+	do_common_rule (output, input, "pr");
+/*	a = sreadfour(input); */
+/*	b = sreadfour(input); */
+/*	if (skipflag == 0) { */
+/*		fprintf(output, "\n%ld %ld pr", a, b); */ /* putrule */
+/* set black rectangle of height a and width b, then DO NOT h <- h + b */
+/* nothing is shown unless a > 0 and b > 0 */
+/*		showcount = 0; */
+/*	} */
+}
+
+char *showcounters(char *s) { /* write TeX /counter's */
+	int k;
+	int kmax=0;
+	sprintf(s, "%ld", counter[0]);	 /* *always* write first one */
+	s += strlen(s);
+	for (k = 10-1; k > 0; k--) {			 /* 1996/Mar/2 */
+		if (counter[k] != 0) {			
+			kmax = k;
+			break;
+		}
+	}
+/*	for (k = 1; k < 10; k++) { */			 /* write others if non-zero */
+	for (k = 1; k <= kmax; k++) {			 /* write others if non-zero */
+/*		if (counter[k] <= 0) break; else */
+		sprintf(s, " %ld", counter[k]);
+		s += strlen(s);
+	}
+	return s;
+}
+
+/*** code for working way into back end of file looking for post ***/
+
+#define BUFSIZE 128		/* buffer size to read in at one time */
+#define NUMSTEPS 32		/* number of buffers to try from end of file */
+#define MAGIC 223		/* magic code used by TeX at end of DVI file */
+
+/* This does some things to work around possible crap at end of file */
+/* The way to loose is get garbage at end that comes from other DVI file ! */
+
+long gotopost(FILE *input) { /* search for post at end of file */
+	unsigned long n;
+	int c, d, e, f, k, i, j, count;
+	int buffer[BUFSIZE];
+	long nlen;
+
+	if (fseek(input, - (long) BUFSIZE, SEEK_END) < 0)  {
+		rewind(input);			/* possibly because file shorter than BUFSIZE ? */
+	}
+	for (j=0; j < NUMSTEPS; j++) {			/* let's not go on forever ! */
+/*		if (traceflag) putc('\n', stdout); */
+		for (k = 0; k < BUFSIZE; k++) {
+			buffer[k] =  getc(input);
+		}
+		k = BUFSIZE - 1;
+		while (k > 10) {
+			count=0;						/* count MAGIC codes seen */
+			for (i = k; i >= 5; i--) {		/* need at least seq of four */
+				if (buffer[i] == MAGIC) {
+					count++;
+					if (count == 4) break;
+				}
+				else count = 0;
+			}
+			k = i;
+			if (count == 4) {	   /* found sequence of four */
+				for (i = k; i >= 5; i--)   /* but there can be many more */
+					if (buffer[i] != MAGIC) break;
+				k = i;					   /* first non MAGIC - ID_BYTE ? */
+				if (buffer[k] != MAGIC) {  /* did see end of MAGIC stuff */
+					if (buffer[k-5] == (int) post_post) { /* is it valid ? */
+/*						if (buffer[k] != ID_BYTE) { 
+							showline( 
+						"File is DVI version %d - program designed for %d\n",
+								i, ID_BYTE);
+							errcount(0);
+						} */
+						k = k - 5;		/* step back to post_post */
+						c = buffer[k+1];	d = buffer[k+2];
+						e = buffer[k+3];	f = buffer[k+4];
+						n = ((((((unsigned long) c << 8) | (unsigned long) d) << 8) | e) << 8) | f;
+						fseek(input, (long) n, SEEK_SET);	/* go to post ! */
+						c = getc(input); (void) ungetc(c, input);
+						if (c != (int) post) {				/* check it ! */
+							showline("ERROR: Unable to find pointer to POST", 1);
+							giveup(5);
+							return 0;
+						}
+						else {
+							if (traceflag) {
+								sprintf(logline, "Found POST at %ld\n", n);
+								showline(logline, 0);
+							}
+							return n;		/* seem to be in good shape */
+						}
+					}
+				}
+			}
+		}
+		if (fseek(input, - (long) (BUFSIZE * 2 - 10), SEEK_CUR) != 0) {
+/*			showline("Can't find proper ending of DVI file", 1); */
+/*			giveup(15); */
+			break;
+		}
+	}
+	sprintf(logline, "ERROR: Can't find proper ending of DVI file `%s'\n",
+			filenamex);
+	showline(logline, 1);
+	fseek(input, 0, SEEK_END);
+	nlen = ftell(input);				/* get length of file 99/Mar/21 */
+	sprintf(logline, "Searched near end of file of %ld bytes\n", nlen);
+	showline(logline, 0);
+	giveup(5);
+	return 0;
+}
+
+/* void insertblank(FILE *output, int page) { */
+void insertblank(FILE *output, long page) {
+/*	if (newbopflag) 
+		fprintf(output, "dvidict begin\n%ld %d bop eop end % blank page\n",
+		   counter[0], page); */	/* 1995/Mar/25 */
+//	fputs("dvidict begin\n", output);
+	PSputs("dvidict begin\n", output);
+	if (newbopflag) {
+		sprintf(logline, "%ld %ld bop eop end ",
+		   counter[0], page);	/* 1995/Mar/25 */
+		PSputs(logline, output);
+	}
+	else {
+//		fputs("bp ep end ", output);
+		PSputs("bp ep end ", output);
+	}
+//	fputs("% blank page\n", output);
+	PSputs("% blank page\n", output);
+}
+
+void docountercomment (FILE *output) {
+	char *s;
+/*	fprintf(output, "%% ["); */	/* eop */
+	s = logline;
+	strcpy(s, "% [");
+	s += strlen(s);
+	s = showcounters(s);
+	strcat(s, "]");
+//	fputs(logline, output);
+	PSputs(logline, output);
+}
+
+void do_bop(FILE *output, FILE *input) { /* beginning of page */
+	int k;
+	long pageno;				/* page number logical or physical */
+	long page;					/* always dvi page count from start of file */
+	double xoffset, yoffset;	/* 1992/July/11 */
+	COLORSPEC SavedColor;		/* 1999/Apr/06 */
+//	char *s;
+
+	if (skiptoend != 0) {
+		gotopost(input);
+		skiptoend = 0;
+		return;
+	}
+
+/*	Normally bRepeatMode == 0 */			 /* 1995/Aug/27 */
+	if (nRepeatCount > 1) {
+		if (nRepeatIndex == 0)					/* first time */
+			currentpagestart = ftell(input)-1;	/* right at bop */
+		else pagenumber--;						/* compensate */
+	}
+
+	pagenumber++;				/* DVI page count from start of job */
+	if (reverseflag) page = dvi_t - pagenumber + 1;
+	else page = pagenumber;
+
+	stinx = 0;					/* reset stack counter */
+/*	h = 0; v = 0; w = 0; x = 0; y = 0; z = 0;  */
+	ff = -1;					/* undefined font */
+/*	fnt = finx[0];	*/		/* just in case - not clear could be -1 ! */
+/*	currentfont = fontchar[0]; */ /* ? */
+/*	reset_stack();		*/	/* empty the stack */
+	pagetpic = 0;			/* 1992/Nov/17 */
+	complainedaboutj=0;		/* 1993/Oct/17 */
+	if (bCarryColor == 0) colorindex=0; 	/* reset color stack index */
+	if (bCarryColor && bColorUsed) {		/* 98/Jul/18 */
+		RestoreColorStack(page);			/* right page number ? */
+/*		if (colorindex > 0) {
+			doColorPop(page);
+			doColorSet(output, -1);
+		} */ /* done down below */
+	}
+
+	clipstackindex = 0;			/* reset push pop stack 98/Sep/12 */
+
+	CTMstackindex= 0;		/* reset CTM stack pointer in dvispeci.c */
+							/* or call resetCTM() in dvispeci.c */
+	for (k = 0; k < 10; k++) counter[k] = sreadfour(input); 
+	previous = sreadfour(input);
+	showcount = 0;
+/*	skipflag = 0; */
+
+/*	if (reverseflag) page = dvi_t - pagenumber + 1;
+	else page = pagenumber; */	/* already done */
+
+	if (countzeroflag != 0) pageno = counter[0];
+/*	else pageno = (long) pagenumber; */
+	else pageno = (long) page;				/* 1993/Aug/28 */
+
+	skipflag = skipthispage(pageno);
+/*	following is the logic for two-sided printing */
+/*	if (skipflag != 0) evenlast = 1; oddlast = 1; */
+	if (skipflag != 0) firstpage = -1;		/* reset for next group */
+	else if (skipflag == 0) {				/* page in valid range */
+		if (oddpageflag != 0) {				/* if printing only odd pages */
+			if ((counter[0] & 1) == 0) {	/* seen even numbered page */
+				if (firstpage != 0)
+					insertblank(output, page);		/* matching blank */
+				skipflag++;	
+			}
+			firstpage = 0;			
+		}
+		if (evenpageflag != 0) {			/* if printing only even pages */
+			if ((counter[0] & 1) == 1) {	/* seen odd numbered page */
+				if (firstpage != 0)
+					insertblank(output, page);  /* matching blank */
+				skipflag++;
+			}
+			firstpage = 0;
+		}
+	}
+	if (skipflag != 0) {		/* skipping this page */
+		if (reverseflag != 0) {
+			if (previous > 0) fseek(input, previous, SEEK_SET);
+			else finish = -1; 
+		}
+		return;
+	}
+	else {						/* not skipping this page */
+		if (verboseflag) { 
+//			putc('[', stdout); 
+//			if (logfileflag) putc('[', logfile); 
+			showline("[", 0);
+			showcounters(logline);
+			showline(logline, 0);
+//			if (logfileflag) showcounters(logfile); 
+		} 
+		else {
+//			putc('.', stdout);
+//			if (logfileflag) putc('.', logfile);
+			showline(".", 0);
+		}
+/*		note: first item after Page: is a page label - here counter[0] */
+/*		(or counter[1]-counter[2]) 1996/Jan/28 */
+/*		note: first item after Page: need not be a number */
+/*		note: second item after Page: is sequential page number */
+/*		An experiment 1995/Aug/27 */
+/*		page = numpages + 1; */
+		if (stripcomment == 0) {
+//			fputs("%%Page: ", output);
+			PSputs("%%Page: ", output);
+			if (bUseCounters) {
+				sprintf(logline, "%ld-%ld %ld\n",
+					counter[1], counter[2], numpages+1);	/* 1996/Jan/20 */
+			}
+			else {
+				sprintf(logline, "%ld %ld\n", counter[0], numpages+1);
+			}
+			PSputs(logline, output);
+		}
+//		fputs("dvidict begin ", output);
+		PSputs("dvidict begin ", output);
+		if (evenoddoff != 0) {
+			if ((counter[0] & 1) == 1) {	/* seen odd numbered page */
+				xoffset = xoffseto; yoffset = yoffseto;
+			}
+			else {							/* seen even numbered page */
+				xoffset = xoffsete; yoffset = yoffsete;
+			}
+			sprintf(logline, 
+				"/xoffset %lg def /yoffset %lg def\n", xoffset, yoffset);
+			PSputs(logline, output);
+		}
+		PSputc('\n', output);		// always start new line for this
+		if (newbopflag) {
+			sprintf(logline, "%ld %ld bop ", counter[0], numpages+1);
+			PSputs(logline, output);
+		}
+		else PSputs("bp ", output);
+
+		if (stripcomment == 0) docountercomment (output);
+
+/*		sure use of pageno ??? is OK even with countzeroflag ??? use page instead ??? */
+		if (bBackGroundFlag && bBackUsed) {		/* 98/Jun/30 */
+			if (BackColors[page].A != -1.0 ||
+				BackColors[page].B != -1.0 ||
+				BackColors[page].C != -1.0) {
+//				putc('\n', output);
+				PSputc('\n', output);
+//				fputs("gsave clippath ", output);
+				PSputs("gsave clippath ", output);
+				SavedColor = CurrColor;			/* save around following */
+				CurrColor = BackColors[page];
+				doColorSet(output, 3);			/* background - in dvispeci.c */
+//				fputs("fill grestore ", output);						
+				PSputs("fill grestore ", output);						
+				CurrColor = SavedColor;			/* restore after 99/Apr/06 */
+/*				putc('\n', output); */
+/*				CurrColor.A = CurrColor.B = CurrColor.C = 0.0F;
+				CurrColor.D = 0.0F; */		/* initial color on page ? */
+			}
+		}
+/*		now pop color pushed at bottom of previous page (restored stack up above) */
+		if (bColorUsed && (colorindex > 0)) {		/* 98/Feb/14 */
+			doColorPop(page);	
+			doColorSet(output, 2);			/* bop - in dvispeci.c */
+		}
+		else {
+			PSputc('\n', output);	/* omission slightly risky ... */
+//			freshflag = 1;			// maybe not, keep blank line in PS
+		}
+
+	}
+/*	maybe also do "structuring conventions" stuff ? */
+}
+
+void do_eop(FILE *output, FILE *input) { /* end of page */
+	int c;
+//	char *s;
+
+	if (bAbort) abortjob();					/* 1992/Nov/24 */
+	if (abortflag) return;
+
+/*	check_stack(pageno); */ /*	check that stack is empty */
+	
+	showcount = 0;
+
+	if (colorindex > 0)	checkColorStack(output);	/* 1996/Nov/3 */
+/*	do this only if color was used ??? */
+	if (bCarryColor && bColorUsed) {
+/*		doColorPush(); *//* NO - do in dvipslog.c */
+/*		UGH! This only makes sense if we page sequentially */
+	}
+
+	if (clipstackindex > 0) doClipBoxPopAll(output);
+
+	if (skipflag == 0) {
+		if (CTMstackindex != 0) checkCTM(output);		/* 1996/Nov/3 */
+		PSputc('\n', output);			// always start new line
+		if (newbopflag) PSputs("eop ", output);
+		else PSputs("ep ", output);
+
+		if (stripcomment == 0)  docountercomment (output);
+
+		PSputc('\n', output);
+		PSputs("end", output);
+		if (stripcomment == 0) PSputs(" % dvidict", output);
+		PSputc('\n', output);
+/*		%%PageTrailer comments highly optional ... */
+		if (bOptionalDSC) {						/* 1994/Mar/3 */
+			if (stripcomment == 0) {
+//				fputs("%%PageTrailer\n", output);
+				PSputs("%%PageTrailer\n", output);
+			}
+		}
+		if (verboseflag) showline("] ", 0);
+
+/* maybe also do "structuring conventions" stuff ? */
+		numpages++;		/* update number of pages actually processed */
+	}
+//	if (ferror(output) != 0) 
+	if (output != NULL && ferror(output)) {
+		showline("\n", 0);
+//		sprintf(logline, " ERROR in output file %s\n", outputfile);
+		showline("ERROR in output file", 1);
+		perrormod((outputfile != NULL) ? outputfile : "");
+		giveup(7);
+		return;
+	}
+
+/*	Normally bRepeatMode == 0 */			 /* 1995/Aug/27 */
+	if (nRepeatCount > 1) {
+		nRepeatIndex++;
+		if (nRepeatIndex == nRepeatCount) nRepeatIndex = 0;
+		else {
+			fseek (input, currentpagestart, SEEK_SET);
+			return;
+		}
+	}
+
+	skipflag = 0;
+	if (reverseflag != 0) { /* go back if reading in reverse */
+		if (previous > 0) fseek(input, previous, SEEK_SET);
+		else finish = -1;
+	}
+	if (textures != 0) (void) ureadfour(input);	/* skip over length code */
+/*	may also want to check whether length is something reasonable ? */
+	c = getc(input); (void) ungetc(c, input);		/* peek ahead */
+/*	here we expect to see bop, nop or fnt_def's ONLY */
+/*	if (c >= 0 && c <= 127) {
+		showline( "Invalid code %d between EOP and BOP\n", c);
+		tellwhere(1);
+		errcount(0); 
+		finish = -1;
+	} */
+	if (c >= 0 && c <= 127) { /* this should normally not happen: */
+		sprintf(logline, " invalid code (%d)\n", c); /* DEBUG */
+		showline(logline, 1);
+		finish = -1;
+	}
+}
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+void do_right1(FILE *output, FILE *input) { /* rare */
+	int b;
+	b = sreadone(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg r", (double) b / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%d r", b); /* right */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + b; */
+	}
+}
+
+void do_right2(FILE *output, FILE *input) {
+	int b;
+	b = sreadtwo(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg r", (double) b / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%d r", b);	/* right */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + b; */
+	}
+} 
+
+void do_rightsub(FILE *output, long b) {
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg r", (double) b / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld r", b); /* right */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + b; */
+	}
+}
+
+void do_right3(FILE *output, FILE *input) {
+	do_rightsub(output, sreadthree(input));
+} 
+
+void do_right4(FILE *output, FILE *input) {
+	do_rightsub(output, sreadfour(input));
+} 
+
+void do_w0(FILE * output) {
+	if (skipflag == 0) {
+//		fputs(" w", output);	/* wright */
+		PSputs(" w", output);	/* wright */
+		showcount = 0;
+/*		h = h + w; */
+	}
+}
+
+void do_w1(FILE *output, FILE *input) { /* rare */
+	long w; /* trial */
+	w = sreadone(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg W", (double) w / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld W", w); /* wsetright */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + w; */
+	}
+}
+
+void do_w2(FILE *output, FILE *input) {
+	long w; /* trial */
+	w = sreadtwo(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg W", (double) w / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld W", w); /* wsetright */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + w; */
+	}
+} 
+
+void do_wsub(FILE *output, long w) {
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg W", (double) w / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld W", w); /* wsetright */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + w; */
+	}
+}
+
+void do_w3(FILE *output, FILE *input) {
+	do_wsub(output, sreadthree(input));
+} 
+
+void do_w4(FILE *output, FILE *input) {
+	do_wsub(output, sreadfour(input));
+} 
+
+void do_x0(FILE *output) {
+	if (skipflag == 0) {
+//		fputs(" x", output); /* xright */
+		PSputs(" x", output); /* xright */
+		showcount = 0;
+/*		h = h + x; */
+	}
+}
+
+void do_x1(FILE *output, FILE *input) { /* rare */
+	long x;	/* trial */
+	x = sreadone(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg X", (double) x / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld X", x); /*  xsetright */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + x; */
+	}
+}
+
+void do_x2(FILE *output, FILE *input) {
+	long x; /* trial */
+	x = sreadtwo(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg X", (double) x / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld X", x); /* xsetright */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + x; */
+	}
+} 
+
+void do_xsub(FILE *output, long x) {
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg X", (double) x / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld X", x); /* xsetright */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	h = h + x; */
+	}
+}
+
+void do_x3(FILE *output, FILE *input) {
+	do_xsub(output, sreadthree(input));
+}
+
+void do_x4(FILE *output, FILE *input) {
+	do_xsub(output, sreadfour(input));
+}
+
+void do_down1(FILE *output, FILE *input) { /* rare */
+	int a;
+	a = sreadone(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg d", (double) a / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%d d", a); /* down */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + a; */
+	}
+}
+
+void do_down2(FILE *output, FILE *input) { /* rare */
+	int a;
+	a = sreadtwo(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg d", (double) a / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%d d", a); /* down */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + a; */
+	}
+} 
+
+void do_downsub(FILE *output, long a) {
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg d", (double) a / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld d", a); /* down */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + a; */
+	}
+}
+
+void do_down3(FILE *output, FILE *input) {
+	do_downsub(output, sreadthree(input));
+}
+
+void do_down4(FILE *output, FILE *input) {
+	do_downsub(output, sreadfour(input));
+} 
+
+void do_y0(FILE *output) {
+	if (skipflag == 0) {
+//		fputs(" y", output); /* ydown */
+		PSputs(" y", output); /* ydown */
+		showcount = 0;
+/*		v = v + y; */
+	}
+}
+
+void do_y1(FILE *output, FILE *input) { /* rare */
+	long y;	/* trial */
+	y = sreadone(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg Y", (double) y / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld Y", y); /* ysetdown */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + y; */
+	}
+}
+
+void do_y2(FILE *output, FILE *input) {
+	long y;	/* trial */
+	y = sreadtwo(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg Y", (double) y / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld Y", y); /*  ysetdown */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + y; */
+	}
+} 
+
+void do_ysub(FILE *output, long y) {
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg Y", (double) y / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld Y", y); /* ysetdown */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + y; */
+	}
+}
+
+void do_y3(FILE *output, FILE *input) {
+	do_ysub(output, sreadthree(input));
+} 
+
+void do_y4(FILE *output, FILE *input) { /* not used */
+	do_ysub(output, sreadfour(input));
+} 
+
+void do_z0(FILE *output) {
+	if (skipflag == 0) {
+//		fputs(" z", output); /* zdown */
+		PSputs(" z", output); /* zdown */
+		showcount = 0;
+/*		v = v + z; */
+	}
+}
+
+void do_z1(FILE *output, FILE *input) {  /* rare */
+	long z;	/* trial */
+	z = sreadone(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg Z", (double) z / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld Z", z); /* zsetdown */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + z; */
+	}
+}
+
+void do_z2(FILE *output, FILE *input) {
+	long z;	/* trial */
+	z = sreadtwo(input);
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg Z", (double) z / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld Z", z); /* zsetdown */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + z; */
+	}
+} 
+
+void do_zsub(FILE *output, long z) {
+	if (skipflag == 0) {
+		if (! freshflag) PSputc('\n', output);
+#ifdef ALLOWSCALE
+		if (outscaleflag) {
+			sprintf(logline, "%.9lg Z", (double) z / outscale);
+		}
+		else
+#endif
+		{
+			sprintf(logline, "%ld Z", z); /* zsetdown */
+		}
+		PSputs(logline, output);
+		freshflag = 0;
+		showcount = 0;
+/*	v = v + z; */
+	}
+}
+
+void do_z3(FILE *output, FILE *input) {
+	do_zsub(output, sreadthree(input));
+} 
+
+void do_z4(FILE *output, FILE *input) {
+	do_zsub(output, sreadfour(input));
+} 
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+void complainfontcode(unsigned long fs) {
+	sprintf(logline, " Bad font code %lu (> %u)\n", fs, MAXFONTNUMBERS-1);
+	showline(logline, 1);
+}
+
+void switchfont(FILE *output, int fs) { /* switching to other font */
+	int fn;
+
+/*	if (fs < 0 || fs > MAXFONTNUMBERS) */	/* new trial debugging */
+	if (fs < 0)	{							/* split up 93/Dec/11 */
+		sprintf(logline, "Negative font number %d\n", fs);
+		showline(logline, 1);
+	}
+	if (fs >= MAXFONTNUMBERS) complainfontcode(fs);
+	ff = fs;								/* set state */
+	if (skipflag == 0) 	{
+		if (bShortFont != 0) fn = finx[ff];
+		else fn = fs;
+		PSputc('\n', output);		// always on new line
+		sprintf(logline, "f%d", fn);
+		PSputs(logline, output);
+	}
+
+/*	if (fnt < 0) fnt = 0;	*/	/* for safety sake */
+	showcount = 0;
+}
+
+void do_fnt1(FILE *output, FILE *input) { /* switch fonts */
+	unsigned int fs;
+/*	fs = ureadone(input); */
+	fs = getc(input);
+/*	if (skipflag == 0) */
+	switchfont(output, (int) fs);
+}
+
+void do_fnt2(FILE *output, FILE *input) { /* switch fonts */
+	unsigned int fs;
+	fs = ureadtwo(input);
+/*	if (skipflag == 0) */
+	if (fs >= MAXFONTNUMBERS) {
+		complainfontcode (fs);
+		fs = MAXFONTNUMBERS-1;
+	}
+	switchfont(output, (int) fs);
+}
+
+void do_fntsub(FILE *output, unsigned long fs) {
+	if (fs >= MAXFONTNUMBERS) {
+		complainfontcode (fs);
+		fs = MAXFONTNUMBERS-1;
+	}
+	switchfont(output, (int) fs);
+}
+
+void do_fnt3(FILE *output, FILE *input) { /* switch fonts */
+/*	unsigned long fs;
+	fs = ureadthree(input); */
+	do_fntsub(output, ureadthree(input));
+}
+
+void do_fnt4(FILE *output, FILE *input) { /* switch fonts */
+	long fs;
+	fs = sreadfour(input);
+	if (fs < 0) {
+		sprintf(logline, "Font code %ld < 0\n", fs);
+		showline(logline, 1);
+		fs = 0;
+	}
+	do_fntsub(output, (unsigned long) fs);
+}
+
+/**************************************************************************/
+
+void do_xxxi (FILE *output, FILE *input, unsigned int n) {
+/*	int c; */
+	unsigned int k;
+
+	if (skipflag) {
+		if (bCarryColor) prereadspecial(input, n);
+		else for(k = 0; k < n; k++) (void) getc(input);
+	}
+	else readspecial(output, input, (unsigned long) n);
+	showcount = 0;
+}
+
+void do_xxx1 (FILE *output, FILE *input) { /* for /special */
+	unsigned n;
+/*	n = ureadone(input); */
+	n = getc(input);
+	do_xxxi(output, input, n);
+}
+
+void do_xxx2 (FILE *output, FILE *input) { /* for /special */
+	unsigned int n;
+	n = ureadtwo(input);
+	do_xxxi(output, input, n);
+}
+
+void do_xxxl (FILE *output, FILE *input, unsigned long n) {
+/*	int c; */
+	unsigned long k;
+
+	if (skipflag) {
+		if (bCarryColor) prereadspecial(input, n);
+		else for(k = 0; k < n; k++) (void) getc(input);
+	}
+	else readspecial(output, input, n);
+	showcount = 0;
+}
+
+void do_xxx3 (FILE *output, FILE *input) { 
+	unsigned long n;
+	n = ureadthree(input);
+	do_xxxl(output, input, n);
+}
+
+void do_xxx4 (FILE *output, FILE *input) { 
+	unsigned long n;
+	n = ureadfour(input);
+	do_xxxl(output, input, n);
+}
+
+/**************************************************************************/
+
+/* need to do this even if skipping pages */
+
+/* nothing much should actually happen here !!! */
+
+void fnt_def (FILE *output, FILE *input, unsigned int k) {
+	unsigned int na, nl, i;
+	int f, newfont=1;
+	char namebuffer[FNAMELEN];
+/*	char *fp; */
+	char *fp;
+
+	if (finx[k] != BLANKFONT) {			/* font being redefined 93/Dec/11 */
+/*		if (reverseflag == 0) {
+			showline("Font %d being redefined\n", k);
+			errcount(0);
+		} */
+		newfont = 0;
+		f = finx[k];
+	}
+	else { 
+		f = fnext; 	
+//		if (finx[k] != f) 
+		if (finx[k] != (short) f) {
+			showline(" ERROR: Inconsistency between passes\n", 1);
+			errcount(0);
+		}
+		fnext++; 
+/*		if (fnext >= maxfonts) { 
+			showline("Too many fonts in use (%d)\n", fnext);
+			fnext--;
+			errcount(0);
+		} */ /* already done in dvipslog.c ? */
+	} 
+
+/*  simply skip over checksum, at size, and design size */
+	for (k = 0; k < 12; k++) (void) getc(input);
+/*	fc[f] = ureadfour(input); 
+	fs[f] = ureadfour(input); 
+	fd[f] = ureadfour(input); */
+	na = getc(input);
+	nl = getc(input);
+	if (newfont == 0) { /* just skip over if already defined */
+		for (i = 0; i < na+nl; i++) (void) getc(input);
+	}
+	else { /* this should never happen !!! */ /* debugging */
+		sprintf(logline, " ERROR: Redefining font %d\n", f);	
+		showline(logline, 1);
+/*		fp = fontname[f]; */
+		fp = namebuffer;
+		if (na + nl >= sizeof(namebuffer)-1) {	/* FNAMELEN */
+			sprintf(logline, "Font name too long: %d (> %d) ",
+					na + nl, sizeof(namebuffer)-1);
+			showline(logline, 1);
+			showline("\n", 0);
+			errcount(0);
+			tellwhere(input, 1);
+			for (i = 0; i < na+nl; i++) (void) getc(input);
+		}
+		else {
+			for (i = 0; i < na+nl; i++) *fp++ = (char) getc(input); 
+		}
+		*fp++ = '\0';
+		if (fontname[f] != NULL) free(fontname[f]);
+		fontname[f] = zstrdup(namebuffer);
+/*		putc('\n', output); */
+		fontsubflag[f] = -1;				/* all this goes to extract */
+/*		if (substitute != 0) fontsubflag[f] = fontremap(fontname[f]); */
+/*		if (uppercaseflag != 0) uppercase(font, fontname[f]); else */
+	}
+/* don't define fonts here - otherwise pages won't be separable ! */
+}
+
+void do_fnt_def1 (FILE *output, FILE *input) { /* define font */
+	unsigned int k;
+
+/*	k = ureadone(input); */
+	k = getc(input);
+	fnt_def(output, input, k);
+}
+
+void do_fnt_def2 (FILE *output, FILE *input) { /* define font */
+	unsigned int k;
+
+	k = ureadtwo(input);
+	if (k >= MAXFONTNUMBERS) {
+		complainfontcode (k);
+		k = MAXFONTNUMBERS-1;
+	}
+	fnt_def(output, input, (unsigned int) k);
+}
+
+void do_fnt_defsub (FILE *output, FILE *input, unsigned long k) {
+	if (k >= MAXFONTNUMBERS) {
+		complainfontcode (k);
+		k = MAXFONTNUMBERS-1;
+	}
+	fnt_def(output, input, (unsigned int) k);
+}
+
+void do_fnt_def3 (FILE *output, FILE *input) { /* define font */
+/*	unsigned long k;
+	k = ureadthree(input); */
+/*	do_fnt_defsub(output, input, (unsigned int) ureadthree(input)); ? */ 
+	do_fnt_defsub(output, input, ureadthree(input));
+}
+
+void do_fnt_def4(FILE *output, FILE *input) { /* define font */
+	long k;
+
+	k = sreadfour(input);
+	if (k < 0) {
+		sprintf(logline, "Font code %ld < 0\n", k);
+		showline(logline, 1);
+		k = 0;
+	}
+	do_fnt_defsub(output, input, (unsigned long) k);
+}
+
+/* need to do this even if skipping pages */
+
+void do_pre (FILE *output, FILE *input) { /* doesn't do output */
+/*	unsigned int id; */
+	unsigned int k, j;
+
+/*	id = ureadone(input); */
+	(void) getc(input);		/* DVI ID byte */
+/*	if (id != ID_BYTE) {
+		showline("File is DVI version %d - program designed for %d\n",
+			id, ID_BYTE);
+		errcount(0); 
+	} */
+
+	for (j = 0; j < 12; j++) (void) getc(input);
+/*	num = ureadfour(input); 
+	den = ureadfour(input);
+	mag = ureadfour(input); */
+
+/*	k = ureadone(input); */
+	k = getc(input);
+/*	s = comment; */
+	for (j = 0; j < k; j++) (void) getc(input); 
+/*	redundant:  done in dvipslog  */
+	if (textures != 0) (void) ureadfour(input);	/* skip over length code */
+} 
+
+/* need to do this even if skipping pages */
+
+void do_post (FILE *output, FILE *input) { /* doesn't do output */
+	int k;
+	previous = sreadfour(input);	/* was ureadfour ... */
+ 	if (traceflag) showline("Hit POST!\n", 0);
+	for (k = 0; k < 12; k++) (void) getc(input); 
+/*	num = ureadfour(input);
+	den = ureadfour(input);
+	mag = ureadfour(input); */
+	for (k = 0; k < 8; k++) (void) getc(input); 
+/*	dvi_l = ureadfour(input);
+	dvi_u = ureadfour(input); */
+	for (k = 0; k < 4; k++) (void) getc(input); 
+/*	dvi_s = ureadtwo(input);	
+	dvi_t = ureadtwo(input); */
+/*	if (dvi_s >= maxstack - 1) {
+		showline(" WARNING: The stack may overflow\n", 1);
+		errcount(0);
+	} */
+	if (reverseflag == 0) finish = -1; 
+	if (reverseflag != 0) fseek(input, previous, SEEK_SET); /* 98/Jul/20 ??? */
+}
+
+void do_post_post (FILE *output, FILE *input) { /* only in reverse ? */
+	unsigned long previous;
+	unsigned int id;
+
+	if (traceflag) showline("Hit POSTPOST!\n", 0);	/* never ? */
+ 	previous = ureadfour(input); 
+/*	(void) ureadfour(input); */			/* backward pointer to post */
+	id = getc(input); 
+/*	(void) getc(input); */				/* DVI ID byte */
+/*	check ID_BYTE again ? */
+/*	followed by at least four 223's */
+	if (reverseflag != 0) fseek(input, previous, SEEK_SET); /* go to POST? */
+	else {
+//		fputs("% This is really the end !\n", output);
+		PSputs("% This is really the end !\n", output); // never!
+	}
+	if (reverseflag == 0) finish = -1;	/* 98/Jul/20 */
+	showcount = 0;
+}
+
+// main entry point to this part of the program
+// lastflag indicates last in set of copies of same page
+
+int scandvifile (FILE *output, FILE *input, int lastflag) {
+	int c, fs;
+/*	int k; */
+	long filptr; 
+
+#ifdef DEBUGGING
+	if (output == NULL) {
+		sprintf(logline, " NULL %s file\n", "output"); /* debug */
+		showline(logline, 1);
+	}
+	if (input == NULL) {
+		sprintf(logline, " NULL %s file\n", "input"); /* debug */
+		showline(logline, 1);
+	}
+#endif
+
+	if (countzeroflag) resetpagerangehit (0);
+
+	numpages = 0;		/* number of pages actually processed */
+	firstpage = -1;		/* flag for two sided printing case */
+/*	evenlast = -1; oddlast = -1; */
+
+	if (textures != 0) fseek(input, dvistart, SEEK_SET);
+
+	if (reverseflag != 0) skiptoend = -1;
+	else skiptoend = 0;
+
+	pagenumber = 0;			/* value from earlier scan already used */
+
+	finish = 0;
+	stinx = 0;		/* maxstinx = 0;	*/	/* redundant, hopefully */
+/*	if (reverseflag != 0) pageorder = -1; else pageorder = +1; */
+
+/*	if (wanthistogram != 0) for(k = 0; k < 256; k++) histogram[k] = 0; */
+
+	if (nRepeatCount > 1) nRepeatIndex = 0;	/* 95/Aug/27 */
+
+	for(;;) {
+/*		if (output == NULL) showline("NULL output file\n", 1); */
+		c = getc(input);
+		if (c == EOF) {
+			sprintf(logline, " Unexpected EOF (%s)\n", "scandvi");
+			showline(logline, 1);
+			{
+				long current = ftell(input);
+				sprintf(logline, " at byte %d\n", current);
+				showline(logline, 1);
+			}
+			finish = -1;
+/*			increase error count here ? */
+			break;			/* NEW ??? */
+/*			giveup(13); */
+		}
+/*		if (wanthistogram != 0) histogram[c]++; */
+		if (c < 128) {
+			normalchar(output, input, c);
+/* set character in current font and advance h by width of character */
+		}
+		else if (c >= 171 && c <= 234) { /*	switch to font (c - 171) */
+			fs = (c - 171);
+/*			if (skipflag == 0) */
+			switchfont(output, fs);
+		}
+		else {
+			switch(c) {
+				case set1: do_set1(output, input); break;
+				case set2: do_set2(output, input); break;  /* silly */
+				case set3: do_set3(output, input); break;  /* silly */
+				case set4: do_set4(output, input); break;  /* silly */
+				case set_rule: do_set_rule(output, input); break;
+				case put1: do_put1(output, input); break ;
+				case put2: do_put2(output, input); break;	/* silly */
+				case put3: do_put3(output, input); break;	/* silly */
+				case put4: do_put4(output, input); break;	/* silly */
+				case put_rule: do_put_rule(output, input); break;	
+				case nop: break;				/* easy, do nothing ! */
+				case bop: do_bop(output, input); break;
+				case eop: do_eop(output, input); break;
+				case push: do_push(output, input); break;
+				case pop: do_pop(output, input); break;
+				case right1: do_right1(output, input); break;
+				case right2: do_right2(output, input); break;  
+				case right3: do_right3(output, input); break; 
+				case right4: do_right4(output, input); break; 
+				case w0: do_w0(output); break;
+				case w1: do_w1(output, input); break;
+				case w2: do_w2(output, input); break; 
+				case w3: do_w3(output, input); break; 
+				case w4: do_w4(output, input); break;		/* not used ? */
+				case x0: do_x0(output); break;
+				case x1: do_x1(output, input); break;
+				case x2: do_x2(output, input); break; 
+				case x3: do_x3(output, input); break; 
+				case x4: do_x4(output, input); break;		/* not used ? */
+				case down1: do_down1(output, input); break;
+ 				case down2: do_down2(output, input); break; 
+				case down3: do_down3(output, input); break; 
+				case down4: do_down4(output, input); break; 
+				case y0: do_y0(output); break;
+				case y1: do_y1(output, input); break;
+				case y2: do_y2(output, input); break; 
+				case y3: do_y3(output, input); break; 
+				case y4: do_y4(output, input); break;		/* not used ? */
+				case z0: do_z0(output); break;
+				case z1: do_z1(output, input); break;
+				case z2: do_z2(output, input); break; 
+				case z3: do_z3(output, input); break; 
+				case z4: do_z4(output, input); break;		/* not used ? */
+				case fnt1: do_fnt1(output, input); break;
+				case fnt2: do_fnt2(output, input); break;	/* silly */
+				case fnt3: do_fnt3(output, input); break;	/* silly */
+				case fnt4: do_fnt4(output, input); break;	/* silly */
+				case xxx1: do_xxx1(output, input); break;
+				case xxx2: do_xxx2(output, input); break;	/* not used ? */
+				case xxx3: do_xxx3(output, input); break;	/* not used ? */
+				case xxx4: do_xxx4(output, input); break; 
+				case fnt_def1: do_fnt_def1(output, input); break;
+				case fnt_def2: do_fnt_def2(output, input); break; /* silly */
+				case fnt_def3: do_fnt_def3(output, input); break; /* silly */
+				case fnt_def4: do_fnt_def4(output, input); break; /* silly */
+				case post: do_post(output, input); break;
+				case pre: do_pre(output, input); break;
+				case post_post: do_post_post(output, input); break;
+	
+				default:
+				{			/* includes EOF ? */
+/* we already complained about this in dvipslog ... */
+					finish = -1;	/* ??? */
+/* this should normally not happen: */
+/*					showline("Unrecognized DVI command!", 1); */
+					sprintf(logline, " ERROR: Unrecognized DVI command: %d", c);
+					showline(logline, 1);
+					filptr = ftell(input);
+					if (filptr > 0)	{			/* 95/Dec/10 */
+						sprintf(logline, " at byte %ld in DVI file", filptr-1);
+						showline(logline, 0);
+/* or use tellwhere(1); ? */
+					}
+					errcount(0); 
+/*					giveup(7); */
+				}
+				break;
+			}
+		}
+		if (c < xxx1 || c > xxx4) freshflag = 0;		// 99/Dec/19
+		if (finish != 0) break;
+		if (bAbort) abortjob();				// fine grained 
+		if (abortflag) break;				// in DLL version
+	}
+
+	if (abortflag) return -1;
+
+	if (verboseflag && lastflag) {
+		char *s;
+		showline("\n", 0);
+		s = logline;
+		if (statisticsflag) {
+			sprintf(s, "Max stack depth %d - ", dvi_s);
+			s += strlen(s);
+			sprintf(s, "%d font slot%s used - ",
+				fnext, (fnext == 1) ? "" : "s");	/* 1994/Feb/1 */
+			s += strlen(s);
+		}
+//		we have a problem if there are more than 65535 pages
+		sprintf(s, "DVI file contains %d page%s\n", dvi_t,
+			(dvi_t == 1) ? "" : "s");				/* 1994/Feb/1 */
+		showline(logline, 0);
+	}
+	return 0;
+}
+
+/* deal with CMINCH */ /* deal with MANFNT */
+
+/* add in PostScript 2.0 structuring convention bullshit */
+
+/* can use either box or line to draw rules - don't need both */
+
+/* combine /font9 def and /f9 def ? what ? */
+
+/* reduce size of scanfile to allow optimize */
+
+/* deal with other page formats ? A4 ? portrait ? */
+
+/* precompute the scale factor used on each BOP - don't recompute it */
+
+/* quick way to get fonts: go to end of file - NOT NEEDED */
+
+/* alternate way of specifying pages (actual pages versus counter[0] ? */
+/* OK use upper case B and E instead of lower case b and e */
+
+/* maybe control how much goes on one output line ? */
+/* presently somewhat kludgy in allowing MAXSHOWONLINE items */
+/* rather count character columns and check before output if it will fit */
+
+/* avoid bind def in some cases to allow redefinition via special ? */
+
+/* may need to align lower left of rule to underlying grid... */
+/* do tests with rules spaced along page to see effect */
+
+/* shorten code for set_rule and put_rule and bp and ep */
+/* set up scale constant to use at top of page */
+/* improve mf  & set font */
+
+/* should bop include "dvidict begin" and eop include "end" ? */
+/* but watch out, fnt_def1 and xxx1 can appear between eop and bop */
+
+/* further compression coding to exploit common sequences ? */
+/* d u u u - s o y u - s o o o o - s o o u - s o o o o o */
+/* exploit - o u - o o u u - sequences ? - u o already is absent */
+/* o o => O,  u u => U,  o u => K,  d u => D */
+/* s o y u => M, s o z u => N */
+/* also helps make undecypherable ! have under control of flag ? */
+/* write as post-processing rules ? use output line buffer ? */
+/* also s o y u <n> r is common pattern with fixed <n> */
+
+/* note also common patterns like r(char)s and r(char)S */
+
+/* keep convention that lower case letters are straight DVI command trans */
+/* while upper case letters are combinations of sorts */
+
+/* access w, x, y, z off stack (i.e. keep in stack not register) ? */
+
+/* consider sequences of set1 commands - treat like normalchar ? */
+
+/* check on fonthit even when font switch on page that is not printed ? */
+
+/* check on redundant operations that dvipslog already does anyway */
+
+/* for set1 and put1, use number, not string! then use =string ? */
+
+/* check that nothing but nop and font defs happen between eop and bop ? */
+
+/* Implement %%PageTable: ? */
+
+/* avoid shortening octal codes for old interpretors maybe */
+
+/* try and avoid actually giving up if at all possible */
+
+/* when print even pages only, print a blank at first if last page is odd */
+/* when print odd pages only, print a blank at first if first is even */
+
+/* when stack gets too deep insert a savestack  - and matching restorestack */
+
+/* bRemapSpace remaps 32 => 195, 13 to 176, 10 => 173, 9 => 170, 0 => 161 */
+/* Rational is that text fonts reencoded to TeX 'n ANSI do not use 0 */
+/* or 9 or 10, and from now on text fonts will not use 13 for fl, */
+/* and TeX does not use 32 in text fonts */
+/* But math fonts do use 0, 9, 10, 13 and 32 */
+/* but math fonts always have the repetition of 0 - 32 higher up */
+/* And for some versions of Acrobat it may be best not to do this */
+/* for example transfer material to clipboard is null terminated */
+/* 9 is treated as tab, 10 as newline, 13 ignored and 32 ignored */
+
+/* Bytes 250 and 251 are used for left to right typesetting. For instance,
+   what follows is the definition of these commands in omega:
+
+   250. Begin a (possibly recursive) reflected segment.
+   251. End a (possibly recursive) reflected segment.
+
+   When a DVI-IVD driver encounters a \\{begin\_reflect} command, it should
+   skim ahead (as previously described) until finding the matching
+   \\{end\_reflect}; these will be properly nested with respect to each
+   other and with respect to \\{push} and \\{pop}.  After skimming has
+   located a segment of material to be reflected, that segment should be
+   re-scanned and obeyed in mirror-image mode as described earlier.  The
+   reflected segment might recursively involve
+   $\\{begin\_reflect}/\\{end\_reflect}$ pairs that need to be reflected
+   again. */
+

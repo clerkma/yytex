@@ -1,0 +1,39 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: LASY
+
+% Use by Y&Y extra LaTeX symbol fonts: LASY10, LASY9, LASY8, LASY7, LASYB10
+
+% This is a small font containing a few extra symbols for use in LaTeX
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+1	22B2	normal subgroup
+2	22B4	contains as normal subgroup
+3	22B3	normal subgroup or equal to
+4	22B5	contains as normal subgroup or equal to
+
+40	FFFF	west arrow tip
+41	FFFF	east arrow tip
+42	FFFF	north arrow tip
+42	FFFF	south arrow tip
+
+48	2127	mho (Omega inverted)
+49	22C8	bowtie
+50	25A1	open square operator 2610
+51	25C7	math diamond lozenge 22C4
+
+58	FFFF	extension for following
+59	2ADD	squiggly right arrow
+60	228F	square image of
+61	2290	square of original
+
+% DUPLICATES of 0 - 31
+
+162	22B2	normal subgroup
+163	22B4	contains as normal subgroup
+164	22B3	normal subgroup or equal to
+165	22B5	contains as normal subgroup or equal to
+

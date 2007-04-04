@@ -1,0 +1,69 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% These are the `standard' 35 printer resident fonts plus a couple more
+% This file forces the use of printer resident fonts even if the
+% pfb files for these fonts exist (used for ATM for example).
+% Here the names used are the abbreviations advocated by Adobe
+
+agw     AvantGarde-Book			*reside*	*force*
+ago     AvantGarde-BookOblique		*reside*	*force*
+agd     AvantGarde-Demi			*reside*	*force*
+agdo    AvantGarde-DemiOblique		*reside*	*force*
+
+bkl     Bookman-Light			*reside*	*force*
+bkli    Bookman-LightItalic		*reside*	*force*
+bkd     Bookman-Demi			*reside*	*force*
+bkdi    Bookman-DemiItalic		*reside*	*force*
+
+% cll     Clarendon-Light		
+% cl      Clarendon		
+% clb     Clarendon-Bold		
+
+com     Courier				*reside*	*force*
+coo     Courier-Oblique			*reside*	*force*
+cobo    Courier-BoldOblique		*reside*	*force*
+cob     Courier-Bold			*reside*	*force*
+
+hv      Helvetica			*reside*	*force*
+hvo     Helvetica-Oblique		*reside*	*force*
+hvb     Helvetica-Bold			*reside*	*force*
+hvbo    Helvetica-BoldOblique		*reside*	*force*
+
+% hvc     Helvetica-Condensed		
+% hvco    Helvetica-Condensed-Oblique	
+% hvcb    Helvetica-Condensed-Bold	
+% hvcbo   Helvetica-Condensed-BoldObl	
+
+% lmi     LucidaMath-Italic	
+% lms     LucidaMath-Symbol	
+% lme     LucidaMath-Extension	
+
+% nbr     NewBaskerville-Roman	
+% nbi     NewBaskerville-Italic	
+% nbb     NewBaskerville-Bold	
+% nbbi    NewBaskerville-BoldItalic
+
+ncr     NewCenturySchlbk-Roman		*reside*	*force*
+nci     NewCenturySchlbk-Italic		*reside*	*force*
+ncb     NewCenturySchlbk-Bold		*reside*	*force*
+ncbi    NewCenturySchlbk-BoldItalic	*reside*	*force*
+
+% new     NeuzeitS-Book	
+% newh    NeuzeitS-BookHeavy
+
+por     Palatino-Roman			*reside*	*force*
+poi     Palatino-Italic			*reside*	*force*
+pob     Palatino-Bold			*reside*	*force*
+pobi    Palatino-BoldItalic		*reside*	*force*
+
+sy      Symbol				*reside*	*force*
+
+tir     Times-Roman			*reside*	*force*
+tii     Times-Italic			*reside*	*force*
+tib     Times-Bold			*reside*	*force*
+tibi    Times-BoldItalic		*reside*	*force*
+
+zcmi    ZapfChancery-MediumItalic	*reside*	*force*
+
+zd      ZapfDingbats			*reside*	*force*

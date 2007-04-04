@@ -1,0 +1,338 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Y&Y DVIPSONE font substitution file.
+%
+% Do not modify this file in order to embed fonts in PostScript files.
+% Use the DVIPSONE command interface instead (see ZZDVICMD.DOC).
+
+
+avgb AvantGarde-Book *epsf* *force* *reside* *remap* zzroman 
+avgbo AvantGarde-BookOblique *epsf* *force* *reside* *remap* zzitalic 
+avgd AvantGarde-Demi *epsf* *force* *reside* *remap* zzroman 
+avgdo AvantGarde-DemiOblique *epsf* *force* *reside* *remap* zzitalic 
+awb ACaslon-Bold *epsf* *force* *reside* *remap* zzroman
+awbi ACaslon-BoldItalic *epsf* *force* *reside* *remap* zzitalic
+awi ACaslon-Italic *epsf* *force* *reside* *remap* zzitalic
+awor ACaslon-Ornaments *epsf* *force* *reside*
+awrg ACaslon-Regular *epsf* *force* *reside* *remap* zzroman
+awsb ACaslon-Semibold *epsf* *force* *reside* *remap* zzroman
+awsbi ACaslon-SemiboldItalic *epsf* *force* *reside* *remap* zzitalic
+axi ACaslonExp-Italic *epsf* *force* *reside* *remap* zzitalic
+axrg ACaslonExp-Regular *epsf* *force* *reside* *remap* zzroman
+bi Birch *epsf* *force* *reside* *remap* zzroman
+bladd BellCentennial-Address *epsf* *force* *reside* *remap* zzroman
+blbla BellCentennial-BoldListingAlt *epsf* *force* *reside* *remap* zzroman
+blbls BellCentennial-BoldListing *epsf* *force* *reside* *remap* zzroman
+blnan BellCentennial-NameAndNumber *epsf* *force* *reside* *remap* zzroman
+blnanc BellCentennial-NameAndNumber *epsf* *force* *reside* *remap* zzpcode
+blscp BellCentennial-SubCaption *epsf* *force* *reside* *remap* zzroman
+blscpc BellCentennial-SubCaption *epsf* *force* *reside* *remap* zzpcode
+bkd Bookman-Demi *epsf* *force* *reside* *remap* zzroman
+bkdi Bookman-DemiItalic *epsf* *force* *reside* *remap* zzitalic
+bkl Bookman-Light *epsf* *force* *reside* *remap* zzroman
+bkli Bookman-LightItalic *epsf* *force* *reside* *remap* zzitalic
+bti BaskervilleBook-Italic *epsf* *force* *reside* *remap* zzitalic 
+btm BaskervilleBook-Medium *epsf* *force* *reside* *remap* zzroman 
+btmi BaskervilleBook-MedItalic *epsf* *force* *reside* *remap* zzitalic 
+btrg BaskervilleBook-Regular *epsf* *force* *reside* *remap* zzroman 
+cmb10 CMB10 *epsf* *force* *reside* *remap* zzroman 
+cmbx8 CMBX8 *epsf* *force* *reside* *remap* zzroman 
+cmbx10 CMBX10 *epsf* *force* *reside* *remap* zzroman 
+cmbx12 CMBX12 *epsf* *force* *reside* *remap* zzroman 
+cmbx6 CMBX6 *epsf* *force* *reside* *remap* zzroman 
+cmbx7 CMBX7 *epsf* *force* *reside* *remap* zzroman 
+cmbx9 CMBX9 *epsf* *force* *reside* *remap* zzroman 
+cmbxsl10 CMBXSL10 *epsf* *force* *reside* *remap* zzitalic
+cmbxti10 CMBXTI10 *epsf* *force* *reside* *remap* zzroman 
+cmcsc10 CMCSC10 *epsf* *force* *reside* *remap* zzroman
+cmdunh10 CMDUNH10 *epsf* *force* *reside* *remap* zzroman
+cmex10 CMEX10 *epsf* *force* *reside*  
+cmitt10 CMITT10 *epsf* *force* *reside* *remap* zzmono
+cmmi5 CMMI5 *epsf* *force* *reside*  
+cmmi6 CMMI6 *epsf* *force* *reside*  
+cmmi7 CMMI7 *epsf* *force* *reside*  
+cmmi8 CMMI8 *epsf* *force* *reside*  
+cmmi9 CMMI9 *epsf* *force* *reside*  
+cmmi10 CMMI10 *epsf* *force* *reside*  
+cmmi12 CMMI12 *epsf* *force* *reside*  
+cmmib10 CMMIB10 *epsf* *force* *reside*  
+cmr10 CMR10 *epsf* *force* *reside* *remap* zzroman 
+cmr12 CMR12 *epsf* *force* *reside* *remap* zzroman 
+cmr17 CMR17 *epsf* *force* *reside* *remap* zzroman 
+cmr5 CMR5 *epsf* *force* *reside* *remap* zzroman 
+cmr6 CMR6 *epsf* *force* *reside* *remap* zzroman 
+cmr7 CMR7 *epsf* *force* *reside* *remap* zzroman 
+cmr8 CMR8 *epsf* *force* *reside* *remap* zzroman 
+cmr9 CMR9 *epsf* *force* *reside* *remap* zzroman 
+cmsl8 CMSL8 *epsf* *force* *reside* *remap* zzroman 
+cmsl10 CMSL10 *epsf* *force* *reside* *remap* zzroman 
+cmsl12 CMSL12 *epsf* *force* *reside* *remap* zzroman 
+cmsltt10 CMSLTT10 *epsf* *force* *reside* *remap* zzmono
+cmss10 CMSS10 *epsf* *force* *reside* *remap* zzroman 
+cmss12 CMSS12 *epsf* *force* *reside* *remap* zzroman 
+cmsy10 CMSY10 *epsf* *force* *reside*  
+cmsy5 CMSY5 *epsf* *force* *reside*  
+cmsy6 CMSY6 *epsf* *force* *reside*  
+cmsy7 CMSY7 *epsf* *force* *reside*  
+cmsy8 CMSY8 *epsf* *force* *reside*  
+cmsy9 CMSY9 *epsf* *force* *reside*  
+cmti10 CMTI10 *epsf* *force* *reside* *remap* zzitalic 
+cmti12 CMTI12 *epsf* *force* *reside* *remap* zzitalic 
+cmti7 CMTI7 *epsf* *force* *reside* *remap* zzitalic 
+cmti8 CMTI8 *epsf* *force* *reside* *remap* zzitalic 
+cmti9 CMTI9 *epsf* *force* *reside* *remap* zzitalic 
+cmtt10 CMTT10 *epsf* *force* *reside* *remap* zzmono 
+cmtt12 CMTT12 *epsf* *force* *reside* *remap* zzmono 
+cmtt9 CMTT9 *epsf* *force* *reside* *remap* zzmono 
+cmu10 CMU10 *epsf* *force* *reside* *remap* zzroman
+cmvtt10  CMVTT10 *epsf* *force* *reside* *remap* zzmono
+cr Carta *epsf* *force* *reside*
+cob Courier-Bold *epsf* *force* *reside* *remap* zzmono 
+cobo Courier-BoldOblique *epsf* *force* *reside* *remap* zzmono 
+com Courier *epsf* *force* *reside* *remap* zzmono 
+como Courier-Oblique *epsf* *force* *reside* *remap* zzmono 
+crinoli Crinoline *epsf* *force* *reside*
+eub Eurostile-Bold *epsf* *force* *reside* *remap* zzroman
+eubo Eurostile-BoldOblique *epsf* *force* *reside* *remap* zzitalic
+euex10 EUEX10 *epsf* *force* *reside*
+eufb10 EUFB10 *epsf* *force* *reside*  
+eufm10 EUFM10 *epsf* *force* *reside*  
+eufm7 EUFM7 *epsf* *force* *reside*  
+eurb10 EURB10 *epsf* *force* *reside*
+eurm10 EURM10 *epsf* *force* *reside*
+eusb10 EUSB10 *epsf* *force* *reside*
+eusm10 EUSM10 *epsf* *force* *reside*
+fub Futura-Bold *epsf* *force* *reside* *remap* zzroman 
+fubo Futura-BoldOblique *epsf* *force* *reside* *remap* zzitalic 
+ful Futura-Light *epsf* *force* *reside* *remap* zzroman 
+fulo Futura-LightOblique *epsf* *force* *reside* *remap* zzitalic 
+fuw Futura-Book *epsf* *force* *reside* *remap* zzroman 
+fuwo Futura-BookOblique *epsf* *force* *reside* *remap* zzitalic 
+gdb AGaramond-Bold *epsf* *force* *reside* *remap* zzroman 
+gdbi AGaramond-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+gdi AGaramond-Italic *epsf* *force* *reside* *remap* zzitalic 
+gdrg AGaramond-Regular *epsf* *force* *reside* *remap* zzroman 
+gdsb AGaramond-Semibold *epsf* *force* *reside* *remap* zzroman 
+gdsbi AGaramond-SemiboldItalic *epsf* *force* *reside* *remap* zzitalic 
+glb Galliard-Bold *epsf* *force* *reside* *remap* zzroman
+glbi Galliard-BoldItalic *epsf* *force* *reside* *remap* zzitalic
+gli Galliard-Italic *epsf* *force* *reside* *remap* zzitalic
+glr Galliard-Roman *epsf* *force* *reside* *remap* zzroman
+gqbv GrotesqueMT-BoldExtended *epsf* *force* *reside* *remap* zzroman
+gqb GrotesqueMT-Bold *epsf* *force* *reside* *remap* zzroman
+gqi GrotesqueMT-Italic *epsf* *force* *reside* *remap* zzitalic
+gq GrotesqueMT *epsf* *force* *reside* *remap* zzroman
+gn GillSans *epsf* *force* *reside* *remap* zzroman
+gnb GillSans-Bold *epsf* *force* *reside* *remap* zzroman
+gnbi GillSans-BoldItalic *epsf* *force* *reside* *remap* zzroman
+gni GillSans-Italic *epsf* *force* *reside* *remap* zzitalic
+gnxbd GillSans-ExtraBoldDisplay *epsf* *force* *reside* *remap* zzroman
+hlb HelveticaNeue-Bold *epsf* *force* *reside* *remap* zzroman 
+hlbi HelveticaNeue-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+hlbl HelveticaNeue-Black *epsf* *force* *reside* *remap* zzroman 
+hlbli HelveticaNeue-BlackItalic *epsf* *force* *reside* *remap* zzitalic
+hlbv HelveticaNeue-BoldExt *epsf* *force* *reside* *remap* zzroman
+hlbvo HelveticaNeue-BoldExtObl *epsf* *force* *reside* *remap* zzitalic
+hlh HelveticaNeue-Heavy *epsf* *force* *reside* *remap* zzroman 
+hlhi HelveticaNeue-HeavyItalic *epsf* *force* *reside* *remap* zzitalic 
+hli HelveticaNeue-Italic *epsf* *force* *reside* *remap* zzitalic 
+hll HelveticaNeue-Light *epsf* *force* *reside* *remap* zzroman 
+hlli HelveticaNeue-LightItalic *epsf* *force* *reside* *remap* zzitalic 
+hlm HelveticaNeue-Medium *epsf* *force* *reside* *remap* zzroman 
+hlmi HelveticaNeue-MediumItalic *epsf* *force* *reside* *remap* zzitalic 
+hlr HelveticaNeue-Roman *epsf* *force* *reside* *remap* zzroman 
+hlt HelveticaNeue-Thin *epsf* *force* *reside* *remap* zzroman 
+hlti HelveticaNeue-ThinItalic *epsf* *force* *reside* *remap* zzitalic 
+hlv HelveticaNeue-Extended *epsf* *force* *reside* *remap* zzroman
+hlvo HelveticaNeue-ExtendedObl *epsf* *force* *reside* *remap* zzitalic
+hv Helvetica *epsf* *force* *reside* *remap* zzroman 
+hvb Helvetica-Bold *epsf* *force* *reside* *remap* zzroman 
+hvbl Helvetica-Black *epsf* *force* *reside* *remap* zzroman 
+hvblo Helvetica-BlackOblique *epsf* *force* *reside* *remap* zzitalic 
+hvbo Helvetica-BoldOblique *epsf* *force* *reside* *remap* zzroman 
+hvl Helvetica-Light *epsf* *force* *reside* *remap* zzroman 
+hvlo Helvetica-LightOblique *epsf* *force* *reside* *remap* zzitalic 
+hvo Helvetica-Oblique *epsf* *force* *reside* *remap* zzitalic 
+jdb DailyNews-Bold *epsf* *force* *reside* *remap* zzroman
+jdbi DailyNews-BoldItalic *epsf* *force* *reside* *remap* zzitalic
+jdeb DailyNews-ExtraBold *epsf* *force* *reside* *remap* zzroman
+jdi DailyNews-Italic *epsf* *force* *reside* *remap* zzitalic
+jdm DailyNews-Medium *epsf* *force* *reside* *remap* zzroman
+jdmi DailyNews-MediumItalic *epsf* *force* *reside* *remap* zzitalic
+jdrg DailyNews-Regular *epsf* *force* *reside* *remap* zzroman
+kbb ItcKabel-Bold *epsf* *force* *reside* *remap* zzroman
+kbd ItcKabel-Demi *epsf* *force* *reside* *remap* zzroman
+kbm ItcKabel-Medium *epsf* *force* *reside* *remap* zzroman
+kbu ItcKabel-Ultra *epsf* *force* *reside* *remap* zzroman
+kbw ItcKabel-Book *epsf* *force* *reside* *remap* zzroman
+lasy10 LASY10 *epsf* *force* *reside*
+lbc LucidaCalligraphy-Italic *epsf* *force* *reside* *remap* zzitalic 
+lbd LucidaBright-Demi *epsf* *force* *reside* *remap* zzroman 
+lbdi LucidaBright-DemiItalic *epsf* *force* *reside* *remap* zzitalic 
+lbi LucidaBright-Italic *epsf* *force* *reside* *remap* zzitalic 
+lbkr LucidaCasual *epsf* *force* *reside* *remap* zzroman
+lbl LucidaBlackletter *epsf* *force* *reside* *remap* zzroman 
+lbma LucidaNewMath-Arrows *epsf* *force* *reside*  
+lbmd LucidaNewMath-Demibold *epsf* *force* *reside*
+lbmdi LucidaNewMath-DemiItalic *epsf* *force* *reside*
+lbmdo LucidaNewMath-AltDemiItalic *epsf* *force* *reside*
+lbme LucidaNewMath-Extension *epsf* *force* *reside*  
+lbmi LucidaNewMath-Italic *epsf* *force* *reside*  
+lbmo LucidaNewMath-AltItalic *epsf* *force* *reside*  
+lbmr LucidaNewMath-Roman *epsf* *force* *reside*  
+lbms LucidaNewMath-Symbol *epsf* *force* *reside*  
+lbmsd LucidaNewMath-Symbol-Demi *epsf* *force* *reside*  
+lbr LucidaBright *epsf* *force* *reside* *remap* zzroman 
+lbsl LucidaBrightSlanted *epsf* *force* *reside* *remap* zzitalic 
+lbtnr LucidaTypewriterNarr *epsf* *force* *reside* *remap* zzmono
+lbtr LucidaTypewriter *epsf* *force* *reside* *remap* zzmono
+lcircle1 LCIRCLE10 *epsf* *force* *reside*  
+lg LetterGothic *epsf* *force* *reside* *remap* zzmono 
+lgb LetterGothic-Bold *epsf* *force* *reside* *remap* zzmono 
+lgbsl LetterGothic-BoldSlanted *epsf* *force* *reside* *remap* zzmono 
+lgsl LetterGothic-Slanted *epsf* *force* *reside* *remap* zzmono 
+line10 LINE10 *epsf* *force* *reside*  
+linew10 LINEW10 *epsf* *force* *reside*  
+lsd LucidaSans-Demi *epsf* *force* *reside* *remap* zzroman 
+lsdi LucidaSans-DemiItalic *epsf* *force* *reside* *remap* zzitalic 
+lsi LucidaSans-Italic *epsf* *force* *reside* *remap* zzitalic 
+lsr LucidaSans *epsf* *force* *reside* *remap* zzroman 
+lstb LucidaSans-TypewriterBold *epsf* *force* *reside* *remap* zzmono 
+lstbo LucidaSans-TypewriterBoldOblique *epsf* *force* *reside* *remap* zzmono 
+lsto LucidaSans-TypewriterOblique *epsf* *force* *reside* *remap* zzmono 
+lstr LucidaSans-Typewriter *epsf* *force* *reside* *remap* zzmono 
+m0b Meridien-Bold *epsf* *force* *reside* *remap* zzroman
+m0bi Meridien-BoldItalic *epsf* *force* *reside* *remap* zzitalic
+m0i Meridien-Italic *epsf* *force* *reside* *remap* zzitalic
+m0m Meridien-Medium *epsf* *force* *reside* *remap* zzroman
+m0mi Meridien-MediumItalic *epsf* *force* *reside* *remap* zzitalic
+m0r Meridien-Roman *epsf* *force* *reside* *remap* zzroman
+mbbou MonotypeOldStyleMT-BoldOut *epsf* *force* *reside* *remap* zzroman
+me Melior *epsf* *force* *reside* *remap* zzroman 
+meb Melior-Bold *epsf* *force* *reside* *remap* zzroman 
+mebi Melior-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+mei Melior-Italic *epsf* *force* *reside* *remap* zzitalic 
+mi MICR *epsf* *force* *reside* *remap* zzmono 
+mpb Memphis-Bold *epsf* *force* *reside* *remap* zzroman 
+mpbi Memphis-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+mpeb Memphis-ExtraBold *epsf* *force* *reside* *remap* zzroman 
+mpl Memphis-Light *epsf* *force* *reside* *remap* zzroman 
+mpli Memphis-LightItalic *epsf* *force* *reside* *remap* zzitalic 
+mpm Memphis-Medium *epsf* *force* *reside* *remap* zzroman 
+mpmi Memphis-MediumItalic *epsf* *force* *reside* *remap* zzitalic 
+msam7 MSAM7 *epsf* *force* *reside*
+msam10 MSAM10 *epsf* *force* *reside*
+msbm10 MSBM10 *epsf* *force* *reside*
+mtex MTEX *epsf* *force* *reside*  
+mtmi MTMI *epsf* *force* *reside*  
+mtsy MTSY *epsf* *force* *reside*  
+nbb NewBaskerville-Bold *epsf* *force* *reside* *remap* zzroman
+nbbi NewBaskerville-BoldItalic *epsf* *force* *reside* *remap* zzitalic
+nbi NewBaskerville-Italic *epsf* *force* *reside* *remap* zzitalic
+nbr NewBaskerville-Roman *epsf* *force* *reside* *remap* zzroman
+ncb NewCenturySchlbk-Bold *epsf* *force* *reside* *remap* zzroman 
+ncbi NewCenturySchlbk-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+nci NewCenturySchlbk-Italic *epsf* *force* *reside* *remap* zzitalic 
+ncr NewCenturySchlbk-Roman *epsf* *force* *reside* *remap* zzroman 
+nfb Nofret-Bold *epsf* *force* *reside* *remap* zzroman 
+nfbi Nofret-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+nfi Nofret-Italic *epsf* *force* *reside* *remap* zzitalic 
+nfl Nofret-Light *epsf* *force* *reside* *remap* zzroman 
+nfli Nofret-LightItalic *epsf* *force* *reside* *remap* zzitalic 
+nfm Nofret-Medium *epsf* *force* *reside* *remap* zzroman 
+nfmi Nofret-MediumItalic *epsf* *force* *reside* *remap* zzitalic 
+nfrg Nofret-Regular *epsf* *force* *reside* *remap* zzroman 
+oa OCRA *epsf* *force* *reside* *remap* zzmono 
+ob OCRB *epsf* *force* *reside* *remap* zzmono 
+op Optima *epsf* *force* *reside* *remap* zzroman 
+opb Optima-Bold *epsf* *force* *reside* *remap* zzroman 
+opbo Optima-BoldOblique *epsf* *force* *reside* *remap* zzitalic 
+opo Optima-Oblique *epsf* *force* *reside* *remap* zzitalic 
+petrucc Petrucci *epsf* *force* *reside*
+pob Palatino-Bold *epsf* *force* *reside* *remap* zzroman 
+pobi Palatino-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+poi Palatino-Italic *epsf* *force* *reside* *remap* zzitalic 
+por Palatino-Roman *epsf* *force* *reside* *remap* zzroman 
+posc Palatino-SC *epsf* *force* *reside* *remap* zzroman
+pvor Poetica-SuppOrnaments *epsf* *force* *reside*
+sonata Sonata *epsf* *force* *reside*
+sr StoneSerif *epsf* *force* *reside* *remap* zzroman 
+srb StoneSerif-Bold *epsf* *force* *reside* *remap* zzroman 
+srbi StoneSerif-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+sri StoneSerif-Italic *epsf* *force* *reside* *remap* zzitalic 
+srsb StoneSerif-Semibold *epsf* *force* *reside* *remap* zzroman 
+srsbi StoneSerif-SemiboldItalic *epsf* *force* *reside* *remap* zzitalic 
+ss StoneSans *epsf* *force* *reside* *remap* zzroman 
+ssb StoneSans-Bold *epsf* *force* *reside* *remap* zzroman 
+ssbi StoneSans-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+ssi StoneSans-Italic *epsf* *force* *reside* *remap* zzitalic 
+sssb StoneSans-Semibold *epsf* *force* *reside* *remap* zzroman 
+sssbi StoneSans-SemiboldItalic *epsf* *force* *reside* *remap* zzitalic 
+sy Symbol *epsf* *force* *reside*  
+tib Times-Bold *epsf* *force* *reside* *remap* zzroman 
+tibi Times-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+tibio Times-BoldItalicOsF *epsf* *force* *reside* *remap* zzitalic 
+tibsc Times-BoldSC *epsf* *force* *reside* *remap* zzroman 
+tieb Times-ExtraBold *epsf* *force* *reside* *remap* zzroman 
+tii Times-Italic *epsf* *force* *reside* *remap* zzitalic 
+tiio Times-ItalicOsF *epsf* *force* *reside* *remap* zzitalic 
+tir Times-Roman *epsf* *force* *reside* *remap* zzroman 
+tirsc Times-RomanSC *epsf* *force* *reside* *remap* zzroman 
+tisb Times-Semibold *epsf* *force* *reside* *remap* zzroman 
+tisbi Times-SemiboldItalic *epsf* *force* *reside* *remap* zzitalic 
+tkb Tekton-Bold *epsf* *force* *reside* *remap* zzitalic
+tmb TrumpMediaeval-Bold *epsf* *force* *reside* *remap* zzroman 
+tmbi TrumpMediaeval-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+tmbio TrumpMediaeval-BoldItalicOsF *epsf* *force* *reside* *remap* zzitalic 
+tmbos TrumpMediaeval-BoldOsF *epsf* *force* *reside* *remap* zzroman 
+tmi TrumpMediaeval-Italic *epsf* *force* *reside* *remap* zzitalic 
+tmios TrumpMediaeval-ItalicOsF *epsf* *force* *reside* *remap* zzitalic 
+tmr TrumpMediaeval-Roman *epsf* *force* *reside* *remap* zzroman 
+tmmr TrumpMediaeval-Roman *epsf* *force* *reside* *remap* zzroman 
+tmsc TrumpMediaeval-SC *epsf* *force* *reside* *remap* zzroman 
+ueb UtopiaExp-Bold *epsf* *force* *reside* *remap* zzother 
+uebi UtopiaExp-BoldItalic *epsf* *force* *reside* *remap* zzother 
+uebl UtopiaExp-Black *epsf* *force* *reside* *remap* zzother 
+uei UtopiaExp-Italic *epsf* *force* *reside* *remap* zzother 
+uerg UtopiaExp-Regular *epsf* *force* *reside* *remap* zzother 
+uesb UtopiaExp-Semibold *epsf* *force* *reside* *remap* zzother 
+uesbi UtopiaExp-SemiboldItalic *epsf* *force* *reside* *remap* zzother 
+unvnc Universal-NewswithCommPi *epsf* *force* *reside*
+unvmg Universal-GreekwithMathPi *epsf* *force* *reside*
+utb Utopia-Bold *epsf* *force* *reside* *remap* zzroman 
+utbi Utopia-BoldItalic *epsf* *force* *reside* *remap* zzitalic 
+utbl Utopia-Black *epsf* *force* *reside* *remap* zzroman 
+uti Utopia-Italic *epsf* *force* *reside* *remap* zzitalic 
+utor Utopia-Ornaments *epsf* *force* *reside*  
+utrg Utopia-Regular *epsf* *force* *reside* *remap* zzroman 
+utsb Utopia-Semibold *epsf* *force* *reside* *remap* zzroman 
+utsbi Utopia-SemiboldItalic *epsf* *force* *reside* *remap* zzitalic 
+utttl Utopia-Titling *epsf* *force* *reside* *remap* zzroman 
+uv Univers *epsf* *force* *reside* *remap* zzroman 
+uvbl Univers-Black *epsf* *force* *reside* *remap* zzroman 
+uvblo Univers-BlackOblique *epsf* *force* *reside* *remap* zzitalic 
+uvb Univers-Bold *epsf* *force* *reside* *remap* zzroman 
+uvbo Univers-BoldOblique *epsf* *force* *reside* *remap* zzitalic 
+uvb Univers-CondensedBold *epsf* *force* *reside* *remap* zzroman
+uvl Univers-Light *epsf* *force* *reside* *remap* zzroman 
+uvlo Univers-LightOblique *epsf* *force* *reside* *remap* zzitalic 
+uvo Univers-Oblique *epsf* *force* *reside* *remap* zzitalic 
+uzbs MercuriusMT-BoldScript *epsf* *force* *reside* *remap* zzroman
+vlb Veljovic-Bold *epsf* *force* *reside* *remap* zzroman
+vlm Veljovic-Medium *epsf* *force* *reside* *remap* zzroman
+vlmi Veljovic-MediumItalic *epsf* *force* *reside* *remap* zzitalic
+vlw Veljovic-Book *epsf* *force* *reside* *remap* zzroman
+vlwi Veljovic-BookItalic *epsf* *force* *reside* *remap* zzitalic
+wc Critter *epsf* *force* *reside* *remap* zzroman
+wmhd Myriad-Headline *epsf* *force* *reside* *remap* zzroman
+wmske Myriad-Sketch *epsf* *force* *reside* *remap* zzroman
+wmtil Myriad-Tilt *epsf* *force* *reside* *remap* zzroman
+wncyr10 WNCYR10 *epsf* *force* *reside*
+wncyss10 WNCYSS10 *epsf* *force* *reside*
+woor2 WoodtypeOrnaments-Two *epsf* *force* *reside*
+wy Mythos *epsf* *force* *reside* *remap* zzroman
+ygrg GoudyModernMT *epsf* *force* *reside* *remap* zzroman
+zcmi ZapfChancery-MediumItalic *epsf* *force* *reside* *remap* zzitalic 
+zd ZapfDingbats *epsf* *force* *reside*  
+zzdoo ZzTeX-Doodads *epsf* *force* *reside*

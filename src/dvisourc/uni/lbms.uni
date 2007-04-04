@@ -1,0 +1,288 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: Lucida New Math math symbol
+
+% Used by Y&Y:
+% LucidaNewMath-Symbol (lbms)
+% LucidaNewMath-Symbol-Demi (lbmsd)
+
+% Note: the lower half (0 - 127) is the same as `math symbol' for CM fonts
+
+% Note: Alphabet (A-Z) is calligraphic style
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	2212	minus
+1	22C5	periodcentered
+2	00D7	multiply
+3	2217	asteriskmath
+4	00F7	divide
+5	22C4	diamondmath
+6	00B1	plusminus
+7	2213	minusplus
+
+8	2295	circleplus
+9	2296	circleminus
+10	2297	circlemultiply
+11	2298	circledivide
+12	2299	circledot
+13	FFFF	circlecopyrt large circle for (C) (R) (S) etc
+14	2218	openbullet
+15	2219	bullet	2022
+
+16	224D	equivasymptotic
+17	2261	equivalence
+18	2286	reflexsubset
+19	2287	reflexsuperset
+20	2264	lessequal
+21	2265	greaterequal
+22	227C	precedesequal
+23	227D	followsequal
+24	223C	similar
+25	2248	approxequal 2245
+26	2282	propersubset
+27	2283	propersuperset
+28	226A	lessmuch
+29	226B	greatermuch
+30	227A	precedes
+31	227B	follows
+
+32	2190	arrowleft
+33	2192	arrowright
+34	2191	arrowup
+35	2193	arrowdown
+36	2194	arrowboth
+37	2197	arrownortheast
+38	2198	arrowsoutheast
+39	2243	similarequal
+40	21D0	arrowdblleft
+41	21D2	arrowdblright
+42	21D1	arrowdblup
+43	21D3	arrowdbldown
+44	21D4	arrowdblboth
+45	2196	arrownorthwest
+46	2199	arrowsouthwest
+47	221D	proportional
+
+48	2032	prime
+49	221E	infinity
+50	2208	element
+51	220B	owner
+52	25B3	triangle	? not 2206
+53	25BD	triangleinv	? not 2207
+54	0338	negationslash	2215
+55	FFFF	mapsto		part of 22A2 22A6 21A6
+56	2200	universal
+57	2203	existential
+58	00AC	logicalnot
+59	2205	emptyset
+60	211C	Rfraktur	Rfractur
+61	2111	Ifraktur	Ifractur
+62	22A4	latticetop
+63	22A5	perpendicular
+
+64	2135	aleph		alephmath
+65	0041	A
+66	0042	B
+67	0043	C
+68	0044	D
+69	0045	E
+70	0046	F
+71	0047	G
+72	0048	H
+73	0049	I
+74	004A	J
+75	004B	K
+76	004C	L
+77	004D	M
+78	004E	N
+79	004F	O
+80	0050	P
+81	0051	Q
+82	0052	R
+83	0053	S
+84	0054	T
+85	0055	U
+86	0056	V
+87	0057	W
+88	0058	X
+89	0059	Y
+90	005A	Z
+
+91	222A	union
+92	2229	intersection
+93	228E	unionmulti
+94	2227	logicaland
+95	2228	logicalor
+96	22A2	turnstileleft
+97	22A3	turnstileright
+98	230A	floorleft
+99	230B	floorright
+100	2308	ceilingleft
+101	2309	ceilingright
+102	007B	braceleft
+103	007D	braceright
+104	2329	angbracketleft	% angleleft ?
+105	232A	angbracketright	% angleright ?
+106	2223	bar		007C
+107	2225	bardbl
+108	2195	arrowbothv
+109	21D5	arrowdblbothv
+110	005C	backslash	not 2216
+111	2240	wreathproduct
+112	221A	radical		except, sits below baseline ?
+113	2210	coproduct
+114	2207	nabla
+115	222B	integral
+116	2294	unionsq
+117	2293	intersectionsq
+118	2291	subsetsqequal
+119	2292	supersetsqequal
+
+120	00A7	section
+121	2020	dagger
+122	2021	daggerdbl
+123	00B6	paragraph
+124	2663	club
+125	2662	diamond
+126	2661	heart
+127	2660	spade
+
+129	0305	radicalext
+130	002B	plus
+131	003D	equal
+132	22CF	curland
+133	22CE	curlor
+134	2206	increment
+135	220F	product
+136	2211	summation
+137	2214	dotplus
+138	221F	rightangle
+139	2220	angle
+140	2221	measuredangle
+141	2222	sphericalangle
+142	22BE	rightanglearc
+143	22BF	righttriangle
+144	2234	therefore
+145	2235	because
+146	2236	colon		%	vertellipsis
+147	2237	proportion
+148	2238	dotminus
+149	2239	excess
+150	223A	geomproportion
+151	223B	homothetic
+152	223F	sine
+153	2242	minustilde
+154	226A	lessmuch1
+155	2245	approxorequal
+156	226B	greatermuch1
+157	224A	almostorequal
+158	224B	tildetrpl
+159	224C	allequal
+160	0020	space
+
+171	2032	prime1
+172	221A	radical1
+
+197	FFFF	lazys	inverse of 223E
+198	223E	lazysinv
+199	224E	geomequivalent
+200	224F	difference
+201	2250	approachlimit
+202	2251	geomequal
+203	2252	approxequalorimage
+204	2253	imageorapproxequal
+205	2254	colonequal
+206	2255	equalcolon
+207	2256	ringinequal
+208	2257	ringequal
+209	2258	corresponds
+210	2259	estimates
+211	225A	equiangular
+212	2306	perspcorrespond
+213	225C	deltaequal
+214	225D	definequal
+215	225E	measurequal
+216	225F	questionequal
+217	2263	strictequivalence
+218	2266	lessdblequal
+219	2267	greaterdblequal
+220	2272	lessequivlnt
+221	2273	greaterequivlnt
+222	2276	lessorgreater
+223	2277	greaterorless
+224	227E	precedequivlnt
+225	227F	followsequivlnt
+226	228C	multiset	arrow connected to U
+227	228D	multiplymultiset
+228	228F	squareimage
+229	2290	squareoriginal
+230	229A	circlering
+231	229B	circleasterisk
+232	229C	circleequal	equal connected to circle
+233	FFFF	circlebar
+234	229E	squareplus
+235	229F	squareminus
+236	22A0	squaremultiply
+237	22A1	squaredot
+238	22A8	satisfy	22A7
+239	FFFF	satisfiedby inverse 22A8
+240	22A9	force
+241	22B9	hermitconjmatrix
+242	22B0	lowerrank
+243	22B1	higherrank
+244	22B4	triangleftequal
+245	22B5	triangrightequal
+246	22BC	nand
+247	22BD	nor
+248	22D0	subsetdbl
+249	22D1	supersetdbl
+250	22D3	uniondbl
+251	22D2	intersectiondbl
+252	FFFF	negeighteenthem
+253	FFFF	eighteenthem
+254	FFFF	eighthem
+255	FFFF	tenthem	
+
+% DUPLICATES of 0 - 31
+
+161	2212	minus
+162	22C5	periodcentered
+163	00D7	multiply
+164	2217	asteriskmath
+165	00F7	divide
+166	22C4	diamondmath
+167	00B1	plusminus
+168	2213	minusplus
+169	2295	circleplus
+170	2296	circleminus
+173	2297	circlemultiply
+174	2298	circledivide
+175	2299	circledot
+176	FFFF	circlecopyrt large circle for (C) (R) (S) etc
+177	2218	openbullet
+178	2219	bullet	2022
+179	224D	equivasymptotic
+180	2261	equivalence
+181	2286	reflexsubset
+182	2287	reflexsuperset
+183	2264	lessequal
+184	2265	greaterequal
+185	227C	precedesequal
+186	227D	followsequal
+187	223C	similar
+188	2248	approxequal 2245
+189	2282	propersubset
+190	2283	propersuperset
+191	226A	lessmuch
+192	226B	greatermuch
+193	227A	precedes
+194	227B	follows
+195	2190	arrowleft
+
+196	2660	spade
+

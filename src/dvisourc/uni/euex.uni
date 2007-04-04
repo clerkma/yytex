@@ -1,0 +1,98 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: Euler math extension
+
+% Used by Y&Y AMS Euler math extension font:	EUEX10
+
+% Note: Large delimiters and operators all hang off baseline
+% Large delimiters occur in several sizes including an extensible version
+% None of these have UNICODE code numbers.
+
+% Note: Large operators occur in two sizes: `text' and `display'
+% We arbitrarily assign UNICODE numbers to the text version, not display
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+8	FFFF	braceleftbig
+9	FFFF	bracerightbig
+10	FFFF	angbracketleftbig	% angleleftbig ?
+11	FFFF	angbracketrightbig	% anglerightbig ?
+12	FFFF	vextendsingle
+13	FFFF	vextenddouble
+14	FFFF	slashbig
+15	FFFF	backslashbig
+
+24	21BC	arrowlefttophalf
+25	21BD	arrowleftbothalf
+26	21C0	arrowrighttophalf
+27	21C1	arrowrightbothalf
+
+32	2190	arrowleft
+33	2192	arrowright
+34	2191	arrowup
+35	2193	arrowdown
+36	2194	arrowboth
+37	2197	arrownortheast
+38	2198	arrowsoutheast
+
+40	21D0	arrowdblleft
+41	21D2	arrowdblright
+42	21D1	arrowdblup
+43	21D3	arrowdbldown
+44	21D4	arrowdblboth
+45	2196	arrownorthwest
+46	2199	arrowsouthwest
+
+49	221E	infinity
+
+55	FFFF	bracketrightex
+56	FFFF	bracelefttp
+57	FFFF	bracerighttp
+58	FFFF	braceleftbt
+59	FFFF	bracerightbt
+60	FFFF	braceleftmid
+61	FFFF	bracerightmid
+62	FFFF	braceex
+
+72	222E	contintegraltext	% contintegral ?
+73	FFFF	contintegraldisplay	% large 222E
+
+80	2211	summationtext		% summation ?
+81	220F	producttext		% product ?
+82	222B	integraltext		% integral ?
+
+88	FFFF	summationdisplay	% large 2211
+89	FFFF	productdisplay		% large 220F
+90	FFFF	integraldisplay		% large 222B
+
+96	2210	coproducttext		% coproduct ?
+97	FFFF	coproductdisplay	% large 2210
+
+108	2195	arrowbothv
+109	21D5	arrowdblbothv
+
+122	FFFF	bracehtipdownleft
+123	FFFF	bracehtipdownright
+124	FFFF	bracehtipupleft
+125	FFFF	bracehtipupright
+
+% DUPLICATES of 0 - 31 follow
+
+169	FFFF	braceleftbig
+170	FFFF	bracerightbig
+
+173	FFFF	angbracketleftbig	% angleleftbig ?
+174	FFFF	angbracketrightbig	% anglerightbig ?
+175	FFFF	vextendsingle
+176	FFFF	vextenddouble
+177	FFFF	slashbig
+178	FFFF	backslashbig
+
+187	21BC	arrowlefttophalf
+188	21BD	arrowleftbothalf
+189	21C0	arrowrighttophalf
+190	21C1	arrowrightbothalf
+
+195	2190	arrowleft

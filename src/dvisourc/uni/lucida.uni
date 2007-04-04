@@ -1,0 +1,1144 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Encoding: Lucida New Math math symbol
+
+% Used by Y&Y:
+% LucidaNewMath-Symbol (lbms)
+% LucidaNewMath-Symbol-Demi (lbmsd)
+
+% Note: the lower half (0 - 127) is the same as `math symbol' for CM fonts
+
+% Note: Alphabet (A-Z) is calligraphic style
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	2212	minus
+1	22C5	periodcentered
+2	00D7	multiply
+3	2217	asteriskmath
+4	00F7	divide
+5	22C4	diamondmath
+6	00B1	plusminus
+7	2213	minusplus
+
+8	2295	circleplus
+9	2296	circleminus
+10	2297	circlemultiply
+11	2298	circledivide
+12	2299	circledot
+13	FFFF	circlecopyrt large circle for (C) (R) (S) etc
+14	2218	openbullet
+15	2219	bullet	2022
+
+16	224D	equivasymptotic
+17	2261	equivalence
+18	2286	reflexsubset
+19	2287	reflexsuperset
+20	2264	lessequal
+21	2265	greaterequal
+22	227C	precedesequal
+23	227D	followsequal
+24	223C	similar
+25	2248	approxequal 2245
+26	2282	propersubset
+27	2283	propersuperset
+28	226A	lessmuch
+29	226B	greatermuch
+30	227A	precedes
+31	227B	follows
+
+32	2190	arrowleft
+33	2192	arrowright
+34	2191	arrowup
+35	2193	arrowdown
+36	2194	arrowboth
+37	2197	arrownortheast
+38	2198	arrowsoutheast
+39	2243	similarequal
+40	21D0	arrowdblleft
+41	21D2	arrowdblright
+42	21D1	arrowdblup
+43	21D3	arrowdbldown
+44	21D4	arrowdblboth
+45	2196	arrownorthwest
+46	2199	arrowsouthwest
+47	221D	proportional
+
+48	2032	prime
+49	221E	infinity
+50	2208	element
+51	220B	owner
+52	25B3	triangle	? not 2206
+53	25BD	triangleinv	? not 2207
+54	0338	negationslash	2215
+55	FFFF	mapsto		part of 22A2 22A6 21A6
+56	2200	universal
+57	2203	existential
+58	00AC	logicalnot
+59	2205	emptyset
+60	211C	Rfraktur	Rfractur
+61	2111	Ifraktur	Ifractur
+62	22A4	latticetop
+63	22A5	perpendicular
+
+64	2135	aleph		alephmath
+65	0041	A
+66	0042	B
+67	0043	C
+68	0044	D
+69	0045	E
+70	0046	F
+71	0047	G
+72	0048	H
+73	0049	I
+74	004A	J
+75	004B	K
+76	004C	L
+77	004D	M
+78	004E	N
+79	004F	O
+80	0050	P
+81	0051	Q
+82	0052	R
+83	0053	S
+84	0054	T
+85	0055	U
+86	0056	V
+87	0057	W
+88	0058	X
+89	0059	Y
+90	005A	Z
+
+91	222A	union
+92	2229	intersection
+93	228E	unionmulti
+94	2227	logicaland
+95	2228	logicalor
+96	22A2	turnstileleft
+97	22A3	turnstileright
+98	230A	floorleft
+99	230B	floorright
+100	2308	ceilingleft
+101	2309	ceilingright
+102	007B	braceleft
+103	007D	braceright
+104	2329	angbracketleft	% angleleft ?
+105	232A	angbracketright	% angleright ?
+106	2223	bar		007C
+107	2225	bardbl
+108	2195	arrowbothv
+109	21D5	arrowdblbothv
+110	005C	backslash	not 2216
+111	2240	wreathproduct
+112	221A	radical		except, sits below baseline ?
+113	2210	coproduct
+114	2207	nabla
+115	222B	integral
+116	2294	unionsq
+117	2293	intersectionsq
+118	2291	subsetsqequal
+119	2292	supersetsqequal
+
+120	00A7	section
+121	2020	dagger
+122	2021	daggerdbl
+123	00B6	paragraph
+124	2663	club
+125	2662	diamond
+126	2661	heart
+127	2660	spade
+
+129	0305	radicalext
+130	002B	plus
+131	003D	equal
+132	22CF	curland
+133	22CE	curlor
+134	2206	increment
+135	220F	product
+136	2211	summation
+137	2214	dotplus
+138	221F	rightangle
+139	2220	angle
+140	2221	measuredangle
+141	2222	sphericalangle
+142	22BE	rightanglearc
+143	22BF	righttriangle
+144	2234	therefore
+145	2235	because
+146	2236	colon		%	vertellipsis
+147	2237	proportion
+148	2238	dotminus
+149	2239	excess
+150	223A	geomproportion
+151	223B	homothetic
+152	223F	sine
+153	2242	minustilde
+154	226A	lessmuch1
+155	2245	approxorequal
+156	226B	greatermuch1
+157	224A	almostorequal
+158	224B	tildetrpl
+159	224C	allequal
+160	0020	space
+
+171	2032	prime1
+172	221A	radical1
+
+197	FFFF	lazys	inverse of 223E
+198	223E	lazysinv
+199	224E	geomequivalent
+200	224F	difference
+201	2250	approachlimit
+202	2251	geomequal
+203	2252	approxequalorimage
+204	2253	imageorapproxequal
+205	2254	colonequal
+206	2255	equalcolon
+207	2256	ringinequal
+208	2257	ringequal
+209	2258	corresponds
+210	2259	estimates
+211	225A	equiangular
+212	2306	perspcorrespond
+213	225C	deltaequal
+214	225D	definequal
+215	225E	measurequal
+216	225F	questionequal
+217	2263	strictequivalence
+218	2266	lessdblequal
+219	2267	greaterdblequal
+220	2272	lessequivlnt
+221	2273	greaterequivlnt
+222	2276	lessorgreater
+223	2277	greaterorless
+224	227E	precedequivlnt
+225	227F	followsequivlnt
+226	228C	multiset	arrow connected to U
+227	228D	multiplymultiset
+228	228F	squareimage
+229	2290	squareoriginal
+230	229A	circlering
+231	229B	circleasterisk
+232	229C	circleequal	equal connected to circle
+233	FFFF	circlebar
+234	229E	squareplus
+235	229F	squareminus
+236	22A0	squaremultiply
+237	22A1	squaredot
+238	22A8	satisfy	22A7
+239	FFFF	satisfiedby inverse 22A8
+240	22A9	force
+241	22B9	hermitconjmatrix
+242	22B0	lowerrank
+243	22B1	higherrank
+244	22B4	triangleftequal
+245	22B5	triangrightequal
+246	22BC	nand
+247	22BD	nor
+248	22D0	subsetdbl
+249	22D1	supersetdbl
+250	22D3	uniondbl
+251	22D2	intersectiondbl
+252	FFFF	negeighteenthem
+253	FFFF	eighteenthem
+254	FFFF	eighthem
+255	FFFF	tenthem	
+
+% DUPLICATES of 0 - 31
+
+161	2212	minus
+162	22C5	periodcentered
+163	00D7	multiply
+164	2217	asteriskmath
+165	00F7	divide
+166	22C4	diamondmath
+167	00B1	plusminus
+168	2213	minusplus
+169	2295	circleplus
+170	2296	circleminus
+173	2297	circlemultiply
+174	2298	circledivide
+175	2299	circledot
+176	FFFF	circlecopyrt large circle for (C) (R) (S) etc
+177	2218	openbullet
+178	2219	bullet	2022
+179	224D	equivasymptotic
+180	2261	equivalence
+181	2286	reflexsubset
+182	2287	reflexsuperset
+183	2264	lessequal
+184	2265	greaterequal
+185	227C	precedesequal
+186	227D	followsequal
+187	223C	similar
+188	2248	approxequal 2245
+189	2282	propersubset
+190	2283	propersuperset
+191	226A	lessmuch
+192	226B	greatermuch
+193	227A	precedes
+194	227B	follows
+195	2190	arrowleft
+
+196	2660	spade
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Encoding: Lucida New Math math italic
+
+% Used by Y&Y:
+% LucidaNewMath-Italic (lbmi)
+% LucidaNewMath-AltItalic (lbmo)
+% LucidaNewMath-DemiItalic (lbmdi)
+% LucidaNewMath-AltDemiItalic (lbmdo)
+% LucidaNewMath-Roman (lbmr)
+% LucidaNewMath-Demibold (lbmd)
+
+% Note: the lower half (0 - 127) is the same as `math italic' for CM fonts
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	0393	Gamma
+1	0394	Delta
+2	0398	Theta
+3	039B	Lambda
+4	039E	Xi
+5	03A0	Pi
+6	03A3	Sigma
+7	03A5	Upsilon
+8	03A6	Phi
+9	03A8	Psi
+10	03A9	Omega
+
+11	03B1	alpha
+12	03B2	beta
+13	03B3	gamma
+14	03B4	delta
+15	03B5	epsilon1
+16	03B6	zeta
+17	03B7	eta
+18	03B8	theta
+19	03B9	iota
+20	03BA	kappa
+21	03BB	lambda
+22	03BC	mu
+23	03BD	nu
+24	03BE	xi
+25	03C0	pi
+26	03C1	rho
+27	03C3	sigma
+28	03C4	tau
+29	03C5	upsilon
+30	03C6	phi
+31	03C7	chi
+32	03C8	psi
+33	03C9	omega
+
+34	FFFF	epsilon		% \varepsilon 03B5 ?
+35	03D1	theta1		% \vartheta
+36	03D6	pi1		% \varpi (Adobe Symbol calls this omega1!)
+37	03F1	rho1		% \varrho
+38	03C2	sigma1		% \varsigma
+39	03D5	phi1		% \varphi
+
+40	21BC	arrowlefttophalf
+41	21BD	arrowleftbothalf
+42	21C0	arrowrighttophalf
+43	21C1	arrowrightbothalf
+44	FFFF	arrowhookleft	21AA ?
+45	FFFF	arrowhookright	21A9 ?
+46	22B3	triangleright	25B7
+47	22B2	triangleleft	25C1
+
+48	0030	zero		% zerooldstyle
+49	0031	one		% oneoldstyle
+50	0032	two		% twooldstyle
+51	0033	three		% threeoldstyle
+52	0034	four		% fouroldstyle
+53	0035	five		% fiveoldstyle
+54	0036	six		% sixoldstyle
+55	0037	seven		% sevenoldstyle
+56	0038	eight		% eightoldstyle
+57	0039	nine		% nineoldstyle
+
+58	002E	period
+59	002C	comma
+60	003C	less
+61	002F	slash
+62	003E	greater
+63	22C6	star		% asterisk ?
+64	2202	partialdiff
+
+65	0041	A
+66	0042	B
+67	0043	C
+68	0044	D
+69	0045	E
+70	0046	F
+71	0047	G
+72	0048	H
+73	0049	I
+74	004A	J
+75	004B	K
+76	004C	L
+77	004D	M
+78	004E	N
+79	004F	O
+80	0050	P
+81	0051	Q
+82	0052	R
+83	0053	S
+84	0054	T
+85	0055	U
+86	0056	V
+87	0057	W
+88	0058	X
+89	0059	Y
+90	005A	Z
+
+91	266D	flat
+92	266E	natural
+93	266F	sharp
+94	FFFF	slurbelow ?
+95	FFFF	slurabove ?
+
+96	2113	lscript
+97	0061	a
+98	0062	b
+99	0063	c
+100	0064	d
+101	0065	e
+102	0066	f
+103	0067	g
+104	0068	h
+105	0069	i
+106	006A	j
+107	006B	k
+108	006C	l
+109	006D	m
+110	006E	n
+111	006F	o
+112	0070	p
+113	0071	q
+114	0072	r
+115	0073	s
+116	0074	t
+117	0075	u
+118	0076	v
+119	0077	w
+120	0078	x
+121	0079	y
+122	007A	z
+
+123	0131	dotlessi
+124	FFFF	dotlessj	not 0284 or 025F
+125	2118	weierstrass
+126	20D6	vector
+127	2040	tie
+
+129	03BF	omicron		not 006F
+130	301A	openbracketleft		% new
+131	301B	openbracketright	% new
+132	002B	parenleft
+133	002C	parenright
+134	005B	bracketleft
+135	005D	bracketright
+136	222C	integraldbl
+137	222D	integraltrpl
+138	222E	contintegral		conintegral
+139	222F	surfintegral  ???
+140	2230	volintegral ???
+141	2231	clwintegral
+142	2233	cclwcontintegral	cclwconintegral
+143	2232	clwcontintegral		clwconintegral
+144	2132	Finv	F inverted
+145	????	Gmir	G mirrored
+146	2127	Omegainv	Mho
+147	2107	Euler
+148	2201	complement
+149	2136	beth	bethmath	05D1
+150	2137	gimel	gimelmath	05D2
+151	2138	daleth	delethmath	05D3
+152	210A	gscript
+153	210E	hscript ???
+154	2125	zscript ???
+155	03F0	kappa1
+156	????	zeroslash (not emptyset)
+157	210F	planckover2pi
+158	019B	lambdabar ?
+159	019A	lscriptbar ?
+160	0020	space
+
+171	2035	primereverse1
+172	22AB	forcesextra
+
+197	22B6	original
+198	22B7	image
+199	22BB	multimap
+200	2035	primereverse
+201	24C7	circleR		% 00AE
+202	24C8	circleS
+203	2720	maltesecross
+204	229D	circleminus1
+205	2215	shortsolidus
+206	22C9	multicloseleft
+207	22CA	multicloseright
+208	22CB	multiopenleft
+209	22CC	multiopenright
+210	22BB	xor		% orunderscore
+211	22AA	tacktrpl
+212	22A6	assertion	22A2 ?
+213	????	notassertion	22A3 ?
+214	22A7	truestate
+215	????	falsestate	22A7 flipped
+216	2216	shortsolidusback % shortsolidus
+217	22BA	intercal
+218	????	lessdblequivlnt
+219	????	greaterdblequivlnt
+220	22D6	lessdot
+221	22D7	greaterdot
+222	22D8	verymuchless
+223	22D9	verymuchgreater
+224	????	lessequal1
+225	????	greaterequal1
+226	22DC	equalless
+227	22DD	equalgreater
+228	227C	precedesequal1
+229	227D	followsequal1
+230	22DE	equalprecedes1
+231	22DF	equalfollows1
+232	22DA	lessequalgreater
+233	22DB	greaterequalless
+234	????	lessdbleqlgreater
+235	????	greaterdbleqlless
+236	????	precedesequivlnt
+237	????	followsequivlnt
+238	????	subsetdblequal
+239	????	supersetdblequal
+240	25C0	triangleleftsld
+241	25B6	trianglerightsld
+242	226C	between
+243	2443	fork
+244	????	barshort
+245	????	parallelshort
+246	22CB	bowtie
+247	227C	divideonmultiply
+248	223C	revsimilar
+249	2243	revasymptequal
+250	220B	element
+251	220B	owner
+252	????	negeighteenthem
+253	????	eighteenthem
+254	????	eighthem
+255	????	tenthem
+
+% DUPLICATES of 0 - 31
+
+161	0393	Gamma
+162	0394	Delta
+163	0398	Theta
+164	039B	Lambda
+165	039E	Xi
+166	03A0	Pi
+167	03A3	Sigma
+168	03A5	Upsilon
+169	03A6	Phi
+170	03A8	Psi
+173	03A9	Omega
+174	03B1	alpha
+175	03B2	beta
+176	03B3	gamma
+177	03B4	delta
+178	03B5	epsilon1
+179	03B6	zeta
+180	03B7	eta
+181	03B8	theta
+182	03B9	iota
+183	03BA	kappa
+184	03BB	lambda
+185	03BC	mu
+186	03BD	nu
+187	03BE	xi
+188	03C0	pi
+189	03C1	rho
+190	03C3	sigma
+191	03C4	tau
+192	03C5	upsilon
+193	03C6	phi
+194	03C7	chi
+195	03C8	psi
+
+196	2040	tie
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Encoding: Lucida New Math math arrows
+
+% Used by Y&Y:
+% LucidaNewMath-Arrows (lbma)
+% LucidaNewMath-Arrows-Demi (lbmad)
+
+% Note: Alphabet A-Z is Blackboard bold or `open face'
+% But only a few of these letters have UNICODE numbers (C, H, N, P, Q, R, Z)
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	25CB	circle
+1	25CF	circlesolid
+2	25A1	square
+3	25A0	squaresolid
+4	25B3	triangle
+5	25B2	trianglesolid
+6	25BD	triangleinv
+7	25BC	triangleinvsolid
+8	25CA	diamond
+9	FFFF	diamondsolid 25CA filled
+10	25C6	diamondmathsolid
+11	2215	upslope
+12	2216	downslope
+13	22E4	sqimageornotequal	% lessmuch1
+14	22E5	sqoriginornotequal	% greatermuch1
+15	FFFF	unionsqdbl squared up 22D3
+16	FFFF	intersectionsqdbl squared up 22D2
+17	FFFF	domsubtract
+18	FFFF	rngsubtract
+19	22EE	vertellipsis
+20	22EF	midhorizellipsis
+21	22F0	upslopeellipsis
+22	22F1	downslopeellipsis
+23	22D5	equalparallel
+24	2246	approxnotequal	% xor
+25	FFFF	pibond
+26	225B	starequal	% plimsol
+27	210F	planckover2pi1	% planckover2pi
+28	FFFF	elementmacron
+29	2209	notelement
+30	FFFF	ownermacron
+31	220C	notowner
+32	2204	notexistential
+
+33	2194	arrowlongboth
+34	2195	arrowlongbothv
+35	219E	dblarrowheadleft
+36	219F	dblarrowheadup
+37	21A0	dblarrowheadright
+38	0026	ampersand	% ampersandmath
+39	21A1	dblarrowheaddown
+40	21A2	arrowtailleft
+41	21A3	arrowtailright
+42	21A4	arrowbarleft
+43	21A5	arrowbarup
+44	21A6	arrowbarright
+45	FFFF	arrowext	% extension for the arrows 2190 2192
+46	21A7	arrowbardown
+47	21E4	arrowtableft
+48	21E5	arrowtabright
+49	21A8	arrowbothvbase
+50	219A	arrowleftnot
+51	219B	arrowrightnot
+52	21AE	arrowbothnot
+53	FFFF	arrowlongbothnot	long 21AE
+54	FFFF	headleft	% 2190	head
+55	FFFF	headright	% 2192  head
+56	21E0	arrowdashleft
+57	21E1	arrowdashup
+58	21E2	arrowdashright
+59	21E3	arrowdashdown
+60	21A9	arrowhookleft
+61	FFFF	arrowdblext	% extension for double arrows
+62	21AA	arrowhookright
+63	21AB	arrowloopleft
+64	21AC	arrowloopright
+
+65	FFFF	A	0041
+66	FFFF	B	0042
+67	2102	C	0043
+68	FFFF	D	0044
+69	FFFF	E	0045
+70	FFFF	F	0046
+71	FFFF	G	0047
+72	210D	H	0048
+73	FFFF	I	0049
+74	FFFF	J	004A
+75	FFFF	K	004B
+76	FFFF	L	004C
+77	FFFF	M	004D
+78	2115	N	004E
+79	FFFF	O	004F
+80	2119	P	0050
+81	211A	Q	0051
+82	211D	R	0052
+83	FFFF	S	0053
+84	FFFF	T	0054
+85	FFFF	U	0055
+86	FFFF	V	0056
+87	FFFF	W	0057
+88	FFFF	X	0058
+89	FFFF	Y	0059
+90	2124	Z	005A
+
+91	231C	brackettopnw
+92	231D	brackettopne
+93	231E	bracketbotsw
+94	231F	bracketbotse
+95	2225	arrowdblvext
+96	21D5	arrowdbllongbothv
+97	21D4	arrowdbllongboth
+98	21D6	arrowdblnw
+99	21D7	arrowdblne
+100	21D9	arrowdblsw
+101	21D8	arrowdblse
+102	21CD	arrowdblleftnot
+103	21CE	arrowdblbothnot
+104	21CF	arrowdblrightnot
+105	FFFF	arrowdbllongbothnot	long 21CE
+106	21DA	arrowtripleleft
+107	FFFF	k	006B blackboard bold k
+108	21DB	arrowtripleright
+109	21C4	arrowparrrightleft
+110	21C6	arrowparrleftright
+111	21C5	dblarrowupdown
+112	FFFF	dblarrowdownup	flipped 21C5
+113	21C7	dblarrowleft
+114	21C8	dblarrowup
+115	21C9	dblarrowright
+116	21CA	dblarrowdown
+117	21BE	harpoonupright
+118	21BF	harpoonupleft
+119	21C2	harpoondownright
+120	21C3	harpoondownleft
+121	21CB	harpoonleftright
+122	21CC	harpoonrightleft
+123	21B0	arrowupleft
+124	2223	arrowvext
+125	21B1	arrowupright
+126	FFFF	vectorleft	reversed 20D6
+127	2278	notlessgreater
+
+129	21B2	arrowdownleft
+130	21B3	arrowdownright
+131	21B4	arrowrightdown
+132	FFFF	arrowleftdown
+133	FFFF	arrowrightup
+134	FFFF	arrowleftup
+135	21B6	arrowsemanticlockw
+136	21B7	arrowsemclockw
+137	FFFF	arrowsemanticlockwplus
+138	FFFF	arrowsemclockwminus
+139	21BA	arrowanticlockw
+140	21BB	arrowclockw
+141	21DC	arrowsquiggleleft
+142	21DD	arrowsquiggleright
+143	219C	arrowwaveleft
+144	219D	arrowwaveright
+145	21AD	arrowwaveboth
+146	FFFF	arrowmidbarright negated 21A3
+147	21AF	arrowzigzag
+148	2260	notequal
+149	2262	notequivalence
+150	2241	notsimilar
+151	2244	notasymptequal
+152	2249	notalmostequal
+153	2247	notapproxequal
+154	226E	notless
+155	226F	notgreater
+156	2270	notlessequal flat bottom stroke ???
+157	2271	notgreaterequal flat bottom stroke ???
+158	2274	notlessequivlnt
+159	2275	notgreaterequivlnt
+
+171	22C6	star1
+172	2713	checkmark
+
+196	2278	notlessgreater
+197	2279	notgreaterless
+198	2284	notpropersubset
+199	2285	notpropersuperset
+200	2288	notreflexsubset
+201	2289	notreflexsuperset
+202	FFFF	notsubsetdblequal
+203	FFFF	notsupersetdblequal
+204	228A	subsetnotequal
+205	228B	supersetnotequal
+206	FFFF	subsetornotequal1
+207	FFFF	supersetornotequal1
+208	FFFF	notsubsetorequal
+209	FFFF	notsupersetorequal
+210	FFFF	subsetornotequal
+211	FFFF	supersetornotequal
+212	22E2	notsubsetsqequal
+213	22E3	notsupersetsqequal
+214	2270	notlessequal1
+215	2271	notgreaterequal1
+216	FFFF	notlessdblequal
+217	FFFF	notgreaterdblequal
+218	FFFF	lessnotequal
+219	FFFF	greaternotequal
+220	2268	lessnotdblequal
+221	2269	greaternotdblequal
+222	FFFF	lessnotdblequal1
+223	FFFF	greaternotdblequal1
+224	22E6	lessnotequivlnt
+225	22C5	periodcenteredbold
+226	22E7	greaternotequivlnt
+227	FFFF	lessnotdblequivlnt
+228	FFFF	greaternotdblequivlnt
+229	2280	notprecedes
+230	2281	notfollows
+231	FFFF	notprecedesequal 22E0
+232	FFFF	notfollowsequal 22E1
+233	FFFF	precedesnotequal
+234	FFFF	followsnotequal
+235	22E8	precedesnotsimilar
+236	22E9	followsnotsimilar
+237	FFFF	precedesnotequivlnt
+238	FFFF	followsnotequivlnt
+239	22EA	nottriangleleft
+240	22EB	nottriangleright
+241	22EC	nottriangleleftequal
+242	22ED	nottrianglerightequal 
+243	226D	notequivasymptotic	but vertical bar
+244	FFFF	notbarshort		short 2224
+245	FFFF	notparallelshort	short 2226
+246	2224	notbar
+247	2226	notbardbl
+248	22AC	notturnstileleft
+249	22AD	notsatisfies
+250	22AE	notforces
+251	22AF	notforcesextra
+252	FFFF	negeighteenthem
+253	FFFF	eighteenthem
+254	FFFF	eighthem
+255	FFFF	tenthem
+
+% DUPLICATES of 0 - 31
+
+161	25CB	circle
+162	25CF	circlesolid
+163	25A1	square
+164	25A0	squaresolid
+165	25B3	triangle
+166	25B2	trianglesolid
+167	25BD	triangleinv
+168	25BC	triangleinvsolid
+169	25CA	diamond
+170	FFFF	diamondsolid 25CA filled
+173	25C6	diamondmathsolid
+174	2215	upslope
+175	2216	downslope
+176	22E4	sqimageornotequal	% lessmuch1
+177	22E5	sqoriginornotequal	% greatermuch1
+178	FFFF	unionsqdbl squared up 22D3
+179	FFFF	intersectionsqdbl squared up 22D2
+180	FFFF	domsubtract
+181	FFFF	rngsubtract
+182	22EE	vertellipsis
+183	22EF	midhorizellipsis
+184	22F0	upslopeellipsis
+185	22F1	downslopeellipsis
+186	22D5	equalparallel
+187	2246	approxnotequal	% xor
+188	FFFF	pibond
+189	225B	starequal	% plimsol
+190	210F	planckover2pi1	% planckover2pi
+191	FFFF	elementmacron
+192	2209	notelement
+193	FFFF	ownermacron
+194	220C	notowner
+195	2204	notexistential
+
+196	2278	notlessgreater
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Encoding: Lucida New Math math extension
+
+% Used by Y&Y:
+% LucidaNewMath-Extension (lbme)
+
+% In the range 0 - 127 same layout as `TeX math extension' used for CMEX10
+
+% Note: Large delimiters and operators all hang off baseline
+
+% Large delimiters occur in several sizes including an extensible version
+
+% Note: Large operators occur in two sizes: `text' and `display'
+% We arbitrarily assign UNICODE numbers to the text version, not display
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	FFFF	parenleftbig
+1	FFFF	parenrightbig
+2	FFFF	bracketleftbig
+3	FFFF	bracketrightbig
+4	FFFF	floorleftbig
+5	FFFF	floorrightbig
+6	FFFF	ceilingleftbig
+7	FFFF	ceilingrightbig
+8	FFFF	braceleftbig
+9	FFFF	bracerightbig
+10	FFFF	angbracketleftbig	% angleleftbig ?
+11	FFFF	angbracketrightbig	% anglerightbig ?
+12	FFFF	vextendsingle
+13	FFFF	vextenddouble
+14	FFFF	slashbig
+15	FFFF	backslashbig
+16	FFFF	parenleftBig
+17	FFFF	parenrightBig
+18	FFFF	parenleftbigg
+19	FFFF	parenrightbigg
+20	FFFF	bracketleftbigg
+21	FFFF	bracketrightbigg
+22	FFFF	floorleftbigg
+23	FFFF	floorrightbigg
+24	FFFF	ceilingleftbigg
+25	FFFF	ceilingrightbigg
+26	FFFF	braceleftbigg
+27	FFFF	bracerightbigg
+28	FFFF	angbracketleftbigg	% angleleftbigg ?
+29	FFFF	angbracketrightbigg	% anglerightbigg ?
+30	FFFF	slashbigg
+31	FFFF	backslashbigg
+
+32	FFFF	parenleftBigg
+33	FFFF	parenrightBigg
+34	FFFF	bracketleftBigg
+35	FFFF	bracketrightBigg
+36	FFFF	floorleftBigg
+37	FFFF	floorrightBigg
+38	FFFF	ceilingleftBigg
+39	FFFF	ceilingrightBigg
+40	FFFF	braceleftBigg
+41	FFFF	bracerightBigg
+42	FFFF	angbracketleftBigg	% angleleftBigg ?
+43	FFFF	angbracketrightBigg	% anglerightBigg ?
+44	FFFF	slashBigg
+45	FFFF	backslashBigg
+46	FFFF	slashBig
+47	FFFF	backslashBig
+48	FFFF	parenlefttp
+49	FFFF	parenrighttp
+50	FFFF	bracketlefttp
+51	FFFF	bracketrighttp
+52	FFFF	bracketleftbt
+53	FFFF	bracketrightbt
+54	FFFF	bracketleftex
+55	FFFF	bracketrightex
+56	FFFF	bracelefttp
+57	FFFF	bracerighttp
+58	FFFF	braceleftbt
+59	FFFF	bracerightbt
+60	FFFF	braceleftmid
+61	FFFF	bracerightmid
+62	FFFF	braceex
+63	FFFF	arrowvertex
+64	FFFF	parenleftbt
+65	FFFF	parenrightbt
+66	FFFF	parenleftex
+67	FFFF	parenrightex
+68	FFFF	angbracketleftBig	% angleleftBig ? 
+69	FFFF	angbracketrightBig	% anglerightBig ?
+70	FFFF	unionsqtext		% unionsq ?
+71	FFFF	unionsqdisplay		% large unionsq
+72	222E	contintegraltext	% contintegral ?
+73	FFFF	contintegraldisplay	% large 222E
+74	2299	circledottext		% circledot ? 
+75	FFFF	circledotdisplay	% large 2299
+76	2295	circleplustext		% circleplus ?
+77	FFFF	circleplusdisplay	% large 2295
+78	2297	circlemultiplytext	% circlemultiply ?
+79	FFFF	circlemultiplydisplay	% large 2297
+80	2211	summationtext		% summation ?
+81	220F	producttext		% product ? 
+82	222B	integraltext		% integral ?
+83	222A	uniontext		% union ?
+84	2229	intersectiontext	% intersection ?
+85	228E	unionmultitext		% unionmulti ?
+86	2227	logicalandtext		% logicaland ?
+87	2228	logicalortext		% logicalor ?
+88	FFFF	summationdisplay
+89	FFFF	productdisplay
+90	FFFF	integraldisplay
+91	FFFF	uniondisplay
+92	FFFF	intersectiondisplay
+93	FFFF	unionmultidisplay
+94	FFFF	logicalanddisplay
+95	FFFF	logicalordisplay
+96	2210	coproducttext		% coproduct ?
+97	FFFF	coproductdisplay
+98	FFFF	hatwide
+99	FFFF	hatwider
+100	FFFF	hatwidest
+101	FFFF	tildewide
+102	FFFF	tildewider
+103	FFFF	tildewidest
+104	FFFF	bracketleftBig
+105	FFFF	bracketrightBig
+106	FFFF	floorleftBig
+107	FFFF	floorrightBig
+108	FFFF	ceilingleftBig
+109	FFFF	ceilingrightBig
+110	FFFF	braceleftBig
+111	FFFF	bracerightBig
+112	FFFF	radicalbig
+113	FFFF	radicalBig
+114	FFFF	radicalbigg
+115	FFFF	radicalBigg
+116	FFFF	radicalbt
+117	FFFF	radicalvertex
+118	FFFF	radicaltp
+119	FFFF	arrowvertexdbl
+120	FFFF	arrowtp
+121	FFFF	arrowbt
+122	FFFF	bracehtipdownleft
+123	FFFF	bracehtipdownright
+124	FFFF	bracehtipupleft
+125	FFFF	bracehtipupright
+126	FFFF	arrowdbltp
+127	FFFF	arrowdblbt
+
+FFFF	130	openbracketleftbig
+FFFF	131	openbracketrightbig
+FFFF	132	openbracketleftBig
+FFFF	133	openbracketrightBig
+FFFF	134	openbracketleftbigg
+FFFF	135	openbracketrightbigg
+FFFF	136	openbracketleftBigg
+FFFF	137	openbracketrightBigg
+FFFF	138	openbracketlefttp
+FFFF	139	openbracketrighttp
+FFFF	140	openbracketleftbt
+FFFF	141	openbracketrightbt
+FFFF	142	openbracketleftex
+FFFF	143	openbracketrightex
+
+222F	144	surfintegraltext
+FFFF	145	surfintegraldisplay	large 222F
+FFFF	146	integralmid		medium 222B
+FFFF	147	contintegralmid		medium 222E
+FFFF	148	surfintegralmid		medium 222F
+2320	149	integraltp
+2321	150	integralbt
+FFFF	151	integralex
+
+221A	159	radical
+0020	160	space
+
+FFFF	197	hatwide1
+FFFF	198	hatwider1
+FFFF	199	tildewide1
+FFFF	200	tildewider1
+
+0393	208	Gamma
+0394	209	Delta
+0398	210	Theta
+039B	211	Lambda
+039E	212	Xi
+03A0	213	Pi
+03A3	214	Sigma
+03A5	215	Upsilon
+03A6	216	Phi
+03A8	217	Psi
+03A9	218	Omega	
+
+FFFF	252	negeighteenthem
+FFFF	253	eighteenthem
+FFFF	254	eighthem
+FFFF	255	tenthem
+
+% DUPLICATES of 0 - 31
+
+161	FFFF	parenleftbig
+162	FFFF	parenrightbig
+163	FFFF	bracketleftbig
+164	FFFF	bracketrightbig
+165	FFFF	floorleftbig
+166	FFFF	floorrightbig
+167	FFFF	ceilingleftbig
+168	FFFF	ceilingrightbig
+169	FFFF	braceleftbig
+170	FFFF	bracerightbig
+173	FFFF	angbracketleftbig	% angleleftbig ?
+174	FFFF	angbracketrightbig	% anglerightbig ?
+175	FFFF	vextendsingle
+176	FFFF	vextenddouble
+177	FFFF	slashbig
+178	FFFF	backslashbig
+179	FFFF	parenleftBig
+180	FFFF	parenrightBig
+181	FFFF	parenleftbigg
+182	FFFF	parenrightbigg
+183	FFFF	bracketleftbigg
+184	FFFF	bracketrightbigg
+185	FFFF	floorleftbigg
+186	FFFF	floorrightbigg
+187	FFFF	ceilingleftbigg
+188	FFFF	ceilingrightbigg
+189	FFFF	braceleftbigg
+190	FFFF	bracerightbigg
+191	FFFF	angbracketleftbigg	% angleleftbigg ?
+192	FFFF	angbracketrightbigg	% anglerightbigg ?
+193	FFFF	slashbigg
+194	FFFF	backslashbigg
+195	FFFF	parenleftBigg
+
+196	FFFF	arrowdblbt
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Encoding: Lucida Bright Astro
+
+% As used in Y&Y Lucida Bright Astro (lbastr)
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+32	0020	space
+
+49	260C	Conjunction
+50	2206	Trine
+51	260A	Ascending
+52	2610	Quadrature
+53	2641	Earth
+54	2297	RoundStamp
+55	22A0	RectangleStamp
+56	260D	Opposition
+57	FFFF	Star
+59	260B	Descending
+60	FFFF	New
+61	263D	FirstQuarter
+62	FFFF	Full
+63	263E	ThirdQuarter
+
+65	2648	Aries
+66	264E	Libra
+67	2651	Capricorn
+69	2640	Venus
+71	2650	Sagittarius
+73	264A	Gemini
+74	2643	Jupiter
+75	264F	Scorpio
+76	264C	Leo
+77	2642	Mars
+78	264B	Cancer
+79	263E	Moon
+80	2653	Pisces
+81	2652	Aquarius
+82	2644	Saturn
+83	263C	Sun
+84	2649	Taurus
+86	264D	Virgo
+89	263F	Mercury
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

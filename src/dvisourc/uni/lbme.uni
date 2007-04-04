@@ -1,0 +1,239 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: Lucida New Math math extension
+
+% Used by Y&Y:
+% LucidaNewMath-Extension (lbme)
+
+% In the range 0 - 127 same layout as `TeX math extension' used for CMEX10
+
+% Note: Large delimiters and operators all hang off baseline
+
+% Large delimiters occur in several sizes including an extensible version
+
+% Note: Large operators occur in two sizes: `text' and `display'
+% We arbitrarily assign UNICODE numbers to the text version, not display
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Lucida is a registered trademark of Bigelow & Holmes, Inc.
+
+0	FFFF	parenleftbig
+1	FFFF	parenrightbig
+2	FFFF	bracketleftbig
+3	FFFF	bracketrightbig
+4	FFFF	floorleftbig
+5	FFFF	floorrightbig
+6	FFFF	ceilingleftbig
+7	FFFF	ceilingrightbig
+8	FFFF	braceleftbig
+9	FFFF	bracerightbig
+10	FFFF	angbracketleftbig	% angleleftbig ?
+11	FFFF	angbracketrightbig	% anglerightbig ?
+12	FFFF	vextendsingle
+13	FFFF	vextenddouble
+14	FFFF	slashbig
+15	FFFF	backslashbig
+16	FFFF	parenleftBig
+17	FFFF	parenrightBig
+18	FFFF	parenleftbigg
+19	FFFF	parenrightbigg
+20	FFFF	bracketleftbigg
+21	FFFF	bracketrightbigg
+22	FFFF	floorleftbigg
+23	FFFF	floorrightbigg
+24	FFFF	ceilingleftbigg
+25	FFFF	ceilingrightbigg
+26	FFFF	braceleftbigg
+27	FFFF	bracerightbigg
+28	FFFF	angbracketleftbigg	% angleleftbigg ?
+29	FFFF	angbracketrightbigg	% anglerightbigg ?
+30	FFFF	slashbigg
+31	FFFF	backslashbigg
+
+32	FFFF	parenleftBigg
+33	FFFF	parenrightBigg
+34	FFFF	bracketleftBigg
+35	FFFF	bracketrightBigg
+36	FFFF	floorleftBigg
+37	FFFF	floorrightBigg
+38	FFFF	ceilingleftBigg
+39	FFFF	ceilingrightBigg
+40	FFFF	braceleftBigg
+41	FFFF	bracerightBigg
+42	FFFF	angbracketleftBigg	% angleleftBigg ?
+43	FFFF	angbracketrightBigg	% anglerightBigg ?
+44	FFFF	slashBigg
+45	FFFF	backslashBigg
+46	FFFF	slashBig
+47	FFFF	backslashBig
+48	FFFF	parenlefttp
+49	FFFF	parenrighttp
+50	FFFF	bracketlefttp
+51	FFFF	bracketrighttp
+52	FFFF	bracketleftbt
+53	FFFF	bracketrightbt
+54	FFFF	bracketleftex
+55	FFFF	bracketrightex
+56	FFFF	bracelefttp
+57	FFFF	bracerighttp
+58	FFFF	braceleftbt
+59	FFFF	bracerightbt
+60	FFFF	braceleftmid
+61	FFFF	bracerightmid
+62	FFFF	braceex
+63	FFFF	arrowvertex
+64	FFFF	parenleftbt
+65	FFFF	parenrightbt
+66	FFFF	parenleftex
+67	FFFF	parenrightex
+68	FFFF	angbracketleftBig	% angleleftBig ? 
+69	FFFF	angbracketrightBig	% anglerightBig ?
+70	FFFF	unionsqtext		% unionsq ?
+71	FFFF	unionsqdisplay		% large unionsq
+72	222E	contintegraltext	% contintegral ?
+73	FFFF	contintegraldisplay	% large 222E
+74	2299	circledottext		% circledot ? 
+75	FFFF	circledotdisplay	% large 2299
+76	2295	circleplustext		% circleplus ?
+77	FFFF	circleplusdisplay	% large 2295
+78	2297	circlemultiplytext	% circlemultiply ?
+79	FFFF	circlemultiplydisplay	% large 2297
+80	2211	summationtext		% summation ?
+81	220F	producttext		% product ? 
+82	222B	integraltext		% integral ?
+83	222A	uniontext		% union ?
+84	2229	intersectiontext	% intersection ?
+85	228E	unionmultitext		% unionmulti ?
+86	2227	logicalandtext		% logicaland ?
+87	2228	logicalortext		% logicalor ?
+88	FFFF	summationdisplay
+89	FFFF	productdisplay
+90	FFFF	integraldisplay
+91	FFFF	uniondisplay
+92	FFFF	intersectiondisplay
+93	FFFF	unionmultidisplay
+94	FFFF	logicalanddisplay
+95	FFFF	logicalordisplay
+96	2210	coproducttext		% coproduct ?
+97	FFFF	coproductdisplay
+98	FFFF	hatwide
+99	FFFF	hatwider
+100	FFFF	hatwidest
+101	FFFF	tildewide
+102	FFFF	tildewider
+103	FFFF	tildewidest
+104	FFFF	bracketleftBig
+105	FFFF	bracketrightBig
+106	FFFF	floorleftBig
+107	FFFF	floorrightBig
+108	FFFF	ceilingleftBig
+109	FFFF	ceilingrightBig
+110	FFFF	braceleftBig
+111	FFFF	bracerightBig
+112	FFFF	radicalbig
+113	FFFF	radicalBig
+114	FFFF	radicalbigg
+115	FFFF	radicalBigg
+116	FFFF	radicalbt
+117	FFFF	radicalvertex
+118	FFFF	radicaltp
+119	FFFF	arrowvertexdbl
+120	FFFF	arrowtp
+121	FFFF	arrowbt
+122	FFFF	bracehtipdownleft
+123	FFFF	bracehtipdownright
+124	FFFF	bracehtipupleft
+125	FFFF	bracehtipupright
+126	FFFF	arrowdbltp
+127	FFFF	arrowdblbt
+
+FFFF	130	openbracketleftbig
+FFFF	131	openbracketrightbig
+FFFF	132	openbracketleftBig
+FFFF	133	openbracketrightBig
+FFFF	134	openbracketleftbigg
+FFFF	135	openbracketrightbigg
+FFFF	136	openbracketleftBigg
+FFFF	137	openbracketrightBigg
+FFFF	138	openbracketlefttp
+FFFF	139	openbracketrighttp
+FFFF	140	openbracketleftbt
+FFFF	141	openbracketrightbt
+FFFF	142	openbracketleftex
+FFFF	143	openbracketrightex
+
+222F	144	surfintegraltext
+FFFF	145	surfintegraldisplay	large 222F
+FFFF	146	integralmid		medium 222B
+FFFF	147	contintegralmid		medium 222E
+FFFF	148	surfintegralmid		medium 222F
+2320	149	integraltp
+2321	150	integralbt
+FFFF	151	integralex
+
+221A	159	radical
+0020	160	space
+
+FFFF	197	hatwide1
+FFFF	198	hatwider1
+FFFF	199	tildewide1
+FFFF	200	tildewider1
+
+0393	208	Gamma
+0394	209	Delta
+0398	210	Theta
+039B	211	Lambda
+039E	212	Xi
+03A0	213	Pi
+03A3	214	Sigma
+03A5	215	Upsilon
+03A6	216	Phi
+03A8	217	Psi
+03A9	218	Omega	
+
+FFFF	252	negeighteenthem
+FFFF	253	eighteenthem
+FFFF	254	eighthem
+FFFF	255	tenthem
+
+% DUPLICATES of 0 - 31
+
+161	FFFF	parenleftbig
+162	FFFF	parenrightbig
+163	FFFF	bracketleftbig
+164	FFFF	bracketrightbig
+165	FFFF	floorleftbig
+166	FFFF	floorrightbig
+167	FFFF	ceilingleftbig
+168	FFFF	ceilingrightbig
+169	FFFF	braceleftbig
+170	FFFF	bracerightbig
+173	FFFF	angbracketleftbig	% angleleftbig ?
+174	FFFF	angbracketrightbig	% anglerightbig ?
+175	FFFF	vextendsingle
+176	FFFF	vextenddouble
+177	FFFF	slashbig
+178	FFFF	backslashbig
+179	FFFF	parenleftBig
+180	FFFF	parenrightBig
+181	FFFF	parenleftbigg
+182	FFFF	parenrightbigg
+183	FFFF	bracketleftbigg
+184	FFFF	bracketrightbigg
+185	FFFF	floorleftbigg
+186	FFFF	floorrightbigg
+187	FFFF	ceilingleftbigg
+188	FFFF	ceilingrightbigg
+189	FFFF	braceleftbigg
+190	FFFF	bracerightbigg
+191	FFFF	angbracketleftbigg	% angleleftbigg ?
+192	FFFF	angbracketrightbigg	% anglerightbigg ?
+193	FFFF	slashbigg
+194	FFFF	backslashbigg
+195	FFFF	parenleftBigg
+
+196	FFFF	arrowdblbt
+

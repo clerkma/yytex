@@ -1,0 +1,181 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: AMS math symbols B
+
+% Use by Y&Y AMS math symbol B fonts:
+% MSBM10, MSBM9, MSBM8, MSBM7, MSBM6, MSBM5
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Note: This has many negated relations (obviates overprinting with slash)
+% Note: This has many variants not found in UNICODE 
+
+% Note: Alphabet A-Z is Blackboard bold or `open face'
+% But only a few of these letters have UNICODE numbers (C, H, N, P, Q, R, Z)
+
+0	FFFF	lessornotequal
+1	FFFF	greaterornotequal
+2	FFFF	notlessequal			2270
+3	FFFF	notgreaterequal			2271
+4	226E	notless
+5	226F	notgreater
+6	FFFF	notprecedes			2280
+7	FFFF	notfollows	% notsucceeds	2281
+8	2268	lessornotdbleql
+9	2269	greaterornotdbleql
+10	2270	notlessorslnteql
+11	2271	notgreaterorslnteql
+12	FFFF	lessnotequal
+13	FFFF	greaternotequal
+14	FFFF	notprecedesoreql	22E0	but slanted
+15	FFFF	notfollowsoreql		22E1	but slanted
+16	22E8	precedeornoteqvlnt	% preceedornoteqlvnt
+17	22E9	followornoteqvlnt	% succeedornoteqlvnt
+18	22E6	lessornotsimilar
+19	22E7	greaterornotsimilar
+20	FFFF	notlessdblequal
+21	FFFF	notgreaterdblequal
+22	FFFF	precedenotslnteql	% preceednotslnteql
+23	FFFF	follownotslnteql	% succeednotslnteql
+24	FFFF	precedenotdbleqv	% preceednotdbleqv
+25	FFFF	follownotdbleqv		% succeednotdbleqv
+26	FFFF	lessnotdblequal
+27	FFFF	greaternotdblequal
+28	2241	notsimilar		notsimilar
+29	2247	notapproxequal		notapproxequal
+30	FFFF	upslope			2215
+31	FFFF	downslope		2216
+32	22E2	notsubsetoreql	notsubsetsqequal
+33	22E3	notsupersetoreql	notsupersetsqequal
+34	FFFF	notsubsetordbleql
+35	FFFF	notsupersetordbleql
+36	FFFF	subsetornotdbleql
+37	FFFF	supersetornotdbleql
+38	FFFF	subsetornoteql
+39	FFFF	supersetornoteql
+40	228A	subsetnoteql
+41	228B	supersetnoteql
+42	2288	notsubseteql
+43	2289	notsuperseteql
+44	2226	notparallel
+45	2224	notbar
+46	FFFF	notshortbar
+47	FFFF	notshortparallel
+48	22AC	notturnstile
+49	22AE	notforces		notforce
+50	22AD	notsatisfies		notsatisfy
+51	22AF	notforcesextra		notforceextr
+52	22ED	nottriangeqlright
+53	22EC	nottriangeqlleft
+54	22EA	nottriangleleft
+55	22EB	nottriangleright
+56	219A	notarrowleft		arrowleftnot
+57	219B	notarrowright	arrowrightnot
+58	21CD	notdblarrowleft
+59	21CF	notdblarrowright
+60	21CE	notdblarrowboth
+61	21AE	notarrowboth
+62	22C7	dividemultiply	divideonmultiply
+63	2205	emptyset
+64	2204	notexistential
+
+65	FFFF	A	0041
+66	FFFF	B	0042
+67	2102	C	0043
+68	FFFF	D	0044
+69	FFFF	E	0045
+70	FFFF	F	0046
+71	FFFF	G	0047
+72	210D	H	0048
+73	FFFF	I	0049
+74	FFFF	J	004A
+75	FFFF	K	004B
+76	FFFF	L	004C
+77	FFFF	M	004D
+78	2115	N	004E
+79	FFFF	O	004F
+80	2119	P	0050
+81	211A	Q	0051
+82	211D	R	0052
+83	FFFF	S	0053
+84	FFFF	T	0054
+85	FFFF	U	0055
+86	FFFF	V	0056
+87	FFFF	W	0057
+88	FFFF	X	0058
+89	FFFF	Y	0059
+90	2124	Z	005A
+
+91	FFFF	hatwide
+92	FFFF	hatwider
+93	FFFF	tildewide
+94	FFFF	tildewider
+96	2132	Finv
+97	FFFF	Gmir
+102	2127	Omegainv	mho
+103	00F0	eth
+104	2242	equalorsimilar
+105	2136	beth		bethmath
+106	2137	gimel		gimelmath
+107	2138	daleth		dalethmath
+108	22D6	lessdot
+109	22D7	greaterdot
+110	22C9	multicloseleft
+111	22CA	multicloseright
+112	FFFF	barshort
+113	FFFF	parallelshort
+114	FFFF	integerdivide	setdifference ? 2216
+115	223C	similar
+116	2248	approxequal
+117	2245	approxorequal
+118	FFFF	followsorequal		followsequal1
+119	FFFF	precedesorequal		precedesequal1
+120	21B6	archleftdown	anticlockwise semi arrow
+121	21B7	archrightdown	clockwise semi arrow
+122	03DC	Digamma	% Fstyle
+123	03F0	kappa varkappa		not 039A
+124	FFFF	k		004B
+125	210F	planckover2pi	slanted bar
+126	210F	planckover2pi1	straight bar
+127	220D	epsiloninv	?
+
+% DUPLICATES of 0 - 31
+
+161	FFFF	lessornotequal
+162	FFFF	greaterornotequal
+163	FFFF	notlessequal			2270
+164	FFFF	notgreaterequal			2271
+165	226E	notless
+166	226F	notgreater
+167	FFFF	notprecedes			2280
+168	FFFF	notfollows	% notsucceeds	2281
+169	2268	lessornotdbleql
+170	2269	greaterornotdbleql
+173	2270	notlessorslnteql
+174	2271	notgreaterorslnteql
+175	FFFF	lessnotequal
+176	FFFF	greaternotequal
+177	FFFF	notprecedesoreql	22E0	but slanted
+178	FFFF	notfollowsoreql		22E1	but slanted
+179	22E8	precedeornoteqvlnt	% preceedornoteqlvnt
+180	22E9	followornoteqvlnt	% succeedornoteqlvnt
+181	22E6	lessornotsimilar
+182	22E7	greaterornotsimilar
+183	FFFF	notlessdblequal
+184	FFFF	notgreaterdblequal
+185	FFFF	precedenotslnteql	% preceednotslnteql
+186	FFFF	follownotslnteql	% succeednotslnteql
+187	FFFF	precedenotdbleqv	% preceednotdbleqv
+188	FFFF	follownotdbleqv		% succeednotdbleqv
+189	FFFF	lessnotdblequal
+190	FFFF	greaternotdblequal
+191	2241	notsimilar		notsimilar
+192	2247	notapproxequal		notapproxequal
+193	FFFF	upslope			2215
+194	FFFF	downslope		2216
+195	22E2	notsubsetoreql	notsubsetsqequal
+
+196	220D	epsiloninv	?
+

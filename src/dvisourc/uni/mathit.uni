@@ -1,0 +1,198 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Encoding: TeX math italic
+
+% Used by Y&Y Computer Modern math italic fonts:
+% CMMI12, CMMI10, CMMI9, CMMI8, CMMI7, CMMI6, CMMI5	(regular)
+
+% Used by Y&Y AMS bold math italic fonts:
+% CMMIB10, CMMIB9, CMMIB8, CMMIB7, CMMIB6, CMMIB5	(bold)
+
+% Note: Figures are old style
+
+% Note: Alphabet is italic (math italic --- for variables x, y, z, X, Y, Z)
+
+% Note: for convenience of some applications, control character range repeated
+% 0-9 => 161-170, 10-32 => 173-195 127 => 196
+
+% Note: TeX \epsilon => epsilon1, \varepsilon => epsilon (to match Symbol)
+% Note: TeX \varpi => pi1 (which in Adobe Symbol is called omega1!)
+% Note: Tex \Upsilon is called Upsilon1 in Symbol (but we use Upsilon here)
+
+0	0393	Gamma
+1	0394	Delta
+2	0398	Theta
+3	039B	Lambda
+4	039E	Xi
+5	03A0	Pi
+6	03A3	Sigma
+7	03A5	Upsilon		% Glyph is actually Adobe Symbol Upsilon1...
+8	03A6	Phi
+9	03A8	Psi
+10	03A9	Omega
+
+11	03B1	alpha
+12	03B2	beta
+13	03B3	gamma
+14	03B4	delta
+15	03B5	epsilon1
+16	03B6	zeta
+17	03B7	eta
+18	03B8	theta
+19	03B9	iota
+20	03BA	kappa
+21	03BB	lambda
+22	03BC	mu
+23	03BD	nu
+24	03BE	xi
+25	03C0	pi
+26	03C1	rho
+27	03C3	sigma
+28	03C4	tau
+29	03C5	upsilon
+30	03C6	phi
+31	03C7	chi
+32	03C8	psi
+33	03C9	omega
+
+34	FFFF	epsilon		% \varepsilon 03B5 ?
+35	03D1	theta1		% \vartheta
+36	03D6	pi1		% \varpi (Adobe Symbol calls this omega1!)
+37	03F1	rho1		% \varrho
+38	03C2	sigma1		% \varsigma
+39	03D5	phi1		% \varphi
+
+40	21BC	arrowlefttophalf
+41	21BD	arrowleftbothalf
+42	21C0	arrowrighttophalf
+43	21C1	arrowrightbothalf
+44	FFFF	arrowhookleft	21AA ?
+45	FFFF	arrowhookright	21A9 ?
+46	22B3	triangleright	25B7
+47	22B2	triangleleft	25C1
+
+48	0030	zero		% zerooldstyle
+49	0031	one		% oneoldstyle
+50	0032	two		% twooldstyle
+51	0033	three		% threeoldstyle
+52	0034	four		% fouroldstyle
+53	0035	five		% fiveoldstyle
+54	0036	six		% sixoldstyle
+55	0037	seven		% sevenoldstyle
+56	0038	eight		% eightoldstyle
+57	0039	nine		% nineoldstyle
+
+58	002E	period
+59	002C	comma
+60	003C	less
+61	002F	slash
+62	003E	greater
+63	22C6	star		% asterisk ?
+64	2202	partialdiff
+
+65	0041	A
+66	0042	B
+67	0043	C
+68	0044	D
+69	0045	E
+70	0046	F
+71	0047	G
+72	0048	H
+73	0049	I
+74	004A	J
+75	004B	K
+76	004C	L
+77	004D	M
+78	004E	N
+79	004F	O
+80	0050	P
+81	0051	Q
+82	0052	R
+83	0053	S
+84	0054	T
+85	0055	U
+86	0056	V
+87	0057	W
+88	0058	X
+89	0059	Y
+90	005A	Z
+
+91	266D	flat
+92	266E	natural
+93	266F	sharp
+94	FFFF	slurbelow ?
+95	FFFF	slurabove ?
+
+96	2113	lscript
+97	0061	a
+98	0062	b
+99	0063	c
+100	0064	d
+101	0065	e
+102	0066	f
+103	0067	g
+104	0068	h
+105	0069	i
+106	006A	j
+107	006B	k
+108	006C	l
+109	006D	m
+110	006E	n
+111	006F	o
+112	0070	p
+113	0071	q
+114	0072	r
+115	0073	s
+116	0074	t
+117	0075	u
+118	0076	v
+119	0077	w
+120	0078	x
+121	0079	y
+122	007A	z
+
+123	0131	dotlessi
+124	FFFF	dotlessj	not 0284 or 025F
+125	2118	weierstrass
+126	20D6	vector
+127	2040	tie
+
+% DUPLICATES of 0 - 31
+
+161	0393	Gamma
+162	0394	Delta
+163	0398	Theta
+164	039B	Lambda
+165	039E	Xi
+166	03A0	Pi
+167	03A3	Sigma
+168	03A5	Upsilon		% Glyph is actually Adobe Symbol Upsilon1...
+169	03A6	Phi
+170	03A8	Psi
+173	03A9	Omega
+174	03B1	alpha
+175	03B2	beta
+176	03B3	gamma
+177	03B4	delta
+178	03B5	epsilon1
+179	03B6	zeta
+180	03B7	eta
+181	03B8	theta
+182	03B9	iota
+183	03BA	kappa
+184	03BB	lambda
+185	03BC	mu
+186	03BD	nu
+187	03BE	xi
+188	03C0	pi
+189	03C1	rho
+190	03C3	sigma
+191	03C4	tau
+192	03C5	upsilon
+193	03C6	phi
+194	03C7	chi
+195	03C8	psi
+
+196	2040	tie
+

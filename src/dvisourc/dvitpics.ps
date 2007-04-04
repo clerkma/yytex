@@ -1,0 +1,324 @@
+% Copyright 1992,1993,1994,1995,1996,1997,1998,1999 Y&Y, Inc.
+% Copyright 2007 TeX Users Group
+% You may freely use, modify and/or distribute this file.
+
+% DVIPSONE TPIC preamble version 1.6 (1999 Sep 25)
+
+dvidict begin
+systemdict/currentpacking known {currentpacking true setpacking} if
+
+%%% Global Parameters (can be changed by user)
+
+% /linecap 0 def	% butt caps
+/linecap 1 def		% round caps
+/linejoin 0 def		% mitered joins
+% /linejoin 1 def	% round joins
+
+/grayshade 0.5 def	% gray for `sh' when shade not specified
+/zeropen 0.4 def	% (pts) use when zero pen width specified
+/zerodot 4.5 def	% (pts) use when zero dot/dash length specified
+
+/dashadjust true def	% adjust dash and dot to fit nicely
+
+% /dashtweak false def	% do not adjust dash for linewidth
+/dashtweak true def	% adjust dash for linewidth
+% /dottweak false def	% do not adjust dot for linewidth
+/dottweak true def	% adjust dot for linewidth
+
+/lineswell 1 def	% scale factor to multiply line thickness by
+
+% /pieshape false def	% show filled elliptical arc as chord
+/pieshape true def	% show filled elliptical arc as pie slice
+
+/tpiceps 20 def		% closed curve tolerance
+
+%%% Global State Variables
+
+/firstpoint true def	% no points on path yet
+/shadefill false def	% on when `fill' requested
+
+%%% Subroutines
+
+/savepoint{	% save current point - at start of path
+currentpoint 2 copy /SaveY xd /SaveX xd newpath moveto}bd
+
+/savepointQ{ % save current point - after first pa, for closed spline
+currentpoint 2 copy /SaveQY xd /SaveQX xd newpath moveto}bd
+
+/restorepoint{	% restore current point after `flushing path'
+SaveX SaveY moveto /firstpoint true def}bd
+
+/filloff{		% `flush shading'
+/shadefill false def	% only come here if shadefill is true
+savedgray setgray	% reset to old gray level
+}bd	
+
+/dashon{		% remember old state
+% currentdash /dashoffset xd /dasharray xd
+currentdash 3 -1 roll	% assumes one item on stack
+}bd
+
+/dashoff{		% `flush dash/dot' --- restore state
+% dasharray dashoffset setdash % [] 0 setdash
+setdash
+}bd
+
+/closeif{	% close path if last point same as first (was 2, now 20)
+currentpoint SaveY sub abs tpiceps lt {SaveX sub abs tpiceps lt 
+{closepath} if}{pop} ifelse
+}bd
+
+/setjoincap{	% set desired line join and line cap
+currentlinecap currentlinejoin	% save current state on stack
+linecap setlinecap linejoin setlinejoin % set new
+}bd
+
+/resjoincap{		% old state is on stack
+setlinejoin setlinecap	% restore old state
+}bd
+
+/fpstroke{		% stroke and flush path
+closeif setjoincap stroke resjoincap restorepoint
+% 0 setgray % fhb ???
+}bd
+
+/daset{	% l
+[exch dup
+dashtweak
+{		% adjust for end caps on dashes
+currentlinewidth 2 div sub
+dup 0 lt {pop 0} if
+exch currentlinewidth 2 div add
+]
+currentlinewidth 4 div neg
+}
+{
+] 0
+}
+ifelse
+setdash
+}bd
+
+/dtset{	% l
+[exch
+dottweak
+{currentlinewidth 2 div	 % make `dots' longer
+exch 1 index sub ] currentlinewidth 4 div
+}
+{
+0 exch ] 0
+}
+ifelse
+setdash
+}bd
+
+/trimdash {	% len
+dup linch div
+0.000001 sub % avoid alternating round-off
+1 sub 2 div
+round
+dup add 1 add
+div
+}bd
+
+/trimdots {	% len
+dup linch neg div dup round cvi
+dup 0 eq {pop 1} if
+exch pop
+div
+}bd
+
+/trimstep {
+xnew xold sub dup mul ynew yold sub dup mul add sqrt
+linch 0 gt {trimdash daset} {trimdots dtset} ifelse
+}bd
+
+/datrace{	% m l c h
+setjoincap
+{newpath 2 copy /yold xd /xold xd
+moveto /first true def}
+{2 copy /ynew xd /xnew xd
+trimstep
+newpath xold yold moveto lineto stroke
+/xold xnew def /yold ynew def}
+{curveto}
+{closepath}
+pathforall
+resjoincap
+restorepoint
+}bd
+
+/arcdraw{	% xo yo xr yr sa ea
+matrix currentmatrix
+currentpoint translate
+newpath		% ?
+7 -2 roll	% xo yo
+pieshape shadefill and {2 copy moveto} if
+translate
+5 -2 roll	% xr yr
+scale
+% newpath	% fhb ???
+0 0 1
+6 -2 roll	% sa ea
+arc
+setmatrix
+}bd
+
+/quadraticclosed{		% pathforall produces m l c h
+{newpath /yold xd /xold xd 
+/first true def}		% m
+{/ynew xd /xnew xd
+first
+{xold xnew add 2 div yold ynew add 2 div 
+moveto /xstar xnew def /ystar ynew def /first false def}
+{xanc xold 5 mul add 6 div yanc yold 5 mul add 6 div
+xnew xold 5 mul add 6 div ynew yold 5 mul add 6 div
+xold xnew add 2 div yold ynew add 2 div curveto}
+ifelse
+/xanc xold def /yanc yold def
+/xold xnew def /yold ynew def}	% l
+{curveto}			% c unlikely
+{}				% h unlikely
+pathforall
+/xnew xstar def /ynew ystar def
+xanc xold 5 mul add 6 div yanc yold 5 mul add 6 div
+xnew xold 5 mul add 6 div ynew yold 5 mul add 6 div
+xold xnew add 2 div yold ynew add 2 div curveto % do the closing piece
+}bd
+
+/quadraticopen{	% pathforall produces m l c h
+{newpath 2 copy /yold xd /xold xd moveto 
+/first true def}		% m
+{/ynew xd /xnew xd
+first
+{xold xnew add 2 div yold ynew add 2 div lineto /first false def}
+{xanc xold 5 mul add 6 div yanc yold 5 mul add 6 div
+xnew xold 5 mul add 6 div ynew yold 5 mul add 6 div
+xold xnew add 2 div yold ynew add 2 div curveto}
+ifelse
+/xanc xold def /yanc yold def
+/xold xnew def /yold ynew def}	% l
+{curveto}			% c unlikely
+{xold yold lineto closepath}	% h unlikely
+pathforall
+xold yold lineto	% in case no closepath
+}bd
+
+/quadratic {			% first see whether closed path 
+currentpoint SaveQY sub abs tpiceps lt 
+	{SaveQX sub abs tpiceps lt}
+	{pop false} ifelse % leaves true or false on stack
+{quadraticclosed}{quadraticopen} ifelse
+}bd
+
+/sh{	% gray
+/savedgray currentgray def	% remember current gray
+/shadefill true def		% `turn on shading'
+% dup /grayshade exch 1 exch sub def	% fhb ???
+setgray 
+}bd
+
+/cl{	% r g b
+/savedgray currentgray def	% remember current gray
+/shadefill true def		% `turn on shading'
+setrgbcolor
+}bd
+
+%%% TPIC calls
+
+/pn{
+dup 0 eq {
+zeropen 0 ne {pop zeropen scl div}if
+}if
+lineswell 1 ne {lineswell mul}if % debugging hack
+setlinewidth
+% /firstpoint true def % redundant ?
+}bd
+
+/pa{	% x y
+firstpoint
+% {savepoint rmoveto /firstpoint false def} % original
+% {rmoveto savepoint /firstpoint false def} % buggy
+{savepoint rmoveto savepointQ /firstpoint false def} % 98/Apr/20
+{rlineto}
+ifelse
+}bd
+
+/fp{	% stroke and possibly fill path
+shadefill {gsave fill grestore filloff} if
+fpstroke
+}bd
+
+/ip{	% fill path
+% fill filloff restorepoint
+shadefill {fill filloff restorepoint} {fp} ifelse
+}bd
+
+/da{	% l
+dup 0 eq {pop zerodot scl div} if
+dashon
+dashadjust
+{
+/linch xd
+datrace
+}
+{
+daset fpstroke
+}
+ifelse
+dashoff
+}bd
+
+/dt{	% l
+dup 0 eq {pop zerodot scl div} if
+dashon
+dashadjust
+{
+neg /linch xd
+datrace
+}
+{
+dtset fpstroke
+}
+ifelse
+dashoff
+}bd
+
+/ar{	% stroke and possible fill arc NEW
+savepoint
+shadefill {6 copy arcdraw fill filloff restorepoint} if
+arcdraw fpstroke
+% savepoint arcdraw	% OLD 
+% shadefill {gsave fill grestore filloff} if
+% fpstroke
+}bd
+
+/ia{	% fill arc
+% savepoint arcdraw fill filloff restorepoint
+shadefill {savepoint arcdraw fill filloff restorepoint} {ar} ifelse
+}bd
+
+/spsld{	% stroke and possible fill spline
+quadratic
+shadefill {gsave fill grestore filloff} if	% ?
+fpstroke
+}bd
+
+/sp{	% l
+dashon
+dup 0 gt
+{daset}		% dashed
+{neg dtset}	% dotted
+ifelse
+spsld
+dashoff
+}bd
+
+/wh{1 sh}bd		% set fill color to white
+
+/bk{0 sh}bd		% set fill color to black
+
+/gr{grayshade sh}bd	% set fill color to gray
+
+systemdict/currentpacking known{setpacking} if
+end

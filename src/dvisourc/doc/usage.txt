@@ -1,0 +1,157 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+DVIPSONE, release 0.6 (1990 October 1).  (Thus outdated, but maybe
+useful as a starting point.)
+
+------------------------------------------------------------------------------
+
+USAGE: 		dvipsone <file-name> <enter>
+-----
+
+will run DVIPSONE on <file-name>.DVI and write the output into the
+file <file-name>.PS Similarly,
+
+		dvipsone -d=PRN <file-name> <enter>
+
+will run DVIPSONE on <file-name>.DVI and send the output directly to
+the printer (the argument following the flag `d' can also be LPT1,
+LPT2, LPT3, COM1, COM2, NUL, or a file name). 
+
+To see the available command line flags and arguments, invoke the
+program without arguments: 
+
+	C:\DVIPSONE\DVIPSONE <enter>
+
+To see short explanations of the command line flags and arguments,
+invoke DVIPSONE with a '?' command line flag:
+
+	C:\DVIPSONE\DVIPSONE -? <enter>
+
+You can, for example, tell DVIPSONE that your font files are in other
+than the default directory, send output to a file instead of the
+printer, use font substitution or font remapping, or request more
+verbose output.
+
+-----------------------------------------------------------------------------
+
+AUXILIARY FILES:
+---------------
+
+Font Metric Information:
+
+DVIPSONE normally does not require additional font metric
+information.  When fonts are substituted for, however, DVIPSONE needs
+to refer to the metric files of the font being substituted for.  
+DVIPSONE can get font metric information from three types of files:
+AFM, TFM and PFM.
+
+If TeX TFM files are available, communicate their location to
+DVIPSONE either using a command line argument (-t), or by setting the
+environment variable TFMPATH to the directory containing these files
+(default c:\pctex\textfms;c:\tex\fonts).  
+
+If TeX TFM files are not available, but Adobe font Metric (AFM) files
+are, tell DVIPSONE where to find the AFM files, either using a
+command line argument (-a), or by setting the environment variable
+AFMPATH to the directory containing these files 
+(default c:\psfonts\afm;c:\tex\afm).  
+
+The final alternative is to use PFM (printer font metric) files.  
+To use these, tell DVIPSONE where to find them, using a command line
+argument (-p) or set the environment variable PFMPATH to the
+directory containing these files (default c:\psfonts\pfm).
+
+Outline Fonts:
+
+The location of the outline font files can be communicated to
+DVIPSONE either through command line argument (-f) or by setting the
+environment variable PSFONTS (default c:\cm;c:\psfonts). 
+
+EPS files:
+
+Encapsulated PostScript (EPS) files to be inserted using \special's
+are searched for in a directory that can be specified either in the
+command line (-i) or by setting the environment variable PSPATH.
+
+Font Substitution:
+
+If the set of fonts available does not include some that are needed
+for the document being processed, a file may be used to tell DVIPSONE
+what fonts to substituted for the missing ones.  The location of the
+font substitution file may be communicated to the program using a
+command line argument (-s).  
+
+The format of the font substitution file is simple:  each non-comment
+line contains a 'from' file name separated from a 'to' file name by
+some white space.  Any line starting with '%' is a comment.  Files
+that need not be downloaded because they are resident in the printer
+are marked by placing *reside* after the 'to' field which contains
+the full PostScript fontname used in the printer.
+
+Fonts that are to be substituted for even when the font files are
+present must be flagged by placing *force* after the 'to' field,
+which contains the name of the font to be used as a replacement.
+
+Fonts that need to be remapped to the standard TeX text character
+encoding are indicated by *remap* after the 'to' field which
+contains the name of the font to be used as a base for remapping.
+The character encoding to be used is indicated in field following *remap*.
+The default is TeX text (as used for roman, bold and sans serif fonts).
+
+Sometimes a different name is used for a font in the DVI file than
+the name it is known under on the system running DVIPSONE.  In this
+case use *alias* in the third field.
+
+For sample files, see STANDARD.SUB and RESIDENT.SUB and others with
+extension .SUB.  For sampe files for character remapping, see the
+files TEXTEXT.VEC and others with extension .VEC.
+
+--------------------------------------------------------------------------
+
+MODEX.COM and Baud Rates:
+-------------------------
+
+The program MODEX.COM is included to facility setting the baud rates
+on serial communication ports COM1: and COM2: to something higher
+than 19,200 baud (DOS and Windows restriction).  MODEX takes arguments in
+essentially the same way that the DOS command MODE does.  
+
+Without arguments MODEX display the present settings of COM1: and COM2:.
+
+Reasonable values for baud rate are 38400 and 57600. To make sure the
+operating system does the right thing when the printer becomes busy
+and refuses further output from the computer, use the DOS command
+"MODE COM1: 19200,n,8,1,b" before using MODEX (MODEX does not
+interpret the trailing b parameter).
+
+NOTE: Remember to change the baud rate on the printer side before you
+change it on the computer side.  
+
+NOTE: some DOS and Windows applications cannot deal with baud rates
+above 19,200 - so remember to lower the rate again before invoking
+these programs.
+
+NOTE: use of a print spooler is highly recommended.
+
+----------------------------------------------------------------------
+
+EHANDLER - Debugging Information from PostScript output:
+-------------------------------------------------------
+
+The output from DVIPSONE should normally not cause any error
+condition in the PostScript interpreter in the printer.  It is
+possible that something may go wrong, however, either because a
+PostScript `clone' does not obey the rules exactly, or because an EPS
+file inserted using \special misbehaves.
+
+When the PostScript file sent to the printer contains some error,
+typically nothing is printed.  To get some information about what is
+wrong, first download the file EHANDLER.PS (an Adobe utility
+program), for example, by typing
+
+	copy c:\dvipsone\ehandler.ps lpt1:/b CR
+
+The state of the PostScript interpreter is then shown on a printed
+page when the next error occurs.  The downloaded error handler remains
+resident until the printer is power cycled or rebooted.

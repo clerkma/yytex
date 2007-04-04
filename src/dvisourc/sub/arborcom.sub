@@ -1,0 +1,167 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Sample combined font substitution table:
+% Here TeX font names use the prefix `ps' (for Adobe foundry)
+
+% Listed are the 75 fonts of plain TeX (plus logo10) and
+% the 35 `standard' printer resident fonts in remapped form.
+% It is assumed that only 40 of the 75 CM fonts are available.
+% If all seventy five are available, remove the first half of the file.
+
+% cmb10		.
+% cmbsy10	.
+% cmbx5		.
+cmbx6		cmbx7
+% cmbx7		.
+cmbx8		cmbx7
+cmbx9		cmbx10
+% cmbx10	.
+% cmbx12	.
+% cmbxsl10	.
+% cmbxti10	.
+% cmcsc10	.
+% cmdunh10	none		% Vaguely like vertically stretched cmr10 
+% cmex10	.
+% cmff10	none		% Funky roman party invitation font 
+% cmfi10	none		% Funky italic font 
+% cmfib8	none		% Fibonacci ratio font 
+% cminch	cmssbx10 	% partial cmssbx10, but scaled by 15.3 
+% cmitt10	.
+% cmmi5		.
+cmmi6		cmmi7
+% cmmi7		.
+cmmi8		cmmi7
+cmmi9		cmmi10
+% cmmi10	.
+% cmmi12	.
+% cmmib10	.
+% cmr5		.
+cmr6		cmr7
+% cmr7		.
+cmr8		cmr7
+cmr9		cmr10
+% cmr10		.
+% cmr12		.
+% cmr17		.
+cmsl8		cmsl10
+cmsl9		cmsl10
+% cmsl10	.
+% cmsl12	.
+% cmsltt10	none		% slanted Typewriter font 
+cmss8		cmss10
+cmss9		cmss10
+% cmss10	.
+% cmss12	.
+% cmss17	.
+% cmssbx10	.
+% cmssdc10	.
+cmssi8		cmssi10
+cmssi9		cmssi10
+% cmssi10	.
+% cmssi12	.
+% cmssi17	.
+% cmssq8	.
+% cmssqi8	.
+% cmsy5		.
+cmsy6		cmsy7
+% cmsy7		.
+cmsy8		cmsy7
+cmsy9		cmsy10
+% cmsy10	.
+% cmtcsc10	none		% Typewriter Caps and Small Caps 
+cmtex8		cmtex10
+cmtex9		cmtex10
+% cmtex10	.
+cmti7		cmti10
+cmti8		cmti10
+cmti9		cmti10
+% cmti10	.
+% cmti12	.
+cmtt8		cmtt10
+cmtt9		cmtt10
+% cmtt10	.
+cmtt12		cmtt10
+% cmu10		none		% Unslanted Text Italic 
+% cmvtt10	none 		% Variable Width Typewriter
+% manfnt	logo10		*alias*
+
+% The thirty-five fonts resident in the Apple LaserWriter II NT:
+% psm<...> are the remapped forms of ps<...>
+
+psmavgb		AvantGarde-Book			*reside*  *remap*
+psmavgbo	AvantGarde-BookOblique		*reside*  *remap* texital
+psmavgd		AvantGarde-Demi			*reside*  *remap*
+psmavgdo	AvantGarde-DemiOblique		*reside*  *remap* texital
+psmbkmd		Bookman-Demi			*reside*  *remap*
+psmbkmdi	Bookman-DemiItalic		*reside*  *remap* texital
+psmbkml		Bookman-Light			*reside*  *remap*
+psmbkmli	Bookman-LightItalic		*reside*  *remap* texital
+psmcou		Courier				*reside*  *remap* typewrit
+psmcoub		Courier-Bold			*reside*  *remap* typewrit
+psmcoubo	Courier-BoldOblique		*reside*  *remap* typeital
+psmcouo		Courier-Oblique			*reside*  *remap* typeital
+psmhlv		Helvetica			*reside*  *remap*
+psmhlvb		Helvetica-Bold			*reside*  *remap*
+psmhlvbo	Helvetica-BoldOblique		*reside*  *remap* texital
+psmhlvo		Helvetica-Oblique		*reside*  *remap* texital
+psmhvn		Helvetica-Narrow		*reside*  *remap*
+psmhvnb		Helvetica-Narrow-Bold		*reside*  *remap*
+psmhvnbo	Helvetica-Narrow-BoldOblique	*reside*  *remap* texital
+psmhvno		Helvetica-Narrow-Oblique	*reside*  *remap* texital
+psmhvo		Helvetica-Oblique		*reside*  *remap* texital
+psmncsb		NewCenturySchlbk-Bold		*reside*  *remap*
+psmncsbi	NewCenturySchlbk-BoldItalic	*reside*  *remap* texital
+psmncsi		NewCenturySchlbk-Italic		*reside*  *remap* texital
+psmncsr		NewCenturySchlbk-Roman		*reside*  *remap*
+psmpalb		Palatino-Bold			*reside*  *remap*
+psmpalbi	Palatino-BoldItalic		*reside*  *remap* texital
+psmpali		Palatino-Italic			*reside*  *remap* texital
+psmpalr		Palatino-Roman			*reside*  *remap*
+psmtimb		Times-Bold			*reside*  *remap*
+psmtimbi	Times-BoldItalic		*reside*  *remap* texital
+psmtimi		Times-Italic			*reside*  *remap* texital
+psmtimr		Times-Roman			*reside*  *remap*
+psmsym		Symbol				*reside*  *remap* mathsy
+psmzchmi	ZapfChancery-MediumItalic	*reside*  *remap* texital
+% psmzdb	ZapfDingbats			*reside*  *remap*
+
+% The following are the unremapped forms of the above:
+
+% psavgb	AvantGarde-Book			*reside*
+% psavgbo	AvantGarde-BookOblique		*reside*
+% psavgd	AvantGarde-Demi			*reside*
+% psavgdo	AvantGarde-DemiOblique		*reside*
+% psbkmd	Bookman-Demi			*reside*
+% psbkmdi	Bookman-DemiItalic		*reside*
+% psbkml	Bookman-Light			*reside*
+% psbkmli	Bookman-LightItalic		*reside*
+% pscou		Courier				*reside*
+% pscoub	Courier-Bold			*reside*
+% pscoubo	Courier-BoldOblique		*reside*
+% pscouo	Courier-Oblique			*reside*
+% pshlv		Helvetica			*reside*
+% pshlvb	Helvetica-Bold			*reside*
+% pshlvbo	Helvetica-BoldOblique		*reside*
+% pshlvo	Helvetica-Oblique		*reside*
+% pshvn		Helvetica-Narrow		*reside*
+% pshvnb	Helvetica-Narrow-Bold		*reside*
+% pshvnbo	Helvetica-Narrow-BoldOblique	*reside*
+% pshvno	Helvetica-Narrow-Oblique	*reside*
+% pshvo		Helvetica-Oblique		*reside*
+% psncsb	NewCenturySchlbk-Bold		*reside*
+% psncsbi	NewCenturySchlbk-BoldItalic	*reside*
+% psncsi	NewCenturySchlbk-Italic		*reside*
+% psncsr	NewCenturySchlbk-Roman		*reside*
+% pspalb	Palatino-Bold			*reside*
+% pspalbi	Palatino-BoldItalic		*reside*
+% pspali	Palatino-Italic			*reside*
+% pspalr	Palatino-Roman			*reside*
+pssym		Symbol				*reside*
+% pstimb	Times-Bold			*reside*
+% pstimbi	Times-BoldItalic		*reside*
+% pstimi	Times-Italic			*reside*
+% pstimr	Times-Roman			*reside*
+% pszchmi	ZapfChancery-MediumItalic	*reside*
+pszdb		ZapfDingbats			*reside*
+
