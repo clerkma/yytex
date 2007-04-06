@@ -1,0 +1,34 @@
+@echo off
+rem Copyright 2007 TeX Users Group.
+rem You may freely use, modify and/or distribute this file.
+
+echo TEXSETNT.BAT calls c:\prog\texsetup.exe
+
+rem c:\prog\texsetup.exe -o=d:\texsourc %1 %2 %3 %4 %5 %6 %7 %8 %9 
+rem echo c:\prog\texsetup.exe -o=d:\texsourc\yandynt.exe %1 %2
+echo c:\prog\texsetup.exe -o=d:\texsourc\yandytex.exe %1 %2
+rem c:\prog\texsetup.exe -o=d:\texsourc\yandynt.exe %1 %2 %3 %4 %5 %6 %7 %8
+c:\prog\texsetup.exe -o=d:\texsourc\yandytex.exe %1 %2 %3 %4 %5 %6 %7 %8 %9 
+
+goto end
+
+echo customize Y&Y TeX 1.2 minus DOS extender
+c:
+cd \texsourc
+
+echo rename yandytex.exe yandydos.exe
+rename yandytex.exe yandydos.exe
+
+echo rename yandynt.exe yandytex.exe
+rename yandynt.exe yandytex.exe
+
+echo call texsetup %1 %2 %3 %4 %5 %6 %7 %8 %9
+call texsetup %1 %2 %3 %4 %5 %6 %7 %8 %9
+
+echo rename yandytex.exe yandynt.exe
+rename yandytex.exe yandynt.exe
+
+echo rename yandydos.exe yandytex.exe 
+rename yandydos.exe yandytex.exe 
+
+:end
