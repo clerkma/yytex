@@ -1,0 +1,128 @@
+a0	Nj		% Serbian soft N (looks like Hb)
+a1	Lj		% Serbian soft L 
+a2	Dzh		% Serbian hard DJ
+a3	Emirror		% Russian reverse E (looks like mirrored C)
+a4	Iord		% Ukranian I
+a5	Ye		% Ukranian YE (looks like C with mid-line)
+a6	Dj		% Serbian soft DJ (looks like Th without tail)
+a7	Tsoft		% Serbian soft T
+a8	nj		% Serbian soft n
+a9	lj		% Serbian soft l
+a10	dzh		% Serbian hard dj
+a11	emirror		% Russian reverse e
+a12	iord		% Ukranian i
+a13	ye		% Ukranian ye
+a14	dj		% Serbian soft dj (looks like barred h with tail)
+a15	tsoft		% Serbian soft t (looks like barred h)
+a16	Yu		% Russian YU (looks like IO)
+a17	Zhe		% Russian ZHE ZH
+a18	Ishort		% Russian short I
+a19	Yo		% Russan YO (looks like Edieresis)
+a20	Izhitsa		% Old Russian IZHITSA (looks like V)
+a21	Fita		% Old Russian FITA (looks like Theta)
+a22	Zelo		% Macedonian ZELO DZ (looks like S)
+a23	Ya		% Russian YA (looks like mirrored R)
+a24	yu		% Russan yu
+a25	zhe		% Russian zhe zh
+a26	ishort		% Russian short i
+a27	yo		% Russian yo (looks like edieresis)
+a28	izhitsa		% Old Russian izhitsa
+a29	fita		% Old Russian fita
+a30	zelo		% Macedonian zero dz (looks like s)
+a31	ya		% Russian ya (looks like mirrored r)
+a32	dieresis
+a33	exclam		
+a34	quotedblright
+a35	Yatz		% Old Russian letter YATZ
+a36	breve1		% cyrillic breve
+a37	percent		
+a38	acute		
+a39	quoteright	% apostrophe
+a40	parenleft
+a41	parenright
+a42	asterisk
+a43	yatz		% Old Russian letter yatz
+a44	comma
+a45	hyphen
+a46	period
+a47	slash		% virgule
+a48	zero
+a49	one
+a50	two
+a51	three
+a52	four
+a53	five
+a54	six
+a55	seven
+a56	eight
+a57	nine
+a58	colon
+a59	semicolon
+a60	guillemotleft	% open Cyrillic quote
+a61	dotlessi
+a62	guillemotright	% close Cyrillic quote
+a63	question
+a64	breve
+a65	A	% Russian A
+a66	B	% Russian B
+a67	C	% Russian TSE
+a68	D	% Russian DE
+a69	E	% Russian E
+a70	F	% Russian EF	(looks like Phi)
+a71	G	% Russian GHE	(looks like Gamma)
+a72	H	% Russian KHA	(looks like X)
+a73	I	% Russian I	(looks like mirrored N)
+a74	J	% Serbian JE
+a75	K	% Russian KA
+a76	L	% Russian EL
+a77	M	% Russian EM
+a78	N	% Russian EN	(looks like H)
+a79	O	% Russian O
+a80	P	% Russian PE	(looks like Pi)
+a81	Q	% Russian CHE
+a82	R	% Russian ER	(looks like P)
+a83	S	% Russian ES	(looks like C)
+a84	T	% Russian TE
+a85	U	% Russian U	(looks like Y)
+a86	V	% Russian VE	(looks like B)
+a87	W	% Russian SHCHA
+a88	X	% Russian SHA
+a89	Y	% Russian ERY
+a90	Z	% Russian ZE	(looks like 3)
+a91	bracketleft
+a92	quotedblleft
+a93	bracketright
+a94	Softsign	% Russian Soft Sign
+a95	Hardsign	% Russian Hard Sign
+a96	quoteleft
+a97	a	% Russian a
+a98	b	% Russian be
+a99	c	% Russian tse
+a100	d	% Russian de
+a101	e	% Russian e
+a102	f	% Russian ef	(looks like phi)
+a103	g	% Russian ghe
+a104	h	% Russian kha
+a105	i	% Russian i
+a106	j	% Serbian je
+a107	k	% Russian ka
+a108	l	% Russian el
+a109	m	% Russian em
+a110	n	% Russian en
+a111	o	% Russian o
+a112	p	% Russian pe
+a113	q	% Russian che
+a114	r	% Russian er	(looks like p)
+a115	s	% Russian es	(looks like c)
+a116	t	% Russian te
+a117	u	% Russian u	(looks like y)
+a118	v	% Russian ve
+a119	w	% Russian shcha
+a120	x	% Russian sha
+a121	y	% Russian ery
+a122	z	% Russian ze
+a123	endash
+a124	emdash
+a125	number		% N0 No.
+a126	softsign	% Russian Soft Sign
+a127	hardsign	% Russian Hard Sign

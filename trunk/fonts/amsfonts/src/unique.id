@@ -1,0 +1,63 @@
+UniqueID 5031981	fontname	 MSAM10
+UniqueID 5031982	fontname	 MSBM10
+UniqueID 5031983	fontname	 EUEX10 	
+
+UniqueID 5031984	fontname	 EURM10 	
+UniqueID 5031985	fontname	 EURB10 	
+UniqueID 5031986	fontname	 EUFM10 	
+UniqueID 5031987	fontname	 EUFB10 	
+UniqueID 5031988	fontname	 EUSM10 	
+UniqueID 5031989	fontname	 EUSB10 	
+UniqueID 5031990	fontname	 EURM7 	
+UniqueID 5031991	fontname	 EURB7 
+UniqueID 5031992	fontname	 EUFM7 		
+UniqueID 5031993	fontname	 EUFB7 		
+UniqueID 5031994	fontname	 EUSM7 		
+UniqueID 5031995	fontname	 EUSB7 	
+UniqueID 5031996	fontname	 EURM5 	
+UniqueID 5031997	fontname	 EURB5 		
+UniqueID 5031998	fontname	 EUFM5 		
+UniqueID 5031999	fontname	 EUFB5 		
+UniqueID 5032000	fontname	 EUSM5 		
+UniqueID 5032001	fontname	 EUSB5 	
+
+UniqueID 5032002	fontname	 WNCYR10
+UniqueID 5032003	fontname	 WNCYB10
+UniqueID 5032004	fontname	 WNCYI10
+UniqueID 5032005	fontname	 WNCYSS10
+UniqueID 5032006	fontname	 WNCYSC10
+
+UniqueID 5032007	fontname	CMBSY5
+UniqueID 5032008	fontname	CMBSY7
+UniqueID 5032009	fontname	CMMIB5
+UniqueID 5032010	fontname	CMMIB7
+
+UniqueID 5032011	fontname	MSAM5
+UniqueID 5032012	fontname	MSAM7
+UniqueID 5032013	fontname	MSBM5
+UniqueID 5032014	fontname	MSBM7
+
+Allocated 5031981 -- 5032070  (90 slots for AMS fonts)
+
+***************************** 1995/June/20 *********************************
+
+UniqueID 5032015	fontname	SMR10
+UniqueID 5032016	fontname	SMR9
+UniqueID 5032017	fontname	SMR8
+UniqueID 5032018	fontname	SMR7
+
+UniqueID 5032019	fontname	SMTI10
+UniqueID 5032020	fontname	SMTI9
+UniqueID 5032021	fontname	SMTI8
+UniqueID 5032022	fontname	SMTI7
+
+UniqueID 5032023	fontname	SMMI10
+UniqueID 5032024	fontname	SMMI9
+UniqueID 5032025	fontname	SMMI8
+UniqueID 5032026	fontname	SMMI7
+
+UniqueID 5032027	fontname	SMCSC10
+UniqueID 5032028	fontname	SMDUNH10
+
+
+Allocated 5031981 -- 5032070  (90 slots for AMS fonts)

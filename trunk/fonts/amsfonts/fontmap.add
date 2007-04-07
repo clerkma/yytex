@@ -1,0 +1,41 @@
+% Add these mapping to /usr/local/lib/ghostscript/Fontmap
+% to use the AMS fonts with GhostScript
+%
+%
+/MSAM10		(msam10.pfb) ;
+/MSAM7		(msam7.pfb) ;
+/MSAM5		(msam5.pfb) ;
+/MSBM10		(msbm10.pfb) ;
+/MSBM7		(msbm7.pfb) ;
+/MSBM5		(msbm5.pfb) ;
+/CMMIB7		(cmmib7.pfb) ;
+/CMMIB5		(cmmib5.pfb) ;
+/CMBSY7		(cmbsy7.pfb) ;
+/CMBSY5		(cmbsy5.pfb) ;
+/EUEX10		(euex10.pfb) ;
+/EURM10		(eurm10.pfb) ;
+/EURB10		(eurb10.pfb) ;
+/EUFM10		(eufm10.pfb) ;
+/EUFB10		(eufb10.pfb) ;
+/EUSM10		(eusm10.pfb) ;
+/EUSB10		(eusb10.pfb) ;
+/EURM7		(eurm7.pfb) ;
+/EURB7		(eurb7.pfb) ;
+/EUFM7		(eufm7.pfb) ;
+/EUFB7		(eufb7.pfb) ;
+/EUSM7		(eusm7.pfb) ;
+/EUSB7		(eusb7.pfb) ;
+/EURM5		(eurm5.pfb) ;
+/EURB5		(eurb5.pfb) ;
+/EUFM5		(eufm5.pfb) ;
+/EUFB5		(eufb5.pfb) ;
+/EUSM5		(eusm5.pfb) ;
+/EUSB5		(eusb5.pfb) ;
+/WNCYR10	(wncyr10.pfb) ;
+/WNCYB10	(wncyb10.pfb) ;
+/WNCYI10	(wncyi10.pfb) ;
+/WNCYSS10	(wncyss10.pfb) ;
+/WNCYSC10	(wncysc10.pfb) ;
+
+
+
