@@ -1,0 +1,42 @@
+minus 0
+approximation 24	% similar
+logicalnot 58
+ur 60			% Rfraktur
+ui 61			% Ifraktur
+? 64			% aleph ?
+A 65
+B 66
+C 67
+D 68
+E 69
+F 70
+G 71
+H 72
+I 73
+J 74
+K 75
+L 76
+M 77
+N 78
+O 79
+P 80
+Q 81
+R 82
+S 83
+T 84
+U 85
+V 86
+W 87
+X 88
+Y 89
+Z 90
+and 94		% logicaland
+or 95		% logicalor
+lbrace 102	% braceleft
+rbrace 103	% braceright
+verticalbar 106	% bar
+backslash 110	
+sectionsign 120	% section
+ia 123		% after end input ?
+ua 125		% after end input ?
+ub 126		% after end input ?

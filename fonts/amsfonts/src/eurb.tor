@@ -1,0 +1,111 @@
+% Encoding file for EURB10
+Gamma 0
+Delta 1
+Theta 2
+Lambda 3
+Xi 4
+Pi 5
+Sigma 6
+Upsilon 7
+Phi 8
+Psi 9
+Omega 10
+alpha 11
+beta 12
+gamma 13
+delta 14
+epsilon 15 	% epsilon1
+zeta 16
+eta  17
+theta 18
+iota 19
+kappa 20
+lambda 21
+mu 22
+nu 23
+xi 24
+pi 25
+rho 26
+sigma 27
+tau 28
+upsilon 29
+phi 30
+chi 31
+psi 32
+omega 33
+varepsilon 34	% epsilon
+vartheta 35	% theta1
+varpi 36	% pi1
+varphi 39	% phi1
+zero 48
+one 49
+two 50
+three 51
+four 52
+five 53
+six 54
+seven 55
+eight 56
+nine 57
+period 58
+comma 59
+lessthan 60	% less
+slash 61
+greaterthan 62	% greater
+partialsign 64	% partialdiff
+A 65
+B 66
+C 67
+D 68
+E 69
+F 70
+G 71
+H 72
+I 73
+J 74
+K 75
+L 76
+M 77
+N 78
+O 79
+P 80
+Q 81
+R 82
+S 83
+T 84
+U 85
+V 86
+W 87
+X 88
+Y 89
+Z 90
+scriptl 96	% lscript
+a 97
+b 98
+c 99
+d 100
+e 101
+f 102
+g 103
+h 104
+i 105
+j 106
+k 107
+l 108
+m 109
+n 110
+o 111
+p 112
+q 113
+r 114
+s 115
+t 116
+u 117
+v 118
+w 119
+x 120
+y 121
+z 122
+dotlessi 123
+dotlessj 124
+wp 125		% weierstrass

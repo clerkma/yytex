@@ -1,0 +1,85 @@
+StartFontMetrics 2.0
+Comment Copyright (c) 1991, 1992 Y&Y.  All Rights Reserved.
+Comment Creation Date: Jan 12 1992
+Comment UniqueID 5031995
+FontName EUSB7
+EncodingScheme FontSpecific
+FullName EUSB7
+FamilyName Euler
+Weight Bold
+ItalicAngle 0.0
+IsFixedPitch false
+Version 2.1
+Notice Euler fonts were designed by Hermann Zapf
+FontBBox 0 -250 1263 750
+XHeight 486.535
+CapHeight 702.774
+Ascender 702.774
+Descender -189.056
+Comment following is extra info from TFM file
+Comment FontID EUSB V2.1
+Comment DesignSize 7 (pts)
+Comment CharacterCodingScheme TeX math symbols subset
+Comment Space 333.333 0 0
+Comment ExtraSpace 0
+Comment Quad 1000
+Comment Num 378.416 270.297 297.326
+Comment Denom 378.416 162.177
+Comment Sup 405.446 378.416 324.356
+Comment Sub 189.207 243.267
+Comment Supdrop 405.446
+Comment Subdrop 27.027
+Comment Delim 2200.23 1000
+Comment Axisheight 256.781
+StartCharMetrics 41
+C 0 ; WX 980.92 ; N minus ; B 0 -83.25 980.92 583.303 ; 
+C 24 ; WX 733.074 ; N similar ; B 0 0 733.074 486.535 ; 
+C 32 ; WX 333.333 ; N space ; B 0 0 0 0 ;
+C 48 ; WX 0 ; N ghost ; B 0 0 0 0 ; 
+C 58 ; WX 893.945 ; N logicalnot ; B 0 0 893.945 486.535 ; 
+C 60 ; WX 1067.9 ; N Rfractur ; B 0 0 1067.9 702.774 ; 
+C 61 ; WX 736.67 ; N Ifractur ; B 0 0 736.67 702.774 ; 
+C 64 ; WX 1003.16 ; N aleph ; B 0 0 1003.16 702.774 ; 
+C 65 ; WX 1014.6 ; N A ; B 0 0 1014.6 702.774 ; 
+C 66 ; WX 991.383 ; N B ; B 0 0 991.383 702.774 ; 
+C 67 ; WX 794.872 ; N C ; B 0 0 794.872 702.774 ; 
+C 68 ; WX 1070.84 ; N D ; B 0 0 1070.84 702.774 ; 
+C 69 ; WX 801.739 ; N E ; B 0 0 801.739 702.774 ; 
+C 70 ; WX 874.654 ; N F ; B 0 0 874.654 702.774 ; 
+C 71 ; WX 797.161 ; N G ; B 0 -126.138 797.161 702.774 ; 
+C 72 ; WX 1136.23 ; N H ; B 0 0 1136.23 702.774 ; 
+C 73 ; WX 668.987 ; N I ; B 0 0 668.987 702.774 ; 
+C 74 ; WX 678.143 ; N J ; B 0 -126.138 678.143 702.774 ; 
+C 75 ; WX 1061.68 ; N K ; B 0 0 1061.68 702.774 ; 
+C 76 ; WX 931.548 ; N L ; B 0 0 931.548 702.774 ; 
+C 77 ; WX 1254.6 ; N M ; B 0 0 1254.6 702.774 ; 
+C 78 ; WX 1002.5 ; N N ; B 0 0 1002.5 702.774 ; 
+C 79 ; WX 922.065 ; N O ; B 0 0 922.065 702.774 ; 
+C 80 ; WX 865.169 ; N P ; B 0 0 865.169 702.774 ; 
+C 81 ; WX 885.444 ; N Q ; B 0 0 885.444 702.774 ; 
+C 82 ; WX 940.375 ; N R ; B 0 0 940.375 702.774 ; 
+C 83 ; WX 706.916 ; N S ; B 0 0 706.916 702.774 ; 
+C 84 ; WX 766.098 ; N T ; B 0 0 831.49 702.774 ; 
+C 85 ; WX 921.739 ; N U ; B 0 0 921.739 702.774 ; 
+C 86 ; WX 870.076 ; N V ; B 0 0 870.076 702.774 ; 
+C 87 ; WX 1263.1 ; N W ; B 0 0 1263.1 702.774 ; 
+C 88 ; WX 933.182 ; N X ; B 0 0 933.182 702.774 ; 
+C 89 ; WX 794.872 ; N Y ; B 0 0 794.872 702.774 ; 
+C 90 ; WX 860.594 ; N Z ; B 0 0 860.594 702.774 ; 
+C 94 ; WX 1003.81 ; N logicaland ; B 0 0 1003.81 702.774 ; 
+C 95 ; WX 1003.81 ; N logicalor ; B 0 0 1003.81 702.774 ; 
+C 102 ; WX 452.857 ; N braceleft ; B 0 -250 452.857 750.076 ; 
+C 103 ; WX 452.857 ; N braceright ; B 0 -250 452.857 750.076 ; 
+C 106 ; WX 323.703 ; N bar ; B 0 -250 323.703 750.076 ; 
+C 110 ; WX 672.911 ; N backslash ; B 0 -250 672.911 750.076 ; 
+C 120 ; WX 688.932 ; N section ; B 0 0 688.932 189.207 ; 
+EndCharMetrics
+Comment The bogus kern pairs with `ghost' are for TeX positioning of accents
+StartKernData
+StartKernPairs 3
+KPX A ghost 168.03
+KPX I ghost 67.211
+KPX J ghost 67.211
+EndKernPairs
+EndKernData
+EndFontMetrics
