@@ -1,0 +1,22 @@
+FontName (CMTCSC10)
+FullName (CMTCSC10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch true
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 611
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMTCSC10)
+VPMenuName (CMTCSC10)
+WORDMenuName (CMTCSC10)
+VPTypefaceID 5000821
+VPStyle (N)
+PCFileNamePrefix (cmtcsc10)
+PCLTypefaceID 5000821
+PCLStrokeWeight 0
+PCLStyle 0

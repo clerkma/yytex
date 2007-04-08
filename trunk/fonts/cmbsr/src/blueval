@@ -1,0 +1,80 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+font name	safe pt size   alignment zones
+
+cmb10.hnt 	11 /BlueValues [-11 0 686 697 444 453 655 676 (21)] def
+cmbsy10.hnt	12 /BlueValues [-17 0 686 703] def
+cmbx10.hnt	11 /BlueValues [-11 0 686 697 444 453 655 676 (21)] def
+cmbx12.hnt	11 /BlueValues [-12 0 686 698 444 453 656 676 (20)] def
+cmbx5.hnt	11 /BlueValues [-17 0 686 703 444 456 661 667] def
+cmbx6.hnt	11 /BlueValues [-14 0 686 700 444 455 658 672] def
+cmbx7.hnt	11 /BlueValues [-12 0 686 698 444 453 656 674] def
+cmbx8.hnt	11 /BlueValues [-14 0 686 700 444 455 658 676] def
+cmbx9.hnt	11 /BlueValues [-12 0 686 698 444 453 656 676 (20)] def
+cmbxsl10.hnt	11 /BlueValues [-11 0 686 697 444 453 655 676 (21)] def
+cmbxti10.hnt	12 /BlueValues [-17 0 686 703 444 452 661 662] def
+cmcsc10.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 514 528 666 677] def
+cmcsc9.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 526 540 666 677] def
+cmdunh10.hnt	11 /BlueValues [-22 0 (22) 961 983 (22) 431 448 944 955] def
+cmff10.hnt	12 /BlueValues [-11 0 625 636 528 537 594 614 (20)] def
+cmfi10.hnt	12 /BlueValues [-11 0 625 636 528 534 594 608] def
+cmfib8.hnt	10 /BlueValues [-28 0 (28) 809 837 (28) 500 521 (21)] def
+cminch.hnt	11 /BlueValues [-22 0 (22) 694 716 (22)] def
+cmitt10.hnt	12 /BlueValues [-11 0 611 622 431 437] def
+cmmi10.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 442 453 466] def
+cmmi12.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 441 452 463] def
+cmmi5.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 442 453 464] def
+cmmi6.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 441 452 463] def
+cmmi7.hnt	11 /BlueValues [-20 0 (20) 683 703 (20) 431 441 451 463] def
+cmmi8.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 441 452 463] def
+cmmi9.hnt	11 /BlueValues [-22 0 (22) 683 705 (21) 431 442 453 464] def
+cmmib10.hnt	12 /BlueValues [-17 0 683 703 (20) 444 452] def
+cmr10.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 448 666 677] def
+cmr12.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 446 665 675] def
+cmr17.hnt	12 /BlueValues [-16 0 683 699 430 442 661 669] def
+cmr5.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 448 666 677] def
+cmr6.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 446 665 675] def
+cmr7.hnt	11 /BlueValues [-20 0 (20) 683 703 (20) 431 446 664 674] def
+cmr8.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 446 665 675] def
+cmr9.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 448 666 677] def
+cmsl10.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 448 666 677] def
+cmsl12.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 446 665 676] def
+cmsl8.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 446 665 676] def
+cmsl9.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 448 666 677] def
+cmsltt10.hnt	11 /BlueValues [-11 0 611 622 431 440 611 627] def
+cmss10.hnt	11 /BlueValues [-22 0 (22) 694 716 (22) 444 461 656 678 (22)] def
+cmss12.hnt	11 /BlueValues [-21 0 (21) 694 715 (21) 444 459 655 676 (21)] def
+cmss17.hnt	12 /BlueValues [-16 0 694 710 430 442 656 672] def
+cmss8.hnt	11 /BlueValues [-21 0 (21) 694 715 (21) 444 459 656 677 (21)] def
+cmss9.hnt	11 /BlueValues [-22 0 (22) 694 716 (22) 444 461 654 676 (22)] def
+cmssbx10.hnt	11 /BlueValues [-22 0 (22) 694 716 (22) 458 475] def
+cmssdc10.hnt	12 /BlueValues [-19 0 694 713 472 487] def
+cmssi10.hnt	11 /BlueValues [-22 0 (22) 694 716 (22) 444 461 656 678 (22)] def
+cmssi12.hnt	11 /BlueValues [-21 0 (21) 694 715 (21) 444 459 655 676 (22)] def
+cmssi17.hnt	12 /BlueValues [-16 0 694 710 430 442 656 672] def
+cmssi8.hnt	11 /BlueValues [-21 0 (21) 694 715 (21) 444 459 656 677 (21)] def
+cmssi9.hnt	11 /BlueValues [-22 0 (22) 694 716 (22) 444 461 654 676 (22)] def
+cmssq8.hnt	11 /BlueValues [-21 0 (21) 684 705 (21) 521 536 660 681 (21)] def
+cmssqi8.hnt	11 /BlueValues [-21 0 (21) 684 705 (21) 521 536 660 681 (21)] def
+cmsy10.hnt	11 /BlueValues [-22 0 (22) 683 705 (22)] def
+cmsy5.hnt	10 /BlueValues [-24 0 (24) 683 705 (22)] def
+cmsy6.hnt	10 /BlueValues [-24 0 (24) 683 708 (25)] def
+cmsy7.hnt	10 /BlueValues [-23 0 (23) 683 708 (25)] def
+cmsy8.hnt	10 /BlueValues [-24 0 (24) 683 704 (21)] def
+cmsy9.hnt	11 /BlueValues [-22 0 (22) 683 705 (22)] def
+cmtcsc10.hnt	12 /BlueValues [-11 0 611 622 472 480] def
+cmtex10.hnt	12 /BlueValues [-11 0 611 622 431 440] def
+cmtex8.hnt	12 /BlueValues [-10 0 611 621 431 439] def
+cmtex9.hnt	12 /BlueValues [-11 0 611 622 431 439] def
+cmti10.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 442 665 667] def
+cmti12.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 441 664 666] def
+cmti7.hnt	11 /BlueValues [-20 0 (20) 683 703 (20) 431 441 664 665] def
+cmti8.hnt	11 /BlueValues [-21 0 (21) 683 704 (21) 431 441 665 666] def
+cmti9.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 442 666 667] def
+cmtt10.hnt	12 /BlueValues [-11 0 611 622 431 440] def
+cmtt12.hnt	12 /BlueValues [-12 0 611 623 431 440] def
+cmtt8.hnt	12 /BlueValues [-10 0 611 621 431 439] def
+cmtt9.hnt	12 /BlueValues [-11 0 611 622 431 439] def
+cmu10.hnt	11 /BlueValues [-22 0 (22) 683 705 (22) 431 442 666 667] def
+cmvtt10.hnt	12 /BlueValues [-11 0 611 622 431 440 611 625] def

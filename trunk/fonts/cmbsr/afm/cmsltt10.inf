@@ -1,0 +1,22 @@
+FontName (CMSLTT10)
+FullName (CMSLTT10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch true
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -9.46
+CapHeight 611
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMSLTT10)
+VPMenuName (CMSLTT10)
+WORDMenuName (CMSLTT10)
+VPTypefaceID 5000800
+VPStyle (N)
+PCFileNamePrefix (cmsltt10)
+PCLTypefaceID 5000800
+PCLStrokeWeight 0
+PCLStyle 0

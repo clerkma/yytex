@@ -1,0 +1,22 @@
+FontName (CMSY6)
+FullName (CMSY6)
+FamilyName (Computer Modern)
+version (1.00)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.035
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMSY6)
+VPMenuName (CMSY6)
+WORDMenuName (CMSY6)
+VPTypefaceID 5000816
+VPStyle (N)
+PCFileNamePrefix (cmsy6)
+PCLTypefaceID 5000816
+PCLStrokeWeight 0
+PCLStyle 0

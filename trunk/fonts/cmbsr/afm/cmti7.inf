@@ -1,0 +1,22 @@
+FontName (CMTI7)
+FullName (CMTI7)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.04
+CapHeight 677
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMTI7)
+VPMenuName (CMTI7)
+WORDMenuName (CMTI7)
+VPTypefaceID 5000825
+VPStyle (N)
+PCFileNamePrefix (cmti7)
+PCLTypefaceID 5000825
+PCLStrokeWeight 0
+PCLStyle 0

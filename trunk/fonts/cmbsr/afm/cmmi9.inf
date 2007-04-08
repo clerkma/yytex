@@ -1,0 +1,22 @@
+FontName (CMMI9)
+FullName (CMMI9)
+FamilyName (Computer Modern)
+version (1.00A)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.04
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMMI9)
+VPMenuName (CMMI9)
+WORDMenuName (CMMI9)
+VPTypefaceID 5000784
+VPStyle (N)
+PCFileNamePrefix (cmmi9)
+PCLTypefaceID 5000784
+PCLStrokeWeight 0
+PCLStyle 0

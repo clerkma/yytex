@@ -1,0 +1,22 @@
+FontName (CMR10)
+FullName (CMR10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMR10)
+VPMenuName (CMR10)
+WORDMenuName (CMR10)
+VPTypefaceID 5000793
+VPStyle (N)
+PCFileNamePrefix (cmr10)
+PCLTypefaceID 5000793
+PCLStrokeWeight 0
+PCLStyle 0

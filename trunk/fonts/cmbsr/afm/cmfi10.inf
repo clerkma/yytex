@@ -1,0 +1,22 @@
+FontName (CMFI10)
+FullName (CMFI10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -5.71
+CapHeight 625
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMFI10)
+VPMenuName (CMFI10)
+WORDMenuName (CMFI10)
+VPTypefaceID 5000776
+VPStyle (N)
+PCFileNamePrefix (cmfi10)
+PCLTypefaceID 5000776
+PCLStrokeWeight 0
+PCLStyle 0

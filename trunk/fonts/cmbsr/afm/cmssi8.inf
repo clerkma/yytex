@@ -1,0 +1,22 @@
+FontName (CMSSI8)
+FullName (CMSSI8)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -12
+CapHeight 694
+UnderlinePosition -100
+UnderlineThickness 50
+Serif false
+Pi true
+MSMenuName (CMSSI8)
+VPMenuName (CMSSI8)
+WORDMenuName (CMSSI8)
+VPTypefaceID 5000808
+VPStyle (N)
+PCFileNamePrefix (cmssi8)
+PCLTypefaceID 5000808
+PCLStrokeWeight 0
+PCLStyle 0

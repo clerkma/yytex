@@ -1,0 +1,22 @@
+FontName (CMSSI9)
+FullName (CMSSI9)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -12
+CapHeight 694
+UnderlinePosition -100
+UnderlineThickness 50
+Serif false
+Pi true
+MSMenuName (CMSSI9)
+VPMenuName (CMSSI9)
+WORDMenuName (CMSSI9)
+VPTypefaceID 5000809
+VPStyle (N)
+PCFileNamePrefix (cmssi9)
+PCLTypefaceID 5000809
+PCLStrokeWeight 0
+PCLStyle 0

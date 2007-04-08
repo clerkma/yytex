@@ -1,0 +1,22 @@
+FontName (CMFF10)
+FullName (CMFF10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 5.71
+CapHeight 625
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMFF10)
+VPMenuName (CMFF10)
+WORDMenuName (CMFF10)
+VPTypefaceID 5000775
+VPStyle (N)
+PCFileNamePrefix (cmff10)
+PCLTypefaceID 5000775
+PCLStrokeWeight 0
+PCLStyle 0

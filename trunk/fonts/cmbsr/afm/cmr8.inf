@@ -1,0 +1,22 @@
+FontName (CMR8)
+FullName (CMR8)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMR8)
+VPMenuName (CMR8)
+WORDMenuName (CMR8)
+VPTypefaceID 5000791
+VPStyle (N)
+PCFileNamePrefix (cmr8)
+PCLTypefaceID 5000791
+PCLStrokeWeight 0
+PCLStyle 0

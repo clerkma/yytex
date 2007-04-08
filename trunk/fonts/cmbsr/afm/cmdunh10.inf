@@ -1,0 +1,22 @@
+FontName (CMDUNH10)
+FullName (CMDUNH10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 961
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMDUNH10)
+VPMenuName (CMDUNH10)
+WORDMenuName (CMDUNH10)
+VPTypefaceID 5000773
+VPStyle (N)
+PCFileNamePrefix (cmdunh10)
+PCLTypefaceID 5000773
+PCLStrokeWeight 0
+PCLStyle 0

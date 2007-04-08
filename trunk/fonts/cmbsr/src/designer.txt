@@ -1,0 +1,83 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Work-Around for Bug in Micrografx Designer PostScript printer driver:
+====================================================================
+
+Micrografx Designer comes with its own PostScript printer driver, which has a
+number of advantages over the standard Windows PostScript driver.  However,
+it also has a problem with some Adobe Type 1 outline fonts.  The symptom is
+that character spacing is wrong (both on screen and when printing -- although
+in slightly different ways).
+
+The fonts affected are fonts that have a character set that does not start at
+32 (space).  Apparently the Micrografx PostScript driver has wired in the
+assumption that firstchar = 32 and lastchar = 255.  While this is true of
+most of Adobe's fonts, there are fonts where this does not make sense,
+particularly fonts that do not follow the StandardEncoding arrangment. 
+
+When firstchar is not 32, then the width used by Designer is that of a
+character in a position offset by (32 - firstchar) -- with sometimes amusing
+results!
+
+One solution is to always use the Windows PostScript driver.  But some of
+the special features of Designer require use of its own printer driver.
+
+The work-around, until this bug is fixed, is to make up a new PFM file where
+firstchar = 32.  If characters below 32 DO need to be accessed, then remap
+these to higher up (for example, the 161 - 196 range).  If you are using
+AFMtoPFM, specify `l' on the command line to force this remapping.  Newer
+versions of AFMtoPFM automatically remove the 0 - 31 range in this case.
+(Use PFMtoAFM with the `v' command line flag to verify that firstchar = 32.)
+
+Of course, since Windows (unfortunately) does not provide for remapping a
+font on the fly, the PFB file will also have to be reencoded IF characters
+in the range 0 - 31 ARE to be used.  Use REENCODE, or if not available,
+convert to PFA format, hand edit the encoding, and convert back to PFB
+format (use PFBtoPFA and then PFAtoPFB, for example).  Note that some PFB
+files are already set up for this reencoding -- that is, the characters in
+question can be accessed both from the 0 - 31 range and the 161 -196 range
+(although this double encoding can confuse some PostScript interpreters,
+such as older versions of ATM for Windows).
+
+Appendix:
+---------
+
+(*) Remember that MicroGrafx Designer has its own `font installation'
+    procedure.  After installing fonts the `normal way' (using ATM),
+    do the following:  From the `File' menu select `Change Printer...'
+    Select `Micrografx Printer on ....' and click `OK'.  Select `Select'
+    from the `Fonts' menu.  Click on `Path...' and enter/select the path
+    to the Type 1 font directory (see next note).  Select the fonts you
+    want MicroGrafx Designer to know about.  Click `OK'. Click `OK'.
+
+(*) Designer assumes that the PFM files are in a subdirectory called PFM.
+    This is the default arrangement for ATM (for example, PFB files in 
+    c:\psfonts and PFM files in c:\psfonts\pfm), but some people find it
+    more convenient to have PFB & PFM files in the same directory (makes it 
+    easier to `install' and `de-install' fonts without moving PFB files).  
+    This will not work with Designer. (Look in ATM.INI for what defaults 
+    directories ATM uses.  They are listed in the [Setup] section under
+    PFB_dir and PFM_dir).
+
+(*) To check on what fonts Designer thinks are installed, look in the
+    [PostScript Fonts] section of your WIN.INI file.
+
+(*) To get ATM rendering as you enter text (rather than upon redraw),
+    Select `Display' from the `Text' menu.  Check `Proof' under `Editing'
+    (as opposed to `Draft', which is the default).
+
+PostScript
+----------
+
+Having a wired in assumption about encoding of characters is not uncommon.
+Some software gets upset if LastChar is not 255, some assumes that `bullet'
+is always the default character or that `space' is always the break
+character. Some software assumes that all fonts start at 32 and hence
+misinterprets default and break character positions in fonts that do not.
+And in some operating systems (not to be named), it is always assumed that
+character 13 has zero width - no matter what your font metric information
+says!  
+
+More examples of how rendering software is developed by debugging on
+commonly used fonts rather than by following the specifications...

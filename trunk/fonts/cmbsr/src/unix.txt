@@ -1,0 +1,373 @@
+****************************************************************************
+Copyright (c) 1991 -- 1993, Y&Y, Inc. All rights reserved.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+****************************************************************************
+
+==============================================================================
+BSR Computer Modern font set in ATM compatible Adobe Type 1 format (Unix/NeXT):
+==============================================================================
+
+Using the CM fonts in Adobe Type 1 format with TeX:
+---------------------------------------------------
+
+The CM fonts in Adobe Type 1 format have exactly the same metrics as
+corresponding bitmapped CM fonts, hence the same TFM files are used by TeX.
+TeX itself concerns itself only with metric information --- which is
+contained entirely in the TFM file. The same DVI file is used for CM fonts
+in Adobe Type 1 format as for corresponding bitmapped CM fonts in PK format.
+
+The DVI processor (previewer or printer driver), however, has to be able to
+deal with fonts in Adobe Type 1 format (referred to as `PostScript' fonts by
+some).  How this works is a function of which DVI processor is being used.
+Read the manual for your DVI processor.  
+
+In the case of DVIPS, for example, fonts in Type 1 format have to be listed
+in the file `psfonts.map' (typically found in `/usr/lib/tex/ps'). If the
+fonts have PostScript FontNames different from the TFM file name, than both
+TFM file name and PostScript FontName must be mentioned on the line listing
+a particular font.
+
+On most Unix systems, DVIPS will be asked to `automatically download' the
+outline font for the duration of the print job.  In this case each line
+added to `psfonts.map' should end with `<' followed by the file name of the
+corresponding PFA (or PFB) file.  DVIPS will typically look for the outline
+font files in PFA (or PFB) format in the directory `/usr/lib/tex/ps'
+(For additional details see below).
+
+Append the contents of one of the files `psfonts.cm', `psfonts.cmx' or
+`psfonts.cmz' to `psfonts.map.'
+
+On the NeXT, Display PostScript will supply the appropriate outline font,
+provided it has been installed properly for use by Display PostScript.
+In this the above mentioned addition to the entries in `psfonts.map'
+is not appropriate.
+
+Outline font file format:
+-------------------------
+
+The actual outline fonts themselves are supplied in  
+
+	(*) Printer Font Binary (PFB) form; or 
+	(*) Printer Font ASCII (PFA) form; or
+	(*) Macintosh outline font format.
+
+PFB files are typically used on IBM PC compatibles, and are what the
+Windows PostScript driver and Adobe Type Manager (ATM) expect to see.
+PFB file are compact, but need to be `unpacked' into the more verbose
+hexadecimal PFA format before being sent to a printer.  The PostScript
+printer driver does this.
+
+On Unix and NeXT systems, it has been customary to use the PFA format, since
+outline fonts in this form can be sent directly to the printer.  PFA files
+can be included in a PostScript document that calls for a particular font.
+
+Some applications (such as DVIPSONE) can handle fonts in either format.
+
+For the NeXT version of the font set, see `nextfont.txt' for installation
+instructions and use the script `nextinst.bat'.
+
+Font Metric Files (AFM, TFM, PFM, and Mac screen font):
+------------------------------------------------------
+
+Adobe Type 1 outline fonts are normally supplied with human-readable 
+metric files.  From these, compact binary application-specific metric files 
+(such as TFM and PFM files) can be constructed.  
+
+The IBM PC compatible versions of the fonts include `Printer Font Metric'
+(PFM) files for use with Windows.  (These can also be constructed from the
+AFM files using the utility AFMtoPFM that comes with DVIWindo).
+
+The metric information on Macintosh computers resides in the `screen fonts'.
+
+The TeX font metric files for these fonts are also included --- 
+in the TFM zip file --- but these are just from the standard TeX 
+distribution and most TeX users already have these.
+
+Installation - Unix:
+--------------------
+
+Note that DOS diskettes can be read on Sun workstations.  Do:
+
+	man mtools
+
+to see what commands are available for manipulating diskettes.
+You can for example do `mdir a:' to see what files are on a diskette
+and `mcopy a:*.*' to copy all the files in the top-level directory
+on the diskette to your current directory.
+
+If you can't find `mtools' on your system, try the InterNet.
+For example, look in /src/unixdos/mtools on `world.std.com'.
+
+Note that MTOOLS interprets DOS file names as all uppercase.  In most TeX
+setups you'll want to rename the files themselves so that they are all
+lowercase --- otherwise they will not match the TFM file names used by TeX.
+But please do *not* change the PostScript FontNames (second item on each
+line) in the `psfonts.map' file (see next) to lower case, since the PostScript
+FontNames for the Computer Modern fonts *are* all upper case.
+
+For use with DVIPS, fonts in Type 1 format have to be listed in the
+file `psfonts.map' (typically found in `/usr/lib/tex/ps'). If the
+fonts have PostScript FontNames different from the TFM file name,
+than both TFM file name and PostScript FontName must be mentioned on
+the line listing a particular font (see `psfonts.cm').  
+
+If you have a recent version of DVIPS, then instead just add the line
+
+	p+ psfonts.cm
+
+to the end of the `config.ps' file used by DVIPS.   This will in effect 
+append the entries in `psfonts.cm' to the list of fonts in Adobe Type 1
+format that are available to DVIPS.  
+
+DVIPS can be asked to `automatically download' the outline font for
+the duration of the print hob.  In this case each line added to
+`psfonts.map' should end with `<' followed by the file name of the
+corresponding PFA (or PFB) file.  DVIPS will typically look for the
+outline font files in PFA (or PFB) format in the directory
+`/usr/lib/tex/ps'  (see `psfonts.cmx' or `psfonts.cmz').
+
+Older versions of DVIPS can only handle the verbose PFA format.  
+Newer versions (recommended) can also handle the more compact PFB format.
+You can convert from PFB to PFA format using PFBtoPFA if needed.
+See section at the end regarding problems with older versions of DVIPS.
+
+If you are using DVIPS, make sure to set the command line parameter
+specifying the `printer resolution' to some high value to avoid
+introducing resolution-dependence into your PostScript output file.
+
+Also make sure to tell DVIPS that your printer has plenty of memory,
+or it will complain about pages `being too complex' and may attempt
+to download the fonts anew for each page, which will certainly lead
+to unusually slow printing and huge PostScript files.
+
+Using the CM fonts on NeXT computers: 
+-------------------------------------
+
+For installation on the NeXT, read `nextfont.txt' and use the installation
+script `nextinst.bat'.  The fonts can be used with any program on the
+NeXT, not just TeX and DVIPS.  For use on the NeXT, the fonts are
+provided in PFA format instead of PFB.
+
+Read `nextfont.txt' for installation instructions.
+
+Part of the font installation can be performed using the 
+shell script `nextinst.bat' 
+
+The file `psfonts.cm' contains the additions to `psfonts.map' 
+required for use of these fonts with DVIPS.
+
+Remapping of character codes:
+----------------------------
+
+Since the character codes 0--31 and 127 cannot be generated from the keyboard
+on the Macintosh, these characters have been remapped to the 161--196 range.
+The range 0--9 can be accessed via codes 161--170, while 10--32 can be
+accessed via 173--195, and 127 can be accessed via 196.
+
+All of these codes can be generated by suitable key chords using the shift
+and option keys on the Macintosh.  On IBM PC compatibles these characters can
+be generated by holding down the `Alt' key, typing `0' and the numeric code
+on the numeric key pad.  Of course, you don't need to use these methods when
+the fonts are used with TeX.
+
+IBM PC utility programs supplied with the PC fonts:
+--------------------------------------------------
+
+A number of utility programs are supplied with the IBM PC version of the fonts.
+
+PFBtoPFA converts from the compact binary form to the printable ASCII format.
+
+PFAtoPFB converts from printable ASCII format to the compact binary format.
+
+PFBtoPFA and PFAtoPFB come in handy when a change is to be made to an outline
+font file (such as changing the case of the name of a font, or changing the
+encoding of a font).  A PFB file cannot normally be edited directly, since it
+contains binary length fields.
+
+SPACIFY can be used to put a `space' character in character code
+position 32.  This is useful for use of these fonts with applications
+other than TeX.  Please read `spacify.txt' for additional details.
+
+REENCODE permanently changes the encoding vector in a PFB or PFA file.
+The encoding vector is stored in a file that can be specified on the
+command line.  Each line of the file simply contains a number followed by a
+space or tab and the PostScript name of the corresponding character.
+For example:	`65	A'.  This provides a more efficient way of reencoding
+a font than directly editing the encoding vector in the PFA file.
+
+Some applications (such as DVIPSONE) can reencode a font on the fly, and so
+don't require permanent reencoding of a font.  However, the Windows
+PostScript driver (and Adobe Type Manager) do not provide for reencoding,
+so REENCODE can come in handy when a font is used with a Windows application.
+
+DOWNLOAD can be used to permanently download a font to the printer, to
+reset the printers virtual memory, or to print out a list of printer resident
+fonts.  Note that some of the PostScript commands used by DOWNLOAD are not
+standardized -- they work on the Apple Laser Writer and its relatives, but
+may not work on some `clone' printers.  It is therefore preferably to use
+specialized utility programs supplied with the printer instead of DOWNLOAD.
+
+SERIAL can be used to send PostScript files to a printer connected over
+a serial link that does not support hardware hand-shaking  (The DOS
+COPY command can be used for printers connected over serial links that
+support hardward hand-shaking).  Serial is also handy when the information 
+sent back over the serial line from the printer is of interest.  It is
+possible to write this information to a log file.
+
+All utility programs from Y&Y give a brief usage summary when invoked without
+arguments.  To see more detail, use the command line flag `-?'.  So to see
+what arguments DOWNLOAD takes, invoke it as follows:
+
+	download -?
+
+`Automatic' versus `Manual' downloading:
+----------------------------------------
+
+`Automatic' (i.e. temporary) downloading is normally the best approach 
+in order to avoid filling up printer memory and to prevent print job
+interdependence.  In this case the font is sent down to the printer
+as part of the PostScript job being printed.  The font is removed from
+printer memory at the end of the print job.
+
+`Manual' (i.e. permanent) downloading can sometimes be useful when a printer
+is used primarily with a fixed set of fonts (and these all fit into printer's
+virtual memory).  Font downloaders can be used to permanently download
+outline fonts.  A `manually' downloaded font remains resident until the
+printer power is turned off (or the PostScript `quit' command is executed). 
+
+The IBM PC utility DOWNLOAD supplied with the fonts can be used to download a
+font `manually'.
+
+Fonts can also be downloaded `manually' by sending them to the printer after
+adding the line
+
+	serverdict begin 0 exitserver
+
+immediately following the last of the initial comment lines in the PFA file
+(Comment lines start with a `%').  If you have PFB files, first convert them
+to PFA format using the PFBtoPFA utility, insert the above line, then convert
+back to PFB format using the PFAtoPFB utility. (In the above it has been
+assumed that the printer's password is still the factory default, namely 0).
+
+Sometimes `manual' downloading is used because the time to transmit a
+PostScript file to the printer is an issue.  File transmission time can be
+reduced by using a parallel instead of a serial printer connection.  Or, if a
+serial line must be used, the baud rate can be increased.  Most printers can
+handle 38,400 or 57,600 baud quite well (provided hand-shaking is set up
+properly).  (The utility MODEX, supplied with DVIPSONE, can be used to
+circumvent the DOS limit of 19,200 baud.  When using Windows 3.0, one can use
+TurboComm from BioEngineering Research laboratory to go beyond the built-in
+limit of 19,200 baud).
+
+Also, applications that use `partial font downloading' (such as DVIPSONE)
+produce PostScript files that are much shorter than those produced by
+applications that simply unpack the PFB file into PFA format, making 
+`automatic' downloading much more attractive.
+
+PostScript `Clone' Interpreters Bugs:
+----------------------------------
+
+Most clone PostScript interpreters have some `misfeature' or other,
+particularly when it comes to Type 1 font interpretation.  Such interpreters
+may work prefectly well on plain vanilla Adobe text fonts, yet fail on more
+complex fonts that fall perfectly well within in the Type 1 specification and
+are even ATM compatible (a tighter constraint).
+
+NeWSPRint:
+----------
+
+Like most PostScript `clones', older versions of NeWSPRint (release 2.0) 
+have many bugs in Type 1 font interpretation.  The fonts included here 
+contain work-arounds for most of the known bugs.  On problem could not be
+solved without impacting the quality of the fonts.  To deal with this
+problem, use `cmexnews.pfa' instead of `cmex10.pfa' --- after renaming 
+it `cmex10.pfa'.  Make sure to get the latest version of NeWSPrint 
+(presently release 2.1). It is somewhat better.
+
+PostScript Interpreter Test Programs:
+------------------------------------
+
+In the PS subdirectory you will find nine PostScript test programs, and the
+error handler (ehandler.ps).  These test files may come in useful should
+there be a problem printing PostScript files using these fonts.  The test
+programs check for various known bugs in `clone' interpreters, particularly 
+as regards Type 1 font interpretation.  There is a short `readme.txt' file
+in the same directory that describes the tests in more detail.
+
+Using CM fonts with applications other than TeX:
+------------------------------------------------
+
+We recommend that you use the utility `spacify' to put a `space' 
+character in code position 32  (This is not neccessary in the case of 
+the Macintosh version of the fonts since the `coordinated' fonts already
+have a space character in character code position 32).
+
+SPACIFY can be used to put a `space' character in character code
+position 32.  This is useful for use of these fonts with applications
+other than TeX.  Please read `spacify.txt' for additional details.
+The file `spacify.txt' also indicates how to put a `space' character in
+character code position 32 by editing the PFA version of the outline font.
+
+Problems with old versions of DVIPS:
+------------------------------------
+
+If you have an older version of DVIPS, the best advice is:  
+
+====>	Get the	latest version of DVIPS!	<========
+
+Seriously, it will be well worth your while.  DVIPS is constantly evolving
+and improving, as well as adapting new features found in other DVI drivers. 
+Here is some advice should you be FORCED to use an older version:
+
+(1)	Older versions of DVIPS can only handle Type 1 fonts in PFA format.
+	They cannot unpack the more compact PFB format.  To deal with this,
+	you will have to run the PFB files through the utility PFBtoPFA.
+
+(2)	Older versions of DVIPS have a problem with fonts that use repeated
+	encodings, because DVIPS modifies the metrics of `PostScript' fonts
+	based on information in the TFM files.  The Lucida New Math fonts use
+	repeated encodings because (a) TeX expects certain characters to be
+	in the control character range (0 - 31) and at the same time (b) many
+	applications cannot access characters in the control character range.
+
+DVIPS redefines the metrics of a font by referring to the TFM file in a way
+that causes the second appearance of a character in the encoding to end up
+with zero width.  This means that ligatures and Greek characters will
+overprint, since the higher numbered encodings are listed first 
+(in order to deal with a `mis-feature' of ATM for Windows).  
+There are several work-arounds for this problem.  
+
+(a)	One way is to change the order in which the characters are
+	accessed, thereby assuring that the one with the smaller character
+	code  (the one called for by TeX) gets the non-zero metric
+	information.   In the file `texps.pro' replace
+
+		0 1 255 { 2 copy get...
+	with
+		0 1 255 { 255 exch sub 2 copy get...
+
+(b)	Another option is to remove the repeated encodings from the fonts
+	themselves. Delete the lines starting with 
+
+		dup 161 ... put
+	through 
+		dup 196 ... put
+
+	after the line 
+
+		/Encoding 256 array
+
+This change can be made directly on a PFA file, but not on a PFB file, since
+the latter contains binary segment length codes which will be invalidated by
+any editing. If you are using PFB files, convert them first to PFA format
+using PFBtoPFA, edit the PFA file and then convert back to PFB form using
+PFAtoPFB.   Of course, this is assuming that you will never want to access
+characters in the `control character' range (0 - 31 and 127) using the
+alternate character codes. 
+
+Using the CM fonts with Ghostscript:
+------------------------------------
+
+Please add the contents of the file `fontmap.add' to the end of the 
+Ghostscript FontMap file in order to use the CM fonts with Ghostscript. 

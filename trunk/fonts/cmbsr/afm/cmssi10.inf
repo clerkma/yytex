@@ -1,0 +1,22 @@
+FontName (CMSSI10)
+FullName (CMSSI10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -12
+CapHeight 694
+UnderlinePosition -100
+UnderlineThickness 50
+Serif false
+Pi true
+MSMenuName (CMSSI10)
+VPMenuName (CMSSI10)
+WORDMenuName (CMSSI10)
+VPTypefaceID 5000810
+VPStyle (N)
+PCFileNamePrefix (cmssi10)
+PCLTypefaceID 5000810
+PCLStrokeWeight 0
+PCLStyle 0

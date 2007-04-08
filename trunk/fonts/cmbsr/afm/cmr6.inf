@@ -1,0 +1,22 @@
+FontName (CMR6)
+FullName (CMR6)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMR6)
+VPMenuName (CMR6)
+WORDMenuName (CMR6)
+VPTypefaceID 5000789
+VPStyle (N)
+PCFileNamePrefix (cmr6)
+PCLTypefaceID 5000789
+PCLStrokeWeight 0
+PCLStyle 0

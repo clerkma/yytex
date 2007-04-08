@@ -1,0 +1,22 @@
+FontName (CMTT8)
+FullName (CMTT8)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch true
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 611
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMTT8)
+VPMenuName (CMTT8)
+WORDMenuName (CMTT8)
+VPTypefaceID 5000830
+VPStyle (N)
+PCFileNamePrefix (cmtt8)
+PCLTypefaceID 5000830
+PCLStrokeWeight 0
+PCLStyle 0

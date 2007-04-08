@@ -1,0 +1,236 @@
+StartFontMetrics 2.0
+Comment Copyright (c) 1996, 1997 Y&Y, Inc.  All Rights Reserved.
+Comment Creation Date: Sun Aug 4 22:23:11 1996
+Comment UniqueID 5092765
+FontName CMEX9
+Comment AMS Version V2.1
+UnderlinePosition -100
+UnderlineThickness 50
+EncodingScheme FontSpecific
+FullName CMEX9
+FamilyName Computer Modern
+Weight Medium
+ItalicAngle 0
+IsFixedPitch false
+Version 001.101
+Notice Copyright (c) 1996, 1997 Y&Y, Inc.  All Right Reserved. (508) 371-3286
+FontBBox -25 -2958 1495 772
+XHeight 430.556
+Comment CapHeight 0
+Ascender 750
+Comment Descender -1757.79
+Descender -2960
+Comment following is extra info from TFM file
+Comment FontID CMEX V2.1
+Comment DesignSize 9 (pts)
+Comment CharacterCodingScheme TeX math extension
+Comment Space 0 0 0
+Comment ExtraSpace 0
+Comment Quad 1027.77
+Comment DefaultRuleThickness 42.221
+Comment BigOpSpacing 111.111 166.667 200 604.938 111.111
+Comment WARNING: Ascendible characters (74)	% macro  - PS charname
+Comment Ascending 0, 16, 18, 32, 48		% (	 - parenleft
+Comment Ascending 1, 17, 19, 33, 49		% )	 - parenright
+Comment Ascending 2, 104, 20, 34, 50		% [	 - bracketleft
+Comment Ascending 3, 105, 21, 35, 51		% ] 	 - bracketright
+Comment Ascending 4, 106, 22, 36, 52		% lfloor - floorleft
+Comment Ascending 5, 107, 23, 37, 53		% rfloor - floorright
+Comment Ascending 6, 108, 24, 38, 54		% lceil	 - ceilingleft
+Comment Ascending 7, 109, 25, 39, 55		% rceil	 - ceilingright
+Comment Ascending 8, 110, 26, 40, 56		% {	 - braceleft
+Comment Ascending 9, 111, 27, 41, 57		% }	 - braceright
+Comment Ascending 10, 68, 28, 42		% <	 - anglebracketleft
+Comment Ascending 11, 69, 29, 43		% >	 - anglebracketright
+Comment Ascending 14, 46, 30, 44		% /	 - slash
+Comment Ascending 15, 47, 31, 45		% \	 - backslash
+Comment Ascending 70, 71			% bigsqcup  - unionsq
+Comment Ascending 72, 73			% oint	    - contintegral
+Comment Ascending 74, 75			% bigodot   - circledot
+Comment Ascending 76, 77			% bigoplus  - circleplus
+Comment Ascending 78, 79			% bigotimes - circlemultiply
+Comment Ascending 80, 88			% sum       - summation
+Comment Ascending 81, 89			% prod      - product
+Comment Ascending 82, 90			% int       - integral
+Comment Ascending 83, 91			% bigcup    - union
+Comment Ascending 84, 92			% bigcap    - intersection
+Comment Ascending 85, 93			% biguplus  - unionmulti
+Comment Ascending 86, 94			% bigwedge  - logicaland
+Comment Ascending 87, 95			% bigvee    - logicalor
+Comment Ascending 96, 97			% coprod    - coproduct
+Comment Ascending 98, 99, 100			% widehat   - hatwide
+Comment Ascending 101, 102, 103			% widetilde - tildewide
+Comment Ascending 112, 113, 114, 115, 116	% radical   - sqrt
+Comment WARNING: extensible characters (28)
+Comment Extensible 12 top 0 mid 0 bot 0 rep 12	    % vert   - thin bar
+Comment Extensible 13 top 0 mid 0 bot 0 rep 13	    % Vert   - thin double bar
+Comment Extensible 48 top 48 mid 0 bot 64 rep 66    % (      - parenleft
+Comment Extensible 49 top 49 mid 0 bot 65 rep 67    % )      - parenright
+Comment Extensible 50 top 50 mid 0 bot 52 rep 54    % [      - bracketleft
+Comment Extensible 51 top 51 mid 0 bot 53 rep 55    % ]      - bracketright
+Comment Extensible 52 top 0 mid 0 bot 52 rep 54	    % lfloor - floorleft
+Comment Extensible 53 top 0 mid 0 bot 53 rep 55	    % rfloor - floorright
+Comment Extensible 54 top 50 mid 0 bot 0 rep 54	    % lceil  - ceilingleft
+Comment Extensible 55 top 51 mid 0 bot 0 rep 55	    % rceil  - ceilingright
+Comment Extensible 56 top 56 mid 60 bot 58 rep 62   % {      - braceleft
+Comment Extensible 57 top 57 mid 61 bot 59 rep 62   % }      - braceright
+Comment Extensible 58 top 56 mid 0 bot 58 rep 62    % lgroup
+Comment Extensible 59 top 57 mid 0 bot 59 rep 62    % rgroup
+Comment Extensible 60 top 0 mid 0 bot 0 rep 63	    % arrowvert
+Comment Extensible 61 top 0 mid 0 bot 0 rep 119	    % Arrowvert
+Comment Extensible 62 top 0 mid 0 bot 0 rep 62	    % bracevert
+Comment Extensible 63 top 120 mid 0 bot 121 rep 63  % updownarrow
+Comment Extensible 64 top 56 mid 0 bot 59 rep 62    % lmoustache
+Comment Extensible 65 top 57 mid 0 bot 58 rep 62    % rmoustache
+Comment Extensible 66 top 0 mid 0 bot 0 rep 66	    % parenleftexten
+Comment Extensible 67 top 0 mid 0 bot 0 rep 67	    % parenrightexten
+Comment Extensible 116 top 118 mid 0 bot 116 rep 117	% radical
+Comment Extensible 119 top 126 mid 0 bot 127 rep 119	% Updownarrow
+Comment Extensible 120 top 120 mid 0 bot 0 rep 63	% uparrow
+Comment Extensible 121 top 0 mid 0 bot 121 rep 63	% downarrow
+Comment Extensible 126 top 126 mid 0 bot 0 rep 119	% Uparrow
+Comment Extensible 127 top 0 mid 0 bot 127 rep 119	% Downarrow
+StartCharMetrics 141
+C 0 ; WX 471.059 ; N parenleftbig ; B 157 -1157 426 42 ;
+C 1 ; WX 471.059 ; N parenrightbig ; B 44 -1157 313 42 ;
+C 2 ; WX 428.236 ; N bracketleftbig ; B 207 -1157 406 42 ;
+C 3 ; WX 428.236 ; N bracketrightbig ; B 21 -1157 220 42 ;
+C 4 ; WX 485.334 ; N floorleftbig ; B 207 -1157 463 42 ;
+C 5 ; WX 485.334 ; N floorrightbig ; B 21 -1157 277 42 ;
+C 6 ; WX 485.334 ; N ceilingleftbig ; B 207 -1157 463 42 ;
+C 7 ; WX 485.334 ; N ceilingrightbig ; B 21 -1157 277 42 ;
+C 8 ; WX 599.533 ; N braceleftbig ; B 115 -1157 484 42 ;
+C 9 ; WX 599.533 ; N bracerightbig ; B 115 -1157 484 42 ;
+C 10 ; WX 485.336 ; N angbracketleftbig ; B 100 -1157 406 42 ;
+C 11 ; WX 485.336 ; N angbracketrightbig ; B 78 -1157 384 42 ;
+C 12 ; WX 342.588 ; N vextendsingle ; B 149 -623 194 23 ;
+C 13 ; WX 570.982 ; N vextenddouble ; B 149 -623 421 23 ;
+C 14 ; WX 593.821 ; N slashbig ; B 57 -1157 536 42 ;
+C 15 ; WX 593.821 ; N backslashbig ; B 57 -1157 536 42 ;
+C 16 ; WX 613.805 ; N parenleftBig ; B 185 -1757 576 42 ;
+C 17 ; WX 613.805 ; N parenrightBig ; B 37 -1757 428 42 ;
+C 18 ; WX 756.551 ; N parenleftbigg ; B 214 -2357 720 42 ;
+C 19 ; WX 756.551 ; N parenrightbigg ; B 36 -2357 542 42 ;
+C 20 ; WX 542.433 ; N bracketleftbigg ; B 256 -2357 528 42 ;
+C 21 ; WX 542.433 ; N bracketrightbigg ; B 13 -2357 285 42 ;
+C 22 ; WX 599.532 ; N floorleftbigg ; B 256 -2357 586 42 ;
+C 23 ; WX 599.532 ; N floorrightbigg ; B 13 -2357 343 42 ;
+C 24 ; WX 599.532 ; N ceilingleftbigg ; B 256 -2357 586 42 ;
+C 25 ; WX 599.532 ; N ceilingrightbigg ; B 13 -2357 343 42 ;
+C 26 ; WX 770.833 ; N braceleftbigg ; B 134 -2357 636 42 ;
+C 27 ; WX 770.833 ; N bracerightbigg ; B 134 -2357 636 42 ;
+C 28 ; WX 770.833 ; N angbracketleftbigg ; B 128 -2357 671 42 ;
+C 29 ; WX 770.833 ; N angbracketrightbigg ; B 99 -2357 642 42 ;
+C 30 ; WX 1073.45 ; N slashbigg ; B 57 -2357 1015 42 ;
+C 31 ; WX 1073.45 ; N backslashbigg ; B 57 -2357 1015 42 ;
+C 32 ; WX 813.649 ; N parenleftBigg ; B 242 -2957 779 42 ;
+C 33 ; WX 813.649 ; N parenrightBigg ; B 34 -2957 571 42 ;
+C 34 ; WX 599.532 ; N bracketleftBigg ; B 281 -2957 589 42 ;
+C 35 ; WX 599.532 ; N bracketrightBigg ; B 10 -2957 318 42 ;
+C 36 ; WX 656.63 ; N floorleftBigg ; B 281 -2957 646 42 ;
+C 37 ; WX 656.63 ; N floorrightBigg ; B 10 -2957 375 42 ;
+C 38 ; WX 656.63 ; N ceilingleftBigg ; B 281 -2957 646 42 ;
+C 39 ; WX 656.63 ; N ceilingrightBigg ; B 10 -2957 375 42 ;
+C 40 ; WX 827.925 ; N braceleftBigg ; B 147 -2957 680 42 ;
+C 41 ; WX 827.925 ; N bracerightBigg ; B 147 -2957 680 42 ;
+C 42 ; WX 827.925 ; N angbracketleftBigg ; B 143 -2958 717 42 ;
+C 43 ; WX 827.925 ; N angbracketrightBigg ; B 110 -2958 684 42 ;
+C 44 ; WX 1313.26 ; N slashBigg ; B 57 -2957 1255 42 ;
+C 45 ; WX 1313.26 ; N backslashBigg ; B 57 -2957 1255 42 ;
+C 46 ; WX 833.635 ; N slashBig ; B 57 -1757 776 42 ;
+C 47 ; WX 833.635 ; N backslashBig ; B 57 -1757 776 42 ;
+C 48 ; WX 899.297 ; N parenlefttp ; B 299 -1769 865 41 ;
+C 49 ; WX 899.297 ; N parenrighttp ; B 33 -1769 599 41 ;
+C 50 ; WX 685.179 ; N bracketlefttp ; B 334 -1758 678 41 ;
+C 51 ; WX 685.179 ; N bracketrighttp ; B 6 -1758 350 41 ;
+C 52 ; WX 685.179 ; N bracketleftbt ; B 334 -1757 678 42 ;
+C 53 ; WX 685.179 ; N bracketrightbt ; B 6 -1757 350 42 ;
+C 54 ; WX 685.179 ; N bracketleftex ; B 334 -601 408 1 ;
+C 55 ; WX 685.179 ; N bracketrightex ; B 276 -601 350 1 ;
+C 56 ; WX 913.572 ; N bracelefttp ; B 393 -911 738 -1 ;
+C 57 ; WX 913.572 ; N bracerighttp ; B 175 -911 520 -1 ;
+C 58 ; WX 913.572 ; N braceleftbt ; B 393 -899 738 11 ;
+C 59 ; WX 913.572 ; N bracerightbt ; B 175 -899 520 11 ;
+C 60 ; WX 913.572 ; N braceleftmid ; B 175 -1811 520 11 ;
+C 61 ; WX 913.572 ; N bracerightmid ; B 393 -1811 738 11 ;
+C 62 ; WX 913.572 ; N braceex ; B 393 -311 520 11 ;
+C 63 ; WX 685.179 ; N arrowvertex ; B 320 -601 365 1 ;
+C 64 ; WX 899.297 ; N parenleftbt ; B 299 -1757 865 53 ;
+C 65 ; WX 899.297 ; N parenrightbt ; B 33 -1757 599 53 ;
+C 66 ; WX 899.297 ; N parenleftex ; B 299 -611 410 11 ;
+C 67 ; WX 899.297 ; N parenrightex ; B 488 -611 599 11 ;
+C 68 ; WX 628.08 ; N angbracketleftBig ; B 114 -1757 538 42 ;
+C 69 ; WX 628.08 ; N angbracketrightBig ; B 89 -1757 513 42 ;
+C 70 ; WX 856.474 ; N unionsqtext ; B 57 -1000 798 0 ;
+C 71 ; WX 1141.97 ; N unionsqdisplay ; B 57 -1400 1084 0 ;
+C 72 ; WX 485.334 ; N contintegraltext ; B 57 -1111 627 0 ;
+C 73 ; WX 570.982 ; N contintegraldisplay ; B 57 -2222 970 0 ;
+C 74 ; WX 1141.97 ; N circledottext ; B 57 -1000 1084 0 ;
+C 75 ; WX 1553.07 ; N circledotdisplay ; B 57 -1400 1495 0 ;
+C 76 ; WX 1141.97 ; N circleplustext ; B 57 -1000 1084 0 ;
+C 77 ; WX 1553.07 ; N circleplusdisplay ; B 57 -1400 1495 0 ;
+C 78 ; WX 1141.97 ; N circlemultiplytext ; B 57 -1000 1084 0 ;
+C 79 ; WX 1553.07 ; N circlemultiplydisplay ; B 57 -1400 1495 0 ;
+C 80 ; WX 1084.87 ; N summationtext ; B 57 -1000 1027 0 ;
+C 81 ; WX 970.67 ; N producttext ; B 57 -1000 913 0 ;
+C 82 ; WX 485.334 ; N integraltext ; B 57 -1111 627 0 ;
+C 83 ; WX 856.474 ; N uniontext ; B 57 -1000 798 0 ;
+C 84 ; WX 856.474 ; N intersectiontext ; B 57 -1000 798 0 ;
+C 85 ; WX 856.474 ; N unionmultitext ; B 57 -1000 798 0 ;
+C 86 ; WX 856.474 ; N logicalandtext ; B 57 -1000 798 0 ;
+C 87 ; WX 856.474 ; N logicalortext ; B 57 -1000 798 0 ;
+C 88 ; WX 1484.56 ; N summationdisplay ; B 57 -1400 1427 0 ;
+C 89 ; WX 1313.26 ; N productdisplay ; B 57 -1400 1255 0 ;
+C 90 ; WX 570.982 ; N integraldisplay ; B 57 -2222 970 0 ;
+C 91 ; WX 1141.97 ; N uniondisplay ; B 57 -1400 1084 0 ;
+C 92 ; WX 1141.97 ; N intersectiondisplay ; B 57 -1400 1084 0 ;
+C 93 ; WX 1141.97 ; N unionmultidisplay ; B 57 -1400 1084 0 ;
+C 94 ; WX 1141.97 ; N logicalanddisplay ; B 57 -1400 1084 0 ;
+C 95 ; WX 1141.97 ; N logicalordisplay ; B 57 -1400 1084 0 ;
+C 96 ; WX 970.67 ; N coproducttext ; B 57 -1000 913 0 ;
+C 97 ; WX 1313.26 ; N coproductdisplay ; B 57 -1400 1255 0 ;
+C 98 ; WX 570.982 ; N hatwide ; B -6 559 576 744 ;
+C 99 ; WX 1027.77 ; N hatwider ; B -4 573 1031 772 ;
+C 100 ; WX 1484.56 ; N hatwidest ; B -3 572 1486 772 ;
+C 101 ; WX 570.982 ; N tildewide ; B 0 605 570 722 ;
+C 102 ; WX 1027.77 ; N tildewider ; B 0 621 1027 750 ;
+C 103 ; WX 1484.56 ; N tildewidest ; B 0 620 1484 750 ;
+C 104 ; WX 485.334 ; N bracketleftBig ; B 231 -1757 467 42 ;
+C 105 ; WX 485.334 ; N bracketrightBig ; B 17 -1757 253 42 ;
+C 106 ; WX 542.433 ; N floorleftBig ; B 231 -1757 524 42 ;
+C 107 ; WX 542.433 ; N floorrightBig ; B 17 -1757 310 42 ;
+C 108 ; WX 542.433 ; N ceilingleftBig ; B 231 -1757 524 42 ;
+C 109 ; WX 542.433 ; N ceilingrightBig ; B 17 -1757 310 42 ;
+C 110 ; WX 685.179 ; N braceleftBig ; B 121 -1757 563 42 ;
+C 111 ; WX 685.179 ; N bracerightBig ; B 121 -1757 563 42 ;
+C 112 ; WX 1027.77 ; N radicalbig ; B 114 -1158 1049 43 ;
+C 113 ; WX 1027.77 ; N radicalBig ; B 114 -1758 1049 43 ;
+C 114 ; WX 1027.77 ; N radicalbigg ; B 114 -2358 1049 43 ;
+C 115 ; WX 1027.77 ; N radicalBigg ; B 114 -2958 1049 43 ;
+C 116 ; WX 1084.87 ; N radicalbt ; B 114 -1800 763 21 ;
+C 117 ; WX 1084.87 ; N radicalvertex ; B 720 -621 763 21 ;
+C 118 ; WX 1084.87 ; N radicaltp ; B 720 -579 1106 43 ;
+C 119 ; WX 799.375 ; N arrowvertexdbl ; B 262 -601 536 1 ;
+C 120 ; WX 685.179 ; N arrowtp ; B 114 -600 571 0 ;
+C 121 ; WX 685.179 ; N arrowbt ; B 114 -600 571 0 ;
+C 122 ; WX 450 ; N bracehtipdownleft ; B -25 -218 461 127 ;
+C 123 ; WX 450 ; N bracehtipdownright ; B -11 -218 475 127 ;
+C 124 ; WX 450 ; N bracehtipupleft ; B -25 0 461 345 ;
+C 125 ; WX 450 ; N bracehtipupright ; B -11 0 475 345 ;
+C 126 ; WX 799.375 ; N arrowdbltp ; B 56 -600 742 -1 ;
+C 127 ; WX 799.375 ; N arrowdblbt ; B 56 -599 742 0 ;
+C 159 ; WX 856.474 ; N radical ; B 73 -958 877 43 ; 
+C 208 ; WX 642.276 ; N Gamma ; B 38 0 598 680 ; 
+C 209 ; WX 856.474 ; N Delta ; B 49 0 806 716 ; 
+C 210 ; WX 799.375 ; N Theta ; B 57 -22 741 705 ; 
+C 211 ; WX 713.573 ; N Lambda ; B 33 0 680 716 ; 
+C 212 ; WX 685.179 ; N Xi ; B 43 0 641 677 ; 
+C 213 ; WX 770.672 ; N Pi ; B 38 0 732 680 ; 
+C 214 ; WX 742.277 ; N Sigma ; B 57 0 684 683 ; 
+C 215 ; WX 799.375 ; N Upsilon ; B 57 0 741 705 ; 
+C 216 ; WX 742.277 ; N Phi ; B 57 0 684 683 ; 
+C 217 ; WX 799.375 ; N Psi ; B 57 0 741 683 ; 
+C 218 ; WX 742.277 ; N Omega ; B 46 0 695 705 ; 
+C -1 ; WX 333.333 ; N space ; B 0 0 0 0 ;
+EndCharMetrics
+EndFontMetrics

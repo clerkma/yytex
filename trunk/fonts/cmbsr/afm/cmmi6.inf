@@ -1,0 +1,22 @@
+FontName (CMMI6)
+FullName (CMMI6)
+FamilyName (Computer Modern)
+version (1.00A)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.04
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMMI6)
+VPMenuName (CMMI6)
+WORDMenuName (CMMI6)
+VPTypefaceID 5000781
+VPStyle (N)
+PCFileNamePrefix (cmmi6)
+PCLTypefaceID 5000781
+PCLStrokeWeight 0
+PCLStyle 0

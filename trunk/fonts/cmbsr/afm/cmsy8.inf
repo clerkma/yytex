@@ -1,0 +1,22 @@
+FontName (CMSY8)
+FullName (CMSY8)
+FamilyName (Computer Modern)
+version (1.00)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.035
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMSY8)
+VPMenuName (CMSY8)
+WORDMenuName (CMSY8)
+VPTypefaceID 5000818
+VPStyle (N)
+PCFileNamePrefix (cmsy8)
+PCLTypefaceID 5000818
+PCLStrokeWeight 0
+PCLStyle 0

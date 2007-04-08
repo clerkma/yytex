@@ -1,0 +1,22 @@
+FontName (CMSY7)
+FullName (CMSY7)
+FamilyName (Computer Modern)
+version (1.00)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.035
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMSY7)
+VPMenuName (CMSY7)
+WORDMenuName (CMSY7)
+VPTypefaceID 5000817
+VPStyle (N)
+PCFileNamePrefix (cmsy7)
+PCLTypefaceID 5000817
+PCLStrokeWeight 0
+PCLStyle 0
