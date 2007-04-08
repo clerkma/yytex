@@ -1,0 +1,23 @@
+all: *.pfb
+
+*.pfb: $*.hex $*.hnt
+
+*.hex: $*.out 
+
+.pfb.pfa:
+	c:\prog\pfatopfb -v $<;
+
+cmex*.pfa:
+	c:\fontone -vklqbd -w c:\afm\tex -h c:\bsr $*.hex
+
+cmsy*.pfa:
+	c:\fontone -vklqb -w c:\afm\tex -h c:\bsr $*.hex
+
+cmmi*.pfa:
+	c:\fontone -vklqb -w c:\afm\tex -h c:\bsr $*.hex
+
+.pfa.hex:
+	c:\prog\fontone -vklq -w c:\afm\tex -h c:\bsr $<;
+
+.hex.out:
+	c:\prog\convert -vk -x 1.0 $<;

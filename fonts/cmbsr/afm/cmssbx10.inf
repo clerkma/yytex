@@ -1,0 +1,22 @@
+FontName (CMSSBX10)
+FullName (CMSSBX10)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 694
+UnderlinePosition -100
+UnderlineThickness 50
+Serif false
+Pi true
+MSMenuName (CMSSBX10)
+VPMenuName (CMSSBX10)
+WORDMenuName (CMSSBX10)
+VPTypefaceID 5000806
+VPStyle (N)
+PCFileNamePrefix (cmssbx10)
+PCLTypefaceID 5000806
+PCLStrokeWeight 0
+PCLStyle 0

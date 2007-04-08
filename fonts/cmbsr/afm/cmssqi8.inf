@@ -1,0 +1,22 @@
+FontName (CMSSQI8)
+FullName (CMSSQI8)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -12
+CapHeight 684
+UnderlinePosition -100
+UnderlineThickness 50
+Serif false
+Pi true
+MSMenuName (CMSSQI8)
+VPMenuName (CMSSQI8)
+WORDMenuName (CMSSQI8)
+VPTypefaceID 5000814
+VPStyle (N)
+PCFileNamePrefix (cmssqi8)
+PCLTypefaceID 5000814
+PCLStrokeWeight 0
+PCLStyle 0

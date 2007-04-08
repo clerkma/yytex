@@ -1,0 +1,22 @@
+FontName (CMMI5)
+FullName (CMMI5)
+FamilyName (Computer Modern)
+version (1.00A)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.04
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMMI5)
+VPMenuName (CMMI5)
+WORDMenuName (CMMI5)
+VPTypefaceID 5000780
+VPStyle (N)
+PCFileNamePrefix (cmmi5)
+PCLTypefaceID 5000780
+PCLStrokeWeight 0
+PCLStyle 0

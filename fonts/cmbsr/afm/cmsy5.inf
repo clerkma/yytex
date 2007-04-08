@@ -1,0 +1,22 @@
+FontName (CMSY5)
+FullName (CMSY5)
+FamilyName (Computer Modern)
+version (1.00)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.035
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMSY5)
+VPMenuName (CMSY5)
+WORDMenuName (CMSY5)
+VPTypefaceID 5000815
+VPStyle (N)
+PCFileNamePrefix (cmsy5)
+PCLTypefaceID 5000815
+PCLStrokeWeight 0
+PCLStyle 0

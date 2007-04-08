@@ -1,0 +1,171 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+CM outline fonts, Windows 3.0 applications and Adobe Type Manager:
+==================================================================
+
+The PC versions of the Blue Sky Research Adobe Type 1 outline fonts
+for Computer Modern come on three diskettes.  These contain the actual
+character outlines (.pfb files), the Windows font metric files (.pfm
+files), Adobe font metric files (.afm files), and a few utility
+programs.  The Adobe font metric files are not used by Adobe Type
+Manager (ATM), but are provided for use with other applications, such
+as programs that generate metric files in other formats from Adobe
+font metric files (like Y&Y's AFMTOTFM and AFMTOPFM).
+
+You may be using these fonts with an application that has its own
+installation procedure, and so the following may not apply.  For
+example, for use with Y&Y's DVIPSONE, you simple copy all of the .pfb
+files to some convenient directory (c:\psfonts say) on your hard disk.
+But if you plan to use these fonts with Windows applications (such as
+MicroSoft Word for Windows, Aldus PageMaker, Micrografix Designer, or
+Y&Y's DVIWindo) then read on!
+
+To install the outline fonts for use with MicroSoft Windows 3.0 and
+Adobe Type Manager (ATM), insert one of the diskette containing .pfb
+and .pfm files into a diskette drive.  Launch Windows 3.0 and double
+click on the ATM icon.  Install the desired fonts from the ATM control
+menu.  You can select several fonts at once by holding down the control
+key while clicking on fontnames.  Repeat using the second diskette.
+(Note that the newly installed fonts will not be accessible to Windows
+applications until you exit and relaunch Windows.)
+
+During the installation process, the .pfb font files will be copied to
+the directory c:\psfonts, while the .pfm files will be copied to
+c:\psfonts\pfm (assuming ATM uses the default directories).  The
+installation procedure also adds softfont entries to each section
+of your win.ini file designated for a PostScript printer (If you
+later add another PostScript printer, you will need to copy the
+softfont entries into the corresponding section of win.ini).
+
+By the way, removing a font using ATM unfortunately does NOT remove the
+corresponding entry from win.ini.  Consequently, if you remove a font
+using ATM, use a text editor to remove all related softfont entries in
+win.ini.  If this is not done, duplicate entries may appear later when
+the font is reinstalled.  Actually, to install a new version of a font,
+it is easier to simply replace the .pfb file in c:\psfonts and the pfm
+file in c:\psfonts\pfm with the new versions (If you do, delete the
+file atmfonts.qlc in the c:\psfonts directory---ATM will rebuilt it the
+next time you launch Windows).
+
+If you would like to check on what fonts are actually installed, double
+click the ATM icon.  Alternatively, look in the file atm.ini in your
+Windows directory.  Each line of this file gives the Windows name of a
+font and both the .pfb and .pfm file names (as well as whether the font
+is considered BOLD or ITALIC---or both).
+
+Downloading fonts:
+-----------------
+
+Fonts can be either downloaded manually (i.e. permanently) or
+automatically (i.e. only for the duration of a particular print job).
+Fonts that are downloaded manually remain resident in the printer until
+the printer is rebooted or power cycled.  Usually applications using
+outline fonts come with utilities for downloading.  You can, for example,
+use one of the Adobe downloader (PCSEND for serial ports or PSDOWN for
+parallel ports) to preload the CM fonts you plan to use.  The utility
+DOWNLOAD that comes with DVIPSONE is also supplied with these fonts for
+downloading of fonts.  To see what command line arguments it takes, invoke
+it using `download -?'.
+
+Fonts downloaded `manually' are treated exactly like printer resident fonts.
+Note, however, that typically only a handful of fonts can be downloaded
+before a significant portion of the printers virtual memory (VM) is used up. 
+
+There is thus an advantage to `automatic' downloading.  To provide for
+automatic downloading of a particular font, you need to make a small
+change in the file win.ini in your Windows directory.  Simply extend
+the softfont entry in win.ini with the path to the .pfb file.  So, for
+example, change:
+
+	softfont29=c:\psfonts\pfm\cmr10.pfm
+to
+	softfont29=c:\psfonts\pfm\cmr10.pfm,c:\psfonts\cmr10.pfb
+
+where it has been assumed that the .pfb font file has been copied
+to the directory c:\psfonts.
+
+(Note: there should be no space after the comma above, and the order of
+entries should be as shown.  Also remember that there is a softfont entry
+for every printer you have installed in Windows, so this alteration may
+need to be made in more than one place in win.ini)
+
+FontName case:
+--------------
+
+The PostScript `FontName's of these CM fonts are all upper case, in order
+to be consistent with the MacIntosh versions, where font name contraction
+would cause lower case names to become non-unique.  Most applications,
+such as DVIPSONE, actually don't care what the FontName is.  If you
+download the font to the printer, however, then there has to be a match
+between the PostScript FontName and that called for by the application.  
+A utility called NAMECASE is provided with these fonts that will change the
+case of Fontname in a PFB file so that fonts can be used with applications
+that expect lowercase fontnames.  To see what command line arguments it
+takes, invoke it using `namecase -?'. Alternatively, convert the PFB file to
+PFA format, change the case of FontName, and convert back to PFB format.
+
+Character Encoding:
+------------------
+
+Alphanumeric characters can be accessed just by typing the appropriate
+key, of course, but Computer Modern fonts also contain many special
+characters that are located in `control-character' positions.
+Unfortunately, you can't effectively use the codes between 0 and 31 in
+most Windows applications, so these have been remapped to positions
+161--195 (see the table below).  Also, note that TeX uses character
+code 32 for Polish ``suppress'' or ``cancel''---to get a real space,
+use character code 160.
+
+Many Windows applications (like PageMaker) do use the kerning
+information in the .pfm files (although you may have to set the point
+size above which kerning is to be used).  Unfortunately, however,
+Windows applications cannot deal with ligatures, because the .pfm file
+format does not provide for ligature information.  To get the ligatures
+commonly used in TeX, you will need to use numeric codes derived from
+the table below (e.g. ff is 174, fi is 175, and fl is 176).
+
+To gain access to the codes above 127 in Windows applications, hold down the
+ALT key, type 0 and then the (decimal) code number  (If you do not type the
+leading 0, IBM OEM encoding is used, which is typically not what you want).
+This table gives the mapping of characters in the `control character'
+positions:
+
+TeX	Windows	Char
+code	code	name
+
+0	161	Gamma	
+1	162	Delta	
+2	163	Theta	
+3	164	Lambda	
+4	165	Xi	
+5	166	Pi	
+6	167	Sigma	
+7	168	Upsilon	
+8	169	Phi	
+9	170	Psi	
+10	173	Omega	
+11	174	ff	
+12	175	fi	
+13	176	fl	
+14	177	ffi	
+15	178	ffl	
+16	179	dotlessi
+17	180	dotlessj
+18	181	grave	
+19	182	acute	
+20	183	caron	
+21	184	breve	
+22	185	macron	
+23	186	ring	
+24	187	cedilla	
+25	188	germandbls
+26	189	ae	
+27	190	oe	
+28	191	oslash	
+29	192	AE	
+30	193	OE	
+31	194	Oslash	
+32	195 	suppress 
+127	196	dieresis
+	160	space

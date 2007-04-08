@@ -1,0 +1,200 @@
+StartFontMetrics 2.0
+Notice Copyright (C) 1997 Y&Y, Inc.  All Rights Reserved.  http://www.YandY.com
+Comment This font is not in the public domain.
+Comment Computer Modern fonts were designed by Donald E. Knuth
+Comment CreationDate: 1997 Jun 21 22:30:11
+Comment UniqueID 5096650
+FontName CMSY9
+EncodingScheme FontSpecific
+FullName CMSY9
+FamilyName Computer Modern
+Weight Medium
+ItalicAngle -14.035
+IsFixedPitch false
+Version 001.100
+FontBBox -30 -958 1146 777
+CapHeight 683.333
+XHeight 430.556
+Ascender 694.444
+Comment Descender 0
+Descender -958
+UnderlinePosition -100
+UnderlineThickness 50
+Comment following is extra information from TFM file
+Comment FontID CMSY
+Comment DesignSize 9 (pts)
+Comment CharacterCodingScheme TeX math symbols
+Comment Space 0 0 0 
+Comment ExtraSpace 0
+Comment Quad 1027.77
+Comment Num 646.739 409.702 449.825
+Comment Denom 678.223 339.335
+Comment Sup 480.367 424.811 287.037
+Comment Sub 111.111 175.932
+Comment Supdrop 351.856
+Comment Subdrop 55.555
+Comment Delim 2655.56 1011.11
+Comment Axisheight 250
+StartCharMetrics 129
+C 0 ; WX 799.375 ; N minus ; B 86 229 712 272 ; 
+C 1 ; WX 285.49 ; N periodcentered ; B 88 197 196 305 ; 
+C 2 ; WX 799.375 ; N multiply ; B 151 2 647 499 ; 
+C 3 ; WX 513.884 ; N asteriskmath ; B 67 34 446 465 ; 
+C 4 ; WX 799.375 ; N divide ; B 57 -39 741 540 ; 
+C 5 ; WX 513.884 ; N diamondmath ; B 11 5 502 496 ; 
+C 6 ; WX 799.375 ; N plusminus ; B 57 -6 741 679 ; 
+C 7 ; WX 799.375 ; N minusplus ; B 57 -178 741 507 ; 
+C 8 ; WX 799.375 ; N circleplus ; B 57 -92 741 593 ; 
+C 9 ; WX 799.375 ; N circleminus ; B 57 -92 741 593 ; 
+C 10 ; WX 799.375 ; N circlemultiply ; B 57 -92 741 593 ; 
+C 11 ; WX 799.375 ; N circledivide ; B 57 -92 741 593 ; 
+C 12 ; WX 799.375 ; N circledot ; B 57 -92 741 593 ; 
+C 13 ; WX 1027.77 ; N circlecopyrt ; B 57 -216 970 716 ; 
+C 14 ; WX 513.884 ; N openbullet ; B 57 51 456 450 ; 
+C 15 ; WX 513.884 ; N bullet ; B 57 51 456 450 ; 
+C 16 ; WX 799.375 ; N equivasymptotic ; B 57 6 741 495 ; 
+C 17 ; WX 799.375 ; N equivalence ; B 57 26 741 475 ; 
+C 18 ; WX 799.375 ; N reflexsubset ; B 86 -154 712 652 ; 
+C 19 ; WX 799.375 ; N reflexsuperset ; B 86 -154 712 652 ; 
+C 20 ; WX 799.375 ; N lessequal ; B 86 -154 712 652 ; 
+C 21 ; WX 799.375 ; N greaterequal ; B 86 -154 712 652 ; 
+C 22 ; WX 799.375 ; N precedesequal ; B 86 -154 712 652 ; 
+C 23 ; WX 799.375 ; N followsequal ; B 86 -154 712 652 ; 
+C 24 ; WX 799.375 ; N similar ; B 57 128 741 372 ; 
+C 25 ; WX 799.375 ; N approxequal ; B 57 48 741 494 ; 
+C 26 ; WX 799.375 ; N propersubset ; B 86 -51 712 552 ; 
+C 27 ; WX 799.375 ; N propersuperset ; B 86 -51 712 552 ; 
+C 28 ; WX 1027.77 ; N lessmuch ; B 57 -79 970 580 ; 
+C 29 ; WX 1027.77 ; N greatermuch ; B 57 -79 970 580 ; 
+C 30 ; WX 799.375 ; N precedes ; B 86 -52 712 551 ; 
+C 31 ; WX 799.375 ; N follows ; B 86 -52 712 551 ; 
+C 32 ; WX 1027.77 ; N arrowleft ; B 57 71 970 430 ; 
+C 33 ; WX 1027.77 ; N arrowright ; B 57 71 970 430 ; 
+C 34 ; WX 513.884 ; N arrowup ; B 73 -194 440 694 ; 
+C 35 ; WX 513.884 ; N arrowdown ; B 73 -194 440 694 ; 
+C 36 ; WX 1027.77 ; N arrowboth ; B 57 71 970 430 ; 
+C 37 ; WX 1027.77 ; N arrownortheast ; B 57 -219 972 696 ; 
+C 38 ; WX 1027.77 ; N arrowsoutheast ; B 57 -196 972 719 ; 
+C 39 ; WX 799.375 ; N similarequal ; B 57 26 741 473 ; 
+C 40 ; WX 1027.77 ; N arrowdblleft ; B 57 -30 970 531 ; 
+C 41 ; WX 1027.77 ; N arrowdblright ; B 57 -30 970 531 ; 
+C 42 ; WX 628.08 ; N arrowdblup ; B 28 -194 599 694 ; 
+C 43 ; WX 628.08 ; N arrowdbldown ; B 28 -194 599 694 ; 
+C 44 ; WX 1027.77 ; N arrowdblboth ; B 35 -30 992 531 ; 
+C 45 ; WX 1027.77 ; N arrownorthwest ; B 55 -219 970 696 ; 
+C 46 ; WX 1027.77 ; N arrowsouthwest ; B 55 -196 970 719 ; 
+C 47 ; WX 799.375 ; N proportional ; B 57 -11 741 442 ; 
+C 48 ; WX 279.319 ; N prime ; B 30 43 266 559 ; 
+C 49 ; WX 1027.77 ; N infinity ; B 57 -11 970 442 ; 
+C 50 ; WX 685.179 ; N element ; B 86 -51 598 552 ; 
+C 51 ; WX 685.179 ; N owner ; B 86 -51 598 552 ; 
+C 52 ; WX 913.572 ; N triangle ; B 61 0 852 716 ; 
+C 53 ; WX 913.572 ; N triangleinv ; B 61 -216 852 500 ; 
+C 54 ; WX 0 ; N negationslash ; B 143 -215 655 716 ; 
+C 55 ; WX 0 ; N mapsto ; B 57 63 128 438 ; 
+C 56 ; WX 570.982 ; N universal ; B 0 -22 571 694 ; 
+C 57 ; WX 570.982 ; N existential ; B 57 0 513 694 ; 
+C 58 ; WX 685.179 ; N logicalnot ; B 57 88 627 358 ; 
+C 59 ; WX 513.884 ; N emptyset ; B 47 -78 466 772 ; 
+C 60 ; WX 742.277 ; N Rfractur ; B 46 -22 734 716 ; 
+C 61 ; WX 742.277 ; N Ifractur ; B 57 -11 712 705 ; 
+C 62 ; WX 799.375 ; N latticetop ; B 57 0 742 685 ; 
+C 63 ; WX 799.375 ; N perpendicular ; B 57 0 742 685 ; 
+C 64 ; WX 628.08 ; N aleph ; B 57 0 570 693 ; 
+C 65 ; WX 821.114 ; N A ; B 27 -51 819 723 ; 
+C 66 ; WX 673.621 ; N B ; B 31 -22 679 706 ; 
+C 67 ; WX 542.57 ; N C ; B 14 -25 547 705 ; 
+C 68 ; WX 793.758 ; N D ; B 21 0 788 683 ; 
+C 69 ; WX 542.433 ; N E ; B 29 -22 576 705 ; 
+C 70 ; WX 736.333 ; N F ; B 18 -33 848 683 ; 
+C 71 ; WX 610.906 ; N G ; B 45 -119 615 705 ; 
+C 72 ; WX 871.046 ; N H ; B 21 -48 840 683 ; 
+C 73 ; WX 562.717 ; N I ; B -20 0 653 683 ; 
+C 74 ; WX 696.597 ; N J ; B 48 -119 859 683 ; 
+C 75 ; WX 782.157 ; N K ; B 31 -22 749 705 ; 
+C 76 ; WX 707.926 ; N L ; B 32 -22 673 705 ; 
+C 77 ; WX 1229.16 ; N M ; B 28 -51 1146 705 ; 
+C 78 ; WX 842.083 ; N N ; B -30 -51 1001 777 ; 
+C 79 ; WX 816.319 ; N O ; B 58 -22 795 705 ; 
+C 80 ; WX 716.768 ; N P ; B 21 -50 754 683 ; 
+C 81 ; WX 839.343 ; N Q ; B 115 -125 809 705 ; 
+C 82 ; WX 873.879 ; N R ; B 21 -22 864 683 ; 
+C 83 ; WX 622.37 ; N S ; B 19 -22 656 705 ; 
+C 84 ; WX 563.154 ; N T ; B 30 0 819 717 ; 
+C 85 ; WX 642.259 ; N U ; B -16 -28 704 683 ; 
+C 86 ; WX 632.063 ; N V ; B 34 -46 677 683 ; 
+C 87 ; WX 1017.48 ; N W ; B 34 -46 1065 683 ; 
+C 88 ; WX 732.424 ; N X ; B 52 0 827 683 ; 
+C 89 ; WX 684.998 ; N Y ; B 32 -136 732 683 ; 
+C 90 ; WX 742.001 ; N Z ; B 38 0 784 683 ; 
+C 91 ; WX 685.179 ; N union ; B 57 -22 627 600 ; 
+C 92 ; WX 685.179 ; N intersection ; B 57 -22 627 600 ; 
+C 93 ; WX 685.179 ; N unionmulti ; B 57 -22 627 600 ; 
+C 94 ; WX 685.179 ; N logicaland ; B 57 -22 627 600 ; 
+C 95 ; WX 685.179 ; N logicalor ; B 57 -22 627 600 ; 
+C 96 ; WX 628.08 ; N turnstileleft ; B 57 0 570 694 ; 
+C 97 ; WX 628.08 ; N turnstileright ; B 57 0 570 694 ; 
+C 98 ; WX 456.785 ; N floorleft ; B 178 -249 435 750 ; 
+C 99 ; WX 456.785 ; N floorright ; B 21 -249 278 750 ; 
+C 100 ; WX 456.785 ; N ceilingleft ; B 178 -249 435 750 ; 
+C 101 ; WX 456.785 ; N ceilingright ; B 21 -249 278 750 ; 
+C 102 ; WX 513.884 ; N braceleft ; B 73 -250 440 750 ; 
+C 103 ; WX 513.884 ; N braceright ; B 73 -250 440 750 ; 
+C 104 ; WX 399.687 ; N angbracketleft ; B 113 -249 342 750 ; 
+C 105 ; WX 399.687 ; N angbracketright ; B 57 -249 286 750 ; 
+C 106 ; WX 285.49 ; N bar ; B 121 -250 164 750 ; 
+C 107 ; WX 513.884 ; N bardbl ; B 133 -249 380 750 ; 
+C 108 ; WX 513.884 ; N arrowbothv ; B 73 -272 440 772 ; 
+C 109 ; WX 628.08 ; N arrowdblbothv ; B 28 -272 599 772 ; 
+C 110 ; WX 513.884 ; N backslash ; B 57 -250 456 750 ; 
+C 111 ; WX 285.49 ; N wreathproduct ; B 57 -82 227 583 ; 
+C 112 ; WX 856.474 ; N radical ; B 73 -958 877 43 ; 
+C 113 ; WX 770.672 ; N coproduct ; B 40 0 730 683 ; 
+C 114 ; WX 856.474 ; N nabla ; B 49 -33 806 683 ; 
+C 115 ; WX 428.238 ; N integral ; B 57 -216 484 716 ; 
+C 116 ; WX 685.179 ; N unionsq ; B 63 0 621 600 ; 
+C 117 ; WX 685.179 ; N intersectionsq ; B 63 0 621 600 ; 
+C 118 ; WX 799.375 ; N subsetsqequal ; B 86 -154 733 652 ; 
+C 119 ; WX 799.375 ; N supersetsqequal ; B 65 -154 712 652 ; 
+C 120 ; WX 456.785 ; N section ; B 71 -205 385 705 ; 
+C 121 ; WX 456.785 ; N dagger ; B 57 -216 400 705 ; 
+C 122 ; WX 456.785 ; N daggerdbl ; B 57 -205 400 705 ; 
+C 123 ; WX 628.08 ; N paragraph ; B 57 -194 598 694 ; 
+C 124 ; WX 799.375 ; N club ; B 29 -130 770 727 ; 
+C 125 ; WX 799.375 ; N diamond ; B 57 -163 742 727 ; 
+C 126 ; WX 799.375 ; N heart ; B 57 -33 742 716 ; 
+C 127 ; WX 799.375 ; N spade ; B 57 -130 742 727 ; 
+C -1 ; WX 333.333 ; N space ; B 0 0 0 0 ;
+EndCharMetrics
+Comment The following are bogus kern pairs for TeX positioning of accents
+StartKernData
+StartKernPairs 26
+KPX A prime 199.843
+KPX B prime 142.744
+KPX C prime 142.744
+KPX D prime 85.645
+KPX E prime 114.195
+KPX F prime 114.195
+KPX G prime 114.195
+KPX H prime 114.195
+KPX I prime 28.547
+KPX J prime 171.293
+KPX K prime 57.096
+KPX L prime 142.744
+KPX M prime 142.744
+KPX N prime 85.645
+KPX O prime 114.195
+KPX P prime 85.645
+KPX Q prime 114.195
+KPX R prime 85.645
+KPX S prime 142.744
+KPX T prime 28.547
+KPX U prime 85.645
+KPX V prime 28.547
+KPX W prime 85.645
+KPX X prime 142.744
+KPX Y prime 85.645
+KPX Z prime 142.744
+EndKernPairs
+EndKernData
+EndFontMetrics

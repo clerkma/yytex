@@ -1,0 +1,127 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Compatibility Trouble Shooting Information
+==========================================
+
+The Computer Modern fonts in Type 1 format are fully hinted
+Adobe Type 1 fonts.  In addition, these fonts are Adobe Type Manager
+compatible (to be ATM compatible a Type 1 font must obey an additional 
+set of rules beyond the Type 1 rules).
+
+These fonts will work with any Adobe PostScript printer interpreter,
+as well as with Adobe Type Manager in Windows (and on the MacIntosh,
+when converted to MacIntosh outline font format).  They also work 
+with most `clone' interpreters.
+
+There are however, some applications and some PS interpreters that make
+unwarranted assumptions about the Type 1 format (to put it politely):
+
+Corel Draw 2.0:
+===============
+
+Corel Draw's WFNBOSS has a number of problems in reading of Type 1 fonts.  
+One such problem is that WFNBOSS insists that lines in the ASCII section of a
+font be separated by `return' (the line terminator on the Mac), instead of
+`newline' (which is the PostScript line terminator).  The CM fonts have
+been modified so that the ASCII section uses `return' instead of `newline'
+(since this change appears not to cause any problem with other clones). 
+
+Corel Draw's WFNBOSS has a number of problems also in writing of Type 1 fonts.
+These include CharString entries without names, which may crash some PS
+interpreters.  Also there some character outlines are lost in conversion.
+And, of course, there are no hints.  A Type 1 font read into WFNBOSS and then
+written out again has lost a great deal of its quality.  And non-standard font
+encoding may present problems.
+
+Micrografx Designer 3.1
+=======================
+
+This version of Designer assumes that all fonts start at character code 32
+(that is, there are no characters with codes in the range 0 - 31). If a font
+starts with character code zero (as the CM fonts do), then all character
+metric information will be shifted by 32 positions.  It is possible to work
+around this by making up modified PFM files that use the remapping present
+in these fonts.  Specify the `t' and `y' command line arguments when running
+AFMtoPFM on the Computer Modern AFM files.
+
+The PFM files distributed with the CM fonts have not been modified in
+this way for a number of reasons, one of which is that this modification
+triggers a problem in ATM 2.0 (!)
+
+Newer releases of Designer appear not to have this problem.
+
+`Clone' PostScript interpreters:
+================================
+
+PostScript interpreters developed by Adobe have only two serious bugs
+(one false `invalidfont' bug and one false `invalidrestore' bug), and
+these are now well documented.  PostScript interpreters developed
+independently often have very many bugs, although most don't show up
+with ordinary use.  Such interpreters may work quite well on plain
+vanialla text fonts from Adobe, since this is what they were debugged
+on.  But text fonts from Adobe were all produced by the same software
+and hence have exactly the same internal structure.  So being able to
+interpret these is no guarantee that all valid Type 1 fonts can be handled.
+
+Many PostScript interpreters do not properly implement the Type 1
+specification.  We include a series of test files in directory PS
+on diskette C that may help pin down problems with you printer or
+software PostScript interpreter.  This numbered series of test files
+includes increasingly more complex material.  Knowing which tests
+fail will help pin down what the problem is.  See the `readme.txt'
+file in that directory for additional details.
+
+NewGen TurboPS printers:
+========================
+
+The older NewGen interpreters have several defects.  One that presents a
+serious problem for users of the Computer Modern fonts is that these
+interpreters cannot handle character widths that are not integer multiples of
+1/1000-th of an `em'.  Contact us for modified versions of the fonts that
+will run on NewGen interpreters.  The above applies to the
+NewGen 480 TurboPS.  New interpreters from NewGen do not have this problem.
+
+LaserMaster 1000
+================
+
+The interpreter in this printer also has some problems in Type 1
+interpretation. For example, it cannot handle 32 bit numbers in the
+Type 1 font program.  The CM fonts have been modified to work
+around these problems.  The fonts should work on this printer without
+any further changes.
+
+ATM 2.0:
+========
+
+ATM for Windows has several shortcomings (generally a weaker product
+than ATM for the MacIntosh).  For example, ATM for Windows cannot handle
+multiply encoded characters (where two character codes map to the same
+character program). 
+
+Also, ATM 2.0 has introduced the `invisible ink' rendering problem,
+where fonts that have multiple encodings will intermittently cause
+all on-screen rendering from ATM to cease.  Most `invisible ink'
+problems have been solved in ATM 2.6 for Windows.  
+
+Please get the latest version of ATM from Adobe.
+
+Software PostScript previewers:
+==============================
+
+Many programs for previewing PostScript (as opposed to Display PostScript)
+either cannot handle Type 1 fonts, or have poor rendering of characters 
+(in comparison say to Adobe Type Manager).  Some also can only handle plain
+vanilla Adobe Type 1 text fonts, and most ignore the hints in the fonts.
+
+DVIPS:
+======
+
+Older versions of DVIPS cannot handle fonts with repeated encoding.
+
+Please get the latest version of DVIPS!
+
+Some NewGen printers to not permit redefinition of font metrics once
+a character has been rendered.  This affects a scheme used by DVIPS
+to redefined character widths to rounded values, and results in uneven
+spacing when DVIPS is used with such printers. 

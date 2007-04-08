@@ -1,0 +1,29 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+  cmr10.pro       63896   Projective Solution outlines (minus triple knots)
+  cmr10.hex       54337   Release 0.8 Type 3 form with across job font caching
+  cmr10.one       40253   Fully encrypted Type 1 form
+  cmr10.two       36260   Lacking outer layer of encryption -> Release 0.9 ?
+  cmr10.fou       71495   No encryption/encoding, incremental (for debugging)
+  cmr10.cmp       20293   Compressed version of cmr10.two (for DVI-to-PS)
+  cmr10.cma       20863   Compressed version of cmr10.one (Adobe downloader)
+  cmr10.mac       20104   Lacking outer layer of encryption -> Mac format ?
+
+  cmr17.pro       66321   Projective Solution outlines 
+  cmr17.hex       55131   Release 0.8 Type 3 form with across job font caching
+  cmr17.one       37370   Fully encrypted Type 1 form
+  cmr17.two       33940   Lacking outer layer of encryption -> Release 0.9 ?
+  cmr17.fiv       77537   No encryption/encoding, absolute (for debugging)
+  cmr17.cmp       19044   Compressed version of cmr17.two (for DVI-to-PS)
+  cmr17.cma       19263   Compressed version of cmr17.one (Adobe downloader) 
+  cmr17.mac       18861   Lacking outer layer of encryption -> Mac format ?
+
+cmr10.two & cmr17.two are in a form that seems most suitable for
+	distribution of the fonts for PC compatibles and other computers.
+
+cmr10.mac & cmr17.mac are in a form that seems most suitable for building
+	the MacIntosh POST resources version of the font files.
+
+NOTE: cmr10 has full character and font level hinting, cmr17 has none.
+

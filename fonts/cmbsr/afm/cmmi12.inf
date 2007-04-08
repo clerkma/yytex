@@ -1,0 +1,22 @@
+FontName (CMMI12)
+FullName (CMMI12)
+FamilyName (Computer Modern)
+version (1.00A)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.04
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMMI12)
+VPMenuName (CMMI12)
+WORDMenuName (CMMI12)
+VPTypefaceID 5000786
+VPStyle (N)
+PCFileNamePrefix (cmmi12)
+PCLTypefaceID 5000786
+PCLStrokeWeight 0
+PCLStyle 0

@@ -1,0 +1,27 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+M (vstem3):
+
+7	Upsilon
+8	Phi	cmr17
+9	Psi	cmr17
+14	ffi
+15	ffl
+36	$
+84	T	(tt fonts)
+109	m
+
+E (hstem3):
+
+2	Theta
+70	F
+82	R
+120	x	(cmu10)
+123	{	(tt fonts)
+125	}	(tt fonts)
+
+Flat and over:  
+
+25	germandbls 
+82	R

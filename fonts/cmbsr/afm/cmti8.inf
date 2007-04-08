@@ -1,0 +1,22 @@
+FontName (CMTI8)
+FullName (CMTI8)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle -14.04
+CapHeight 683
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMTI8)
+VPMenuName (CMTI8)
+WORDMenuName (CMTI8)
+VPTypefaceID 5000826
+VPStyle (N)
+PCFileNamePrefix (cmti8)
+PCLTypefaceID 5000826
+PCLStrokeWeight 0
+PCLStyle 0

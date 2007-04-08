@@ -1,0 +1,22 @@
+FontName (CMINCH)
+FullName (CMINCH)
+FamilyName (Computer Modern)
+version (1.00)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 694
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMINCH)
+VPMenuName (CMINCH)
+WORDMenuName (CMINCH)
+VPTypefaceID 5000778
+VPStyle (N)
+PCFileNamePrefix (cminch)
+PCLTypefaceID 5000778
+PCLStrokeWeight 0
+PCLStyle 0

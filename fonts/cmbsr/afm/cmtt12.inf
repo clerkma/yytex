@@ -1,0 +1,22 @@
+FontName (CMTT12)
+FullName (CMTT12)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch true
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 611
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMTT12)
+VPMenuName (CMTT12)
+WORDMenuName (CMTT12)
+VPTypefaceID 5000833
+VPStyle (N)
+PCFileNamePrefix (cmtt12)
+PCLTypefaceID 5000833
+PCLStrokeWeight 0
+PCLStyle 0

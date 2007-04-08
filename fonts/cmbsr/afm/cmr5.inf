@@ -1,0 +1,22 @@
+FontName (CMR5)
+FullName (CMR5)
+FamilyName (Computer Modern)
+version (1.00B)
+isFixedPitch false
+CharacterSet (isoadobe)
+Encoding (FontSpecific)
+ItalicAngle 0
+CapHeight 679
+UnderlinePosition -100
+UnderlineThickness 50
+Serif true
+Pi true
+MSMenuName (CMR5)
+VPMenuName (CMR5)
+WORDMenuName (CMR5)
+VPTypefaceID 5000788
+VPStyle (N)
+PCFileNamePrefix (cmr5)
+PCLTypefaceID 5000788
+PCLStrokeWeight 0
+PCLStyle 0

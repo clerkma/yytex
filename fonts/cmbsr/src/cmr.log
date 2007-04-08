@@ -1,0 +1,138 @@
+Outline font conversion program FONTONE 1.0
+Reading AFM file c:\afm\tex\CMR10.afm
+Processing font file c:\bsr\CMR10.HEX
+In: c:\bsr\CMR10.HEX, Out: CMR10.pfa
+Using Scale Factor 1/1 
+FontBBox [-40 -250 1009 750]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR10.HEX, Out: CMR10.pfa, Hint: c:\bsr\CMR10.hnt
+FontName used: CMR10
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 333.333 for space width
+TrueBBox [-40 -250 1009 750]
+Processed 130 characters (including space) (including .notdef) 
+Reading AFM file c:\afm\tex\CMR12.afm
+Processing font file c:\bsr\CMR12.HEX
+In: c:\bsr\CMR12.HEX, Out: CMR12.pfa
+Using Scale Factor 1/1 
+FontBBox [-34 -251 988 750]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR12.HEX, Out: CMR12.pfa, Hint: c:\bsr\CMR12.hnt
+FontName used: CMR12
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 326.384 for space width
+TrueBBox [-34 -251 988 750]
+Processed 130 characters (including space) (including .notdef) 
+Reading AFM file c:\afm\tex\CMR17.afm
+Processing font file c:\bsr\CMR17.HEX
+In: c:\bsr\CMR17.HEX, Out: CMR17.pfa
+Using Scale Factor 1/1 
+FontBBox [-33 -250 945 749]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR17.HEX, Out: CMR17.pfa, Hint: c:\bsr\CMR17.hnt
+FontName used: CMR17
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 301.887 for space width
+TrueBBox [-33 -250 945 749]
+Processed 130 characters (including space) (including .notdef) 
+Reading AFM file c:\afm\tex\CMR5.afm
+Processing font file c:\bsr\CMR5.HEX
+In: c:\bsr\CMR5.HEX, Out: CMR5.pfa
+Using Scale Factor 1/1 
+FontBBox [-10 -250 1304 750]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR5.HEX, Out: CMR5.pfa, Hint: c:\bsr\CMR5.hnt
+FontName used: CMR5
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 472.222 for space width
+TrueBBox [-10 -250 1304 750]
+Processed 130 characters (including space) (including .notdef) 
+Reading AFM file c:\afm\tex\CMR6.afm
+Processing font file c:\bsr\CMR6.HEX
+In: c:\bsr\CMR6.HEX, Out: CMR6.pfa
+Using Scale Factor 1/1 
+FontBBox [-20 -250 1193 750]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR6.HEX, Out: CMR6.pfa, Hint: c:\bsr\CMR6.hnt
+FontName used: CMR6
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 416.667 for space width
+TrueBBox [-20 -250 1193 750]
+Processed 130 characters (including space) (including .notdef) 
+Reading AFM file c:\afm\tex\CMR7.afm
+Processing font file c:\bsr\CMR7.HEX
+In: c:\bsr\CMR7.HEX, Out: CMR7.pfa
+Using Scale Factor 1/1 
+FontBBox [-27 -250 1122 750]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR7.HEX, Out: CMR7.pfa, Hint: c:\bsr\CMR7.hnt
+FontName used: CMR7
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 384.921 for space width
+TrueBBox [-27 -250 1122 750]
+Processed 130 characters (including space) (including .notdef) 
+Reading AFM file c:\afm\tex\CMR8.afm
+Processing font file c:\bsr\CMR8.HEX
+In: c:\bsr\CMR8.HEX, Out: CMR8.pfa
+Using Scale Factor 1/1 
+FontBBox [-36 -250 1070 750]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR8.HEX, Out: CMR8.pfa, Hint: c:\bsr\CMR8.hnt
+FontName used: CMR8
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 354.167 for space width
+TrueBBox [-36 -250 1070 750]
+Processed 130 characters (including space) (including .notdef) 
+Reading AFM file c:\afm\tex\CMR9.afm
+Processing font file c:\bsr\CMR9.HEX
+In: c:\bsr\CMR9.HEX, Out: CMR9.pfa
+Using Scale Factor 1/1 
+FontBBox [-39 -250 1036 750]
+................................................................
+................................................................
+Second pass follows:
+In: c:\bsr\CMR9.HEX, Out: CMR9.pfa, Hint: c:\bsr\CMR9.hnt
+FontName used: CMR9
+Had to make space for space
+................................................................
+................................................................
+Read 128 CharDefs 
+Using 342.588 for space width
+TrueBBox [-39 -250 1036 750]
+Processed 130 characters (including space) (including .notdef) 
+Processed 9 font files
