@@ -1,0 +1,82 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Presently missing from EM fonts w.r.t. T1:
+
+	19 guillemotleft, 20 guillemotright,
+	14 guilsinglleft, 15 guilsinglright,
+
+	12 ogonek, 34 quotedbl,
+
+	208 Eth, 222 Thorn, 240 eth, 254 thorn,
+
+	94 asciicircum, 126 asciitilde,
+
+	129 Aogonek, 161 aogonek, 134 Eogonek, 166 eogonek,
+
+	147 Scommaaccent (Scedilla), 149 Tcommaaccent (Tcedilla),
+	179 scommaaccent (scedilla), 181 tcommaaccent (tcedilla),
+
+	137 Lcaron (Lquoteright), 169 lcaron (lquoteright),
+	158 dcroat,
+	164 dcaron (dquoteright), 180 tcaron (tquoteright),
+
+	141 Eng, 173 eng,
+
+	24 zeroinferior (perthousand),
+
+	60 less, 62 greater,
+
+	32 visiblespace, 127 sfthyphen (hanging hyphen),
+
+	92 backslash, 95 underline (underscore),
+
+	123 braceleft, 124 bar, 125 braceright,
+
+	199 Ccedilla, 231 ccedilla,
+
+	197 Aring?, 138 Lslash?, 170 lslash?, 
+	156 IJ?, 188 ij?, 223 SS?, 157 Idotaccent?,
+
+ 	?? commaaccent  ?? quotesingle
+
+----------------------------------------------------------------------------
+
+Following exist, but have SEAC problems (particularly in T1):
+
+	128 Abreve, 135 Gbreve, 160 abreve, 167 gbreve (breve = 198 AE)
+	142 Ohungarumlaut ? 174 ohungarumlaut ? (hungarumlaut = 205 Iacute)
+	150 Uhungarumlaut ? 182 uhungarumlaut ?
+	155 Zdotaccent ? 157 Idotaccent ? 
+	187 zdotaccent ? (dotaccent = 199 Ccedilla)
+
+----------------------------------------------------------------------------
+
+Missing w.r.t. TeX 'n ANSI (in parenthesis items already listed above):
+
+	(7 ogonek)
+	(34 quotedbl)
+
+	129 quotesingle (from quotedbl?)
+
+	(171 guillemotleft) (187 guillemotright)
+	(139 guilsingleft) (155 guilsinglright)
+	(142 asciicircum), (158 asciitilde)
+	(208 Eth), (222 Thorn), (240 eth), (254 thorn)
+
+	153 trademark, 169 copyright, 174 registered
+	
+	166 brokenbar (from bar ? )
+	181 mu (from math italic ? at least in italic font?)
+	176 degree (from circ in math font ?)
+
+	137 perthousand, 133 ellipsis, 
+
+	4 fraction
+
+	131 florin, 162 cent, 165 yen, 164 currency
+	
+	170 ordfeminine, 186 ordmasculine
+
+	185 onesuperior, 177 twosuperior, 178 threesuperior
+	188 onequarter, 189 onehalf, 190 threequarters

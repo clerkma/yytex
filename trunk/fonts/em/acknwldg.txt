@@ -1,0 +1,26 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+ACKNOWLEDGMENTS:
+
+Donald E. Knuth for Computer Modern, on which European Modern is based.
+
+David Carlisle for LaTeX 2e support for European Modern (the em package).
+
+David Carlisle, Sebastian Rahtz, Frank Mittelbach for PSNFSS.
+
+J"org Knappen and Norbert Schwartz for pioneering work on EC and TC fonts.
+
+Doug Henderson at `Hair of the Dog' brewery for supplying vital ingredients.
+
+Barry Smith of BSR for the original CM fonts in Type 1 format project. 
+
+Ian Morrison and Henry Pinkham of Projective Solutions for ScanLab.
+
+URW, Manfred Albracht and Yuri Yarmola for some font manipulation software.
+
+Jean-Pierre Vial, Alain Joly, Thierry Bouche, Hilmar Schlegel and Tapio
+Luttinen for valuable typographic feedback, regarding proper accent position,
+guillemet shape and size, kerning, boundary characters and so on.
+
+

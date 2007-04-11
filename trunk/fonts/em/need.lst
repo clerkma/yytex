@@ -1,0 +1,57 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Presently still missing from many/most of the 57 EM text fonts 
+	(with respect to T1/Cork encoding):
+
+12	ogonek,
+14	guilsinglleft,
+15	guilsinglright,
+19	guillemotleft,
+20	guillemotright,
+24	zeroinferior (perthousand),
+32	visiblespace,
+34	quotedbl,
+60	less,
+62	greater,
+92	backslash,
+94	asciicircum,
+95	underline (underscore),
+123	braceleft,
+124	bar,
+125	braceright,
+126	asciitilde,
+127	sfthyphen (hanging hyphen),
+129	Aogonek,
+134	Eogonek,
+137	Lcaron (Lquoteright),
+141	Eng,
+147	Scommaaccent (Scedilla),
+149	Tcommaaccent (Tcedilla),
+158	dcroat (dbar),
+161	aogonek,
+164	dcaron (dquoteright),
+166	eogonek,
+169	lcaron (lquoteright),
+173	eng,
+179	scommaaccent (scedilla),
+180	tcaron (tquoteright),
+181	tcommaaccent (tcedilla),
+197	Aring,
+199	Ccedilla,
+208	Eth (Dcroat),
+222	Thorn,
+231	ccedilla,
+240	eth,
+254	thorn,
+
+Don't need the following since they have been constructed already
+
+138	Lslash?, 
+170	lslash?, 
+156	IJ?, 
+188	ij?, 
+223	SS?, 
+157	Idotaccent?,
+
+Not in EC: ?? commaaccent ?? quoterightaccent  ?? quotesingle

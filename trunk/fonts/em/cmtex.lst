@@ -1,0 +1,38 @@
+; Copyright 2007 TeX Users Group.
+; You may freely use, modify and/or distribute this file.
+; characters to extract from cmtex* to add to emtt*
+
+dotmath		22C5
+; arrowdown	2193
+alpha		03B1
+beta		03B2
+logicaland	2277
+logicalnot	00AC
+element		2208
+lambda		03BB
+gamma		03B3
+delta		03B4
+; arrowup	2191
+plusminus	00B1
+circleplus	2295
+infinity	221E
+partialdiff	2202
+propersubset	2282
+propersuperset	2283
+intersection	2229
+union		222A
+universal	2200
+existential	2203
+circlemultiply	2297
+arrowboth	2194
+arrowleft	2190
+arrowright	2192
+notequal	2260
+lozenge		25CA
+lessequal	2264
+greaterequal	2265
+equivalence	2261
+logicalor	2228
+; space		0020
+minus		2212
+integral	222B

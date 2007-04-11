@@ -1,0 +1,994 @@
+% \iffalse
+%
+%% EM package for LaTeX
+%%
+%% Copyright 1997 Y&Y, Inc.
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%%
+%% Modified to also cover LM1 (Textures) encoding 1997/Dec/05
+%%
+%
+%<*driver>
+\documentclass{ltxdoc}
+\begin{document}
+ \DocInput{em.fdd}
+\end{document}
+%</driver>
+% \fi
+%
+%    \begin{macrocode}
+%<*package>
+\ProvidesPackage{em}
+%</package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*T1>
+%<emr,   >\ProvidesFile{t1cmr.fd}
+%<emss,  >\ProvidesFile{t1cmss.fd}
+%<emtt,  >\ProvidesFile{t1cmtt.fd}
+%<emfr,  >\ProvidesFile{t1cmfr.fd}
+%<emdh,  >\ProvidesFile{t1cmdh.fd}
+%<emfib, >\ProvidesFile{t1cmfib.fd}
+%</T1>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*LY1>
+%<emr,   >\ProvidesFile{ly1cmr.fd}
+%<emss,  >\ProvidesFile{ly1cmss.fd}
+%<emtt,  >\ProvidesFile{ly1cmtt.fd}
+%<emfr,  >\ProvidesFile{ly1cmfr.fd}
+%<emdh,  >\ProvidesFile{ly1cmdh.fd}
+%<emfib, >\ProvidesFile{ly1cmfib.fd}
+%</LY1>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*LM1>
+%<emr,   >\ProvidesFile{lm1cmr.fd}
+%<emss,  >\ProvidesFile{lm1cmss.fd}
+%<emtt,  >\ProvidesFile{lm1cmtt.fd}
+%<emfr,  >\ProvidesFile{lm1cmfr.fd}
+%<emdh,  >\ProvidesFile{lm1cmdh.fd}
+%<emfib, >\ProvidesFile{lm1cmfib.fd}
+%</LM1>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*OML>
+%<emm,   >\ProvidesFile{omlcmm.fd}
+%<cmr,   >\ProvidesFile{omlcmr.fd}
+%</OML>
+%<*OMS>
+%<cmsy,  >\ProvidesFile{omscmsy.fd}
+%<cmr,   >\ProvidesFile{omscmr.fd}
+%</OMS>
+%<*OMX>
+%<cmex,  >\ProvidesFile{omxcmex.fd}
+%</OMX>
+%<*U>
+%<lasy, >\ProvidesFile{ulasy.fd}
+%<msa,  >\ProvidesFile{umsa.fd}
+%<msb,  >\ProvidesFile{umsb.fd}
+%<euex, >\ProvidesFile{ueuex.fd}
+%<euf,  >\ProvidesFile{ueuf.fd}
+%<eur,  >\ProvidesFile{ueur.fd}
+%<eus,  >\ProvidesFile{ueus.fd}
+%</U>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%        [1997/08/05 v0.05 Y&Y EM font definitions (BKPH,DPC)]
+        [1997/12/05 v0.06 Y&Y EM font definitions T1, LY1, LM1 (BKPH,DPC)]
+%    \end{macrocode}
+%
+% Options to control the encoding used.
+%    \begin{macrocode}
+%<*package>
+\edef\operator@encoding{\encodingdefault}
+\DeclareOption{T1}{\def\operator@encoding{T1}}
+\DeclareOption{LY1}{\def\operator@encoding{LY1}}
+\DeclareOption{LM1}{\def\operator@encoding{LM1}}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ProcessOptions
+%    \end{macrocode}
+%
+% Call fontenc to set up the encoding for \LaTeX.
+%    \begin{macrocode}
+\RequirePackage[\operator@encoding]{fontenc}
+%    \end{macrocode}
+%
+% Either at the line above, or in an earlier |\usepackage| the
+% default font may have been already loaded. As we haven't
+% given the new font shape declarations yet, want to forget about
+% that font, so it will be looked up again with the new settings.
+%    \begin{macrocode}
+\expandafter\let
+  \csname \operator@encoding/cmr/m/n/10\endcsname\@undefined
+%    \end{macrocode}
+%
+% `fd' code done in a group with white space ignored, for
+% a minor efficiency saving (otherwise each command individually
+% turns on ignoring white space).
+%    \begin{macrocode}
+\begingroup
+\nfss@catcodes
+%    \end{macrocode}
+%
+% First the T1 encoding.
+%    \begin{macrocode}
+\def\@tempa{T1}
+\ifx\operator@encoding\@tempa
+%    \end{macrocode}
+%
+% Make the default hyphenchar 127, if you want the old one
+% set the default back to 45.
+%    \begin{macrocode}
+\global\defaulthyphenchar=127
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,T1>
+%<*package,emr>
+\DeclareFontFamily{T1}{cmr}{}
+\DeclareFontShape{T1}{cmr}{m}{n}{
+        <-6>    emr5
+        <6-7>   emr6
+        <7-8>   emr7
+        <8-9>   emr8
+        <9-10>  emr9
+        <10-12> emr10
+        <12-17> emr12
+        <17->   emr17
+      }{}
+\DeclareFontShape{T1}{cmr}{m}{sl}{
+        <-9>    emsl8
+        <9-10>  emsl9
+        <10-12> emsl10
+        <12->   emsl12
+        }{}
+\DeclareFontShape{T1}{cmr}{m}{it}{
+        <-8>    emti7
+        <8-9>   emti8
+        <9-10>  emti9
+        <10-12> emti10
+        <12->   emti12
+      }{}
+\DeclareFontShape{T1}{cmr}{m}{sc}{
+        <-9>    emcsc8
+        <9-10>  emcsc9
+        <10->   emcsc10
+               }{}
+\DeclareFontShape{T1}{cmr}{m}{ui}{
+        <->     emu10
+      }{}
+\DeclareFontShape{T1}{cmr}{b}{n}{
+        <->     emb10
+      }{}
+\DeclareFontShape{T1}{cmr}{bx}{n}{
+        <-6>    embx5
+        <6-7>   embx6
+        <7-8>   embx7
+        <8-9>   embx8
+        <9-10>  embx9
+        <10-12> embx10
+        <12->   embx12
+        }{}
+\DeclareFontShape{T1}{cmr}{bx}{sl}{
+        <->     embxsl10
+      }{}
+\DeclareFontShape{T1}{cmr}{bx}{it}{
+        <->     embxti10
+      }{}
+\DeclareFontShape{T1}{cmr}{bx}{ui}
+      {<->ssub * cmr/m/ui}{}
+%</package,emr>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emss>
+\DeclareFontFamily{T1}{cmss}{}
+\DeclareFontShape{T1}{cmss}{m}{n}{
+        <-9>    emss8
+        <9-10>  emss9
+        <10-12> emss10
+        <12-17> emss12
+        <17->   emss17
+      }{}
+\DeclareFontShape{T1}{cmss}{m}{it}
+      {<->sub * cmss/m/sl}{}
+\DeclareFontShape{T1}{cmss}{m}{sl}{
+        <-9>    emssi8
+        <9-10>  emssi9
+        <10-12> emssi10
+        <12-17> emssi12
+        <17->   emssi17
+      }{}
+\DeclareFontShape{T1}{cmss}{m}{sc}
+       {<->sub * cmr/m/sc}{}
+\DeclareFontShape{T1}{cmss}{m}{ui}
+       {<->sub * cmr/m/ui}{}
+\DeclareFontShape{T1}{cmss}{sbc}{n}{
+        <->     emssdc10
+       }{}
+\DeclareFontShape{T1}{cmss}{bx}{n}{
+        <->     emssbx10
+      }{}
+\DeclareFontShape{T1}{cmss}{bx}{ui}
+       {<->sub * cmr/bx/ui}{}
+%</package,emss>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emtt>
+\DeclareFontFamily{T1}{cmtt}{\hyphenchar \font\m@ne}
+\DeclareFontShape{T1}{cmtt}{m}{n}{
+        <-9>    emtt8
+        <9-10>  emtt9
+        <10-12> emtt10
+        <12->   emtt12
+      }{}
+\DeclareFontShape{T1}{cmtt}{m}{it}{
+        <->     emitt10
+      }{}
+\DeclareFontShape{T1}{cmtt}{m}{sl}{
+        <->     emsltt10
+      }{}
+\DeclareFontShape{T1}{cmtt}{m}{sc}{
+        <->     emtcsc10
+      }{}
+\DeclareFontShape{T1}{cmtt}{m}{ui}
+  {<->sub * cmtt/m/it}{}
+\DeclareFontShape{T1}{cmtt}{bx}{n}
+  {<->sub * cmtt/m/n}{}
+\DeclareFontShape{T1}{cmtt}{bx}{it}
+  {<->sub * cmtt/m/it}{}
+\DeclareFontShape{T1}{cmtt}{bx}{ui}
+  {<->sub * cmtt/m/it}{}
+%</package,emtt>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emfr>
+\DeclareFontFamily{T1}{cmfr}{}
+\DeclareFontShape{T1}{cmfr}{m}{n}{%
+        <->     emff10
+    }{}
+\DeclareFontShape{T1}{cmfr}{m}{it}{
+        <->     emfi10
+    }{}
+%</package,emfr>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emdh>
+\DeclareFontFamily{T1}{cmdh}{}
+\DeclareFontShape{T1}{cmdh}{m}{n}{
+        <->     emdunh10
+    }{}
+%</package,emdh>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emfib>
+\DeclareFontFamily{T1}{cmfib}{}
+\DeclareFontShape{T1}{cmfib}{m}{n}{
+        <->     emfib8
+    }{}
+%</package,emfib>
+%</package,T1>
+%    \end{macrocode}
+%
+% End the T1 code, and now the LY1 encoding case.
+%    \begin{macrocode}
+%<*package>
+\fi
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\@tempa{LY1}
+\ifx\operator@encoding\@tempa
+%    \end{macrocode}
+%
+% Make the default hyphenchar 173, if you want the old one
+% set the default back to 45.
+%    \begin{macrocode}
+\global\defaulthyphenchar=173
+%</package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,LY1>
+%<*package,emr>
+\DeclareFontFamily{LY1}{cmr}{}
+\DeclareFontShape{LY1}{cmr}{m}{n}{
+        <-6>    emr5
+        <6-7>   emr6
+        <7-8>   emr7
+        <8-9>   emr8
+        <9-10>  emr9
+        <10-12> emr10
+        <12-17> emr12
+        <17->   emr17
+      }{}
+\DeclareFontShape{LY1}{cmr}{m}{sl}{
+        <-9>    emsl8
+        <9-10>  emsl9
+        <10-12> emsl10
+        <12->   emsl12
+        }{}
+\DeclareFontShape{LY1}{cmr}{m}{it}{
+        <-8>    emti7
+        <8-9>   emti8
+        <9-10>  emti9
+        <10-12> emti10
+        <12->   emti12
+      }{}
+\DeclareFontShape{LY1}{cmr}{m}{sc}{
+        <-9>    emcsc8
+        <9-10>  emcsc9
+        <10->   emcsc10
+       }{}
+\DeclareFontShape{LY1}{cmr}{m}{ui}{
+        <->     emu10
+      }{}
+\DeclareFontShape{LY1}{cmr}{b}{n}{
+        <->     emb10
+      }{}
+\DeclareFontShape{LY1}{cmr}{bx}{n}{
+        <-6>    embx5
+        <6-7>   embx6
+        <7-8>   embx7
+        <8-9>   embx8
+        <9-10>  embx9
+        <10-12> embx10
+        <12->   embx12
+        }{}
+\DeclareFontShape{LY1}{cmr}{bx}{sl}{
+        <->     embxsl10
+      }{}
+\DeclareFontShape{LY1}{cmr}{bx}{it}{
+        <->     embxti10
+      }{}
+\DeclareFontShape{LY1}{cmr}{bx}{ui}
+      {<->ssub * cmr/m/ui}{}
+%</package,emr>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emss>
+\DeclareFontFamily{LY1}{cmss}{}
+\DeclareFontShape{LY1}{cmss}{m}{n}{
+        <-9>    emss8
+        <9-10>  emss9
+        <10-12> emss10
+        <12-17> emss12
+        <17->   emss17
+      }{}
+\DeclareFontShape{LY1}{cmss}{m}{it}
+      {<->sub * cmss/m/sl}{}
+\DeclareFontShape{LY1}{cmss}{m}{sl}{
+        <-9>    emssi8
+        <9-10>  emssi9
+        <10-12> emssi10
+        <12-17> emssi12
+        <17->   emssi17
+      }{}
+\DeclareFontShape{LY1}{cmss}{m}{sc}
+       {<->sub * cmr/m/sc}{}
+\DeclareFontShape{LY1}{cmss}{m}{ui}
+       {<->sub * cmr/m/ui}{}
+\DeclareFontShape{LY1}{cmss}{sbc}{n}{
+        <->     emssdc10
+       }{}
+\DeclareFontShape{LY1}{cmss}{bx}{n}{
+        <->     emssbx10
+      }{}
+\DeclareFontShape{LY1}{cmss}{bx}{ui}
+       {<->sub * cmr/bx/ui}{}
+%</package,emss>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emtt>
+\DeclareFontFamily{LY1}{cmtt}{\hyphenchar \font\m@ne}
+\DeclareFontShape{LY1}{cmtt}{m}{n}{
+        <-9>    emtt8
+        <9-10>  emtt9
+        <10-12> emtt10
+        <12->   emtt12
+      }{}
+\DeclareFontShape{LY1}{cmtt}{m}{it}{
+        <->     emitt10
+      }{}
+\DeclareFontShape{LY1}{cmtt}{m}{sl}{
+        <->     emsltt10
+      }{}
+\DeclareFontShape{LY1}{cmtt}{m}{sc}{
+        <->     emtcsc10
+      }{}
+\DeclareFontShape{LY1}{cmtt}{m}{ui}
+  {<->sub * cmtt/m/it}{}
+\DeclareFontShape{LY1}{cmtt}{bx}{n}
+  {<->sub * cmtt/m/n}{}
+\DeclareFontShape{LY1}{cmtt}{bx}{it}
+  {<->sub * cmtt/m/it}{}
+\DeclareFontShape{LY1}{cmtt}{bx}{ui}
+  {<->sub * cmtt/m/it}{}
+%</package,emtt>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emfr>
+\DeclareFontFamily{LY1}{cmfr}{}
+\DeclareFontShape{LY1}{cmfr}{m}{n}{%
+        <->     emff10
+    }{}
+\DeclareFontShape{LY1}{cmfr}{m}{it}{
+        <->     emfi10
+    }{}
+%</package,emfr>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emdh>
+\DeclareFontFamily{LY1}{cmdh}{}
+\DeclareFontShape{LY1}{cmdh}{m}{n}{
+        <->     emdunh10
+    }{}
+%</package,emdh>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emfib>
+\DeclareFontFamily{LY1}{cmfib}{}
+\DeclareFontShape{LY1}{cmfib}{m}{n}{
+        <->     emfib8
+    }{}
+%</package,emfib>
+%</package,LY1>
+%    \end{macrocode}
+%
+% End the LY1 code, and now the LM1 encoding case.
+%    \begin{macrocode}
+%<*package>
+\fi
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\@tempa{LM1}
+\ifx\operator@encoding\@tempa
+%    \end{macrocode}
+%
+% Make the default hyphenchar 45 (no sfthyphen available in LM1)
+%    \begin{macrocode}
+\global\defaulthyphenchar=45
+%</package>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,LM1>
+%<*package,emr>
+\DeclareFontFamily{LM1}{cmr}{}
+\DeclareFontShape{LM1}{cmr}{m}{n}{
+        <-6>    emr5
+        <6-7>   emr6
+        <7-8>   emr7
+        <8-9>   emr8
+        <9-10>  emr9
+        <10-12> emr10
+        <12-17> emr12
+        <17->   emr17
+      }{}
+\DeclareFontShape{LM1}{cmr}{m}{sl}{
+        <-9>    emsl8
+        <9-10>  emsl9
+        <10-12> emsl10
+        <12->   emsl12
+        }{}
+\DeclareFontShape{LM1}{cmr}{m}{it}{
+        <-8>    emti7
+        <8-9>   emti8
+        <9-10>  emti9
+        <10-12> emti10
+        <12->   emti12
+      }{}
+\DeclareFontShape{LM1}{cmr}{m}{sc}{
+        <-9>    emcsc8
+        <9-10>  emcsc9
+        <10->   emcsc10
+       }{}
+\DeclareFontShape{LM1}{cmr}{m}{ui}{
+        <->     emu10
+      }{}
+\DeclareFontShape{LM1}{cmr}{b}{n}{
+        <->     emb10
+      }{}
+\DeclareFontShape{LM1}{cmr}{bx}{n}{
+        <-6>    embx5
+        <6-7>   embx6
+        <7-8>   embx7
+        <8-9>   embx8
+        <9-10>  embx9
+        <10-12> embx10
+        <12->   embx12
+        }{}
+\DeclareFontShape{LM1}{cmr}{bx}{sl}{
+        <->     embxsl10
+      }{}
+\DeclareFontShape{LM1}{cmr}{bx}{it}{
+        <->     embxti10
+      }{}
+\DeclareFontShape{LM1}{cmr}{bx}{ui}
+      {<->ssub * cmr/m/ui}{}
+%</package,emr>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emss>
+\DeclareFontFamily{LM1}{cmss}{}
+\DeclareFontShape{LM1}{cmss}{m}{n}{
+        <-9>    emss8
+        <9-10>  emss9
+        <10-12> emss10
+        <12-17> emss12
+        <17->   emss17
+      }{}
+\DeclareFontShape{LM1}{cmss}{m}{it}
+      {<->sub * cmss/m/sl}{}
+\DeclareFontShape{LM1}{cmss}{m}{sl}{
+        <-9>    emssi8
+        <9-10>  emssi9
+        <10-12> emssi10
+        <12-17> emssi12
+        <17->   emssi17
+      }{}
+\DeclareFontShape{LM1}{cmss}{m}{sc}
+       {<->sub * cmr/m/sc}{}
+\DeclareFontShape{LM1}{cmss}{m}{ui}
+       {<->sub * cmr/m/ui}{}
+\DeclareFontShape{LM1}{cmss}{sbc}{n}{
+        <->     emssdc10
+       }{}
+\DeclareFontShape{LM1}{cmss}{bx}{n}{
+        <->     emssbx10
+      }{}
+\DeclareFontShape{LM1}{cmss}{bx}{ui}
+       {<->sub * cmr/bx/ui}{}
+%</package,emss>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emtt>
+\DeclareFontFamily{LM1}{cmtt}{\hyphenchar \font\m@ne}
+\DeclareFontShape{LM1}{cmtt}{m}{n}{
+        <-9>    emtt8
+        <9-10>  emtt9
+        <10-12> emtt10
+        <12->   emtt12
+      }{}
+\DeclareFontShape{LM1}{cmtt}{m}{it}{
+        <->     emitt10
+      }{}
+\DeclareFontShape{LM1}{cmtt}{m}{sl}{
+        <->     emsltt10
+      }{}
+\DeclareFontShape{LM1}{cmtt}{m}{sc}{
+        <->     emtcsc10
+      }{}
+\DeclareFontShape{LM1}{cmtt}{m}{ui}
+  {<->sub * cmtt/m/it}{}
+\DeclareFontShape{LM1}{cmtt}{bx}{n}
+  {<->sub * cmtt/m/n}{}
+\DeclareFontShape{LM1}{cmtt}{bx}{it}
+  {<->sub * cmtt/m/it}{}
+\DeclareFontShape{LM1}{cmtt}{bx}{ui}
+  {<->sub * cmtt/m/it}{}
+%</package,emtt>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emfr>
+\DeclareFontFamily{LM1}{cmfr}{}
+\DeclareFontShape{LM1}{cmfr}{m}{n}{%
+        <->     emff10
+    }{}
+\DeclareFontShape{LM1}{cmfr}{m}{it}{
+        <->     emfi10
+    }{}
+%</package,emfr>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emdh>
+\DeclareFontFamily{LM1}{cmdh}{}
+\DeclareFontShape{LM1}{cmdh}{m}{n}{
+        <->     emdunh10
+    }{}
+%</package,emdh>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,emfib>
+\DeclareFontFamily{LM1}{cmfib}{}
+\DeclareFontShape{LM1}{cmfib}{m}{n}{
+        <->     emfib8
+    }{}
+%</package,emfib>
+%</package,LM1>
+%    \end{macrocode}
+%
+% End of LM1 case, and stub test for OT1.
+%    \begin{macrocode}
+%<*package>
+\fi
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\@tempa{OT1}
+\ifx\operator@encoding\@tempa
+\PackageError{em}%
+{OT1\space encoding\space not\space useable\space with\space em.sty}%
+{Specify\space T1\space or\space LY1\space or\space LM1 option}%
+\fi
+%</package>
+%    \end{macrocode}
+%
+% Now the fonts with fixed encodings (Math fonts and symbol fonts).
+%
+%    \begin{macrocode}
+%<*package,emm>
+\DeclareFontFamily{OML}{cmm}{\skewchar\font127 }
+\DeclareFontShape{OML}{cmm}{m}{it}{
+        <-6>    emmi5
+        <6-7>   emmi6
+        <7-8>   emmi7
+        <8-9>   emmi8
+        <9-10>  emmi9
+        <10-12> emmi10
+        <12->   emmi12
+      }{}
+\DeclareFontShape{OML}{cmm}{b}{it}{%
+        <-6>    emmib5
+        <6-7>   emmib6
+        <7-8>   emmib7
+        <8-9>   emmib8
+        <9-10>  emmib9
+        <10->   emmib10
+      }{}
+\DeclareFontShape{OML}{cmm}{bx}{it}
+   {<-> ssub * cmm/b/it}{}
+%</package,emm>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,OML>
+%<*package,cmr>
+\DeclareFontFamily{OML}{cmr}{\skewchar\font127 }
+\DeclareFontShape{OML}{cmr}{m}{n}
+   {<-> ssub * cmm/m/it}{}
+\DeclareFontShape{OML}{cmr}{m}{it}
+   {<-> ssub * cmm/m/it}{}
+\DeclareFontShape{OML}{cmr}{m}{sl}
+   {<-> ssub * cmm/m/it}{}
+\DeclareFontShape{OML}{cmr}{m}{sc}
+   {<-> ssub * cmm/m/it}{}
+\DeclareFontShape{OML}{cmr}{bx}{n}
+   {<-> ssub * cmm/b/it}{}
+\DeclareFontShape{OML}{cmr}{bx}{it}
+   {<-> ssub * cmm/b/it}{}
+\DeclareFontShape{OML}{cmr}{bx}{sl}
+   {<-> ssub * cmm/b/it}{}
+\DeclareFontShape{OML}{cmr}{bx}{sc}
+   {<-> ssub * cmm/b/it}{}
+%</package,cmr>
+%</package,OML>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,OMS>
+%<*package,cmsy>
+\DeclareFontFamily{OMS}{cmsy}{\skewchar\font48 }
+\DeclareFontShape{OMS}{cmsy}{m}{n}{%
+        <-6>    cmsy5
+        <6-7>   cmsy6
+        <7-8>   cmsy7
+        <8-9>   cmsy8
+        <9-10>  cmsy9
+        <10->   cmsy10
+      }{}
+\DeclareFontShape{OMS}{cmsy}{b}{n}{%
+%<*ams&!extra>
+        <-7>    cmbsy5
+        <7-10>  cmbsy7
+        <10->   cmbsy10
+%</ams&!extra>
+%<*ams&extra>
+        <-6>    cmbsy5
+        <6-7>   cmbsy6
+        <7-8>   cmbsy7
+        <8-9>   cmbsy8
+        <9-10>  cmbsy9
+        <10->   cmbsy10
+%</ams&extra>
+%<!ams> <->     cmbsy10
+      }{}
+%</package,cmsy>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,cmr>
+\DeclareFontFamily{OMS}{cmr}{\skewchar\font48 }
+\DeclareFontShape{OMS}{cmr}{m}{n}
+   {<-> ssub * cmsy/m/n}{}
+\DeclareFontShape{OMS}{cmr}{m}{it}
+   {<-> ssub * cmsy/m/n}{}
+\DeclareFontShape{OMS}{cmr}{m}{sl}
+   {<-> ssub * cmsy/m/n}{}
+\DeclareFontShape{OMS}{cmr}{m}{sc}
+   {<-> ssub * cmsy/m/n}{}
+\DeclareFontShape{OMS}{cmr}{bx}{n}
+   {<-> ssub * cmsy/b/n}{}
+\DeclareFontShape{OMS}{cmr}{bx}{it}
+   {<-> ssub * cmsy/b/n}{}
+\DeclareFontShape{OMS}{cmr}{bx}{sl}
+   {<-> ssub * cmsy/b/n}{}
+\DeclareFontShape{OMS}{cmr}{bx}{sc}
+   {<-> ssub * cmsy/b/n}{}
+%</package,cmr>
+%</package,OMS>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,OMX>
+%<*package,cmex>
+\DeclareFontFamily{OMX}{cmex}{}{}
+\DeclareFontShape{OMX}{cmex}{m}{n}{
+%<*ams&extra>
+        <-8>    cmex7
+        <8-9>   cmex8
+        <9-10>  cmex9
+        <10->   cmex10
+%</ams&extra>
+%<!extra><->    cmex10
+        }{}
+%</package,cmex>
+%</package,OMX>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,U>
+%<*package,lasy>
+\DeclareFontFamily{U}{lasy}{}
+\DeclareFontShape{U}{lasy}{m}{n}{ 
+        <-6>    lasy5
+        <6-7>   lasy6
+        <7-8>   lasy7
+        <8-9>   lasy8
+        <9-10>  lasy9
+        <10->   lasy10
+        }{}
+\DeclareFontShape{U}{lasy}{b}{n}{
+        <->     lasyb10
+        }{}
+%</package,lasy>
+%<*package,ams>
+%<*package,msa>
+\DeclareFontFamily{U}{msa}{}
+\DeclareFontShape{U}{msa}{m}{n}{
+%<!extra> <-7>    msam5 
+%<!extra> <7-10>  msam7
+%<extra>  <-6>    msam5
+%<extra>  <6-7>   msam6
+%<extra>  <7-8>   msam7
+%<extra>  <8-9>   msam8
+%<extra>  <9-10>  msam9
+          <10->   msam10
+          }{}
+%</package,msa>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,msb>
+\DeclareFontFamily{U}{msb}{}
+\DeclareFontShape{U}{msb}{m}{n}{
+%<!extra> <-7>    msbm5
+%<!extra> <7-10>  msbm7
+%<extra>  <-6>    msbm5
+%<extra>  <6-7>   msbm6
+%<extra>  <7-8>   msbm7
+%<extra>  <8-9>   msbm8
+%<extra>  <9-10>  msbm9
+          <10->   msbm10
+          }{}
+%</package,msb>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,euex>
+\DeclareFontFamily{U}{euex}{}
+\DeclareFontShape{U}{euex}{m}{n}{
+        <->   euex10 % AMS set only includes euex10
+        }{}
+%</package,euex>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,euf>
+\DeclareFontFamily{U}{euf}{}
+\DeclareFontShape{U}{euf}{m}{n}{
+        <-7>    eufm5 
+        <7-10>  eufm7
+        <10->   eufm10
+         }{}
+\DeclareFontShape{U}{euf}{b}{n}{
+        <-7>    eufb5 
+        <7-10>  eufb7
+        <10->   eufb10
+         }{}
+%</package,euf>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,eur>
+\DeclareFontFamily{U}{eur}{\skewchar\font'177}
+\DeclareFontShape{U}{eur}{m}{n}{
+        <-7>    eurm5 
+        <7-10>  eurm7
+        <10->   eurm10
+         }{}
+\DeclareFontShape{U}{eur}{b}{n}{
+        <-7>    eurb5 
+        <7-10>  eurb7
+        <10->   eurb10
+         }{}
+%</package,eur>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%<*package,eus>
+\DeclareFontFamily{U}{eus}{\skewchar\font'60}
+\DeclareFontShape{U}{eus}{m}{n}{
+        <-7>    eusm5 
+        <7-10>  eusm7
+        <10->   eusm10
+         }{}
+\DeclareFontShape{U}{eus}{b}{n}{
+        <-7>    eusb5 
+        <7-10>  eusb7
+        <10->   eusb10
+         }{}
+%</package,eus>
+%</package,ams>
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</package,U>
+%    \end{macrocode}
+%
+% End of `fd' codes
+%    \begin{macrocode}
+%<*package>
+\endgroup
+%    \end{macrocode}
+%
+% Now just check we have picked the em fonts with the right encoding.
+%    \begin{macrocode}
+\sbox\z@{\normalfont\char140}
+\edef\@tempa{%
+  \ifdim\wd0=7.5ptT1%             T1  Ncaron
+  \else\ifdim\wd0=10.1389ptLY1%   LY1 aring
+  \else\ifdim\wd0=5.24998ptLM1%   LM1 OE
+  \else U%
+  \fi\fi\fi}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\ifx\@tempa\operator@encoding
+\else
+  \PackageError{em}{%
+  Installed em tfm files have encoding `\@tempa'\MessageBreak
+  but this document requests encoding `\operator@encoding'}
+  {Change the package option}
+  \showthe\wd0 % debugging output
+\fi
+%    \end{macrocode}
+%
+% Use the text encoding for text fonts used in math
+%    \begin{macrocode}
+\DeclareSymbolFont{operators}{\operator@encoding}{\rmdefault}{m}{n}
+\SetSymbolFont{operators}{bold}{\operator@encoding}{\rmdefault}{bx}{n}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\DeclareMathAlphabet\mathbf  \operator@encoding{\rmdefault}{bx}{n}
+\DeclareMathAlphabet\mathrm  \operator@encoding{\rmdefault}{m}{n}
+\DeclareMathAlphabet\mathsf  \operator@encoding{\sfdefault}{m}{n}
+\DeclareMathAlphabet\mathit  \operator@encoding{\rmdefault}{m}{it}
+\DeclareMathAlphabet\mathtt  \operator@encoding{\ttdefault}{m}{n}
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\SetMathAlphabet{\mathbf}{bold}{\operator@encoding}{\rmdefault}{bx}{n}
+\SetMathAlphabet{\mathsf}{bold}{\operator@encoding}{\sfdefault}{bx}{n}
+\SetMathAlphabet{\mathrm}{bold}{\operator@encoding}{\rmdefault}{bx}{n}
+\SetMathAlphabet{\mathit}{bold}{\operator@encoding}{\rmdefault}{bx}{it}
+\SetMathAlphabet{\mathtt}{bold}{\operator@encoding}{\ttdefault}{bx}{n}
+%    \end{macrocode}
+%
+% So move the Greek to the letters font (which therefore should
+% not really be considered OML encoded, but pass on that for now)
+%    \begin{macrocode}
+\DeclareMathSymbol{\Gamma}{\mathalpha}{letters}{"D0}
+\DeclareMathSymbol{\Delta}{\mathalpha}{letters}{"D1}
+\DeclareMathSymbol{\Theta}{\mathalpha}{letters}{"D2}
+\DeclareMathSymbol{\Lambda}{\mathalpha}{letters}{"D3}
+\DeclareMathSymbol{\Xi}{\mathalpha}{letters}{"D4}
+\DeclareMathSymbol{\Pi}{\mathalpha}{letters}{"D5}
+\DeclareMathSymbol{\Sigma}{\mathalpha}{letters}{"D6}
+\DeclareMathSymbol{\Upsilon}{\mathalpha}{letters}{"D7}
+\DeclareMathSymbol{\Phi}{\mathalpha}{letters}{"D8}
+\DeclareMathSymbol{\Psi}{\mathalpha}{letters}{"D9}
+\DeclareMathSymbol{\Omega}{\mathalpha}{letters}{"DA}
+%    \end{macrocode}
+%
+% Also need to move the math accents, depending on the
+% encoding used for the operators font.
+% Actually for LY1 only |\dot| needs changing as the others
+% are the same as OT1.
+% Actually for LM1 coding we need not do anything since 
+% (by remapping of Macintosh standard roman) it matches OT1.
+%    \begin{macrocode}
+\def\@tempa{T1}
+\ifx\operator@encoding\@tempa
+  \DeclareMathAccent{\grave}{\mathalpha}{operators}{0}
+  \DeclareMathAccent{\acute}{\mathalpha}{operators}{1}
+  \DeclareMathAccent{\hat}{\mathalpha}{operators}{2}
+  \DeclareMathAccent{\tilde}{\mathalpha}{operators}{3}
+  \DeclareMathAccent{\ddot}{\mathalpha}{operators}{4}
+  \DeclareMathAccent{\check}{\mathalpha}{operators}{7}
+  \DeclareMathAccent{\breve}{\mathalpha}{operators}{8}
+  \DeclareMathAccent{\bar}{\mathalpha}{operators}{9}
+  \DeclareMathAccent{\dot}{\mathalpha}{operators}{10}
+\else
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\@tempa{LY1}
+\ifx\operator@encoding\@tempa
+  \DeclareMathAccent{\dot}{\mathalpha}{operators}{5}
+\else
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+\def\@tempa{LM1}
+\ifx\operator@encoding\@tempa
+%  \DeclareMathAccent{\grave}{\mathalpha}{operators}{18}%  or 96
+%  \DeclareMathAccent{\acute}{\mathalpha}{operators}{19}%  or 171
+%  \DeclareMathAccent{\hat}{\mathalpha}{operators}{94}%    or 246
+%  \DeclareMathAccent{\tilde}{\mathalpha}{operators}{126}% or 247
+%  \DeclareMathAccent{\ddot}{\mathalpha}{operators}{127}%  or 172
+%  \DeclareMathAccent{\check}{\mathalpha}{operators}{20}%  or 255
+%  \DeclareMathAccent{\breve}{\mathalpha}{operators}{21}%  or 249
+%  \DeclareMathAccent{\bar}{\mathalpha}{operators}{22}%    or 248
+%  \DeclareMathAccent{\dot}{\mathalpha}{operators}{95}%    or 250
+\else
+  \PackageWarningNoLine{em}
+    {Unknown Operator Encoding!\MessageBreak
+     Math accents may be wrong: assuming OT1 positions}
+\fi\fi\fi
+%    \end{macrocode}
+%
+%    \begin{macrocode}
+%</package>
+%    \end{macrocode}
+%
+

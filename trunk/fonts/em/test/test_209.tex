@@ -1,0 +1,73 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% This is a test for EM font support under LaTeX 2.09
+
+\documentstyle{article}
+
+\input emlatex
+
+% \input dcaccent
+\input texnansi
+
+\begin{document}
+
+$\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega$
+
+\vskip .1in
+
+\boldmath
+
+$\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega$
+
+\vskip .1in
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\it 
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\bf 
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\sf
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\tt
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} % \H{O} \.{Z} \u{A}
+
+\end{document}
+
+
+

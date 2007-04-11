@@ -1,0 +1,121 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+\documentclass{article}
+
+\usepackage[LY1]{fontenc}
+% \usepackage[T1]{fontenc}
+
+% \DeclareFontEncoding{LY1}{}{}
+
+\usepackage{dm}
+
+% \usepackage[LY1]{fontenc}
+
+% \usepackage[T1]{fontenc}
+
+\usepackage{dmgreek}
+
+\begin{document}
+
+$\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega$
+
+\vskip .05in
+
+$A_{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}^{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}$
+
+\vskip .05in
+
+$A_{B_{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}}
+^{B^{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}}$
+
+\vskip .1in
+
+\boldmath
+
+$\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega$
+
+\vskip .05in
+
+$A_{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}^{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}$
+
+\vskip .05in
+
+$A_{B_{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}}
+^{B^{\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega}}$
+
+\vskip .1in
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \r{A} \u{A} % \.{A} \H{A} 
+
+\vskip .1in
+
+\it 
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \r{A} \u{A} % \.{A} \H{A} 
+
+\vskip .1in
+
+\bf 
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \r{A} \u{A} % \.{A} \H{A} 
+
+\vskip .1in
+
+\sf
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \r{A} \u{A} % \.{A} \H{A} 
+
+\vskip .1in
+
+\tt
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \r{A} \u{A} % \.{A} \H{A} 
+
+\end{document}
+
+% following works
+
+\usepackage[LY1]{fontenc}
+\usepackage{dm}
+
+% Encoding scheme `LY1' unknown, while in dm.sty
+
+\usepackage{dm}
+\usepackage[LY1]{fontenc}
+
+% following works
+
+\DeclareFontEncoding{LY1}{}{}
+\usepackage{dm}
+\usepackage[LY1]{fontenc}
+
+% following works:
+
+\usepackage{dm}
+\usepackage[T1]{fontenc}
+
+% Font T1/cmr/m/n/10=dcr1000 ... not loadable, while in fontenc.sty
+
+\usepackage[T1]{fontenc}
+\usepackage{dm}
+

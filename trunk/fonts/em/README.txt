@@ -1,0 +1,241 @@
+==================================================================
+                  The European Modern font set
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+==================================================================
+
+*	Computer Modern style fonts -
+*	with accented and composite characters - 
+*	in ATM compatible Adobe Type 1 (PostScript) format -
+*	useable with TeX as well as other applications.
+
+
+Background and Motivation:
+
+The European Modern (EM) font set consists of 57 text fonts that are
+vastly extended versions of Computer Modern (CM) text fonts.  Each EM text
+font contains 310 glyphs compared to the 128 in CM text fonts (of which
+eleven are upright Greek letters).  Each EM text font has over 90 accented
+characters, including the 58 `standard' ones found in most fonts in Type 1
+format.  
+
+*	Having ready-made accented/composite glyphs in the font makes it
+*	possible to achieve proper hyphenation when using TeX in languages
+*	that use accented characters.  This is not possible when using
+*	Computer Modern (CM) fonts.
+
+Of course, proper hyphenation is already possible when using text fonts
+other than CM that have a suitable complement of accented characters, but
+the EM font set brings the `CM look.'  And --- unlike the bitmapped EC/T1
+fonts --- this font set is in scalable outline format.  It also contains
+only 57 text fonts --- compared to the 565 fonts in the EC set.
+
+
+EM math fonts and CM math fonts:
+
+The EM font set covers text and math italic. This is augmented with CM
+math fonts for math symbols and math extension.  Consequently, the EM font
+set also includes the CMEX*, CMSY* and CMBSY* fonts.
+
+For math italic one uses EMMI* and EMMIB* (in place of CMMI* and CMMIB*).
+The reason there are separate EM math italic fonts, is that CM math fonts
+do not contain upright upper case Greek.  When using CM, the upright upper
+case Greek characters are obtained from the CM *text* fonts.  In order to
+avoid having to use the CM text fonts, the eleven required characters have
+been imported into the EMMI* and EMMIB* math italic fonts.  (While the EM
+text fonts do in fact contain the Greek letters, it is undesirable to have
+to compromise the font encoding in order to gain access to these glyphs).
+
+EM text fonts are just that: text fonts.  They can be used with any
+encoding.  The encoding of these fonte are not hard-wired like the CM or
+the EC fonts.  Nor are these fonts limited to 256 glyphs (most contain
+310).  The glyph complement includes all characters in Cork (T1) encoding
+as well as in TeX 'n ANSI (LY1) encoding.
+
+
+Installation:
+
+The PFB and PFM files are supplied on four diskettes (or CD-ROM).  Use
+Adobe Type Manager (ATM) to install the fonts.  In Windows NT you can also
+install the fonts without ATM just by dragging the PFM files to the
+`fonts' folder.  However, you will get better on-screen rendering if you
+do use ATM Deluxe 4.0 for Windows NT 4.0.
+
+TFM and AFM files may be found on the third and fourth diskette.  TFM
+files for these fonts are not unique, since text fonts can be arbitrarily
+reencoded.  We provide one set for TeX 'n ANSI (LY1) encoding
+(subdirectory texnansi) and one for Cork (T1) encoding (subdirectory
+tex256).  TFM files for other encodings can be made using DVIWindo's
+`WriteTFM...', or by applying the AFMtoTFM utility to the AFM files.
+
+If you have Y&Y TeX System release 2.1 you will already have all the
+required TFM files (linked to appropriate encoding specific environment
+variables).  If you have release 2.0, and you want to make sure you have 
+the latest version, replace them with what is on the diskette.  Typically
+this would be done as follows:
+
+	xcopy a:\tfm\texnansi\*.tfm c:\yandy\fonts\tfm\texansi\tfm-em
+	xcopy a:\tfm\tex256\*.tfm c:\yandy\fonts\tfm\tex256\tfm-em
+	xcopy a:\tfm\*.tfm c:\yandy\fonts\tfm\nontext\tfm-emmi
+
+(Details may differ slightly depending on your directory structure).
+The first line copies the TFM files for TeX 'n ANSI (LY1) encoding.
+The second line copies the TFM files for Cork (T1) encoding.
+The third line copies the TFM files for the math italic fonts.
+
+
+Relationship to corresponding CM fonts:
+
+The EM font set has equivalents for 55 text fonts in the 75 font CM set.
+Note that there is no need for equivalents of the three CMTEX* fonts.
+This is because these are mere encoding variants of the CMTT* fonts, in
+the sense that glyphs with the same names are identical in shape in
+corresponding CMTEX* and CMTT* fonts.  The only difference is that a
+CMTEX* font has a few glyphs not found in the corresponding CMTT* font and
+vice versa.  The extra glyphs found in CMTEX* have been absorbed into the
+corresponding EMTT* fonts.  They can be made accessible by reencoding
+these fonts, if desired.
+
+Similarly, CMINCH is just a different size of CMSSBX10 with fewer glyphs.  
+Use EMSSBX10 at 109.5pt to get the equivalent of CMINCH (with more glyphs).
+(Where 109.5 = 72.27 * CapHeight / X-Height for this font).
+
+The reason there are 57 EM text fonts rather than 55 is that equivalents
+of two AMS text fonts (smaller sizes of the smallcaps face) are also
+included, for convenience.
+
+In addition, the math fonts supplied with the EM font set include the
+extra sizes of the CM math bold fonts found in the AMS font set, not in
+the CM set.  This includes extra `in between' sizes not previously
+available in Type 1 format.
+
+Note that in the math fonts supplied here - both the math italic and the
+math symbol fonts - have been revised following Knuths recommendations.
+
+
+Plain TeX, LaTeX 2.09 Support:
+
+Support for the fonts under plain TeX, LaTeX 2.09 may be found on the
+third diskette in directories `plain' and `latex209'.  There are files
+than can be \input on top of an existing CM-based format, as well as
+source files for constructing a new EM-based format.
+
+
+LaTeX 2e support:
+
+LaTeX 2e support for the fonts may be found in the `latex2e' subdirectory. Add: 
+
+\usepackage[T1]{em}  or \usepackage[LY1]{em} or \usepackage[LM1]{em}
+
+to your LaTeX source after \documentclass{...} and before \begin{document}.
+This will override the definitions for all the fonts and so the standard 
+`fd' files are not invoked.  You will also need to tell LaTeX what text font 
+encoding you are using:
+
+\usepackage[T1]{fontenc}	% for T1 / Cork encoding
+\usepackage[LY1]{fontenc}	% for LY1 / TeX 'n ANSI encoding
+\usepackage[LM1]{fontenc}	% for LM1 / Textures encoding
+
+If you add this line *before* the ones calling for the `em' package,
+then you can leave out the encoding option to that packages.
+Additional information may be found in the file `em.txt'.
+
+
+ATM problems with a few `non-standard' accented characters:
+
+Some versions of ATM have problems with accented characters not found in the
+Windows ANSI set.  ATM 3.02 for Windows and ATM 4.0 for Windows 95 have such
+problems.  ATM Deluxe 4.0 for Windows NT on the other hand works correctly.
+
+The problem shows up when the font is reencoded to expose accented characters
+that use `breve,' `dotaccent,' or `hungarumlaut.'  These are accents that do
+not occur in the standard 58 accented characters found in Adobe fonts. 
+
+The versions of ATM affected by this bug pick the character in the
+position of the accent in Adobe Standard Encoding (198, 199, 205) instead
+of the actual accent.  If what appears at this character code is a simple
+character, it will be shown instead of the accent.  If this character is a
+composite character itself, nothing will be shown.
+
+The work-around for this problem is to pass the font through the SAFESEAC
+utility supplied with the font set.  This makes the font file larger, but
+avoids problems with these older versions of ATM.  First convert the PFB file
+to PFA format, then use SAFESEAC, then convert back from PFA to PFB format.
+
+
+Using EM fonts with DVIPS:
+
+For use with DVIPS you will need to specify in the psfonts.map file what
+encoding you want to use.  We provide two sample files, psfonts.emt for 
+T1 (Cork) encoding, and psfonts.emy for LY1 (TeX 'n ANSI).  The math fonts
+use fixed encoding and so do not need to be reencoded.
+
+T1 encoding contains accented/composite glyphs used in Latin writing
+systems of Western, Central and to some extent Eastern Europe.
+LY1 contains accented glyphs for Western Europe only, but covers many
+typographically important glyphs (like dagger and daggerdbl) for which
+there is no space in T1 encoding.  The fonts can of course also be used
+with other encoding schemes such as Windows ANSI or Macintosh standard
+roman encoding.
+
+You also need to use the TFM files appropriate for the encoding you have
+chosen.  We supply TFM files for the text fonts for T1 (in directory tex256)
+as well as LY1 (in directory texnansi).  These TFM files are complete with
+ligature and kerning information.  There is a single TFM file per font.  
+
+*	NOTE:  No need for `virtual fonts,' or multiple TFM files!
+
+
+Special Features of EM when compared with CM:
+
+The glyphs in EM fonts that come directly from CM fonts have the same 
+shape and size, and generally the same advance width and metrics as the
+corresponding glyphs in CM fonts.  There are a few exceptions:
+
+(1) Proper subscript positioning with respect to upright upper case Greek
+letters:  Since in the EM font set the upright upper case greek letters
+come from a math font (EMMI*), the appropriate modifications to the glyphs
+and the TFM file could be made to draw the subscript closer to the letter
+in the case of overhanging glyphs like Gamma, Upsilon, and Psi.  This is
+not possible in CM fonts, because these letters are there pulled from a
+text font.
+
+(2) Hanging hyphens:  The EM text fonts contain a second `hyphen' called
+`sfthyphen' which is the same shape and size as the regular `hyphen' but
+has half the width; as a result it `sticks out of the format' on the
+right.  The `sfthyphen' appears at character code 127 in T1 encoding and
+173 in LY1 encoding.  Setting the \defaulthyphenchar to the appropriate
+value (as is done in em.sty) automatically generates hanging hyphens.  If
+you prefer not to have hanging hyphens, just change the \defaulthyphenchar
+back to 45.
+
+(3) Minor corrections in some glyphs:  In some EM text fonts, the letter `s'
+has slightly larger left side bearing, the letter `a' has slightly larger
+right side bearing, while the letter `t' has slightly less on the right than 
+the corresponding glyphs in CM.
+
+(4) In some of the EM text fonts, the grave accent has been moved to the
+right and the acute accent to the left to get better appearance of
+ready-made accented letters.  Also, the circumflex is a bit lower and
+a bit wider. The circumflex on `ecircumflex' has been moved a bit to the right.
+
+(5) Minor corrections in some metric files: Some of the EM text fonts have a
+negative kern for the pair `o j' --- unlike the corresponding CM text fonts
+which incorrectly have a positive kern. The italic digit `7' has a near zero
+depth --- unlike the corresponding CM text fonts where this glyph by mistake
+has a depth equal to that of the old-style digit `4' (which hangs way below 
+the base line).
+
+(6) Kerning with respect to the `boundary' character: The quotation
+characters in the CM fonts include extra side-bearings to separate the
+quotation from the rest of the test.  This assumes that the `English'
+opening and closing quotation convention is being used.  This is a serious
+restrictions in some other languages where quotation marks are used
+differently.  The extra side-bearing has been removed from the double
+quotation characters.  Instead, suitable kern pairs with respect to the
+`space' character have been introduced.  This works for quoteleft/right,
+quotedblleft/right, quotedblbase and quotereversed.
+
+(7) Kern pairs for accented characters: accented/composite characters
+inherit the kern values from the corresponding base characters (except in
+a few places where there are additional adjustments).

@@ -1,0 +1,72 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+--------------------------------------------------------------------------
+
+Change FontName CM => DM => EM
+Change FullName CM => DM => EM
+Change FontID   CM => DM => EM
+
+Remove Knuth Notice (revise as comment in AFM file)
+
+Change Copyright in PFA and in AFM
+
+Change Notice in PFA and in AFM
+
+Add Notice: This font is not in the public domain both in PFA and AFM
+
+Change Encoding FontSpecific => AdobeStandardEncoding in AFM
+
+Change Encoding spelled out to /Encoding StandardEncoding in PFA
+
+Reencode AFM files to ASE
+
+version 1.100 => 001.100
+
+Change UniqueID in AFM and PFA.  Propagate into encrypted section.
+
+Change file names CM => DM => EM
+
+pfatopfb -v *.pfa
+
+afmtopfm -vq *.afm
+
+---------------------------------------------------------------------------
+
+Need TFM files for new CMMI* fonts. Use TFMtoAFM first to get bogus AFM.
+
+---------------------------------------------------------------------------
+
+CM fonts not expanded			AMS		Extra AMS
+
+CMSY 5, 6, 7, 8, 9, 10
+CMMI 5, 6, 7, 8, 9, 10
+
+CMBSY 10				5, 7,		6, 8, 9
+CMMIB 10				5, 7,		6, 8, 9
+
+CMEX 10							7, 8, 9
+
+CMINCH
+
+CMTEX 8, 9, 10
+
+Added: CMCSC						8, 9
+
+---------------------------------------------------------------------------
+
+Glyphs not in UNICODE: 
+
+dotlessj, suppress, SS, 
+Tcedilla, tcedilla, Scedilla, scedilla (last two in ATM) 
+Should have instead Tcommaaccent, tcommaaccent, Scommaaccent, scommaaccent 
+
+Make list of what is in Cork, but not in EMR10 - see glyph.lst
+
+Make list of what is in EMR10, but not in Cork - see glyph.lst
+
+--------------------------------------------------------------------------
+
+Lithuanian needs [iIuU]ogonek (absent)
+
+Polish needs [aAeE]ogonek (present)

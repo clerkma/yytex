@@ -1,0 +1,717 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+% Copyright (C) 1996, 1997 Y&Y, Inc.
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+%
+% 	emlatex.tex		Version 1.1		1997 Feb 20
+%
+%	This TeX macro header file can be used for replacing CM fonts
+%	with the EM fonts from Y&Y, Inc. in Adobe Type 1 format.
+%
+%	\input emlatex.tex  in your LaTeX 2.09 source file after
+%	\documentstyle{...} or rename this file `emlatex.sty' and use 
+%	it as a style file.  This countermands declarations in
+%	`lfonts.tex'  which set up the CM fonts. 
+%
+%	This is for use with LaTeX 2.09 --- for plain TeX use `emplain.tex'.
+%	
+%	For LaTeX 2e, instead run `em.ins' on `em.dtx' and then	\usepackage{em}
+%
+% NOTE: Loading many new fonts on top of a predefined format may cause
+%	some implementations of TeX to run out of space for fonts.
+%	You may wish to create a new `TeX format' in that case using `ini TeX'
+%	on lplain-e.tex (which refers to lfonts-e.tex, latex.tex, lhyphen.tex)
+%	Or use a `big' TeX, or better yet a `dynamic' TeX.
+%
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% We make @ signs act like letters, temporarily, to avoid conflict
+% between user names and internal control sequences of plain format.
+
+\chardef\atcode=\catcode`\@	% save catcode of at sign
+\catcode`\@=11			% make at a letter
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% five point
+ \font\fivrm  = emr5		% roman
+ \font\fivmi  = emmi5		% math italic
+    \skewchar\fivmi =127	%  for placement of accents
+%\font\fivmib = emmib5		% bold math italic
+ \font\fivsy  = cmsy5		% math symbols
+    \skewchar\fivsy =48		%  for placement of math accents
+%\font\fivsyb = cmbsy5		% bold math symbols
+%\font\fivit  = emti7	scaled 714	% text italic
+%\font\fivsl  = emsl10	\@ptscale5	% slanted
+%\font\fivbf  = embx7	scaled 714	% extended bold
+%\font\fivbfs = embxsl10\@ptscale5	% extended bold slanted
+%\font\fivtt  = emtt10	\@ptscale5	% typewriter
+%\font\fivtti = emitt10	\@ptscale5	% italic typewriter
+%\font\fivtts = emsltt10\@ptscale5	% slanted typewriter
+%\font\fivsf  = emss10	\@ptscale5	% sans serif
+%\font\fivsfi = emssi10	\@ptscale5	% italic sans serif
+%\font\fivsfb = emssbx10\@ptscale5	% bold sans serif
+%\font\fivsc  = emcsc10	\@ptscale5	% small caps
+%\font\fivuit  = emu10	\@ptscale5	% unslanted italic
+
+% six point
+ \font\sixrm  = emr6		% roman
+ \font\sixmi  = emmi6		% math italic
+    \skewchar\sixmi =127	%  for placement of accents
+%\font\sixmib = emmib6		% bold math italic
+ \font\sixsy  = cmsy6		% math symbols
+    \skewchar\sixsy =48		%  for placement of math accents
+%\font\sixsyb = cmbsy6		% bold math symbols
+%\font\sixit  = emti7	scaled 857	% text italic
+%\font\sixsl  = emsl10	\@ptscale6	% slanted
+%\font\sixbf  = embx7	scaled 857	% extended bold
+%\font\sixbfs = embxsl10\@ptscale6	% extended bold
+%\font\sixtt  = emtt10	\@ptscale6	% typewriter
+%\font\sixtti = emitt10	\@ptscale6	% italic typewriter
+%\font\sixtts = emsltt10\@ptscale6	% slanted typewriter
+%\font\sixsf  = emss10	\@ptscale6	% sans serif
+%\font\sixsfi = emssi10	\@ptscale6	% italic sans serif
+%\font\sixsfb = emssbx10\@ptscale6	% bold sans serif
+%\font\sixsc  = emcsc10	\@ptscale6	% small caps
+%\font\sixuit = emu10   \@ptscale6	% unslanted italic
+
+% seven point
+ \font\sevrm  = emr7		% roman
+ \font\sevmi  = emmi7		% math italic
+    \skewchar\sevmi =127	%  for placement of accents
+%\font\sevmib = emmib7		% bold math italic
+ \font\sevsy  = cmsy7		% math symbols
+    \skewchar\sevsy =48		%  for placement of math accents
+%\font\sevsyb = cmbsy7		% bold math symbols
+ \font\sevit  = emti7		% text italic
+%\font\sevsl  = emsl10	\@ptscale7	% slanted
+%\font\sevbf  = embx7		% extended bold
+%\font\sevbfs = embxsl10\@ptscale7	% extended bold slanted
+%\font\sevtt  = emtt10	\@ptscale7	% typewriter
+%\font\sevtti = emitt10	\@ptscale7	% italic typewriter
+%\font\sevtts = emsltt10\@ptscale7	% slanted typewriter
+%\font\sevsf  = emss10	\@ptscale7	% sans serif
+%\font\sevsfi = emssi10	\@ptscale7	% italic sans serif
+%\font\sevsfb = emssbx10\@ptscale7	% bold sans serif
+%\font\sevsc  = emcsc10	\@ptscale7	% small caps
+%\font\sevuit = emu10   \@ptscale7	% unslanted italic
+
+% eight point
+ \font\egtrm  = emr8		% roman
+ \font\egtmi  = emmi8		% math italic
+    \skewchar\egtmi =127	%  for placement of accents
+%\font\egtmib = emmib8		% bold math italic
+ \font\egtsy  = cmsy8		% math symbols
+    \skewchar\egtsy =48		%  for placement of math accents
+%\font\egtsyb = cmbsy8		% bold math symbols
+ \font\egtit  = emti8		% text italic
+%\font\egtsl  = emsl8		% slanted
+%\font\egtbf  = embx8		% extended bold
+%\font\egtbfs = embxsl10\@ptscale8 % extended bold slanted
+ \font\egttt  = emtt8		% typewriter
+%\font\egttti = emitt10	\@ptscale8 % italic typewriter
+%\font\egttts = emsltt10\@ptscale8 % slanted typewriter
+%\font\egtsf  = emss10	\@ptscale8 % sans serif
+%\font\egtsfi = emssi10	\@ptscale8 % italic sans serif
+%\font\egtsfb = emssbx10\@ptscale8 % bold sans serif
+%\font\egtsc  = emcsc8		% small caps
+%\font\egtuit = emu10   \@ptscale8 % unslanted italic
+
+% nine point
+ \font\ninrm  = emr9		% roman
+ \font\ninmi  = emmi9		% math italic
+    \skewchar\ninmi =127	%  for placement of accents
+%\font\ninmib = emmib9		% bold math italic
+ \font\ninsy  = cmsy9		% math symbols
+    \skewchar\ninsy =48		%  for placement of math accents
+%\font\ninsyb = cmbsy9		% bold math symbols
+ \font\ninit  = emti9		% text italic
+%\font\ninsl  = emsl9		% slanted
+ \font\ninbf  = embx9		% extended bold
+%\font\ninbfs = embxsl10\@ptscale9 % extended bold slanted
+ \font\nintt  = emtt9		% typewriter
+    \hyphenchar\nintt = -1	%  suppress hyphenation in \tt font
+%\font\nintti = emitt10	\@ptscale9 % italic typewriter
+%\font\nintts = emsltt10\@ptscale9 % slanted typewriter
+%\font\ninsf  = emss10	\@ptscale9 % sans serif
+%\font\ninsfi = emssi10	\@ptscale9 % italic sans serif
+%\font\ninsfb = emssbx10\@ptscale9 % bold sans serif
+%\font\ninsc  = emcsc9		% small caps
+%\font\ninuit = emu10   \@ptscale9 % unslanted italic
+
+% ten point
+ \font\tenrm  = emr10		% roman
+ \font\tenmi  = emmi10		% math italic
+    \skewchar\tenmi =127	%  for placement of accents
+%\font\tenmib = emmib10		% bold math italic
+ \font\tensy  = cmsy10		% math symbols
+    \skewchar\tensy =48		%  for placement of math accents
+%\font\tensyb = cmbsy10		% bold math symbols
+ \font\tenit  = emti10		% text italic
+ \font\tensl  = emsl10		% slanted
+ \font\tenbf  = embx10		% extended bold
+%\font\tenbfs = embxsl10 % extended bold slanted
+ \font\tentt  = emtt10		% typewriter
+    \hyphenchar\tentt = -1	%  suppress hyphenation in \tt font
+%\font\tentti = emitt10		% italic typewriter
+%\font\tentts = emsltt10 % slanted typewriter
+ \font\tensf  = emss10		% sans serif
+%\font\tensfi = emssi10		% italic sans serif
+%\font\tensfb = emssbx10		% bold sans serif
+%\font\tensc  = emcsc10		% small caps
+%\font\tenuit = emu10    % unslanted italic
+
+% eleven point
+ \font\elvrm  = emr10	\@halfmag	% roman
+ \font\elvmi  = emmi10	\@halfmag	% math italic
+    \skewchar\elvmi =127	%  for placement of accents
+%\font\elvmib = emmib10	\@halfmag	% bold math italic
+ \font\elvsy  = cmsy10	\@halfmag	% math symbols
+    \skewchar\elvsy =48		%  for placement of math accents
+%\font\elvsyb = cmbsy10	\@halfmag	% bold math symbols
+ \font\elvit  = emti10	\@halfmag	% text italic
+ \font\elvsl  = emsl10	\@halfmag	% slanted
+ \font\elvbf  = embx10	\@halfmag	% extended bold
+%\font\elvbfs = embxsl10\@halfmag	% extended bold slanted
+ \font\elvtt  = emtt10	\@halfmag	% typewriter
+    \hyphenchar\elvtt = -1	%  suppress hyphenation in \tt font
+%\font\elvtti = emitt10	\@halfmag	% italic typewriter
+%\font\elvtts = emsltt10\@halfmag	% slanted typewriter
+ \font\elvsf  = emss10	\@halfmag	% sans serif
+%\font\elvsfi = emssi10	\@halfmag	% italic sans serif
+%\font\elvsfb = emssbx10\@halfmag	% bold sans serif
+%\font\elvsc  = emcsc10	\@halfmag	% small caps
+%\font\elvuit = emu10   \@halfmag % unslanted italic
+
+% twelve point
+ \font\twlrm  = emr12		% roman
+ \font\twlmi  = emmi12		% math italic
+    \skewchar\twlmi =127	%  for placement of accents
+%\font\twlmib = emmib10 \@magscale1	% bold math italic
+ \font\twlsy  = cmsy10	\@magscale1	% math symbols
+    \skewchar\twlsy =48		%  for placement of math accents
+%\font\twlsyb = cmbsy10	\@magscale1	% bold math symbols
+ \font\twlit  = emti12		% text italic
+ \font\twlsl  = emsl12		% slanted
+ \font\twlbf  = embx12		% extended bold
+%\font\twlbfs = embxsl10 \@magscale1 % extended bold slanted
+ \font\twltt  = emtt12		% typewriter
+    \hyphenchar\twltt = -1	%  suppress hyphenation in \tt font
+%\font\twltti = emitt10	\@magscale1	% italic typewriter
+%\font\twltts = emsltt10\@magscale1 % slanted typewriter
+ \font\twlsf  = emss12		% sans serif
+%\font\twlsfi = emssi10	\@magscale1		% italic sans serif
+%\font\twlsfb = emssbx10\@magscale1	% bold sans serif
+%\font\twlsc  = emcsc10	\@magscale1	% small caps
+%\font\twluit = emu10	\@magscale1	% unslanted italic
+
+% fourteen point
+ \font\frtnrm  = emr10	\@magscale2	% roman
+ \font\frtnmi  = emmi10	\@magscale2	% math italic
+    \skewchar\frtnmi =127	%  for placement of accents
+%\font\frtnmib = emmib10	\@magscale2		% bold math italic
+ \font\frtnsy  = cmsy10	\@magscale2	% math symbols
+    \skewchar\frtnsy =48	%  for placement of math accents
+%\font\frtnsyb = cmbsy10	\@magscale2		% bold math symbols
+%\font\frtnit  = emti10	\@magscale2	% text italic
+%\font\frtnsl  = emsl10	\@magscale2	% slanted
+ \font\frtnbf  = embx10	\@magscale2	% extended bold
+%\font\frtnbfs = embxsl10\@magscale2	% extended bold slanted
+%\font\frtntt  = emtt10	\@magscale2	% typewriter
+%\font\frtntti = emitt10\@magscale2	% italic typewriter
+%\font\frtntts = emsltt10\@magscale2	% slanted typewriter
+%\font\frtnsf  = emss10	\@magscale2	% sans serif
+%\font\frtnsfi = emssi10\@magscale2	% italic sans serif
+%\font\frtnsfb = emssbx10\@magscale2	% bold sans serif
+%\font\frtnsc  = emcsc10\@magscale2	% small caps
+%\font\frtnuit = emu10	\@magscale2	% unslanted italic
+
+% seventeen point
+ \font\svtnrm  = emr17			% roman
+ \font\svtnmi  = emmi10	\@magscale3	% math italic
+    \skewchar\svtnmi =127	%  for placement of accents
+%\font\svtnmib = emmib10\@magscale3	% bold math italic
+ \font\svtnsy  = cmsy10	\@magscale3	% math symbols
+    \skewchar\svtnsy =48	%  for placement of math accents
+%\font\svtnsyb = cmbsy10\@magscale3	% bold math symbols
+%\font\svtnit  = emti10	\@magscale3	% text italic
+%\font\svtnsl  = emsl10	\@magscale3	% slanted
+ \font\svtnbf  = embx10	\@magscale3	% extended bold
+%\font\svtnbfs = embxsl10\@magscale3	% extended bold slanted
+%\font\svtntt  = emtt10	\@magscale3	% typewriter
+%\font\svtntti = emitt10\@magscale3	% italic typewriter
+%\font\svtntts = emsltt10\@magscale3	% slanted typewriter
+%\font\svtnsf  = emss10	\@magscale3	% sans serif
+%\font\svtnsfi = emssi10\@magscale3	% italic sans serif
+%\font\svtnsfb = emssbx10\@magscale3	% bold sans serif
+%\font\svtnsc  = emcsc10\@magscale3	% small caps
+%\font\svtnuit = emu10	\@magscale3	% unslanted italic
+
+% twenty point
+ \font\twtyrm  = emr10	\@magscale4	% roman
+ \font\twtymi  = emmi10	\@magscale4	% math italic
+    \skewchar\twtymi =127	%  for placement of accents
+%\font\twtymib = emmib10\@magscale4	% bold math italic
+ \font\twtysy  = cmsy10	\@magscale4	% math symbols
+    \skewchar\twtysy =48	%  for placement of math accents
+%\font\twtysyb = cmbsy10\@magscale4	% bold math symbols
+%\font\twtyit  = emti10	\@magscale4	% text italic
+%\font\twtysl  = emsl10	\@magscale4	% slanted
+%\font\twtybf  = embx10	\@magscale4	% extended bold
+%\font\twtybfs = embxsl10\@magscale4	% extended bold slanted
+%\font\twtytt  = emtt10	\@magscale4	% typewriter
+%\font\twtytti = emitt10\@magscale4	% italic typewriter
+%\font\twtytts = emsltt10\@magscale4 % slanted typewriter
+%\font\twtysf  = emss10	\@magscale4	% sans serif
+%\font\twtysfi = emssi10\@magscale4	% italic sans serif
+%\font\twtysfb = emssbx10\@magscale4	% bold sans serif
+%\font\twtysc  = emcsc10\@magscale4	% small caps
+%\font\twtyuit = emu10	\@magscale4	% unslanted italic
+
+% twenty-five point
+ \font\twfvrm  = emr10	\@magscale5	% roman
+%\font\twfvmi  = emmi10	\@magscale5	% math italic
+%\font\twfvmib = emmib10\@magscale5	% bold math italic
+%\font\twfvsy  = cmsy10	\@magscale5	% math symbols
+%\font\twfvsyb = cmbsy10\@magscale5	% bold math symbols
+%\font\twfvit  = emti10	\@magscale5	% text italic
+%\font\twfvsl  = emsl10	\@magscale5	% slanted
+%\font\twfvbf  = embx10	\@magscale5	% extended bold
+%\font\twfvbfs = embxsl10\@magscale5	% extended bold slanted
+%\font\twfvtt  = emtt10	\@magscale5	% typewriter
+%\font\twfvtti = emitt10\@magscale5	% italic typewriter
+%\font\twfvtts = emsltt10\@magscale5	% slanted typewriter
+%\font\twfvsf  = emss10	\@magscale5	% sans serif
+%\font\twfvsfi = emssi10\@magscale5	% italic sans serif
+%\font\twfvsfb = emssbx10\@magscale5	% bold sans serif
+%\font\twfvsc  = emcsc10\@magscale5	% small caps
+%\font\twfvuit = emu10	\@magscale5	% unslanted italic
+
+% Math extension
+ \font\tenex  = cmex10 at 9.5pt
+ \font\ninex  = cmex9 at 8.6pt %
+ \font\egtex  = cmex8 at 7.8pt %
+ \font\sevex  = cmex7 at 6.9pt
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+%% lfonts.tex FONT-CUSTOMIZING:
+
+\def\@mss{emss10}
+\def\@mcsc{emcsc10}
+\def\@mbi{emmib10}
+\def\@mbsy{cmbsy10}
+ 
+\def\vpt{\textfont\z@\fivrm
+  \scriptfont\z@\fivrm \scriptscriptfont\z@\fivrm
+\textfont\@ne\fivmi \scriptfont\@ne\fivmi \scriptscriptfont\@ne\fivmi
+\textfont\tw@\fivsy \scriptfont\tw@\fivsy \scriptscriptfont\tw@\fivsy
+% \textfont\thr@@\fivex \scriptfont\thr@@\fivex \scriptscriptfont\thr@@\fivex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\prm{\fam\z@\fivrm}%
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath
+  \unboldmath\fam\@ne\@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\pit{\@subfont\it\rm}%
+\def\psl{\@subfont\sl\rm}%
+\def\pbf{\@getfont\pbf\bffam\@vpt{embx5}}% explicit reference
+\def\ptt{\@subfont\tt\rm}%
+\def\psf{\@subfont\sf\rm}%
+\def\psc{\@subfont\sc\rm}%
+\def\ly{\fam\lyfam\fivly}\textfont\lyfam\fivly
+    \scriptfont\lyfam\fivly \scriptscriptfont\lyfam\fivly
+\@setstrut\rm}
+
+% \def\@vpt{}
+
+\def\vipt{\textfont\z@\sixrm
+  \scriptfont\z@\sixrm \scriptscriptfont\z@\sixrm
+\textfont\@ne\sixmi \scriptfont\@ne\sixmi \scriptscriptfont\@ne\sixmi
+\textfont\tw@\sixsy \scriptfont\tw@\sixsy \scriptscriptfont\tw@\sixsy
+% \textfont\thr@@\tenex \scriptfont\thr@@\sevex \scriptscriptfont\thr@@\fivex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\prm{\fam\z@\sixrm}%
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath
+  \unboldmath\@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\pit{\@subfont\it\rm}%
+\def\psl{\@subfont\sl\rm}%
+\def\pbf{\@getfont\pbf\bffam\@vipt{embx6}}% explicit reference
+\def\ptt{\@subfont\tt\rm}%
+\def\psf{\@subfont\sf\rm}%
+\def\psc{\@subfont\sc\rm}%
+\def\ly{\fam\lyfam\sixly}\textfont\lyfam\sixly
+    \scriptfont\lyfam\sixly \scriptscriptfont\lyfam\sixly
+\@setstrut\rm}
+
+% \def\@vipt{}
+
+\def\viipt{\textfont\z@\sevrm
+  \scriptfont\z@\sixrm \scriptscriptfont\z@\fivrm
+\textfont\@ne\sevmi \scriptfont\@ne\fivmi \scriptscriptfont\@ne\fivmi
+\textfont\tw@\sevsy \scriptfont\tw@\fivsy \scriptscriptfont\tw@\fivsy
+% \textfont\thr@@\sevex \scriptfont\thr@@\fivex \scriptscriptfont\thr@@\fivex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\prm{\fam\z@\sevrm}%
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath
+\unboldmath\@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\pit{\fam\itfam\sevit}\textfont\itfam\sevit
+   \scriptfont\itfam\sevit \scriptscriptfont\itfam\sevit
+\def\psl{\@subfont\sl\it}%
+\def\pbf{\@getfont\pbf\bffam\@viipt{embx7}}% explicit reference
+\def\ptt{\@subfont\tt\rm}%
+\def\psf{\@subfont\sf\rm}%
+\def\psc{\@subfont\sc\rm}%
+\def\ly{\fam\lyfam\sevly}\textfont\lyfam\sevly
+    \scriptfont\lyfam\fivly \scriptscriptfont\lyfam\fivly
+\@setstrut \rm}
+
+% \def\@viipt{}
+
+\def\viiipt{\textfont\z@\egtrm
+  \scriptfont\z@\sixrm \scriptscriptfont\z@\fivrm
+\textfont\@ne\egtmi \scriptfont\@ne\sixmi \scriptscriptfont\@ne\fivmi
+\textfont\tw@\egtsy \scriptfont\tw@\sixsy \scriptscriptfont\tw@\fivsy
+% \textfont\thr@@\egtex \scriptfont\thr@@\sixex \scriptscriptfont\thr@@\fivex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\prm{\fam\z@\egtrm}%
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath
+\unboldmath\@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\pit{\fam\itfam\egtit}\textfont\itfam\egtit
+   \scriptfont\itfam\sevit \scriptscriptfont\itfam\sevit
+\def\psl{\@getfont\psl\slfam\@viiipt{emsl8}}% explicit reference
+\def\pbf{\@getfont\pbf\bffam\@viiipt{embx8}}% explicit reference
+\def\ptt{\@getfont\ptt\ttfam\@viiipt{emtt8}\@nohyphens\ptt\@viiipt}%
+\def\psf{\@getfont\psf\sffam\@viiipt{emss8}}%
+\def\psc{\@getfont\psc\scfam\@viiipt{\@mcsc \@ptscale8}}%
+\def\ly{\fam\lyfam\egtly}\textfont\lyfam\egtly
+    \scriptfont\lyfam\sixly \scriptscriptfont\lyfam\fivly
+\@setstrut \rm}
+
+% \def\@viiipt{}
+
+\def\ixpt{\textfont\z@\ninrm
+  \scriptfont\z@\sixrm \scriptscriptfont\z@\fivrm
+\textfont\@ne\ninmi \scriptfont\@ne\sixmi \scriptscriptfont\@ne\fivmi
+\textfont\tw@\ninsy \scriptfont\tw@\sixsy \scriptscriptfont\tw@\fivsy
+% \textfont\thr@@\ninex \scriptfont\thr@@\sixex \scriptscriptfont\thr@@\fivex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\prm{\fam\z@\ninrm}%
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+    \@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\pit{\fam\itfam\ninit}\textfont\itfam\ninit
+   \scriptfont\itfam\sevit \scriptscriptfont\itfam\sevit
+\def\psl{\@getfont\psl\slfam\@ixpt{emsl9}}% explicit reference
+\def\pbf{\fam\bffam\ninbf}\textfont\bffam\ninbf
+   \scriptfont\bffam\ninbf \scriptscriptfont\bffam\ninbf
+\def\ptt{\fam\ttfam\nintt}\textfont\ttfam\nintt
+   \scriptfont\ttfam\nintt \scriptscriptfont\ttfam\nintt
+\def\psf{\@getfont\psf\sffam\@ixpt{cmss9}}% explicit reference
+\def\psc{\@getfont\psc\scfam\@ixpt{\@mcsc \@ptscale9}}%
+\def\ly{\fam\lyfam\ninly}\textfont\lyfam\ninly
+   \scriptfont\lyfam\sixly \scriptscriptfont\lyfam\fivly
+\@setstrut \rm}
+
+% \def\@ixpt{}
+
+\def\xpt{\textfont\z@\tenrm
+  \scriptfont\z@\sevrm \scriptscriptfont\z@\fivrm
+\textfont\@ne\tenmi \scriptfont\@ne\sevmi \scriptscriptfont\@ne\fivmi
+\textfont\tw@\tensy \scriptfont\tw@\sevsy \scriptscriptfont\tw@\fivsy
+% \textfont\thr@@\tenex \scriptfont\thr@@\sevex \scriptscriptfont\thr@@\fivex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+          \textfont\@ne\tenmi
+          \textfont\tw@\tensy \textfont\lyfam\tenly
+          \@boldfalse}\@boldfalse
+\def\boldmath{\@ifundefined{tenmib}{\global\font\tenmib\@mbi
+   \global\font\tensyb\@mbsy
+   \global\font\tenlyb\@lasyb\relax\@addfontinfo\@xpt
+   {\def\boldmath{\everymath{\mit}\everydisplay{\mit}\@prtct\@nomathbold
+        \textfont\@ne\tenmib \textfont\tw@\tensyb
+        \textfont\lyfam\tenlyb \@prtct\@boldtrue}}}{}\@xpt\boldmath}%
+\def\prm{\fam\z@\tenrm}%
+\def\pit{\fam\itfam\tenit}\textfont\itfam\tenit \scriptfont\itfam\sevit
+    \scriptscriptfont\itfam\sevit
+\def\psl{\fam\slfam\tensl}\textfont\slfam\tensl
+     \scriptfont\slfam\tensl \scriptscriptfont\slfam\tensl
+\def\pbf{\fam\bffam\tenbf}\textfont\bffam\tenbf
+    \scriptfont\bffam\tenbf \scriptscriptfont\bffam\tenbf
+\def\ptt{\fam\ttfam\tentt}\textfont\ttfam\tentt
+    \scriptfont\ttfam\tentt \scriptscriptfont\ttfam\tentt
+\def\psf{\fam\sffam\tensf}\textfont\sffam\tensf
+    \scriptfont\sffam\tensf \scriptscriptfont\sffam\tensf
+\def\psc{\@getfont\psc\scfam\@xpt{\@mcsc}}% explicit reference
+\def\ly{\fam\lyfam\tenly}\textfont\lyfam\tenly
+   \scriptfont\lyfam\sevly \scriptscriptfont\lyfam\fivly
+\@setstrut \rm}
+
+% \def\@xpt{}
+
+\def\xipt{\textfont\z@\elvrm
+  \scriptfont\z@\egtrm \scriptscriptfont\z@\sixrm
+\textfont\@ne\elvmi \scriptfont\@ne\egtmi \scriptscriptfont\@ne\sixmi
+\textfont\tw@\elvsy \scriptfont\tw@\egtsy \scriptscriptfont\tw@\sixsy
+% \textfont\thr@@\elvex \scriptfont\thr@@\egtex \scriptscriptfont\thr@@\sixex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+          \textfont\@ne\elvmi \textfont\tw@\elvsy
+          \textfont\lyfam\elvly \@boldfalse}\@boldfalse
+\def\boldmath{\@ifundefined{elvmib}{\global\font\elvmib\@mbi\@halfmag
+         \global\font\elvsyb\@mbsy\@halfmag
+         \global\font\elvlyb\@lasyb\@halfmag\relax\@addfontinfo\@xipt
+         {\def\boldmath{\everymath{\mit}\everydisplay{\mit}\@prtct\@nomathbold
+                \textfont\@ne\elvmib \textfont\tw@\elvsyb
+                \textfont\lyfam\elvlyb\@prtct\@boldtrue}}}{}\@xipt\boldmath}%
+\def\prm{\fam\z@\elvrm}%
+\def\pit{\fam\itfam\elvit}\textfont\itfam\elvit
+   \scriptfont\itfam\egtit \scriptscriptfont\itfam\sevit
+\def\psl{\fam\slfam\elvsl}\textfont\slfam\elvsl
+    \scriptfont\slfam\tensl \scriptscriptfont\slfam\tensl
+\def\pbf{\fam\bffam\elvbf}\textfont\bffam\elvbf
+   \scriptfont\bffam\ninbf \scriptscriptfont\bffam\ninbf
+\def\ptt{\fam\ttfam\elvtt}\textfont\ttfam\elvtt
+   \scriptfont\ttfam\nintt \scriptscriptfont\ttfam\nintt
+\def\psf{\fam\sffam\elvsf}\textfont\sffam\elvsf
+    \scriptfont\sffam\tensf \scriptscriptfont\sffam\tensf
+\def\psc{\@getfont\psc\scfam\@xipt{\@mcsc\@halfmag}}%
+\def\ly{\fam\lyfam\elvly}\textfont\lyfam\elvly
+   \scriptfont\lyfam\egtly \scriptscriptfont\lyfam\sixly
+\@setstrut \rm}
+
+% \def\@xipt{}
+
+\def\xiipt{\textfont\z@\twlrm
+  \scriptfont\z@\egtrm \scriptscriptfont\z@\sixrm
+\textfont\@ne\twlmi \scriptfont\@ne\egtmi \scriptscriptfont\@ne\sixmi
+\textfont\tw@\twlsy \scriptfont\tw@\egtsy \scriptscriptfont\tw@\sixsy
+% \textfont\thr@@\twlex \scriptfont\thr@@\egtex \scriptscriptfont\thr@@\sixex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+          \textfont\@ne\twlmi
+          \textfont\tw@\twlsy \textfont\lyfam\twlly
+          \@boldfalse}\@boldfalse
+\def\boldmath{\@ifundefined{twlmib}{\global\font\twlmib\@mbi\@magscale1\global
+        \font\twlsyb\@mbsy \@magscale1\global\font
+         \twllyb\@lasyb\@magscale1\relax\@addfontinfo\@xiipt
+              {\def\boldmath{\everymath
+                {\mit}\everydisplay{\mit}\@prtct\@nomathbold
+                \textfont\@ne\twlmib \textfont\tw@\twlsyb
+                \textfont\lyfam\twllyb\@prtct\@boldtrue}}}{}\@xiipt\boldmath}%
+\def\prm{\fam\z@\twlrm}%
+\def\pit{\fam\itfam\twlit}\textfont\itfam\twlit \scriptfont\itfam\egtit
+   \scriptscriptfont\itfam\sevit
+\def\psl{\fam\slfam\twlsl}\textfont\slfam\twlsl
+     \scriptfont\slfam\tensl \scriptscriptfont\slfam\tensl
+\def\pbf{\fam\bffam\twlbf}\textfont\bffam\twlbf
+   \scriptfont\bffam\ninbf \scriptscriptfont\bffam\ninbf
+\def\ptt{\fam\ttfam\twltt}\textfont\ttfam\twltt
+   \scriptfont\ttfam\nintt \scriptscriptfont\ttfam\nintt
+\def\psf{\fam\sffam\twlsf}\textfont\sffam\twlsf
+    \scriptfont\sffam\tensf \scriptscriptfont\sffam\tensf
+\def\psc{\@getfont\psc\scfam\@xiipt{\@mcsc\@magscale1}}%
+\def\ly{\fam\lyfam\twlly}\textfont\lyfam\twlly
+   \scriptfont\lyfam\egtly \scriptscriptfont\lyfam\sixly
+\@setstrut \rm}
+
+% \def\@xiipt{}
+
+\def\xivpt{\textfont\z@\frtnrm
+  \scriptfont\z@\tenrm \scriptscriptfont\z@\sevrm
+\textfont\@ne\frtnmi \scriptfont\@ne\tenmi \scriptscriptfont\@ne\sevmi
+\textfont\tw@\frtnsy \scriptfont\tw@\tensy \scriptscriptfont\tw@\sevsy
+% \textfont\thr@@\frtnex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\sevex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+          \textfont\@ne\frtnmi \textfont\tw@\frtnsy
+          \textfont\lyfam\frtnly \@boldfalse}\@boldfalse
+\def\boldmath{\@ifundefined{frtnmib}{\global\font
+        \frtnmib\@mbi\@magscale2\global\font\frtnsyb\@mbsy\@magscale2
+         \global\font\frtnlyb\@lasyb\@magscale2\relax\@addfontinfo\@xivpt
+               {\def\boldmath{\everymath
+                {\mit}\everydisplay{\mit}\@prtct\@nomathbold
+              \textfont\@ne\frtnmib \textfont\tw@\frtnsyb
+              \textfont\lyfam\frtnlyb\@prtct\@boldtrue}}}{}\@xivpt\boldmath}%
+\def\prm{\fam\z@\frtnrm}%
+\def\pit{\@getfont\pit\itfam\@xivpt{emti10\@magscale2}}%  explicit reference
+\def\psl{\@getfont\psl\slfam\@xivpt{emsl10\@magscale2}}% explicit reference
+\def\pbf{\fam\bffam\frtnbf}\textfont\bffam\frtnbf
+   \scriptfont\bffam\tenbf \scriptscriptfont\bffam\ninbf
+\def\ptt{\@getfont\ptt\ttfam\@xivpt{emtt\@magscale2}\@nohyphens\ptt\@xivpt}%
+\def\psf{\@getfont\psf\sffam\@xivpt{\@mss\@magscale2}}%
+\def\psc{\@getfont\psc\scfam\@xivpt{\@mcsc\@magscale2}}%
+\def\ly{\fam\lyfam\frtnly}\textfont\lyfam\frtnly
+   \scriptfont\lyfam\tenly \scriptscriptfont\lyfam\sevly
+\@setstrut \rm}
+
+% \def\@xivpt{}
+
+\def\xviipt{\textfont\z@\svtnrm
+  \scriptfont\z@\twlrm \scriptscriptfont\z@\tenrm
+\textfont\@ne\svtnmi \scriptfont\@ne\twlmi \scriptscriptfont\@ne\tenmi
+\textfont\tw@\svtnsy \scriptfont\tw@\twlsy \scriptscriptfont\tw@\tensy
+% \textfont\thr@@\svtnex \scriptfont\thr@@\twlex \scriptscriptfont\thr@@\tenex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+          \textfont\@ne\svtnmi \textfont\tw@\svtnsy \textfont\lyfam\svtnly
+          \@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\prm{\fam\z@\svtnrm}%
+\def\pit{\@getfont\pit\itfam\@xviipt{emti10\@magscale3}}% explicit reference
+\def\psl{\@getfont\psl\slfam\@xviipt{emsl10\@magscale3}}% explicit reference
+\def\pbf{\fam\bffam\svtnbf}\textfont\bffam\svtnbf
+    \scriptfont\bffam\twlbf \scriptscriptfont\bffam\tenbf
+\def\ptt{\@getfont\ptt\ttfam\@xviipt{emtt10\@magscale3}\@nohyphens
+   \ptt\@xviipt}%
+\def\psf{\@getfont\psf\sffam\@xviipt{emss17}}%
+\def\psc{\@getfont\psc\scfam\@xviipt{\@mcsc\@magscale3}}%
+\def\ly{\fam\lyfam\svtnly}\textfont\lyfam\svtnly
+   \scriptfont\lyfam\twlly   \scriptscriptfont\lyfam\tenly
+\@setstrut \rm}
+
+% \def\@xviipt{}
+
+\def\xxpt{\textfont\z@\twtyrm
+  \scriptfont\z@\frtnrm \scriptscriptfont\z@\twlrm
+\textfont\@ne\twtymi \scriptfont\@ne\frtnmi \scriptscriptfont\@ne\twlmi
+\textfont\tw@\twtysy \scriptfont\tw@\frtnsy \scriptscriptfont\tw@\twlsy
+% \textfont\thr@@\twtyex \scriptfont\thr@@\frtnex \scriptscriptfont\thr@@\twlex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+        \textfont\@ne\twtymi \textfont\tw@\twtysy \textfont\lyfam\twtyly
+        \@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\prm{\fam\z@\twtyrm}%
+\def\pit{\@getfont\pit\itfam\@xxpt{emti10\@magscale4}}%  explicit reference
+\def\psl{\@getfont\psl\slfam\@xxpt{emsl10\@magscale4}}%  explicit reference
+\def\pbf{\@getfont\pbf\bffam\@xxpt{embx10\@magscale4}}%  explicit reference
+\def\ptt{\@getfont\ptt\ttfam\@xxpt{emtt10\@magscale4}\@nohyphens\ptt\@xxpt}%
+\def\psf{\@getfont\psf\sffam\@xxpt{\@mss\@magscale4}}%
+\def\psc{\@getfont\psc\scfam\@xxpt{\@mcsc\@magscale4}}%
+\def\ly{\fam\lyfam\twtyly}\textfont\lyfam\twtyly
+   \scriptfont\lyfam\frtnly \scriptscriptfont\lyfam\twlly
+\@setstrut \rm}
+
+% \def\@xxpt{}
+
+\def\xxvpt{\textfont\z@\twfvrm
+  \scriptfont\z@\twtyrm \scriptscriptfont\z@\svtnrm
+\textfont\@ne\twtymi \scriptfont\@ne\twtymi \scriptscriptfont\@ne\svtnmi
+\textfont\tw@\twtysy \scriptfont\tw@\twtysy \scriptscriptfont\tw@\svtnsy
+% \textfont\thr@@\twtyex \scriptfont\thr@@\twtyex \scriptscriptfont\thr@@\svtnex
+\textfont\thr@@\tenex \scriptfont\thr@@\tenex \scriptscriptfont\thr@@\tenex
+\def\unboldmath{\everymath{}\everydisplay{}\@nomath\unboldmath
+        \textfont\@ne\twtymi \textfont\tw@\twtysy \textfont\lyfam\twtyly
+        \@boldfalse}\@boldfalse
+\def\boldmath{\@subfont\boldmath\unboldmath}%
+\def\prm{\fam\z@\twfvrm}%
+\def\pit{\@subfont\it\rm}%
+\def\psl{\@subfont\sl\rm}%
+\def\pbf{\@getfont\pbf\bffam\@xxvpt{embx10\@magscale5}}%  explicit reference
+\def\ptt{\@subfont\tt\rm}%
+\def\psf{\@subfont\sf\rm}%
+\def\psc{\@subfont\sc\rm}%
+\def\ly{\fam\lyfam\twtyly}\textfont\lyfam\twtyly
+   \scriptfont\lyfam\twtyly \scriptscriptfont\lyfam\svtnly
+\@setstrut \rm}
+
+% \def\@xxvpt{}
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% The following are the standard plain TeX defaults for CM
+
+% \delimiterfactor=901
+% \delimitershortfall=5pt
+% \nulldelimiterspace=1.2pt
+% \scriptspace=0.5pt
+% \thinmuskip=3mu
+% \medmuskip=4mu plus 2mu minus 4mu
+% \thickmuskip=5mu plus 5mu
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% Draw small radical from cmex10 also (do only if cmex10 exist in three sizes)
+
+% \def\sqrt{\radical"39F370 }	% \def\sqrt{\radical"270370 }
+\def\@@sqrt{\radical"39F370 }	% \def\sqrt{\radical"270370 }
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% Upper case upright Greek are in CM are in text font!
+
+% \mathchardef\Gamma="7000
+% \mathchardef\Delta="7001
+% \mathchardef\Theta="7002
+% \mathchardef\Lambda="7003
+% \mathchardef\Xi="7004
+% \mathchardef\Pi="7005
+% \mathchardef\Sigma="7006
+% \mathchardef\Upsilon="7007
+% \mathchardef\Phi="7008
+% \mathchardef\Psi="7009
+% \mathchardef\Omega="700A
+
+% In EM, the upright upper case Greek letters are in the math italic font
+
+\mathchardef\Gamma="01D0
+\mathchardef\Delta="01D1
+\mathchardef\Theta="01D2
+\mathchardef\Lambda="01D3
+\mathchardef\Xi="01D4
+\mathchardef\Pi="01D5
+\mathchardef\Sigma="01D6
+\mathchardef\Upsilon="01D7
+\mathchardef\Phi="01D8
+\mathchardef\Psi="01D9
+\mathchardef\Omega="01DA
+
+% Draw upper case italic Greek from math italic ---
+% --- can use the following instead of \mit for italic Greek
+
+\mathchardef\varGamma="0100
+\mathchardef\varDelta="0101
+\mathchardef\varTheta="0102
+\mathchardef\varLambda="0103
+\mathchardef\varXi="0104
+\mathchardef\varPi="0105
+\mathchardef\varSigma="0106
+\mathchardef\varUpsilon="0107
+\mathchardef\varPhi="0108
+\mathchardef\varPsi="0109
+\mathchardef\varOmega="010A
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+\catcode`\@=\atcode		% restore original catcode of at sign
+
+\rm
+
+\endinput
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% Note that plain TeX has the accent character positions hardwired to:
+
+% 16 for `dotlessi', 17 for `dotlessj',
+% 18 for `grave', 19 for `acute', 20 for `caron',
+% 21 for `breve', 22 for `macron',
+% 23 for `ring', 24 for `cedilla',
+% 25 for `germandbls', 26 for `ae', 27 for `oe',
+% 28 for `oslash', 29 for `AE', 30 for 'OE', 31 for `Oslash',
+% 94 for `circumflex', 95 for `dotaccent', 125 for `hungarumlaut',
+% 126 for `tilde', 127 for `dieresis',
+% (see page 356 of the TeX book, and plain.tex for additional information)
+
+% These should be adjusted - if these characters are to be used -
+% AND if the text fonts are encoded to something other than TeX text
+
+% \input texnansi.tex if you are using `TeX n ANSI' encoding
+% \input ansiacce.tex if you are using Windows ANSI encoding
+% \input dcaccent.tex if you are using Cork (T1) encoding
