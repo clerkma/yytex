@@ -1,0 +1,101 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% This is a test for EM font support under LaTeX 2e
+
+\documentclass{article}
+
+% \DeclareFontEncoding{LY1}{}{}
+
+% \usepackage[T1]{fontenc}
+\usepackage[LY1]{fontenc}
+
+\usepackage{em}
+
+\usepackage{emgreek}
+
+\begin{document}
+
+$\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega$
+
+\vskip .1in
+
+\boldmath
+
+$\Gamma\Delta\Theta\Lambda\Xi\Pi\Sigma\Upsilon\Phi\Psi\Omega$
+
+\vskip .1in
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\it 
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\bf 
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\sf
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} \H{O} \.{Z} \u{A}
+
+\vskip .1in
+
+\tt
+
+Hello world!
+
+`Quoted' ``Double quoted'' ,,German quote`` % <<Guillemeted>> 
+
+\'A \`A \^A \~A \"A \r{A} % \H{O} \.{Z} \u{A}
+
+\end{document}
+
+% following works:
+
+\usepackage[LY1]{fontenc}
+\usepackage{em}
+
+% following fails: encoding scheme `LY1' unknown, while in em.sty
+
+\usepackage{em}
+\usepackage[LY1]{fontenc}
+
+% following works:
+
+\DeclareFontEncoding{LY1}{}{}
+\usepackage{em}
+\usepackage[LY1]{fontenc}
+
+% following works:
+
+\usepackage{em}
+\usepackage[T1]{fontenc}
+
+% Following fails: Font T1/cmr/m/n/10=dcr1000 ... not loadable, while in fontenc.sty
+
+\usepackage[T1]{fontenc}
+\usepackage{em}
+

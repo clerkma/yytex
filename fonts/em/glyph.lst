@@ -1,0 +1,37 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Glyphs that occur in Cork but not in EMR10:
+===========================================
+
+ogonek, Aogonek, aogonek, Eogonek, eogonek
+guilsinglleft, guilsinglright, guillemotleft, guillemotright,
+Lcaron, lcaron, dcaron, tcaron, dcroat
+Eth, eth, Thorn, thorn, Eng, eng,
+Scommaaccent, Tcommaaccent (but does have Scedilla, Tcedilla)
+asciicircum, asciitilde, quotedbl, zeroinferior
+
+(but does have cwm, sfthyphen, nbspace)
+
+Glyphs in EMR10 that are not in Cork encoding:
+==============================================
+
+Scedilla, Tcedilla (but not Scommaaccent, Tcommaaccent)
+suppress, bullet, 
+dagger, daggerdbl, paragraph (but section is included)
+multiply, divide, minus, periodcentered, logicalnot
+Gamma, Delta, Theta, Lambda, Xi, Pi, Sigma, Upsilon, Phi, Psi, Omega.
+
+Glyphs in TeX 'n ANSI not in EMR
+================================
+
+ogonek, fraction, quotedbl, quotesingle, 
+florin, cent, currency,
+copyright, trademark, registered
+ellipsis, perthousand, brokenbar, degree, mu
+ordfeminine, ordmasculine,
+onesuperior, twosuperior, threesuperior,
+onequarter, onehalf, threequarters
+Eth, eth, Thorn, thorn
+asciicircum, asciitilde
+guilsinglleft, guilsinglright, guillemotleft, guillemotright,

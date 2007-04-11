@@ -1,0 +1,94 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+emb10	EMB10 "Textures ReEncodeFont" <texmac.enc <emb10.pfb
+embx5	EMBX5 "Textures ReEncodeFont" <texmac.enc <embx5.pfb
+embx6	EMBX6 "Textures ReEncodeFont" <texmac.enc <embx6.pfb
+embx7	EMBX7 "Textures ReEncodeFont" <texmac.enc <embx7.pfb
+embx8	EMBX8 "Textures ReEncodeFont" <texmac.enc <embx8.pfb
+embx9	EMBX9 "Textures ReEncodeFont" <texmac.enc <embx9.pfb
+embx10	EMBX10 "Textures ReEncodeFont" <texmac.enc <embx10.pfb
+embx12	EMBX12 "Textures ReEncodeFont" <texmac.enc <embx12.pfb
+embxsl10	EMBXSL10 "Textures ReEncodeFont" <texmac.enc <embxsl10.pfb
+embxti10	EMBXTI10 "Textures ReEncodeFont" <texmac.enc <embxti10.pfb
+emcsc8	EMCSC8 "Textures ReEncodeFont" <texmac.enc <emcsc8.pfb
+emcsc9	EMCSC9 "Textures ReEncodeFont" <texmac.enc <emcsc9.pfb
+emcsc10	EMCSC10 "Textures ReEncodeFont" <texmac.enc <emcsc10.pfb
+emdunh10	EMDUNH10 "Textures ReEncodeFont" <texmac.enc <emdunh10.pfb
+emff10	EMFF10 "Textures ReEncodeFont" <texmac.enc <emff10.pfb
+emfi10	EMFI10 "Textures ReEncodeFont" <texmac.enc <emfi10.pfb
+emfib8	EMFIB8 "Textures ReEncodeFont" <texmac.enc <emfib8.pfb
+emitt10	EMITT10 "Textures ReEncodeFont" <texmac.enc <emitt10.pfb
+emr5	EMR5 "Textures ReEncodeFont" <texmac.enc <emr5.pfb
+emr6	EMR6 "Textures ReEncodeFont" <texmac.enc <emr6.pfb
+emr7	EMR7 "Textures ReEncodeFont" <texmac.enc <emr7.pfb
+emr8	EMR8 "Textures ReEncodeFont" <texmac.enc <emr8.pfb
+emr9	EMR9 "Textures ReEncodeFont" <texmac.enc <emr9.pfb
+emr10	EMR10 "Textures ReEncodeFont" <texmac.enc <emr10.pfb
+emr12	EMR12 "Textures ReEncodeFont" <texmac.enc <emr12.pfb
+emr17	EMR17 "Textures ReEncodeFont" <texmac.enc <emr17.pfb
+emsl8	EMSL8 "Textures ReEncodeFont" <texmac.enc <emsl8.pfb
+emsl9	EMSL9 "Textures ReEncodeFont" <texmac.enc <emsl9.pfb
+emsl10	EMSL10 "Textures ReEncodeFont" <texmac.enc <emsl10.pfb
+emsl12	EMSL12 "Textures ReEncodeFont" <texmac.enc <emsl12.pfb
+emsltt10	EMSLTT10 "Textures ReEncodeFont" <texmac.enc <emsltt10.pfb
+emss8	EMSS8 "Textures ReEncodeFont" <texmac.enc <emss8.pfb
+emss9	EMSS9 "Textures ReEncodeFont" <texmac.enc <emss9.pfb
+emss10	EMSS10 "Textures ReEncodeFont" <texmac.enc <emss10.pfb
+emss12	EMSS12 "Textures ReEncodeFont" <texmac.enc <emss12.pfb
+emss17	EMSS17 "Textures ReEncodeFont" <texmac.enc <emss17.pfb
+emssbx10	EMSSBX10 "Textures ReEncodeFont" <texmac.enc <emssbx10.pfb
+emssdc10	EMSSDC10 "Textures ReEncodeFont" <texmac.enc <emssdc10.pfb
+emssi8	EMSSI8 "Textures ReEncodeFont" <texmac.enc <emssi8.pfb
+emssi9	EMSSI9 "Textures ReEncodeFont" <texmac.enc <emssi9.pfb
+emssi10	EMSSI10 "Textures ReEncodeFont" <texmac.enc <emssi10.pfb
+emssi12	EMSSI12 "Textures ReEncodeFont" <texmac.enc <emssi12.pfb
+emssi17	EMSSI17 "Textures ReEncodeFont" <texmac.enc <emssi17.pfb
+emssq8	EMSSQ8 "Textures ReEncodeFont" <texmac.enc <emssq8.pfb
+emssqi8	EMSSQI8 "Textures ReEncodeFont" <texmac.enc <emssqi8.pfb
+emtcsc10	EMTCSC10 "Textures ReEncodeFont" <texmac.enc <emtcsc10.pfb
+emti7	EMTI7 "Textures ReEncodeFont" <texmac.enc <emti7.pfb
+emti8	EMTI8 "Textures ReEncodeFont" <texmac.enc <emti8.pfb
+emti9	EMTI9 "Textures ReEncodeFont" <texmac.enc <emti9.pfb
+emti10	EMTI10 "Textures ReEncodeFont" <texmac.enc <emti10.pfb
+emti12	EMTI12 "Textures ReEncodeFont" <texmac.enc <emti12.pfb
+emtt8	EMTT8 "Textures ReEncodeFont" <texmac.enc <emtt8.pfb
+emtt9	EMTT9 "Textures ReEncodeFont" <texmac.enc <emtt9.pfb
+emtt10	EMTT10 "Textures ReEncodeFont" <texmac.enc <emtt10.pfb
+emtt12	EMTT12 "Textures ReEncodeFont" <texmac.enc <emtt12.pfb
+emu10	EMU10 "Textures ReEncodeFont" <texmac.enc <emu10.pfb
+emvtt10	EMVTT10 "Textures ReEncodeFont" <texmac.enc <emvtt10.pfb
+
+emmi5	EMMI5 <emmi5.pfb
+emmi6	EMMI6 <emmi6.pfb
+emmi7	EMMI7 <emmi7.pfb
+emmi8	EMMI8 <emmi8.pfb
+emmi9	EMMI9 <emmi9.pfb
+emmi10	EMMI10 <emmi10.pfb
+emmi12	EMMI12 <emmi12.pfb
+emmib5	EMMIB5 <emmib5.pfb
+emmib6	EMMIB6 <emmib6.pfb
+emmib7	EMMIB7 <emmib7.pfb
+emmib8	EMMIB8 <emmib8.pfb
+emmib9	EMMIB9 <emmib9.pfb
+emmib10	EMMIB10 <emmib10.pfb
+
+cmsy5	CMSY5	<cmsy5.pfb
+cmsy6	CMSY6	<cmsy6.pfb
+cmsy7	CMSY7	<cmsy7.pfb
+cmsy8	CMSY8	<cmsy8.pfb
+cmsy9	CMSY9	<cmsy9.pfb
+cmsy10	CMSY10	<cmsy10.pfb
+cmbsy5	CMBSY5	<cmbsy5.pfb
+cmbsy6	CMBSY6	<cmbsy6.pfb
+cmbsy7	CMBSY7	<cmbsy7.pfb
+cmbsy8	CMBSY8	<cmbsy8.pfb
+cmbsy9	CMBSY9	<cmbsy9.pfb
+cmbsy10	CMBSY10	<cmbsy10.pfb
+
+cmex7	CMEX7	<cmex7.pfb
+cmex8	CMEX8	<cmex8.pfb
+cmex9	CMEX9	<cmex9.pfb
+cmex10	CMEX10	<cmex10.pfb
+
+

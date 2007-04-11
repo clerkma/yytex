@@ -1,0 +1,69 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+List of EM text fonts:
+
+  emb10
+  embx10
+  embx12
+  embx5
+  embx6
+  embx7
+  embx8
+  embx9
+  embxsl10
+  embxti10
+  emcsc10
+  emcsc8
+  emcsc9
+  emdunh10
+  emff10
+  emfi10
+  emfib8
+  emitt10
+  emr10
+  emr12
+  emr17
+  emr5
+  emr6
+  emr7
+  emr8
+  emr9
+  emsl10
+  emsl12
+  emsl8
+  emsl9
+  emsltt10
+  emss10
+  emss12
+  emss17
+  emss8
+  emss9
+  emssbx10
+  emssdc10
+  emssi10
+  emssi12
+  emssi17
+  emssi8
+  emssi9
+  emssq8
+  emssqi8
+  emtcsc10
+  emti10
+  emti12
+  emti7
+  emti8
+  emti9
+  emtt10
+  emtt12
+  emtt8
+  emtt9
+  emu10
+  emvtt10
+
+There are no emtex* fonts since the cmtex* fonts are just the
+cmtt* fonts with some glyphs removed and others added. When
+reencoded to Windows ANSI or Macintosh standard roman encoding
+they will basically look the same (with some mising glyphs in
+each case).  So as not to lose any useful glyphs from the
+collection, emtt* contains both the glyphs from cmtt* and cmtex*

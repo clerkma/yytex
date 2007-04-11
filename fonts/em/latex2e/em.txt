@@ -1,0 +1,191 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+EM  package for LaTeX
+=====================
+
+  CM style fonts - but with accented characters - in Adobe Type 1 format!
+
+Background:
+===========
+
+Do you:
+
+    (1)  like the look of Computer Modern (CM) fonts;  but
+    (2)  need ready-made accented characters for proper hyphenation; and
+    (3)  need scalable outline fonts (a.k.a. `PostScript' or `ATM' fonts)?
+
+Then the EM font set is for you!  The character shapes are from Computer
+Modern, yet the glyph complement is much larger -- including numerous
+ready-made accented and composite characters -- and the fonts are in 
+scalable Adobe Type 1 format (as opposed to METAFONT or PK bitmaps).  
+
+The EM fonts also satisfy the needs of non-TeX users desireous of the CM
+look, because they appear to the operating system as plain vanilla text fonts.
+
+The EM font set:
+================
+
+The EM font set contains 57 text fonts based on the text fonts in Knuth's
+Computer Modern font (CM) set.  It also contains 13 math italic fonts based
+on the math italic fonts in CM and the AMS font set. The EM text fonts have 
+a more complete set of glyphs than the corresponding CM fonts.
+
+Each CM text font has only about 117 usable glyphs for text (plus eleven
+Greek letters).  The EM fonts add over 90 ready-made composites and
+other `missing' glyphs to bring the total number of glyphs to over 300.  
+This makes it convenient to use these fonts with T1 (Cork) encoding or LY1 
+(TeX 'n ANSI), encoding or LM1 (Textures) encoding. The AFM files show the 
+actual glyph complement available.
+
+Note that the EM fonts are set up as normal text fonts, unlike the CM fonts --
+all of which have to be set up as pi/math/symbol/decorative -- since CM fonts
+use there own unusual character layout and do not have anywhere near the
+`standard' complement of 228 glyphs for a text font.  
+
+Treated as text fonts, the EM fonts are reencoded to platform specific
+encoding when installed in Windows or on the Macintosh.  Consequently, for
+use with TeX, you need a system that can reencode fonts `on the fly' (or you
+need to `hard reencode' the PFB and PFM files using the REENCODE and AFMtoPFM
+utilities). 
+
+The EM text fonts are used in conjunction with some of the CM math fonts. 
+CM math fonts do not contain upright uppercase Greek letters -- these are
+normally taken from the roman text fonts (CMR* and CMBX*). Included in the EM
+font set are EMMI* math italic fonts which have these irksome upright
+uppercase Greek letters in character code positions 208 - 218.  Note that
+this is the same scheme used in the MathTime font set, and similar to the
+scheme used with the Lucida Bright + Lucida New Math font set when the Lucida
+Bright Expert set is not available.
+
+The names of the EM fonts are derived directly from those of the CM fonts.
+So, for example, EMR17 is based on CMR17 --- with close to two hundred 
+glyphs added. And EMMI10 is based on CMMI10 --- with upright Greek added.
+
+NOTE: the following is largely adapted from David Carlisle's type1cm.txt
+
+Using the LaTeX support for the EM font set from Y&Y, Inc.
+==========================================================
+
+The default way of using the `em' package is as a LaTeX package file.
+Install em.sty as described below and then just add
+
+\usepackage[T1]{em}		 or \usepackage[LY1]{em}	or \usepackage[LM1]{em}
+
+to your document. This will override the definitions for all the fonts
+and so the standard fd files are not used. This will cause LaTeX
+to use the em fonts, and will also call the fontenc package to switch
+to the requested encoding (T1/Cork or LY1/TeXnANSI or LM1/Mac).
+
+Installation Instructions:
+==========================
+
+IMPORTANT NOTE: we also supply a ready-made em.sty so the following
+`unpacking' is actually not normally needed; unless you require some
+particular customization.
+
+The installation is controlled by the file em.ins which you may want to
+edit in two places.
+
+1) If you do not have the AMS Font set available in scalable form then
+   remove the `%' from the line           %\def\ams{}
+   This will cause a more restricted font specification to be used.
+
+   If you do not have the `AMS Extra' font set available in scalable form
+   (i.e. msam6, msam8 and msam9 in addition to msam5, msam7 and msam10)
+   then remove the `%' from the line      %\def\ams{ams}
+
+2) If after reading the warning above regarding *.fd files, you decide to
+   make a set of fd files, remove the `%'from the line     %\makefdtrue
+
+Then run TeX (or LaTeX) on the file em.ins.  A package file em.sty (and
+perhaps a set of fd files - see above) will be produced which you should
+place in a directory where TeX looks for input files.  (Alternatively, add
+the directory containing these files to the list in the TEXINPUTS 
+environment variable; or the format specific environment variable LATEX).
+
+Appendix A: Font sizing -- discrete or continuous?
+==================================================
+
+LaTeX separates its internal notion of font specification from the external
+fonts available on the system by means of `Font Shape Specifications', that
+are normally held in `Font Descriptor' (fd) files.
+
+The fd files that come with LaTeX that refer to the standard Computer Modern
+set (and the related AMS set) are based on the classical bitmap fonts which
+are available in discrete `magstep' sizes only.  For instance, the
+specification of the main roman font is
+
+  \DeclareFontShape{OT1}{cmr}{m}{n}
+   {  <5> <6> <7> <8> <9> <10> <12> gen * cmr
+      <10.95> cmr10
+      <14.4>  cmr12
+      <17.28><20.74><24.88>cmr17}{}
+
+which says that no font is available at 10.5pt (LaTeX will substitute the
+nearest available size if you ask for this) and similarly the font is not
+available at all above 25pt.
+
+Such restrictions are essential with bitmap fonts to save generating huge
+numbers of bitmaps for any size that might be requested, however with
+scalable versions of the fonts these restrictions are not really needed. 
+For instance the equivalent definition here is:
+
+\DeclareFontShape{LY1}{cmr}{m}{n}{
+        <-6>    emr5
+        <6-7>   emr6
+        <7-8>   emr7
+        <8-9>   emr8
+        <9-10>  emr9
+        <10-12> emr10
+        <12-17> emr12
+        <17->   emr17
+      }{}
+
+which means that you can (although some may consider it bad style) go
+\fontsize{10.345pt}{12pt}\selectfont and be given a suitably scaled version of
+emr10 and a baseline setting of 12pt.  Similarly if you really want, you can
+go \fontsize{2cm}{2.5cm}\selectfont and use emr17 scaled to 2cm height for a
+special display context.
+
+Appendix B:  Technical note about the Font Shape specifications used:
+==========================================================================
+
+David Carlisle consistently specifies that given a requested size, the
+largest available font size smaller than (or equal to) the requested size
+should be used and then enlarged to the requested size. The exception being
+sizes smaller than the smallest available font, which use a reduced version
+of that font.  The rationale for this is that enlarging a small font
+typically produces a rather `fat' font, but something readable, whereas
+shrinking a font may produce something unreadable quite quickly, particularly
+since the strokes in Computer Modern - and hence European Modern - are
+already quite thin.
+
+So for msam (if `extra' is not specified) he used:
+
+\DeclareFontShape{U}{msa}{m}{n}{
+        <-7>    msam5 
+        <7-10>  msam7
+        <10->   msam10
+        }{}
+
+That is, sizes strictly below 7pt use msam5, 7pt to (less than) 10pt
+use msam7 and sizes 10pt and above use msam10.
+
+This differs from the specification that the AMS use for the scalable
+AMS fonts (used by the psfonts option to the amsfonts package)
+They use
+
+\DeclareFontShape{U}{msa}{m}{n}{
+       <-6>      msam5 
+       <6-8>     msam7 
+       <8->      msam10
+  }{}
+
+This scheme has the advantage of minimising the scaling used, so for instance
+a 9pt request is satisfied by msam7 scaled up to 9 by this package, but by
+msam10 scaled down to 9 by the AMS package.
+
+In practice this is not likely to make a difference that anyone might notice,
+but it could in principle affect line breaks etc, so David thought that it
+should be mentioned here.

@@ -1,0 +1,23 @@
+% test.tex - test file for testing parts of LaTeX code
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+\documentclass[11pt]{book}
+
+\usepackage[LY1]{fontenc}	% must define LY1 encoding before use
+\usepackage{em}				% may need encoding option LY1 or T1
+\usepackage{emgreek}		% needed for upright uppercase Greek
+
+\begin{document}
+
+\noindent This will be a test
+\begin{equation}
+V = \sum_{i=1}^{n} s_n(i) \left( i - \frac{n+1}{2} \right).
+\end{equation}
+This is a test
+\begin{equation}
+\Gamma = \sqrt{\alpha^2+\beta^2}
+\end{equation}
+That was a test.
+
+\end{document}

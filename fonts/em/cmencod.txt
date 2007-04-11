@@ -1,0 +1,21 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Differences between OT1 (TeX text) and `ASCII' encoding
+
+ASCII	OT1 (TeX text)	code
+
+space	suppress		32
+{		endash			124
+|		emdash			125
+}		hungarumlaut	126
+_		dotaccent		95
+\		quotedblleft	92
+<		exclamdown		60
+>		questiondown	62
+`		quoteleft		96
+^		circumflex accent	94
+~		tilde accent	126
+'		quotesingle		39
+"		quotedblright	34
+

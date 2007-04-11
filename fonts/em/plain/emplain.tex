@@ -1,0 +1,407 @@
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+% Copyright (C) 1996, 1997, 1998 Y&Y, Inc.
+% Copyright (C) 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+%       
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+%
+%       emplain.tex             Version 1.2             1998 June 5
+%
+%       This TeX macro header file is used for replacing CM fonts with the
+%       EM fonts from Y&Y, Inc. in Adobe Type 1 format.
+%
+%       \input emplain.tex  at the top of your TeX source file.
+%       This countermands declarations in plain.tex which set up the CM fonts.
+%
+%       This is for use with plain TeX --- for LaTeX 2.09 use `emlatex.tex'
+%       instead.  For LaTeX 2e, instead run `em.ins' on `em.dtx' from
+%       (read em.txt for details) and then \usepackage{em}.
+%
+% NOTE: Loading many new fonts on top of a predefined format may cause
+%       some implementations of TeX to run out of space for fonts.
+%       You may wish to create a new `TeX format' in that case using 
+%       `ini TeX' (or use a `big' TeX, or better yet a `dynamic' TeX).
+%
+%		updated 1998/06/03 by bnb for use with tugboat.sty
+%
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% We assume this is loaded on top of an existing plain TeX format
+% We try and avoid loading too many unnecessary fonts
+
+\font\tenrm=emr10 % roman text
+% \font\preloaded=emr9
+% \font\preloaded=emr8
+\font\sevenrm=emr7
+% \font\preloaded=emr6
+\font\fiverm=emr5
+
+\font\teni=emmi10 % math italic
+% \font\preloaded=emmi9
+% \font\preloaded=emmi8
+\font\seveni=emmi7
+% \font\preloaded=emmi6
+\font\fivei=emmi5
+
+\font\tensy=cmsy10 % math symbols
+% \font\preloaded=cmsy9
+% \font\preloaded=cmsy8
+\font\sevensy=cmsy7
+% \font\preloaded=cmsy6
+\font\fivesy=cmsy5
+
+\font\tenex=cmex10 % math extension
+\font\sevenex=cmex7
+% \font\fiveex=cmex7 at 5pt
+
+% \font\preloaded=emss10 % sans serif
+% \font\preloaded=emssq8
+
+% \font\preloaded=emssi10 % sans serif italic
+% \font\preloaded=emssqi8
+
+\font\tenbf=embx10 % boldface extended
+% \font\preloaded=embx9
+% \font\preloaded=embx8
+\font\sevenbf=embx7
+% \font\preloaded=embx6
+\font\fivebf=embx5
+
+\font\tentt=emtt10 % typewriter
+% \font\preloaded=emtt9
+% \font\preloaded=emtt8
+
+% \font\preloaded=emsltt10 % slanted typewriter
+
+\font\tensl=emsl10 % slanted roman
+% \font\preloaded=emsl9
+% \font\preloaded=emsl8
+
+\font\tenit=emti10 % text italic
+% \font\preloaded=emti9
+% \font\preloaded=emti8
+% \font\preloaded=emti7
+
+% More random fonts
+
+% \font\preloaded=emu10 % unslanted text italic
+\font\tenuit=emu10
+
+% \font\preloaded=emmib10 % bold math italic
+% \font\preloaded=cmbsy10 % bold math symbols
+
+% \font\preloaded=emcsc10 % caps and small caps
+\font\tensmc=emcsc10
+
+% \font\preloaded=emssbx10 % sans serif bold extended
+
+\chardef\atcode=\catcode`\@	% save catcode of atsign
+\catcode`\@=11			% make atsign `letter'
+\ifx\tugstyloaded@\relax
+% \newfam\sectitlefam                  % family used in tugboat.sty
+\font\seventeenssb=emssbx10 scaled \magstep3
+\font\twelvessb=emssbx10 scaled \magstep1
+\textfont\sectitlefam=\seventeenssb 
+\scriptfont\sectitlefam=\twelvessb
+\fi
+\catcode`\@=\atcode		% restore original catcode of atsign
+
+% \font\preloaded=emdunh10 % Dunhill style
+
+% Additional \preloaded fonts can be specified here.
+% (And those that were \preloaded above can be eliminated.)
+
+\let\preloaded=\undefined % preloaded fonts must be declared anew later.
+
+\skewchar\teni=127 \skewchar\seveni=127 \skewchar\fivei=127
+\skewchar\tensy=45 \skewchar\sevensy=45 \skewchar\fivesy=45
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% Pick up the math font family numbers defined by plain TeX already
+
+% For TUB, comment out the following...
+
+\textfont0=\tenrm \scriptfont0=\sevenrm \scriptscriptfont0=\fiverm
+% \def\rm{\fam\z@\tenrm}
+\textfont1=\teni \scriptfont1=\seveni \scriptscriptfont1=\fivei
+% \def\mit{\fam\@ne} \def\oldstyle{\fam\@ne\teni}
+\textfont2=\tensy \scriptfont2=\sevensy \scriptscriptfont2=\fivesy
+% \def\cal{\fam\tw@}
+% \textfont3=\tenex \scriptfont3=\sevenex \scriptscriptfont3=\fiveex
+\textfont3=\tenex \scriptfont3=\tenex \scriptscriptfont3=\tenex
+% \newfam\itfam \def\it{\fam\itfam\tenit} % \it is family 4
+\textfont\itfam=\tenit
+% \newfam\slfam \def\sl{\fam\slfam\tensl} % \sl is family 5
+\textfont\slfam=\tensl
+% \newfam\bffam \def\bf{\fam\bffam\tenbf} % \bf is family 6
+\textfont\bffam=\tenbf 
+        \scriptfont\bffam=\sevenbf \scriptscriptfont\bffam=\fivebf
+% \newfam\ttfam \def\tt{\fam\ttfam\tentt} % \tt is family 7
+\textfont\ttfam=\tentt
+
+% For use in TUB, load them through call to size collection instead:
+% \tenpoint
+% Which can be done below, after remainder of fonts defined.
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% Set up some additional sizes.  If you need to conserve TeX memory 
+% (or gain some speed), then comment out the rarely used sizes marked with %*
+
+% math italic
+\font\eighteeni=emmi12 at 18pt  %*
+\font\fourteeni=emmi12 at 14pt  %*
+\font\twelvei=emmi12            %*
+\font\eleveni=emmi12 at 10.95pt %*
+%\font\teni=emmi10
+\font\ninei=emmi9               %*
+\font\eighti=emmi8              %*
+%\font\seveni=emmi7
+\font\sixi=emmi6                %*
+%\font\fivei=emmi5
+
+% math symbols
+\font\eighteensy=cmsy10 at 18pt %*
+\font\fourteensy=cmsy10 at 14pt %*
+\font\twelvesy=cmsy10 at 12pt   %*
+\font\elevensy=cmsy10 at 10.95pt        %*
+%\font\tensy=cmsy10
+\font\ninesy=cmsy9              %*
+\font\eightsy=cmsy8             %*
+%\font\sevensy=cmsy7
+\font\sixsy=cmsy6               %*
+%\font\fivesy=cmsy5
+
+% math extension
+\font\eighteenex=cmex10 at 18pt %*
+\font\fourteenex=cmex10 at 14pt %*
+\font\twelveex=cmex10 at 12pt           %*
+\font\elevenex=cmex10 at 10.95pt        %*
+%\font\tenex=cmex10
+
+% roman text
+\font\eighteenrm=emr17 at 18pt  %*
+\font\fourteenrm=emr12 at 14pt  %*
+\font\twelverm=emr12
+\font\elevenrm=emr10 at 10.95pt %*
+%\font\tenrm=emr10
+\font\ninerm=emr9
+\font\eightrm=emr8
+%\font\sevenrm=emr7
+\font\sixrm=emr6                %*
+%\font\fiverm=emr5
+
+% text italic
+\font\eighteenit=emti12 at 18pt %*
+\font\fourteenit=emti12 at 14pt %*
+\font\twelveit=emti12 at 12pt   %*
+\font\elevenit=emti10 at 10.95pt                %*
+%\font\tenit=emti10
+\font\nineit=emti9
+\font\eightit=emti8             %*
+
+% boldface extended
+\font\eighteenbf=embx12 at 18pt %*
+\font\fourteenbf=embx12 at 14pt %*
+\font\twelvebf=embx12
+\font\elevenbf=embx10 at 10.95pt                %*
+%\font\tenbf=embx10
+\font\ninebf=embx9
+\font\eightbf=embx8             %*
+%\font\sevenbf=embx7
+\font\sixbf=embx6               %*
+%\font\fivebf=embx5
+
+% typewriter
+\font\eighteentt=emtt12 at 18pt %*
+\font\fourteentt=emtt12 at 14pt %*
+\font\twelvett=emtt12           %*
+\font\eleventt=emtt10 at 10.95pt        %*
+%\font\tentt=emtt10
+\font\ninett=emtt10 at 9pt      %*
+\font\eighttt=emtt8 at 8pt      %*
+
+% slanted roman
+\font\eighteensl=emsl12 at 18pt %*
+\font\fourteensl=emsl12 at 14pt %*
+\font\twelvesl=emsl12
+\font\elevensl=emsl10 at 10.95pt        %*
+%\font\tensl=emsl10
+\font\ninesl=emsl9              %*
+\font\eightsl=emsl8             %*
+
+% If we do define math fonts here we would need to also set \skewchar:
+
+\skewchar\eighteeni=127 \skewchar\fourteeni=127 \skewchar\twelvei=127
+\skewchar\eleveni=127 \skewchar\teni=127 \skewchar\ninei=127
+\skewchar\eighti=127 \skewchar\seveni=127 \skewchar\sixi=127
+\skewchar\fivei=127
+\skewchar\eighteensy=48 \skewchar\fourteensy=48 \skewchar\twelvesy=48
+\skewchar\elevensy=48 \skewchar\tensy=48 \skewchar\ninesy=48
+\skewchar\eightsy=48 \skewchar\sevensy=48 \skewchar\sixsy=48
+\skewchar\fivesy=48
+
+% Can now load TUB fonts here:
+% \tenpoint
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% The following are the standard plain TeX defaults for CM
+
+% \delimiterfactor=901
+% \delimitershortfall=5pt
+% \nulldelimiterspace=1.2pt
+% \scriptspace=0.5pt
+% \thinmuskip=3mu
+% \medmuskip=4mu plus 2mu minus 4mu
+% \thickmuskip=5mu plus 5mu
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** % 
+
+% Draw small radical from CMEX (do this ONLY if CMEX exist in three sizes)
+
+% \def\sqrt{\radical"39F370 }   % \def\sqrt{\radical"270370 }
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% The following depends on text font encoding so needs to be taken
+% care of separately by something like \input texnansi.tex
+
+% \chardef\%=`\%
+% \chardef\&=`\&
+% \chardef\#=`\#
+% \chardef\$=`\$
+% \chardef\ss=25
+% \chardef\ae=26
+% \chardef\oe=27
+% \chardef\o=28
+% \chardef\AE=29
+% \chardef\OE=30
+% \chardef\O=31
+% \chardef\i=16 \chardef\j=17 % dotless letters
+% \def\aa{\accent23a}
+% \def\l{\char32l}
+% \def\L{\leavevmode\setbox0\hbox{L}\hbox to\wd0{\hss\char32L}}
+
+% \def\aa{^^e5} \def\AA{^^c5}           % aring (229), Aring (197)
+% \def\l{^^90} \def\L{^^80}             % lslash (144), Lslash (128)
+
+% The EM fonts have a real underline
+
+% \def\_{\leavevmode \kern.06em \vbox{\hrule width.3em}}
+% \def\_{^^5F}                          % underline (95)
+
+% \def\AA{\leavevmode\setbox0\hbox{h}\dimen@\ht0\advance\dimen@-1ex%
+%   \rlap{\raise.67\dimen@\hbox{\char'27}}A}
+
+% We could pull section, paragraph, dagger, daggerdbl from text font
+
+% \def\mathhexbox#1#2#3{\leavevmode
+%   \hbox{$\m@th \mathchar"#1#2#3$}}
+% \def\dag{\mathhexbox279}
+% \def\ddag{\mathhexbox27A}
+% \def\S{\mathhexbox278}
+% \def\P{\mathhexbox27B}
+
+% \def\dag{^^86} \def\ddag{^^87}        % dagger (134), daggerdbl (135)
+% \def\S{^^a7}  \def\P{^^b6}            % section (167), paragraph (182)
+
+% Uncomment the following standard plain TeX definitions for TUB
+
+% \def\`#1{{\accent18 #1}}
+% \def\'#1{{\accent19 #1}}
+% \def\^#1{{\accent94 #1}} \let\^^D=\^
+% \def\~#1{{\accent126 #1}}
+% \def\=#1{{\accent22 #1}}
+% \def\v#1{{\accent20 #1}} \let\^^_=\v
+% \def\u#1{{\accent21 #1}} \let\^^S=\u
+% \def\"#1{{\accent127 #1}}
+% \def\.#1{{\accent95 #1}}
+% \def\H#1{{\accent125 #1}}
+% \def\t#1{{\edef\next{\the\font}\the\textfont1\accent127\next#1}}
+
+% following four lines are for TeX n ANSI encoding only
+% \def\.##1{{\accent5 ##1}}%     dotaccent      % not in 95
+% \def\H##1{{\accent6 ##1}}%     hungarumlaut   % not in 125
+% \def\k##1{{\accent7 ##1}}%     ogonek         % not in CM fonts
+% \def\"##1{{\accent168 ##1}}%   dieresis       % alternate to 127
+
+% Lower case Greek letters in smae place as in CM
+
+% \mathchardef\Gamma="7000
+% \mathchardef\Delta="7001
+% \mathchardef\Theta="7002
+% \mathchardef\Lambda="7003
+% \mathchardef\Xi="7004
+% \mathchardef\Pi="7005
+% \mathchardef\Sigma="7006
+% \mathchardef\Upsilon="7007
+% \mathchardef\Phi="7008
+% \mathchardef\Psi="7009
+% \mathchardef\Omega="700A
+
+% The upright upper case Greek letters are in the math italic font
+
+\mathchardef\Gamma="01D0
+\mathchardef\Delta="01D1
+\mathchardef\Theta="01D2
+\mathchardef\Lambda="01D3
+\mathchardef\Xi="01D4
+\mathchardef\Pi="01D5
+\mathchardef\Sigma="01D6
+\mathchardef\Upsilon="01D7
+\mathchardef\Phi="01D8
+\mathchardef\Psi="01D9
+\mathchardef\Omega="01DA
+
+% \def\acute{\mathaccent"7013 }
+% \def\grave{\mathaccent"7012 }
+% \def\ddot{\mathaccent"707F }
+% \def\tilde{\mathaccent"707E }
+% \def\bar{\mathaccent"7016 }
+% \def\breve{\mathaccent"7015 }
+% \def\check{\mathaccent"7014 }
+% \def\hat{\mathaccent"705E }
+% \def\vec{\mathaccent"017E }
+% \def\dot{\mathaccent"705F }
+
+% \def\ddot{\mathaccent"70A8 }  % 168 dieresis
+
+% \normalbaselines\rm % select roman font
+% \nonfrenchspacing % punctuation affects the spacing
+
+% The following not needed for TUB, taken care of in \tenpoint above.
+\rm
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% AMS TeX with amsppt.sty:
+
+% For use with amsppt.sty, need the following fonts (make sure uncommented):
+
+% \eightbf, \eightit, \eightsl, \eighttt, \sevenit, \sixrm, \sixbf, 
+% \eighti, \sixi, \eightsy, \sixsy
+
+% *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** %
+
+% Note that plain TeX has the accent character positions hardwired to:
+
+% 16 for `dotlessi', 17 for `dotlessj',
+% 18 for `grave', 19 for `acute', 20 for `caron',
+% 21 for `breve', 22 for `macron',
+% 23 for `ring', 24 for `cedilla',
+% 25 for `germandbls', 26 for `ae', 27 for `oe',
+% 28 for `oslash', 29 for `AE', 30 for 'OE', 31 for `Oslash',
+% 94 for `circumflex', 95 for `dotaccent', 125 for `hungarumlaut',
+% 126 for `tilde', 127 for `dieresis',
+% (see page 356 of the TeX book, and plain.tex for additional information)
+
+% These should be adjusted - if these characters are to be used -
+% AND if the text fonts are encoded to something other than TeX text
+
+% \input texnansi.tex if you are using `TeX n ANSI' encoding
+% \input ansiacce.tex if you are using Windows ANSI encoding
+% \input dcaccent.tex if you are using Cork (T1) encoding

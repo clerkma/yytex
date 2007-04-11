@@ -1,0 +1,62 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+% Glyphs missing from EM w.r.t. LY1 encoding - comments are position in TS1
+
+ copyright			% 169
+ trademark			% 151
+ registered			% 174		(ok in EMR*, EMCSC*, EMSL*)
+
+ cent				% 162
+ florin				% 140
+ currency			% 164
+ yen				% 165		(ok in EMR*, EMCSC*, EMSL*)
+
+ ordfeminine		% 170
+ ordmasculine		% 186
+
+ degree				% 176
+ fraction			%  47
+ mu					% 181		(could import from EMMI and EMMIB)
+
+ onequarter			% 188
+ onehalf			% 189
+ threequarters		% 190
+ 
+ onesuperior		% 185
+ twosuperior		% 178
+ threesuperior		% 179
+
+ dagger			% 132	(ok in EMR*, EMSL*, EMCSC*, EMB, EMBX*, EMTI*, EMU)
+ daggerdbl		% 133	(ok in EMR*, EMSL*, EMCSC*, EMB, EMBX*, EMTI*, EMU)
+
+ multiply		% 215	(ok in EMR*, EMSL*, EMCSC*, EMB, EMBX*, EMTI*, EMU)
+ divide			% 247	(ok in EMR*, EMSL*, EMCSC*, EMB, EMBX*, EMTI*, EMU)
+
+ logicalnot		% 172	(ok in EMR*, EMSL*, EMCSC*, EMB, EMBX*, EMTI*, EMTT*, EMU)
+ plusminus		% 177	(ok in EMR*, EMSL*, EMCSC*, EMB, EMBX*, EMTI*, EMTT*, EMU)
+
+% We already have constructed the following:
+
+% space				% 32
+% dollar			% 36
+% quotesingle		% 39
+% quotedbl			% 130
+% perthousand		% 135
+% bullet			% 136
+% sterling			% 163
+% section			% 167
+% brokenbar			% 166
+% periodcentered	% 183
+
+% old style digits 48-57
+
+% arrows 24, 25, 94, 95
+
+% Macintosh encoding also has the following symbols borrowed from Symbol:
+% notequal, infinity, lessequal, greaterequal, partialdiff, summation, 
+% product, pi, integral, radical, approxequal, lozenge, apple
+% in any case, none of these are in TS1...
+
+% check: paragraph ? endash ? emdash ? quotedblleft ? quotedblright ? 
+% check: quotedblbase ? dotaccent ? hungarumlaut ? fi ? fl ?

@@ -1,0 +1,231 @@
+********************************************************************
+Copyright (c) 1996 - 1997 Y&Y, Inc.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+*******************************************************************
+
+=====================================================================
+European Modern font set for the Macintosh --- Installation:
+=====================================================================
+
+These diskettes contain:
+
+	(*) Adobe Type 1 outline font files (diskettes A, B, C);
+	(*) screen fonts (diskettes A and C);
+	(*) font metric files - AFM and TFM extension (diskettes D and E);
+	(*) plain TeX, LaTeX 2.09 and LaTeX 2e support (diskette C).
+
+for:
+
+	(*) European Modern text font
+	(*) European Modern math fonts
+	(*) Some Computer Modern math fonts
+
+The fonts are in Adobe Type 1 format (a.k.a. `PostScript' or `ATM' fonts).
+For on screen viewing you will need Adobe Type Manager (ATM).
+We recommend the new ATM Deluxe 4.0 since it adds font management
+capabilities to its basic font rasterizing function.  With older 
+versions of ATM you may want to use SuitCase II for font management.
+
+Outline font file format:
+-------------------------
+
+The actual outline fonts themselves are supplied in Macintosh outline font
+format.  These files appear with the YandY icon and have no extension on the
+file name.
+
+Font Metric Files (AFM, TFM, and Mac screen font):
+--------------------------------------------------
+
+Adobe Type 1 outline fonts are normally supplied with human-readable 
+metric files (AFM).  From these, compact binary application-specific metric
+files (such as TFM files) can be constructed.  
+
+The metric information on Macintosh computers resides in the `screen fonts'.
+Screen fonts appear with a `suitcase' icon.
+
+The TeX font metric files for these fonts are also included --- in the TFM
+subdirectory.  Textures uses a compact `Textures Metric' file instead.
+
+Text font TFM files are encoding sensitive.  We provided TFM files
+for the most commonly used encodings: T1(Cork), LY1(TeX 'n ANSI), 
+as well as LM1(Textures) and  Macintosh standard roman encoding.
+
+Installation - Macintosh:
+-------------------------
+
+You need to install: (a) the outline font files and (b) the `screen fonts'.
+
+*	We recommend ATM `Deluxe' 4.0 as a font installer/font manager;
+
+*	Also useful is Steve Brecher's Suitcase II (sold by Fifth Generation
+*	Systems, Inc.).  Suitcase II greatly simplifies font installation
+*	(and removal) and avoids problems arising from the fact that 
+*	font installation is different for various versions of the Systems.
+
+First install the outline font files themselves.  The outline fonts are 
+the files with the YandY icon and a file name that has no extension.
+Install the outline fonts as follows:
+
+(1a) If you are using ATM Deluxe 4.0 follow the installation instructions
+     
+(1b) If you are using SuitCase II, create a new folder (`European Modern' 
+     say) and copy the outline fonts to this new folder.  The 
+     corresponding screen fonts should be added to this folder later.
+
+If you are not using ATM Deluxe 4.0 or SuitCase II:
+
+(1c) For System 6, copy the outline font files themselves to your 
+     system folder; 
+
+(1d) For System 7.0, copy the outline font files to your CLOSED
+     system folder. They will then be automatically installed 
+     in the `Extensions' folder in your system folder; 
+
+(1e) For System 7.1, copy the outline fonts files to your CLOSED
+     system folder. They will then be automatically installed
+     in the `Fonts' folder in the system folder.  
+
+     Very old versions of ATM  expect the fonts to be in the `Extensions'
+	 folder - so copy (or make aliases) for the fonts in the `Extensions' 
+     folder (Very old versions of the LaserWriter printer driver will also
+     look for the fonts in the wrong place, by the way).
+
+Next install the `screen fonts' (which is where the font metric
+information is kept).  The screen fonts are files with a suitcase icon.
+
+Install the screen fonts as follows: 
+
+(2a) If you are using ATM Deluxe 4.0 follow the instructions. 
+
+(2b) if you are using Suitcase II, simply copy the screen fonts to the 
+     folder created earlier for the outline fonts.  
+
+If you are not using ATM Deluxe 4.0 or Suitcase II:
+
+(2c) For System 6, launch Font D/A mover.  Then open the new screen font 
+     suitcases and add each of the screen fonts (Screen fonts installed this
+     way will be added to the System file in your System folder), or,  
+
+(2d) For System 6 with Adobe's FontPorter installed, simply copy the
+     screen font files to your System folder, or,
+
+(2e) if you are using System 7, copy the screen font suitcases to your
+     CLOSED system folder (they will be installed in your System file).
+
+Now, if you are using Suitcase II, select Suitcase II from the `Apple menu',
+create a new, named font set (`European Modern' say), and add the new screen
+fonts to this set.  You can `open' the fonts at this point and they will
+be available to applications (without needing to reboot the system).
+You can also elect to have this set of fonts added to those that
+will be opened automatically when the system is restarted in future.
+
+If you are not using ATM Deluxe 4.0 or Suitcase II, then restart your 
+system from the `Special' menu.  Newly installed fonts will not be 
+available to applications until you restart in this case.
+
+For use with Textures, move the `EM Text Metrics' and `EM Math Metrics'
+files to the  `TeX Fonts' folder in the `Textures' folder.  
+
+For use with Textures move the required source files to the ``TeX Inputs'
+folder.  For LaTeX 2e, you will need the `LaTeX 2e'' folder for example.
+See below.
+
+Enabling Fractional Widths - Macintosh:
+---------------------------------------
+
+If you are using these fonts with non-TeX applications then please
+read the following.
+
+*	IMPORTANT NOTE: Check that `Fractional Widths' are enabled.
+*	This is required in order to get accurate character spacing.
+*	Fortunately this is the default for most applications these days.
+
+In MicroSoft Word, select `Page Setup' from the `File' menu, 
+which will bring up the `LaserWriter PageSetup' dialog box. 
+Check the `Fractional Width' box.
+
+In Quark XPress, instead follow the trail `Edit', `Preferences',
+`Typographic', then make sure `Fractional' is selected for
+`Character Width' (as opposed to `Integral').
+
+Aldus Pagemaker normally uses fractional widths.  If spacing nevertheless
+seems irregular, then use the Apple LaserWriter printer driver, instead 
+of the default Aldus printer driver.  To use the Apple LaserWriter 
+printer driver, hold down the `Shift' and `Option' keys while selecting 
+`File' from the main menu and then `Print...'
+
+There are no actual bitmap fonts - Macintosh:
+--------------------------------------------
+
+The fonts are intended to be used with ATM --- there are no actual
+bitmap screen fonts.  All on-screen rendering will by done by ATM.  
+The `screen fonts' that are supplied do not contain recognizable glyphs.
+They are there only to provide a substrate for the font metric information
+(in the FOND resource), and to make it possible for ATM to find the actual
+outline font file (One cannot use an outline font on the Macintosh
+without some corresponding `screen font', since this is where the metric
+information lives).
+
+NOTE: Very old versions of Key Caps uses the metric information from 
+the actual bitmap `screen font' rather than from the FOND resource, 
+so character spacing will be rather coarsely `quantized'.  
+Other applications normally extract metric information from the 
+FOND resource, which has accurate width and pair kerning data.
+
+Remapping of character codes:
+----------------------------
+
+The CM math fonts and the EM math fonts use character code 0 - 31 and 127.
+Since the character codes 0--31 and 127 cannot be generated from the keyboard
+on the Macintosh, these characters have been remapped to the 161--196 range.
+The range 0--9 can be accessed via codes 161--170, while 10--31 can be
+accessed via 173--194, and 127 can be accessed via 196.  
+
+All of these codes can be generated by suitable key chords using the shift
+and option keys.  Of course, you don't need to use these when the fonts are
+used with TeX.  Also, the remapping is not used with the EM test fonts since
+these are ordinary Type 1 text fonts.
+
+Virtual Fonts:
+--------------
+
+No virtual fonts are needed for European Modern fonts.  Each text font
+only requires a single TFM file complete with ligature and kerning
+information.  This applies whether you are using T1 (Cork), LY1
+(TeX 'n ANSI) encoding or LM1 (Textures) encoding.
+
+Textures installation:
+--------------------
+
+Drag the `EM Text Metrics' and  `EM Math Metrics'  (diskette E) to your
+Textures `TeX Fonts' folder.  There is no need for `CM Math Metrics' since 
+Textures already knows those.
+
+Drag the TeX support folders (diskette C) to your Textures `TeX Inputs' folder.  
+For plain TeX support, drag the `Plain TeX' folder.
+For LaTeX 2.09 support, drag the `LaTeX 2.09' folder.
+For LaTeX 2e suport, drag the `LaTeX 2e' folder.
+
+Use with other TeX implementations:
+-----------------------------------
+
+TFM files for use with OzTeX and other TeX implementationsd may be found on
+diskette E.  Also refer to the folder `OzTeX' for additional information
+(diskette C).
+
+For DVIPS look in the `psfonts' folder (diskette C).
+
+Support for various font encoding schemes:
+---------------------------------------
+
+EM text fonts have 310 glyphs that cover T1 (Cork), LY1 (TeX 'n ANSI),
+LM1(Textures), Windows ANSI, and Macintosh standard roman encoding. 
+T1 font encoding support comes with LaTeX 2e.  LY1 font encoding
+support may be found in the LY1 folder on diskette C (or on CTAN in
+tex-archive/macros/latex/contrib/supported/psnfssx/ly1).
+Support for LM1 may be found on diskette C.
+
+If you are using DVIPS, then do not use TeX Base 1 (8r) as a base encoding 
+since it does not contain all of the glyphs needed.  Use T1 or LY1 encoding
+directly (that is, refer to tex256.enc or texnansi.enc in psfonts.map).

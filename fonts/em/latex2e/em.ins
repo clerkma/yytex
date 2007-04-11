@@ -1,0 +1,112 @@
+%% em package Copyright 1997 Y&Y, Inc.
+%% Copyright 2007 TeX Users Group.
+%% You may freely use, modify and/or distribute this file.
+%%
+%% Please see em.txt for instructions.
+%%
+%% Based on the type1cm package Copyright 1997 David Carlisle.
+%%
+%% Revised to also cover LM1 (Textures) encoding 1997/Dec/05
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% YOU CAN EDIT THIS FIRST PART TO SUITE YOUR INSTALLATION
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Assume AMS fontset and the `AMS Extra' fonts from Y&Y by default
+
+\def\ams{ams,extra}
+
+% If you have the AMS fonts, but not the `AMS EXTRA' font set available
+% (that is, you do not have msam6 in addition to msam5 msam7 and msam10),
+% then remove the % on the next line.
+% \def\ams{ams}
+
+% If you do not have the AMS FONT SET at all, then
+% remove the % on the next line.
+% \def\ams{}
+
+% We'll assume you do not want to make fd files (see em.txt for details)
+\newif\ifmakefd
+\makefdfalse
+
+% If you DO want to make fd files replacing the standard LaTeX and AMS
+% ones, remove the % on the next line.
+% \makefdtrue
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% DO NOT EDIT BELOW THIS POINT
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\def\batchfile{em.ins}
+
+\input docstrip
+
+\askforoverwritefalse
+\keepsilent
+
+\preamble
+This is a generated file for the EM font set from Y&Y, Inc.
+No permission is granted to distribute a
+modified version of this file under its original name.
+
+\endpreamble
+
+\generate{%
+ \file{em.sty}{\from{em.fdd}{package,\ams}}}
+
+{\ifmakefd
+
+\preamble
+This is a generated file for EM.  Permission is granted to 
+customize the declarations in this file to serve the needs of your
+installation.  However, no permission is granted to distribute a
+modified version of this file under its original name.
+
+\endpreamble
+
+\generate{%
+  \file{ly1cmr.fd}{\from{em.fdd}{LY1,emr,\ams}}
+  \file{ly1cmss.fd}{\from{em.fdd}{LY1,emss,\ams}}
+  \file{ly1cmtt.fd}{\from{em.fdd}{LY1,emtt,\ams}}
+  \file{ly1cmfr.fd}{\from{em.fdd}{LY1,emfr,\ams}}
+  \file{ly1cmdh.fd}{\from{em.fdd}{LY1,emdh,\ams}}
+  }
+
+\generate{%
+  \file{lm1cmr.fd}{\from{em.fdd}{LM1,emr,\ams}}
+  \file{lm1cmss.fd}{\from{em.fdd}{LM1,emss,\ams}}
+  \file{lm1cmtt.fd}{\from{em.fdd}{LM1,emtt,\ams}}
+  \file{lm1cmfr.fd}{\from{em.fdd}{LM1,emfr,\ams}}
+  \file{lm1cmdh.fd}{\from{em.fdd}{LM1,emdh,\ams}}
+  }
+
+\generate{%
+  \file{t1cmr.fd}{\from{em.fdd}{T1,emr,\ams}}
+  \file{t1cmss.fd}{\from{em.fdd}{T1,emss,\ams}}
+  \file{t1cmtt.fd}{\from{em.fdd}{T1,emtt,\ams}}
+  \file{t1cmfr.fd}{\from{em.fdd}{T1,emfr,\ams}}
+  \file{t1cmdh.fd}{\from{em.fdd}{T1,emdh,\ams}}}
+
+\generate{%
+%  \file{omlcmm.fd}{\from{em.fdd}{OML,cmm,\ams}}
+  \file{omlcmm.fd}{\from{em.fdd}{OML,emm,\ams}}
+  \file{omlcmr.fd}{\from{em.fdd}{OML,cmr,\ams}}
+  \file{omscmsy.fd}{\from{em.fdd}{OMS,cmsy,\ams}}
+  \file{omscmr.fd}{\from{em.fdd}{OMS,cmr,\ams}}
+  \file{omxcmex.fd}{\from{em.fdd}{OMX,cmex,\ams}}
+  \file{ulasy.fd}{\from{em.fdd}{U,lasy,\ams}}}
+
+\ifx\ams\empty\else
+
+\generate{%
+  \file{umsa.fd}{\from{em.fdd}{U,msa,ams}}
+  \file{umsb.fd}{\from{em.fdd}{U,msb,ams}}
+  \file{ueuex.fd}{\from{em.fdd}{U,euex,ams}}
+  \file{ueuf.fd}{\from{em.fdd}{U,euf,ams}}
+  \file{ueur.fd}{\from{em.fdd}{U,eur,ams}}
+  \file{ueus.fd}{\from{em.fdd}{U,eus,ams}}
+  }
+
+\fi
+\fi
+}

@@ -1,0 +1,41 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+=====================================================
+Manifest of what is on the Macintosh EM font set diskettes:
+=====================================================
+
+A      Some EM Text fonts
+       EM Text screen font suitcase
+       ReadMe!
+       Installation
+       Manifest
+       Acknowledgements
+       Copyright
+
+B      More EM Text fonts
+       psfonts.map files for DVIPS
+
+C      EM Math fonts
+       EM Math screen font suitcase
+       CM Math fonts
+       CM Math screen font suitcase
+       plain TeX support
+       LaTeX 2.09 support
+       LaTeX 2e support for EM fonts
+       LaTeX 2e support for LY1 encoding
+       LaTeX 2e support for LM1 encoding
+       OzTeX support files
+       encoding vector in PS form for DVIPS
+
+D      EM text font AFM files
+
+E      EM Math font AFM files
+       CM Math font AFM files
+       EM Text Metrics for Textures
+       EM Math Metrics for Textures
+       TFM files for EM Math fonts
+          TFM files for EM Text fonts T1 encoding
+          TFM files for EM Text fonts LY1 encoding
+          TFM files for EM Text fonts LM1 encoding
+          TFM files for EM Text fonts Macintosh encoding
