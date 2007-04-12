@@ -1,0 +1,56 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Partial MSYM10 font file:
+=========================
+
+Enclosed find a PFB file for part of the AMS font msym10.
+
+This is the font now called msbm10 (with some changes).
+
+NOTE: the PFB file ONLY contains the characters: C, N, R, S, and Z
+(which are the black-board bold characters most often called for).
+
+There are also font metric files: TFM, PFM, and AFM.
+
+The outlines were eye-balled from 900 dpi bitmaps.  The outlines are
+not accurate, although they look fine when printed at `normal' size.
+The stem width may be 5% to 10% too light.
+
+These outlines are not up to the standard of fonts traced from very
+high resolution bitmaps, or those made directly from MetaFont programs
+(such as Y&Y's LaTeX and Logo fonts).
+
+But they work better than enlarged bitmap fonts anyway...
+
+The font is fully hinted and will work well even on low resolution devices.
+
+	(If you need more characters from the blackboard bold font, please 
+	note that the blackboard bold character set may also be found in 
+	Adobe's Mathematical Pi 6 font and in Bigelow & Holmes 
+	LucidaBrightMathArrows) 
+
+====================================================
+SANS SERIF BLACKBOARD BOLD --- A Partial MSYM10 font
+====================================================
+
+There was some discussion on comp.text.tex regarding the relative virtues of
+the `old' AMS Blackboard Bold (MSYM*) versus the `new' AMS Blackboard Bold
+(MSBM*).  Some people seem to prefer the old version.  Unfortunately it
+appears that the old version was written in an old version of METAFONT, and 
+so is hard to use today to generate PK bitmap font files.
+
+This brought to mind a ATM compatible Type 1 font that was made up as a
+stop-gap measure long before the AMS font set became available in Type 1
+format.  This was a partial font containing just the most commonly used
+letters from MSYM10, namely C, N, R, S, Z (for complex numbers, integers,
+reals etc).  
+
+Attached find PFA, AFM, PFB, PFM, and TFM files.  On Unix/NeXT you'd most
+probably want to use the PFA and AFM files, and on IBM PC compatibles (and
+for ATM in Windows), the PFB and PFM files.  These files are included here
+without warranties of any kind.  Use them if you know how.  Please don't ask
+how to use them with _your_ favourite printer driver or previewer - we
+almost certainly do _not_ know the answer!
+
+WARNING: this is only a partial font containing the letters C, N, R, S, Z

@@ -1,0 +1,14 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+c:\latxfont\lasy5.hnt: /StVHW [56] def
+c:\latxfont\lasy6.hnt: /StVHW [52] def
+c:\latxfont\lasy7.hnt: /StVHW [49] def
+c:\latxfont\lasy8.hnt: /StVHW [45] def
+c:\latxfont\lasy9.hnt: /StVHW [42] def
+c:\latxfont\lasy10.hnt: /StVHW [40] def
+c:\latxfont\line10.hnt: /StVHW [40] def
+c:\latxfont\linew10.hnt: /StVHW [80] def
+c:\latxfont\lcircle1.hnt: /StVHW [40] def
+c:\latxfont\lcirclew.hnt: /StVHW [80] def
+c:\latxfont\msym10.hnt: /StVHW [35] def
