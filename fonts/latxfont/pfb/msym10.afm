@@ -1,0 +1,32 @@
+StartFontMetrics 2.0
+Comment CreationDate: 1990 Aug 09 21:43:16
+Comment Creator Y&Y, Inc. http://www.YandY.com (978) 371 3286
+FontName MSYM10
+EncodingScheme FontSpecific
+FullName MSYM10
+FamilyName MSYM10
+ItalicAngle 0
+Weight Medium
+IsFixedPitch false
+Version 0.901
+Notice AMS math fonts were designed by the American Mathematical Society
+FontBBox 32 -17 718 700
+XHeight 685.956
+CapHeight 683.333
+Descender -250
+Comment following is extra information for the TFM file
+Comment Fontid MSYM
+Comment DesignSize 10 (pts)
+Comment CharacterCodingScheme UNSPECIFIED
+Comment space 676.511 393.733 443.733 
+Comment ExtraSpace 412.889
+Comment quad 344.845
+StartCharMetrics 6
+C 32 ; WX 676.511 ; N space ; B 0 0 0 0 ;
+C 67 ; WX 722.222 ; N C ; B 0 0 722.222 683.333 ; 
+C 78 ; WX 777.778 ; N N ; B 0 0 777.778 683.333 ; 
+C 82 ; WX 666.667 ; N R ; B 0 0 666.667 683.333 ; 
+C 83 ; WX 555.555 ; N S ; B 0 0 555.555 683.333 ; 
+C 90 ; WX 611.111 ; N Z ; B 0 0 611.111 683.333 ; 
+EndCharMetrics
+EndFontMetrics

@@ -1,0 +1,292 @@
+****************************************************************************
+Copyright (c) 1991 - 1993 Y&Y, Inc.
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+****************************************************************************
+
+==========================================================================
+LaTeX + SliTeX font set in fully hinted ATM compatible Adobe Type 1 format:
+==========================================================================
+
+This diskette contains:
+
+	(*) Adobe Type 1 outline font files (PFB or PFA extension);
+	(*) font metric files (AFM and TFM extension);
+	(*) utility programs for IBM PC compatibles (EXE extension);
+
+for:
+
+	(*) the LaTeX line, circle, symbol fonts (5 design sizes),
+	    and bold symbol font:
+
+		line10, linew10,
+		lcircle1, lcirclew,
+		lasy5, lasy6, lasy7, lasy8, lasy9, lasy10, 
+		lasyb10
+
+	(*) the SliTeX lcmss* fonts:
+
+		lcmss8, lcmssb8, lcmssi8
+
+	(*) the SliTeX `invisible' fonts:
+
+		ilcmss8, ilcmssb8, ilcmssi8
+		icmtt8, icmmi8, icmmsy8, icmex10, ilasy8,
+
+	(*) the logo fonts (used for the word METAFONT):
+
+		logo8, logo9, logo10, 
+		logobf10, logosl10
+
+The IBM PC compatible versions of the fonts also include `Printer Font Metric'
+(PFM) files for use with MS Windows.
+
+The fonts are all fully hinted (both character-level and font-level), and so
+will render well even on low-resolution (on screen) and medium-resolution
+(laser printer) devices.  The fonts are completely compliant with the Type 1 
+specification and, in addition, are ATM compatible (a tighter constraint).  
+They also include work arounds for numerous bugs in `clone' interpreters.
+
+The SliTeX fonts include the `invisible' fonts, although these will not 
+often be used, since the they do not contain any actual character outlines.
+To save space you may want to load only the 14 visible LaTeX + SliTeX fonts, 
+and NOT load the 8 `invisible' fonts (names starting with `i').  
+The same goes for the 5 `logo' fonts, which only contain the letters 
+`M', `E', `T', `A', `F', `O', and `N'.
+
+It may interest you to know that the LaTeX fonts and the LOGO fonts
+were converted directly from the METAFONT source by Y&Y to ensure
+perfect accuracy.  This was possible because the LaTeX fonts and LOGO
+fonts use METAFONT in a rather restricted way.
+
+Outline font file format:
+-------------------------
+
+The actual outline fonts themselves are supplied in  
+
+	(*) Printer Font Binary (PFB) form; or 
+	(*) Printer Font ASCII (PFA) form; or
+	(*) Macintosh outline font format.
+
+PFB files are typically used on IBM PC compatibles, and are what the
+Windows PostScript driver and Adobe Type Manager (ATM) expect to see.
+PFB file are compact, but need to be `unpacked' into the more verbose
+hexadecimal PFA format before being sent to a printer.  The PostScript
+printer driver does this.
+
+On Unix and NeXT systems, it has been customary to use the PFA format, since
+outline fonts in this form can be sent directly to the printer.  PFA files
+can be included in a PostScript document that calls for a particular font.
+
+Some applications (such as DVIPSONE) can handle fonts in either format.
+
+For the NeXT version of the font set, see `nextfont.txt' for installation
+instructions and use the script `nextinst.bat'.
+
+Font Metric Files (AFM, TFM, PFM, and Mac screen font):
+------------------------------------------------------
+
+Adobe Type 1 outline fonts are normally supplied with human-readable 
+metric files.  From these, compact binary application-specific metric files 
+(such as TFM and PFM files) can be constructed.  
+
+The IBM PC compatible versions of the fonts include `Printer Font Metric'
+(PFM) files for use with Windows.  (These can also be constructed from the
+AFM files using the utility AFMtoPFM that comes with DVIWindo).
+
+The metric information on Macintosh computers resides in the `screen fonts'.
+
+The TeX font metric files for these fonts are also included --- in the TFM
+subdirectory --- but these are just from the standard TeX distribution and
+most TeX users already have these.
+
+Installation - Macintosh:
+-------------------------
+
+You need to install: (a) the outline font files and (b) the `screen fonts'.
+
+*	We recommend Steve Brecher's Suitcase II (sold by Fifth Generation
+*	Systems, Inc.).  Suitcase II greatly simplifies font installation
+*	(and removal) and avoids problems arising from the fact that without
+*	Suitcase II, font installation is different on System 6, System 7.0 -
+*	and yet again on System 7.1! 
+
+First install the outline font files themselves.  The outline fonts are 
+the files with the Y&Y icon and a file name that has no extension.
+Install the outline fonts as follows:
+
+(1a) If you are using SuitCase II, create a new folder (`LaTeX SliTeX' say)
+     and copy the outline fonts to this new folder.  The corresponding 
+     screen fonts should be added to this folder later.
+
+If you are not using SuitCase II:
+
+(1b) For System 6, copy the outline font files themselves to your 
+     system folder; 
+
+(1c) For System 7.0, copy the outline font files to your CLOSED
+     system folder. They will then be automatically installed 
+     in the `Extensions' folder in your system folder; 
+
+(1d) For System 7.1, copy the outline fonts files to your CLOSED
+     system folder. They will then be automatically installed
+     in the `Fonts' folder in the system folder.  
+
+     Old versions of ATM  expect the fonts to be in the `Extensions' folder -
+     so copy (or make aliases) for the fonts in the `Extensions' folder 
+     (Older versions of the LaserWriter printer driver will also
+     look for the fonts in the wrong place, by the way).
+
+Next install the `screen fonts' (which is where the font metric
+information is kept).  The screen fonts are files with a suitcase icon.
+The screen fonts are kept in two files, "Visible Screen",
+and "Invisible Screen".
+
+Install the screen fonts as follows: 
+
+(2a) if you are using Suitcase II, simply copy the screen fonts to the 
+     folder created earlier for the outline fonts.  
+
+If you are not using Suitcase II:
+
+(2b) For System 6, launch Font D/A mover.  Then open the new screen font 
+     suitcases and add each of the screen fonts (Screen fonts installed this
+     way will be added to the System file in your System folder), or,  
+
+(2c) For System 6 with Adobe's FontPorter installed, simply copy the
+     screen font files to your System folder, or,
+
+(2d) if you are using System 7, copy the screen font suitcases to your
+     CLOSED system folder (they will be installed in your System file).
+
+Now, if you are using Suitcase II, select Suitcase II from the `Apple menu',
+create a new, named font set (`LaTeX SliTeX' say), and add the new screen
+fonts to this set.  You can `open' the fonts at this point and they will
+be available to applications (without needing to reboot the system).
+You can also elect to have this set of fonts added to those that
+will be opened automatically when the system is restarted in future.
+
+If you are not using Suitcase II, then restart your system from the
+`Special' menu.   Newly installed fonts will not be available to 
+applications until you restart if you are not using Suitcase II.
+
+For use with Textures, you may want to move the `LaTeX Metrics' file to the
+`Fonts'  folder in the `Textures' folder.  This shouldn't normally be
+neccessary, since Textures already knows the metrics of these fonts.
+
+Enabling Fractional Widths - Macintosh:
+---------------------------------------
+
+If you are using these fonts with non-TeX applications then please
+read the following.
+
+*	IMPORTANT NOTE: Check that `Fractional Widths' are enabled.
+*	This is required in order to get accurate character spacing.
+*	Fortunately this is the default for most applications these days.
+
+In MicroSoft Word, select `Page Setup' from the `File' menu, 
+which will bring up the `LaserWriter PageSetup' dialog box. 
+Check the `Fractional Width' box.
+
+In Quark XPress, instead follow the trail `Edit', `Preferences',
+`Typographic', then make sure `Fractional' is selected for
+`Character Width' (as opposed to `Integral').
+
+Aldus Pagemaker normally uses fractional widths.  If spacing nevertheless
+seems irregular, then use the Apple LaserWriter printer driver, instead 
+of the default Aldus printer driver.  To use the Apple LaserWriter 
+printer driver, hold down the `Shift' and `Option' keys while selecting 
+`File' from the main menu and then `Print...'
+
+There are no actual bitmap fonts - Macintosh:
+--------------------------------------------
+
+The fonts are intended to be used with ATM --- there are no actual
+bitmap screen fonts.  All on-screen rendering will by done by ATM.  
+The `screen fonts' that are supplied do not contain recognizable glyphs.
+They are there only to provide a substrate for the font metric information
+(in the FOND resource), and to make it possible for ATM to find the actual
+outline font file (One cannot use an outline font on the Macintosh
+without some corresponding `screen font', since this is where the metric
+information lives).
+
+NOTE: Old versions of Key Caps uses the metric information from 
+the actual bitmap `screen font' rather than from the FOND resource, 
+so character spacing will be rather coarsely `quantized'.  
+Other applications normally extract metric information from the 
+FOND resource, which has accurate width and pair kerning data.
+
+Remapping of character codes:
+----------------------------
+
+Since the character codes 0--31 and 127 cannot be generated from the keyboard
+on the Macintosh, these characters have been remapped to the 161--196 range.
+The range 0--9 can be accessed via codes 161--170, while 10--31 can be
+accessed via 173--194, and 127 can be accessed via 196.
+
+All of these codes can be generated by suitable key chords using the shift
+and option keys.  Of course, you don't need to use these when the fonts are
+used with TeX.
+
+`Automatic' versus `Manual' downloading:
+----------------------------------------
+
+`Automatic' (i.e. temporary) downloading is normally the best approach 
+in order to avoid filling up printer memory and to prevent print job
+interdependence.  In this case the font is sent down to the printer
+as part of the PostScript job being printed.  The font is removed from
+printer memory at the end of the print job.
+
+`Manual' (i.e. permanent) downloading can sometimes be useful when a printer
+is used primarily with a fixed set of fonts (and these all fit into printer's
+virtual memory).  Font downloaders can be used to permanently download
+outline fonts.  A `manually' downloaded font remains resident until the
+printer power is turned off (or the PostScript `quit' command is executed). 
+
+The IBM PC utility DOWNLOAD supplied with the fonts can be used to download a
+font `manually'.
+
+Fonts can also be downloaded `manually' by sending them to the printer after
+adding the line
+
+	serverdict begin 0 exitserver
+
+immediately following the last of the initial comment lines in the PFA file
+(Comment lines start with a `%').  If you have PFB files, first convert them
+to PFA format using the PFBtoPFA utility, insert the above line, then convert
+back to PFB format using the PFAtoPFB utility. (In the above it has been
+assumed that the printer's password is still the factory default, namely 0).
+
+Sometimes `manual' downloading is used because the time to transmit a
+PostScript file to the printer is an issue.  File transmission time can be
+reduced by using a parallel instead of a serial printer connection.  Or, if a
+serial line must be used, the baud rate can be increased.  Most printers can
+handle 38,400 or 57,600 baud quite well (provided hand-shaking is set up
+properly).  (The utility MODEX, supplied with DVIPSONE, can be used to
+circumvent the DOS limit of 19,200 baud.  When using Windows 3.0, one can use
+TurboComm from BioEngineering Research laboratory to go beyond the built-in
+limit of 19,200 baud).
+
+Also, applications that use `partial font downloading' (such as DVIPSONE)
+produce PostScript files that are much shorter than those produced by
+applications that simply unpack the PFB file into PFA format, making 
+`automatic' downloading much more attractive.
+
+PostScript `Clone' Interpreters Bugs:
+----------------------------------
+
+Most clone PostScript interpreters have some `misfeature' or other,
+particularly when it comes to Type 1 font interpretation.  Such interpreters
+may work prefectly well on plain vanilla Adobe text fonts, yet fail on more
+complex fonts that fall perfectly well within in the Type 1 specification and
+are even ATM compatible (a tighter constraint).
+
+PostScript Interpreter Test Programs:
+------------------------------------
+
+In the PS subdirectory you will find nine PostScript test programs, and the
+error handler (ehandler.ps).  These test files may come in useful should
+there be a problem printing PostScript files using these fonts.  The test
+programs check for various known bugs in `clone' interpreters, particularly 
+as regards Type 1 font interpretation.  There is a short `readme.txt' file
+in the same directory that describes the tests in more detail.

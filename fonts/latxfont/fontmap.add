@@ -1,0 +1,36 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+% Add these mapping to /usr/local/lib/ghostscript/Fontmap
+% to use the extra LaTeX + SliTeX fonts with GhostScript
+%
+%
+/LASY5		(lasy5.pfb) ;
+/LASY6		(lasy6.pfb) ;
+/LASY7		(lasy7.pfb) ;
+/LASY8		(lasy8.pfb) ;
+/LASY9		(lasy9.pfb) ;
+/LASY10		(lasy10.pfb) ;
+/LASYB10	(lasyb10.pfb) ;
+/LCIRCLE10	(lcircle1.pfb) ;
+/LCIRCLEW10	(lcirclew.pfb) ;
+/LINE10		(line10.pfb) ;
+/LINEW10	(linew10.pfb) ;
+/LCMSS8		(lcmss8.pfb) ;
+/LCMSSB8	(lcmssb8.pfb) ;
+/LCMSSI8	(lcmssi8.pfb) ;
+/ILCMSS8	(ilcmss8.pfb) ;
+/ILCMSSB8	(ilcmssb8.pfb) ;
+/ILCMSSI8	(ilcmssi8.pfb) ;
+/ICMEX10	(icmex10.pfb) ;
+/ICMSY8		(icmsy8.pfb) ;
+/ICMMI8		(icmmi8.pfb) ;
+/ICMTT8		(icmtt8.pfb) ;
+/ILASY8		(ilasy8.pfb) ;
+/LOGO10		(logo10.pfb) ;
+/LOGO8		(logo8.pfb) ;
+/LOGO9		(logo9.pfb) ;
+/LOGOBF10	(logobf10.pfb) ;
+/LOGOD10	(logod10.pfb) ;
+/LOGOSL10	(logosl10.pfb) ;
+/LOGOSL8	(logosl8.pfb) ;
+/LOGOSL9	(logosl9.pfb) ;
