@@ -1,0 +1,179 @@
+StartFontMetrics 2.0
+Comment CreationDate: 1998 Feb 17 06:43:11
+Comment RevisionDate: 1998 Apr 12 11:43:12
+FontName STMARY7
+FullName St. Mary's Road 7pt
+FamilyName St. Mary's Road
+Weight Medium
+Version 001.001
+Notice The original STMARYRD fonts were designed by Alan Jeffrey and Jeremy Gibbons 1994
+Notice Copyright 1998 Y&Y Inc. Copyright 2007 TeX Users Group. You may freely use, modify and/or distribute this file.
+UnderlinePosition -100
+UnderlineThickness 50
+EncodingScheme FontSpecific
+ItalicAngle 0
+FontBBox -125 -2950 1184 870
+Comment UniqueID 5096694
+IsFixedPitch false
+XHeight 430.556
+CapHeight 750
+Descender -1151.44
+Comment UniqueID 5096694
+Comment following is extra info from TFM file
+Comment FontID STMARY
+Comment DesignSize 7 (pts)
+Comment Space 0 0 0
+Comment ExtraSpace 0
+Comment Quad 1170.64
+Comment Num 732.313 383.903 471.205
+Comment Denom 752.15 344.214
+Comment Sup 502.543 431.115 285.714
+Comment Sub 142.858 285.714
+Comment Supdrop 353.171
+Comment Subdrop 71.428
+Comment Delim 1700 1157.14
+Comment Axisheight 250
+Comment Ascending 96, 104
+Comment Ascending 97, 105
+Comment Ascending 98, 106
+Comment Ascending 99, 107
+Comment Ascending 100, 108
+Comment Ascending 101, 109
+Comment Ascending 102, 110
+Comment Ascending 103, 111
+Comment Ascending 112, 120
+Comment Ascending 113, 114, 115, 116, 117
+Comment Ascending 121, 122, 123, 124, 125
+Comment Extensible 117 top 117 mid 0 bot 118 rep 119
+Comment Extensible 125 top 125 mid 0 bot 126 rep 127
+StartCharMetrics 128
+C 0 ; WX 892.861 ; N a0 ; B 77 70 815 431 ; 
+C 1 ; WX 892.861 ; N a1 ; B 77 70 815 431 ; 
+C 2 ; WX 585.32 ; N a2 ; B 94 -119 491 619 ; 
+C 3 ; WX 585.32 ; N a3 ; B 94 -119 491 619 ; 
+C 4 ; WX 646.829 ; N a4 ; B 78 3 568 558 ; 
+C 5 ; WX 646.829 ; N a5 ; B 78 -58 568 497 ; 
+C 6 ; WX 708.333 ; N a6 ; B 77 3 630 497 ; 
+C 7 ; WX 708.333 ; N a7 ; B 77 3 630 497 ; 
+C 8 ; WX 769.846 ; N a8 ; B 16 -214 753 694 ; 
+C 9 ; WX 769.846 ; N a9 ; B 16 -214 753 694 ; 
+C 10 ; WX 892.861 ; N a10 ; B 77 4 815 497 ; 
+C 11 ; WX 646.829 ; N a11 ; B 77 -118 569 619 ; 
+C 12 ; WX 769.846 ; N a12 ; B 77 -250 692 750 ; 
+C 13 ; WX 769.846 ; N a13 ; B 77 -250 692 750 ; 
+C 14 ; WX 892.861 ; N a14 ; B 139 -20 752 521 ; 
+C 15 ; WX 892.861 ; N a15 ; B 77 -118 814 619 ; 
+C 16 ; WX 892.861 ; N a16 ; B 77 -118 814 619 ; 
+C 17 ; WX 892.861 ; N a17 ; B 77 -118 814 619 ; 
+C 18 ; WX 892.861 ; N a18 ; B 77 -118 814 619 ; 
+C 19 ; WX 892.861 ; N a19 ; B 77 -118 814 619 ; 
+C 20 ; WX 892.861 ; N a20 ; B 77 -118 814 619 ; 
+C 21 ; WX 892.861 ; N a21 ; B 77 -118 814 619 ; 
+C 22 ; WX 892.861 ; N a22 ; B 77 -118 814 619 ; 
+C 23 ; WX 892.861 ; N a23 ; B 77 -118 814 619 ; 
+C 24 ; WX 892.861 ; N a24 ; B 108 -87 783 588 ; 
+C 25 ; WX 892.861 ; N a25 ; B 108 -87 783 588 ; 
+C 26 ; WX 892.861 ; N a26 ; B 108 -87 783 588 ; 
+C 27 ; WX 892.861 ; N a27 ; B 108 -87 783 588 ; 
+C 28 ; WX 892.861 ; N a28 ; B 108 -87 783 588 ; 
+C 29 ; WX 892.861 ; N a29 ; B 108 -87 784 589 ; 
+C 30 ; WX 892.861 ; N a30 ; B 108 -87 783 588 ; 
+C 31 ; WX 892.861 ; N a31 ; B 108 -87 783 588 ; 
+C 32 ; WX 708.333 ; N a32 ; B 113 -194 462 694 ; 
+C 33 ; WX 1015.88 ; N a33 ; B 84 0 931 738 ; 
+C 34 ; WX 646.829 ; N a34 ; B 77 0 569 694 ; 
+C 35 ; WX 400.796 ; N a35 ; B 77 -194 323 563 ; 
+C 36 ; WX 708.333 ; N a36 ; B 113 -194 630 694 ; 
+C 37 ; WX 708.333 ; N a37 ; B 77 -194 594 694 ; 
+C 38 ; WX 769.846 ; N a38 ; B 16 -194 753 703 ; 
+C 39 ; WX 769.846 ; N a39 ; B 16 -240 753 714 ; 
+C 40 ; WX 831.353 ; N a40 ; B 325 -250 1000 750 ; 
+C 41 ; WX 831.353 ; N a41 ; B 77 -250 752 750 ; 
+C 42 ; WX 523.813 ; N a42 ; B 77 -250 446 750 ; 
+C 43 ; WX 523.813 ; N a43 ; B 77 -250 446 750 ; 
+C 44 ; WX 1138.89 ; N a44 ; B 77 -242 1061 742 ; 
+C 45 ; WX 892.861 ; N a45 ; B 62 116 830 541 ; 
+C 46 ; WX 769.846 ; N a46 ; B 16 -203 753 694 ; 
+C 47 ; WX 769.846 ; N a47 ; B 16 -214 753 740 ; 
+C 48 ; WX 708.333 ; N a48 ; B 113 -194 630 694 ; 
+C 49 ; WX 708.333 ; N a49 ; B 77 -194 594 694 ; 
+C 50 ; WX 892.861 ; N a50 ; B 77 -18 815 519 ; 
+C 51 ; WX 892.861 ; N a51 ; B 77 -18 815 519 ; 
+C 52 ; WX 892.861 ; N a52 ; B 77 -118 814 619 ; 
+C 53 ; WX 892.861 ; N a53 ; B 77 -118 814 619 ; 
+C 54 ; WX 892.861 ; N a54 ; B 77 -118 814 619 ; 
+C 55 ; WX 892.861 ; N a55 ; B 77 -118 814 619 ; 
+C 56 ; WX 585.32 ; N a56 ; B 157 -249 427 750 ; 
+C 57 ; WX 800.6 ; N a57 ; B 156 -249 645 750 ; 
+C 58 ; WX 892.861 ; N a58 ; B 77 -118 815 619 ; 
+C 59 ; WX 892.861 ; N a59 ; B 77 -118 815 619 ; 
+C 60 ; WX 892.861 ; N a60 ; B 77 -118 815 619 ; 
+C 61 ; WX 892.861 ; N a61 ; B 77 -118 815 619 ; 
+C 62 ; WX 892.861 ; N a62 ; B 77 -118 815 619 ; 
+C 63 ; WX 892.861 ; N a63 ; B 77 -118 815 619 ; 
+C 64 ; WX 769.846 ; N a64 ; B 84 0 685 601 ; 
+C 65 ; WX 769.846 ; N a65 ; B 108 -76 661 577 ; 
+C 66 ; WX 769.846 ; N a66 ; B 108 -76 661 577 ; 
+C 67 ; WX 769.846 ; N a67 ; B 77 -20 692 601 ; 
+C 68 ; WX 892.861 ; N a68 ; B 108 -76 784 577 ; 
+C 69 ; WX 892.861 ; N a69 ; B 108 -76 784 577 ; 
+C 70 ; WX 892.861 ; N a70 ; B 108 -187 784 685 ; 
+C 71 ; WX 892.861 ; N a71 ; B 108 -187 784 685 ; 
+C 72 ; WX 523.813 ; N a72 ; B 77 -250 446 750 ; 
+C 73 ; WX 523.813 ; N a73 ; B 77 -250 446 750 ; 
+C 74 ; WX 477.681 ; N a74 ; B 144 -250 437 750 ; 
+C 75 ; WX 477.681 ; N a75 ; B 41 -250 333 750 ; 
+C 76 ; WX 462.304 ; N a76 ; B 125 -249 384 750 ; 
+C 77 ; WX 462.304 ; N a77 ; B 77 -249 336 750 ; 
+C 78 ; WX 892.861 ; N a78 ; B 77 -119 815 620 ; 
+C 79 ; WX 892.861 ; N a79 ; B 77 -120 815 619 ; 
+C 80 ; WX 892.861 ; N a80 ; B 108 -187 784 685 ; 
+C 81 ; WX 892.861 ; N a81 ; B 108 -187 784 685 ; 
+C 82 ; WX 892.861 ; N a82 ; B 108 -370 784 870 ; 
+C 83 ; WX 892.861 ; N a83 ; B 108 -370 784 870 ; 
+C 84 ; WX 646.829 ; N a84 ; B 141 -249 630 750 ; 
+C 85 ; WX 646.829 ; N a85 ; B 16 -249 505 750 ; 
+C 86 ; WX 646.829 ; N a86 ; B 141 -250 630 751 ; 
+C 87 ; WX 646.829 ; N a87 ; B 16 -250 505 751 ; 
+C 88 ; WX 0 ; N a88 ; B 422 59 716 441 ; 
+C 89 ; WX 0 ; N a89 ; B 452 -51 686 551 ; 
+C 90 ; WX 0 ; N a90 ; B 77 -51 157 552 ; 
+C 91 ; WX 0 ; N a91 ; B -125 59 -45 442 ; 
+C 92 ; WX 0 ; N a92 ; B -125 -51 -45 552 ; 
+C 93 ; WX 1138.89 ; N a93 ; B 77 66 1061 434 ; 
+C 94 ; WX 1138.89 ; N a94 ; B 78 65 1060 435 ; 
+C 95 ; WX 1138.89 ; N a95 ; B 78 65 1060 435 ; 
+C 96 ; WX 954.37 ; N a96 ; B 77 -1000 876 0 ; 
+C 97 ; WX 954.37 ; N a97 ; B 77 -1000 876 0 ; 
+C 98 ; WX 954.37 ; N a98 ; B 77 -1000 876 0 ; 
+C 99 ; WX 954.37 ; N a99 ; B 77 -1000 876 0 ; 
+C 100 ; WX 954.37 ; N a100 ; B 77 -1000 876 0 ; 
+C 101 ; WX 954.37 ; N a101 ; B 77 -1000 876 0 ; 
+C 102 ; WX 523.813 ; N a102 ; B 77 -1000 446 0 ; 
+C 103 ; WX 708.333 ; N a103 ; B 78 -1000 708 0 ; 
+C 104 ; WX 1261.91 ; N a104 ; B 77 -1400 1184 0 ; 
+C 105 ; WX 1261.91 ; N a105 ; B 77 -1400 1184 0 ; 
+C 106 ; WX 1261.91 ; N a106 ; B 77 -1400 1184 0 ; 
+C 107 ; WX 1261.91 ; N a107 ; B 77 -1400 1184 0 ; 
+C 108 ; WX 1261.91 ; N a108 ; B 77 -1400 1184 0 ; 
+C 109 ; WX 1261.91 ; N a109 ; B 77 -1400 1184 0 ; 
+C 110 ; WX 646.829 ; N a110 ; B 77 -1400 569 0 ; 
+C 111 ; WX 954.37 ; N a111 ; B 78 -1400 965 0 ; 
+C 112 ; WX 954.37 ; N a112 ; B 77 -1000 876 0 ; 
+C 113 ; WX 616.077 ; N a113 ; B 237 -1150 577 49 ; 
+C 114 ; WX 677.583 ; N a114 ; B 265 -1750 643 49 ; 
+C 115 ; WX 739.091 ; N a115 ; B 291 -2350 708 49 ; 
+C 116 ; WX 800.6 ; N a116 ; B 319 -2950 773 49 ; 
+C 117 ; WX 892.861 ; N a117 ; B 376 -1765 869 48 ; 
+C 118 ; WX 892.861 ; N a118 ; B 376 -1750 869 63 ; 
+C 119 ; WX 892.861 ; N a119 ; B 376 -601 674 15 ; 
+C 120 ; WX 1261.91 ; N a120 ; B 77 -1400 1184 0 ; 
+C 121 ; WX 616.077 ; N a121 ; B 38 -1150 378 49 ; 
+C 122 ; WX 677.583 ; N a122 ; B 34 -1750 412 49 ; 
+C 123 ; WX 739.091 ; N a123 ; B 30 -2350 447 49 ; 
+C 124 ; WX 800.6 ; N a124 ; B 27 -2950 481 49 ; 
+C 125 ; WX 892.861 ; N a125 ; B 23 -1765 516 48 ; 
+C 126 ; WX 892.861 ; N a126 ; B 23 -1750 516 63 ; 
+C 127 ; WX 892.861 ; N a127 ; B 218 -601 516 15 ; 
+EndCharMetrics
+EndFontMetrics

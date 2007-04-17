@@ -1,0 +1,16 @@
+%%
+%% This is file `ustmry.fd',
+%% Alan Jeffrey and Jeremy Gibbobs St. Mary's Road fonts
+%%
+\ProvidesFile{ustmry.fd}
+             [1998/04/25 v1.0f
+              St, Mary's Road symbol font definitions]
+\DeclareFontFamily{U}{stmry}{}
+\DeclareFontShape{U}{stmry}{m}{n}
+   {  <-7> stmary5
+      <7-10> stmary7
+	  <10-> stmary10
+   }{}
+\endinput
+%%
+%% End of file `ustmry.fd'.

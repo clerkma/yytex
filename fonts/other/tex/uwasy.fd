@@ -1,0 +1,26 @@
+%% 
+%% This is file `uwasy.fd'
+%% Roland Waldi WASY Symbol fonts (extending LaTeX LASY)
+%% 
+%% 
+\ProvidesFile{uwasy.fd}
+             [1998/04/25 v1.0f
+              Wasy symbol font definitions]
+%%%%%% astronomy
+%%%%%% the zodiac
+%%%%%% APL characters
+%%%%%% math characters
+%%%%%% diagrams
+%%%%%% special characters
+\DeclareFontFamily{U}{wasy}{}
+\DeclareFontShape{U}{wasy}{m}{n}{ 
+	<-7> wasy5
+	<7-10> wasy7
+	<10-> wasy10  
+}{}
+\DeclareFontShape{U}{wasy}{b}{n}{ 
+	<-> wasyb10
+}{}
+\endinput
+%% 
+%% End of file `uwasy.fd'.

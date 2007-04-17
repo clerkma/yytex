@@ -1,0 +1,39 @@
+mathrsfs.rme
+
+Readme File for the mathrsfs package by J"org Knappen
+(c) Copyleft 1995, 1996, 1998 J"org Knappen under the GNU licence version 2
+
+   Physicists don't like the appearance of the standard calligraphic fonts
+when speaking about Lagrangian density, Hamiltonian density, or the measure 
+in the path integral. Fortunately, the Ralph Smith Formal Script (rsfs) 
+fonts provide the desired shapes. The mathrsfs package makes them accesible
+via the command \mathscr{ABC}.
+
+   To use this package, just write
+\usepackage{mathrsfs}
+in the preamble of the document.
+
+   If you don't have the rsfs fonts ready, get the METAFONT sources from 
+the nearest CTAN archive in directory tex-archive/fonts/rsfs.
+
+  This package contains 3 files, namely
+  mathrsfs.rme    This readme file
+  mathrsfs.sty    Package file
+  ursfs.fd        Font definition file
+The latter two file need to be in the search path of LaTeX2e.
+
+  This package is different from Vadim V. Zhytnikov's calrsfs package in
+several aspects. It does not overwrite the \mathcal command, so that you
+have the calligraphic shape still available. I also choose to do some 
+internal things in a different way.
+
+J"org Knappen
+Barbarossaring 43
+D-55118 Mainz
+Allemagne
+
+Change history:
+
+1998/03/24    Added setting of the skewchar to ursfs.fd
+
+[the end]

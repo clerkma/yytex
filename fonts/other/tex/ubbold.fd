@@ -1,0 +1,16 @@
+%%
+%% This is file `ubbold.fd',
+%% Alan Jeffrey Blackboard Bold fonts
+%% 
+\ProvidesFile{ubbold.fd}
+             [1998/04/25 v1.0f
+              Blackboard bold font definitions]
+\DeclareFontFamily{U}{bbold}{}
+\DeclareFontShape{U}{bbold}{m}{n}
+   {  <-7> bbold5
+      <7-10> bbold7
+      <10-> bbold10
+   }{}
+\endinput
+%%
+%% End of file `ubbold.fd'.

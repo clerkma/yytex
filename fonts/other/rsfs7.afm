@@ -1,0 +1,58 @@
+StartFontMetrics 2.0
+Comment CreationDate: 1998 Feb 01 10:22:48
+Comment UniqueID 5096683
+FullName RSFS7
+FamilyName RSFS
+Weight Medium
+ItalicAngle -35.259
+IsFixedPitch false
+Version 001.001
+Notice Original Formal Script fonts designed by Ralph A. Smith in 1991
+Notice Based on Formal Script by R. Hunter Middleton
+Notice Copyright 1998 Y&Y Inc. Copyright 2007 TeX Users Group. You may freely use, modify and/or distribute this file.
+UnderlinePosition -100
+UnderlineThickness 50
+FontName RSFS7
+FontBBox 17 -302 1351 728
+XHeight 233.333
+CapHeight 700
+Descender -302
+Ascender 728
+EncodingScheme FontSpecific
+Comment following is extra info from TFM file
+Comment FontID RSFS
+Comment DesignSize 7 (pts)
+Comment CharacterCodingScheme RAS Script
+Comment Space 0 0 0
+Comment Quad 1170.64
+StartCharMetrics 28
+C 32 ; WX 333.333 ; N space ; B 0 0 0 0 ; 
+C 65 ; WX 917.607 ; N A ; B 58 -10 1080 720 ; 
+C 66 ; WX 1028.61 ; N B ; B 54 -14 1014 710 ; 
+C 67 ; WX 793.174 ; N C ; B 50 -24 908 714 ; 
+C 68 ; WX 871.654 ; N D ; B 86 -36 915 710 ; 
+C 69 ; WX 658.842 ; N E ; B 71 -10 776 710 ; 
+C 70 ; WX 1004.57 ; N F ; B 64 -24 1068 728 ; 
+C 71 ; WX 719.927 ; N G ; B 38 -24 824 720 ; 
+C 72 ; WX 1102.13 ; N H ; B 52 -24 1351 719 ; 
+C 73 ; WX 906.294 ; N I ; B 77 -20 1025 719 ; 
+C 74 ; WX 1154.77 ; N J ; B 122 -302 1212 719 ; 
+C 75 ; WX 1040.62 ; N K ; B 52 -24 1301 719 ; 
+C 76 ; WX 985.833 ; N L ; B 27 -20 1116 720 ; 
+C 77 ; WX 1225.15 ; N M ; B 51 -37 1316 721 ; 
+C 78 ; WX 1016.59 ; N N ; B 52 -24 1310 722 ; 
+C 79 ; WX 838.069 ; N O ; B 126 -10 878 710 ; 
+C 80 ; WX 1139.6 ; N P ; B 125 -24 1133 720 ; 
+C 81 ; WX 1003.85 ; N Q ; B 76 -20 960 720 ; 
+C 82 ; WX 972.824 ; N R ; B 17 -16 967 720 ; 
+C 83 ; WX 973.818 ; N S ; B 52 -24 1103 710 ; 
+C 84 ; WX 856.101 ; N T ; B 124 -24 1080 728 ; 
+C 85 ; WX 934.392 ; N U ; B 74 -20 1058 720 ; 
+C 86 ; WX 729.974 ; N V ; B 77 -20 952 720 ; 
+C 87 ; WX 935.279 ; N W ; B 65 -20 1145 720 ; 
+C 88 ; WX 1077.39 ; N X ; B 137 -20 1230 720 ; 
+C 89 ; WX 830.645 ; N Y ; B 83 -20 1063 720 ; 
+C 90 ; WX 930.33 ; N Z ; B 105 -20 1112 720 ; 
+C 127 ; WX 339.288 ; N tie ; B 419 365 901 520 ; 
+EndCharMetrics
+EndFontMetrics

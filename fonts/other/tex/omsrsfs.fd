@@ -1,0 +1,19 @@
+%%
+%% This is file `omsrsfs.fd',
+%% Formal script Math symbols by Ralph A. Smith
+%% Based on Formal Script by R. Hunter Middleton
+%% 1994/06/06 Vadim V. Zhytnikov
+%% 1998/04/06 Louis Vosloo
+%%
+\ProvidesFile{omsrsfs.fd}
+             [1998/04/25 v1.0f
+              RSFS Script font definitions]
+\DeclareFontFamily{OMS}{rsfs}{\skewchar\font127 }
+\DeclareFontShape{OMS}{rsfs}{m}{n}{%
+      <-7> rsfs5
+      <7-10> rsfs7
+      <10-> rsfs10
+      }{}
+\endinput
+%%
+%% End of file `omsrsfs.fd'.
