@@ -1,0 +1,72 @@
+mathbbol.rme
+
+Readme File for the mathbbol package by J"org Knappen
+(c) Copyleft 1995--98 J"org Knappen under the GNU licence version 2
+
+   The mathbbol package exploits the bbold-fonts and the stmaryrd-fonts
+designed by Alan Jeffrey and Jermy Gibbons. Many people prefer these fonts 
+over the AMS \mathbb, because the symbols for the real numbers, complex 
+numbers, etc. look just right. But the Jeffrey fonts contain more: 
+blackbord bold digits, lower case, greek and even punctuation.
+
+   To use this package, just write
+\usepackage[cspex,bbgreekl]{mathbbol}
+in the preamble of the document. Note that this package has two options.
+
+-- cspex activates the special extension font, allowing you to say
+   $\left\Lbrack ... \right\Rbrack$ to get double lined extensible 
+   brackets.
+
+   With Version 2 of the package, the extensions are taken from the
+   stmaryrd fonts instead of cspex, since the latter fonts are withdrawn
+   by their author.
+
+-- bbgreekl activates commands for the lower case blackbord bold greek, 
+   which are just \bbalpha ... \bbomega.
+
+Without options, the following commands are defined:
+o \mathbb{A}  to produce blackbord bold A. All upper and lowercase latin 
+  letters are accessible this way. It overwrites AMS-LaTeX's 
+  \mathbb (and can be overwritten if you load amsfonts after mathbbol)
+o \mathbb{0}  to produce the blackbord bold digit 0. All digits are
+  accessible this way
+o \mathbb{\Lambda} to produce a blackbord bold Lambda. All uppercase greek
+  letters are accessible this way. 
+o \Langle, \Lbrack, \Lparen to produce blackbord bold <, [, (
+o \Rangle, \Rbrack, \Rparen right counterparts of the above
+o \Eins to produce blackbord bold digit 1.
+
+   There are more symbols in the font, which aren't defined, because they
+are never (really?) needed.
+
+   Please find the bbold and stmary fonts on your nearest CTAN archive in 
+directory tex-archive/fonts/bbold. 
+
+   This package assumes that the Sauter-tools, to be found in 
+tex-archive/fonts/cm/sauter, are used to generate the fonts at true sizes.
+
+   This package contains 4 files, namely
+
+   mathbbol.rme   This readme file
+   mathbbol.sty   The package file
+   Ubbold.fd      Font definition file for the bbold fonts
+   Ustmary.fd     Font definition file for the stmaryrd fonts
+
+   Conflicts with other packages:
+If amsfonts is loaded together with mathbbol, the later package decides
+the shape of the \mathbb letters.
+
+If amsmath is loaded, \mathbb{<Capital greek letter>} does not work any more.
+To work around this, save the original definitions of \Gamma etc. before
+loading amsmath and restore them afterwards:
+\let\savedGamma\Gamma
+\usepackage{amsmath}
+\let\Gamma\savedGamma
+
+   This package is supported by
+
+J"org Knappen
+Barbarossaring 43
+D-55118 Mainz
+Allemagne
+

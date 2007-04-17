@@ -1,0 +1,110 @@
+%%
+%% This file will generate fast loadable files and documentation
+%% driver files from the doc files in this package when run through
+%% LaTeX or TeX.
+%%
+%% 
+%% This file is part of the LaTeX2e system (PRELIMINARY TEST RELEASE).
+%% -------------------------------------------------------------------
+%% 
+%%  This system is distributed in the hope that it will be useful,
+%%  but WITHOUT ANY WARRANTY; without even the implied warranty of
+%%  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+%% 
+%% IMPORTANT NOTICE:
+%% 
+%% Copyright (C) 1994 A. Kielhorn. All rights reserved.
+%% For additional copyright information see further down in this file.
+%% 
+%% Permission is granted to distributed verbatim copies of this file
+%% together with all other files of the LaTeX2e system.
+%% 
+%% No other permissions to copy or distribute this file in any form
+%% are granted and in particular no permission to modify its contents.
+%%
+%% --------------- start of docstrip commands ------------------
+%%
+\def\batchfile{wasysym.ins}
+\input docstrip.tex
+\preamble
+
+Copyright (C) 1994-1997 by A. Kielhorn.  All rights reserved.
+For additional copyright information see further down in this file.
+
+This file is NOT part of the LaTeX2e system.
+--------------------------------------------
+
+ This system is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+
+
+IMPORTANT NOTICE:
+
+Error reports in case of UNCHANGED versions to
+Axel Kielhorn
+a.kielhorn@tu-bs.de
+This address may not be valid after 1998/01/01. If I don't answer I 
+have lost access to the internet.
+
+Please do not request updates from us directly.  Distribution is
+done through Mail-Servers and TeX organizations.
+
+You are not allowed to change this file.
+
+\endpreamble
+\def\batchfile{wasysym.dst}   % ignored in distribution
+\input docstrip.tex            % ignored in distribution
+
+\keepsilent
+
+\Msg{*** Generating .sty files ***}
+
+\generateFile{wasysym.sty}{t}{%
+  \from{wasysym.dtx}{package}}
+
+
+\preamble
+
+Copyright (C) 1994 Axel Kielhorn.
+All rights reserved.
+
+This file is NOT part of the LaTeX2e.
+-------------------------------------
+
+This is a generated file.  Permission is granted to to customize the
+declarations in this file to serve the needs of your installation.
+However, no permission is granted to distribute a modified version of
+this file under its original name.
+
+We recommend that you copy the relevant portions of the original
+source file into a private .fdd instead of modifying this file
+directly. Otherwise any new release of NFSS2 may clobber your
+customizations.
+
+\endpreamble
+
+\Msg{*** Generating .fd files ***}
+
+\generateFile{Uwasy.fd}{t}{
+     \from{wasysym.dtx}{fd}}
+
+
+\ifToplevel{
+\Msg{***********************************************************}
+\Msg{*}
+\Msg{* To finish the installation you have to move the following}
+\Msg{* files into a directory searched by TeX:}
+\Msg{*}
+\Msg{* \space\space wasysym.sty}
+\Msg{* \space\space *.fd}
+\Msg{*}
+\Msg{* To produce the documentation run the files ending with}
+\Msg{* `.dtx' through LaTeX.}
+\Msg{*}
+\Msg{* Happy TeXing}
+\Msg{***********************************************************}
+}
+
+\endinput
+

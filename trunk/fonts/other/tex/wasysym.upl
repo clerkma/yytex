@@ -1,0 +1,35 @@
+This is an interface to the wasy-2 fonts for LaTeX2e.
+
+It does work with the old wasy-fonts but some characters are
+missing and others may come out wrong. Therefore I suggest
+to upgrade to wasy-2.
+
+These definitions are not 100% compatible to wasy.tex or the
+wasyfont.sty for NFSS1.
+
+Bug reports (and enhancements) to
+
+Axel Kielhorn
+a.kielhorn@tu-bs.de
+This address may go away soon.
+I'll move to a new town in december 1997 and loose my old account.
+
+Please note that the EC fonts (former DC fonts) come with
+a textcompanion font that contains a lot of special characters.
+Use the textcomp package to acces these symbols.
+
+Changes:
+1.0b Corrected mathcode of integrals (now 1) (=mathop)
+1.0c The command is textwasy as defined and not textlasy as
+     shown in the margin
+1.0d Adapted to LaTeX2e[1994/06/01]
+1.0e Changed some symbols from mathrel to mathbin as in latexsym
+     Changed the way the documentation is generated form
+     latex2e-beta to official LaTeX2e-way.
+1.0f Corrected \dh and \Dh definition for T1 encoding
+     Renamed \Dh to \DH as in T1 encoding but keeping the old
+     name for compatibility
+1.0g Reinserted the \hbox commands, wasysym now works in mathmode again
+1.0f Changed most \hbox commands to \mbox (thanks to Donald Arseneau)
+     Donald added partial support for AMSmath
+     
