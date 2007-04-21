@@ -1,0 +1,92 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Trouble shooting information for printer problems:
+==================================================
+
+Once a viable connection has been established with the printer, there may
+still be problems when printing PostScript files calling for fonts in
+Adobe Type 1 format, particularly those used with TeX (Computer Modern, 
+LaTeX, SliTeX, AMS Euler, Symbol & Cyrillic fonts, LucidaBright +
+LucidaNewMath etc).  This `readme.txt' file and the PostScript files in
+this directory are designed to help with such problems.
+
+The error handler `ehandler.ps':
+================================
+
+This subdirectory contains files useful for trouble-shooting printer
+problems.  First of all, please download the error handler,
+`ehandler.ps' to the printer (or other PostScript interpreter).
+This will provide useful diagnostic information should one of the 
+tests fail.  The error handler can be downloaded as follows:
+
+	copy b:\ps\ehandler.ps LPT1:/b
+
+In this incantation, substitute the directory where you keep the error 
+handler for `b:\ps'.  Also substitute the correct port for your printer 
+(AUX, COM1, ...  COM4, PRN, LPT1 ... LPT3).  If you have a printer on a
+serial line WITHOUT hardware handshaking, use the utility program SERIAL
+instead to send `ehandler.ps' to the printer.
+
+Any error condition will cause the partially rendered page to be shown,
+along with details about the state of the PostScript interpreter at the 
+time the error occured, as well as information on where in the PostScript 
+file the error occured.  (Note, the error handler assumes the PostScript 
+interpreter sets up the error information as specified --- some clones do
+not, and the output from the error handler will be less useful in that case). 
+
+PostScript interpreter test files:
+==================================
+
+There are nine PS test files provided in this directory.
+
+Send the test files to the printer - in increasing numerical order.
+The test files present increasingly more challenging material to the 
+PostScript interpreter.  For detailed information see the start of each
+test file.  A properly designed PostScript interpreter should handle all
+nine test files without error, as do all true Adobe interpreters.
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
+
+printtst1.ps	This is a very simple test just to establish that files can 
+		be sent to the printer, and that they are received by the 
+		printer.  If this doesn't work, suspect the cables, the
+		baud rate setting when using a serial connection, or perhaps
+		problems with handshaking (hardware versus software).
+
+printst2.ps	is a test of rendering using a printer resident font 
+		(Times-Roman).  A different font (Courier) may be used
+		if the printer does not have Times-Roman built-in.
+
+printst3.ps	is a test of the interpreter's ability to read `eexec'
+		encrypted material.  This is required for reading Type 1
+		outline font programs and for dealing with the preambles
+		used by DVIPSONE and utilities supplied with DVIPSONE.
+
+printst4.ps	is a test of the ability to render very simple Type 1 fonts.
+		The font is `plain vanilla' and has no features that
+		should trigger known `clone' interpreter bugs.
+
+printst5.ps	is a test of the ability to deal with several different
+		Type 1 fonts and perform correct positioning on the page.
+
+printst6.ps	is a test of the interpreter with a font that is somewhat
+		more sophisticated. A very small number of `clone'
+		interpreters fail this test. If your interpreter is one of
+		these, ask us about `greatly simplified' fonts. 
+
+printst7.ps	is a test using an even more sophisticated Type 1 font.  
+		Several `clone' interpreters fail this test.  If your
+		interpreter fails this test, ask us about `simplified' fonts.
+
+printst8.ps	is a test of the ability to deal with several different
+		sophisticated Type 1 fonts in a page of mathematical text.
+
+printst9.ps	is a test of the ability to render simple (scaled) Type 3
+		bitmapped fonts.  Some `clone' interpreters will fail this
+		test.  The capability to render such fonts is only required
+		if you plan to use fonts that are not yet available in
+		outline format (that is, by converting them to Type 3 form
+		using PKtoPS).
+
+--- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- 
