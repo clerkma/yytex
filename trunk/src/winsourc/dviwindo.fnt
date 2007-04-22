@@ -1,0 +1,110 @@
+; DVIWINDO.FNT --- a sample font mapping table.
+; Copyright 2007 TeX Users Group.
+; You may freely use, modify and/or distribute this file.
+
+; This particular one is for a subset of the Computer Modern fonts.
+; Useful when only basic 40 fonts are installed instead of full set of 75.
+
+; To use: rename this file `DVIWINDO.FNT' & install in the DVIWindo directory.
+; Or rename to <file-name>.FNT and place in same directory as <file-name>.DVI,
+; for use specifically with the DVI file <file-name>.DVI.
+
+; Syntax: <windows-face-name>[,{BOLD|ITALIC|BOLDITALIC}]=<tex-font-name> 
+; gives mapping from the TeX TFM file name  =>  MS Windows face name.
+; The MS Windows face name should be the name of a font known to Windows.
+; The font to be substituted appears BEFORE the font to be substituted for.
+; (This may seem backwards, but is consistent with ATM.INI & WIN.INI format)
+ 
+[Fonts]
+; CMB10
+; CMBSY10  
+; CMBX5 
+CMBX7,BOLD=CMBX6
+; CMBX7 
+CMBX7,BOLD=CMBX8
+CMBX10,BOLD=CMBX9
+; CMBX10 
+; CMBX12 
+; CMBXSL10 
+; CMBXTI10 
+; CMCSC10 
+; CMDUNH10  
+; CMEX10 
+; CMFF10   
+; CMFI10   
+; CMFIB8   
+; CMINCH   
+; CMITT10 
+; CMMI5 
+CMMI7,ITALIC=CMMI6
+; CMMI7 
+CMMI7,ITALIC=CMMI8
+CMMI10,ITALIC=CMMI9
+; CMMI10 
+; CMMI12 
+; CMMIB10 
+; CMR5 
+CMR7=CMR6
+; CMR7 
+CMR7=CMR8
+CMR10=CMR9
+; CMR10 
+; CMR12 
+; CMR17 
+CMSL10,ITALIC=CMSL8
+CMSL10,ITALIC=CMSL9
+; CMSL10 
+; CMSL12 
+; CMSLTT10
+CMSS10=CMSS8
+CMSS10=CMSS9
+; CMSS10 
+; CMSS12 
+; CMSS17 
+; CMSSBX10 
+; CMSSDC10 
+CMSSI10,ITALIC=CMSSI8
+CMSSI10,ITALIC=CMSSI9
+; CMSSI10 
+; CMSSI12 
+; CMSSI17 
+; CMSSQ8 
+; CMSSQI8 
+; CMSY5 
+CMSY7=CMSY6
+; CMSY7 
+CMSY7=CMSY8
+CMSY10=CMSY9
+; CMSY10 
+; CMTCSC10 
+CMTEX10=CMTEX8
+CMTEX10=CMTEX9
+; CMTEX10 
+CMTI10,ITALIC=CMTI7
+CMTI10,ITALIC=CMTI8
+CMTI10,ITALIC=CMTI9
+; CMTI10 
+; CMTI12 
+CMTT10=CMTT8
+CMTT10=CMTT9
+; CMTT10 
+CMTT10=CMTT12
+; CMU10   
+; CMVTT10  
+CMCSC10=CMCSC8
+
+; Following deals with misfeature of LaTeX 2e
+
+CMMIB7=CMMIB6
+CMMIB7=CMMIB8
+CMMIB10=CMMIB9
+
+CMBSY7=CMBSY6
+CMBSY7=CMBSY8
+CMBSY10=CMBSY9
+
+CMEX10=CMEX7
+CMEX10=CMEX8
+CMEX10=CMEX9
+
+CMCSC9=CMCSC8
