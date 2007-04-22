@@ -1,0 +1,161 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+=========================================
+Information for users of Scientific Word:
+=========================================
+
+See the file `texref.doc' in the `sciword\extras' directory of Scientific
+Word for some information about using DVIWindo for previewing and printing,
+using DVIPSONE for printing to PostScript devices, using Y&YTeX instead of
+TurboTeX, and using fonts other than Computer Modern with LaTeX in
+Scientific Word.  
+
+The changes and additions needed are to the file `sciword.ini' in your
+Windows directory.  Like other Windows `ini' files, this file is divided into
+sections, each starting with a word surrounded by brackets ([...]).  Sections
+are separated by blank lines, and any line starting with a `;' is considered
+a comment, and hence ignored.  In the instructions below, please replace `c:'
+with the drive letter where the corresponding files may be found on your
+system, and adjust the file paths and names appropriately. 
+
+
+Asking Scientific Word to use DVIWindo for previewing:
+------------------------------------------------------
+
+DVIWindo is a previewer that allows previewing of files calling for scalable
+outline fonts (e.g. PostScript Type 1 and TrueType).  The TurboTeX previewer
+works with PK bitmapped fonts instead (and so is restricted to fixed
+magnificaiton).  You can ask Scientific Word to link to DVIWindo for
+previewing as follows:
+
+In the [TeX] section of the file `sciword.ini', comment out the line:
+
+	TeXPreviewer=c:\sciword\tex\wdviwin, -z
+
+and add the line:
+
+	TeXPreviewer=c:\dviwindo\dviwindo,,2
+
+
+Asking Scientific Word to use DVIWindo for printing:
+----------------------------------------------------
+
+In addition to being a previewer, DVIWindo can also print to any device
+with a Windows printer driver including HP, IBM, dot-matrix, PS, even fax
+boards and Adobe Acrobat PDF.
+
+In the [TeXDriver] section of the file `sciword.ini' add the line
+
+	default=DVIWindo: Apple LaserWriter II NT on LPT1:
+
+Replace `Apple LaserWriter II NT' in the above with the name of your 
+printer as noted under `device=' in the [windows] section of your `win.ini' 
+file.  Also replace `LPT1:' with the appropriate port, as noted in the
+`device=' entry in `win.ini'.  The above example corresponds to the 
+following `win.ini' entry: 
+
+	device=Apple LaserWriter II NT,pscript,LPT1:
+
+The `device=' entry in the [windows] section applies to the default printer, 
+If the printer you wish to use is not the default printer, then look in the
+[devices] section of `win.ini' for the corresponding information for 
+printers installed in Windows other than the default printer.
+
+Also add the following line to the [TeXDriver] section of `sciword.ini':
+
+	TeXDriver3=DVIWindo,c:\dviwindo\dviwindo,*,N,,N{}{-b=1 -e=2}{}
+
+
+Asking Scientific Word to use DVIPSONE for printing:
+----------------------------------------------------
+
+DVIPSONE is the only program of any kind using `partial font downloading' of
+Adobe Type 1 fonts (a.k.a `PostScript' fonts).  While you can certainly print
+from DVIWindo to a PostScript printer, the PostScript file produced will be
+as large as that produced by other DVI-to-PS printer drivers, and printing as
+slow.  You may also run out of printer memory if you have an older printer
+and are using lots of fonts (as is common when using TeX).
+
+The easiest way to link to DVIPSONE for printing to PostScript printers is to
+have Scientific Word link to DVIWindo, and to set up DVIWindo ahead of time
+to use DVIPSONE.  To do this, launch DVIWindo, open some DVI file, select
+`Print' from the `File' menu and check the box next to `Use DVIPSONE'.  When
+DVIWindo is closed it will save this setting in the `dviwindo.ini' file and
+hence use DVIPSONE for printing when it is later called from Scientific Word.
+
+If the `Use DVIPSONE' check box does not appear in the dialog box, then
+either DVIPSONE is not installed, or DVIPSONE.EXE is not on the DOS path.
+
+
+Asking Scientific Word to use Y&YTeX:
+-------------------------------------
+
+Y&YTeX is the only `dynamic' TeX that can run in DOS or Windows.  TurboTeX,
+on the other hand is a slower, Windows-only `small' TeX that can easily run
+out of memory.  You may find it advantageous to use Y&YTeX instead of
+TurboTeX.  Actually, you may not have much of a choice if you use fonts other
+than Computer Modern, since you then most likely will run out of font space
+in *any* `small TeX' implementation. 
+
+Note that Y&YTeX requires at least a 386 computer and at least 1.6 meg of
+*free* RAM.  So the machine should have at least 4 meg installed (and if
+there are only 4 meg, then not much of it should be used for RAM disks,
+SMARTDRV cache, ATM cache, and print buffers).  Use the DOS `mem' command
+to see how much memory of various flavors you have available.  (Note that
+in a DOS box in Windows, the amount available is under-reported, since
+Windows grabs it, but is prepared to give it to processes asking for it). 
+
+In the [TeX] section of the file `sciword.ini', comment out the line
+
+	LaTeX=2, c:\sciword\tex\wlatex,
+
+and add the line
+
+	LaTeX=1,c:\y&ytex\y&ytex &lplain,
+
+You'll also have to make sure that the environment variables are set for
+TeX.  In particular, add `c:\sciword\tex\macros' to `texinputs'. For example:
+
+	set texinputs=c:\y&ytex\latex;c:\sciword\tex\macros
+
+Additional semicolon-separated directories with TeX source files may be added.
+
+The environment variables are set up in `setyytex.bat', a batch file
+created during installation of Y&YTeX.  Lines from this batch file
+may already have been appended to your `autoexec.bat'.  It is usually
+most convenient to set environment variables from `autoexec.bat'.
+
+If you are using Windows ANSI encoding for ordinary text fonts, then
+please add `Set TEXANSI=1' to your autoexec.bat file so that DVIPSONE
+*also* reencodes text fonts to use Windows ANSI encoding.
+
+
+Inserted EPS figures --- printing with DVIPSONE and previewing with DVIWindo:
+-----------------------------------------------------------------------------
+
+To enable printing by DVIPSONE of EPS figures inserted using Scientific Word,  
+use the command line flag -*S.
+
+To enable previewing in DVIWindo of EPS figures inserted using Scientific
+Word, add the line
+
+	SciWord=1
+
+to the [Window] section of your `dviwindo.ini' file.
+
+(The reason these capabilities are not automatically enabled is that
+Scientific Word uses a \special syntax for inserted EPS files that
+conflicts with that used by other drivers such as DVIPS).
+
+You may find that one of the other schemes for insertion of EPS figures
+provides more capabilities than that used by Scientific Word (such as scaling
+of the figure).  Please refer to the DVIPSONE or DVIWindo manual. You can use
+Scientific Word's `TeX Field' mechanism to define your own \special using one
+of the other schemes. 
+
+You may want to use Tom Rokicki's `EPSF.TEX' (see `epsfsafe.tex') or Trevor
+Darrell's PSFIG.STY (see `psfigfix.txt') as a high level interface for EPS
+figure inclusion.
+
+Note that DVIWindo and DVIPSONE *also* support inclusion of TIFF images.
