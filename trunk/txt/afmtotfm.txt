@@ -1,0 +1,276 @@
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
+
+Extended Comment Syntax for AFM files used by AFMtoTFM:
+=======================================================
+
+TeX Font Metric (TFM) files contain fields for many parameters, a few
+of which are not normally specified in an AFM files.  The sample AFM
+files in this directory illustrate the comment syntax used to specify
+this extra information for use with AFMtoTFM.  AFMtoTFM uses
+information normally included in an AFM file together with information
+in the extra comments.  
+
+For text fonts the extra parameters are not really needed, since they
+default to reasonable values if not specified.  But for math fonts the
+extra information is crucial to proper operation of TeX's mathematical
+typsetting capabilities.  Indeed, a unique feature of AFMtoTFM is its
+ability to create TFM files for math fonts.
+
+(*) The following example shows the parameters that may be specified for a
+    plain vanilla text font:
+
+Comment FontID CMR
+Comment DesignSize 10 (pts)
+Comment CharacterCodingScheme TeX text
+Comment Space 333.333 166.667 111.111 
+Comment ExtraSpace 111.111
+Comment Quad 1000
+
+The `FontID' can for example be the PostScript FullName.
+
+The `DesignSize' is the size for which the font was designed, default 10pt.
+
+Make `Quad' equal to emspace, i.e. 1000 units (on the Adobe 1000 per em scale).
+
+For `Spacewidth' use the width of the space character in the font.
+For `Spacestretch' use `Spacewidth/2'. For `Spaceshrink' use `Spacewidth/6'
+(CM fonts use larger values for `Spaceshrink', but this may not look good).
+
+For `Extraspace' use `Quad'/2 - `Spacewidth'.
+
+For fixed width fonts, use 0 for `Spacestretch' and  `Spaceshrink',
+make `Quad' equal to `Spacewidth' * 2, and `Extraspace' equal to `Spacewidth'.
+
+This is all very straightforward for text fonts.  You can ignore the rest
+if you are only dealing with text fonts.
+
+Extended Comment Syntax for MATH FONTS:
+=======================================
+
+NOTE:	`Spacewidth' and `ExtraSpace' must be zero for all math fonts.
+
+(1) For a math italic font, fewer parameters are needed:
+
+Comment FontID CMMI
+Comment DesignSize 10 (pts)
+Comment CharacterCodingScheme TeX math italic
+Comment Space 0 0 0 
+Comment Quad 1000
+
+(2) For a math symbol font, additional parameters are needed:
+
+Comment FontID CMSY
+Comment DesignSize 10 (pts)
+Comment CharacterCodingScheme TeX math symbols
+Comment Space 0 0 0 
+Comment ExtraSpace 0
+Comment Quad 1000
+Comment Num 676.508 393.732 443.731
+Comment Denom 685.951 344.841
+Comment Sup 412.892 362.892 288.889
+Comment Sub 150 247.217
+Comment Supdrop 386.108
+Comment Subdrop 50
+Comment Delim 2390 1010
+Comment Axisheight 250
+
+Several of these parameters have to do with typesetting of numerators and
+denominators of fractional expressions, as well superscripts and
+subscripts.  See the TeX book for the significance of these parameters in
+typesetting of mathematical expressions.
+
+(3) Math extensions fonts are the most complex.  For a start, a few extra
+parameters need to be specified:
+
+Comment FontID CMEX
+Comment DesignSize 10 (pts)
+Comment CharacterCodingScheme TeX math extension
+Comment Space 0 0 0 
+Comment ExtraSpace 0
+Comment Quad 1000
+Comment DefaultRuleThickness 40
+Comment BigOpSpacing 111.111 166.667 200 600 100
+
+DefaultRuleThickness is used for many different purposes, including
+minimal separation between various items being typeset.  It is also
+used for the thickness of division lines separating numerator from
+denominator. 
+
+Next, delimiters and operators of different sizes are chained
+together. For example:
+
+Comment Ascending 0, 16, 18, 32, 48		% (	 - parenleft
+Comment Ascending 1, 17, 19, 33, 49		% )	 - parenright
+Comment Ascending 2, 104, 20, 34, 50		% [	 - bracketleft
+Comment Ascending 3, 105, 21, 35, 51		% ] 	 - bracketright
+Comment Ascending 4, 106, 22, 36, 52		% lfloor - floorleft
+Comment Ascending 5, 107, 23, 37, 53		% rfloor - floorright
+Comment Ascending 6, 108, 24, 38, 54		% lceil	 - ceilingleft
+Comment Ascending 7, 109, 25, 39, 55		% rceil	 - ceilingright
+Comment Ascending 8, 110, 26, 40, 56		% {	 - braceleft
+Comment Ascending 9, 111, 27, 41, 57		% }	 - braceright
+Comment Ascending 10, 68, 28, 42		% <	 - anglebracketleft
+Comment Ascending 11, 69, 29, 43		% >	 - anglebracketright
+Comment Ascending 14, 46, 30, 44		% /	 - slash
+Comment Ascending 15, 47, 31, 45		% \	 - backslash
+Comment Ascending 70, 71			% bigsqcup  - unionsq
+Comment Ascending 72, 73			% oint	    - contintegral
+Comment Ascending 74, 75			% bigodot   - circledot
+Comment Ascending 76, 77			% bigoplus  - circleplus
+Comment Ascending 78, 79			% bigotimes - circlemultiply
+Comment Ascending 80, 88			% sum       - summation
+Comment Ascending 81, 89			% prod      - product
+Comment Ascending 82, 90			% int       - integral
+Comment Ascending 83, 91			% bigcup    - union
+Comment Ascending 84, 92			% bigcap    - intersection
+Comment Ascending 85, 93			% biguplus  - unionmulti
+Comment Ascending 86, 94			% bigwedge  - logicaland
+Comment Ascending 87, 95			% bigvee    - logicalor
+Comment Ascending 96, 97			% coprod    - coproduct
+Comment Ascending 98, 99, 100			% widehat   - hatwide
+Comment Ascending 101, 102, 103			% widetilde - tildewide
+Comment Ascending 112, 113, 114, 115, 116	% radical   - sqrt
+
+Finally, methods for constructing large delimiters out of partial
+character shapes are specified:
+
+Comment Extensible 12 top 0 mid 0 bot 0 rep 12	    % vert   - thin bar
+Comment Extensible 13 top 0 mid 0 bot 0 rep 13	    % Vert   - thin double bar
+Comment Extensible 48 top 48 mid 0 bot 64 rep 66    % (      - parenleft
+Comment Extensible 49 top 49 mid 0 bot 65 rep 67    % )      - parenright
+Comment Extensible 50 top 50 mid 0 bot 52 rep 54    % [      - bracketleft
+Comment Extensible 51 top 51 mid 0 bot 53 rep 55    % ]      - bracketright
+Comment Extensible 52 top 0 mid 0 bot 52 rep 54	    % lfloor - floorleft
+Comment Extensible 53 top 0 mid 0 bot 53 rep 55	    % rfloor - floorright
+Comment Extensible 54 top 50 mid 0 bot 0 rep 54	    % lceil  - ceilingleft
+Comment Extensible 55 top 51 mid 0 bot 0 rep 55	    % rceil  - ceilingright
+Comment Extensible 56 top 56 mid 60 bot 58 rep 62   % {      - braceleft
+Comment Extensible 57 top 57 mid 61 bot 59 rep 62   % }      - braceright
+Comment Extensible 58 top 56 mid 0 bot 58 rep 62    % lgroup
+Comment Extensible 59 top 57 mid 0 bot 59 rep 62    % rgroup
+Comment Extensible 60 top 0 mid 0 bot 0 rep 63	    % arrowvert
+Comment Extensible 61 top 0 mid 0 bot 0 rep 119	    % Arrowvert
+Comment Extensible 62 top 0 mid 0 bot 0 rep 62	    % bracevert
+Comment Extensible 63 top 120 mid 0 bot 121 rep 63  % updownarrow
+Comment Extensible 64 top 56 mid 0 bot 59 rep 62    % lmoustache
+Comment Extensible 65 top 57 mid 0 bot 58 rep 62    % rmoustache
+Comment Extensible 66 top 0 mid 0 bot 0 rep 66	    % parenleftexten
+Comment Extensible 67 top 0 mid 0 bot 0 rep 67	    % parenrightexten
+Comment Extensible 116 top 118 mid 0 bot 116 rep 117	% radical
+Comment Extensible 119 top 126 mid 0 bot 127 rep 119	% Updownarrow
+Comment Extensible 120 top 120 mid 0 bot 0 rep 63	% uparrow
+Comment Extensible 121 top 0 mid 0 bot 121 rep 63	% downarrow
+Comment Extensible 126 top 126 mid 0 bot 0 rep 119	% Uparrow
+Comment Extensible 127 top 0 mid 0 bot 127 rep 119	% Downarrow
+
+
+Bogus Character Bounding Boxes:
+===============================
+
+TeX achieves some of its typesetting capabilities of mathematical
+expression by using `heights' and `depths' for certain characters
+that depart from the actual height and depth of the character bounding box.
+That is, the TFM file pretends that the character has a different shape.
+
+For example, the large operators have 100 added to both depth and height
+to make sure that lower and upper limits are position appropriately.
+And the bounding boxes for all operators are made the same, independent
+of their actual shape.
+
+The sample AFM files with names containing `tex' have been set up to
+illustrate this.  For additional examples, run TFMtoAFM on existing TFM
+files for Computer Modern, LaTeX, or Euler fonts, and compare with the
+partial AFM file produced using GETAFM.PS, for example.
+
+
+Bogus Kern Pairs --- Accent Positioning in Math Fonts:
+======================================================
+
+Math Italic and Math Symbol fonts typically contain a large number of
+`kerning pairs'. These have nothing to do with kerning.  Instead,
+they are pairs that specify how to place an accent.  Kerning pairs
+whose second letter is the so-called `skew-char' --- traditionally
+127 (tie) for math italic fonts, and 48 (prime) for math symbol fonts
+--- fall in this category. 
+
+The reason accent positioning has to be dealt with differently for math
+fonts is that the character width in the TFM file is NOT the actual
+character with (see below). Typically (but not always) the only kern pairs 
+in math fonts are such bogus kern pairs, since normal text typesetting 
+rules are not used when in math mode.
+
+
+Bogus Character Widths - SubScript and SuperScript Positioning:
+===============================================================
+
+The `character width' in the TFM file of a math font is used to determine
+where to place a subscript, while the character `width' plus the `italic
+correction' determines where to place a superscript.  The advance in
+horizontal position (that is the REAL character width) is equal to the
+sum of the TFM `character width' plus the `italic correction'.  
+
+This can lead to some confusion, since AFM files normally specify the
+actual character width.  There is no real problem with using such AFM
+files, all that happens is that the superscript will be directly above
+the subscript for all characters that have zero italic correction. 
+And one CANNOT modify the width of a character arbitrarily by changing
+the AFM file, one has to change the actual font also.  Hence proper
+positioning of subscripts and superscripts cannot be achieved in TeX unless
+the font is especially designed to work with TeX (which means it may then 
+not work particularly well with other applications). 
+
+Italic Correction:
+==================
+
+A character that overhangs on the right past the character advance width
+should have a non-zero italic correction in the TFM file. The italic
+correction is used when switching from an italic font to a regular font
+(using \/).  In this case the italic correction is simply added to the
+character width.
+
+The italic correction is used differently in typesetting mathematics,
+as explained above. It is ALWAYS added to the character `width' found in
+the TFM file.  The purpose of the italic correction in a math font is
+to provide horizontal separation between the position of a subscript
+and a superscript. 
+
+Italic correction may be specified directly in the AFM file using 
+a field like `I 23 ;' following the character bounding box, or may 
+be computed by AFMtoTFM from the character bounding box.  Otherwise,
+the italic correction is computed by AFMtoTFM using the formula
+
+	xur - width + 30
+
+provided that this is greater than zero.  Note that the italic correction 
+can be manipulated at will by providing a bogus value for `xur'.
+
+
+Font Menu Names and Additional Comments:
+========================================
+
+The name that appears in a font menu in Microsoft Windows is pulled from
+the corresponding PFM (Printed Font Metric) file.  Normally AFMtoPFM
+generates a reasonable name based on the FontName and the FamilyName.
+This can be overridden using a comment such as:
+
+	Comment MS-WindowsName LucidNewMatIta
+
+The name that appears in a font menu on the Macintosh is pulled from
+the corresponding FOND resource in the `screen font'.  Normally AFMtoSCR
+generates a reasonable name based on the FontName and the FamilyName.
+This can be overridden using a comment such as:
+
+	Comment MacIntoshName LucidaNewMath-Ita
+
+The utility for creating Macintosh `screen fonts' normally comes up
+with a reasonable font ID number.  If this conflicts with an existing
+font ID, then use a comment of the form:
+
+	Comment MacResID 13260
+
+Finally, some font manipulation utilities pull the font's UniqueID
+from a comment of the form
+
+	Comment UniqueID 501234
+
