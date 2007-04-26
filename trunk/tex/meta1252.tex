@@ -1,0 +1,137 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% META1252.TEX  keyboard replacement file for Windows ANSI
+
+% Makes `meta' characters active and replaces them with suitable TeX macros
+
+% A source file using Windows ANSI can then be read in even if the fonts
+% use a different encoding or if they do not contain ready-made accented chars
+
+\catcode128=\active \def^^80{{\euro}}	% Euro (may not exist in font)
+
+\catcode130=\active \def^^82{,}		% quotesinglebase (approximation)
+\catcode131=\active \def^^83{{\it f}}	% florin  (approximation)
+\catcode132=\active \def^^84{,,}	% quotedoublebase  (approximation)
+\catcode133=\active \def^^85{\ldots}	% ellipsis
+\catcode134=\active \def^^86{{\dag}}	% dagger
+\catcode135=\active \def^^87{{\ddag}}	% daggerdbl
+\catcode136=\active \def^^88{\^}	% circumflex accent
+\catcode137=\active \def^^89{{\perthousand}}
+\catcode138=\active \def^^8a{\v S}	% Scaron
+\catcode139=\active \def^^8b{$<$}		% guilsinglleft  (approximation)
+\catcode140=\active \def^^8c{{\OE}}
+
+\catcode142=\active \def^^8e{\v Z}	% Zcaron
+
+\catcode145=\active \def^^91{`}		% quoteleft
+\catcode146=\active \def^^92{'}		% quoteright
+\catcode147=\active \def^^93{``}	% quotedblleft (pseudo ligature)
+\catcode148=\active \def^^94{''}	% quotedblright (pseudo ligature)
+\catcode149=\active \def^^95{{\bullet}}
+\catcode150=\active \def^^96{--}	% endash (pseudo ligature)
+\catcode151=\active \def^^97{---}	% emdash (pseudo ligature)
+\catcode152=\active \def^^98{\~}	% tilde accent
+\catcode153=\active \def^^99{{\trademark}}
+\catcode154=\active \def^^9a{\v s}	% scaron
+\catcode155=\active \def^^9b{$>$}		% guilsinglright (approximation)
+\catcode156=\active \def^^9c{{\oe}}
+
+\catcode158=\active \def^^9e{\s z}	% zcaron
+\catcode159=\active \def^^9f{\"Y}	% Ydieresis
+\catcode160=\active \def^^a0{ }		% space, nbspace
+\catcode161=\active \def^^a1{!`}	% exclamdown
+\catcode162=\active \def^^a2{c}		% cent (approximation)
+\catcode163=\active \def^^a3{{\pounds}} % sterling
+\catcode164=\active \def^^a4{o}		% currency (approximation)
+\catcode165=\active \def^^a5{Y}		% Yen (approximation)
+\catcode166=\active \def^^a6{|}		% brokenbar (approximation)
+\catcode167=\active \def^^a7{\S}	% section
+\catcode168=\active \def^^a8{\"}	% dieresis accent
+\catcode169=\active \def^^a9{{\copyright}}
+\catcode170=\active \def^^aa{^{a}}	% ordfeminine (approximation)
+\catcode171=\active \def^^ab{<<}	% guillemotleft  (assume ligature)
+\catcode172=\active \def^^ac{!}		% logicalnot  (gross approximation)
+\catcode173=\active \def^^ad{-}		% hyphen, sfthyphen
+\catcode174=\active \def^^ae{{\registered}}
+\catcode175=\active \def^^af{\=}	% macron accent
+\catcode176=\active \def^^b0{$^{\circ}$}
+\catcode177=\active \def^^b1{${\pm}$}	% plusminus
+\catcode178=\active \def^^b2{$^{2}$}	% twosuperior
+\catcode179=\active \def^^b3{$^{3}$}	% threesuperior
+\catcode180=\active \def^^b4{\'}	% acute accent
+\catcode181=\active \def^^b5{$\mu$}	% mu, micro
+\catcode182=\active \def^^b6{{\P}}	% paragraph
+\catcode183=\active \def^^b7{$^{.}$}		% periodcentered  (approximation)
+\catcode184=\active \def^^b8{\c }		% cedilla
+\catcode185=\active \def^^b9{$^{1}$}	% onesuperior
+\catcode186=\active \def^^ba{$^{o}$}	% ordmasculine
+\catcode187=\active \def^^bb{>>}		% guillemotright (assume ligature)
+\catcode188=\active \def^^bc{${1/4}$}		% onequarter
+\catcode189=\active \def^^bd{${1/2}$}		% onehalf
+\catcode190=\active \def^^be{${3/4}$}		% threequarters
+\catcode191=\active \def^^bf{?`}		% questiondown
+\catcode192=\active \def^^c0{\`A}		% Agrave
+\catcode193=\active \def^^c1{\'A}		% Aacute
+\catcode194=\active \def^^c2{\^A}		% Acircumflex
+\catcode195=\active \def^^c3{\"A}		% Atilde
+\catcode196=\active \def^^c4{\"A}		% Adieresis
+\catcode197=\active \def^^c5{{\AA}}		% Aring
+\catcode198=\active \def^^c6{{\AE}}		% AE
+\catcode199=\active \def^^c7{\c C}		% Ccedilla
+\catcode200=\active	\def^^c8{\`E}		% Egrave
+\catcode201=\active	\def^^c9{\'E}		% Eacute
+\catcode202=\active	\def^^ca{\^E}		% Ecircumflex
+\catcode203=\active	\def^^cb{\"E}		% Edieresis
+\catcode204=\active	\def^^cc{\`I}		% Igrave
+\catcode205=\active	\def^^cd{\'I}		% Iacute
+\catcode206=\active	\def^^ce{\^I}		% Icircumflex
+\catcode207=\active	\def^^cf{\"I}		% Idieresis
+\catcode208=\active	\def^^d0{{\DH}}		% Eth		
+\catcode209=\active	\def^^d1{\~N}		% Ntilde
+\catcode210=\active	\def^^d2{\`O}		% Ograve
+\catcode211=\active	\def^^d3{\'O}		% Oacute
+\catcode212=\active	\def^^d4{\^O}		% Ocircumflex
+\catcode213=\active	\def^^d5{\~O}		% Otilde
+\catcode214=\active	\def^^d6{\"O}		% Odieresis
+\catcode215=\active	\def^^d7{$\times$}	% multiply (approximation)
+\catcode216=\active	\def^^d8{{\O}}		% Oslash
+\catcode217=\active	\def^^d9{\`U}		% Ugrave
+\catcode218=\active	\def^^da{\'U}		% Uacute
+\catcode219=\active	\def^^db{\^U}		% Ucircumflex
+\catcode220=\active	\def^^dc{\"U}		% Udieresis
+\catcode221=\active	\def^^dd{\'Y}		% Yacute	
+\catcode222=\active	\def^^de{{\TH}}		% Thorn	
+\catcode223=\active	\def^^df{{\ss}}		% germandbls
+\catcode224=\active	\def^^e0{\`a}		% agrave
+\catcode225=\active	\def^^e1{\'a}		% aacute
+\catcode226=\active	\def^^e2{\^a}		% acircumflex
+\catcode227=\active	\def^^e3{\~a}		% atilde
+\catcode228=\active	\def^^e4{\"a}		% adieresis
+\catcode229=\active	\def^^e5{{\aa}}		% aring
+\catcode230=\active	\def^^e6{{\ae}}		% ae
+\catcode231=\active	\def^^e7{\c c}		% ccedilla
+\catcode232=\active	\def^^e8{\`e}		% egrave
+\catcode233=\active	\def^^e9{\'e}		% eacute
+\catcode234=\active	\def^^ea{\^e}		% ecircumflex
+\catcode235=\active	\def^^eb{\"e}		% edieresis
+\catcode236=\active	\def^^ec{\`i}		% igrave
+\catcode237=\active	\def^^ed{\'i}		% iacute
+\catcode238=\active	\def^^ee{\^i}		% icircumflex
+\catcode239=\active	\def^^ef{\"i}		% idieresis
+\catcode240=\active	\def^^f0{{\dh}}		% eth	
+\catcode241=\active	\def^^f1{\~n}}		% ntilde
+\catcode242=\active	\def^^f2{\`o}		% ograve
+\catcode243=\active	\def^^f3{\'o}		% oacute
+\catcode244=\active	\def^^f4{\^o}		% ocircumflex
+\catcode245=\active	\def^^f5{\~o}		% otilde
+\catcode246=\active	\def^^f6{\"o}		% odieresis
+\catcode247=\active	\def^^f7{$/$}		% divide (approximation)
+\catcode248=\active	\def^^f8{{\o}}		% oslash
+\catcode249=\active	\def^^f9{\`u}		% ugrave
+\catcode250=\active	\def^^fa{\'u}		% uacute
+\catcode251=\active	\def^^fb{\^u}		% ucircumflex
+\catcode252=\active	\def^^fc{\"u}		% udieresis
+\catcode253=\active	\def^^fd{\'y}		% yacute	
+\catcode254=\active	\def^^fe{{\th}}		% thorn	
+\catcode255=\active	\def^^ff{\"y}		% ydieresis
