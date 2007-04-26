@@ -1,0 +1,159 @@
+% Copyright 2007 TeX Users Group.
+% You may freely use, modify and/or distribute this file.
+
+% Sample xchr [] array file.		DOS 437 (US English) => Windows ANSI
+
+% Input (TeX source files) using IBM OEM (DOS code page 437) `dos437.vec'
+% Output (on-screen display and printing) using Windows ANSI `ansinew.vec'
+
+% xchr [] is a mapping from internal TeX code (jokingly referred to as ASCII) 
+% to source file code.  The inverse of xchr [] is xord [].
+% xord [] is used to translate char codes in the input to the internal code.
+
+% -1's indicate characters in the internal encoding (here Windows ANSI) 
+% for which there is no source file encoding (here IBM OEM) equivalent.
+
+% When setting up files like this, avoid `collisions', where more than one
+% code map to the same number.  The mapping cannot be inverted if this happens.
+% Use the utility `translate' - if available - to make mapping files like this.
+
+% Note that char codes not listed are not mapped - for example A-Z, a-z, 0-9 -
+% for these, the same code is used internally as in the source file.
+
+% DOS based editors typically use IBM OEM encoding and can show the extended
+% character set in some way.  With Lugaru's Epsilon, type control-F6.
+
+%Inside Input 
+%TeX	File
+% |	 |
+% v	 v
+
+%ANSI	IBM OEM
+
+% 34	34	% quotedbl	(plain TeX refer)
+39	-1	% quotesingle
+% 46	46	% period	(plain TeX refer)
+% 61	61	% equal		(plain TeX refer)
+% 94	-1	% asciicircum	(plain TeX refer) 
+96	-1	% grave		(accent)
+124	-1	% bar
+% 126	-1	% asciitilde	(plain TeX refer)
+130	-1	% quotesinglbase
+131	159	% florin
+132	-1	% quotedblbase
+133	-1	% ellipsis
+134	-1	% dagger
+135	-1	% daggerdbl
+% 136	94	% circumflex	(plain TeX refer)
+137	-1	% perthousand
+138	-1	% Scaron
+139	-1	% guilsinglleft
+140	-1	% OE
+% 145	96	% quoteleft	(plain TeX refer - \input ansiacce.tex)
+% 146	39	% quoteright	(plain TeX refer - \input ansiacce.tex)
+147	-1	% quotedblleft
+148	-1	% quotedblright
+149	7	% bullet
+150	-1	% endash
+151	-1	% emdash
+152	126	% tilde		(accent)
+153	-1	% trademark
+154	-1	% scaron
+155	-1	% guilsinglright
+156	-1	% oe
+159	-1	% Ydieresis
+161	173	% exclamdown
+162	155	% cent
+163	156	% sterling
+164	-1	% currency
+165	157	% yen
+166	124	% brokenbar
+167	21	% section
+168	-1	% dieresis	(accent)
+169	-1	% copyright
+170	166	% ordfeminine
+171	174	% guillemotleft
+172	170	% logicalnot
+% 173	45	% hyphen	(repeat)
+174	-1	% registered
+175	-1	% macron	(accent)
+176	248	% degree
+177	241	% plusminus
+178	253	% twosuperior
+179	-1	% threesuperior
+180	-1	% acute		(accent)
+181	230	% mu
+182	20	% paragraph
+183	-1	% periodcentered
+184	-1	% cedilla	(accent)
+185	-1	% onesuperior
+186	167	% ordmasculine
+187	175	% guillemotright
+188	172	% onequarter
+189	171	% onehalf
+190	-1	% threequarters
+191	168	% questiondown
+192	-1	% Agrave
+193	-1	% Aacute
+194	-1	% Acircumflex
+195	-1	% Atilde
+196	142	% Adieresis
+197	143	% Aring
+198	146	% AE
+199	128	% Ccedilla
+200	-1	% Egrave
+201	144	% Eacute
+202	-1	% Ecircumflex
+203	-1	% Edieresis
+204	-1	% Igrave
+205	-1	% Iacute
+206	-1	% Icircumflex
+207	-1	% Idieresis
+208	-1	% Eth
+209	165	% Ntilde
+210	-1	% Ograve
+211	-1	% Oacute
+212	-1	% Ocircumflex
+213	-1	% Otilde
+214	153	% Odieresis
+215	-1	% multiply
+216	-1	% Oslash
+217	-1	% Ugrave
+218	-1	% Uacute
+219	-1	% Ucircumflex
+220	154	% Udieresis
+221	-1	% Yacute
+222	-1	% Thorn
+223	225	% germandbls
+224	133	% agrave
+225	160	% aacute
+226	131	% acircumflex
+227	-1	% atilde
+228	132	% adieresis
+229	134	% aring
+230	145	% ae
+231	135	% ccedilla
+232	138	% egrave
+233	130	% eacute
+234	136	% ecircumflex
+235	137	% edieresis
+236	141	% igrave
+237	161	% iacute
+238	140	% icircumflex
+239	139	% idieresis
+240	-1	% eth
+241	164	% ntilde
+242	149	% ograve
+243	162	% oacute
+244	147	% ocircumflex
+245	-1	% otilde
+246	148	% odieresis
+247	246	% divide
+248	-1	% oslash
+249	151	% ugrave
+250	163	% uacute
+251	150	% ucircumflex
+252	129	% udieresis
+253	-1	% yacute
+254	-1	% thorn
+255	152	% ydieresis
