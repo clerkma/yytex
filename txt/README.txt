@@ -1,6 +1,5 @@
-===============================================================================
-Files in c:\flyers directory (electronic flyers) - this is c:\flyers\readme.txt
-===============================================================================
+Copyright 2007 TeX Users Group.
+You may freely use, modify and/or distribute this file.
 
 Main electronic flyers:
 
@@ -45,5 +44,3 @@ Auxiliary information:
 *	preps.txt	Page Imposition software from ScenicSoft
 *	prism.txt	Color Separation software from Insight Systems
 *	transver.txt	PostScript Previewer from TechPool Software
-
-
