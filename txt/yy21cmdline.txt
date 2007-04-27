@@ -1,0 +1,57 @@
+rem Copyright 2007 TeX Users Group.
+rem You may freely use, modify and/or distribute this file.
+
+-----------------------------------
+Command line flags for Y&Y TeX 2.1:
+-----------------------------------
+
+-v	verbose mode, show version number
+-i	run as ini-TeX
+-Q	quiet mode
+_R	run mode
+-S	scroll mode
+_T	TeX mode
+-K	disable all non-Knuthian features
+-L	show error message info in C-style format (i.e. with file name)
+-Z	show TFM files read in LOG file
+-c	do not look in current directory first for TFM files
+-C	do not look in current directory first for any files (implies -c)
+-n	complain about any non-ASCII character in input
+-w	show non-ASCII characters as is (not in hex)
+-j	convert from ANSI to DOS code page when showing non-ASCII
+-4	ignore TFMs frozen into format - read fresh TFMs
+-5	disable use of \fontdimen0 for checksum
+-9	show \csnames after loading format, and new \csnames at the end
+-M	do not show missing character information on screen
+-I	turn off format specific TEXINPUTS environment variables
+-3	turn off encoding specific TEXFONTS environment variables
+-6	enable use of source directory  when WorkingDirectory is not set
+-7	disable use of source directory when WorkingDirectory is set
+-p	allow \patterns after ini-TeX
+-2	suppress f-ligatures (useful for search in PDF and HP PCL printers)
+-O	do not show format file name in log file
+-J	do not show line breaking statistics in log file
+-f	do not show list of fonts used at end of log file
+-F	disable showing TEXINPUTS or TEXFONTS in messages about file not found
+-W	do not use dviwindo.ini file to look up environment variables
+-N  do not show character code in decimal with missing character errors
+-8	shorten file names to 8.3 convention
+-X	disable auto-truncation of long binary input lines
+-d	do not turn \ into / in file names
+
+defunct:	-y	do not cache file name information
+defunct:	-r	do not allow Mac line termination
+defunct:	-z	do not flush ^Z at end of file
+
+-----------------------------------
+Command line arguments for Y&Y TeX 2.1:
+-----------------------------------
+
+-x	character map file for translation of input
+-k	character replacement file for expansion of input
+-m	main memory size in TeX's kilo-words --- for ini-TeX only
+-h	hyphenation pattern trie size  --- for ini-TeX only
+-e	hyphenation hash table size  --- for ini-TeX only
+-H	tab step size in conversion of tabs to spaces in input
+
+
