@@ -43,7 +43,8 @@ software here.  I've taken the time to make these files available in the
 hope that there will be interest in the TeX community to revive the Y&Y
 distribution, and/or integrate the Y&Y programs, fonts, and other files
 into other free software packages, and that others will come forward to
-lead the project from this point.
+lead the project from this point.  I will be most pleased to turn over
+administration of the project.
 
 I hope that any new distribution based on Y&Y will follow the TeX
 Directory Structure and use the current versions of TeX-related packages
@@ -80,4 +81,5 @@ I hope these files will be useful to the TeX community.
 Karl Berry, for TUG  -  http://tug.org/yandy/  -  yandytex@tug.org
 
 With, again, major thanks to Blenda Horn.  Thanks also to David Walden,
-Jochen Autschbach, Mimi Burbank, and the members of the Y&Y mailing list.
+Christina Thiele, Robin Fairbairns, Mimi Burbank, Barbara Beeton, Jochen
+Autschbach, and the members of the Y&Y mailing list.
