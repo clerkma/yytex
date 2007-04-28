@@ -74,7 +74,7 @@ I started with a raw dump of the Y&Y machines.  I did my best to remove
 Y&Y business correspondence and other irrelevant files, but with such a
 large file set, it seems inevitable that some extraneous files remain,
 and conversely that some necessary files were removed.  Please email
-any problems, suggestions, questions.
+any problems, suggestions, questions to the list below.
 
 I hope these files will be useful to the TeX community.
 
