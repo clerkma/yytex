@@ -1,2804 +1,2406 @@
 #ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#pragma warning(disable:4115)	// kill rpcasync.h complaint
-#include <windows.h>
+  #define NOCOMM
+  #define NOSOUND
+  #define NODRIVERS
+  #define STRICT
+  #pragma warning(disable:4115) // kill rpcasync.h complaint
+  #include <windows.h>
+  #define MYLIBAPI __declspec(dllexport)
 #endif
 
-#ifdef _WINDOWS
-// We must define MYLIBAPI as __declspec(dllexport) before including
-// texwin.h, then texwin.h will see that we have already
-// defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-#define MYLIBAPI __declspec(dllexport)
-// #include "texwin.h"
-#endif
-
-#include "texwin.h"
-
-#pragma warning(disable:4131)	// old style declarator
-#pragma warning(disable:4135)	// conversion between different integral types 
-#pragma warning(disable:4127)	// conditional expression is constant
+#pragma warning(disable:4996)
+#pragma warning(disable:4131) // old style declarator
+#pragma warning(disable:4135) // conversion between different integral types 
+#pragma warning(disable:4127) // conditional expression is constant
 
 #include <setjmp.h>
-
-#pragma hdrstop
 
 #define EXTERN extern
 
 #include "texd.h"
 
-#pragma warning(disable:4244)				/* 96/Jan/10 */
-
-/* #pragma optimize("a", off) */			/* 98/Dec/10 experiment */
+#pragma warning(disable:4244)       /* 96/Jan/10 */
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-/* mathfraction etc used to be in tex7.c */
+/* math_fraction etc used to be in tex7.c */
+/* sec 1181 */
+void math_fraction (void)
+{
+  small_number c;
 
-void mathfraction ( ) 
-{mathfraction_regmem 
-  smallnumber c  ; 
-  c = curchr ; 
-  if ( curlist .auxfield .cint != 0 ) 
-  {
-    if ( c >= 3 ) 
-    {
-      scandelimiter ( memtop - 12 , false ) ; 
-      scandelimiter ( memtop - 12 , false ) ; 
-    } 
-    if ( c % 3 == 0 ) 
-    scandimen ( false , false , false ) ; 
-	ABORTCHECK;
-    {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 1147 ) ;		/* Ambiguous; you need another { and } */
-    } 
-    {
-      helpptr = 3 ; 
-      helpline [ 2 ] = 1148 ;	/* I'm ignoring this fraction specification, since I don't */
-      helpline [ 1 ] = 1149 ;	/* know whether a construction like `x \over y \over z' */
-      helpline [ 0 ] = 1150 ;	/* means `{x \over y} \over z' or `x \over {y \over z}'. */
-    } 
-    error () ; 
-	ABORTCHECK;
-  } 
-  else {
-      
-    curlist .auxfield .cint = getnode ( 6 ) ; 
-    mem [ curlist .auxfield .cint ] .hh.b0 = 25 ; 
-    mem [ curlist .auxfield .cint ] .hh.b1 = 0 ; 
-    mem [ curlist .auxfield .cint + 2 ] .hh .v.RH = 3 ; 
-    mem [ curlist .auxfield .cint + 2 ] .hh .v.LH = mem [ curlist .headfield ] 
-    .hh .v.RH ; 
-    mem [ curlist .auxfield .cint + 3 ] .hh = emptyfield ; 
-    mem [ curlist .auxfield .cint + 4 ] .qqqq = nulldelimiter ; 
-    mem [ curlist .auxfield .cint + 5 ] .qqqq = nulldelimiter ; 
-    mem [ curlist .headfield ] .hh .v.RH = 0 ; 
-    curlist .tailfield = curlist .headfield ; 
-    if ( c >= 3 ) 
-    {
-      scandelimiter ( curlist .auxfield .cint + 4 , false ) ; 
-      scandelimiter ( curlist .auxfield .cint + 5 , false ) ; 
-    } 
-    switch ( c % 3 ) 
-    {case 0 : 
-      {
-	scandimen ( false , false , false ) ; 
-	ABORTCHECK;
-	mem [ curlist .auxfield .cint + 1 ] .cint = curval ; 
-      } 
-      break ; 
-    case 1 : 
-      mem [ curlist .auxfield .cint + 1 ] .cint = 1073741824L ;  /* 2^30 */
-      break ; 
-    case 2 : 
-      mem [ curlist .auxfield .cint + 1 ] .cint = 0 ; 
-      break ; 
-    } 
-  } 
-} 
+  c = cur_chr;
 
-void mathleftright ( ) 
-{mathleftright_regmem 
-  smallnumber t  ; 
-  halfword p  ; 
-  t = curchr ; 
-  if ( ( t == 31 ) && ( curgroup != 16 ) ) 
+  if (incompleat_noad != 0)
   {
-    if ( curgroup == 15 ) 
+    if (c >= delimited_code)
     {
-      scandelimiter ( memtop - 12 , false ) ; 
-      {
-	if ( interaction == 3 ) 
-	; 
-	printnl ( 262 ) ;		/* !  */
-	print ( 773 ) ;			/* Extra  */
-      } 
-      printesc ( 871 ) ;	/* right */
-      {
-	helpptr = 1 ; 
-	helpline [ 0 ] = 1151 ;		/* I'm ignoring a \right that had no matching \left. */
-      } 
-      error () ; 
-	  ABORTCHECK;
-    } 
-    else {
-		offsave () ;
-		ABORTCHECK;
-	}
-  } 
-  else {
-      
-    p = newnoad () ; 
-    mem [ p ] .hh.b0 = t ; 
-    scandelimiter ( p + 1 , false ) ; 
-    if ( t == 30 ) 
-    {
-      pushmath ( 16 ) ; 
-      mem [ curlist .headfield ] .hh .v.RH = p ; 
-      curlist .tailfield = p ; 
-    } 
-    else {
-	
-      p = finmlist ( p ) ; 
-      unsave () ; 
-      {
-	mem [ curlist .tailfield ] .hh .v.RH = newnoad () ; 
-	curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      mem [ curlist .tailfield ] .hh.b0 = 23 ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.RH = 3 ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.LH = p ; 
-    } 
-  } 
-} 
+      scan_delimiter(garbage, false);
+      scan_delimiter(garbage, false);
+    }
 
-void aftermath ( ) 
-{aftermath_regmem 
-  booleane l  ; 
-  booleane danger  ; 
-  integer m  ; 
-  halfword p  ; 
-  halfword a  ; 
-  halfword b  ; 
-  scaled w  ; 
-  scaled z  ; 
-  scaled e  ; 
-  scaled q  ; 
-  scaled d  ; 
-  scaled s  ; 
-  smallnumber g1, g2  ; 
-  halfword r  ; 
-  halfword t  ; 
-  danger = false ; 
-  if ( ( fontparams [ eqtb [ (hash_size + 1837) ] .hh .v.RH ] < 22 ) ||
-	   ( fontparams [ eqtb [ (hash_size + 1853) ] .hh .v.RH ] < 22 ) ||
-	   ( fontparams [ eqtb [ (hash_size + 1869) ] .hh .v.RH ] < 22 ) ) 
-  {
-    {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 1152 ) ;		/* Math formula deleted: Insufficient symbol fonts */
-    } 
-    {
-      helpptr = 3 ; 
-      helpline [ 2 ] = 1153 ;	/* Sorry, but I can't typeset math unless \textfont Sorry, but I can't typeset math unless \textfont 2 */ 
-      helpline [ 1 ] = 1154 ;	/* and \scriptfont 2 and \scriptscriptfont 2 have and \scriptfont 2 and \scriptscriptfont 2 have all */
-      helpline [ 0 ] = 1155 ;	/* the \fontdimen values needed in math symbol the \fontdimen values needed in math symbol fonts.. */
-    } 
-    error () ; 
-	ABORTCHECK;
-    flushmath () ; 
-    danger = true ; 
-  } 
-  else if ( ( fontparams [ eqtb [ (hash_size + 1838) ] .hh .v.RH ] < 13 ) ||
-			( fontparams [ eqtb [ (hash_size + 1854) ] .hh .v.RH ] < 13 ) ||
-			( fontparams [ eqtb [ (hash_size + 1870) ] .hh .v.RH ] < 13 ) ) 
-  {
-    {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 1156 ) ;		/* Math formula deleted: Insufficient extension fonts */
-    } 
-    {
-      helpptr = 3 ; 
-      helpline [ 2 ] = 1157 ;	/* Sorry, but I can't typeset math unless \textfont 3 */
-      helpline [ 1 ] = 1158 ;	/* and \scriptfont 3 and \scriptscriptfont 3 have all */
-      helpline [ 0 ] = 1159 ;	/* the \fontdimen values needed in math extension fonts. */
-    } 
-    error () ; 
-	ABORTCHECK;
-    flushmath () ; 
-    danger = true ; 
-  } 
-  m = curlist .modefield ; 
-  l = false ; 
-  p = finmlist ( 0 ) ; 
-  if ( curlist .modefield == - (integer) m ) 
-  {
-    {
-      getxtoken () ; 
-	  ABORTCHECK;
-      if ( curcmd != 3 ) 
-      {
-	{
-	  if ( interaction == 3 ) 
-	  ; 
-	  printnl ( 262 ) ;		/* !  */
-	  print ( 1160 ) ;		/* Display math should end with $$ */
-	} 
-	{
-	  helpptr = 2 ; 
-	  helpline [ 1 ] = 1161 ;	/* The `$' that I just saw supposedly matches a previous `$$'. */
-	  helpline [ 0 ] = 1162 ;	/* So I shall assume that you typed `$$' both times. */
-	} 
-	backerror () ; 
-	ABORTCHECK;
-      } 
-    } 
-    curmlist = p ; 
-    curstyle = 2 ; 
-    mlistpenalties = false ; 
-    mlisttohlist () ; 
-    a = hpack ( mem [ memtop - 3 ] .hh .v.RH , 0 , 1 ) ; 
-    unsave () ; 
-    decr ( saveptr ) ; 
-    if ( savestack [ saveptr + 0 ] .cint == 1 ) 
-    l = true ; 
-    danger = false ; 
-    if ( ( fontparams [ eqtb [ (hash_size + 1837) ] .hh .v.RH ] < 22 ) ||
-		 ( fontparams [ eqtb [ (hash_size + 1853) ] .hh .v.RH ] < 22 ) ||
-		 ( fontparams [ eqtb [ (hash_size + 1869) ] .hh .v.RH ] < 22 ) ) 
-    {
-      {
-	if ( interaction == 3 ) 
-	; 
-	printnl ( 262 ) ;	/* !  */
-	print ( 1152 ) ;	/* Math formula deleted: Insufficient symbol fonts */
-      } 
-      {
-	helpptr = 3 ; 
-	helpline [ 2 ] = 1153 ;		/* Sorry, but I can't typeset math unless \textfont 2 */ 
-	helpline [ 1 ] = 1154 ;		/* and \scriptfont 2 and \scriptscriptfont 2 have all */
-	helpline [ 0 ] = 1155 ;		/* the \fontdimen values needed in math symbol fonts. */
-      } 
-      error () ; 
-	  ABORTCHECK;
-      flushmath () ; 
-      danger = true ; 
-    } 
-    else if ( ( fontparams [ eqtb [ (hash_size + 1838) ] .hh .v.RH ] < 13 ) ||
-			  ( fontparams [ eqtb [ (hash_size + 1854) ] .hh .v.RH ] < 13 ) || 
-			  ( fontparams [ eqtb [ (hash_size + 1870) ] .hh .v.RH ] < 13 ) ) 
-    {
-      {
-	if ( interaction == 3 ) 
-	; 
-	printnl ( 262 ) ;	/* !  */
-	print ( 1156 ) ;	/* Math formula deleted: Insufficient extension fonts */
-      } 
-      {
-	helpptr = 3 ; 
-	helpline [ 2 ] = 1157 ;		/* Sorry, but I can't typeset math unless \textfont 3 */
-	helpline [ 1 ] = 1158 ;		/* and \scriptfont 3 and \scriptscriptfont 3 have all */
-	helpline [ 0 ] = 1159 ;		/* the \fontdimen values needed in math extension fonts. */
-      } 
-      error () ; 
-	  ABORTCHECK;
-      flushmath () ; 
-      danger = true ; 
-    } 
-    m = curlist .modefield ; 
-    p = finmlist ( 0 ) ; 
-  } 
-  else a = 0 ; 
-  if ( m < 0 ) 
-  {
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = newmath ( eqtb [ (hash_size + 3731) ] .cint , 
-      0 ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-    } 
-    curmlist = p ; 
-    curstyle = 2 ; 
-    mlistpenalties = ( curlist .modefield > 0 ) ; 
-    mlisttohlist () ; 
-    mem [ curlist .tailfield ] .hh .v.RH = mem [ memtop - 3 ] .hh .v.RH ; 
-    while ( mem [ curlist .tailfield ] .hh .v.RH != 0 ) curlist .tailfield = 
-    mem [ curlist .tailfield ] .hh .v.RH ; 
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = newmath ( eqtb [ (hash_size + 3731) ] .cint , 
-      1 ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-    } 
-    curlist .auxfield .hh .v.LH = 1000 ; 
-    unsave () ; 
-  } 
-  else {
-      
-    if ( a == 0 ) 
-    {
-      getxtoken () ; 
-	  ABORTCHECK;
-      if ( curcmd != 3 )  {
-	{
-	  if ( interaction == 3 ) 
-	  ; 
-	  printnl ( 262 ) ;		/* !  */
-	  print ( 1160 ) ;		/* Display math should end with $$ */
-	} 
-	{
-	  helpptr = 2 ; 
-	  helpline [ 1 ] = 1161 ;	/* The `$' that I just saw supposedly matches a previous `$$'. */
-	  helpline [ 0 ] = 1162 ;	/* So I shall assume that you typed `$$' both times. */
-	} 
-	backerror () ; 
-	ABORTCHECK;
-      } 
-    } 
-    curmlist = p ; 
-    curstyle = 0 ; 
-    mlistpenalties = false ; 
-    mlisttohlist () ; 
-    p = mem [ memtop - 3 ] .hh .v.RH ; 
-    adjusttail = memtop - 5 ; 
-    b = hpack ( p , 0 , 1 ) ; 
-    p = mem [ b + 5 ] .hh .v.RH ; 
-    t = adjusttail ; 
-    adjusttail = 0 ; 
-    w = mem [ b + 1 ] .cint ; 
-    z = eqtb [ (hash_size + 3744) ] .cint ; 
-    s = eqtb [ (hash_size + 3745) ] .cint ; 
-    if ( ( a == 0 ) || danger ) 
-    {
-      e = 0 ; 
-      q = 0 ; 
-    } 
-    else {
-	
-      e = mem [ a + 1 ] .cint ; 
-      q = e + fontinfo [ 6 + parambase [ eqtb [ (hash_size + 1837) ] .hh .v.RH ] ] .cint ; 
-    } 
-    if ( w + q > z ) 
-    {
-      if ( ( e != 0 ) && ( ( w - totalshrink [ 0 ] + q <= z ) || ( totalshrink 
-      [ 1 ] != 0 ) || ( totalshrink [ 2 ] != 0 ) || ( totalshrink [ 3 ] != 0 ) 
-      ) ) 
-      {
-	freenode ( b , 7 ) ; 
-	b = hpack ( p , z - q , 0 ) ; 
-      } 
-      else {
-	  
-	e = 0 ; 
-	if ( w > z ) 
-	{
-	  freenode ( b , 7 ) ; 
-	  b = hpack ( p , z , 0 ) ; 
-	} 
-      } 
-      w = mem [ b + 1 ] .cint ; 
-    } 
-    d = half ( z - w ) ; 
-    if ( ( e > 0 ) && ( d < 2 * e ) ) 
-    {
-      d = half ( z - w - e ) ; 
-      if ( p != 0 ) 
-      if ( ! ( p >= himemmin ) ) 
-      if ( mem [ p ] .hh.b0 == 10 ) 
-      d = 0 ; 
-    } 
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = newpenalty ( eqtb [ (hash_size + 3174) ] .cint 
-      ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-    } 
-    if ( ( d + s <= eqtb [ (hash_size + 3743) ] .cint ) || l ) 
-    {
-      g1 = 3 ; 
-      g2 = 4 ; 
-    } 
-    else {
-	
-      g1 = 5 ; 
-      g2 = 6 ; 
-    } 
-    if ( l && ( e == 0 ) ) 
-    {
-      mem [ a + 4 ] .cint = s ; 
-      appendtovlist ( a ) ; 
-      {
-	mem [ curlist .tailfield ] .hh .v.RH = newpenalty ( 10000 ) ; 
-	curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-    } 
-    else {
-	
-      mem [ curlist .tailfield ] .hh .v.RH = newparamglue ( g1 ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-    } 
-    if ( e != 0 ) 
-    {
-      r = newkern ( z - w - e - d ) ; 
-      if ( l ) 
-      {
-	mem [ a ] .hh .v.RH = r ; 
-	mem [ r ] .hh .v.RH = b ; 
-	b = a ; 
-	d = 0 ; 
-      } 
-      else {
-	  
-	mem [ b ] .hh .v.RH = r ; 
-	mem [ r ] .hh .v.RH = a ; 
-      } 
-      b = hpack ( b , 0 , 1 ) ; 
-    } 
-    mem [ b + 4 ] .cint = s + d ; 
-    appendtovlist ( b ) ; 
-    if ( ( a != 0 ) && ( e == 0 ) && ! l ) 
-    {
-      {
-	mem [ curlist .tailfield ] .hh .v.RH = newpenalty ( 10000 ) ; 
-	curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      mem [ a + 4 ] .cint = s + z - mem [ a + 1 ] .cint ; 
-      appendtovlist ( a ) ; 
-      g2 = 0 ; 
-    } 
-    if ( t != memtop - 5 ) 
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = mem [ memtop - 5 ] .hh .v.RH ; 
-      curlist .tailfield = t ; 
-    } 
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = newpenalty ( eqtb [ (hash_size + 3175) ] .cint 
-      ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-    } 
-    if ( g2 > 0 ) 
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = newparamglue ( g2 ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-    } 
-    resumeafterdisplay () ; 
-  } 
-} 
+    if (c % delimited_code == 0)
+      scan_dimen(false, false, false);
 
-void resumeafterdisplay ( ) 
-{resumeafterdisplay_regmem 
-
-   if ( curgroup != 15 ) {
-		confusion ( 1163 ) ;		/* display */
-		return;				// abortflag set
-	}
-  unsave () ; 
-  curlist .pgfield = curlist .pgfield + 3 ; 
-  pushnest () ; 
-  curlist .modefield = 102 ; 
-  curlist .auxfield .hh .v.LH = 1000 ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* was   curlist .auxfield .hh .v.RH = 0 ; etc in 3.141 new stuff follows */
-  if ( eqtb [ (hash_size + 3213) ] .cint <= 0 ) 
-  curlang = 0 ; 
-  else if ( eqtb [ (hash_size + 3213) ] .cint > 255 ) 
-  curlang = 0 ; 
-  else curlang = eqtb [ (hash_size + 3213) ] .cint ; 
-  curlist .auxfield .hh .v.RH = curlang ; 
-  curlist .pgfield = ( normmin ( eqtb [ (hash_size + 3214) ] .cint ) * 64 +
-	   normmin ( eqtb [ (hash_size + 3215) ] .cint ) ) * 65536L + curlang ; 
-/* eqtb ??? hash_size ? hash_size + hash_extra ? normmin etc */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  {
-    getxtoken () ; 
-	ABORTCHECK;
-    if ( curcmd != 10 )  backinput () ; 
-  } 
-  if ( nestptr == 1 ) {
-	  buildpage () ;
+    print_err("Ambiguous; you need another { and }");
+    help3("I'm ignoring this fraction specification, since I don't",
+      "know whether a construction like `x \\over y \\over z'",
+      "means `{x \\over y} \\over z' or `x \\over {y \\over z}'.");
+    error();
   }
-} 
+  else
+  {
+    incompleat_noad = get_node(fraction_noad_size);
+    type(incompleat_noad) = fraction_noad;
+    subtype(incompleat_noad) = normal;
+    math_type(numerator(incompleat_noad)) = sub_mlist;
+    info(numerator(incompleat_noad)) = link(head);
+    mem[denominator(incompleat_noad)].hh = empty_field;
+    mem[left_delimiter(incompleat_noad)].qqqq = null_delimiter;
+    mem[right_delimiter(incompleat_noad)].qqqq = null_delimiter;
+    link(head) = 0;
+    tail = head;
 
-void getrtoken ( ) 
-{/* 20 */ getrtoken_regmem 
+    if (c >= delimited_code)
+    {
+      scan_delimiter(left_delimiter(incompleat_noad), false);
+      scan_delimiter(right_delimiter(incompleat_noad), false);
+    }
+
+    switch(c % delimited_code)
+    {
+      case above_code:
+        scan_dimen(false, false, false);
+        thickness(incompleat_noad) = cur_val;
+        break;
+
+      case over_code:
+        thickness(incompleat_noad) = default_code;
+        break;
+
+      case atop_code:
+        thickness(incompleat_noad) = 0;
+        break;
+    }
+  }
+}
+/* sec 1191 */
+void math_left_right (void)
+{
+  small_number t;
+  halfword p;
+
+  t = cur_chr;
+
+  if ((t == right_noad) && (cur_group != math_left_group))
+  {
+    if (cur_group == math_shift_group)
+    {
+      scan_delimiter(garbage, false);
+      print_err("Extra ");
+      print_esc("right");
+      help1("I'm ignoring a \\right that had no matching \\left.");
+      error();
+    }
+    else
+    {
+      off_save();
+    }
+  }
+  else
+  {
+    p = new_noad();
+    type(p) = t;
+    scan_delimiter(delimiter(p), false);
+
+    if (t == left_noad)
+    {
+      push_math(math_left_group);
+      link(tail) = p;
+      tail = p;
+    }
+    else
+    {
+      p = fin_mlist(p);
+      unsave();
+      tail_append(new_noad());
+      type(tail) = inner_noad;
+      math_type(nucleus(tail)) = sub_mlist;
+      info(nucleus(tail)) = p;
+    }
+  }
+}
+/* sec 1194 */
+void after_math (void)
+{
+  bool l;
+  bool danger;
+  integer m;
+  halfword p;
+  halfword a;
+  halfword b;
+  scaled w;
+  scaled z;
+  scaled e;
+  scaled q;
+  scaled d;
+  scaled s;
+  small_number g1, g2;
+  halfword r;
+  halfword t;
+
+  danger = false;
+  
+  if ((font_params[fam_fnt(2 + text_size)] < total_mathsy_params) ||
+    (font_params[fam_fnt(2 + script_size)] < total_mathsy_params) ||
+    (font_params[fam_fnt(2 + script_script_size)] < total_mathsy_params))
+  {
+    print_err("Math formula deleted: Insufficient symbol fonts");
+    help3("Sorry, but I can't typeset math unless \\textfont 2",
+        "and \\scriptfont 2 and \\scriptscriptfont 2 have all",
+        "the \\fontdimen values needed in math symbol fonts.");
+    error();
+    flush_math();
+    danger = true;
+  }
+  else if ((font_params[fam_fnt(3 + text_size)] < total_mathex_params) ||
+    (font_params[fam_fnt(3 + script_size)] < total_mathex_params) ||
+    (font_params[fam_fnt(3 + script_script_size)] < total_mathex_params))
+  {
+    print_err("Math formula deleted: Insufficient extension fonts");
+    help3("Sorry, but I can't typeset math unless \\textfont 3",
+        "and \\scriptfont 3 and \\scriptscriptfont 3 have all",
+        "the \\fontdimen values needed in math extension fonts.");
+    error();
+    flush_math();
+    danger = true;
+  }
+
+  m = mode;
+  l = false;
+  p = fin_mlist(0);
+
+  if (mode == - (integer) m)
+  {
+    {
+      get_x_token();
+
+      if (cur_cmd != math_shift)
+      {
+        print_err("Display math should end with $$");
+        help2("The `$' that I just saw supposedly matches a previous `$$'.",
+            "So I shall assume that you typed `$$' both times.");
+        back_error();
+      }
+    }
+
+    cur_mlist = p;
+    cur_style = text_style;
+    mlist_penalties = false;
+    mlist_to_hlist();
+    a = hpack(link(temp_head), 0, 1);
+    unsave();
+    decr(save_ptr);
+
+    if (saved(0) == 1)
+      l = true;
+
+    danger = false;
+
+    if ((font_params[fam_fnt(2 + text_size)] < total_mathsy_params) ||
+      (font_params[fam_fnt(2 + script_size)] < total_mathsy_params) ||
+      (font_params[fam_fnt(2 + script_script_size)] < total_mathsy_params))
+    {
+      print_err("Math formula deleted: Insufficient symbol fonts");
+      help3("Sorry, but I can't typeset math unless \\textfont 2",
+          "and \\scriptfont 2 and \\scriptscriptfont 2 have all",
+          "the \\fontdimen values needed in math symbol fonts.");
+      error();
+      flush_math();
+      danger = true;
+    }
+    else if ((font_params[fam_fnt(3 + text_size)] < total_mathex_params) ||
+      (font_params[fam_fnt(3 + script_size)] < total_mathex_params) ||
+      (font_params[fam_fnt(3 + script_script_size)] < total_mathex_params))
+    {
+      print_err("Math formula deleted: Insufficient extension fonts");
+      help3("Sorry, but I can't typeset math unless \\textfont 3",
+        "and \\scriptfont 3 and \\scriptscriptfont 3 have all",
+        "the \\fontdimen values needed in math extension fonts.");
+      error();
+      flush_math();
+      danger = true;
+    }
+
+    m = mode;
+    p = fin_mlist(0);
+  }
+  else
+    a = 0;
+
+  if (m < 0)
+  {
+    tail_append(new_math(math_surround, 0));
+    cur_mlist = p;
+    cur_style = text_style;
+    mlist_penalties = (mode > 0);
+    mlist_to_hlist();
+    link(tail) = link(temp_head);
+
+    while(link(tail) != 0)
+      tail = link(tail);
+
+    tail_append(new_math(math_surround, 1));
+    space_factor = 1000;
+    unsave();
+  }
+  else
+  {
+    if (a == 0)
+    {
+      get_x_token();
+
+      if (cur_cmd != math_shift)
+      {
+        print_err("Display math should end with $$");
+        help2("The `$' that I just saw supposedly matches a previous `$$'.",
+            "So I shall assume that you typed `$$' both times.");
+        back_error();
+      }
+    }
+    cur_mlist = p;
+    cur_style = display_style;
+    mlist_penalties = false;
+    mlist_to_hlist();
+    p = link(temp_head);
+    adjust_tail = adjust_head;
+    b = hpack(p, 0, 1);
+    p = list_ptr(b);
+    t = adjust_tail;
+    adjust_tail = 0;
+    w = width(b);
+    z = display_width;
+    s = display_indent;
+
+    if ((a == 0) || danger)
+    {
+      e = 0;
+      q = 0;
+    }
+    else
+    {
+      e = width(a);
+      q = e + math_quad(text_size);
+    }
+
+    if (w + q > z)
+    {
+      if ((e != 0) && ((w - total_shrink[normal] + q <= z) || (total_shrink[fil] != 0) || (total_shrink[fill] != 0) || (total_shrink[filll] != 0)))
+      {
+        free_node(b, box_node_size);
+        b = hpack(p, z - q, 0);
+      }
+      else
+      {
+        e = 0;
+
+        if (w > z)
+        {
+          free_node(b, box_node_size);
+          b = hpack(p, z, 0);
+        }
+      }
+      w = width(b);
+    }
+
+    d = half(z - w);
+
+    if ((e > 0) && (d < 2 * e))
+    {
+      d = half(z - w - e);
+
+      if (p != 0)
+        if (!(p >= hi_mem_min))
+          if (type(p) == glue_node)
+            d = 0;
+    }
+
+    tail_append(new_penalty(pre_display_penalty));
+
+    if ((d + s <= pre_display_size) || l)
+    {
+      g1 = above_display_skip_code;
+      g2 = below_display_skip_code;
+    }
+    else
+    {
+      g1 = above_display_short_skip_code;
+      g2 = below_display_short_skip_code;
+    }
+    if (l && (e == 0))
+    {
+      shift_amount(a) = s;
+      append_to_vlist(a);
+      tail_append(new_penalty(10000));
+    }
+    else
+    {
+      tail_append(new_param_glue(g1));
+    }
+
+    if (e != 0)
+    {
+      r = new_kern(z - w - e - d);
+
+      if (l)
+      {
+        link(a) = r;
+        link(r) = b;
+        b = a;
+        d = 0;
+      }
+      else
+      {
+        link(b) = r;
+        link(r) = a;
+      }
+      b = hpack(b, 0, 1);
+    }
+
+    shift_amount(b) = s + d;
+    append_to_vlist(b);
+
+    if ((a != 0) && (e == 0) && !l)
+    {
+      tail_append(new_penalty(10000));
+      shift_amount(a) = s + z - width(a);
+      append_to_vlist(a);
+      g2 = 0;
+    }
+
+    if (t != adjust_head)
+    {
+      link(tail) = link(adjust_head);
+      tail = t;
+    }
+
+    tail_append(new_penalty(post_display_penalty));
+
+    if (g2 > 0)
+    {
+      tail_append(new_param_glue(g2));
+    }
+
+    resume_after_display();
+  }
+}
+/* sec 1200 */
+void resume_after_display (void)
+{
+  if (cur_group != math_shift_group)
+  {
+    confusion("display");
+    return;       // abort_flag set
+  }
+
+  unsave();
+  prev_graf = prev_graf + 3;
+  push_nest();
+  mode = hmode;
+  space_factor = 1000;
+  set_cur_lang();
+  clang = cur_lang;
+  prev_graf =(norm_min(left_hyphen_min) * 64 + norm_min(right_hyphen_min)) * 65536L + cur_lang;
+
+  {
+    get_x_token();
+
+    if (cur_cmd != spacer)
+      back_input();
+  }
+
+  if (nest_ptr == 1)
+  {
+    build_page();
+  }
+}
+/* sec 1215 */
+void get_r_token (void)
+{
 lab20:
-	do {
-		gettoken () ; 
-	} while ( ! ( curtok != 2592 ) ) ; 
-/*  if ( ( curcs == 0 ) || ( curcs > (hash_size + 514) ) ) */	/* 95/Jan/10 */
-  if ( ( curcs == 0 ) || ( curcs > (hash_size + hash_extra + 514) ) ) {
+  do
     {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 1178 ) ;		/* Missing control sequence inserted */
-    } 
-    {
-      helpptr = 5 ; 
-      helpline [ 4 ] = 1179 ;	/* Please don't say `\def cs{...}', say `\def\cs{...}'. */
-      helpline [ 3 ] = 1180 ;	/* I've inserted an inaccessible control sequence so that your */
-      helpline [ 2 ] = 1181 ;	/* definition will be completed without mixing me up too badly. */
-      helpline [ 1 ] = 1182 ;	/* You can recover graciously from this error, if you're */
-      helpline [ 0 ] = 1183 ;	/* careful; see exercise 27.2 in The TeXbook. */
-    } 
-    if ( curcs == 0 ) 
-    backinput () ; 
-/*    curtok = (hash_size + 4609) ;  */
-/*    curtok = (hash_size + 4095 + 514) ;  */
-    curtok = (hash_size + hash_extra + 4095 + 514) ; /* 96/Jan/10 */
-    inserror () ; 
-	ABORTCHECK;
-    goto lab20 ; 
-  } 
-} 
+      get_token();
+    }
+  while (!(cur_tok != 2592));
 
-void trapzeroglue ( ) 
-{trapzeroglue_regmem 
-  if ( ( mem [ curval + 1 ] .cint == 0 ) && ( mem [ curval + 2 ] .cint == 0 ) 
-  && ( mem [ curval + 3 ] .cint == 0 ) ) 
+  if ((cur_cs == 0) || (cur_cs > frozen_control_sequence))
   {
-    incr ( mem [ 0 ] .hh .v.RH ) ;	/* mem [ membot ] ? */ /* mem [ null ] ? */
-    deleteglueref ( curval ) ; 
-    curval = 0 ; 
-  } 
-} 
+    print_err("Missing control sequence inserted");
+    help5("Please don't say `\\def cs{...}', say `\\def\\cs{...}'.",
+      "I've inserted an inaccessible control sequence so that your",
+      "definition will be completed without mixing me up too badly.",
+      "You can recover graciously from this error, if you're",
+      "careful; see exercise 27.2 in The TeXbook.");
 
-void zdoregistercommand ( a ) 
-smallnumber a ; 
-{/* 40 10 */ doregistercommand_regmem 
-  halfword l, q, r, s  ; 
-  char p  ; 
-  q = curcmd ; 
-  {
-    if ( q != 89 ) 
-    {
-      getxtoken () ; 
-	  ABORTCHECK;
-      if ( ( curcmd >= 73 ) && ( curcmd <= 76 ) ) 
-      {
-	l = curchr ; 
-	p = curcmd - 73 ; 
-	goto lab40 ; 
-      } 
-      if ( curcmd != 89 ) 
-      {
-	{
-	  if ( interaction == 3 ) 
-	  ; 
-	  printnl ( 262 ) ;		/* !  */
-	  print ( 682 ) ;		/* You can't use ` */
-	} 
-	printcmdchr ( curcmd , curchr ) ; 
-	print ( 683 ) ;			/* ' after  */
-	printcmdchr ( q , 0 ) ; 
-	{
-	  helpptr = 1 ; 
-	  helpline [ 0 ] = 1204 ;	/* I'm forgetting what you said and not changing anything. */
-	} 
-	error () ; 
-	ABORTCHECK;
-	return ; 
-      } 
-    } 
-    p = curchr ; 
-    scaneightbitint () ; 
-	ABORTCHECK;
-    switch ( p ) 
-    {case 0 : 
-      l = curval + (hash_size + 3218) ; 
-      break ; 
-    case 1 : 
-      l = curval + (hash_size + 3751) ; 
-      break ; 
-    case 2 : 
-      l = curval + (hash_size + 800) ; 
-      break ; 
-    case 3 : 
-      l = curval + (hash_size + 1056) ; 
-      break ; 
-    } 
-  } 
-  lab40: ; 
-  if ( q == 89 ) 
-  scanoptionalequals () ; 
-  else if ( scankeyword ( 1200 ) )		/* by */
-  ; 
-  aritherror = false ; 
-  if ( q < 91 ) 
-  if ( p < 2 ) 
-  {
-    if ( p == 0 ) {
-		scanint () ;
-		ABORTCHECK;
-	}
-    else {
-		scandimen ( false , false , false ) ;
-		ABORTCHECK;
-	}
-    if ( q == 90 ) 
-    curval = curval + eqtb [ l ] .cint ; 
-  } 
-  else {
-      
-    scanglue ( p ) ; 
-	ABORTCHECK;
-    if ( q == 90 ) {
-      q = newspec ( curval ) ; 
-      r = eqtb [ l ] .hh .v.RH ; 
-      deleteglueref ( curval ) ; 
-      mem [ q + 1 ] .cint = mem [ q + 1 ] .cint + mem [ r + 1 ] .cint ; 
-      if ( mem [ q + 2 ] .cint == 0 ) 
-      mem [ q ] .hh.b0 = 0 ; 
-      if ( mem [ q ] .hh.b0 == mem [ r ] .hh.b0 ) 
-      mem [ q + 2 ] .cint = mem [ q + 2 ] .cint + mem [ r + 2 ] .cint ; 
-      else if ( ( mem [ q ] .hh.b0 < mem [ r ] .hh.b0 ) && ( mem [ r + 2 ] 
-      .cint != 0 ) ) 
-      {
-	mem [ q + 2 ] .cint = mem [ r + 2 ] .cint ; 
-	mem [ q ] .hh.b0 = mem [ r ] .hh.b0 ; 
-      } 
-      if ( mem [ q + 3 ] .cint == 0 ) 
-      mem [ q ] .hh.b1 = 0 ; 
-      if ( mem [ q ] .hh.b1 == mem [ r ] .hh.b1 ) 
-      mem [ q + 3 ] .cint = mem [ q + 3 ] .cint + mem [ r + 3 ] .cint ; 
-      else if ( ( mem [ q ] .hh.b1 < mem [ r ] .hh.b1 ) && ( mem [ r + 3 ] 
-      .cint != 0 ) ) 
-      {
-	mem [ q + 3 ] .cint = mem [ r + 3 ] .cint ; 
-	mem [ q ] .hh.b1 = mem [ r ] .hh.b1 ; 
-      } 
-      curval = q ; 
-    } 
-  } 
-  else {
-    scanint () ; 
-	ABORTCHECK;
-    if ( p < 2 ) 
-    if ( q == 91 ) 
-    if ( p == 0 ) 
-    curval = multandadd ( eqtb [ l ] .cint , curval , 0 , 2147483647L ) ; 
-/*	2^31 - 1 */
-    else curval = multandadd ( eqtb [ l ] .cint , curval , 0 , 1073741823L ) ; 
-/*	2^30 - 1 */
-    else curval = xovern ( eqtb [ l ] .cint , curval ) ; 
-    else {
-      s = eqtb [ l ] .hh .v.RH ;	/* l may be used ... */
-      r = newspec ( s ) ; 
-      if ( q == 91 ) 
-      {
-	mem [ r + 1 ] .cint = multandadd ( mem [ s + 1 ] .cint , curval , 0 , 
-	1073741823L ) ;  /* 2^30 - 1 */
-	mem [ r + 2 ] .cint = multandadd ( mem [ s + 2 ] .cint , curval , 0 , 
-	1073741823L ) ;  /* 2^30 - 1 */
-	mem [ r + 3 ] .cint = multandadd ( mem [ s + 3 ] .cint , curval , 0 , 
-	1073741823L ) ;  /* 2^30 - 1 */
-      } 
-      else {
-	mem [ r + 1 ] .cint = xovern ( mem [ s + 1 ] .cint , curval ) ; 
-	mem [ r + 2 ] .cint = xovern ( mem [ s + 2 ] .cint , curval ) ; 
-	mem [ r + 3 ] .cint = xovern ( mem [ s + 3 ] .cint , curval ) ; 
-      } 
-      curval = r ; 
-    } 
-  } 
-  if ( aritherror ) {
-    {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 1201 ) ;		/* Arithmetic overflow */
-    } 
-    {
-      helpptr = 2 ; 
-      helpline [ 1 ] = 1202 ;	/* I can't carry out that multiplication or division, */
-      helpline [ 0 ] = 1203 ;	/* since the result is out of range. */
-    } 
-    error () ; 
-	ABORTCHECK;
-    return ; 
-  } 
-  if ( p < 2 ) 
-  if ( ( a >= 4 ) ) 
-  geqworddefine ( l , curval ) ; 
-  else eqworddefine ( l , curval ) ; 
-  else {
-      
-    trapzeroglue () ; 
-    if ( ( a >= 4 ) ) 
-    geqdefine ( l , 117 , curval ) ; 
-    else eqdefine ( l , 117 , curval ) ; 
-  } 
-} 
+    if (cur_cs == 0)
+      back_input();
 
+    cur_tok = cs_token_flag + frozen_protection;
+    ins_error();
+    goto lab20;
+  }
+}
+/* sec 1229 */
+void trap_zero_glue (void)
+{
+  if ((width(cur_val) == 0) && (stretch(cur_val) == 0) && (shrink(cur_val) == 0))
+  {
+    add_glue_ref(zero_glue);
+    delete_glue_ref(cur_val);
+    cur_val = 0;
+  }
+}
+/* sec 1236 */
+void do_register_command_ (small_number a)
+{
+  halfword l, q, r, s;
+  char p;
+
+  q = cur_cmd;
+
+  {
+    if (q != tex_register)
+    {
+      get_x_token();
+
+      if ((cur_cmd >= assign_int) && (cur_cmd <= assign_mu_glue))
+      {
+        l = cur_chr;
+        p = cur_cmd - assign_int;
+        goto lab40;
+      }
+
+      if (cur_cmd != tex_register)
+      {
+        print_err("You can't use `");
+        print_cmd_chr(cur_cmd, cur_chr);
+        print_string("' after ");
+        print_cmd_chr(q, 0);
+        help1("I'm forgetting what you said and not changing anything.");
+        error();
+        return;
+      }
+    }
+
+    p = cur_chr;
+    scan_eight_bit_int();
+
+    switch(p)
+    {
+      case int_val:
+        l = cur_val + count_base;
+        break;
+
+      case dimen_val:
+        l = cur_val + scaled_base;
+        break;
+
+      case glue_val:
+        l = cur_val + skip_base;
+        break;
+
+      case mu_val:
+        l = cur_val + mu_skip_base;
+        break;
+    }
+  }
+lab40:;
+
+  if (q == tex_register)
+    scan_optional_equals();
+  else
+    if (scan_keyword("by"));
+
+  arith_error = false;
+
+  if (q < multiply)
+    if (p < glue_val)
+    {
+      if (p == int_val)
+        scan_int();
+      else
+        scan_dimen(false, false, false);
+
+      if (q == advance)
+        cur_val = cur_val + eqtb[l].cint;
+    }
+    else
+    {
+      scan_glue(p);
+
+      if (q == advance)
+      {
+        q = new_spec(cur_val);
+        r = equiv(l);
+        delete_glue_ref(cur_val);
+        width(q) = width(q) + width(r);
+
+        if (stretch(q) == 0)
+          stretch_order(q) = normal;
+
+        if (stretch_order(q) == stretch_order(r))
+          stretch(q) = stretch(q) + stretch(r);
+        else if ((stretch_order(q) < stretch_order(r)) && (stretch(r) != 0))
+        {
+          stretch(q) = stretch(r);
+          stretch_order(q) = stretch_order(r);
+        }
+
+        if (shrink(q) == 0)
+          shrink_order(q) = normal;
+
+        if (shrink_order(q) == shrink_order(r))
+          shrink(q) = shrink(q) + shrink(r);
+        else if ((shrink_order(q) < shrink_order(r)) && (shrink(r) != 0))
+        {
+          shrink(q) = shrink(r);
+          shrink_order(q) = shrink_order(r);
+        }
+        cur_val = q;
+      }
+    }
+  else
+  {
+    scan_int();
+
+    if (p < glue_val)
+      if (q == multiply)
+        if (p == int_val)
+          cur_val = mult_and_add(eqtb[l].cint, cur_val, 0, 2147483647L); /*  2^31 - 1 */
+        else
+          cur_val = mult_and_add(eqtb[l].cint, cur_val, 0, 1073741823L); /*  2^30 - 1 */
+      else
+        cur_val = x_over_n(eqtb[l].cint, cur_val);
+    else
+    {
+      s = equiv(l);
+      r = new_spec(s);
+
+      if (q == multiply)
+      {
+        width(r) = mult_and_add(width(s), cur_val, 0, 1073741823L);  /* 2^30 - 1 */
+        stretch(r) = mult_and_add(stretch(s), cur_val, 0, 1073741823L);  /* 2^30 - 1 */
+        shrink(r) = mult_and_add(shrink(s), cur_val, 0, 1073741823L);  /* 2^30 - 1 */
+      }
+      else
+      {
+        width(r) = x_over_n(width(s), cur_val);
+        stretch(r) = x_over_n(stretch(s), cur_val);
+        shrink(r) = x_over_n(shrink(s), cur_val);
+      }
+      cur_val = r;
+    }
+  }
+
+  if (arith_error)
+  {
+    print_err("Arithmetic overflow");
+    help2("I can't carry out that multiplication or division,",
+        "since the result is out of range.");
+
+    if (p >= glue_val)
+      delete_glue_ref(cur_val);
+
+    error();
+    return;
+  }
+
+  if (p < glue_val)
+  {
+    if ((a >= 4))
+      geq_word_define(l, cur_val);
+    else
+      eq_word_define(l, cur_val);
+  }
+  else
+  {
+    trap_zero_glue();
+
+    if ((a >= 4))
+      geq_define(l, glue_ref, cur_val);
+    else
+      eq_define(l, glue_ref, cur_val);
+  }
+}
 /* called only from itex.c */
+/* sec 1243 */
+void alter_aux (void)
+{
+  halfword c;
 
-void alteraux ( ) 
-{alteraux_regmem 
-  halfword c  ; 
-  if ( curchr != abs ( curlist .modefield ) ) {
-	  reportillegalcase () ;
-	  ABORTCHECK;
+  if (cur_chr != abs(mode))
+  {
+    report_illegal_case();
   }
-  else {
-    c = curchr ; 
-    scanoptionalequals () ; 
-    if ( c == 1 ) 
-    {
-      scandimen ( false , false , false ) ; 
-	  ABORTCHECK;
-      curlist .auxfield .cint = curval ; 
-    } 
-    else {
-      scanint () ; 
-	  ABORTCHECK;
-      if ( ( curval <= 0 ) || ( curval > 32767 ) ) 
-      {
-	{
-	  if ( interaction == 3 ) 
-	  ; 
-	  printnl ( 262 ) ;		/* !  */
-	  print ( 1207 ) ;		/* Bad space factor */
-	} 
-	{
-	  helpptr = 1 ; 
-	  helpline [ 0 ] = 1208 ;	/* I allow only values in the range 1..32767 here. */
-	} 
-	interror ( curval ) ; 
-	ABORTCHECK;
-      } 
-      else curlist .auxfield .hh .v.LH = curval ; 
-    } 
-  } 
-} 
-
-void alterprevgraf ( ) 
-{alterprevgraf_regmem 
-  integer p  ; 
-  nest [ nestptr ] = curlist ; 
-  p = nestptr ; 
-  while ( abs ( nest [ p ] .modefield ) != 1 ) decr ( p ) ; 
-  scanoptionalequals () ; 
-  scanint () ; 
-  ABORTCHECK;
-  if ( curval < 0 ) 
+  else
   {
+    c = cur_chr;
+    scan_optional_equals();
+
+    if (c == vmode)
     {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ; /* ! */
-      print ( 949 ) ;	/* Bad */
-    } 
-    printesc ( 529 ) ;	/* prevgraf */
+      scan_dimen(false, false, false);
+      prev_depth = cur_val;
+    }
+    else
     {
-      helpptr = 1 ; 
-      helpline [ 0 ] = 1209 ;	/* I allow only nonnegative values here. */
-    } 
-    interror ( curval ) ; 
-	ABORTCHECK;
-  } 
-  else {
-      
-    nest [ p ] .pgfield = curval ; 
-    curlist = nest [ nestptr ] ; 
-  } 
-} 
+      scan_int();
 
-void alterpagesofar ( ) 
-{alterpagesofar_regmem 
-  char c  ; 
-  c = curchr ; 
-  scanoptionalequals () ; 
-  scandimen ( false , false , false ) ; 
-  ABORTCHECK;
-  pagesofar [ c ] = curval ; 
-} 
-
-void alterinteger ( ) 
-{alterinteger_regmem 
-  char c  ; 
-  c = curchr ; 
-  scanoptionalequals () ; 
-  scanint () ; 
-  ABORTCHECK;
-  if ( c == 0 ) deadcycles = curval ; 
-  else insertpenalties = curval ; 
-} 
-
-void alterboxdimen ( ) 
-{alterboxdimen_regmem 
-  smallnumber c  ; 
-  eightbits b  ; 
-  c = curchr ; 
-  scaneightbitint () ; 
-  ABORTCHECK;
-  b = curval ; 
-  scanoptionalequals () ; 
-  scandimen ( false , false , false ) ; 
-  ABORTCHECK;
-  if ( eqtb [ (hash_size + 1578) + b ] .hh .v.RH != 0 ) 
-  mem [ eqtb [ (hash_size + 1578) + b ] .hh .v.RH + c ] .cint = curval ; 
-} 
-
-void znewfont ( a ) 
-smallnumber a ; 
-{/* 50 */ newfont_regmem 
-  halfword u  ; 
-  scaled s  ; 
-  internalfontnumber f  ; 
-  strnumber t  ; 
-  char oldsetting  ; 
-  strnumber flushablestring  ; 
-  if ( jobname == 0 ) openlogfile () ; 
-  getrtoken () ; 
-  u = curcs ; 
-  if ( u >= 514 )			/* if u >= hash_base then t <- text(u); p.1257 */
-	  t = hash [ u ] .v.RH ; 
-  else if ( u >= 257 )		/* if u >= single_base then ... */
-/*    if u=null_cs then t:="FONT"@+else t:=u-single_base */
-  if ( u == 513 ) 
-	  t = 1213 ;			/* FONT */
-  else t = u - 257 ;		/* else t <- u - single_base */
-  else {
-    oldsetting = selector ; 
-    selector = 21 ; 
-    print ( 1213 ) ;		/* FONT */
-    print ( u - 1 ) ; 
-    selector = oldsetting ; 
-    {
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef ALLOCATESTRING
-	  if ( poolptr + 1 > currentpoolsize ) 
-		  strpool = reallocstrpool (incrementpoolsize);
-	  if ( poolptr + 1 > currentpoolsize ) {			/* 94/Jan/24 */
-		  overflow ( 257 , currentpoolsize - initpoolptr ) ; /* 97/Mar/9 */
-		  return;			// abortflag set
-	  }
-#else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-      if ( poolptr + 1 > poolsize ) {
-		  overflow ( 257 , poolsize - initpoolptr ) ; /* pool size */
-		  return;			// abortflag set
-	  }
-#endif
-    } 
-    t = makestring () ; 
-  } 
-  if ( ( a >= 4 ) ) geqdefine ( u , 87 , 0 ) ; 
-  else eqdefine ( u , 87 , 0 ) ; 
-  scanoptionalequals () ; 
-  scanfilename () ; 
-
-/* paragraph 1258 */
-  nameinprogress = true ; 
-  if ( scankeyword ( 1214 ) )	/* at */
-  {
-    scandimen ( false , false , false ) ; 
-	ABORTCHECK;
-    s = curval ; 
-    if ( ( s <= 0 ) || ( s >= 134217728L ) ) /* 2^27 */
-    {
+      if ((cur_val <= 0) || (cur_val > 32767))
       {
-	if ( interaction == 3 ) 	; 
-	printnl ( 262 ) ;	/* ! */
-	print ( 1216 ) ;	/* Improper `at' size ( */
-      } 
-      printscaled ( s ) ; 
-      print ( 1217 ) ;	/* pt), replaced by 10pt */
-      {
-	helpptr = 2 ; 
-	helpline [ 1 ] = 1218 ;	/* I can only handle fonts at positive sizes that are */
-	helpline [ 0 ] = 1219 ;	/* less than 2048pt, so I've changed what you said to 10pt. */
-      } 
-      error () ; 
-	  ABORTCHECK;
-      s = 10 * 65536L ;		/* 10pt */
-    } 
-  } 
-  else if ( scankeyword ( 1215 ) )	/* scaled */
-  {
-    scanint () ; 
-	ABORTCHECK;
-    s = - (integer) curval ; 
-    if ( ( curval <= 0 ) || ( curval > 32768L ) )  {
-      {
-	if ( interaction == 3 ) 	; 
-	printnl ( 262 ) ;	/* ! */
-	print ( 549 ) ;		/* Illegal magnification has been changed to 1000 */
-      } 
-      {
-	helpptr = 1 ; 
-	helpline [ 0 ] = 550 ;	/* The magnification ratio must be between 1 and 32768. */
-      } 
-      interror ( curval ) ; 
-	  ABORTCHECK;
-      s = -1000 ; 
-    } 
-  } 
-  else s = -1000 ; 
-  nameinprogress = false ; 
-
-  flushablestring = strptr - 1 ; 
-  if (traceflag)   {					/* debugging stuff only 98/Oct/5 */
-	  int i, k1, k2, l1, l2;
-	  char *sch=logline;
-	  k1 = strstart [ curarea ];
-	  k2 = strstart [ curname ];
-	  l1 = strstart [ curarea + 1] - strstart [ curarea ];
-	  l2 = strstart [ curname + 1] - strstart [ curname ];
-	  showchar('\n');
-	  showline("FONT ", 0);
-	  for (i = 0; i < l1; i++) {
-		  *sch++ = strpool[i+k1];
-	  }
-	  for (i = 0; i < l2; i++) {
-		  *sch++ = strpool[i+k2];
-	  }
-	  *sch++ = ' ';
-	  *sch++ = '\0';
-	  showline(logline, 0);
+        print_err("Bad space factor");
+        help1("I allow only values in the range 1..32767 here.");
+        int_error(cur_val);
+      }
+      else
+        space_factor = cur_val;
+    }
   }
-/*  if (ignorefrozen) goto lab69; */			/* 98/Oct/5 */
+}
+/* sec 1244 */
+void alter_prev_graf (void)
+{
+  integer p;
 
-/* paragraph 1260 for f <- fontbase+1 to font_ptr do */
+  nest[nest_ptr] = cur_list;
+  p = nest_ptr;
+
+  while(abs(nest[p].mode_field) != vmode)
+    decr(p);
+
+  scan_optional_equals();
+  scan_int();
+
+  if (cur_val < 0)
   {
-	  register integer for_end; 
-	  f = 1 ; 
-	  for_end = fontptr ; 
-	  if ( f <= for_end) 
-		  do 
-/* if str_eq_str(font_name[f],cur_name) ^ str_eq_str(font_area[f],cur_area) */
-			  if ( streqstr ( fontname [ f ] , curname ) &&
-				   streqstr ( fontarea [ f ] , curarea ) )  {
-				  if ( curname == flushablestring ) {
-					  {
-						  decr ( strptr ) ; 
-						  poolptr = strstart [ strptr ] ; 
-					  } 
-					  curname = fontname [ f ] ; 
-				  } 
-/*	  if (ignorefrozen) continue; */ 			/* 98/Oct/5 */
-				  if ( s > 0 )  {		/* if pt size was specified */
-					  if ( s == fontsize [ f ] ) {
-/*						  if (ignorefrozen == 0)  */
-						  if (ignorefrozen == 0 || f > frozenfontptr) { /* 99/Mar/26 */
-							  if (traceflag) {
-								  sprintf(logline, "SKIPPING %ld ", s);
-								  showline(logline, 0);
-							  }
-							  goto lab50 ;
-						  }
-					  }
-				  } 
-/* else if font_size[f] = xn_over_d(font_dsize[f],-s,1000) then goto common_ending */
-				  else if ( fontsize [ f ] == xnoverd ( fontdsize [ f ] ,
-					  - (integer) s , 1000 ) ) {	/* if using design size */
-/*					  if (ignorefrozen == 0) */
-					  if (ignorefrozen == 0 || f > frozenfontptr) { /* 99/Mar/26 */
-						  if (traceflag) {
-							  sprintf(logline, "SKIPPING %ld ", s);
-							  showline(logline, 0);
-						  }
-						  goto lab50 ;
-					  }
-				  }
-			  } 
-	  while ( f++ < for_end ) ;
-  } 
-
-/* lab69: */	/* 98/Oct/5 */
-/* end of paragraph 1257 */
-  if (traceflag) showline("READING ", 0);	/* debugging only */
-  f = readfontinfo ( u , curname , curarea , s ) ; 
-  ABORTCHECK;
-
-/* common_ending: equiv[u] <- f;  */	/* use existing font info */
-  lab50:
-  if (traceflag) {
-	  sprintf(logline, "NEW FONT %d ", f); /* debugging only */
-	  showline(logline, 0);
+    print_err("Bad ");
+    print_esc("prevgraf");
+    help1("I allow only nonnegative values here.");
+    int_error(cur_val);
   }
-  eqtb [ u ] .hh .v.RH = f ; 
-/*  eqtb [ (hash_size + 524) + f ] = eqtb [ u ] ;*/ /* eqtb[frozen_null+font+f] */
-  eqtb [ (hash_size + hash_extra + 524) + f ] = eqtb [ u ] ; /* 96/Jan/10 */
-#ifdef SHORTHASH						/*	debugging only  1996/Jan/20 */
-  if (t > 65535L) {
-	  sprintf(logline, "ERROR: %s too large %d\n",  "hashused", t);
-	  showline(logline, 1);
+  else
+  {
+    nest[p].pg_field = cur_val;
+    cur_list = nest[nest_ptr];
+  }
+}
+/* sec 1245 */
+void alter_page_so_far (void)
+{
+  char c;
+
+  c = cur_chr;
+  scan_optional_equals();
+  scan_dimen(false, false, false);
+  page_so_far[c] = cur_val;
+}
+/* sec 1246 */
+void alter_integer (void)
+{
+  char c;
+
+  c = cur_chr;
+  scan_optional_equals();
+  scan_int();
+
+  if (c == 0)
+    dead_cycles = cur_val;
+  else
+    insert_penalties = cur_val;
+}
+/* sec 1247 */
+void alter_box_dimen (void)
+{
+  small_number c;
+  eight_bits b;
+
+  c = cur_chr;
+  scan_eight_bit_int();
+  b = cur_val;
+  scan_optional_equals();
+  scan_dimen(false, false, false);
+
+  if (box(b) != 0)
+    mem[box(b) + c].cint = cur_val;
+}
+/* sec 1257 */
+void new_font_(small_number a)
+{
+  halfword u;
+  scaled s;
+  internal_font_number f;
+  str_number t;
+  char old_setting;
+  str_number flushable_string;
+
+  if (job_name == 0)
+    open_log_file();
+
+  get_r_token();
+  u = cur_cs;
+
+  if (u >= hash_base)
+    t = text(u);
+  else if (u >= single_base)
+    if (u == null_cs)
+      t = 1213;     /* FONT */
+    else
+      t = u - single_base;
+  else
+  {
+    old_setting = selector;
+    selector = 21;
+    print_string("FONT");
+    print(u - active_base);
+    selector = old_setting;
+    str_room(1);
+    t = make_string();
+  }
+
+  if ((a >= 4))
+    geq_define(u, set_font, 0);
+  else
+    eq_define(u, set_font, 0);
+
+  scan_optional_equals();
+  scan_file_name();
+
+  name_in_progress = true;
+
+  if (scan_keyword("at"))
+  {
+    scan_dimen(false, false, false);
+    s = cur_val; 
+
+    if ((s <= 0) || (s >= 134217728L)) /* 2^27 */
+    {
+      print_err("Improper `at' size (");
+      print_scaled(s);
+      print_string("pt), replaced by 10pt");
+      help2("I can only handle fonts at positive sizes that are",
+        "less than 2048pt, so I've changed what you said to 10pt.");
+      error();
+      s = 10 * 65536L;    /* 10pt */
+    }
+  }
+  else if (scan_keyword("scaled"))
+  {
+    scan_int();
+    s = - (integer) cur_val;
+
+    if ((cur_val <= 0) || (cur_val > 32768L))
+    {
+      print_err("Illegal magnification has been changed to 1000");
+      help1("The magnification ratio must be between 1 and 32768.");
+      int_error(cur_val);
+      s = -1000;
+    }
+  }
+  else
+    s = -1000;
+
+  name_in_progress = false;
+
+  flushable_string = str_ptr - 1;
+
+  if (trace_flag) /* debugging stuff only 98/Oct/5 */
+  {
+    int i, k1, k2, l1, l2;
+    char *sch = log_line;
+    k1 = str_start[cur_area];
+    k2 = str_start[cur_name];
+    l1 = length(cur_area);
+    l2 = length(cur_name);
+    show_char('\n');
+    show_line("FONT ", 0);
+
+    for (i = 0; i < l1; i++)
+    {
+      *sch++ = str_pool[i + k1];
+    }
+
+    for (i = 0; i < l2; i++)
+    {
+      *sch++ = str_pool[i + k2];
+    }
+
+    *sch++ = ' ';
+    *sch++ = '\0';
+    show_line(log_line, 0);
+  }
+
+  for (f = font_base + 1; f < font_ptr; f++)
+  {
+    if (str_eq_str(font_name[f], cur_name) && str_eq_str(font_area[f], cur_area))
+    {
+      if (cur_name == flushable_string)
+      {
+        flush_string();
+        cur_name = font_name[f];
+      }
+
+      if (s > 0)
+      {
+        if (s == font_size[f])
+        {
+          if (ignore_frozen == 0 || f > frozenfontptr)
+          {
+            if (trace_flag)
+            {
+              sprintf(log_line, "SKIPPING %ld ", s);
+              show_line(log_line, 0);
+            }
+            goto lab50;
+          }
+        }
+      }
+      else if (font_size[f] == xn_over_d(font_dsize[f], - (integer) s, 1000))
+      {
+        if (ignore_frozen == 0 || f > frozenfontptr) /* 99/Mar/26 */
+        {
+          if (trace_flag)
+          {
+            sprintf(log_line, "SKIPPING %ld ", s);
+            show_line(log_line, 0);
+          }
+          goto lab50;
+        }
+      }
+    }
+  }
+
+  if (trace_flag)
+    show_line("READING ", 0);
+
+  f = read_font_info(u, cur_name, cur_area, s); 
+
+lab50:
+  if (trace_flag)
+  {
+    sprintf(log_line, "NEW FONT %d ", f);
+    show_line(log_line, 0);
+  }
+
+  equiv(u) = f;
+  eqtb[font_id_base + f] = eqtb[u];
+
+#ifdef SHORTHASH
+  if (t > 65535L)
+  {
+    sprintf(log_line, "ERROR: %s too large %d\n",  "hash_used", t);
+    show_line(log_line, 1);
   }
 #endif
-/*  hash [ (hash_size + 524) + f ] .v.RH = t ;  */
-  hash [ (hash_size + hash_extra + 524) + f ] .v.RH = t ; /* 96/Jan/10 */
-} 
+  font_id_text(f) = t;
+}
+/* sec 1265 */
+void new_interaction (void)
+{
+  print_ln();
+  interaction = cur_chr;
 
-void newinteraction ( ) 
-{newinteraction_regmem 
-  println () ; 
-  interaction = curchr ; 
-  if ( interaction == 0 )  selector = 16 ; 
-  else selector = 17 ; 
-  if ( logopened )  selector = selector + 2 ; 
-} 
+  if (interaction == batch_mode)
+    selector = no_print;
+  else
+    selector = term_only;
 
-void doassignments ( ) 
-{/* 10 */ doassignments_regmem 
-  while ( true ) {
-    do {
-		getxtoken () ; 
-		ABORTCHECK;
-    } while ( ! ( ( curcmd != 10 ) && ( curcmd != 0 ) ) ) ; 
-    if ( curcmd <= 70 ) 
-		return ; 
-    setboxallowed = false ; 
-    prefixedcommand () ; 
-	ABORTCHECK;
-    setboxallowed = true ; 
-  } 
-} 
-
-void openorclosein ( ) 
-{openorclosein_regmem 
-  char c  ; 
-  char n  ; 
-  c = curchr ; 
-  scanfourbitint () ; 
-  ABORTCHECK;
-  n = curval ; 
-  if ( readopen [ n ] != 2 ) 
+  if (log_opened)
+    selector = selector + 2;
+}
+/* sec 1270 */
+void do_assignments (void)
+{
+  while (true)
   {
-    (void) aclose ( readfile [ n ] ) ; 
-    readopen [ n ] = 2 ; 
-  } 
-  if ( c != 0 ) 
+    do
+      {
+        get_x_token();
+      }
+    while (!((cur_cmd != spacer) && (cur_cmd != relax)));
+
+    if (cur_cmd <= max_non_prefixed_command)
+      return;
+
+    set_box_allowed = false;
+    prefixed_command();
+    set_box_allowed = true;
+  }
+}
+/* sec 1275 */
+void open_or_close_in (void)
+{
+  char c;
+  char n;
+
+  c = cur_chr;
+  scan_four_bit_int();
+  n = cur_val;
+
+  if (read_open[n] != closed)
   {
-    scanoptionalequals () ; 
-    scanfilename () ; 
-    packfilename ( curname , curarea , curext ) ; 
+    (void) a_close(read_file[n]);
+    read_open[n] = closed;
+  }
+
+  if (c != 0)
+  {
+    scan_optional_equals();
+    scan_file_name();
+    pack_file_name(cur_name, cur_area, cur_ext);
+
 /* *** some changes in following in 3.14159 *** */
-/*	if current extension is *not* empty, try to open using name as is */
-/*	string 335 is "" the empty string */
-    if ( ( curext != 335 ) && aopenin ( readfile [ n ] , TEXINPUTPATH ) ) 
-		readopen [ n ] = 1 ; 
-/*	we get here if extension is "", or file with extension failed to open */
-/*	if current extension is not `tex,' and `tex' is not irrelevant, try it */
-/*	string 785 is  .tex */
-    else if ( ( curext != 785 ) && ( namelength + 5 < PATHMAX ) && 
-/* *** some changes in above file name handling *** */
-/*			  ( ! extensionirrelevantp ( nameoffile , "tex" ) ) )  */
-			  ( ! extensionirrelevantp ( nameoffile , namelength , "tex" ) ) )
-	{
-      nameoffile [ namelength + 1 ] = 46 ;		/* .tex  */
-      nameoffile [ namelength + 2 ] = 116 ; 
-      nameoffile [ namelength + 3 ] = 101 ; 
-      nameoffile [ namelength + 4 ] = 120 ; 
-      nameoffile [ namelength + 5 ] = 32 ; 
-      namelength = namelength + 4 ; 
-      if ( aopenin ( readfile [ n ] , TEXINPUTPATH ) ) 
-		  readopen [ n ] = 1 ; 
-      else {
-/*    more changes here in 3.14159 *** */
-		  namelength = namelength - 4 ;			/* remove ".tex" again */
-		  nameoffile [ namelength + 1 ] = 32 ;	/* '  '  */
-/*	  string 335 is "" the empty string */
-		  if ( ( curext == 335 ) && aopenin ( readfile [ n ] , TEXINPUTPATH ) ) 
-			  readopen [ n ] = 1 ; 
-		  else if ( maketextex () && aopenin ( readfile [ n ] , TEXINPUTPATH ) ) 
-			  readopen [ n ] = 1 ; 
-	  } 
-    } 
-  } 
-} 
-
-void issuemessage ( ) 
-{issuemessage_regmem 
-  char oldsetting  ; 
-  char c  ; 
-  strnumber s  ; 
-  c = curchr ; 
-  mem [ memtop - 12 ] .hh .v.RH = scantoks ( false , true ) ; 
-  ABORTCHECK;
-  oldsetting = selector ; 
-  selector = 21 ; 
-  tokenshow ( defref ) ; 
-  selector = oldsetting ; 
-  flushlist ( defref ) ; 
-  {
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef ALLOCATESTRING
-	if ( poolptr + 1 > currentpoolsize ) 
-		  strpool = reallocstrpool (incrementpoolsize);
-	if ( poolptr + 1 > currentpoolsize ) {	/* in case it failed 94/Jan/24 */
-		overflow ( 257 , currentpoolsize - initpoolptr ) ; /* 97/Mar/7 */
-		return;			// abortflag set
-	}
-#else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-    if ( poolptr + 1 > poolsize ) {
-		overflow ( 257 , poolsize - initpoolptr ) ; /* pool size */
-		return;			// abortflag set
-	}
-#endif
-  } 
-  s = makestring () ; 
-  if ( c == 0 ) 
-  {
-    if ( termoffset + ( strstart [ s + 1 ] - strstart [ s ] ) > maxprintline - 
-    2 ) 
-    println () ; 
-    else if ( ( termoffset > 0 ) || ( fileoffset > 0 ) ) 
-    printchar ( 32 ) ;		/*   */
-    slowprint ( s ) ; 
-#ifndef f_WINDOWS
-    fflush ( stdout ) ; 
-#endif
-  } 
-  else {
-      
-    {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 335 ) ;		/* */
-    } 
-    slowprint ( s ) ; 
-    if ( eqtb [ (hash_size + 1321) ] .hh .v.RH != 0 ) 
-    useerrhelp = true ; 
-    else if ( longhelpseen ) 
-    {
-      helpptr = 1 ; 
-      helpline [ 0 ] = 1226 ;	/* (That was another \errmessage.) */
-    } 
-    else {
-	
-      if ( interaction < 3 ) 
-      longhelpseen = true ; 
+/*  if current extension is *not* empty, try to open using name as is */
+/*  string 335 is "" the empty string */
+    if ((cur_ext != 335) && a_open_in(read_file[n], TEXINPUTPATH))
+      read_open[n] = 1;
+/*  we get here if extension is "", or file with extension failed to open */
+/*  if current extension is not `tex,' and `tex' is not irrelevant, try it */
+/*  string 785 is  .tex */
+    else if ((cur_ext != 785) && (name_length + 5 < PATHMAX))
       {
-	helpptr = 4 ; 
-	helpline [ 3 ] = 1227 ;		/* This error message was generated by an \errmessage */
-	helpline [ 2 ] = 1228 ;		/* command, so I can't give any explicit help. */
-	helpline [ 1 ] = 1229 ;		/* Pretend that you're Hercule Poirot: Examine all clues, */
-	helpline [ 0 ] = 1230 ;		/* and deduce the truth by order and method. */
-      } 
-    } 
-    error () ; 
-	ABORTCHECK;
-    useerrhelp = false ; 
-  } 
-  {
-    decr ( strptr ) ; 
-    poolptr = strstart [ strptr ] ; 
-  } 
-} 
+        name_of_file[name_length + 1] = '.';
+        name_of_file[name_length + 2] = 't';
+        name_of_file[name_length + 3] = 'e';
+        name_of_file[name_length + 4] = 'x';
+        name_of_file[name_length + 5] = ' ';
+        name_length = name_length + 4;
 
-void shiftcase ( ) 
-{shiftcase_regmem 
-  halfword b  ; 
-  halfword p  ; 
-  halfword t  ; 
-  eightbits c  ; 
-  b = curchr ; 
-  p = scantoks ( false , false ) ; 
-  ABORTCHECK;
-  p = mem [ defref ] .hh .v.RH ; 
-  while ( p != 0 ) {			/* while p <> null ... p.1288 */
-      
-    t = mem [ p ] .hh .v.LH ;	/* t <- info(p) p.1289 */ 
-/*    if ( t < 4352 )  */
-    if ( t < 4095 + 257) 		/* 4095 + 257 = cs_tokenflag + single_base */
-    {
-      c = t % 256 ;  
-/*      c = t & 255 ;  */	/* last 8 bits */
-      if ( eqtb [ b + c ] .hh .v.RH != 0 ) 
-      mem [ p ] .hh .v.LH = t - c + eqtb [ b + c ] .hh .v.RH ; 
-    } 
-    p = mem [ p ] .hh .v.RH ; 
-  } 
-  begintokenlist ( mem [ defref ] .hh .v.RH , 3 ) ; 
-  {
-    mem [ defref ] .hh .v.RH = avail ; 
-    avail = defref ; 
-	;
-#ifdef STAT
-    decr ( dynused ) ; 
-#endif /* STAT */
-  } 
-} 
-void showwhatever ( ) 
-{/* 50 */ showwhatever_regmem 
-  halfword p  ; 
-  switch ( curchr ) 
-  {case 3 : 
-    {
-      begindiagnostic () ; 
-      showactivities () ; 
-    } 
-    break ; 
-  case 1 : 
-    {
-      scaneightbitint () ; 
-	  ABORTCHECK;
-      begindiagnostic () ; 
-      printnl ( 1248 ) ;	/* > \box */
-      printint ( curval ) ; 
-      printchar ( 61 ) ;	/* = */
-      if ( eqtb [ (hash_size + 1578) + curval ] .hh .v.RH == 0 ) 
-      print ( 407 ) ;		/* void */
-      else showbox ( eqtb [ (hash_size + 1578) + curval ] .hh .v.RH ) ; 
-    } 
-    break ; 
-  case 0 : 
-    {
-      gettoken () ; 
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 1242 ) ;	/* >  */
-      if ( curcs != 0 ) 
-      {
-	sprintcs ( curcs ) ; 
-	printchar ( 61 ) ;		/* = */
-      } 
-      printmeaning () ; 
-      goto lab50 ; 
-    } 
-    break ; 
-    default: 
-    {
-      p = thetoks () ; 
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 1242 ) ;	/* 	>  */
-      tokenshow ( memtop - 3 ) ; 
-      flushlist ( mem [ memtop - 3 ] .hh .v.RH ) ; 
-      goto lab50 ; 
-    } 
-    break ; 
-  } 
-  enddiagnostic ( true ) ; 
-  {
-    if ( interaction == 3 ) 
-    ; 
-    printnl ( 262 ) ;	/* !  */
-    print ( 1249 ) ;	/* OK */
-  } 
-  if ( selector == 19 ) 
-  if ( eqtb [ (hash_size + 3192) ] .cint <= 0 ) 
-  {
-    selector = 17 ; 
-    print ( 1250 ) ;	/*  (see the transcript file) */
-    selector = 19 ; 
-  } 
-  lab50: if ( interaction < 3 ) 
-  {
-    helpptr = 0 ; 
-    decr ( errorcount ) ; 
-  } 
-  else if ( eqtb [ (hash_size + 3192) ] .cint > 0 ) 
-  {
-    {
-      helpptr = 3 ; 
-      helpline [ 2 ] = 1237 ;	/* This isn't an error message; I'm just \showing something. */
-      helpline [ 1 ] = 1238 ;	/* Type `I\show...' to show more (e.g., \show\cs, */
-      helpline [ 0 ] = 1239 ;	/* \showthe\count10, \showbox255, \showlists). */
-    } 
-  } 
-  else {
-      
-    {
-      helpptr = 5 ; 
-      helpline [ 4 ] = 1237 ;	/* This isn't an error message; I'm just \showing something. */
-      helpline [ 3 ] = 1238 ;	/* Type `I\show...' to show more (e.g., \show\cs, */
-      helpline [ 2 ] = 1239 ;	/* \showthe\count10, \showbox255, \showlists). */
-      helpline [ 1 ] = 1240 ;	/* And type `I\tracingonline=1\show...' to show boxes and */
-      helpline [ 0 ] = 1241 ;	/* lists on your terminal as well as in the transcript file. */
-    } 
-  } 
-  error () ; 
-//	ABORTCHECK;
-} 
+        if (a_open_in(read_file[n], TEXINPUTPATH))
+          read_open[n] = just_open;
+        else
+        {
+          name_length = name_length - 4;      /* remove ".tex" again */
+          name_of_file[name_length + 1] = ' ';
 
-void znewwhatsit ( s , w ) 
-smallnumber s ; 
-smallnumber w ; 
-{newwhatsit_regmem 
-  halfword p  ; 
-  p = getnode ( w ) ; 
-  mem [ p ] .hh.b0 = 8 ; 
-  mem [ p ] .hh.b1 = s ; 
-  mem [ curlist .tailfield ] .hh .v.RH = p ; 
-  curlist .tailfield = p ; 
-} 
-
-void znewwritewhatsit ( w ) 
-smallnumber w ; 
-{newwritewhatsit_regmem 
-  newwhatsit ( curchr , w ) ; 
-  if ( w != 2 ) {
-	  scanfourbitint () ;
-	  ABORTCHECK;
+          if ((cur_ext == 335) && a_open_in(read_file[n], TEXINPUTPATH))
+            read_open[n] = 1;
+        }
+      }
   }
-  else {
-    scanint () ; 
-	ABORTCHECK;
-    if ( curval < 0 ) curval = 17 ; 
-    else if ( curval > 15 ) curval = 16 ; 
-  } 
-  mem [ curlist .tailfield + 1 ] .hh .v.LH = curval ; 
-} 
+}
+/* sec 1279 */
+void issue_message (void)
+{
+  char old_setting;
+  char c;
+  str_number s;
 
-void doextension ( ) 
-{doextension_regmem 
-/*  integer i, j, k  ;  */
-  integer k  ; 
-/*  halfword p, q, r  ;  */
-  halfword p  ; 
-  switch ( curchr ) 
-  {case 0 : 
-    {
-      newwritewhatsit ( 3 ) ; 
-      scanoptionalequals () ; 
-      scanfilename () ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.RH = curname ; 
-      mem [ curlist .tailfield + 2 ] .hh .v.LH = curarea ; 
-      mem [ curlist .tailfield + 2 ] .hh .v.RH = curext ; 
-    } 
-    break ; 
-  case 1 : 
-    {
-      k = curcs ; 
-      newwritewhatsit ( 2 ) ; 
-      curcs = k ; 
-      p = scantoks ( false , false ) ; 
-	  ABORTCHECK;
-      mem [ curlist .tailfield + 1 ] .hh .v.RH = defref ; 
-    } 
-    break ; 
-  case 2 : 
-    {
-      newwritewhatsit ( 2 ) ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.RH = 0 ; 
-    } 
-    break ; 
-  case 3 : 
-    {
-      newwhatsit ( 3 , 2 ) ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.LH = 0 ; 
-      p = scantoks ( false , true ) ; 
-	  ABORTCHECK;
-      mem [ curlist .tailfield + 1 ] .hh .v.RH = defref ; 
-    } 
-    break ; 
-  case 4 : 
-    {
-      getxtoken () ; 
-	  ABORTCHECK;
-      if ( ( curcmd == 59 ) && ( curchr <= 2 ) ) 
-      {
-	p = curlist .tailfield ; 
-	doextension () ; 
-	ABORTCHECK;
-	outwhat ( curlist .tailfield ) ;
-	ABORTCHECK;
-	flushnodelist ( curlist .tailfield ) ; 
-	curlist .tailfield = p ; 
-	mem [ p ] .hh .v.RH = 0 ; 
-      } 
-      else backinput () ; 
-    } 
-    break ; 
-  case 5 : 
-    if ( abs ( curlist .modefield ) != 102 ) {
-		reportillegalcase () ;
-		ABORTCHECK;
-	}
-    else {
-	
-      newwhatsit ( 4 , 2 ) ; 
-      scanint () ; 
-	  ABORTCHECK;
-      if ( curval <= 0 )  curlist .auxfield .hh .v.RH = 0 ; 
-      else if ( curval > 255 ) 
-      curlist .auxfield .hh .v.RH = 0 ; 
-      else curlist .auxfield .hh .v.RH = curval ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.RH = curlist .auxfield .hh .v.RH ; 
-      mem [ curlist .tailfield + 1 ] .hh.b0 = normmin ( eqtb [ (hash_size + 3214) ] .cint ) 
-      ; 
-      mem [ curlist .tailfield + 1 ] .hh.b1 = normmin ( eqtb [ (hash_size + 3215) ] .cint ) 
-      ; 
-    } 
-    break ; 
-    default: 
-		{
-			confusion ( 1285 ) ;	/* display */
-			return;				// abortflag set
-		}
-		break ; 
-  } 
-} 
+  c = cur_chr;
+  link(garbage) = scan_toks(false, true);
+  old_setting = selector;
+  selector = new_string;
+  token_show(def_ref);
+  selector = old_setting;
+  flush_list(def_ref);
+  str_room(1);
+  s = make_string();
 
-void fixlanguage ( ) 
-{fixlanguage_regmem 
-/*  ASCIIcode l  ;  */
-  int l  ;									/* 95/Jan/7 */
-  if ( eqtb [ (hash_size + 3213) ] .cint <= 0 ) 
-  l = 0 ; 
-  else if ( eqtb [ (hash_size + 3213) ] .cint > 255 ) 
-  l = 0 ; 
-  else l = eqtb [ (hash_size + 3213) ] .cint ; 
-  if ( l != curlist .auxfield .hh .v.RH ) 
+  if (c == 0)
   {
-    newwhatsit ( 4 , 2 ) ; 
-    mem [ curlist .tailfield + 1 ] .hh .v.RH = l ; 
-    curlist .auxfield .hh .v.RH = l ; 
-    mem [ curlist .tailfield + 1 ] .hh.b0 = normmin ( eqtb [ (hash_size + 3214) ] .cint ) ; 
-    mem [ curlist .tailfield + 1 ] .hh.b1 = normmin ( eqtb [ (hash_size + 3215) ] .cint ) ; 
-  } 
-} 
+    if (term_offset + length(s) > max_print_line - 2)
+      print_ln();
+    else if ((term_offset > 0) || (file_offset > 0))
+      print_char(' ');
 
-void handlerightbrace ( ) 
-{handlerightbrace_regmem 
-  halfword p, q  ; 
-  scaled d  ; 
-  integer f  ; 
+    slow_print(s);
 
-  switch ( curgroup ) 
-  {case 1 : 
-    unsave () ; 
-    break ; 
-  case 0 : 
-    {
-      {
-	if ( interaction == 3 ) 
-	; 
-	printnl ( 262 ) ;	/* !  */
-	print ( 1038 ) ;	/* Too many }'s */
-      } 
-      {
-	helpptr = 2 ; 
-	helpline [ 1 ] = 1039 ;		/* You've closed more groups than you opened. */
-	helpline [ 0 ] = 1040 ;		/* Such booboos are generally harmless, so keep going. */
-      } 
-      error () ; 
-	  ABORTCHECK;
-    } 
-    break ; 
-  case 14 : 
-  case 15 : 
-  case 16 : 
-    extrarightbrace () ; 
-	ABORTCHECK;
-    break ; 
-  case 2 : 
-    package ( 0 ) ; 
-    break ; 
-  case 3 : 
-    {
-      adjusttail = memtop - 5 ; 
-      package ( 0 ) ; 
-    } 
-    break ; 
-  case 4 : 
-    {
-      endgraf () ; 
-      package ( 0 ) ; 
-    } 
-    break ; 
-  case 5 : 
-    {
-      endgraf () ; 
-      package ( 4 ) ; 
-    } 
-    break ; 
-  case 11 : 
-    {
-      endgraf () ; 
-      q = eqtb [ (hash_size + 792) ] .hh .v.RH ; 
-      incr ( mem [ q ] .hh .v.RH ) ; 
-      d = eqtb [ (hash_size + 3736) ] .cint ; 
-      f = eqtb [ (hash_size + 3205) ] .cint ; 
-      unsave () ; 
-      decr ( saveptr ) ; 
-      p = vpackage ( mem [ curlist .headfield ] .hh .v.RH , 0 , 1 , 
-      1073741823L ) ;  /* 2^30 - 1 */
-      popnest () ; 
-      if ( savestack [ saveptr + 0 ] .cint < 255 ) 
-      {
-	{
-	  mem [ curlist .tailfield ] .hh .v.RH = getnode ( 5 ) ; 
-	  curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-	} 
-	mem [ curlist .tailfield ] .hh.b0 = 3 ; 
-	mem [ curlist .tailfield ] .hh.b1 = savestack [ saveptr + 0 ] .cint ; 
-	mem [ curlist .tailfield + 3 ] .cint = mem [ p + 3 ] .cint + mem [ p + 
-	2 ] .cint ; 
-	mem [ curlist .tailfield + 4 ] .hh .v.LH = mem [ p + 5 ] .hh .v.RH ; 
-	mem [ curlist .tailfield + 4 ] .hh .v.RH = q ; 
-	mem [ curlist .tailfield + 2 ] .cint = d ; 
-	mem [ curlist .tailfield + 1 ] .cint = f ; 
-      } 
-      else {
-	  
-	{
-	  mem [ curlist .tailfield ] .hh .v.RH = getnode ( 2 ) ; 
-	  curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-	} 
-	mem [ curlist .tailfield ] .hh.b0 = 5 ; 
-	mem [ curlist .tailfield ] .hh.b1 = 0 ; 
-	mem [ curlist .tailfield + 1 ] .cint = mem [ p + 5 ] .hh .v.RH ; 
-	deleteglueref ( q ) ; 
-      } 
-      freenode ( p , 7 ) ; 
-      if ( nestptr == 0 ) {
-		  buildpage () ;
-		  ABORTCHECK;
-	  }
-    } 
-    break ; 
-  case 8 : 
-    {
-      if ( ( curinput .locfield != 0 ) || ( ( curinput .indexfield != 6 ) && ( 
-      curinput .indexfield != 3 ) ) ) 
-      {
-	{
-	  if ( interaction == 3 ) 
-	  ; 
-	  printnl ( 262 ) ;		/* !  */
-	  print ( 1004 ) ;		/* Unbalanced output routine */
-	} 
-	{
-	  helpptr = 2 ; 
-	  helpline [ 1 ] = 1005 ;	/* Your sneaky output routine has problematic {'s and/or }'s. */
-	  helpline [ 0 ] = 1006 ;	/* I can't handle that very well; good luck. */
-	} 
-	error () ; 
-	ABORTCHECK;
-	do {
-	    gettoken () ; 
-	} while ( ! ( curinput .locfield == 0 ) ) ; 
-      } 
-      endtokenlist () ; 
-	  ABORTCHECK;
-      endgraf () ; 
-      unsave () ; 
-      outputactive = false ; 
-      insertpenalties = 0 ; 
-      if ( eqtb [ (hash_size + 1833) ] .hh .v.RH != 0 ) 
-      {
-		  {
-			  if ( interaction == 3 ) 
-				  ; 
-			  printnl ( 262 ) ;		/* !  */
-			  print ( 1007 ) ;		/* Output routine didn't use all of  */
-		  } 
-		  printesc ( 406 ) ;		/* box */
-		  printint ( 255 ) ; 
-		  {
-			  helpptr = 3 ; 
-			  helpline [ 2 ] = 1008 ;	/* Your \output commands should empty \box255, */
-			  helpline [ 1 ] = 1009 ;	/* e.g., by saying `\shipout\box255'. */
-			  helpline [ 0 ] = 1010 ;	/* Proceed; I'll discard its present contents. */
-		  } 
-		  boxerror ( 255 ) ; 
-		  ABORTCHECK;
-	  }
-      if ( curlist .tailfield != curlist .headfield ) 
-      {
-	mem [ pagetail ] .hh .v.RH = mem [ curlist .headfield ] .hh .v.RH ; 
-	pagetail = curlist .tailfield ; 
-      } 
-      if ( mem [ memtop - 2 ] .hh .v.RH != 0 ) 
-      {
-	if ( mem [ memtop - 1 ] .hh .v.RH == 0 ) 
-	nest [ 0 ] .tailfield = pagetail ; 
-	mem [ pagetail ] .hh .v.RH = mem [ memtop - 1 ] .hh .v.RH ; 
-	mem [ memtop - 1 ] .hh .v.RH = mem [ memtop - 2 ] .hh .v.RH ; 
-	mem [ memtop - 2 ] .hh .v.RH = 0 ; 
-	pagetail = memtop - 2 ; 
-      } 
-      popnest () ; 
-      buildpage () ; 
-	  ABORTCHECK;
-    } 
-    break ; 
-  case 10 : 
-    builddiscretionary () ; 
-	ABORTCHECK;
-    break ; 
-  case 6 : 
-/* align_group: begin back_input; cur_tok:=cs_token_flag+frozen_cr; */
-    {
-      backinput () ; 
-/*      curtok = (hash_size + 4610) ;  */
-/*      curtok = (hash_size + 4095 + 515) ;  */
-      curtok = (hash_size + hash_extra + 4095 + 515) ; 
-      {
-	if ( interaction == 3 ) 
-	; 
-	printnl ( 262 ) ;	/* !  */
-	print ( 622 ) ;		/* Missing  */
-      } 
-      printesc ( 893 ) ;	/* cr */
-      print ( 623 ) ;		/* inserted */
-      {
-	helpptr = 1 ; 
-	helpline [ 0 ] = 1119 ;		/* I'm guessing that you meant to end an alignment here. */
-      } 
-      inserror () ; 
-	  ABORTCHECK;
-    } 
-    break ; 
-  case 7 : 
-    {
-      endgraf () ; 
-      unsave () ; 
-      alignpeek () ; 
-	  ABORTCHECK;
-    } 
-    break ; 
-  case 12 : 
-    {
-      endgraf () ; 
-      unsave () ; 
-      saveptr = saveptr - 2 ; 
-      p = vpackage ( mem [ curlist .headfield ] .hh .v.RH , savestack [ 
-      saveptr + 1 ] .cint , savestack [ saveptr + 0 ] .cint ,
-			1073741823L ) ;   /* 2^30 - 1 */
-      popnest () ; 
-      {
-	mem [ curlist .tailfield ] .hh .v.RH = newnoad () ; 
-	curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      mem [ curlist .tailfield ] .hh.b0 = 29 ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.RH = 2 ; 
-      mem [ curlist .tailfield + 1 ] .hh .v.LH = p ; 
-    } 
-    break ; 
-  case 13 : 
-    buildchoices () ; 
-    break ; 
-  case 9 : 
-    {
-      unsave () ; 
-      decr ( saveptr ) ; 
-      mem [ savestack [ saveptr + 0 ] .cint ] .hh .v.RH = 3 ; 
-      p = finmlist ( 0 ) ; 
-      mem [ savestack [ saveptr + 0 ] .cint ] .hh .v.LH = p ; 
-      if ( p != 0 ) 
-      if ( mem [ p ] .hh .v.RH == 0 ) 
-      if ( mem [ p ] .hh.b0 == 16 ) 
-      {
-	if ( mem [ p + 3 ] .hh .v.RH == 0 ) 
-	if ( mem [ p + 2 ] .hh .v.RH == 0 ) 
-	{
-	  mem [ savestack [ saveptr + 0 ] .cint ] .hh = mem [ p + 1 ] .hh ; 
-	  freenode ( p , 4 ) ; 
-	} 
-      } 
-      else if ( mem [ p ] .hh.b0 == 28 ) 
-      if ( savestack [ saveptr + 0 ] .cint == curlist .tailfield + 1 ) 
-      if ( mem [ curlist .tailfield ] .hh.b0 == 16 ) 
-      {
-	q = curlist .headfield ; 
-	while ( mem [ q ] .hh .v.RH != curlist .tailfield ) q = mem [ q ] .hh 
-	.v.RH ; 
-	mem [ q ] .hh .v.RH = p ; 
-	freenode ( curlist .tailfield , 4 ) ; 
-	curlist .tailfield = p ; 
-      } 
-    } 
-    break ; 
-    default: 
-		{
-			confusion ( 1041 ) ;	/* rightbrace */
-			return;				// abortflag set
-		}
-		break ; 
-  } 
-} 
+#ifndef _WINDOWS
+    fflush(stdout);
+#endif
+  }
+  else
+  {
+    print_err("");
+    slow_print(s);
 
-/* main control loop */
+    if (err_help != 0)
+      use_err_help = true;
+    else if (long_help_seen)
+      help1("(That was another \\errmessage.)");
+    else
+    {
+      if (interaction < error_stop_mode)
+        long_help_seen = true;
 
-void maincontrol ( ) 
-{/* 60 21 70 80 90 91 92 95 100 101 110 111 112 120 10 */ maincontrol_regmem 
-    integer t  ; 
-	integer bSuppress ;		/* 199/Jan/5 */
+      help4("This error message was generated by an \\errmessage",
+        "command, so I can't give any explicit help.",
+        "Pretend that you're Hercule Poirot: Examine all clues,",
+        "and deduce the truth by order and method.");
+    }
 
-	if ( eqtb [ (hash_size + 1319) ] .hh .v.RH != 0 ) /* everyjob */
-		begintokenlist ( eqtb [ (hash_size + 1319) ] .hh .v.RH , 12 ) ; 
+    error();
+    use_err_help = false;
+  }
+
+  flush_string();
+}
+/* sec 1288 */
+void shift_case (void)
+{
+  halfword b;
+  halfword p;
+  halfword t;
+  eight_bits c;
+
+  b = cur_chr;
+  p = scan_toks(false, false);
+  p = link(def_ref);
+
+  while (p != 0)
+  {
+    t = info(p); 
+
+    if (t < cs_token_flag + single_base)
+    {
+      c = t % 256;
+
+      if (equiv(b + c) != 0)
+        info(p) = t - c + equiv(b + c);
+    }
+
+    p = link(p);
+  }
+
+  begin_token_list(link(def_ref), 3);
+  free_avail(def_ref);
+}
+/* sec 1293 */
+void show_whatever (void)
+{
+  halfword p;
+
+  switch(cur_chr)
+  {
+    case show_lists:
+      {
+        begin_diagnostic();
+        show_activities();
+      }
+      break;
+
+    case show_box_code:
+      {
+        scan_eight_bit_int();
+        begin_diagnostic();
+        print_nl("> \\box");
+        print_int(cur_val);
+        print_char('=');
+
+        if (box(cur_val) == 0)
+          print_string("void");
+        else
+          show_box(box(cur_val));
+      }
+      break;
+
+    case show_code:
+      {
+        get_token();
+
+        if (interaction == error_stop_mode)
+          ;
+
+        print_nl("> ");
+
+        if (cur_cs != 0)
+        {
+          sprint_cs(cur_cs);
+          print_char('=');
+        }
+
+        print_meaning();
+        goto lab50;
+      }
+      break;
+
+    default:
+      {
+        p = the_toks();
+
+        if (interaction == error_stop_mode)
+          ;
+
+        print_nl("> ");
+        token_show(temp_head);
+        flush_list(link(temp_head));
+        goto lab50;
+      }
+      break;
+  }
+
+  end_diagnostic(true);
+  print_err("OK");
+
+  if (selector == term_and_log)
+    if (tracing_online <= 0)
+    {
+      selector = term_only;
+      print_string(" (see the transcript file)");
+      selector = term_and_log;
+    }
+
+lab50:
+
+  if (interaction < error_stop_mode)
+  {
+    help_ptr = 0;
+    decr(error_count);
+  }
+  else if (tracing_online > 0)
+  {
+    help3("This isn't an error message; I'm just \\showing something.",
+      "Type `I\\show...' to show more (e.g., \\show\\cs,",
+      "\\showthe\\count10, \\showbox255, \\showlists).");
+  }
+  else
+  {
+    help5("This isn't an error message; I'm just \\showing something.",
+      "Type `I\\show...' to show more (e.g., \\show\\cs,",
+      "\\showthe\\count10, \\showbox255, \\showlists).",
+      "And type `I\\tracingonline=1\\show...' to show boxes and",
+      "lists on your terminal as well as in the transcript file.");
+  }
+  error();
+}
+/* sec 1349 */
+void new_whatsit_(small_number s, small_number w)
+{
+  halfword p;
+
+  p = get_node(w);
+  type(p) = whatsit_node;
+  subtype(p) = s;
+  link(tail) = p;
+  tail = p;
+}
+/* sec 1350 */
+void new_write_whatsit_(small_number w)
+{
+  new_whatsit(cur_chr, w);
+
+  if (w != write_node_size)
+  {
+    scan_four_bit_int();
+  }
+  else
+  {
+    scan_int();
+
+    if (cur_val < 0)
+      cur_val = 17;
+    else if (cur_val > 15)
+      cur_val = 16;
+  }
+
+  write_stream(tail) = cur_val;
+}
+/* sec 1348 */
+void do_extension (void)
+{
+/*  integer i, j, k;  */
+  integer k;
+/*  halfword p, q, r;  */
+  halfword p;
+
+  switch(cur_chr)
+  {
+    case open_node:
+      {
+        new_write_whatsit(open_node_size);
+        scan_optional_equals();
+        scan_file_name();
+        open_name(tail) = cur_name;
+        open_area(tail) = cur_area;
+        open_ext(tail) = cur_ext;
+      }
+      break;
+
+    case write_node:
+      {
+        k = cur_cs;
+        new_write_whatsit(write_node_size);
+        cur_cs = k;
+        p = scan_toks(false, false);
+        write_tokens(tail) = def_ref;
+      }
+      break;
+
+    case close_node:
+      {
+        new_write_whatsit(write_node_size);
+        write_tokens(tail) = 0;
+      }
+      break;
+
+    case special_node:
+      {
+        new_whatsit(special_node, write_node_size);
+        write_stream(tail) = 0;
+        p = scan_toks(false, true);
+        write_tokens(tail) = def_ref;
+      }
+      break;
+
+    case immediate_code:
+      {
+        get_x_token();
+
+        if ((cur_cmd == extension) && (cur_chr <= close_node))
+        {
+          p = tail;
+          do_extension();
+          out_what(tail);
+          flush_node_list(tail);
+          tail = p;
+          link(p) = 0;
+        }
+        else
+          back_input();
+      }
+      break;
+
+    case set_language_code:
+      if (abs(mode) != hmode)
+      {
+        report_illegal_case();
+      }
+      else
+      {
+        new_whatsit(language_node, small_node_size);
+        scan_int();
+
+        if (cur_val <= 0)
+          clang = 0;
+        else if (cur_val > 255)
+          clang = 0;
+        else
+          clang = cur_val;
+
+        what_lang(tail) = clang;
+        what_lhm(tail) = norm_min(left_hyphen_min);
+        what_rhm(tail) = norm_min(right_hyphen_min);
+      }
+      break;
+
+    default:
+      {
+        confusion("ext1");
+        return;       // abort_flag set
+      }
+      break;
+  }
+}
+/* sec 1376 */
+void fix_language (void)
+{
+/*  ASCII_code l;  */
+  int l;                  /* 95/Jan/7 */
+
+  if (language <= 0)
+    l = 0; 
+  else if (language > 255)
+    l = 0;
+  else
+    l = language;
+
+  if (l != clang)
+  {
+    new_whatsit(language_node, small_node_size);
+    what_lang(tail) = l;
+    clang = l;
+    what_lhm(tail) = norm_min(left_hyphen_min);
+    what_rhm(tail) = norm_min(right_hyphen_min);
+  }
+}
+/* sec 1068 */
+void handle_right_brace (void)
+{
+  halfword p, q;
+  scaled d;
+  integer f;
+
+  switch(cur_group)
+  {
+    case simple_group:
+      unsave();
+      break;
+
+    case bottom_level:
+      {
+        print_err("Too many }'s");
+        help2("You've closed more groups than you opened.",
+          "Such booboos are generally harmless, so keep going.");
+        error();
+      }
+      break;
+
+    case semi_simple_group:
+    case math_shift_group:
+    case math_left_group:
+      extra_right_brace();
+      break;
+
+    case hbox_group:
+      package(0);
+      break;
+
+    case adjust_hbox_group:
+      {
+        adjust_tail = adjust_head;
+        package(0);
+      }
+      break;
+
+    case vbox_group:
+      {
+        end_graf();
+        package(0);
+      }
+      break;
+
+    case vtop_group:
+      {
+        end_graf();
+        package(vtop_code);
+      }
+      break;
+
+    case insert_group:
+      {
+        end_graf();
+        q = split_top_skip;
+        add_glue_ref(q);
+        d = split_max_depth;
+        f = floating_penalty;
+        unsave();
+        decr(save_ptr);
+        p = vpackage(link(head), 0, 1, 1073741823L);  /* 2^30 - 1 */
+        pop_nest();
+
+        if (saved(0) < 255)
+        {
+          tail_append(get_node(ins_node_size));
+          type(tail) = ins_node;
+          subtype(tail) = saved(0);
+          height(tail) = height(p) + depth(p);
+          ins_ptr(tail) = list_ptr(p);
+          split_top_ptr(tail) = q;
+          depth(tail) = d;
+          float_cost(tail) = f;
+        }
+        else
+        {
+          tail_append(get_node(small_node_size));
+          type(tail) = adjust_node;
+          subtype(tail) = 0;
+          adjust_ptr(tail) = list_ptr(p);
+          delete_glue_ref(q);
+        }
+        free_node(p, box_node_size);
+
+        if (nest_ptr == 0)
+        {
+          build_page();
+        }
+      }
+      break;
+    case output_group:
+      {
+        if ((cur_input.loc_field != 0) || ((token_type != output_text) && (token_type != backed_up)))
+        {
+          print_err("Unbalanced output routine");
+          help2("Your sneaky output routine has problematic {'s and/or }'s.",
+            "I can't handle that very well; good luck.");
+          error();
+
+          do
+            {
+              get_token();
+            }
+          while (!(cur_input.loc_field == 0));
+        }
+
+        end_token_list();
+        end_graf();
+        unsave();
+        output_active = false;
+        insert_penalties = 0;
+
+        if (box(255) != 0)
+        {
+          print_err("Output routine didn't use all of ");
+          print_esc("box");
+          print_int(255);
+          help3("Your \\output commands should empty \\box255,",
+            "e.g., by saying `\\shipout\\box255'.",
+            "Proceed; I'll discard its present contents.");
+          box_error(255);
+        }
+
+        if (tail != head)
+        {
+          link(page_tail) = link(head);
+          page_tail = tail;
+        }
+
+        if (link(page_head) != 0)
+        {
+          if (link(contrib_head) == 0)
+            nest[0].tail_field = page_tail;
+
+          link(page_tail) = link(contrib_head);
+          link(contrib_head) = link(page_head);
+          link(page_head) = 0;
+          page_tail = page_head;
+        }
+        pop_nest();
+        build_page();
+      }
+      break;
+
+    case disc_group:
+      build_discretionary();
+      break;
+
+    case align_group:
+      {
+        back_input();
+        cur_tok = cs_token_flag + frozen_cr;
+        print_err("Missing ");
+        print_esc("cr");
+        print_string("inserted");
+        help1("I'm guessing that you meant to end an alignment here.");
+        ins_error();
+      }
+      break;
+
+    case no_align_group:
+      {
+        end_graf();
+        unsave();
+        align_peek();
+      }
+      break;
+
+    case vcenter_group:
+      {
+        end_graf();
+        unsave();
+        save_ptr = save_ptr - 2;
+        p = vpackage(link(head), saved(1), saved(0), 1073741823L);   /* 2^30 - 1 */
+        pop_nest();
+        tail_append(new_noad());
+        type(tail) = vcenter_noad;
+        math_type(nucleus(tail)) = sub_box;
+        info(nucleus(tail)) = p;
+      }
+      break;
+
+    case math_choice_group:
+      build_choices();
+      break;
+
+    case math_group:
+      {
+        unsave();
+        decr(save_ptr);
+        math_type(saved(0)) = sub_mlist;
+        p = fin_mlist(0);
+        info(saved(0)) = p;
+
+        if (p != 0)
+          if (link(p) == 0)
+            if (type(p) == ord_noad)
+            {
+              if (math_type(subscr(p)) == 0)
+                if (math_type(supscr(p)) == 0)
+                {
+                  mem[saved(0)].hh = mem[nucleus(p)].hh;
+                  free_node(p, noad_size);
+                }
+            }
+            else if (type(p) == accent_noad)
+              if (saved(0) == nucleus(tail))
+                if (type(tail) == ord_noad)
+                {
+                  q = head;
+
+                  while(link(q) != tail)
+                    q = link(q);
+
+                  link(q) = p;
+                  free_node(tail, noad_size);
+                  tail = p;
+                }
+      }
+      break;
+    default:
+      {
+        confusion("rightbrace");
+        return;       // abort_flag set
+      }
+      break;
+  }
+}
+/* sec 1030 */
+void main_control (void) 
+{
+  integer t;
+  integer bSuppress; /* 199/Jan/5 */
+
+  if (every_job != 0)
+    begin_token_list(every_job, every_job_text);
 
 lab60:
-	ABORTCHECK;
-	getxtoken () ;				/* big_switch */
+  get_x_token();       /* big_switch */
+
 lab21:
-	ABORTCHECK;
-	if ( interrupt != 0 ) 
-		if ( OKtointerrupt ) {
-			backinput () ; 
-			{
-				if ( interrupt != 0 ) {
-					pauseforinstructions () ;
-					ABORTCHECK;
-				}
-			}	 
-			goto lab60 ; 
-		} 
-	;
+  if (interrupt != 0)
+    if (OK_to_interrupt)
+    {
+      back_input();
+      {
+        if (interrupt != 0)
+        {
+          pause_for_instructions();
+        }
+      }
+      goto lab60;
+    }
+
 #ifdef DEBUG
-	if ( panicking ) checkmem ( false ) ; 
-#endif /* DEBUG */
-	if ( eqtb [ (hash_size + 3199) ] .cint > 0 ) 
-		showcurcmdchr () ; 
+  if (panicking)
+    check_mem(false);
+#endif
 
-/*	the big switch --- don't bother to test abortflag ??? */
-	switch ( abs ( curlist .modefield ) + curcmd ) {
-		   case 113 : 
-		   case 114 : 
-		   case 170 : 
-			   goto lab70 ; 
-			   break ; 
-		   case 118 : 
-		   {
-			   scancharnum () ; 
-			   ABORTCHECK;
-			   curchr = curval ; 
-			   goto lab70 ; 
-		   } 
-		   break ; 
-		   case 167 : 
-		   {
-			   getxtoken () ; 
-			   ABORTCHECK;
-			   if ( ( curcmd == 11 ) || ( curcmd == 12 ) || ( curcmd == 68 ) || ( 
-				   curcmd == 16 ) ) 
-				   cancelboundary = true ; 
-			   goto lab21 ; 
-		   } 
-		   break ; 
-  case 112 : 
-    if ( curlist .auxfield .hh .v.LH == 1000 ) goto lab120 ; 
-    else {
-		appspace () ;
-		ABORTCHECK;
-	}
-    break ; 
-  case 166 : 
-  case 267 : 
-    goto lab120 ; 
-    break ; 
-  case 1 : 
-  case 102 : 
-  case 203 : 
-  case 11 : 
-  case 213 : 
-  case 268 : 
-    ; 
-    break ; 
-  case 40 : 
-  case 141 : 
-  case 242 : 
-    {
-      do {
-		  getxtoken () ; 
-		  ABORTCHECK;
-      } while ( ! ( curcmd != 10 ) ) ; 
-      goto lab21 ; 
-    } 
-    break ; 
-  case 15 : 
-    if ( itsallover () ) return ; 
-    break ; 
-  case 23 : 
-  case 123 : 
-  case 224 : 
-  case 71 : 
-  case 172 : 
-  case 273 : 
-  case 39 : 
-  case 45 : 
-  case 49 : 
-  case 150 : 
-  case 7 : 
-  case 108 : 
-  case 209 : 
-    reportillegalcase () ; 
-	ABORTCHECK;
-    break ; 
-  case 8 : 
-  case 109 : 
-  case 9 : 
-  case 110 : 
-  case 18 : 
-  case 119 : 
-  case 70 : 
-  case 171 : 
-  case 51 : 
-  case 152 : 
-  case 16 : 
-  case 117 : 
-  case 50 : 
-  case 151 : 
-  case 53 : 
-  case 154 : 
-  case 67 : 
-  case 168 : 
-  case 54 : 
-  case 155 : 
-  case 55 : 
-  case 156 : 
-  case 57 : 
-  case 158 : 
-  case 56 : 
-  case 157 : 
-  case 31 : 
-  case 132 : 
-  case 52 : 
-  case 153 : 
-  case 29 : 
-  case 130 : 
-  case 47 : 
-  case 148 : 
-  case 212 : 
-  case 216 : 
-  case 217 : 
-  case 230 : 
-  case 227 : 
-  case 236 : 
-  case 239 : 
-    insertdollarsign () ; 
-	ABORTCHECK;
-    break ; 
-  case 37 : 
-  case 137 : 
-  case 238 : 
-    {
-      {
-		  mem [ curlist .tailfield ] .hh .v.RH = scanrulespec () ; 
-		  ABORTCHECK;
-		  curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      if ( abs ( curlist .modefield ) == 1 ) 
-		  curlist .auxfield .cint = -65536000L ; 
-      else if ( abs ( curlist .modefield ) == 102 ) 
-		  curlist .auxfield .hh .v.LH = 1000 ; 
-    } 
-    break ; 
-  case 28 : 
-  case 128 : 
-  case 229 : 
-  case 231 : 
-    appendglue () ; 
-	ABORTCHECK;
-    break ; 
-  case 30 : 
-  case 131 : 
-  case 232 : 
-  case 233 : 
-    appendkern () ; 
-	ABORTCHECK;
-    break ; 
-  case 2 : 
-  case 103 : 
-    newsavelevel ( 1 ) ; 
-	ABORTCHECK;
-    break ; 
-  case 62 : 
-  case 163 : 
-  case 264 : 
-    newsavelevel ( 14 ) ; 
-	ABORTCHECK;
-    break ; 
-  case 63 : 
-  case 164 : 
-  case 265 : 
-    if ( curgroup == 14 )  unsave () ; 
-    else offsave () ;
-	ABORTCHECK;
-    break ; 
-  case 3 : 
-  case 104 : 
-  case 205 : 
-    handlerightbrace () ; 
-	ABORTCHECK;
-    break ; 
-  case 22 : 
-  case 124 : 
-  case 225 : 
-    {
-      t = curchr ; 
-      scandimen ( false , false , false ) ; 
-	  ABORTCHECK;
-      if ( t == 0 ) scanbox ( curval ) ;
-      else scanbox ( - (integer) curval ) ;
-	  ABORTCHECK;
-    } 
-    break ; 
-  case 32 : 
-  case 133 : 
-  case 234 : 
-/* scan_box(leader_flag-a_leaders+cur_chr); */
-    scanbox ( 1073742237L + curchr ) ; /* 2^30 + 513 - 100 ? */
-	ABORTCHECK;
-    break ; 
-  case 21 : 
-  case 122 : 
-  case 223 : 
-    beginbox ( 0 ) ; 
-	ABORTCHECK;
-    break ; 
-  case 44 : 
-    newgraf ( curchr > 0 ) ; 
-	ABORTCHECK;
-    break ; 
-  case 12 : 
-  case 13 : 
-  case 17 : 
-  case 69 : 
-  case 4 : 
-  case 24 : 
-  case 36 : 
-  case 46 : 
-  case 48 : 
-  case 27 : 
-  case 34 : 
-  case 65 : 
-  case 66 : 
-    {
-      backinput () ; 
-      newgraf ( true ) ; 
-	  ABORTCHECK;
-    } 
-    break ; 
-  case 145 : 
-  case 246 : 
-    indentinhmode () ; 
-	ABORTCHECK;
-    break ; 
-  case 14 : 
-    {
-      normalparagraph () ; 
-	  ABORTCHECK;
-      if ( curlist .modefield > 0 ) {
-		  buildpage () ;
-		  ABORTCHECK;
-	  }
-    } 
-    break ; 
-  case 115 : 
-    {
-      if ( alignstate < 0 ) {
-		  offsave () ;
-		  ABORTCHECK;
-	  }
-      endgraf () ; 
-	  ABORTCHECK;
-      if ( curlist .modefield == 1 ) {
-		  buildpage () ;
-		  ABORTCHECK;
-	  }
-    } 
-    break ; 
-  case 116 : 
-  case 129 : 
-  case 138 : 
-  case 126 : 
-  case 134 : 
-    headforvmode () ; 
-	ABORTCHECK;
-    break ; 
-  case 38 : 
-  case 139 : 
-  case 240 : 
-  case 140 : 
-  case 241 : 
-    begininsertoradjust () ; 
-	ABORTCHECK;
-    break ; 
-  case 19 : 
-  case 120 : 
-  case 221 : 
-    makemark () ; 
-	ABORTCHECK;
-    break ; 
-  case 43 : 
-  case 144 : 
-  case 245 : 
-    appendpenalty () ; 
-	ABORTCHECK;
-    break ; 
-  case 26 : 
-  case 127 : 
-  case 228 : 
-    deletelast () ; 
-	ABORTCHECK;
-    break ; 
-  case 25 : 
-  case 125 : 
-  case 226 : 
-    unpackage () ; 
-	ABORTCHECK;
-    break ; 
-  case 146 : 
-    appenditaliccorrection () ; 
-	ABORTCHECK;
-    break ; 
-  case 247 : 
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = newkern ( 0 ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-	  ABORTCHECK;
-    } 
-    break ; 
-  case 149 : 
-  case 250 : 
-    appenddiscretionary () ; 
-	ABORTCHECK;
-    break ; 
-  case 147 : 
-    makeaccent () ; 
-	ABORTCHECK;
-    break ; 
-  case 6 : 
-  case 107 : 
-  case 208 : 
-  case 5 : 
-  case 106 : 
-  case 207 : 
-    alignerror () ; 
-	ABORTCHECK;
-    break ; 
-  case 35 : 
-  case 136 : 
-  case 237 : 
-    noalignerror () ; 
-	ABORTCHECK;
-    break ; 
-  case 64 : 
-  case 165 : 
-  case 266 : 
-    omiterror () ; 
-	ABORTCHECK;
-    break ; 
-  case 33 : 
-  case 135 : 
-    initalign () ; 
-	ABORTCHECK;
-    break ; 
-  case 235 : 
-    if ( privileged () ) 
-    if ( curgroup == 15 ) initalign () ;
-    else offsave () ;
-	ABORTCHECK;
+  if (tracing_commands > 0)
+    show_cur_cmd_chr();
 
-    break ; 
-  case 10 : 
-  case 111 : 
-    doendv () ; 
-	ABORTCHECK;
-    break ; 
-  case 68 : 
-  case 169 : 
-  case 270 : 
-    cserror () ; 
-	ABORTCHECK;
-    break ; 
-  case 105 : 
-    initmath () ; 
-	ABORTCHECK;
-    break ; 
-  case 251 : 
-    if ( privileged () ) 
-    if ( curgroup == 15 )  starteqno () ; 
-    else offsave () ;
-	ABORTCHECK;
-    break ; 
-  case 204 : 
-    {
+/*  the big switch --- don't bother to test abort_flag ??? */
+  switch(abs(mode) + cur_cmd)
+  {
+    case hmode + letter:
+    case hmode + other_char:
+    case hmode + char_given:
+      goto lab70;
+      break;
+
+    case hmode + char_num:
       {
-	mem [ curlist .tailfield ] .hh .v.RH = newnoad () ; 
-	curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      backinput () ; 
-      scanmath ( curlist .tailfield + 1 ) ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 214 : 
-  case 215 : 
-  case 271 : 
-    setmathchar ( eqtb [ (hash_size + 2907) + curchr ] .hh .v.RH ) ; 
-	ABORTCHECK;
-    break ; 
-  case 219 : 
-    {
-      scancharnum () ; 
-	  ABORTCHECK;
-      curchr = curval ; 
-      setmathchar ( eqtb [ (hash_size + 2907) + curchr ] .hh .v.RH ) ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 220 : 
-    {
-      scanfifteenbitint () ; 
-	  ABORTCHECK;
-      setmathchar ( curval ) ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 272 : 
-    setmathchar ( curchr ) ; 
-	ABORTCHECK;
-    break ; 
-  case 218 : 
-    {
-      scantwentysevenbitint () ; 
-	  ABORTCHECK;
-      setmathchar ( curval / 4096 ) ;  
-/*      setmathchar ( curval >> 12 ) ; */
-    } 
-	ABORTCHECK;
-    break ; 
-  case 253 : 
-    {
+        scan_char_num();
+        cur_chr = cur_val;
+        goto lab70;
+      }
+      break;
+
+    case hmode + no_boundary:
       {
-		  mem [ curlist .tailfield ] .hh .v.RH = newnoad () ; 
-		  curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      mem [ curlist .tailfield ] .hh.b0 = curchr ; 
-      scanmath ( curlist .tailfield + 1 ) ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 254 : 
-    mathlimitswitch () ; 
-	ABORTCHECK;
-    break ; 
-  case 269 : 
-    mathradical () ; 
-	ABORTCHECK;
-    break ; 
-  case 248 : 
-  case 249 : 
-    mathac () ; 
-	ABORTCHECK;
-    break ; 
-  case 259 : 
-    {
-      scanspec ( 12 , false ) ; 
-      normalparagraph () ; 
-      pushnest () ; 
-	  ABORTCHECK;
-      curlist .modefield = -1 ; 
-      curlist .auxfield .cint = -65536000L ; 
-      if ( eqtb [ (hash_size + 1318) ] .hh .v.RH != 0 ) /* everyvbox */
-		  begintokenlist ( eqtb [ (hash_size + 1318) ] .hh .v.RH , 11 ) ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 256 : 
-    {
-      mem [ curlist .tailfield ] .hh .v.RH = newstyle ( curchr ) ; 
-      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 258 : 
-    {
+        get_x_token();
+
+        if ((cur_cmd == letter) || (cur_cmd == other_char) ||
+          (cur_cmd == char_given) || (cur_cmd == char_num))
+          cancel_boundary = true;
+        goto lab21;
+      }
+      break;
+
+    case hmode + spacer:
+      if (space_factor == 1000)
+        goto lab120;
+      else
+        app_space();
+      break;
+
+    case hmode + ex_space:
+    case mmode + ex_space:
+      goto lab120;
+      break;
+
+    case any_mode(relax):
+    case vmode + spacer:
+    case mmode + spacer:
+    case mmode + no_boundary:
+      ;
+      break;
+
+    case any_mode(ignore_spaces):
       {
-		  mem [ curlist .tailfield ] .hh .v.RH = newglue ( 0 ) ; 
-		  curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      mem [ curlist .tailfield ] .hh.b1 = 98 ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 257 : 
-    appendchoices () ; 
-	ABORTCHECK;
-    break ; 
-  case 211 : 
-  case 210 : 
-    subsup () ; 
-	ABORTCHECK;
-    break ; 
-  case 255 : 
-    mathfraction () ; 
-	ABORTCHECK;
-    break ; 
-  case 252 : 
-    mathleftright () ; 
-	ABORTCHECK;
-    break ; 
-  case 206 : 
-    if ( curgroup == 15 ) aftermath () ; 
-    else offsave () ;
-	ABORTCHECK;
-    break ; 
-  case 72 : 
-  case 173 : 
-  case 274 : 
-  case 73 : 
-  case 174 : 
-  case 275 : 
-  case 74 : 
-  case 175 : 
-  case 276 : 
-  case 75 : 
-  case 176 : 
-  case 277 : 
-  case 76 : 
-  case 177 : 
-  case 278 : 
-  case 77 : 
-  case 178 : 
-  case 279 : 
-  case 78 : 
-  case 179 : 
-  case 280 : 
-  case 79 : 
-  case 180 : 
-  case 281 : 
-  case 80 : 
-  case 181 : 
-  case 282 : 
-  case 81 : 
-  case 182 : 
-  case 283 : 
-  case 82 : 
-  case 183 : 
-  case 284 : 
-  case 83 : 
-  case 184 : 
-  case 285 : 
-  case 84 : 
-  case 185 : 
-  case 286 : 
-  case 85 : 
-  case 186 : 
-  case 287 : 
-  case 86 : 
-  case 187 : 
-  case 288 : 
-  case 87 : 
-  case 188 : 
-  case 289 : 
-  case 88 : 
-  case 189 : 
-  case 290 : 
-  case 89 : 
-  case 190 : 
-  case 291 : 
-  case 90 : 
-  case 191 : 
-  case 292 : 
-  case 91 : 
-  case 192 : 
-  case 293 : 
-  case 92 : 
-  case 193 : 
-  case 294 : 
-  case 93 : 
-  case 194 : 
-  case 295 : 
-  case 94 : 
-  case 195 : 
-  case 296 : 
-  case 95 : 
-  case 196 : 
-  case 297 : 
-  case 96 : 
-  case 197 : 
-  case 298 : 
-  case 97 : 
-  case 198 : 
-  case 299 : 
-  case 98 : 
-  case 199 : 
-  case 300 : 
-  case 99 : 
-  case 200 : 
-  case 301 : 
-  case 100 : 
-  case 201 : 
-  case 302 : 
-  case 101 : 
-  case 202 : 
-  case 303 : 
-    prefixedcommand () ; 
-	ABORTCHECK;
-    break ; 
-  case 41 : 
-  case 142 : 
-  case 243 : 
-    {
-      gettoken () ; 
-      aftertoken = curtok ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 42 : 
-  case 143 : 
-  case 244 : 
-    {
-      gettoken () ; 
-      saveforafter ( curtok ) ; 
-    } 
-	ABORTCHECK;
-    break ; 
-  case 61 : 
-  case 162 : 
-  case 263 : 
-    openorclosein () ; 
-	ABORTCHECK;
-    break ; 
-  case 59 : 
-  case 160 : 
-  case 261 : 
-    issuemessage () ; 
-	ABORTCHECK;
-    break ; 
-  case 58 : 
-  case 159 : 
-  case 260 : 
-    shiftcase () ; 
-	ABORTCHECK;
-    break ; 
-  case 20 : 
-  case 121 : 
-  case 222 : 
-    showwhatever () ; 
-	ABORTCHECK;
-    break ; 
-  case 60 : 
-  case 161 : 
-  case 262 : 
-	  doextension () ; 
-	  ABORTCHECK;
-	  break ; 
-	} /* end of big switch */
-	ABORTCHECK;		// do it here --- once
-	goto lab60 ; /*	main_loop */
+        do
+          {
+            get_x_token();
+          }
+        while(!(cur_cmd != spacer));
+        goto lab21;
+      }
+      break;
+
+    case vmode + stop:
+      if (its_all_over())
+        return;
+      break;
+
+    case vmode + vmove:
+    case hmode + hmove:
+    case mmode + hmove:
+    case any_mode(last_item):
+    case vmode + vadjust:
+    case vmode + ital_corr:
+    case non_math(eq_no):
+    case any_mode(mac_param):
+      report_illegal_case();
+      break;
+
+    case non_math(sup_mark):
+    case non_math(sub_mark):
+    case non_math(math_char_num):
+    case non_math(math_given):
+    case non_math(math_comp):
+    case non_math(delim_num):
+    case non_math(left_right):
+    case non_math(above):
+    case non_math(radical):
+    case non_math(math_style):
+    case non_math(math_choice):
+    case non_math(vcenter):
+    case non_math(non_script):
+    case non_math(mkern):
+    case non_math(limit_switch):
+    case non_math(mskip):
+    case non_math(math_accent):
+    case mmode + endv:
+    case mmode + par_end:
+    case mmode + stop:
+    case mmode + vskip:
+    case mmode + un_vbox:
+    case mmode + valign:
+    case mmode + hrule:
+      insert_dollar_sign();
+      break;
+
+    case vmode + hrule:
+    case hmode + vrule:
+    case mmode + vrule:
+      {
+        tail_append(scan_rule_spec());
+
+        if (abs(mode) == vmode)
+          prev_depth = ignore_depth;
+        else if (abs(mode) == hmode)
+          space_factor = 1000;
+      }
+      break;
+
+    case vmode + vskip:
+    case hmode + hskip:
+    case mmode + hskip:
+    case mmode + mskip:
+      append_glue();
+      break;
+
+    case any_mode(kern):
+    case mmode + mkern:
+      append_kern();
+      break;
+
+    case non_math(left_brace):
+      new_save_level(simple_group);
+      break;
+
+    case any_mode(begin_group):
+      new_save_level(semi_simple_group);
+      break;
+
+    case any_mode(end_group):
+      if (cur_group == semi_simple_group)
+        unsave();
+      else
+        off_save();
+      break;
+
+    case any_mode(right_brace):
+      handle_right_brace();
+      break;
+
+    case vmode + hmove:
+    case hmode + vmove:
+    case mmode + vmove:
+      {
+        t = cur_chr;
+        scan_dimen(false, false, false);
+
+        if (t == 0)
+          scan_box(cur_val);
+        else
+          scan_box(- (integer) cur_val);
+      }
+      break;
+
+    case any_mode(leader_ship):
+      scan_box(leader_flag - a_leaders + cur_chr);
+      break;
+
+    case any_mode(make_box):
+      begin_box(0);
+      break;
+
+    case vmode + start_par:
+      new_graf(cur_chr > 0);
+      break;
+
+    case vmode + letter:
+    case vmode + other_char:
+    case vmode + char_num:
+    case vmode + char_given:
+    case vmode + math_shift:
+    case vmode + un_hbox:
+    case vmode + vrule:
+    case vmode + accent:
+    case vmode + discretionary:
+    case vmode + hskip:
+    case vmode + valign:
+    case vmode + ex_space:
+    case vmode + no_boundary:
+      {
+        back_input();
+        new_graf(true);
+      }
+      break;
+
+    case hmode + start_par:
+    case mmode + start_par:
+      indent_in_hmode();
+      break;
+
+    case vmode + par_end:
+      {
+        normal_paragraph();
+
+        if (mode > 0)
+          build_page();
+      }
+      break;
+
+    case hmode + par_end:
+      {
+        if (align_state < 0)
+          off_save();
+
+        end_graf();
+
+        if (mode == 1)
+          build_page();
+      }
+      break;
+
+    case hmode + stop:
+    case hmode + vskip:
+    case hmode + hrule:
+    case hmode + un_vbox:
+    case hmode + halign:
+      head_for_vmode();
+      break;
+
+    case any_mode(insert):
+    case hmode + vadjust:
+    case mmode + vadjust:
+      begin_insert_or_adjust();
+      break;
+
+    case any_mode(mark):
+      make_mark();
+      break;
+
+    case any_mode(break_penalty):
+      append_penalty();
+      break;
+
+    case any_mode(remove_item):
+      delete_last();
+      break;
+
+    case vmode + un_vbox:
+    case hmode + un_hbox:
+    case mmode + un_hbox:
+      unpackage();
+      break;
+
+    case hmode + ital_corr:
+      append_italic_correction();
+      break;
+
+    case mmode + ital_corr:
+      tail_append(new_kern(0));
+      break;
+
+    case hmode + discretionary:
+    case mmode + discretionary:
+      append_discretionary();
+      break;
+
+    case hmode + accent:
+      make_accent();
+      break;
+
+    case any_mode(car_ret):
+    case any_mode(tab_mark):
+      align_error();
+      break;
+
+    case any_mode(no_align):
+      noalign_error();
+      break;
+
+    case any_mode(omit):
+      omit_error();
+      break;
+
+    case vmode + halign:
+    case hmode + valign:
+      init_align();
+      break;
+
+    case mmode + halign:
+      if (privileged ())
+        if (cur_group == math_shift_group)
+          init_align();
+        else
+          off_save();
+      break;
+
+    case vmode + endv:
+    case hmode + endv:
+      do_endv();
+      break;
+
+    case any_mode(end_cs_name):
+      cs_error();
+      break;
+
+    case hmode + math_shift:
+      init_math();
+      break;
+
+    case mmode + eq_no:
+      if (privileged ())
+        if (cur_group == math_shift_group)
+          start_eq_no();
+        else
+          off_save();
+      break;
+
+    case mmode + left_brace:
+      {
+        tail_append(new_noad());
+        back_input();
+        scan_math(nucleus(tail));
+      }
+      break;
+
+    case mmode + letter:
+    case mmode + other_char:
+    case mmode + char_given:
+      set_math_char(math_code(cur_chr));
+      break;
+
+    case mmode + char_num:
+      {
+        scan_char_num();
+        cur_chr = cur_val;
+        set_math_char(math_code(cur_chr));
+      }
+      break;
+
+    case mmode + math_char_num:
+      {
+        scan_fifteen_bit_int();
+        set_math_char(cur_val);
+      }
+      break;
+
+    case mmode + math_given:
+      set_math_char(cur_chr);
+      break;
+
+    case mmode + delim_num:
+      {
+        scan_twenty_seven_bit_int();
+        set_math_char(cur_val / 4096);
+      }
+      break;
+
+    case mmode + math_comp:
+      {
+        tail_append(new_noad());
+        type(tail) = cur_chr;
+        scan_math(nucleus(tail));
+      }
+      break;
+
+    case mmode + limit_switch:
+      math_limit_switch();
+      break;
+
+    case mmode + radical:
+      math_radical();
+      break;
+
+    case mmode + accent:
+    case mmode + math_accent:
+      math_ac();
+      break;
+
+    case mmode + vcenter:
+      {
+        scan_spec(vcenter_group, false);
+        normal_paragraph();
+        push_nest();
+        mode = -1;
+        prev_depth = ignore_depth;
+
+        if (every_vbox != 0)
+          begin_token_list(every_vbox, every_vbox_text);
+      }
+      break;
+
+    case mmode + math_style:
+      tail_append(new_style(cur_chr));
+      break;
+
+    case mmode + non_script:
+      {
+        tail_append(new_glue(0));
+        subtype(tail) = cond_math_glue;
+      }
+      break;
+
+    case mmode + math_choice:
+      append_choices();
+      break;
+
+    case mmode + sub_mark:
+    case mmode + sup_mark:
+      sub_sup();
+      break;
+
+    case mmode + above:
+      math_fraction();
+      break;
+
+    case mmode + left_right:
+      math_left_right();
+      break;
+
+    case mmode + math_shift:
+      if (cur_group == math_shift_group)
+        after_math();
+      else
+        off_save();
+      break;
+
+    case any_mode(toks_register):
+    case any_mode(assign_toks):
+    case any_mode(assign_int):
+    case any_mode(assign_dimen):
+    case any_mode(assign_glue):
+    case any_mode(assign_mu_glue):
+    case any_mode(assign_font_dimen):
+    case any_mode(assign_font_int):
+    case any_mode(set_aux):
+    case any_mode(set_prev_graf):
+    case any_mode(set_page_dimen):
+    case any_mode(set_page_int):
+    case any_mode(set_box_dimen):
+    case any_mode(set_shape):
+    case any_mode(def_code):
+    case any_mode(def_family):
+    case any_mode(set_font):
+    case any_mode(def_font):
+    case any_mode(tex_register):
+    case any_mode(advance):
+    case any_mode(multiply):
+    case any_mode(divide):
+    case any_mode(prefix):
+    case any_mode(let):
+    case any_mode(shorthand_def):
+    case any_mode(read_to_cs):
+    case any_mode(def):
+    case any_mode(set_box):
+    case any_mode(hyph_data):
+    case any_mode(set_interaction):
+      prefixed_command();
+      break;
+
+    case any_mode(after_assignment):
+      {
+        get_token();
+        after_token = cur_tok;
+      }
+      break;
+
+    case any_mode(after_group):
+      {
+        get_token();
+        save_for_after(cur_tok);
+      }
+      break;
+
+    case any_mode(in_stream):
+      open_or_close_in();
+      break;
+
+    case any_mode(message):
+      issue_message();
+      break;
+
+    case any_mode(case_shift):
+      shift_case();
+      break;
+
+    case any_mode(xray):
+      show_whatever();
+      break;
+
+    case any_mode(extension):
+      do_extension();
+      break;
+  } /* end of big switch */
+  goto lab60; /*  main_loop */
 
 lab70:
-	ABORTCHECK;
-  mains = eqtb [ (hash_size + 2651) + curchr ] .hh .v.RH ; 
-  if ( mains == 1000 ) 
-	  curlist .auxfield .hh .v.LH = 1000 ; 
-  else if ( mains < 1000 ) 
+  adjust_space_factor();
+  main_f = cur_font;
+  bchar = font_bchar[main_f];
+  false_bchar = font_false_bchar[main_f];
+
+  if (mode > 0)
+    if (language != clang)
+      fix_language();
   {
-    if ( mains > 0 ) 
-		curlist .auxfield .hh .v.LH = mains ; 
-  } 
-  else if ( curlist .auxfield .hh .v.LH < 1000 ) 
-	  curlist .auxfield .hh .v.LH = 1000 ; 
-  else curlist .auxfield .hh .v.LH = mains ; 
-  mainf = eqtb [ (hash_size + 1834) ] .hh .v.RH ; 
-  bchar = fontbchar [ mainf ] ; 
-  falsebchar = fontfalsebchar [ mainf ] ; 
-  if ( curlist .modefield > 0 ) 
-  if ( eqtb [ (hash_size + 3213) ] .cint != curlist .auxfield .hh .v.RH ) 
-  fixlanguage () ; 
-  {
-    ligstack = avail ; 
-    if ( ligstack == 0 ) 
-		ligstack = getavail () ; 
-    else {
-      avail = mem [ ligstack ] .hh .v.RH ; 
-      mem [ ligstack ] .hh .v.RH = 0 ; 
-	;
+    lig_stack = avail;
+
+    if (lig_stack == 0)
+      lig_stack = get_avail();
+    else
+    {
+      avail = mem[lig_stack].hh.v.RH;
+      mem[lig_stack].hh.v.RH = 0;
 #ifdef STAT
-      incr ( dynused ) ; 
+      incr(dyn_used);
 #endif /* STAT */
-    } 
-  } 
-  mem [ ligstack ] .hh.b0 = mainf ; 
-  curl = curchr ; 
-  mem [ ligstack ] .hh.b1 = curl ; 
-  curq = curlist .tailfield ; 
-  if ( cancelboundary ) 
-  {
-/*  begin cancel_boundary:=false; main_k:=non_address; l.20093 */
-    cancelboundary = false ; 
-/* main_k:=non_address 3.14159 */
-/*    maink = fontmemsize ; */		/* OK ? 1993/Nov/29 */
-    maink = non_address ;			/* i.e. --- 1995/Jan/15 3.14159 */
-  } 
-  else maink = bcharlabel [ mainf ] ; 
-/* if main_k=non_address then goto main_loop_move+2; l.20096 */
-/*  if ( maink == fontmemsize )  */
-  if ( maink == non_address )		/* i.e. 0 --- 1995/Jan/15 */
-/* cur_r:=cur_l; cur_l:=non_char; */
-  goto lab92 ; 
-  curr = curl ; 
-  curl = 256 ;						/* cur_l:=non_char; */
-/* goto main_lig_loop+1; l.20071 */
-  goto lab111 ; 
+    }
+  }
 
-/* main_loop_wrapup:@<Make a ligature node, if |ligature_present|;
-  insert a null discretionary, if appropriate@>; */
-/* @d wrapup(#)==if cur_l<non_char then */
-/*	main_loop_wrapup */
-lab80: if ( curl < 256 ) 
-  {
-/*  begin if character(tail)=qi(hyphen_char[main_f]) then
-	if link(cur_q)>null then ... l.20107 */
-    if ( mem [ curlist .tailfield ] .hh.b1 == hyphenchar [ mainf ] ) 
-/*    if ( mem [ curq ] .hh .v.RH > 0 )  */ /* NO! */
-    if ( mem [ curq ] .hh .v.RH != 0 )	/* BUG FIX l.20107 */
-    insdisc = true ; 
-    if ( ligaturepresent ) 
-    {
-      mainp = newligature ( mainf , curl , mem [ curq ] .hh .v.RH ) ; 
-      if ( lfthit ) 
-      {
-	mem [ mainp ] .hh.b1 = 2 ; 
-	lfthit = false ; 
-      } 
-      if ( rthit ) 
-      if ( ligstack == 0 ) 
-      {
-	incr ( mem [ mainp ] .hh.b1 ) ; 
-	rthit = false ; 
-      } 
-      mem [ curq ] .hh .v.RH = mainp ; 
-      curlist .tailfield = mainp ; 
-      ligaturepresent = false ; 
-    } 
-/*   if ins_disc then l.20110 */
-    if ( insdisc ) 
-    {
-      insdisc = false ; 
-/*   if mode>0 then tail_append(new_disc); l.20112 */
-      if ( curlist .modefield > 0 ) 
-      {
-	mem [ curlist .tailfield ] .hh .v.RH = newdisc () ; 
-	curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-    } 
-  } 
+  font(lig_stack) = main_f;
+  cur_l = cur_chr;
+  character(lig_stack) = cur_l;
+  cur_q = tail;
 
-/*	main_loop_move */
+  if (cancel_boundary)
+  {
+    cancel_boundary = false;
+    main_k = non_address;
+  }
+  else
+    main_k = bchar_label[main_f];
+
+  if (main_k == non_address)
+    goto lab92;
+
+  cur_r = cur_l;
+  cur_l = non_char;
+  goto lab111;
+
+lab80: 
+  wrapup(rt_hit);
+
+/*  main_loop_move */
 lab90:
-  if ( ligstack == 0 )  goto lab21 ; 
-  curq = curlist .tailfield ; 
-  curl = mem [ ligstack ] .hh.b1 ; 
+  if (lig_stack == 0)
+    goto lab21;
+
+  cur_q = tail;
+  cur_l = character(lig_stack);
 
 lab91:
-  if ( ! ( ligstack >= himemmin ) ) goto lab95 ; 
+  if (!(lig_stack >= hi_mem_min))
+    goto lab95;
 
-lab92: if ( ( curchr < fontbc [ mainf ] ) || ( curchr > fontec [ mainf ] ) ) 
+lab92:
+  if ((cur_chr < font_bc[main_f]) || (cur_chr > font_ec[main_f]))
   {
-    charwarning ( mainf , curchr ) ; 
-    {
-      mem [ ligstack ] .hh .v.RH = avail ; 
-      avail = ligstack ; 
-	;
-#ifdef STAT
-      decr ( dynused ) ; 
-#endif /* STAT */
-    } 
-    goto lab60 ; 
-  } 
-  maini = fontinfo [ charbase [ mainf ] + curl ] .qqqq ; 
-  if ( ! ( maini .b0 > 0 ) ) 
-  {
-    charwarning ( mainf , curchr ) ; 
-    {
-      mem [ ligstack ] .hh .v.RH = avail ; 
-      avail = ligstack ; 
-	;
-#ifdef STAT
-      decr ( dynused ) ; 
-#endif /* STAT */
-    } 
-    goto lab60 ; 
-  } 
-  {
-    mem [ curlist .tailfield ] .hh .v.RH = ligstack ; 
-    curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-  } 
+    char_warning(main_f, cur_chr);
+    free_avail(lig_stack);
+    goto lab60;
+  }
 
-/*	main_loop_lookahead */
+  main_i = char_info(main_f, cur_l);
+
+  if (!(main_i.b0 > 0))
+  {
+    char_warning(main_f, cur_chr);
+    free_avail(lig_stack);
+    goto lab60; 
+  }
+  {
+    link(tail) = lig_stack;
+    tail = lig_stack;
+  }
+
+/*  main_loop_lookahead */
 lab100:
-  ABORTCHECK;
-  getnext () ; 
-  ABORTCHECK;
-  if ( curcmd == 11 )  goto lab101 ; 
-  if ( curcmd == 12 )  goto lab101 ; 
-  if ( curcmd == 68 )  goto lab101 ; 
-  xtoken () ; 
-  ABORTCHECK;
-  if ( curcmd == 11 )  goto lab101 ; 
-  if ( curcmd == 12 )  goto lab101 ; 
-  if ( curcmd == 68 )  goto lab101 ; 
-  if ( curcmd == 16 )  {
-    scancharnum () ; 
-	ABORTCHECK;
-    curchr = curval ; 
-    goto lab101 ; 
-  } 
-  if ( curcmd == 65 )  bchar = 256 ; 
-  curr = bchar ; 
-  ligstack = 0 ; 
-  goto lab110 ; 
+  get_next();
 
-lab101: mains = eqtb [ (hash_size + 2651) + curchr ] .hh .v.RH ; 
-  if ( mains == 1000 ) 
-  curlist .auxfield .hh .v.LH = 1000 ; 
-  else if ( mains < 1000 ) 
+  if (cur_cmd == letter)
+    goto lab101;
+  if (cur_cmd == other_char)
+    goto lab101;
+  if (cur_cmd == char_given)
+    goto lab101;
+
+  x_token();
+
+  if (cur_cmd == letter)
+    goto lab101;
+  if (cur_cmd == other_char)
+    goto lab101;
+  if (cur_cmd == char_given)
+    goto lab101;
+
+  if (cur_cmd == char_num)
   {
-    if ( mains > 0 ) 
-    curlist .auxfield .hh .v.LH = mains ; 
-  } 
-  else if ( curlist .auxfield .hh .v.LH < 1000 ) 
-  curlist .auxfield .hh .v.LH = 1000 ; 
-  else curlist .auxfield .hh .v.LH = mains ; 
+    scan_char_num();
+    cur_chr = cur_val;
+    goto lab101;
+  }
+
+  if (cur_cmd == no_boundary)
+    bchar = non_char;
+
+  cur_r = bchar;
+  lig_stack = 0;
+  goto lab110;
+
+lab101:
+  adjust_space_factor();
+
   {
-    ligstack = avail ; 
-    if ( ligstack == 0 ) 
-		ligstack = getavail () ; 
-    else {
-      avail = mem [ ligstack ] .hh .v.RH ; 
-      mem [ ligstack ] .hh .v.RH = 0 ; 
-	;
+    lig_stack = avail;
+
+    if (lig_stack == 0)
+      lig_stack = get_avail();
+    else
+    {
+      avail = mem[lig_stack].hh.v.RH;
+      mem[lig_stack].hh.v.RH = 0;
 #ifdef STAT
-      incr ( dynused ) ; 
+      incr(dyn_used);
 #endif /* STAT */
-    } 
-  } 
-  mem [ ligstack ] .hh.b0 = mainf ; 
-  curr = curchr ; 
-  mem [ ligstack ] .hh.b1 = curr ; 
-  if ( curr == falsebchar ) 
-	  curr = 256 ; 
+    }
+  }
+
+  font(lig_stack) = main_f;
+  cur_r = cur_chr;
+  character(lig_stack) = cur_r;
+
+  if (cur_r == false_bchar)
+    cur_r = non_char;
 
 // main_lig_loop:@<If there's a ligature/kern command relevant to |cur_l| and
 //  |cur_r|, adjust the text appropriately; exit to |main_loop_wrapup|@>;
 lab110:
-/*	if char_tag(main_i)<>lig_tag then goto main_loop_wrapup; */
-  if ( ( ( maini .b2 ) % 4 ) != 1 ) 
-	  goto lab80 ; 
-/*	main_k:=lig_kern_start(main_f)(main_i); */
-  maink = ligkernbase [ mainf ] + maini .b3 ; 
-/*	main_j:=font_info[main_k].qqqq; */
-  mainj = fontinfo [ maink ] .qqqq ; 
-/* if skip_byte(main_j)<=stop_flag then goto main_lig_loop+2; */
-  if ( mainj .b0 <= 128 ) goto lab112 ; 
-/* main_k:=lig_kern_restart(main_f)(main_j); */
-  maink = ligkernbase [ mainf ] + 256 * mainj .b2 + mainj .b3 + 32768L - 256 * 
-  ( 128 ) ; 
+
+  if (char_tag(main_i) != lig_tag)
+    goto lab80;
+
+  if (cur_r == non_char)
+    goto lab80;
+
+  main_k = lig_kern_start(main_f, main_i);
+  main_j = font_info[main_k].qqqq;
+
+  if (skip_byte(main_j) <= stop_flag)
+    goto lab112;
+
+  main_k = lig_kern_restart(main_f, main_j);
 
 /* main_lig_loop+1:main_j:=font_info[main_k].qqqq; */
-lab111: mainj = fontinfo [ maink ] .qqqq ; 
+lab111:
+  main_j = font_info[main_k].qqqq;
 
-/* main_lig_loop+2:if next_char(main_j)=cur_r then l.20184 */
 lab112:
-/*	provide for suppression of f-ligatures 99/Jan/5 */
-	bSuppress = 0;
-	if ( suppressfligs && mainj .b1 == curr && mainj .b2 == 0) {
-		if (curl == 'f') 
-				bSuppress = 1;
-	}
+/* provide for suppression of f-ligatures 99/Jan/5 */
+  bSuppress = 0;
 
-/*	if ( mainj .b1 == curr ) */
-	if ( mainj .b1 == curr && bSuppress == 0)	/* 99/Jan/5 */
-/*  if skip_byte(main_j)<=stop_flag then l.20185 */
-//   @<Do ligature or kern command, returning to |main_lig_loop|
-//	  or |main_loop_wrapup| or |main_loop_move|@>;
-  if ( mainj .b0 <= 128 ) 
+  if (suppress_f_ligs && next_char(main_j) == cur_r && op_byte(main_j) == no_tag)
   {
-/* begin if op_byte(main_j)>=kern_flag then l.20225 */
-    if ( mainj .b2 >= 128 ) 
-    {
-/* @d wrapup(#)==if cur_l<non_char then */
-      if ( curl < 256 ) 
-      {
-/* if character(tail)=qi(hyphen_char[main_f]) then if link(cur_q)>null */
-	if ( mem [ curlist .tailfield ] .hh.b1 == hyphenchar [ mainf ] ) 
-/*	if ( mem [ curq ] .hh .v.RH > 0 )  */	/* 94/Mar/22 ?????????????? */
-	if ( mem [ curq ] .hh .v.RH != 0 )  /* BUG FIX l.20107l.20186  */
-	insdisc = true ; 
-/*   if ligature_present then pack_lig(#); */
-	if ( ligaturepresent ) 
-	{
-	  mainp = newligature ( mainf , curl , mem [ curq ] .hh .v.RH ) ; 
-	  if ( lfthit ) 
-	  {
-	    mem [ mainp ] .hh.b1 = 2 ; 
-	    lfthit = false ; 
-	  } 
-	  if ( rthit ) 
-	  if ( ligstack == 0 ) 
-	  {
-	    incr ( mem [ mainp ] .hh.b1 ) ; 
-	    rthit = false ; 
-	  } 
-	  mem [ curq ] .hh .v.RH = mainp ; 
-	  curlist .tailfield = mainp ; 
-	  ligaturepresent = false ; 
-	} 
-	if ( insdisc ) 
-	{
-	  insdisc = false ; 
-	  if ( curlist .modefield > 0 ) 
-	  {
-	    mem [ curlist .tailfield ] .hh .v.RH = newdisc () ; 
-	    curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-	  } 
-	} 
-      } 
-      {
-	mem [ curlist .tailfield ] .hh .v.RH = newkern ( fontinfo [ kernbase [ 
-	mainf ] + 256 * mainj .b2 + mainj .b3 ] .cint ) ; 
-	curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-      } 
-      goto lab90 ; 
-    } 
-/* begin if cur_l=non_char then lft_hit:=true; */
-    if ( curl == 256 ) 
-    lfthit = true ; 
-    else if ( ligstack == 0 ) 
-    rthit = true ; 
-    {
-      if ( interrupt != 0 ) {
-		  pauseforinstructions () ;
-		  ABORTCHECK;
-	  }
-    } 
-    switch ( mainj .b2 ) 
-    {case 1 : 
-    case 5 : 
-      {
-	curl = mainj .b3 ; 
-	maini = fontinfo [ charbase [ mainf ] + curl ] .qqqq ; 
-	ligaturepresent = true ; 
-      } 
-      break ; 
-    case 2 : 
-    case 6 : 
-      {
-	curr = mainj .b3 ; 
-	if ( ligstack == 0 ) 
-	{
-	  ligstack = newligitem ( curr ) ; 
-	  bchar = 256 ; 
-	} 
-	else if ( ( ligstack >= himemmin ) ) 
-	{
-	  mainp = ligstack ; 
-	  ligstack = newligitem ( curr ) ; 
-	  mem [ ligstack + 1 ] .hh .v.RH = mainp ; 
-	} 
-	else mem [ ligstack ] .hh.b1 = curr ; 
-      } 
-      break ; 
-    case 3 : 
-      {
-	curr = mainj .b3 ; 
-	mainp = ligstack ; 
-	ligstack = newligitem ( curr ) ; 
-	mem [ ligstack ] .hh .v.RH = mainp ; 
-      } 
-      break ; 
-    case 7 : 
-    case 11 : 
-      {
-	if ( curl < 256 )	/* if cur_l<non_char then  */
-/*  begin if character(tail)=qi(hyphen_char[main_f]) then if link(cur_q)>null
-then */
-	{
-	  if ( mem [ curlist .tailfield ] .hh.b1 == hyphenchar [ mainf ] ) 
-/*	  if ( mem [ curq ] .hh .v.RH > 0 )  */  /* 94/Mar/22 */
-	  if ( mem [ curq ] .hh .v.RH != 0 )	/* BUG FIX ???????????? */
-	  insdisc = true ; 
-	  if ( ligaturepresent ) 
-	  {
-	    mainp = newligature ( mainf , curl , mem [ curq ] .hh .v.RH ) ; 
-	    if ( lfthit ) 
-	    {
-	      mem [ mainp ] .hh.b1 = 2 ; 
-	      lfthit = false ; 
-	    } 
-/*	    if ( false )
-			if ( ligstack == 0 ) {
-				incr ( mem [ mainp ] .hh.b1 ) ; 
-				rthit = false ; 
-			} */							/* removed 99/Jan/6 */
-		mem [ curq ] .hh .v.RH = mainp ; 
-	    curlist .tailfield = mainp ; 
-	    ligaturepresent = false ; 
-	  } 
-	  if ( insdisc ) 
-	  {
-	    insdisc = false ; 
-	    if ( curlist .modefield > 0 ) 
-	    {
-	      mem [ curlist .tailfield ] .hh .v.RH = newdisc () ; 
-	      curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-	    } 
-	  } 
-	} 
-	curq = curlist .tailfield ; 
-	curl = mainj .b3 ; 
-	maini = fontinfo [ charbase [ mainf ] + curl ] .qqqq ; 
-	ligaturepresent = true ; 
-      } 
-      break ; 
-      default: 
-      {
-	curl = mainj .b3 ; 
-	ligaturepresent = true ; 
-	if ( ligstack == 0 ) 
-	goto lab80 ; 
-	else goto lab91 ; 
-      } 
-      break ; 
-    } 
-    if ( mainj .b2 > 4 ) 
-    if ( mainj .b2 != 7 ) 
-    goto lab80 ; 
-    if ( curl < 256 ) 
-    goto lab110 ; 
-    maink = bcharlabel [ mainf ] ; 
-    goto lab111 ; 
-  } 
-  if ( mainj .b0 == 0 ) 
-  incr ( maink ) ; 
-  else {
-    if ( mainj .b0 >= 128 ) 
-    goto lab80 ; 
-    maink = maink + mainj .b0 + 1 ; 
-  } 
-  goto lab111 ; 
+    if (cur_l == 'f')
+      bSuppress = 1;
+  }
 
-/*	main_move_log */
-lab95: mainp = mem [ ligstack + 1 ] .hh .v.RH ; 
-/* if main_p>null then tail_append(main_p); l.20137 */
-/*  if ( mainp > 0 )  */	/* 92/Mar/22 */
-  if ( mainp != 0 )			/* BUG FIX */
-  {
-    mem [ curlist .tailfield ] .hh .v.RH = mainp ; 
-    curlist .tailfield = mem [ curlist .tailfield ] .hh .v.RH ; 
-  } 
-  tempptr = ligstack ; 
-  ligstack = mem [ tempptr ] .hh .v.RH ; 
-  freenode ( tempptr , 2 ) ; 
-  maini = fontinfo [ charbase [ mainf ] + curl ] .qqqq ; 
-  ligaturepresent = true ; 
-  if ( ligstack == 0 ) 
-/*   if main_p>null then goto main_loop_lookahead l.20142 */
-/*  if ( mainp > 0 )  */ /* 94/Mar/2 */
-  if ( mainp != 0 )		/* BUG FIX */
-  goto lab100 ; 
-  else curr = bchar ; 
-  else curr = mem [ ligstack ] .hh.b1 ; 
-  goto lab110 ; 
+  if (next_char(main_j) == cur_r && bSuppress == 0)  /* 99/Jan/5 */
+    if (skip_byte(main_j) <= stop_flag)
+    {
+      if (op_byte(main_j) >= kern_flag)
+      {
+        wrapup(rt_hit);
+        tail_append(new_kern(char_kern(main_f, main_j)));
+        goto lab90;
+      }
 
-/*	append_normal_space */
-lab120: if ( eqtb [ (hash_size + 794) ] .hh .v.RH == 0 ) 
+      if (cur_l == non_char)
+        lft_hit = true;
+      else if (lig_stack == 0)
+        rt_hit = true;
+
+      {
+        if (interrupt != 0)
+        {
+          pause_for_instructions();
+        }
+      }
+
+      switch (op_byte(main_j))
+      {
+        case 1:
+        case 5:
+          {
+            cur_l = rem_byte(main_j);
+            main_i = char_info(main_f, cur_l);
+            ligature_present = true;
+          }
+          break;
+        case 2:
+        case 6:
+          {
+            cur_r = rem_byte(main_j);
+
+            if (lig_stack == 0)
+            {
+              lig_stack = new_lig_item(cur_r);
+              bchar = non_char;
+            }
+            else if ((lig_stack >= hi_mem_min))
+            {
+              main_p = lig_stack;
+              lig_stack = new_lig_item(cur_r);
+              lig_ptr(lig_stack) = main_p;
+            }
+            else
+              character(lig_stack) = cur_r;
+          }
+          break;
+        case 3:
+          {
+            cur_r = rem_byte(main_j);
+            main_p = lig_stack;
+            lig_stack = new_lig_item(cur_r);
+            link(lig_stack) = main_p;
+          }
+          break;
+        case 7:
+        case 11:
+          {
+            wrapup(false);
+            cur_q = tail;
+            cur_l = rem_byte(main_j);
+            main_i = char_info(main_f, cur_l);
+            ligature_present = true;
+          }
+          break;
+        default:
+          {
+            cur_l = rem_byte(main_j);
+            ligature_present = true;
+ 
+            if (lig_stack == 0)
+              goto lab80;
+            else
+              goto lab91;
+          }
+          break;
+      }
+
+      if (op_byte(main_j) > 4)
+        if (op_byte(main_j) != 7)
+          goto lab80;
+
+      if (cur_l < non_char)
+        goto lab110;
+
+      main_k = bchar_label[main_f];
+      goto lab111;
+    }
+
+    if (skip_byte(main_j) == 0)
+      incr(main_k);
+    else
+    {
+      if (skip_byte(main_j) >= stop_flag)
+        goto lab80;
+
+      main_k = main_k + skip_byte(main_j) + 1;
+    }
+
+    goto lab111;
+
+/*  main_move_log */
+lab95:
+  main_p = lig_ptr(lig_stack);
+
+  if (main_p != 0)     /* BUG FIX */
+    tail_append(main_p);
+
+  temp_ptr = lig_stack;
+  lig_stack = link(temp_ptr);
+  free_node(temp_ptr, small_node_size);
+  main_i = char_info(main_f, cur_l);
+  ligature_present = true;
+
+  if (lig_stack == 0)
+    if (main_p != 0)   /* BUG FIX */
+      goto lab100;
+    else
+      cur_r = bchar;
+  else
+    cur_r = character(lig_stack);
+
+  goto lab110;
+
+/*  append_normal_space */
+lab120:
+  if (space_skip == 0)
   {
     {
-      mainp = fontglue [ eqtb [ (hash_size + 1834) ] .hh .v.RH ] ; 
-      if ( mainp == 0 ) 
-      {
-	mainp = newspec ( 0 ) ; 
-	maink = parambase [ eqtb [ (hash_size + 1834) ] .hh .v.RH ] + 2 ; 
-	mem [ mainp + 1 ] .cint = fontinfo [ maink ] .cint ; 
-	mem [ mainp + 2 ] .cint = fontinfo [ maink + 1 ] .cint ; 
-	mem [ mainp + 3 ] .cint = fontinfo [ maink + 2 ] .cint ; 
-	fontglue [ eqtb [ (hash_size + 1834) ] .hh .v.RH ] = mainp ; 
-      } 
-    } 
-    tempptr = newglue ( mainp ) ; 
-  } 
-  else tempptr = newparamglue ( 12 ) ; 
-  mem [ curlist .tailfield ] .hh .v.RH = tempptr ; 
-  curlist .tailfield = tempptr ; 
-  goto lab60 ; 
-} /* end of maincontrol */
+      main_p = font_glue[cur_font];
 
-/* giveerrhelp etc followed here in the old tex8.c */
+      if (main_p == 0)
+      {
+        main_p = new_spec(zero_glue);
+        main_k = param_base[cur_font] + space_code;
+        width(main_p) = font_info[main_k].cint;
+        stretch(main_p) = font_info[main_k + 1].cint;
+        shrink(main_p) = font_info[main_k + 2].cint;
+        font_glue[cur_font] = main_p;
+      }
+    }
+    temp_ptr = new_glue(main_p);
+  }
+  else
+    temp_ptr = new_param_glue(space_skip_code);
+
+  link(tail) = temp_ptr;
+  tail = temp_ptr;
+  goto lab60;
+}
+/* give_err_help etc followed here in the old tex8.c */
