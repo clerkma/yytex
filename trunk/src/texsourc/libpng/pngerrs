@@ -1,0 +1,67 @@
+png.c
+pngset.c
+pngget.c
+pngrutil.c
+pngtrans.c
+pngwutil.c
+pngmem.c
+pngpread.c
+pngread.c
+pngread.c(1461) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+pngread.c(1477) : warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(164) : 参见“strerror”的声明
+pngerror.c
+pngwrite.c
+pngwrite.c(470) : warning C4996: 'gmtime': This function or variable may be unsafe. Consider using gmtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\time.inl(99) : 参见“gmtime”的声明
+pngwrite.c(2378) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+pngwrite.c(2406) : warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(164) : 参见“strerror”的声明
+pngwrite.c(2419) : warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(164) : 参见“strerror”的声明
+pngrtran.c
+pngwtran.c
+pngrio.c
+pngwio.c
+pngtest.c
+pngtest.c(855) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+pngtest.c(861) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+pngtest.c(1286) : warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(191) : 参见“strncpy”的声明
+pngtest.c(1468) : warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(191) : 参见“strncpy”的声明
+pngtest.c(1588) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+pngtest.c(1594) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+png.c
+pngset.c
+pngget.c
+pngrutil.c
+pngtrans.c
+pngwutil.c
+pngmem.c
+pngpread.c
+pngread.c
+pngread.c(1461) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+pngread.c(1477) : warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(164) : 参见“strerror”的声明
+pngerror.c
+pngwrite.c
+pngwrite.c(470) : warning C4996: 'gmtime': This function or variable may be unsafe. Consider using gmtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\time.inl(99) : 参见“gmtime”的声明
+pngwrite.c(2378) : warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\stdio.h(218) : 参见“fopen”的声明
+pngwrite.c(2406) : warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(164) : 参见“strerror”的声明
+pngwrite.c(2419) : warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\INCLUDE\string.h(164) : 参见“strerror”的声明
+pngrtran.c
+pngwtran.c
+pngrio.c
+pngwio.c
