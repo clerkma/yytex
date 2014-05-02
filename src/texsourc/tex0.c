@@ -1,2818 +1,3020 @@
 #ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#pragma warning(disable:4115)	// kill rpcasync.h complaint
-#include <windows.h>
+  #define NOCOMM
+  #define NOSOUND
+  #define NODRIVERS
+  #define STRICT
+  #pragma warning(disable:4115) // kill rpcasync.h complaint
+  #include <windows.h>
+  #define MYLIBAPI __declspec(dllexport)
 #endif
 
-#ifdef _WINDOWS
-// We must define MYLIBAPI as __declspec(dllexport) before including
-// texwin.h, then texwin.h will see that we have already
-// defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-#define MYLIBAPI __declspec(dllexport)
-// #include "texwin.h"
-#endif
-
-#include "texwin.h"
-
-#pragma warning(disable:4131)	// old style declarator
-#pragma warning(disable:4135)	// conversion between different integral types 
-#pragma warning(disable:4127)	// conditional expression is constant
+#pragma warning(disable:4996)
+#pragma warning(disable:4131) // old style declarator
+#pragma warning(disable:4135) // conversion between different integral types 
+#pragma warning(disable:4127) // conditional expression is constant
 
 #include <setjmp.h>
-
-#pragma hdrstop
 
 #define EXTERN extern
 
 #include "texd.h"
 
-/* #pragma optimize("a", off) */				/* 98/Dec/10 experiment */
-
-#ifdef IGNORED
-static void winerror (char *message) {
-	(void) MessageBox(NULL, message, "YandYTeX.DLL", MB_ICONSTOP | MB_OK);
-}
-#endif
-
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-/* selector 1 - 15 => write to specified output file, */
-/* selector 16 => null 17 => screen, */
-/* selector 18 => logfile, 19 => logfile + screen, */
-/* selector 20 => null 21 => null */
-
-// print newline
-
-void println ( void ) 
-{println_regmem 
-   switch ( selector ) {
-	   case 19 :	// log file and on screen
-	   {
-		   showchar('\n');
-		   termoffset = 0 ; 
-		   (void) putc ('\n',  logfile );
-		   fileoffset = 0 ; 
-	   } 
-	   break ; 
-	   case 18 :	// log file only
-	   {
-		   (void) putc ('\n',  logfile );
-		   fileoffset = 0 ; 
-	   } 
-	   break ; 
-	   case 17 :	// on screen only
-	   {
-		   showchar('\n');
-		   termoffset = 0 ; 
-	   } 
-	   break ; 
-	   case 16 : 
-	   case 20 : 
-	   case 21 : 
-		   ; 
-		   break ; 
-	   default: 
-		   (void) putc ('\n',  writefile [ selector ] );
-		   break ; 
-	} 
-} 
-
-void zprintchar ( s ) 
-ASCIIcode s ; 
-{/* 10 */ printchar_regmem 
-    if ( s == eqtb [ (hash_size + 3212) ] .cint ) 
-		if ( selector < 20 ) {
-			println () ; 
-			return ; 
-		} 
-	switch ( selector ) {
-		case 19 :	//log file and on screen
-		{
-			(void) showchar ( Xchr(s) );
-			incr ( termoffset ) ; 
-			(void) putc ( Xchr ( s ) ,  logfile );
-			incr ( fileoffset ) ; 
-			if ( termoffset == maxprintline ) {
-				showchar('\n');
-				termoffset = 0 ; 
-			} 
-			if ( fileoffset == maxprintline ) {
-				(void) putc ('\n',  logfile );
-				fileoffset = 0 ; 
-			} 
-		} 
-		break ; 
-		case 18 : // log file only
-		{
-			(void) putc ( Xchr ( s ) ,  logfile );
-			incr ( fileoffset ) ; 
-			if ( fileoffset == maxprintline ) println () ; 
-		} 
-		break ; 
-		case 17 : // on screen only
-		{
-			(void) showchar ( Xchr( s ));
-			incr ( termoffset ) ; 
-			if ( termoffset == maxprintline ) println () ; 
-		} 
-		break ; 
-		case 16 : 
-			; 
-			break ; 
-		case 20 : 
-			if ( tally < trickcount ) 
-				trickbuf [ tally % errorline ] = s ; 
-			break ; 
-		case 21 : 
-		{
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef ALLOCATESTRING
-			if ( poolptr + 1 > currentpoolsize )	{	
-				strpool = reallocstrpool (incrementpoolsize);	/* 94/Jan/24 */
-			}
-			if ( poolptr < currentpoolsize )					/* 94/Jan/24 */
-#else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-				if ( poolptr < poolsize ) 
-#endif
-				{
-					strpool [ poolptr ] = s ; 
-					incr ( poolptr ) ; 
-				} 
-		} 
-		break ; 
-		default: 
-			(void) putc ( Xchr ( s ) ,  writefile [ selector ] );
-			break ; 
-	}	/* end of switch(selector) */
-	incr ( tally ) ; 
-} 
-
-/* This could be made more efficient using fputs ? ... bkph */
-void zprint ( integer s ) 
-{/* 10 */ print_regmem 
-    poolpointer j  ; 
-	integer nl  ; 
-	if ( s >= strptr ) 	s = 259 ;				/* ??? */
-	else if ( s < 256 ) 
-		if ( s < 0 )  s = 259 ; 				/* ??? */
-		else {
-			if ( selector > 20 ) {
-				printchar ( s ) ; 
-				return ; 
-			} 
-			if ( ( s == eqtb [ (hash_size + 3212) ] .cint ) ) 
-				if ( selector < 20 ) {
-					println () ; 
-					return ; 
-				} 
-			nl = eqtb [ (hash_size + 3212) ] .cint ;	/* save eol */
-			eqtb [ (hash_size + 3212) ] .cint = -1 ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*			if (!showinhex && s < 256)  */			/* show control chars also ?? */
-			if (! showinhex && s < 256 && s >= 32) {			/* 94/Jan/26 */
-/*				following added 1996/Jan/20 */
-				if (showindos && s > 127) {			/* translate ANSI to DOS 850 */
-					if (wintodos[s-128] > 0) printchar (wintodos[s-128]);
-					else {							/* print in hex after all */
-						j = strstart [ s ] ; 
-						while ( j < strstart [ s + 1 ] ) {
-							printchar ( strpool [ j ] ) ; 
-							incr ( j ) ; 
-						} 
-					}
-				}
-				else printchar ( s );				/* don't translate to hex */
-			}
-			else {									/* not just a character */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-				j = strstart [ s ] ; 
-				while ( j < strstart [ s + 1 ] ) {
-					printchar ( strpool [ j ] ) ; 
-					incr ( j ) ; 
-				} 
-			}
-			eqtb [ (hash_size + 3212) ] .cint = nl ;	/* restore eol */
-			return ; 
-		}
-/*  we get here with s > 256 - i.e. not a single character */
-	j = strstart [ s ] ; 
-	while ( j < strstart [ s + 1 ] ) {
-		printchar ( strpool [ j ] ) ; 
-		incr ( j ) ; 
-	}
-} 
-
-// print string number s from string pool by calling zprint
-
-void zslowprint ( integer s ) 
-{slowprint_regmem 
-    poolpointer j  ; 
-	if ( ( s >= strptr ) || ( s < 256 ) ) print ( s ) ; 
-	else {
-		j = strstart [ s ] ; 
-		while ( j < strstart [ s + 1 ] ) {
-//			if (strpool [ j ] >= 128) print ( strpool [ j ] -128); // debugging only
-//			if (strpool [ j ] == 0) print ( 36 ); // debugging only
-			print ( strpool [ j ] ) ; 
-			incr ( j ) ; 
-		} 
-	} 
-} 
-
-// print newline followed by string number s (unless at start of line)
-
-void zprintnl ( strnumber s ) 
-{printnl_regmem 
-   if ( ( ( termoffset > 0 ) && ( odd ( selector ) ) ) ||
-		( ( fileoffset > 0 ) && ( selector >= 18 ) ) ) 	println () ; 
-	print ( s ) ; 
-} 
-
-// print string number s preceded by escape character
-
-void zprintesc ( strnumber s ) 
-{printesc_regmem 
-    integer c  ; 
-	c = eqtb [ (hash_size + 3208) ] .cint ; 
-	if ( c >= 0 ) 
-		if ( c < 256 ) 	print ( c ) ; 
-	slowprint ( s ) ; 
-} 
-
-// print the digits in the array dig[...]
-
-void zprintthedigs ( k ) 
-eightbits k ; 
-{printthedigs_regmem 
-  while ( k > 0 ) {
-    decr ( k ) ; 
-    if ( dig [ k ] < 10 ) 
-    printchar ( 48 + dig [ k ] ) ; 
-    else printchar ( 55 + dig [ k ] ) ; 
-  } 
-} 
-
-// print integer n
-
-void zprintint ( n ) 
-integer n ; 
-{printint_regmem 
-  char k  ; 
-  integer m  ; 
-  k = 0 ; 
-  if ( n < 0 ) 
+void synch_h(void)
+{
+  if (cur_h != dvi_h)
   {
-    printchar ( 45 ) ;			/* - */
-    if ( n > -100000000L ) 
-    n = - (integer) n ; 
-    else {
-      m = -1 - n ; 
-      n = m / 10 ; 
-      m = ( m % 10 ) + 1 ; 
-      k = 1 ; 
-      if ( m < 10 ) 
-/*      dig [ 0 ] = m ; */			/* keep compiler happy */
-      dig [ 0 ] = (char) m ; 
-      else {
-		  dig [ 0 ] = 0 ; 
-		  incr ( n ) ; 
-      } 
-    } 
-  } 
-  do {
-/*	  dig [ k ] = n % 10 ;  */		/* keep compiler happy */
-	  dig [ k ] = (char) (n % 10) ; 
-	  n = n / 10 ; 
-	  incr ( k ) ; 
-  } while ( ! ( n == 0 ) ) ; 
-  printthedigs ( k ) ; 
-} 
-
-// print control sequence
-
-void zprintcs ( p ) 
-integer p ; 
-{printcs_regmem 
-  if ( p < 514 )				/* if p < hash_base then ... p.262 */
-  if ( p >= 257 )				/* if p > single_base then ... p.262 */
-  if ( p == 513 )				/* if p = null_cs then ... p.262 */
-  {
-    printesc ( 501 ) ;			/* csname */
-    printesc ( 502 ) ;			/* endcsname */
-  } 
-  else {
-    printesc ( p - 257 ) ;		/* p - single_base */
-/*  if cat_code(p - single_base) = letter then ... p.262 */
-    if ( eqtb [ (hash_size + 1883) + p - 257 ] .hh .v.RH == 11 ) 
-		printchar ( 32 ) ;			/*   */
-  } 
-  else if ( p < 1 ) 
-	  printesc ( 503 ) ;				/* IMPOSSIBLE */
-  else print ( p - 1 ) ; 
-  else if ( p >= (hash_size + 781) )	/* undefined_control_sequence */
-	  printesc ( 503 ) ;				/* IMPOSSIBLE */
-  else if ( ( hash [ p ] .v.RH >= strptr ) ) 
-	  printesc ( 504 ) ;				/* NONEXISTENT */
-  else {
-    printesc ( hash [ p ] .v.RH ) ; 
-    printchar ( 32 ) ;			/*    */
-  } 
-} 
-
-void zsprintcs ( p ) 
-halfword p ; 
-{sprintcs_regmem 
-  if ( p < 514 )				/* if p < hash_base then ... p.263 */
-  if ( p < 257 )				/* if p < single_base then ... p.263 */
-	  print ( p - 1 ) ;			/* print (p - active_base); */
-  else if ( p < 513 )			/* else if p < null_cs then ... */
-	  printesc ( p - 257 ) ;	/* print (p - single_base); */
-  else {
-    printesc ( 501 ) ;			/* csname */
-    printesc ( 502 ) ;			/* endcsname */
-  } 
-  else printesc ( hash [ p ] .v.RH ) ; 
-} 
-
-/* ! I can't find file `  c:/foo/  accents  .tex  '. */
-void zprintfilename ( n , a , e ) 
-integer n ; 
-integer a ; 
-integer e ; 
-{printfilename_regmem 
-/*  sprintf(logline, "\na %d n %d e %d\n", a, n, e); */
-/*	showline(logline, 0); */
-//  printchar ( 33 ) ;  // debugging only
-  slowprint ( a ) ; 
-//  printchar ( 33 ) ;  // debugging only
-  slowprint ( n ) ; 
-//  printchar ( 33 ) ;  // debugging only
-  slowprint ( e ) ; 
-//  printchar ( 33 ) ;  // debugging only
+    movement(cur_h - dvi_h, right1);
+    dvi_h = cur_h;
+  }
 }
+void synch_v(void)
+{
+  if (cur_v != dvi_v)
+  {
+    movement(cur_v - dvi_v, down1);
+    dvi_v = cur_v;
+  }
+}
+void set_cur_lang(void)
+{
+  if (language <= 0)
+    cur_lang = 0;
+  else if (language > 255)
+    cur_lang = 0;
+  else
+    cur_lang = language;
+}
+INLINE void free_avail_(halfword p)
+{
+  link(p) = avail;
+  avail = p;
+#ifdef STAT
+  decr(dyn_used);
+#endif /* STAT */
+}
+INLINE void dvi_out_(ASCII_code op)
+{
+  dvi_buf[dvi_ptr] = op;
+  incr(dvi_ptr);
+  if (dvi_ptr == dvi_limit)
+    dvi_swap();
+}
+INLINE void succumb (void)
+{
+  if (interaction == error_stop_mode)
+    interaction = scroll_mode;
 
-void zprintsize ( s ) 
-integer s ; 
-{printsize_regmem 
-  if ( s == 0 ) printesc ( 409 ) ;			/* textfont */
-  else if ( s == 16 )  printesc ( 410 ) ;	/* scriptfont */
-  else printesc ( 411 ) ;					/* scriptscriptfont */
-} 
-
-void zprintwritewhatsit ( s , p ) 
-strnumber s ; 
-halfword p ; 
-{printwritewhatsit_regmem 
-  printesc ( s ) ; 
-  if ( mem [ p + 1 ] .hh .v.LH < 16 ) 
-	  printint ( mem [ p + 1 ] .hh .v.LH ) ; 
-  else if ( mem [ p + 1 ] .hh .v.LH == 16 ) 
-	  printchar ( 42 ) ;		/* * */
-  else printchar ( 45 ) ;		/* - */
-} 
-
+  if (log_opened)
+  {
+    error();
+  }
 #ifdef DEBUG
-#endif /* DEBUG */
+  if (interaction > 0)
+    debug_help();
+#endif
+  history = 3;
+  jump_out();
+}
+INLINE void flush_string (void)
+{
+  decr(str_ptr);
+  pool_ptr = str_start[str_ptr];
+}
+INLINE void append_char (ASCII_code c)
+{
+  str_pool[pool_ptr] = c;
+  incr(pool_ptr);
+}
+INLINE void append_lc_hex (ASCII_code c)
+{
+  if (c < 10)
+    append_char(c + '0');
+  else
+    append_char(c - 10 + 'a');
+}
+INLINE void print_err (const char * s)
+{
+  if (interaction == error_stop_mode);
+    print_nl("! ");
+  print_string(s);
+}
+INLINE void tex_help (unsigned int n, ...)
+{
+  int i;
+  va_list help_arg;
 
+  if (n > 6)
+    n = 6;
+
+  help_ptr = n;
+  va_start(help_arg, n);
+
+  for (i = n - 1; i > -1; --i)
+    help_line[i] = va_arg(help_arg, char *);
+
+  va_end(help_arg);
+}
+INLINE void str_room_ (int val)
+{
+#ifdef ALLOCATESTRING
+  if (pool_ptr + val > current_pool_size)
+    str_pool = realloc_str_pool(increment_pool_size);
+
+  if (pool_ptr + val > current_pool_size)
+  {
+    overflow("pool size", current_pool_size - init_pool_ptr);
+  }
+#else
+  if (pool_ptr + val > pool_size)
+  {
+    overflow("pool size", pool_size - init_pool_ptr);
+  }
+#endif
+}
+INLINE void tail_append_ (pointer val)
+{
+  link(tail) = val;
+  tail = link(tail);
+}
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+/* sec 0058 */
+void print_ln (void)
+{
+  switch (selector)
+  {
+    case term_and_log:
+      show_char('\n');
+      term_offset = 0;
+      (void) putc ('\n', log_file);
+      file_offset = 0;
+      break;
+
+    case log_only:
+      (void) putc ('\n',  log_file);
+      file_offset = 0;
+      break;
+
+    case term_only:
+      show_char('\n');
+      term_offset = 0;
+      break;
+
+    case no_print:
+    case pseudo:
+    case new_string:
+      break;
+
+    default:
+      (void) putc ('\n', write_file[selector]);
+      break;
+  }
+}
+/* sec 0058 */
+void print_char_ (ASCII_code s)
+{
+  if (s == new_line_char)
+  {
+    if (selector < pseudo)
+    {
+      print_ln();
+      return;
+    }
+  }
+
+  switch (selector)
+  {
+    case term_and_log:
+      (void) show_char(Xchr(s));
+      incr(term_offset);
+      (void) putc(Xchr(s), log_file);
+      incr(file_offset);
+
+      if (term_offset == max_print_line)
+      {
+        show_char('\n');
+        term_offset = 0;
+      }
+      
+      if (file_offset == max_print_line)
+      {
+        (void) putc ('\n', log_file);
+        file_offset = 0;
+      }
+
+      break;
+
+    case log_only:
+      (void) putc(Xchr(s), log_file);
+      incr(file_offset);
+
+      if (file_offset == max_print_line)
+        print_ln();
+
+      break;
+
+    case term_only:
+      (void) show_char(Xchr(s));
+      incr(term_offset);
+
+      if (term_offset == max_print_line)
+        print_ln();
+
+      break;
+
+    case no_print:
+      break;
+
+    case pseudo:
+      if (tally < trick_count)
+        trick_buf[tally % error_line] = s;
+
+      break;
+
+    case new_string:
+#ifdef ALLOCATESTRING
+      if (pool_ptr + 1 > current_pool_size)
+      {
+        str_pool = realloc_str_pool (increment_pool_size);
+      }
+      
+      if (pool_ptr < current_pool_size)
+      {
+        str_pool[pool_ptr]= s;
+        incr(pool_ptr);
+      }
+#else
+      if (pool_ptr < pool_size)
+      {
+        str_pool[pool_ptr]= s;
+        incr(pool_ptr);
+      }
+#endif
+      break;
+
+    default:
+      (void) putc(Xchr(s), write_file[selector]);
+      break;
+  }
+
+  incr(tally);
+}
+/* sec 0059 */
+void print_ (integer s)
+{
+  pool_pointer j;
+  integer nl;
+
+  if (s >= str_ptr)
+    s = 259; /* ??? */
+  else 
+  {
+    if (s < 256)
+    {
+      if (s < 0)
+        s = 259; /* ??? */
+      else
+      {
+        if (selector > pseudo)
+        {
+          print_char(s);
+          return;
+        }
+
+        if ((s == new_line_char))
+          if (selector < pseudo)
+          {
+            print_ln();
+            return;
+          }
+          
+          nl = new_line_char;
+          new_line_char = -1;
+/* translate ansi to dos 850 */
+          if (!show_in_hex && s < 256 && s >= 32)
+          {
+            if (show_in_dos && s > 127)
+            {
+              if (wintodos[s - 128] > 0)
+              {
+                print_char (wintodos[s - 128]);
+              }
+              else
+              {
+                j = str_start[s];
+
+                while (j < str_start[s + 1])
+                {
+                  print_char(str_pool[j]);
+                  incr(j);
+                }
+              }
+            }
+            else
+            {
+              print_char(s);       /* don't translate to hex */
+            }
+          }
+          else
+          {                       /* not just a character */
+            j = str_start[s];
+
+            while (j < str_start[s + 1])
+            {
+              print_char(str_pool[j]);
+              incr(j);
+            }
+          }
+          new_line_char = nl; /* restore eol */
+          return;
+      }
+    }
+  }
+/*  we get here with s > 256 - i.e. not a single character */
+  j = str_start[s];
+
+  while (j < str_start[s + 1])
+  {
+    print_char(str_pool[j]);
+    incr(j);
+  }
+}
+/* string version print. */
+void print_string_ (unsigned char *s)
+{
+  while (*s > 0)
+    print_char(*s++);
+}
+/* sec 0060 */
+// print string number s from string pool by calling print_
+void slow_print_ (integer s)
+{
+  pool_pointer j;
+
+  if ((s >= str_ptr) || (s < 256))
+  {
+    print(s);
+  }
+  else
+  {
+    j = str_start[s];
+
+    while (j < str_start[s + 1])
+    {
+      print(str_pool[j]);
+      incr(j);
+    }
+  }
+}
+/* sec 0062 */
+// print newline followed by string number s (unless at start of line)
+void print_nl_ (const char * s)
+{
+  if (((term_offset > 0) && (odd(selector))) ||
+      ((file_offset > 0) && (selector >= log_only)))
+    print_ln();
+
+  print_string(s);
+}
+/* sec 0063 */
+// print string number s preceded by escape character
+void print_esc_ (const char * s)
+{
+  integer c;
+
+  c = escape_char;
+
+  if (c >= 0)
+    if (c < 256)
+      print(c);
+
+  print_string(s);
+}
+/* sec 0064 */
+void print_the_digs_ (eight_bits k)
+{
+  while (k > 0)
+  {
+    decr(k);
+
+    if (dig[k] < 10)
+      print_char('0' + dig[k]);
+    else
+      print_char('A' + dig[k]);
+  }
+}
+/* sec 0065 */
+void print_int_ (integer n)
+{
+  char k;
+  integer m;
+
+  k = 0;
+
+  if (n < 0)
+  {
+    print_char('-');
+
+    if (n > -100000000L)
+      n = - (integer) n;
+    else
+    {
+      m = -1 - n;
+      n = m / 10;
+      m = (m % 10) + 1;
+      k = 1;
+
+      if (m < 10)
+        dig[0] = (char) m;
+      else
+      {
+        dig[0] = 0;
+        incr(n);
+      }
+    }
+  }
+
+  do
+    {
+      dig[k] = (char) (n % 10);
+      n = n / 10;
+      incr(k);
+    }
+  while (!(n == 0));
+
+  print_the_digs(k);
+}
+/* sec 0262 */
+void print_cs_ (integer p)
+{
+  if (p < hash_base)
+    if (p >= single_base)
+      if (p == null_cs)
+      {
+        print_esc("csname");
+        print_esc("endcsname");
+        print_char(' ');
+      }
+      else
+      {
+        print_esc(""); print(p - single_base);
+
+        if (cat_code(p - single_base) == letter)
+          print_char(' ');
+      }
+    else if (p < active_base)
+      print_esc("IMPOSSIBLE.");
+    else print(p - active_base);
+  else if (p >= undefined_control_sequence)
+    print_esc("IMPOSSIBLE.");
+  else if ((text(p) >= str_ptr))
+    print_esc("NONEXISTENT.");
+  else
+  {
+    print_esc(""); print(text(p));
+    print_char(' ');
+  }
+}
+/* sec 0263 */
+void sprint_cs_(halfword p)
+{ 
+  if (p < hash_base)
+    if (p < single_base)
+      print(p - active_base);
+    else if (p < null_cs)
+    {
+      print_esc(""); print(p - single_base);
+    }
+    else
+    {
+      print_esc("csname");
+      print_esc("endcsname");
+    }
+  else
+  {
+    print_esc(""); print(text(p));
+  }
+}
+/* sec 0518 */
+/* ! I can't find file `  c:/foo/  accents  .tex  '. */
+void print_file_name_(integer n, integer a, integer e)
+{
+  slow_print(a);
+  slow_print(n);
+  slow_print(e);
+}
+/* sec 0699 */
+void print_size_ (integer s)
+{ 
+  if (s == 0)
+    print_esc("textfont");
+  else if (s == 16)
+    print_esc("scriptfont");
+  else
+    print_esc("scriptscriptfont");
+} 
+/* sec 1355 */
+void print_write_whatsit_(str_number s, halfword p)
+{
+  print_esc(""); print(s);
+  if (write_stream(p) < 16)
+    print_int(write_stream(p)); 
+  else if (write_stream(p) == 16)
+    print_char('*');
+  else print_char('-');
+}
+/* sec 0081 */
 // called from itex.c and tex0.c only  NASTY NASTY!
 // now uses uses non-local goto (longjmp) 1999/Nov/7
+void jump_out (void) 
+{
+  close_files_and_terminate();
 
-void jumpout ( ) 
-{jumpout_regmem 
-	closefilesandterminate () ; 
-	{
-		int code;
+  {
+    int code;
+
 #ifndef _WINDOWS
-		fflush ( stdout ) ; 
+    fflush(stdout); 
 #endif
-		readyalready = 0 ; 
 
-		if (traceflag) showline("EXITING at JUMPOUT\n", 0);
+    ready_already = 0;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-//		if (endit(history) != 0) history = 2;	/* 93/Dec/26 in local.c */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+    if (trace_flag)
+      show_line("EXITING at JUMPOUT\n", 0);
 
-//		abortflag++;				// TURN OFF THE POWER ???
+    if ((history != 0) && (history != 1))
+      code = 1;
+    else
+      code = 0;
 
-		if ( ( history != 0 ) && ( history != 1 ) )	code = 1 ;
-		else code = 0 ;
-		uexit ( code ) ; 
-//		longjmp(jumpbuffer, code+1);
-	}
+    uexit(code);
+  }
 }
-
+/* sec 0082 */
 // deal with error by asking for user response 0-9, D, E, H, I, X, Q, R, S
 // NOTE: this may JUMPOUT either via X, or because of too many errors
+void error (void)
+{
+  ASCII_code c;
+  integer s1, s2, s3, s4;
 
-void error ( void ) 
-{/* 22 10 */ error_regmem 
-    ASCIIcode c  ; 
-	integer s1, s2, s3, s4  ; 
-	if ( history < 2 )  history = 2 ;
+  if (history < error_message_issued)
+    history = error_message_issued;
 
-	printchar ( 46 ) ;	 	/* . */
-	showcontext () ; 
+  print_char('.');
+  show_context();
 
-	if ( interaction == 3 ) 
-		while ( true ) {
-lab22:					/* loop */
-			ABORTCHECK;
-			clearforerrorprompt () ; 
-			{
-				; 
-				print ( 264 ) ;		/* ?  */
-				terminput ( 264, helpptr ) ; 
-				ABORTCHECK;
-			} 
-			if ( last == first ) return ;		// no input
-			c = buffer [ first ] ;				// analyze first letter typed
-			if ( c >= 97 )						// uppercase letter first
-/*				c = c - 32 ;  */				/* keep compiler happy */
-				c = (unsigned char) (c - 32) ; 
-			switch ( c ) {
-				case 48 :				/* 0 */
-				case 49 :				/* 1 */
-				case 50 : 
-				case 51 : 
-				case 52 : 
-				case 53 : 
-				case 54 : 
-				case 55 : 
-				case 56 : 
-				case 57 :				/* 9 */
-					if ( deletionsallowed ) {
-						s1 = curtok ; 
-						s2 = curcmd ; 
-						s3 = curchr ; 
-						s4 = alignstate ; 
-						alignstate = 1000000L ; 
-						OKtointerrupt = false ; 
-						if ( ( last > first + 1 ) && ( buffer [ first + 1 ] >= 48 ) &&
-							 ( buffer [ first + 1 ] <= 57 ) ) 
-/*							c = c * 10 + buffer [ first + 1 ] - 48 * 11 ; */
-							c = (unsigned char) (c * 10 + buffer [ first + 1 ] - 48 * 11) ; 
-/*						else c = c - 48 ;  */	/* keep compiler happy */
-						else c = (unsigned char) (c - 48);
-						while ( c > 0 ) {
-							gettoken () ; 
-							decr ( c ) ; 
-						} 
-						curtok = s1 ; 
-						curcmd = s2 ; 
-						curchr = s3 ; 
-						alignstate = s4 ; 
-						OKtointerrupt = true ; 
-						{
-							helpptr = 2 ; 
-							helpline [ 1 ] = 277 ; /* I have just deleted some text, as you asked. */
-							helpline [ 0 ] = 278 ; /* You can now delete more, or insert, or whatever. */
-						} 
-						showcontext () ; 
-						goto lab22 ;			/* loop again */
-					} 
-					break ; 
-					;
+  if (interaction == error_stop_mode)
+    while (true)
+    {
+lab22:
+      clear_for_error_prompt();
+
+      { /* prompt_input */
+        print_string("? ");
+        term_input("? ", help_ptr);
+      }
+
+      if (last == first)
+        return; // no input
+
+      c = buffer[first];   // analyze first letter typed
+
+      if (c >= 'a')         // uppercase letter first
+        c = (unsigned char) (c + 'A' - 'a'); 
+
+      switch (c)
+      {
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+          if (deletions_allowed)
+          {
+            s1 = cur_tok;
+            s2 = cur_cmd;
+            s3 = cur_chr;
+            s4 = align_state;
+            align_state = 1000000L;
+            OK_to_interrupt = false;
+
+            if ((last > first + 1) && (buffer[first + 1] >= '0') && (buffer[first + 1] <= '9'))
+              c = (unsigned char) (c * 10 + buffer[first + 1] - '0' * 11);
+            else
+              c = (unsigned char) (c - 48);
+            
+            while (c > 0)
+            {
+              get_token();
+              decr(c);
+            }
+
+            cur_tok = s1;
+            cur_cmd = s2;
+            cur_chr = s3;
+            align_state = s4;
+            OK_to_interrupt = true;
+            help2("I have just deleted some text, as you asked.",
+                "You can now delete more, or insert, or whatever.");
+            show_context();
+            goto lab22;     /* loop again */
+          }
+          break;
+
 #ifdef DEBUG
-				case 68 :			/* D */
-				{
-					debughelp () ; 
-					goto lab22 ;				/* loop again */
-				} 
-				break ; 
+        case 'D':
+          {
+            debug_help();
+            goto lab22;       /* loop again */
+          }
+          break;
 #endif /* DEBUG */
-				case 69 :			/* E */
-					if ( baseptr > 0 ) {
-						editnamestart = strstart [ inputstack [ baseptr ] .namefield ] ; 
-						editnamelength = strstart [ inputstack [ baseptr ] .namefield + 1 ] - 
-										 strstart [ inputstack [ baseptr ] .namefield ] ; 
-						editline = line ; 
-						jumpout();
-//						return ;			// can drop through now 99/Oct/20
-					} 
-					break ; 
-				case 72 :			/* H */
-				{
-					if ( useerrhelp ) 
-					{
-						giveerrhelp () ; 
-						useerrhelp = false ; 
-					} 
-					else {
-						if ( helpptr == 0 ) 
-						{
-							helpptr = 2 ; 
-							helpline [ 1 ] = 279 ; /* Sorry, I don't know how to help in this situation. */
-							helpline [ 0 ] = 280 ; /* Maybe you should try asking a human? */
-						} 
-						do {
-							decr ( helpptr ) ; 
-							print ( helpline [ helpptr ] ) ; 
-							println () ; 
-						} while ( ! ( helpptr == 0 ) ) ; 
-					} 
-					{
-						helpptr = 4 ; 
-						helpline [ 3 ] = 281 ; /* Sorry, I already gave what help I could... */
-						helpline [ 2 ] = 280 ; /* Maybe you should try asking a human? */
-						helpline [ 1 ] = 282 ; /* An error might have occurred before I noticed any problems. */
-						helpline [ 0 ] = 283 ; /* ``If all else fails, read the instructions.'' */
-					} 
-					goto lab22 ;	/* loop again */
-				} 
-				break ; 
-				case 73 :			/* I */
-				{
-					beginfilereading () ; 
-					if ( last > first + 1 ) 
-					{
-						curinput .locfield = first + 1 ; 
-						buffer [ first ] = 32 ; 
-					} 
-					else {
-						{
-							; 
-							print ( 276 ) ; /* insert> */
-							terminput ( 276, 0 ) ; 
-							ABORTCHECK;
-						} 
-						curinput .locfield = first ; 
-					} 
-					first = last ; 
-					curinput .limitfield = last - 1 ; 
-					return ; 
-				} 
-				break ; 
-				case 81 :			/* Q, R, S */
-				case 82 : 
-				case 83 : 
-				{
-					errorcount = 0 ; 
-					interaction = 0 + c - 81 ; /* Q = 0, R = 1, S = 2, T = 3 */
-					print ( 271 ) ;			/* OK, entering  */
-					switch ( c ) {
-						case 81 :				/* Q */
-						{
-							printesc ( 272 ) ;	/* batchmode */
-							decr ( selector ) ; 
-						} 
-						break ; 
-						case 82 :				/* R */
-							printesc ( 273 ) ;	/* nonstopmode */
-							break ; 
-						case 83 :				/* S */
-							printesc ( 274 ) ;	/*  scrollmode */
-							break ; 
-					} 
-					print ( 275 ) ;			/* ... */
-					println () ; 
+        case 'E':
+          if (base_ptr > 0)
+          {
+            edit_name_start = str_start[input_stack[base_ptr].name_field];
+            edit_name_length = length(input_stack[base_ptr].name_field);
+            edit_line = line;
+            jump_out();
+          }
+          break;
+
+        case 'H':
+          {
+            if (use_err_help)
+            {
+              give_err_help();
+              use_err_help = false;
+            }
+            else
+            {
+              if (help_ptr == 0)
+                help2("Sorry, I don't know how to help in this situation.",
+                    "Maybe you should try asking a human?");
+              do {
+                decr(help_ptr);
+                print_string(help_line[help_ptr]);
+                print_ln();
+              } while (!(help_ptr == 0));
+            }
+
+            help4("Sorry, I already gave what help I could...",
+                "Maybe you should try asking a human?",
+                "An error might have occurred before I noticed any problems.",
+                "``If all else fails, read the instructions.''");
+            goto lab22; /* loop again */
+          }
+          break;
+
+        case 'I':
+          {
+            begin_file_reading();
+
+            if (last > first + 1)
+            {
+              cur_input.loc_field = first + 1;
+              buffer[first] = 32;
+            }
+            else
+            {
+              { /* prompt_input */
+                print_string("insert>");
+                term_input("insert>", 0);
+              }
+              cur_input.loc_field = first;
+            }
+            first = last;
+            cur_input.limit_field = last - 1;
+            return;
+          }
+          break;
+
+        case 'Q':
+        case 'R':
+        case 'S':
+          {
+            error_count = 0; 
+            interaction = 0 + c - 81; /* Q = 0, R = 1, S = 2, T = 3 */
+            print_string("OK, entering ");
+
+            switch (c)
+            {
+              case 'Q':
+                print_esc("batchmode");
+                decr(selector);
+                break;
+              case 'R':
+                print_esc("nonstopmode");
+                break;
+              case 'S':
+                print_esc("scrollmode");
+                break;
+            }
+
+            print_string("...");
+            print_ln();
 #ifndef _WINDOWS
-					fflush ( stdout ) ; 
+            fflush(stdout);
 #endif
-					return ; 
-				} 
-				break ; 
-				case 88 :				/* X */
-				{
-					interaction = 2 ; 
-					jumpout();
-//					return ;			// can drop through now 99/Oct/20	  
-				} 
-				break ; 
-				default: 
-					; 
-					break ; 
-			}						/* end of switch analysing response character */
-			{
-				print ( 265 ) ;		/* Type <return> to proceed, S to scroll future error messages, */
-				printnl ( 266 ) ;	/* R to run without stopping, Q to run quietly, */
-				printnl ( 267 ) ;	/* I to insert something,  */
-				if ( baseptr > 0 ) print ( 268 ) ;	/*  E to edit your file,  */
-				if ( deletionsallowed ) printnl ( 269 ) ;	/* 1 or ... or 9 to ignore the next 1 to 9 tokens of input, */
-				printnl ( 270 ) ;	/* H for help, X to quit. */
-			} 
-		}		/* end of while(true) loop */
+            return;
+          }
+          break;
 
-	incr ( errorcount ) ; 
-	if ( errorcount == 100 )  {
-		printnl ( 263 ) ;	/* (That makes 100 errors; please try again.) */
-		history = 3 ; 
-		jumpout();
-//		return ;			// can drop through now 99/Oct/20	  
-	} 
-	if ( interaction > 0 )  decr ( selector ) ; 
-	if ( useerrhelp )  {
-		println () ; 
-		giveerrhelp () ; 
-	} 
-	else while ( helpptr > 0 ) {
-		decr ( helpptr ) ; 
-		printnl ( helpline [ helpptr ] ) ; 
-	} 
-	println () ; 
-	if ( interaction > 0 ) incr ( selector ) ; 
-	println () ; 
-} 
+        case 'X':
+          {
+            interaction = 2;
+            jump_out();
+          }
+          break;
 
-void zfatalerror ( strnumber s ) 
-{fatalerror_regmem 
-   normalizeselector () ; 
-	{
-		if ( interaction == 3 ) 
-			; 
-		printnl ( 262 ) ;	/* ! */
-		print ( 285 ) ;		/* Emergency stop */
-	} 
-	{
-		helpptr = 1 ; 
-		helpline [ 0 ] = s ;	// given string goes into help line
-	} 
-	{
-		if ( interaction == 3 ) interaction = 2 ; 
-		if ( logopened ) {
-			error () ;
-			ABORTCHECK;
-		}
-		;
-#ifdef DEBUG
-		if ( interaction > 0 ) debughelp () ; 
-#endif /* DEBUG */
-		history = 3 ; 
-		jumpout();
-//		return;			// can drop through now 99/Oct/20	  
-	} 
+        default:
+          break;
+      }           /* end of switch analysing response character */
+
+      {
+        print_string("Type <return> to proceed, S to scroll future error messages,");
+        print_nl("R to run without stopping, Q to run quietly,");
+        print_nl("I to insert something, ");
+
+        if (base_ptr > 0)
+          print_string("E to edit your file,");
+
+        if (deletions_allowed)
+          print_nl("1 or ... or 9 to ignore the next 1 to 9 tokens of input,");
+
+        print_nl("H for help, X to quit.");
+      }
+    } /* end of while(true) loop */
+
+  incr(error_count);
+
+  if (error_count == 100)
+  {
+    print_nl("(That makes 100 errors; please try again.)");
+    history = 3;
+    jump_out();
+  }
+
+  if (interaction > batch_mode)
+    decr(selector);
+
+  if (use_err_help)
+  {
+    print_ln();
+    give_err_help();
+  }
+  else while(help_ptr > 0)
+  {
+    decr(help_ptr);
+    print_nl(help_line[help_ptr] == NULL ? "" : help_line[help_ptr]);
+  }
+
+  print_ln();
+
+  if (interaction > batch_mode)
+    incr(selector);
+  
+  print_ln();
 }
-
-void zoverflow ( strnumber s , integer n ) 
-{overflow_regmem 
-   normalizeselector () ; 
-	{
-		if ( interaction == 3 ) 
-			; 
-		printnl ( 262 ) ;	/* ! */
-		print ( 286 ) ;		/* TeX capacity exceeded, sorry [ */
-	} 
-	print ( s ) ; 
-	printchar ( 61 ) ;	/* '=' */
-	printint ( n ) ; 
-	printchar ( 93 ) ;	/* ']' */
-	{
-		helpptr = 2 ; 
-		helpline [ 1 ] = 287 ; /* If you really absolutely need more capacity, */
-		helpline [ 0 ] = 288 ; /*  you can ask a wizard to enlarge me. */
-	} 
-	if (! knuthflag) {		/*	Additional comments 98/Jan/5 */
-	  if (s == 945 && n == triesize) {
-		  sprintf(logline, "\n  (Maybe use -h=... on command line in ini-TeX)\n");
-		  showline(logline, 0);
-	  }
-	  else if (s == 942 && n == hyphen_prime) {
-		  sprintf(logline, "\n  (Maybe use -e=... on command line in ini-TeX)\n");
-		  showline(logline, 0);
-	  }
-	}
-	if ( interaction == 3 ) interaction = 2 ; 
-	if ( logopened ) {
-		error () ;
-		ABORTCHECK;
-	}
-	;
-#ifdef DEBUG
-    if ( interaction > 0 ) debughelp () ; 
-#endif /* DEBUG */
-	history = 3 ; 
-	jumpout();
-//	return;			// can drop through now 99/Oct/20	  
+/* sec 0093 */
+void fatal_error_(char * s)
+{
+  normalize_selector();
+  print_err("Emergency stop");
+  help1(s);
+  succumb();
 }
+/* sec 0094 */
+void overflow_(char * s, integer n)
+{
+  normalize_selector();
+  print_err("TeX capacity exceeded, sorry [");
+  print_string(s);
+  print_char('=');
+  print_int(n);
+  print_char(']');
+  help2("If you really absolutely need more capacity,",
+      "you can ask a wizard to enlarge me.");
 
+  if (!knuth_flag)
+  {
+    if (!strcmp(s, "pattern memory") && n == trie_size)
+    {
+      sprintf(log_line, "\n  (Maybe use -h=... on command line in ini-TeX)\n");
+      show_line(log_line, 0);
+    }
+    else if (!strcmp(s, "exception dictionary") && n == hyphen_prime)
+    {
+      sprintf(log_line, "\n  (Maybe use -e=... on command line in ini-TeX)\n");
+      show_line(log_line, 0);
+    }
+  }
 
-void zconfusion ( strnumber s ) 
-{confusion_regmem 
-   normalizeselector () ; 
-	if ( history < 2 )  {
-		{
-			if ( interaction == 3 ) 
-				; 
-			printnl ( 262 ) ; /* ! */
-			print ( 289 ) ;	/* This can't happen ( */
-		} 
-		print ( s ) ; 
-		printchar ( 41 ) ;	/* ) */
-		{
-			helpptr = 1 ; 
-			helpline [ 0 ] = 290 ; /* I'm broken. Please show this to someone who can fix can fix */
-		} 
-	} 
-	else {
-		
-		{
-			if ( interaction == 3 ) 
-				; 
-			printnl ( 262 ) ; /* ! */
-			print ( 291 ) ;	/* I can't go on meeting you like this */
-		} 
-		{
-			helpptr = 2 ; 
-			helpline [ 1 ] = 292 ; /* One of your faux pas seems to have wounded me deeply... */
-			helpline [ 0 ] = 293 ; /* in fact, I'm barely conscious. Please fix it and try again. */
-		} 
-	} 
-	{
-		if ( interaction == 3 ) interaction = 2 ; 
-		if ( logopened ) {
-			error () ;
-			ABORTCHECK;
-		}
-		;
-#ifdef DEBUG
-		if ( interaction > 0 ) debughelp () ; 
-#endif /* DEBUG */
-		history = 3 ; 
-		jumpout();
-//		return;			// can drop through now 99/Oct/20	  
-	} 
-} 
+  succumb();
+}
+/* sec 0095 */
+void confusion_(char * s)
+{
+  normalize_selector();
 
-booleane initterminal ( ) 
-{/* 10 */ register booleane Result; initterminal_regmem 
-	int flag;
-	topenin () ; 
+  if (history < error_message_issued)
+  {
+    print_err("This can't happen (");
+    print_string(s);
+    print_char(')');
+    help1("I'm broken. Please show this to someone who can fix can fix");
+  }
+  else
+  {
+    print_err("I can't go on meeting you like this");
+    help2("One of your faux pas seems to have wounded me deeply...",
+        "in fact, I'm barely conscious. Please fix it and try again.");
+  }
 
-	if ( last > first )   {
-		curinput .locfield = first ; 
-		while ( ( curinput .locfield < last ) &&
-				( buffer [ curinput .locfield ] == ' ' ) )
-			incr ( curinput .locfield ) ;		// step over initial white space
-		if ( curinput .locfield < last ) {
-			Result = true ; 
-			return Result ;		// there is an input file name
-		} 
-	} 
+  succumb();
+}
+/* sec 0037 */
+bool init_terminal (void)
+{
+  int flag;
 
-//	failed to find input file name
-	while ( true ) {
-		; 
+  t_open_in();
+
+  if (last > first)
+  {
+    cur_input.loc_field = first;
+
+    while((cur_input.loc_field < last) && (buffer[cur_input.loc_field]== ' '))
+      incr(cur_input.loc_field);    // step over initial white space
+
+    if (cur_input.loc_field < last)
+      return true;
+  }
+
+// failed to find input file name
+  while (true)
+  {
 #ifdef _WINDOWS
-		flag = ConsoleInput("**",
-							"Please type a file name or a control sequence\r\n(or ^z to exit)",
-							(char *) &buffer[first]);
-		last = first + strlen((char *) &buffer[first]);	/* -1 ? */
-//		may need to be more elaborate see input_line in texmf.c
+    flag = ConsoleInput("**", "Please type a file name or a control sequence\r\n(or ^z to exit)", (char *) &buffer[first]);
+    last = first + strlen((char *) &buffer[first]); /* -1 ? */
+//    may need to be more elaborate see input_line in texmf.c
 #else
-		(void) fputs( "**", stdout ) ;			/* ** PROMPT */
-		fflush ( stdout ) ; 
-		flag = inputln ( stdin , true );
+    (void) fputs("**", stdout);
+    fflush(stdout);
+    flag = input_ln(stdin, true);
 #endif
-		if ( ! flag ) {
-			showchar('\n');
-			showline("! End of file on the terminal... why?\n", 1); 
-			Result = false ; 
-			return Result ; 
-		} 
 
-		curinput .locfield = first ; 
-		while ( ( curinput .locfield < last ) &&
-				( buffer [ curinput .locfield ] == ' ' ) )
-			incr ( curinput .locfield ) ;		// step over intial white space
-		if ( curinput .locfield < last ) {
-			Result = true ; 
-			return Result ;		// there is an input file name
-		} 
-		sprintf(logline , "%s\n",  "Please type the name of your input file." ) ; 
-		showline(logline, 1);
-	}
-//	return Result ; 
-} 
+    if (!flag)
+    {
+      show_char('\n');
+      show_line("! End of file on the terminal... why?\n", 1);
+      return false;
+    }
 
-// Make string from strstart [ strptr ] to poolptr
+    cur_input.loc_field = first;
 
-strnumber makestring ( ) 
-{register strnumber Result; makestring_regmem 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+    while ((cur_input.loc_field < last) && (buffer[cur_input.loc_field]== ' '))
+      incr(cur_input.loc_field);    // step over intial white space
+
+    if (cur_input.loc_field < last)
+      return true;
+
+    sprintf(log_line, "%s\n", "Please type the name of your input file.");
+    show_line(log_line, 1);
+  }
+}
+/* sec 0043 */
+// Make string from str_start[str_ptr] to pool_ptr
+str_number make_string (void)
+{
 #ifdef ALLOCATESTRING
-  if ( strptr == currentmaxstrings )
-	  strstart = reallocstrstart ( incrementmaxstrings );
-  if ( strptr == currentmaxstrings ) {				/* 94/Jan/24 */
-//	  printf("**********MAKESTRING**********");		// debugging only
- 	  overflow ( 258 , currentmaxstrings - initstrptr ) ; /* 97/Mar/9 */
-	  return 0;			// abortflag set
+  if (str_ptr == current_max_strings)
+    str_start = realloc_str_start(increment_max_strings);
+
+  if (str_ptr == current_max_strings)
+  {
+    overflow("number of strings", current_max_strings - init_str_ptr); /* 97/Mar/9 */
+    return 0;     // abort_flag set
   }
 #else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  if ( strptr == maxstrings ) {
-	  overflow ( 258 , maxstrings - initstrptr ) ; /* number of strings */
-	  return 0;			// abortflag set
+  if (str_ptr == max_strings)
+  {
+    overflow("number of strings", max_strings - init_str_ptr);
+    return 0;     // abort_flag set
   }
 #endif
-  incr ( strptr ) ; 
-  strstart [ strptr ] = poolptr ; 
-  Result = strptr - 1 ; 
-  return Result ; 
-} 
+  incr(str_ptr);
+  str_start[str_ptr] = pool_ptr;
 
-booleane zstreqbuf ( s , k ) 
-strnumber s ; 
-integer k ; 
-{/* 45 */ register booleane Result; streqbuf_regmem 
-  poolpointer j  ; 
-  booleane result  ; 
-  j = strstart [ s ] ; 
-  while ( j < strstart [ s + 1 ] ) {
-      
-    if ( strpool [ j ] != buffer [ k ] ) 
+  return (str_ptr - 1);
+}
+/* sec 0044 */
+bool str_eq_buf_ (str_number s, integer k)
+{
+  register bool Result;
+  pool_pointer j;
+  bool result;
+
+  j = str_start[s];
+
+  while (j < str_start[s + 1])
+  {
+    if (str_pool[j] != buffer[k])
     {
-      result = false ; 
-      goto lab45 ; 
-    } 
-    incr ( j ) ; 
-    incr ( k ) ; 
-  } 
-  result = true ; 
-  lab45: Result = result ; 
-  return Result ; 
-} 
+      result = false;
+      goto lab45;
+    }
 
-booleane zstreqstr ( s , t ) 
-strnumber s ; 
-strnumber t ; 
-{/* 45 */ register booleane Result; streqstr_regmem 
-  poolpointer j, k  ; 
-  booleane result  ; 
-  result = false ; 
-  if ( ( strstart [ s + 1 ] - strstart [ s ] ) != ( strstart [ t + 1 ] - 
-  strstart [ t ] ) ) 
-  goto lab45 ; 
-  j = strstart [ s ] ; 
-  k = strstart [ t ] ; 
-  while ( j < strstart [ s + 1 ] ) {
-      
-    if ( strpool [ j ] != strpool [ k ] ) 
-    goto lab45 ; 
-    incr ( j ) ; 
-    incr ( k ) ; 
-  } 
-  result = true ; 
-  lab45: Result = result ; 
-  return Result ; 
-} 
+    incr(j);
+    incr(k);
+  }
+  result = true;
+lab45:
+  Result = result;
+  return Result;
+}
+/* sec 0045 */
+bool str_eq_str_ (str_number s, str_number t)
+{
+  register bool Result;
+  pool_pointer j, k;
+  bool result;
 
-void zprinttwo ( n ) 
-integer n ; 
-{printtwo_regmem 
-  n = abs ( n ) % 100 ; 
-  printchar ( 48 + ( n / 10 ) ) ; 
-  printchar ( 48 + ( n % 10 ) ) ; 
-} 
+  result = false;
 
-void zprinthex ( n ) 
-integer n ; 
-{printhex_regmem 
-  char k  ; 
-  k = 0 ; 
-  printchar ( 34 ) ;  	/* " */
-  do {
-/*      dig [ k ] = n % 16 ; */
-	  dig [ k ] = (unsigned char) (n % 16) ;  
-/*      dig [ k ] = n & 15 ; */
-    n = n / 16 ; 
-/*    n = n >> 4 ;  */
-    incr ( k ) ; 
-  } while ( ! ( n == 0 ) ) ; 
-  printthedigs ( k ) ; 
-} 
+  if (length(s) != length(t))
+    goto lab45;
 
-void zprintromanint ( n ) 
-integer n ; 
-{/* 10 */ printromanint_regmem 
-  poolpointer j, k  ; 
-  nonnegativeinteger u, v  ; 
-  j = strstart [ 260 ] ;	/*  m2d5c2l5x2v5i */
-  v = 1000 ; 
-  while ( true ) {
-    while ( n >= v ) {
-      printchar ( strpool [ j ] ) ; 
-      n = n - v ; 
-    } 
-    if ( n <= 0 ) 
-    return ; 
-    k = j + 2 ; 
-    u = v / ( strpool [ k - 1 ] - 48 ) ; 
-    if ( strpool [ k - 1 ] == 50 ) 
+  j = str_start[s];
+  k = str_start[t];
+
+  while (j < str_start[s + 1])
+  {
+    if (str_pool[j] != str_pool[k])
+      goto lab45;
+
+    incr(j);
+    incr(k);
+  }
+  result = true;
+lab45:
+  Result = result;
+  return Result;
+}
+/* sec 0066 */
+void print_two_(integer n)
+{ 
+  n = abs(n) % 100;
+  print_char('0' + (n / 10));
+  print_char('0' + (n % 10));
+} 
+/* sec 0067 */
+void print_hex_(integer n)
+{
+  char k;
+
+  k = 0;
+  print_char('"');
+
+  do
     {
-      k = k + 2 ; 
-      u = u / ( strpool [ k - 1 ] - 48 ) ; 
-    } 
-    if ( n + u >= v ) 
+      dig[k] = (unsigned char) (n % 16);
+      n = n / 16;
+      incr(k);
+    }
+  while (!(n == 0));
+
+  print_the_digs(k);
+}
+/* sec 0069 */
+void print_roman_int_(integer n)
+{
+  pool_pointer j, k;
+  nonnegative_integer u, v;
+
+  j = str_start[260]; /*  m2d5c2l5x2v5i */
+  v = 1000;
+
+  while (true)
+  {
+    while (n >= v)
     {
-      printchar ( strpool [ k ] ) ; 
-      n = n + u ; 
-    } 
-    else {
-      j = j + 2 ; 
-      v = v / ( strpool [ j - 1 ] - 48 ) ; 
-    } 
-  } 
-} 
+      print_char(str_pool[j]);
+      n = n - v;
+    }
 
-void printcurrentstring ( void ) 
-{printcurrentstring_regmem 
-  poolpointer j  ; 
-  j = strstart [ strptr ] ; 
-  while ( j < poolptr ) {
-    printchar ( strpool [ j ] ) ; 
-    incr ( j ) ; 
-  } 
-} 
+    if (n <= 0)
+      return;
 
-int stringlength (int strptr) {
-	int nstart, nnext;
-	nstart = strstart[ strptr ];
-	nnext = strstart[ strptr + 1 ];
-	return (nnext - nstart) + 2;
+    k = j + 2;
+    u = v / (str_pool[k - 1] - '0');
+
+    if (str_pool[k - 1] == 50)
+    {
+      k = k + 2;
+      u = u / (str_pool[k - 1] - '0');
+    }
+
+    if (n + u >= v)
+    {
+      print_char(str_pool[k]);
+      n = n + u;
+    }
+    else
+    {
+      j = j + 2;
+      v = v / (str_pool[j - 1] - '0');
+    }
+  }
+}
+/* sec 0070 */
+void print_current_string (void)
+{
+  pool_pointer j;
+
+  j = str_start[str_ptr];
+
+  while (j < pool_ptr)
+  {
+    print_char(str_pool[j]);
+    incr(j);
+  }
 }
 
-char *addstring (char *s, int strptr) {
-	int nstart, nnext, n;
-	nstart = strstart[ strptr ];
-	nnext = strstart[ strptr + 1 ];
-	n = nnext - nstart;
-	memcpy(s, &strpool[nstart], n);
-	s += n;
-	strcpy(s, "\r\n");
-	s += 2;
-	return s;
+int stringlength (int str_ptr)
+{
+  return (str_start[str_ptr + 1] - str_start[str_ptr]) + 2;
 }
 
-int addextrahelp=1;
+char * add_string (char *s, char * str_string)
+{
+  int n;
+
+  n = strlen(str_string);
+  memcpy(s, &str_string, n);
+  s += n;
+  strcpy(s, "\r\n");
+  s += 2;
+  return s;
+}
+
+int addextrahelp = 1;
 
 // make one long \r\n separated string out of help lines 
-// strpool is packedASCIIcode *
+// str_pool is packed_ASCII_code *
 
-char *makeuphelpstring (int nhelplines) {
-	char *helpstring, *s;
-	int k, nlen=0;
-	
-//	get length of help for this specific message
-	for (k = nhelplines-1; k >= 0; k--) {
-		nlen += stringlength(helpline[ k ]);
-	}
-	nlen += 2;		// for blank line separator
-	if (addextrahelp) {
-		nlen += stringlength(265);
-		nlen += stringlength(266);
-		nlen += stringlength(267);
-		if ( baseptr > 0 ) nlen += stringlength(268);
-		if ( deletionsallowed ) nlen += stringlength(269);
-		nlen += stringlength(270);
-	}
-	helpstring = (char *) malloc(nlen+1);
-	s = helpstring;
-	for (k = nhelplines-1; k >= 0; k--) {
-		s = addstring(s, helpline[k]);
-	}
-	if (addextrahelp) {
-		strcpy(s, "\r\n");
-		s += 2;
-		s = addstring(s, 265);		/* Type <return> to proceed, S to scroll future error messages, */
-		s = addstring(s, 266);		/* R to run without stopping, Q to run quietly, */
-		s = addstring(s, 267);		/* I to insert something,  */
-		if ( baseptr > 0 ) s = addstring(s, 268) ;	/*  E to edit your file,  */
-		if ( deletionsallowed ) s = addstring(s,  269 ) ;	/* 1 or ... or 9 to ignore the next 1 to 9 tokens of input, */
-		s = addstring(s, 270);		/* H for help, X to quit. */
-	}
-	return helpstring;
+char * make_up_help_string (int nhelplines)
+{
+  char * helpstring, *s;
+  int k, nlen = 0;
+  
+//  get length of help for this specific message
+  for (k = nhelplines - 1; k >= 0; k--)
+  {
+    nlen += strlen(help_line[k]);
+  }
+
+  nlen += 2; // for blank line separator: "\r\n"
+
+  if (addextrahelp)
+  {
+    nlen += stringlength(265);
+    nlen += stringlength(266);
+    nlen += stringlength(267);
+
+    if (base_ptr > 0)
+      nlen += stringlength(268);
+
+    if (deletions_allowed)
+      nlen += stringlength(269);
+
+    nlen += stringlength(270);
+  }
+
+  helpstring = (char *) malloc(nlen + 1); // +1 = '\0'
+  s = helpstring;
+
+  for (k = nhelplines-1; k >= 0; k--)
+  {
+    s = add_string(s, help_line[k]);
+  }
+
+  if (addextrahelp)
+  {
+    strcpy(s, "\r\n");
+    s += 2;
+    s = add_string(s, "Type <return> to proceed, S to scroll future error messages,");
+    s = add_string(s, "R to run without stopping, Q to run quietly,");
+    s = add_string(s, "I to insert something, ");
+
+    if (base_ptr > 0)
+      s = add_string(s, "E to edit your file, ");
+
+    if (deletions_allowed)
+      s = add_string(s, "1 or ... or 9 to ignore the next 1 to 9 tokens of input,");
+
+    s = add_string(s, "H for help, X to quit.");
+  }
+
+  return helpstring;
 }
 
-char *makeupquerystring (int promptstr) {
-	char *querystr;
-	int nstart, nnext, n;
-	char *s;
-	nstart = strstart[ promptstr ];
-	nnext = strstart[ promptstr + 1 ];
-	n = nnext - nstart;
-	querystr = (char *) malloc(n + 1);
-	s = querystr;
-	memcpy(s, &strpool[nstart], n);	
-	s += n;
-	*s = '\0';
-	return querystr;	
+char * make_up_query_string (int promptstr)
+{
+  char *querystr;
+  int nstart, nnext, n;
+  char *s;
+
+  nstart = str_start[ promptstr];
+  nnext = str_start[ promptstr + 1];
+  n = nnext - nstart;
+  querystr = (char *) malloc(n + 1);
+  s = querystr;
+  memcpy(s, &str_pool[nstart], n);  
+  s += n;
+  *s = '\0';
+
+  return querystr;
 }
 
-// abortflag set if input_line / ConsoleInput returns non-zero
+// abort_flag set if input_line / ConsoleInput returns non-zero
 // should set interrupt instead ???
 // called from tex0.c, tex2.c, tex3.c
-
-// void terminput ( void ) 
-void terminput ( int promptstr, int nhelplines ) 
-{terminput_regmem 
-    integer k  ;
-	int flag;
-	char *helpstring=NULL;
-	char *querystring=NULL;
-//	if (nhelplines != 0) {
-//		helpstring = makeuphelpstring (nhelplines);
-//		printf(helpstring);
-//		free(helpstring);
-//	}
-	showline("\n", 0);		// force it to show what may be buffered up ???
-	helpstring = NULL;	
+/* sec 0071 */
+// void term_input(void)
+void term_input (char * term_str, int term_help_lines)
+{ 
+  integer k;
+  int flag;
+  char * helpstring = NULL;
 #ifdef _WINDOWS
-	if (promptstr != 0) querystring = makeupquerystring (promptstr);
-	if (nhelplines != 0) helpstring = makeuphelpstring (nhelplines);
-	if (helpstring == NULL && querystring != NULL) {
-		if (strcmp(querystring, ": ") == 0)
-			helpstring = xstrdup("Please type another file name (or ^z to exit):");
-		else if (strcmp(querystring, "=>") == 0)		// from firmuptheline
-			helpstring = xstrdup("Please type <enter> to accept this line\r\nor type a replacement line");
-		else if (strcmp(querystring, "insert>") == 0)	// from error() after "I"
-			helpstring = xstrdup("Please type something to insert here");
-		else if (strcmp(querystring, "") == 0)			// from readtoks
-			helpstring = xstrdup("Please type a control sequence");
-		else if (strcmp(querystring, "= ") == 0)		// from readtoks
-			helpstring = xstrdup("Please type a token");
-		else if (strcmp(querystring, "*") == 0)		// getnext
-			helpstring = xstrdup("Please type a control sequence\r\n(or ^z to exit)");
-//		else if (strcmp(querystring, "**") == 0)	// initterminal
-//			helpstring = xstrdup("Please type a control sequence or a file name\r\n(or ^z to exit)");			
-//		else if (strcmp(querystring, "? ") == 0)	// from error()
-//			helpstring = xstrdup("Please type a character to select an action");
-	}
-	flag = ConsoleInput(querystring, helpstring, (char *) &buffer[first]);	// ???
-//	flag == 0 means trouble --- EOF on terminal
-	if (querystring != NULL) free(querystring);
-	if (helpstring != NULL) free(helpstring);
-	helpstring = querystring = NULL;
-
-	last = first + strlen((char *) &buffer[first]);	/* -1 ? */
-//	flag = (last > first);
-//	may need to be more elaborate see input_line in texmf.c ???
-//	sprintf(logline, "first %d last %d flag %d - %s",
-//			first, last, flag, (char *) &buffer[first]);
-//	winerror(logline);
-#else
-	fflush ( stdout ) ; 
-	flag = inputln ( stdin , true );
+  char * querystring = NULL;
 #endif
-	if ( ! flag ) {
-		fatalerror ( 261 ) ;	/* End of file on the terminal! */
-		return;					// abortflag set
-	}
-	termoffset = 0 ; 
+//  if (nhelplines != 0) {
+//    helpstring = make_up_help_string (nhelplines);
+//    printf(helpstring);
+//    free(helpstring);
+//  }
+  show_line("\n", 0);    // force it to show what may be buffered up ???
+  helpstring = NULL;
+
+#ifdef _WINDOWS
+  if (term_str != NULL)
+    querystring = term_str;
+
+  if (term_help_lines != NULL)
+    helpstring = make_up_help_string(term_help_lines);
+
+  if (helpstring == NULL && querystring != NULL)
+  {
+    if (strcmp(querystring, ": ") == 0)
+      helpstring = xstrdup("Please type another file name (or ^z to exit):");
+    else if (strcmp(querystring, "=>") == 0)    // from firm_up_the_line
+      helpstring = xstrdup("Please type <enter> to accept this line\r\nor type a replacement line");
+    else if (strcmp(querystring, "insert>") == 0) // from error() after "I"
+      helpstring = xstrdup("Please type something to insert here");
+    else if (strcmp(querystring, "") == 0)      // from read_toks
+      helpstring = xstrdup("Please type a control sequence");
+    else if (strcmp(querystring, "= ") == 0)    // from read_toks
+      helpstring = xstrdup("Please type a token");
+    else if (strcmp(querystring, "*") == 0)   // get_next
+      helpstring = xstrdup("Please type a control sequence\r\n(or ^z to exit)");
+  }
+
+  flag = ConsoleInput(querystring, helpstring, (char *) &buffer[first]);  // ???
+//  flag == 0 means trouble --- EOF on terminal
+  if (querystring != NULL)
+    free(querystring);
+
+  if (helpstring != NULL)
+    free(helpstring);
+
+  helpstring = querystring = NULL;
+
+  last = first + strlen((char *) &buffer[first]); /* -1 ? */
+//  flag = (last > first);
+//  may need to be more elaborate see input_line in texmf.c ???
+//  sprintf(log_line, "first %d last %d flag %d - %s",
+//      first, last, flag, (char *) &buffer[first]);
+//  winerror(log_line);
+#else
+  fflush(stdout);
+  flag = input_ln(stdin, true);
+#endif
+  if (!flag)
+  {
+    fatal_error("End of file on the terminal!");
+    return;         // abort_flag set
+  }
+  term_offset = 0;
 #ifdef _WINDOWS
 // echo what was typed into Console buffer also
-	if ( last != first ) 
-		{register integer for_end; k = first ; for_end = last - 1 ;
-	if ( k <=  for_end) do
-		print ( buffer [ k ] ) ; 
-	while ( k++ < for_end ) ;
-		} 
-	println () ; 
+  if (last != first)
+    for (k = first; k <= last - 1; k++)
+      print(buffer[k]);
+  print_ln();
 #else
-	decr ( selector ) ;			// shut off echo
-	if ( last != first ) 
-		{register integer for_end; k = first ; for_end = last - 1 ;
-	if ( k <=  for_end) do
-		print ( buffer [ k ] ) ; 
-	while ( k++ < for_end ) ;
-		} 
-	println () ; 
-	incr ( selector ) ;			// reset selector again
+  decr(selector);     // shut off echo
+
+  if (last != first)
+    for (k = first; k <= last - 1; k++)
+      print(buffer[k]);
+
+  print_ln();
+  incr(selector);     // reset selector again
 #endif
-} 
+}
+/* sec 0091 */
+void int_error_ (integer n)
+{
+  print_string(" (");
+  print_int(n);
+  print_char(')');
+  error();
+}
+/* sec 0092 */
+void normalize_selector (void)
+{
+  if (log_opened)
+    selector = term_and_log;
+  else
+    selector = term_only;
 
-void zinterror ( integer n ) 
-{interror_regmem 
-    print ( 284 ) ;	 /*  ( */
-	printint ( n ) ; 
-	printchar ( 41 ) ; /* ) */
-	error () ; 
-} 
+  if (job_name == 0)
+    open_log_file();
 
-void normalizeselector ( ) 
-{normalizeselector_regmem 
-    if ( logopened ) 	selector = 19 ; 
-	else selector = 17 ; 
-	if ( jobname == 0 )	openlogfile () ; 
-	if ( interaction == 0 ) decr ( selector ) ; 
-} 
+  if (interaction == batch_mode)
+    decr(selector);
+}
+/* sec 0098 */
+void pause_for_instructions (void)
+{
+   if (OK_to_interrupt)
+   {
+    interaction = error_stop_mode;
 
-void pauseforinstructions ( ) 
-{pauseforinstructions_regmem 
-   if ( OKtointerrupt ) {
-	  interaction = 3 ; 
-	  if ( ( selector == 18 ) || ( selector == 16 ) ) incr ( selector ) ; 
-	  {
-		  if ( interaction == 3 ) 
-			  ; 
-		  printnl ( 262 ) ;		/* ! */
-		  print ( 294 ) ;		/* Interruption */
-	  } 
-	  {
-		helpptr = 3 ; 
-		helpline [ 2 ] = 295 ; /* You rang? */
-		helpline [ 1 ] = 296 ; /* Try to insert some instructions for me (e.g.,`I\showlists'), */
-		helpline [ 0 ] = 297 ; /* unless you just want to quit by typing `X'. */
-	  } 
-	  deletionsallowed = false ; 
-	  error () ; 
-	  ABORTCHECK;
-	  deletionsallowed = true ; 
-	  interrupt = 0 ; 
-	} 
-} 
+    if ((selector == log_only) || (selector == no_print))
+      incr(selector);
 
-integer zhalf ( x ) 
-integer x ; 
-{register integer Result; half_regmem 
-  if ( odd ( x ) ) 
-	Result = ( x + 1 ) / 2 ; 
-  else Result = x / 2 ; 
-  return Result ; 
-} 
+    print_err("Interruption");
+    help3("You rang?",
+        "Try to insert some instructions for me (e.g.,`I\\showlists'),",
+        "unless you just want to quit by typing `X'.");
+    deletions_allowed = false;
+    error();
+    deletions_allowed = true;
+    interrupt = 0;
+  }
+}
+/* sec 0100 */
+integer half_(integer x)
+{
+  if (odd(x))
+    return ((x + 1) / 2);
+  else
+    return (x / 2);
+}
+/* sec 0102 */
+scaled round_decimals_(small_number k)
+{
+  integer a;
 
-scaled zrounddecimals ( k ) 
-smallnumber k ; 
-{register scaled Result; rounddecimals_regmem 
-  integer a  ; 
-  a = 0 ; 
-  while ( k > 0 ) {
-    decr ( k ) ; 
-    a = ( a + dig [ k ] * 131072L ) / 10 ;	/* 2^17 */
-  } 
-  Result = ( a + 1 ) / 2 ; 
-  return Result ; 
-} 
+  a = 0;
 
+  while (k > 0)
+  {
+    decr(k);
+    a = (a + dig[k] * 131072L) / 10; /* 2^17 */
+  }
+  
+  return ((a + 1) / 2);
+}
+/* sec 0103 */
 /* This has some minor speedup changes - no real advantage probably ... */
-void zprintscaled ( s ) 
-scaled s ; 
-{printscaled_regmem 
-  scaled delta  ; 
-  if ( s < 0 ) 
-  {
-    printchar ( 45 ) ;						/* '-' */
-    s = - (integer) s ; 
-  } 
-  printint ( s / 65536L ) ; 
-/*  printint ( s >> 16 ) ;  */
-  printchar ( 46 ) ;						/* '.' */
-  s = 10 * ( s % 65536L ) + 5 ; 
-/*  s = 10 * ( s & 65535L ) + 5 ; */
-  delta = 10 ; 
-  do {
-      if ( delta > 65536L ) 
-    s = s - 17232 ;							/* 2^15 - 50000 - rounding */
-    printchar ( 48 + ( s / 65536L ) ) ;		/* '0' + */
-/*    printchar ( 48 + ( s >> 16 ) ) ; */
-    s = 10 * ( s % 65536L ) ; 
-/*    s = 10 * ( s & 65535L ) ; */
-    delta = delta * 10 ; 
-  } while ( ! ( s <= delta ) ) ; 
-} 
+void print_scaled_(scaled s)
+{
+  scaled delta;
 
-scaled zmultandadd ( n , x , y , maxanswer ) 
-integer n ; 
-scaled x ; 
-scaled y ; 
-scaled maxanswer ; 
-{register scaled Result; multandadd_regmem 
-  if ( n < 0 ) 
+  if (s < 0)
   {
-    x = - (integer) x ; 
-    n = - (integer) n ; 
-  } 
-  if ( n == 0 ) 
-  Result = y ; 
-  else if ( ( ( x <= ( maxanswer - y ) / n ) && ( - (integer) x <= ( maxanswer 
-  + y ) / n ) ) ) 
-  Result = n * x + y ; 
-  else {
-    aritherror = true ; 
-    Result = 0 ; 
-  } 
-  return Result ; 
-} 
+    print_char('-');
+    s = - (integer) s;
+  }
 
-scaled zxovern ( x , n ) 
-scaled x ; 
-integer n ; 
-{register scaled Result; xovern_regmem 
-  booleane negative  ; 
-  negative = false ; 
-  if ( n == 0 ) 
-  {
-    aritherror = true ; 
-    Result = 0 ; 
-    texremainder = x ; 
-  } 
-  else {
-      
-    if ( n < 0 ) 
+  print_int(s / 65536L);
+  print_char('.');
+  s = 10 * (s % 65536L) + 5;
+  delta = 10;
+
+  do
     {
-      x = - (integer) x ; 
-      n = - (integer) n ; 
-      negative = true ; 
-    } 
-    if ( x >= 0 ) 
-    {
-      Result = x / n ; 
-      texremainder = x % n ; 
-    } 
-    else {
-	
-      Result = - (integer) ( ( - (integer) x ) / n ) ; 
-      texremainder = - (integer) ( ( - (integer) x ) % n ) ; 
-    } 
-  } 
-  if ( negative ) 
-  texremainder = - (integer) texremainder ; 
-  return Result ; 
-} 
-
-scaled zxnoverd ( x , n , d ) 
-scaled x ; 
-integer n ; 
-integer d ; 
-{register scaled Result; xnoverd_regmem 
-  booleane positive  ; 
-  nonnegativeinteger t, u, v  ; 
-  if ( x >= 0 ) 
-  positive = true ; 
-  else {
-      
-    x = - (integer) x ; 
-    positive = false ; 
-  } 
-/*  t = ( x % 32768L ) * n ;  */
-  t = ( x & 32767L ) * n ; 
-/*  u = ( x / 32768L ) * n + ( t / 32768L ) ;  */
-  u = ( x >> 15 ) * n + ( t >> 15 ) ; 
-/*  v = ( u % d ) * 32768L + ( t % 32768L ) ;  */
-  v = ( ( u % d ) << 15 ) + ( t & 32767L ) ; 
-  if ( u / d >= 32768L ) 
-  aritherror = true ; 
-/*  else u = 32768L * ( u / d ) + ( v / d ) ;  */ 
-  else u = ( ( u / d ) << 15 ) + ( v / d ) ;	
-  if ( positive ) 
+      if (delta > 65536L)
+        s = s - 17232; /* 2^15 - 50000 - rounding */
+      print_char('0' + (s / 65536L));
+      s = 10 * (s % 65536L);
+      delta = delta * 10;
+    }
+  while (!(s <= delta));
+}
+/* sec 0105 */
+scaled mult_and_add_(integer n, scaled x, scaled y, scaled maxanswer)
+{
+  if (n < 0)
   {
-    Result = u ; 
-    texremainder = v % d ; 
-  } 
-  else {
-      
-    Result = - (integer) u ; 
-    texremainder = - (integer) ( v % d ) ; 
-  } 
-  return Result ; 
-} 
+    x = - (integer) x;
+    n = - (integer) n;
+  }
 
-halfword zbadness ( t , s ) 
-scaled t ; 
-scaled s ; 
-{register halfword Result; badness_regmem 
-  integer r  ; 
-  if ( t == 0 ) 
-  Result = 0 ; 
-  else if ( s <= 0 ) 
-  Result = 10000 ; 
-  else {
-    if ( t <= 7230584L ) 
-    r = ( t * 297 ) / s ; 
-    else if ( s >= 1663497L ) 
-    r = t / ( s / 297 ) ; 
-    else r = t ; 
-    if ( r > 1290 ) 
-    Result = 10000 ; 
-/*    safe to assume that r is positive ? */
-/*    else Result = ( r * r * r + 131072L ) / 262144L ;  */
-    else Result = ( r * r * r + 131072L ) >> 18 ;	/* 2^17 */
-  } 
-  return Result ; 
-} 
+  if (n == 0)
+    return y;
+  else if (((x <= (maxanswer - y) / n) && (- (integer) x <= (maxanswer + y) / n)))
+    return (n * x + y); 
+  else
+  {
+    arith_error = true;
+    return 0;
+  }
+}
+/* sec 0106 */
+scaled x_over_n_(scaled x, integer n)
+{
+  register scaled Result;
+  bool negative;
 
+  negative = false;
+
+  if (n == 0)
+  {
+    arith_error = true;
+    Result = 0;
+    tex_remainder = x;
+  }
+  else
+  {
+    if (n < 0)
+    {
+      x = - (integer) x;
+      n = - (integer) n;
+      negative = true;
+    }
+
+    if (x >= 0)
+    {
+      Result = x / n;
+      tex_remainder = x % n;
+    }
+    else
+    {
+      Result = - (integer) ((- (integer) x)/ n);
+      tex_remainder = - (integer) ((- (integer) x)% n);
+    }
+  }
+
+  if (negative)
+    tex_remainder = - (integer) tex_remainder;
+
+  return Result;
+}
+/* sec 0107 */
+scaled xn_over_d_(scaled x, integer n, integer d)
+{
+  register scaled Result;
+  bool positive;
+  nonnegative_integer t, u, v;
+
+  if (x >= 0)
+    positive = true; 
+  else
+  {
+    x = - (integer) x;
+    positive = false;
+  }
+
+  t =(x % 32767L) * n;
+  u =(x / 32768L)* n +(t / 32768L);
+  v =(u % d)* 32768L +(t % 32768L); 
+
+  if (u / d >= 32768L)
+    arith_error = true; 
+  else
+    u = 32768L * (u / d) + (v / d);
+
+  if (positive)
+  {
+    Result = u;
+    tex_remainder = v % d;
+  }
+  else
+  {
+    Result = - (integer) u;
+    tex_remainder = - (integer)(v % d);
+  }
+
+  return Result;
+}
+/* sec 0108 */
+halfword badness_(scaled t, scaled s)
+{
+  integer r;
+
+  if (t == 0)
+    return 0;
+  else if (s <= 0)
+    return 10000;
+  else
+  {
+    if (t <= 7230584L)
+      r = (t * 297) / s;
+    else if (s >= 1663497L)
+      r = t / (s / 297);
+    else
+      r = t;
+
+    if (r > 1290)
+      return 10000; 
+    else
+      return (r * r * r + 131072L) / 262144L;  /* 2^17 */
+  }
+}
+/* sec 0114 */
 #ifdef DEBUG
-void zprintword ( w ) 
-memoryword w ; 
-{printword_regmem 
-  printint ( w .cint ) ; 
-  printchar ( 32 ) ;			/*   */
-  printscaled ( w .cint ) ; 
-  printchar ( 32 ) ;		 	/*   */
-  printscaled ( round ( 65536L * w .gr ) ) ; 
-  println () ; 
-  printint ( w .hh .v.LH ) ; 
-  printchar ( 61 ) ;			/* = */
-  printint ( w .hh.b0 ) ; 
-  printchar ( 58 ) ;			/* : */
-  printint ( w .hh.b1 ) ; 
-  printchar ( 59 ) ;			/* ; */
-  printint ( w .hh .v.RH ) ; 
-  printchar ( 32 ) ;			/*   */
-  printint ( w .qqqq .b0 ) ; 
-  printchar ( 58 ) ;			/* : */
-  printint ( w .qqqq .b1 ) ; 
-  printchar ( 58 ) ;			/* : */
-  printint ( w .qqqq .b2 ) ; 
-  printchar ( 58 ) ;			/* : */
-  printint ( w .qqqq .b3 ) ; 
+void print_word_(memory_word w)
+{ 
+  print_int(w.cint); 
+  print_char(' ');
+  print_scaled(w.cint); 
+  print_char(' ');
+  print_scaled(round(65536L * w.gr));
+  print_ln();
+  print_int(w.hh.v.LH);
+  print_char('=');
+  print_int(w.hh.b0);
+  print_char(':');
+  print_int(w.hh.b1);
+  print_char(';');
+  print_int(w.hh.v.RH);
+  print_char(' ');
+  print_int(w.qqqq.b0); 
+  print_char(':');
+  print_int(w.qqqq.b1); 
+  print_char(':');
+  print_int(w.qqqq.b2); 
+  print_char(':');
+  print_int(w.qqqq.b3);
 } 
-
 /* need this version only if SHORTFONTINFO defined */
+void zprintfword(fmemoryword w)
+{
+  print_int(w.cint);
+  print_char(' ');
+  print_scaled(w.cint);
+  print_char(' ');
+  print_scaled(round(65536L * w.gr));
+  print_ln();
+  print_int(w.hh.v.LH);
+  print_char('=');
+  print_int(w.hh.b0);
+  print_char(':');
+  print_int(w .hh.b1);
+  print_char(';');
+  print_int(w.hh.v.RH);
+  print_char(' ');
+  print_int(w.qqqq.b0);
+  print_char(':');
+  print_int(w.qqqq.b1);
+  print_char(':');
+  print_int(w.qqqq.b2);
+  print_char(':');
+  print_int(w.qqqq.b3);
+}
+#endif
+/* sec 0292 */
+void show_token_list_(integer p, integer q, integer l)
+{
+  integer m, c;
+  ASCII_code match_chr;
+  ASCII_code n;
 
-void zprintfword ( w ) 
-fmemoryword w ; 
-{printword_regmem 
-   printint ( w .cint ) ; 
-printchar ( 32 ) ;			/*   */
-printscaled ( w .cint ) ; 
-printchar ( 32 ) ;		 	/*   */
-printscaled ( round ( 65536L * w .gr ) ) ; 
-println () ; 
-printint ( w .hh .v.LH ) ; 
-printchar ( 61 ) ;			/* = */
-printint ( w .hh.b0 ) ; 
-printchar ( 58 ) ;			/* : */
-printint ( w .hh.b1 ) ; 
-printchar ( 59 ) ;			/* ; */
-printint ( w .hh .v.RH ) ; 
-printchar ( 32 ) ;			/*   */
-printint ( w .qqqq .b0 ) ; 
-printchar ( 58 ) ;			/* : */
-printint ( w .qqqq .b1 ) ; 
-printchar ( 58 ) ;			/* : */
-printint ( w .qqqq .b2 ) ; 
-printchar ( 58 ) ;			/* : */
-printint ( w .qqqq .b3 ) ; 
-} 
-#endif /* DEBUG */
+  match_chr = '#';
+  n = '0';
+  tally = 0;
 
-void zshowtokenlist ( p , q , l ) 
-integer p ; 
-integer q ; 
-integer l ; 
-{/* 10 */ showtokenlist_regmem 
-  integer m, c  ; 
-  ASCIIcode matchchr  ; 
-  ASCIIcode n  ; 
-  matchchr = 35 ; 
-  n = 48 ; 
-  tally = 0 ; 
-/* while (p<>null) and (tally<l) do l.6239 */
-  while ( ( p != 0 ) && ( tally < l ) ) {
-      
-    if ( p == q ) 
-    {
-      firstcount = tally ; 
-      trickcount = tally + 1 + errorline - halferrorline ; 
-      if ( trickcount < errorline ) 
-      trickcount = errorline ; 
-    } 
-    if ( ( p < himemmin ) || ( p > memend ) ) 
-    {
-      printesc ( 307 ) ;	/* CLOBBERED. */
-      return ; 
-    } 
-    if ( mem [ p ] .hh .v.LH >= 4095 ) 
-    printcs ( mem [ p ] .hh .v.LH - 4095 ) ; 
-    else {
-	
-      m = mem [ p ] .hh .v.LH / 256 ; 
-/*      m = mem [ p ] .hh .v.LH >> 8 ;  */
-      c = mem [ p ] .hh .v.LH % 256 ; 
-/*      c = mem [ p ] .hh .v.LH & 255 ;  */
-      if ( mem [ p ] .hh .v.LH < 0 ) 
-      printesc ( 552 ) ;			/* BAD. */
-      else switch ( m ) 
-      {case 1 : 
-      case 2 : 
-      case 3 : 
-      case 4 : 
-      case 7 : 
-      case 8 : 
-      case 10 : 
-      case 11 : 
-      case 12 : 
-	print ( c ) ; 
-	break ; 
-      case 6 : 
-	{
-	  print ( c ) ; 
-	  print ( c ) ; 
-	} 
-	break ; 
-      case 5 : 
-	{
-	  print ( matchchr ) ; 
-	  if ( c <= 9 ) 
-	  printchar ( c + 48 ) ; 
-	  else {
-	    printchar ( 33 ) ;		/* ! */
-	    return ; 
-	  } 
-	} 
-	break ; 
-      case 13 : 
-	{
-/*	  matchchr =  c ; */		/* keep compiler happy */
-	  matchchr = (ASCIIcode) c ; 
-	  print ( c ) ; 
-	  incr ( n ) ; 
-	  printchar ( n ) ; 
-	  if ( n > 57 ) 
-		  return ; 
-	} 
-	break ; 
-      case 14 : 
-	print ( 553 ) ;			/* -> */
-	break ; 
-	default: 
-	printesc ( 552 ) ;		/* BAD.  */
-	break ; 
-      } 
-    } 
-    p = mem [ p ] .hh .v.RH ; 
-  } 
-/* if p<>null then print_esc("ETC."); l.6244 */
-  if ( p != 0 ) 
-  printesc ( 551 ) ;			/* ETC. */
-} 
-
-void runaway ( ) 
-{runaway_regmem 
-  halfword p  ; 
-  if ( scannerstatus > 1 ) 
+  while ((p != 0) && (tally < l))
   {
-    printnl ( 566 ) ;				/* Runaway  */
-    switch ( scannerstatus ) 
-    {case 2 : 
-      {
-	print ( 567 ) ;					/* definition */
-	p = defref ; 
-      } 
-      break ; 
-    case 3 : 
-      {
-	print ( 568 ) ;					/* argument */
-	p = memtop - 3 ; 
-      } 
-      break ; 
-    case 4 : 
-      {
-	print ( 569 ) ;					/* preamble */
-	p = memtop - 4 ; 
-      } 
-      break ; 
-    case 5 : 
-      {
-	print ( 570 ) ;					/* text */
-	p = defref ; 
-      } 
-      break ; 
-    } 
-    printchar ( 63 ) ;				/* ? */
-    println () ; 
-/*	p may be used without being initialized -- OK */
-    showtokenlist ( mem [ p ] .hh .v.RH , 0 , errorline - 10 ) ; 
-  } 
-} 
+    if (p == q)
+    {
+      first_count = tally;
+      trick_count = tally + 1 + error_line - half_error_line;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* first try list of available nodes (avail != NULL) */
-/* then see if can go upwards (memend < memmax) */
-/* then see if can go downwards (himemmin > lomemmax) */
-/* if not, extend memory at the top and grab from there --- new */
-/* else fail ! */	/* paragraph 120 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-halfword getavail ( ) 
-{register halfword Result; getavail_regmem 
-  halfword p  ; 
-  p = avail ; 
-  if ( p != 0 )								/* while p<>null do */
-  avail = mem [ avail ] .hh .v.RH ; 
-  else if ( memend < memmax )				/* memend + 1 < memmax ? NO */
+      if (trick_count < error_line)
+        trick_count = error_line;
+    }
+
+    if ((p < hi_mem_min) || (p > mem_end))
+    {
+      print_esc("CLOBBERED.");
+      return;
+    }
+
+    if (info(p) >= cs_token_flag)
+      print_cs(info(p) - cs_token_flag);
+    else
+    {
+      m = info(p) / 256;
+      c = info(p) % 256;
+
+      if (info(p) < 0)
+        print_esc("BAD.");
+      else
+        switch (m)
+        {
+          case left_brace:
+          case right_brace:
+          case math_shift:
+          case tab_mark:
+          case sup_mark:
+          case sub_mark:
+          case spacer:
+          case letter:
+          case other_char:
+            print(c);
+            break;
+
+          case mac_param:
+            print(c);
+            print(c);
+            break;
+
+          case out_param:
+            print(match_chr);
+
+            if (c <= 9)
+              print_char(c + '0');
+            else
+            {
+              print_char('!');
+              return;
+            }
+            break;
+
+          case match:
+            match_chr = (ASCII_code) c;
+            print(c);
+            incr(n);
+            print_char(n);
+
+            if (n > '9')
+              return;
+            break;
+
+          case end_match:
+            print_string("->");
+            break;
+
+          default:
+            print_esc("BAD.");
+            break;
+        }
+    }
+    p = link(p);
+  }
+
+  if (p != 0)
+    print_esc("ETC.");
+}
+/* sec 0306 */
+void runaway (void)
+{
+  halfword p;
+
+  if (scanner_status > 1)
   {
-    incr ( memend ) ; 
-    p = memend ; 
-  } 
-  else { 
-    decr ( himemmin ) ; 
-    p = himemmin ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-    if ( himemmin <= lomemmax ) {		/* have we run out in middle ? */
-		incr ( himemmin ) ;				/* undo the change */
-/*		reallocmain (0, memtop/2); */	/* extend main memory at hi end */
-		mem = reallocmain (0, memtop/2);	/* zzzaa = zmem = mem */
-		if (mem == NULL) {
-			return 0;
-		}
-/* presumably now memend < memmax - but need test in case allocation fails */
-		if (memend >= memmax)    {
-			runaway () ; 
-			overflow ( 298 , memmax + 1 - memmin ) ; /* main memory size */
-			return 0;						// abortflag set
-		} 
-		incr ( memend ) ;				/* then grab from new area */
-		p = memend ;					/* 1993/Dec/14 */
-	}
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  }	
-  mem [ p ] .hh .v.RH = 0 ;				/* link(p) = null !!! */
-	;
+    print_nl("Runaway ");
+
+    switch (scanner_status)
+    {
+      case defining:
+        print_string("definition");
+        p = def_ref;
+        break;
+
+      case matching:
+        print_string("argument");
+        p = temp_head;
+        break;
+
+      case aligning:
+        print_string("preamble");
+        p = hold_head;
+        break;
+
+      case absorbing:
+        print_string("text");
+        p = def_ref;
+        break;
+    }
+
+    print_char('?');
+    print_ln();
+    show_token_list(link(p), 0, error_line - 10); 
+  }
+}
+/* sec 0120 */
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+/* first try list of available nodes (avail != NULL)                   */
+/* then see if can go upwards (mem_end < mem_max)                      */
+/* then see if can go downwards (hi_mem_min > lo_mem_max)              */
+/* if not, extend memory at the top and grab from there --- new        */
+/* else fail ! paragraph 120                                           */
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+halfword get_avail (void)
+{
+  halfword p;
+
+  p = avail;
+
+  if (p != 0)
+    avail = link(avail);
+  else if (mem_end < mem_max)
+  {
+    incr(mem_end);
+    p = mem_end;
+  }
+  else
+  {
+    decr(hi_mem_min);
+    p = hi_mem_min;
+
+    if (hi_mem_min <= lo_mem_max) /* have we run out in middle ? */
+    {
+      incr(hi_mem_min);
+      mem = realloc_main (0, mem_top / 2);  /* zzzaa = zmem = mem */
+
+      if (mem == NULL)
+        return 0;
+
+      if (mem_end >= mem_max)
+      {
+        runaway();
+        overflow("main memory size", mem_max + 1 - mem_min);
+        return 0;           // abort_flag set
+      }
+      incr(mem_end);        /* then grab from new area */
+      p = mem_end;          /* 1993/Dec/14 */
+    }
+  }
+
+  link(p) = 0;       /* link(p) = null !!! */
+
 #ifdef STAT
-  incr ( dynused ) ; 
+  incr(dyn_used); 
 #endif /* STAT */
-  Result = p ; 
-  return Result ; 
-} 
 
-void zflushlist ( p )					/* paragraph 123 */
-halfword p ; 
-{flushlist_regmem 
-  halfword q, r  ; 
-  if ( p != 0 )							/* null !!! */
+  return p; 
+} 
+/* sec 0123 */
+void flush_list_(halfword p)          /* paragraph 123 */
+{ 
+  halfword q, r;
+
+  if (p != 0)              /* null !!! */
   {
-    r = p ; 
-    do {
-	q = r ; 
-      r = mem [ r ] .hh .v.RH ; 
-	;
+    r = p;
+
+    do
+      {
+        q = r;
+        r = link(r);
 #ifdef STAT
-      decr ( dynused ) ; 
+        decr(dyn_used);
 #endif /* STAT */
-    } while ( ! ( r == 0 ) ) ;			/* r != null */
-    mem [ q ] .hh .v.RH = avail ; 
-    avail = p ; 
-  } 
-} 
+      }
+    while (!(r == 0));     /* r != null */
 
-halfword zgetnode ( s ) 
-integer s ; 
-{/* 40 10 20 */ register halfword Result; getnode_regmem 
-  halfword p  ; 
-  halfword q  ; 
-  integer r  ; 
-  integer t  ; 
-  lab20: p = rover ; 
-  do {
-      q = p + mem [ p ] .hh .v.LH ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*    while ( ( mem [ q ] .hh .v.RH == 262143L ) ) { */ /* NO! */
-    while ( ( mem [ q ] .hh .v.RH == emptyflag ) ) {
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+    link(q) = avail;
+    avail = p;
+  }
+}
+/* sec 0125 */
+halfword get_node_(integer s)
+{
+  register halfword Result;
+  halfword p;
+  halfword q;
+  integer r;
+  integer t;
+lab20:
 
-	  if (q == 0) {
-/* should never happen, since this field is reference count for zeroglue */
-	  }  /* debugging code 93/DEC/15 */ /* eventually remove */
+  p = rover;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-      t = mem [ q + 1 ] .hh .v.RH ; 
-      if ( q == rover ) 
-      rover = t ; 
-      mem [ t + 1 ] .hh .v.LH = mem [ q + 1 ] .hh .v.LH ; 
-      mem [ mem [ q + 1 ] .hh .v.LH + 1 ] .hh .v.RH = t ; 
-      q = q + mem [ q ] .hh .v.LH ; 
-    } 
-    r = q - s ; 
-    if ( r > toint ( p + 1 ) ) 
+  do
     {
-      mem [ p ] .hh .v.LH = r - p ; 
-      rover = p ; 
-      goto lab40 ; 
-    } 
-    if ( r == p ) 
-    if ( mem [ p + 1 ] .hh .v.RH != p ) 
+      q = p + node_size(p);
+
+      while ((mem[q].hh.v.RH == empty_flag))
+      {
+        t = rlink(q);
+
+        if (q == rover)
+          rover = t;
+
+        llink(t) = llink(q);
+        rlink(llink(q)) = t;
+        q = q + node_size(q);
+      }
+
+      r = q - s;
+
+      if (r > toint(p + 1)) 
+      {
+        node_size(p) = r - p;
+        rover = p;
+        goto lab40;
+      }
+
+      if (r == p)
+        if (rlink(p) != p)
+        {
+          rover = rlink(p);
+          t = llink(p);
+          llink(rover) = t;
+          rlink(t) = rover;
+          goto lab40;
+        }
+
+      node_size(p) = q - p;
+      p = rlink(p);
+    }
+  while (!(p == rover));
+
+  if (s == 1073741824L)    /* 2^30 - special case - merge adjacent */
+  {
+    Result = max_halfword;
+
+    if (trace_flag)
+      show_line("Merged adjacent multi-word nodes\n", 0);
+
+    return Result;
+  }
+
+/*  maybe try downward epxansion first instead ? */
+  if (lo_mem_max + 2 < hi_mem_min)
+    if (lo_mem_max + 2 <= mem_bot + max_halfword)  /* silly ? flush 93/Dec/16 */
     {
-      rover = mem [ p + 1 ] .hh .v.RH ; 
-      t = mem [ p + 1 ] .hh .v.LH ; 
-      mem [ rover + 1 ] .hh .v.LH = t ; 
-      mem [ t + 1 ] .hh .v.RH = rover ; 
-      goto lab40 ; 
-    } 
-    mem [ p ] .hh .v.LH = q - p ; 
-    p = mem [ p + 1 ] .hh .v.RH ; 
-  } while ( ! ( p == rover ) ) ; 
-  if ( s == 1073741824L )		/* 2^30 - special case - merge adjacent */
-  {
-/*    Result = 262143L ;  */ /* NO ! */
-    Result = emptyflag ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	if (traceflag) showline("Merged adjacent multi-word nodes\n", 0);
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-    return Result ; 
-  } 
-/*	maybe try downward epxansion first instead ? */
-  if ( lomemmax + 2 < himemmin ) 
+      /* if (hi_mem_min - lo_mem_max >= 1998) */
+      if (hi_mem_min - lo_mem_max >= (block_size + block_size - 2))
+        /* t = lo_mem_max + 1000; */
+        t = lo_mem_max + block_size;
+      else
+        t = lo_mem_max + 1 + (hi_mem_min - lo_mem_max) / 2;
 
-/*  if ( lomemmax + 2 <= 262143L )  */	/* NO! */
-  if ( lomemmax + 2 <= membot + maxhalfword ) 	/* silly ? flush 93/Dec/16 */
+      p = llink(rover);
+      q = lo_mem_max;
+      rlink(p) = q;
+      llink(rover) = q;
 
-  {
-/*    if ( himemmin - lomemmax >= 1998 )  */
-    if ( himemmin - lomemmax >= (blocksize + blocksize - 2) ) 
-/*    t = lomemmax + 1000 ;  */
-    t = lomemmax + blocksize ; 
-    else t = lomemmax + 1 + ( himemmin - lomemmax ) / 2 ; 
-    p = mem [ rover + 1 ] .hh .v.LH ; 
-    q = lomemmax ; 
-    mem [ p + 1 ] .hh .v.RH = q ; 
-    mem [ rover + 1 ] .hh .v.LH = q ; 
+      if (t > mem_bot + max_halfword)
+        t = mem_bot + max_halfword;     /* silly ? flush 93/Dec/16 */
 
-/*    if ( t > 262143L )    t = 262143L ;  */ /* NO! */
-    if ( t > membot + maxhalfword )
-		t = membot + maxhalfword ;			/* silly ? flush 93/Dec/16 */
+      rlink(q) = rover;
+      llink(q) = p;
+      link(q) = empty_flag;
+      node_size(q) = t - lo_mem_max; /* block size */
+      lo_mem_max = t;
+      link(lo_mem_max) = 0;
+      info(lo_mem_max) = 0;
+      rover = q;
+      goto lab20;
+    }
 
-    mem [ q + 1 ] .hh .v.RH = rover ; 
-    mem [ q + 1 ] .hh .v.LH = p ; 
-/*    mem [ q ] .hh .v.RH = 262143L ; */ /* NO! */
-    mem [ q ] .hh .v.RH = emptyflag ; 
-    mem [ q ] .hh .v.LH = t - lomemmax ; /* block size */
-    lomemmax = t ; 
-    mem [ lomemmax ] .hh .v.RH = 0 ; 
-    mem [ lomemmax ] .hh .v.LH = 0 ; 
-    rover = q ; 
-    goto lab20 ; 
-  } 
-/*  overflow ( 298 , memmax + 1 - memmin ) ;  */ /* what used to happen! */
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* we've run out of space in the middle for variable length blocks */
-/* try and add new block from below membot *//* first check if space ! */
-  if (memmin - (blocksize + 1) <= memstart)	{/* extend lower memory downwards */
-/*	  reallocmain (memtop/2, 0); */
-	  mem = reallocmain (memtop/2 + blocksize, 0);	/* zzzaa = zmem = mem */
-	  if (mem == NULL) {
-		  return 0;
-	  }
+/* try and add new block from below mem_bot *//* first check if space ! */
+  if (mem_min - (block_size + 1) <= mem_start) /* extend lower memory downwards */
+  {
+    mem = realloc_main (mem_top/2 + block_size, 0);  /* zzzaa = zmem = mem */
+
+    if (mem == NULL)
+    {
+      return 0;
+    }
   }
-/*  if (traceflag) showline("Extending downwards by %d\n", blocksize, 0); */
-  if (memmin - (blocksize + 1) <= memstart)	{ /* check again */
-	  if (traceflag) {
-		  sprintf(logline, "memmin %d, memstart %d, blocksize %d\n",
-				  memmin, memstart, blocksize);
-		  showline(logline, 0);
-	  }
-	  overflow ( 298 , memmax + 1 - memmin ) ;	/* darn: allocation failed ! */
-	  return 0;			// abortflag set
+
+  if (mem_min - (block_size + 1) <= mem_start) /* check again */
+  {
+    if (trace_flag)
+    {
+      sprintf(log_line, "mem_min %d, mem_start %d, block_size %d\n", mem_min, mem_start, block_size);
+      show_line(log_line, 0);
+    }
+
+    overflow("main memory size", mem_max + 1 - mem_min); /* darn: allocation failed ! */
+    return 0;     // abort_flag set
   }
 /* avoid function call in following ? */
-  addvariablespace (blocksize);	/* now to be found in itex.c */
-  goto lab20 ;					/* go try getnode again */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+  add_variable_space (block_size); /* now to be found in itex.c */
+  goto lab20;         /* go try get_node again */
 
-  lab40: mem [ r ] .hh .v.RH = 0 ; 
-	;
+lab40:
+  link(r) = 0;
+
 #ifdef STAT
-  varused = varused + s ; 
+  var_used = var_used + s; 
 #endif /* STAT */
 
-/*  if (traceflag) {
-	  if (r == 0) showline("r IS ZERO in ZGETNODE!\n", 0);
-  } */ 			/* debugging code 93/dec/15 */
-
-  Result = r ; 
-  return Result ; 
+  Result = r; 
+  return Result; 
 } 
+/* sec 0130 */
+void free_node_(halfword p, halfword s)
+{ 
+  halfword q;
 
-void zfreenode ( p , s ) 
-halfword p ; 
-halfword s ; 
-{freenode_regmem 
-  halfword q  ; 
-  mem [ p ] .hh .v.LH = s ; 
-/*  mem [ p ] .hh .v.RH = 262143L ;  */	/* NO! */
-  mem [ p ] .hh .v.RH = emptyflag ; 
-  q = mem [ rover + 1 ] .hh .v.LH ; 
-  mem [ p + 1 ] .hh .v.LH = q ; 
-  mem [ p + 1 ] .hh .v.RH = rover ; 
-  mem [ rover + 1 ] .hh .v.LH = p ; 
-  mem [ q + 1 ] .hh .v.RH = p ; 
-	;
+  node_size(p) = s;
+  link(p) = empty_flag;
+  q = llink(rover);
+  llink(p) = q;
+  rlink(p) = rover;
+  llink(rover) = p;
+  rlink(q) = p;
 #ifdef STAT
-  varused = varused - s ; 
+  var_used = var_used - s; 
 #endif /* STAT */
-} 
+}
+/* sec 0136 */
+halfword new_null_box (void) 
+{
+  halfword p;
 
-halfword newnullbox ( ) 
-{register halfword Result; newnullbox_regmem 
-  halfword p  ; 
-  p = getnode ( 7 ) ; 
-  mem [ p ] .hh.b0 = 0 ; 
-  mem [ p ] .hh.b1 = 0 ; 
-  mem [ p + 1 ] .cint = 0 ; 
-  mem [ p + 2 ] .cint = 0 ; 
-  mem [ p + 3 ] .cint = 0 ; 
-  mem [ p + 4 ] .cint = 0 ; 
-  mem [ p + 5 ] .hh .v.RH = 0 ; 
-  mem [ p + 5 ] .hh.b0 = 0 ; 
-  mem [ p + 5 ] .hh.b1 = 0 ; 
-  mem [ p + 6 ] .gr = 0.0 ; 
-  Result = p ; 
-  return Result ; 
-} 
+  p = get_node(box_node_size);
+  type(p) = hlist_node;
+  subtype(p) = min_quarterword;
+  width(p) = 0;
+  depth(p) = 0;
+  height(p) = 0;
+  shift_amount(p) = 0;
+  list_ptr(p) = 0;
+  glue_sign(p) = normal;
+  glue_order(p) = normal;
+  glue_set(p) = 0.0;
 
-// @ A new rule node is delivered by the |new_rule| function. It
-//   makes all the dimensions ``running,'' so you have to change the
-//   ones that are not allowed to run.
+  return p;
+}
+/* sec 0139 */
+halfword new_rule (void) 
+{
+  halfword p;
 
-halfword newrule ( ) 
-{register halfword Result; newrule_regmem 
-  halfword p  ; 
-  p = getnode ( 4 ) ;					/* rule_node_size */
-  mem [ p ] .hh.b0 = 2 ;				/* rule_node type */
-  mem [ p ] .hh.b1 = 0 ;				/* sub_type zero */
-  mem [ p + 1 ] .cint = -1073741824L ;	/* -2^30 null_flag width */
-  mem [ p + 2 ] .cint = -1073741824L ;	/* -2^30 null_flag depth */
-  mem [ p + 3 ] .cint = -1073741824L ;	/* -2^30 null_flag height */
-  Result = p ; 
-  return Result ; 
-} 
+  p = get_node(rule_node_size);
+  type(p) = rule_node;
+  subtype(p) = 0;
+  width(p) = null_flag;
+  depth(p) = null_flag;
+  height(p) = null_flag;
 
-// @ The |new_ligature| function creates a ligature node having given
-//   contents of the |font|, |character|, and |lig_ptr| fields.
+  return p;
+}
+/* sec 0144 */
+halfword new_ligature_(quarterword f, quarterword c, halfword q)
+{
+  halfword p;
 
-halfword znewligature ( f , c , q ) 
-quarterword f ; 
-quarterword c ; 
-halfword q ; 
-{register halfword Result; newligature_regmem 
-  halfword p  ; 
-  p = getnode ( 2 ) ;			/* small_node_size */
-  mem [ p ] .hh.b0 = 6 ;		/* ligature_node type */
-  mem [ p + 1 ] .hh.b0 = f ;	/* font */
-  mem [ p + 1 ] .hh.b1 = c ;	/* character */
-  mem [ p + 1 ] .hh .v.RH = q ;	/* pointer */
-  mem [ p ] .hh.b1 = 0 ;		/* subtype zero */
-  Result = p ; 
-  return Result ; 
-} 
+  p = get_node(small_node_size);
+  type(p) = ligature_node;
+  font(lig_char(p)) = f;
+  character(lig_char(p)) = c;
+  lig_ptr(p) = q;
+  subtype(p) = 0;
 
-//	We also have a |new_lig_item| function, which returns a two-word
-//	node having a given |character| field. Such nodes are used for
-//	temporary processing as ligatures are being created.
+  return p;
+}
+/* sec 0144 */
+halfword new_lig_item_(quarterword c)
+{
+  halfword p;
 
-halfword znewligitem ( c ) 
-quarterword c ; 
-{register halfword Result; newligitem_regmem 
-  halfword p  ; 
-  p = getnode ( 2 ) ;			/* small_node_size */
-  mem [ p ] .hh.b1 = c ;		/* character */ 
-  mem [ p + 1 ] .hh .v.RH = 0 ; /* lig_ptr(p):=null; */
-  Result = p ; 
-  return Result ; 
-} 
+  p = get_node(small_node_size);
+  character(p) = c;
+  lig_ptr(p) = 0;
 
-halfword newdisc ( ) 
-{register halfword Result; newdisc_regmem 
-  halfword p  ; 
-  p = getnode ( 2 ) ; 
-  mem [ p ] .hh.b0 = 7 ; 
-  mem [ p ] .hh.b1 = 0 ; 
-  mem [ p + 1 ] .hh .v.LH = 0 ; /* pre_break(p):=null; */
-  mem [ p + 1 ] .hh .v.RH = 0 ; /* post_break(p):=null; */
-  Result = p ; 
-  return Result ; 
-} 
+  return p;
+}
+/* sec 0145 */
+halfword new_disc (void) 
+{
+  halfword p;
 
-halfword znewmath ( w , s ) 
-scaled w ; 
-smallnumber s ; 
-{register halfword Result; newmath_regmem 
-  halfword p  ; 
-  p = getnode ( 2 ) ; 
-  mem [ p ] .hh.b0 = 9 ; 
-  mem [ p ] .hh.b1 = s ; 
-  mem [ p + 1 ] .cint = w ; 
-  Result = p ; 
-  return Result ; 
-} 
+  p = get_node(small_node_size);
+  type(p) = disc_node;
+  replace_count(p) = 0;
+  pre_break(p) = 0;
+  post_break(p) = 0;
 
-halfword znewspec ( p ) 
-halfword p ; 
-{register halfword Result; newspec_regmem 
-  halfword q  ; 
-  q = getnode ( 4 ) ; 
-  mem [ q ] = mem [ p ] ; 
-  mem [ q ] .hh .v.RH = 0 ; 
-  mem [ q + 1 ] .cint = mem [ p + 1 ] .cint ; 
-  mem [ q + 2 ] .cint = mem [ p + 2 ] .cint ; 
-  mem [ q + 3 ] .cint = mem [ p + 3 ] .cint ; 
-  Result = q ; 
-  return Result ; 
-} 
+  return p;
+}
+/* sec 0147 */
+halfword new_math_(scaled w, small_number s)
+{
+  halfword p;
 
-halfword znewparamglue ( n ) 
-smallnumber n ; 
-{register halfword Result; newparamglue_regmem 
-  halfword p  ; 
-  halfword q  ; 
-  p = getnode ( 2 ) ; 
-  mem [ p ] .hh.b0 = 10 ; 
-  mem [ p ] .hh.b1 = n + 1 ;	/* conversion int to unsigned short */
-  mem [ p + 1 ] .hh .v.RH = 0 ; 
-  q = eqtb [ (hash_size + 782) + n ] .hh .v.RH ; /* gluebase + n */
-  mem [ p + 1 ] .hh .v.LH = q ; 
-  incr ( mem [ q ] .hh .v.RH ) ; 
-  Result = p ; 
-  return Result ; 
-} 
+  p = get_node(small_node_size);
+  type(p) = math_node;
+  subtype(p) = s;
+  width(p) = w;
 
-halfword znewglue ( q ) 
-halfword q ; 
-{register halfword Result; newglue_regmem 
-  halfword p  ; 
-  p = getnode ( 2 ) ; 
-  mem [ p ] .hh.b0 = 10 ; 
-  mem [ p ] .hh.b1 = 0 ; 
-  mem [ p + 1 ] .hh .v.RH = 0 ; 
-  mem [ p + 1 ] .hh .v.LH = q ; 
-  incr ( mem [ q ] .hh .v.RH ) ; 
-  Result = p ; 
-  return Result ; 
-} 
+  return p;
+}
+/* sec 0151 */
+halfword new_spec_(halfword p)
+{
+  halfword q;
 
-halfword znewskipparam ( n ) 
-smallnumber n ; 
-{register halfword Result; newskipparam_regmem 
-  halfword p  ; 
-  tempptr = newspec ( eqtb [ (hash_size + 782) + n ] .hh .v.RH ) ; /* gluebase + n */
-  p = newglue ( tempptr ) ; 
-  mem [ tempptr ] .hh .v.RH = 0 ; 
-  mem [ p ] .hh.b1 = n + 1 ; 	/* conversion int to unsigned short */
-  Result = p ; 
-  return Result ; 
-} 
+  q = get_node(glue_spec_size);
+  mem[q] = mem[p];
+  glue_ref_count(q) = 0;
+  width(q) = width(p);
+  stretch(q) = stretch(p);
+  shrink(q) = shrink(p);
 
-halfword znewkern ( w ) 
-scaled w ; 
-{register halfword Result; newkern_regmem 
-  halfword p  ; 
-  p = getnode ( 2 ) ; 
-  mem [ p ] .hh.b0 = 11 ; 
-  mem [ p ] .hh.b1 = 0 ; 
-  mem [ p + 1 ] .cint = w ; 
-  Result = p ; 
-  return Result ; 
-} 
+  return q;
+}
+/* se 0152 */
+halfword new_param_glue_(small_number n)
+{
+  halfword p;
+  halfword q;
 
-halfword znewpenalty ( m ) 
-integer m ; 
-{register halfword Result; newpenalty_regmem 
-  halfword p  ; 
-  p = getnode ( 2 ) ; 
-  mem [ p ] .hh.b0 = 12 ; 
-  mem [ p ] .hh.b1 = 0 ; 
-  mem [ p + 1 ] .cint = m ; 
-  Result = p ; 
-  return Result ; 
-} 
+  p = get_node(small_node_size);
+  type(p) = glue_node;
+  subtype(p) = n + 1;
+  leader_ptr(p) = 0;
+  q = glue_par(n);
+  glue_ptr(p) = q;
+  incr(glue_ref_count(q));
+
+  return p;
+}
+/* sec 0153 */
+halfword new_glue_(halfword q)
+{
+  halfword p;
+
+  p = get_node(small_node_size);
+  type(p) = glue_node;
+  subtype(p) = normal;
+  leader_ptr(p) = 0; 
+  glue_ptr(p) = q;
+  incr(glue_ref_count(q));
+
+  return p;
+}
+/* sec 0154 */
+halfword new_skip_param_(small_number n)
+{
+  halfword p;
+
+  temp_ptr = new_spec(glue_par(n));
+  p = new_glue(temp_ptr); 
+  glue_ref_count(temp_ptr) = 0;
+  subtype(p) = n + 1;
+
+  return p;
+}
+/* sec 0155 */
+halfword new_kern_(scaled w)
+{
+  halfword p;
+
+  p = get_node(small_node_size);
+  type(p) = kern_node;
+  subtype(p) = normal;
+  width(p) = w;
+
+  return p;
+}
+/* sec 0158 */
+halfword new_penalty_(integer m)
+{
+  halfword p;
+
+  p = get_node(small_node_size);
+  type(p) = penalty_node;
+  subtype(p) = 0;
+  penalty(p) = m;
+
+  return p;
+}
 
 #ifdef DEBUG
-void zcheckmem ( printlocs ) 
-booleane printlocs ; 
-{/* 31 32 */ checkmem_regmem 
-  halfword p, q  ; 
-  booleane clobbered  ; 
-  {register integer for_end; p = memmin ; for_end = lomemmax ; if ( p <= 
-  for_end) do 
-    freearr [ p ] = false ; 
-  while ( p++ < for_end ) ; } 
-  {register integer for_end; p = himemmin ; for_end = memend ; if ( p <= 
-  for_end) do 
-    freearr [ p ] = false ; 
-  while ( p++ < for_end ) ; } 
-  p = avail ; 
-  q = 0 ; 
-  clobbered = false ; 
-  while ( p != 0 ) {		/* while p<>null do */
-      
-    if ( ( p > memend ) || ( p < himemmin ) ) 
-    clobbered = true ; 
-    else if ( freearr [ p ] ) 
-    clobbered = true ; 
-    if ( clobbered ) 
+/* sec 0167 */
+void check_mem_(bool printlocs)
+{
+  halfword p, q;
+  bool clobbered;
+
+  for (p = mem_min; p <= lo_mem_max; p++) freearr[p] = false;
+  for (p = hi_mem_min; p <= mem_end; p++) freearr[p] = false;
+  p = avail;
+  q = 0;
+  clobbered = false;
+  while (p != 0) {
+    if ((p > mem_end) || (p < hi_mem_min))
+      clobbered = true;
+    else if (freearr[p])
+      clobbered = true;
+
+    if (clobbered)
     {
-      printnl ( 299 ) ;		/* AVAIL list clobbered at  */
-      printint ( q ) ; 
-      goto lab31 ; 
-    } 
-    freearr [ p ] = true ; 
-    q = p ; 
-    p = mem [ q ] .hh .v.RH ; 
-  } 
-  lab31: ; 
-  p = rover ; 
-  q = 0 ;				/* q:=null */
-  clobbered = false ; 
+      print_nl("AVAIL list clobbered at ");
+      print_int(q);
+      goto lab31;
+    }
+    freearr[p] = true;
+    q = p;
+    p = link(q);
+  }
+lab31:;
+  p = rover;
+  q = 0;
+  clobbered = false;
   do {
-      if ( ( p >= lomemmax ) || ( p < memmin ) ) 
-    clobbered = true ; 
-    else if ( ( mem [ p + 1 ] .hh .v.RH >= lomemmax ) || ( mem [ p + 1 ] .hh 
-    .v.RH < memmin ) ) 
-    clobbered = true ; 
-/*    else if ( ! ( ( mem [ p ] .hh .v.RH == 262143L ) ) || ( mem [ p ] .hh *//*NO!*/
-    else if ( ! ( ( mem [ p ] .hh .v.RH == emptyflag ) ) || ( mem [ p ] .hh 
-    .v.LH < 2 ) || ( p + mem [ p ] .hh .v.LH > lomemmax ) || ( mem [ mem [ p + 
-    1 ] .hh .v.RH + 1 ] .hh .v.LH != p ) ) 
-    clobbered = true ; 
-    if ( clobbered ) 
-    {
-      printnl ( 300 ) ;		/* Double-AVAIL list clobbered at  */
-      printint ( q ) ; 
-      goto lab32 ; 
-    } 
-    {register integer for_end; q = p ; for_end = p + mem [ p ] .hh .v.LH - 1 
-    ; if ( q <= for_end) do 
-      {
-	if ( freearr [ q ] ) 
-	{
-	  printnl ( 301 ) ;		/* Doubly free location at  */
-	  printint ( q ) ; 
-	  goto lab32 ; 
-	} 
-	freearr [ q ] = true ; 
-      } 
-    while ( q++ < for_end ) ; } 
-    q = p ; 
-    p = mem [ p + 1 ] .hh .v.RH ; 
-  } while ( ! ( p == rover ) ) ; 
-  lab32: ; 
-  p = memmin ; 
-  while ( p <= lomemmax ) {
+      if ((p >= lo_mem_max) || (p < mem_min))
+        clobbered = true;
+      else if ((rlink(p) >= lo_mem_max) || (rlink(p) < mem_min))
+        clobbered = true;
+      else if (!(is_empty(p)) || (node_size(p) < 2) ||
+          (p + node_size(p) > lo_mem_max) || (llink(rlink(p)) != p))
+        clobbered = true;
       
-/*    if ( ( mem [ p ] .hh .v.RH == 262143L ) )  */	/* NO! */
-    if ( ( mem [ p ] .hh .v.RH == emptyflag ) ) 
+      if (clobbered)
+      {
+        print_nl("Double-AVAIL list clobbered at ");
+        print_int(q);
+        goto lab32;
+      }
+
+      for (q = p; q <= p + node_size(p) - 1; q++)
+      {
+        if (freearr[q])
+        {
+          print_nl("Doubly free location at ");
+          print_int(q);
+          goto lab32;
+        }
+        freearr[q]= true;
+      }
+      q = p;
+      p = rlink(p);
+  } while (!(p == rover));
+lab32:;
+  p = mem_min;
+  while (p <= lo_mem_max) {
+    if (is_empty(p))
     {
-      printnl ( 302 ) ;			/* Bad flag at  */
-      printint ( p ) ; 
-    } 
-    while ( ( p <= lomemmax ) && ! freearr [ p ] ) incr ( p ) ; 
-    while ( ( p <= lomemmax ) && freearr [ p ] ) incr ( p ) ; 
-  } 
-  if ( printlocs ) 
+      print_nl("Bad flag at ");
+      print_int(p);
+    }
+    while ((p <= lo_mem_max) && !freearr[p]) incr(p);
+    while ((p <= lo_mem_max) && freearr[p]) incr(p);
+  }
+
+  if (printlocs)
   {
-    printnl ( 303 ) ;			/* New busy locs: */
-    {register integer for_end; p = memmin ; for_end = lomemmax ; if ( p <= 
-    for_end) do 
-      if ( ! freearr [ p ] && ( ( p > waslomax ) || wasfree [ p ] ) ) 
+    print_nl("New busy locs:");
+
+    for (p = mem_min; p <= lo_mem_max; p++)
+      if (!freearr[p] && ((p > was_lo_max) || wasfree[p]))
       {
-	printchar ( 32 ) ;			/*   */
-	printint ( p ) ; 
-      } 
-    while ( p++ < for_end ) ; } 
-    {register integer for_end; p = himemmin ; for_end = memend ; if ( p <= 
-    for_end) do 
-      if ( ! freearr [ p ] && ( ( p < washimin ) || ( p > wasmemend ) || 
-      wasfree [ p ] ) ) 
+        print_char(' ');
+        print_int(p);
+      }
+
+    for (p = hi_mem_min; p <= mem_end; p++)
+      if (!freearr[p] && ((p < was_hi_min) || (p > was_mem_end) || wasfree[p]))
       {
-	printchar ( 32 ) ;			/*   */
-	printint ( p ) ; 
-      } 
-    while ( p++ < for_end ) ; } 
-  } 
-  {register integer for_end; p = memmin ; for_end = lomemmax ; if ( p <= 
-  for_end) do 
-    wasfree [ p ] = freearr [ p ] ; 
-  while ( p++ < for_end ) ; } 
-  {register integer for_end; p = himemmin ; for_end = memend ; if ( p <= 
-  for_end) do 
-    wasfree [ p ] = freearr [ p ] ; 
-  while ( p++ < for_end ) ; } 
-  wasmemend = memend ; 
-  waslomax = lomemmax ; 
-  washimin = himemmin ; 
-} 
+        print_char(' ');
+        print_int(p);
+      }
+  }
+
+  for (p = mem_min; p <= lo_mem_max; p++) wasfree[p] = freearr[p];
+  for (p = hi_mem_min; p <= mem_end; p++) wasfree[p] = freearr[p];
+
+  was_mem_end = mem_end;
+  was_lo_max = lo_mem_max;
+  was_hi_min = hi_mem_min;
+}
 #endif /* DEBUG */
 
 #ifdef DEBUG
-void zsearchmem ( p ) 
-halfword p ; 
-{searchmem_regmem 
-  integer q  ; 
-  {register integer for_end; q = memmin ; for_end = lomemmax ; if ( q <= 
-  for_end) do 
+/* sec 0172 */
+void search_mem_(halfword p)
+{
+  integer q;
+
+  for (q = mem_min; q <= lo_mem_max; q++)
+  {
+    if (link(q) == p)
     {
-      if ( mem [ q ] .hh .v.RH == p ) 
-      {
-	printnl ( 304 ) ;	/* LINK( */
-	printint ( q ) ; 
-	printchar ( 41 ) ;	/* ) */
-      } 
-      if ( mem [ q ] .hh .v.LH == p ) 
-      {
-	printnl ( 305 ) ;	/* INFO( */
-	printint ( q ) ; 
-	printchar ( 41 ) ; /* ) */
-      } 
-    } 
-  while ( q++ < for_end ) ; } 
-  {register integer for_end; q = himemmin ; for_end = memend ; if ( q <= 
-  for_end) do 
+      print_nl("LINK(");
+      print_int(q);
+      print_char(')');
+    }
+    if (info(q) == p)
     {
-      if ( mem [ q ] .hh .v.RH == p ) 
-      {
-	printnl ( 304 ) ;	/* LINK( */
-	printint ( q ) ; 
-	printchar ( 41 ) ; /* ) */
-      } 
-      if ( mem [ q ] .hh .v.LH == p ) 
-      {
-	printnl ( 305 ) ;	/* INFO( */
-	printint ( q ) ; 
-	printchar ( 41 ) ;	/* ) */
-      } 
-    } 
-  while ( q++ < for_end ) ; } 
-  {register integer for_end; q = 1 ; for_end = (hash_size + 1833) ; if ( q <= for_end) do 
+      print_nl("INFO(");
+      print_int(q);
+      print_char(')');
+    }
+  }
+
+  for (q = hi_mem_min; q <= mem_end; q++)
+  {
+    if (link(q) == p)
     {
-      if ( eqtb [ q ] .hh .v.RH == p ) 
-      {
-	printnl ( 498 ) ;		/* EQUIV( */
-	printint ( q ) ; 
-	printchar ( 41 ) ;		/* ) */
-      } 
-    } 
-  while ( q++ < for_end ) ; } 
-  if ( saveptr > 0 ) 
-  {register integer for_end; q = 0 ; for_end = saveptr - 1 ; if ( q <= 
-  for_end) do 
+      print_nl("LINK(");
+      print_int(q);
+      print_char(')');
+    }
+    if (info(q) == p)
     {
-      if ( savestack [ q ] .hh .v.RH == p ) 
-      {
-	printnl ( 543 ) ;			/* SAVE( */
-	printint ( q ) ; 
-	printchar ( 41 ) ;			/* ) */
-      } 
-    } 
-  while ( q++ < for_end ) ; } 
-/*  {register integer for_end; q = 0 ; for_end = 607 ; if ( q <= for_end) do */
-  {register integer for_end; q = 0 ; for_end = hyphen_prime ; if ( q <= for_end) do 
+      print_nl("INFO(");
+      print_int(q);
+      print_char(')');
+    }
+  }
+
+  for (q = active_base; q <= box_base + 255; q++)
+    if (equiv(q) == p)
     {
-      if ( hyphlist [ q ] == p ) 
+      print_nl("EQUIV(");
+      print_int(q);
+      print_char(')');
+    }
+
+  if (save_ptr > 0)
+    for (q = 0; q <= save_ptr - 1; q++)
+    {
+      if (equiv_field(save_stack[q]) == p)
       {
-	printnl ( 934 ) ;			/* HYPH( */
-	printint ( q ) ; 
-	printchar ( 41 ) ;			/* ) */
-      } 
-    } 
-  while ( q++ < for_end ) ; } 
-} 
+        print_nl("SAVE(");
+        print_int(q);
+        print_char(')');
+      }
+    }
+
+  for (q = 0; q <= hyphen_prime; q++)
+    if (hyph_list[q] == p)
+    {
+      print_nl("HYPH(");
+      print_int(q);
+      print_char(')');
+    }
+}
 #endif /* DEBUG */
+/* sec 0174 */
+void short_display_(integer p)
+{
+  integer n; 
 
-void zshortdisplay ( p ) 
-integer p ; 
-{shortdisplay_regmem 
-  integer n  ; 
-/*  while ( p > memmin ) { */
-  while ( p != 0 ) {			/* want p != null here bkph 93/Dec/15 !!! */
-								/* NOTE: still not fixed in 3.14159 ! */
-     if ( ( p >= himemmin ) )	/* is_char_node(p) */
-    {
-      if ( p <= memend ) 
-      {
-	if ( mem [ p ] .hh.b0 != fontinshortdisplay )	/* font(p) */
-	{
-	  if ( ( mem [ p ] .hh.b0 > fontmax ) ) 
-	  printchar ( 42 ) ;		/* * */
-/*	  else printesc ( hash [ (hash_size + 524) + mem [ p ] .hh.b0 ] .v.RH ) ; */
-	  else printesc ( hash [ (hash_size + hash_extra + 524) + mem [ p ] .hh.b0 ] .v.RH ) ; 
-													  /* 96/Jan/10 */
-	  printchar ( 32 ) ;		/*   */
-	  fontinshortdisplay = mem [ p ] .hh.b0 ; 
-	} 
-	print ( mem [ p ] .hh.b1 ) ;					/* character(p) */
-      } 
-    } 
-    else switch ( mem [ p ] .hh.b0 ) 
-    {case 0 : 
-    case 1 : 
-    case 3 : 
-    case 8 : 
-    case 4 : 
-    case 5 : 
-    case 13 : 
-      print ( 306 ) ;		/* [] */
-      break ; 
-    case 2 : 
-      printchar ( 124 ) ;	/* | */
-      break ; 
-    case 10 : 
-      if ( mem [ p + 1 ] .hh .v.LH != 0 ) 
-      printchar ( 32 ) ;	/*   */
-      break ; 
-    case 9 : 
-      printchar ( 36 ) ;	/* $ */
-      break ; 
-    case 6 : 
-      shortdisplay ( mem [ p + 1 ] .hh .v.RH ) ; 
-      break ; 
-    case 7 : 
-      {
-	shortdisplay ( mem [ p + 1 ] .hh .v.LH ) ; 
-	shortdisplay ( mem [ p + 1 ] .hh .v.RH ) ; 
-	n = mem [ p ] .hh.b1 ; 
-	while ( n > 0 ) {
-	    
-	  if ( mem [ p ] .hh .v.RH != 0 )	/* if link(p)<>null then */
-	  p = mem [ p ] .hh .v.RH ; 
-	  decr ( n ) ; 
-	} 
-      } 
-      break ; 
-      default: 
-      ; 
-      break ; 
-    } 
-    p = mem [ p ] .hh .v.RH ; 
-  } 
-} 
+  while (p != 0) {      /* want p != null here bkph 93/Dec/15 !!! NOTE: still not fixed in 3.14159 ! */
+     if (is_char_node(p))
+     {
+       if (p <= mem_end)
+       {
+         if (font(p) != font_in_short_display)
+         {
+           if ((font(p) > font_max))
+             print_char('*');
+           else
+           {
+             print_esc("");
+             print(font_id_text(font(p)));
+           }
+           print_char(' ');
+           font_in_short_display = font(p);
+         }
+         print(character(p));
+       }
+     }
+     else switch (mem[p].hh.b0)
+     {
+      case hlist_node:
+      case vlist_node:
+      case ins_node:
+      case whatsit_node:
+      case mark_node:
+      case adjust_node:
+      case unset_node:
+        print_string("[]");
+        break;
+      case rule_node:
+        print_char('|');
+        break;
+      case glue_node:
+        if (glue_ptr(p) != 0)
+          print_char(' ');
+        break;
+      case math_node:
+        print_char('$');
+        break;
+      case ligature_node:
+        short_display(lig_ptr(p));
+        break;
+      case disc_node:
+        short_display(pre_break(p));
+        short_display(post_break(p));
+        n = replace_count(p);
 
-void zprintfontandchar ( p ) 
-integer p ; 
-{printfontandchar_regmem 
-  if ( p > memend ) 
-  printesc ( 307 ) ;	/* CLOBBERED. */
-  else {
-      
-    if ( ( mem [ p ] .hh.b0 > fontmax ) )	/* font(p) */
-    printchar ( 42 ) ;		/* * */
-/*    else printesc ( hash [ (hash_size + 524) + mem [ p ] .hh.b0 ] .v.RH ) ; */
-    else printesc ( hash [ (hash_size + hash_extra + 524) + mem [ p ] .hh.b0 ] .v.RH ) ;  
-											/* 96/Jan/10 */
-    printchar ( 32 ) ;		/*   */
-    print ( mem [ p ] .hh.b1 ) ;			/* character(p) */
-  } 
-} 
-
-void zprintmark ( p ) 
-integer p ; 
-{printmark_regmem 
-  printchar ( 123 ) ;		/* { */
-  if ( ( p < himemmin ) || ( p > memend ) ) 
-	  printesc ( 307 ) ;	/* CLOBBERED. */
-  else showtokenlist ( mem [ p ] .hh .v.RH , 0 , maxprintline - 10 ) ; 
-  printchar ( 125 ) ;		/* } */
-} 
-
-void zprintruledimen ( d ) 
-scaled d ; 
-{printruledimen_regmem 
-  if ( ( d == -1073741824L ) )	/* - 2^30 */
-  printchar ( 42 ) ;		/* * */
-  else printscaled ( d ) ; 
-} 
-
-void zprintglue ( d , order , s ) 
-scaled d ; 
-integer order ; 
-strnumber s ; 
-{printglue_regmem 
-  printscaled ( d ) ; 
-  if ( ( order < 0 ) || ( order > 3 ) ) 
-  print ( 308 ) ;	/* foul */
-  else if ( order > 0 ) 
+        while (n > 0) {
+          if (link(p) != 0) /* if link(p)<>null then */
+            p = link(p);
+          decr(n);
+        }
+        break;
+      default:
+        break;
+    }
+    p = link(p);
+  }
+}
+/* sec 0176 */
+void print_font_and_char_ (integer p)
+{
+  if (p > mem_end)
+    print_esc("CLOBBERED.");
+  else
   {
-    print ( 309 ) ; /* fil */
-    while ( order > 1 ) {
-	
-      printchar ( 108 ) ; /* l */
-      decr ( order ) ; 
-    } 
-  } 
-  else if ( s != 0 ) 
-  print ( s ) ; 
-} 
-
-void zprintspec ( p , s ) 
-integer p ; 
-strnumber s ; 
-{printspec_regmem 
-  if ( ( p < memmin ) || ( p >= lomemmax ) ) 
-  printchar ( 42 ) ;		/* * */
-  else {
-      
-    printscaled ( mem [ p + 1 ] .cint ) ; 
-    if ( s != 0 ) 
-    print ( s ) ; 
-    if ( mem [ p + 2 ] .cint != 0 ) 
+    if ((font(p) > font_max))
+      print_char('*');
+    else
     {
-      print ( 310 ) ; /*  plus */
-      printglue ( mem [ p + 2 ] .cint , mem [ p ] .hh.b0 , s ) ; 
-    } 
-    if ( mem [ p + 3 ] .cint != 0 ) 
-    {
-      print ( 311 ) ; /*  minus */
-      printglue ( mem [ p + 3 ] .cint , mem [ p ] .hh.b1 , s ) ; 
-    } 
-  } 
-} 
+      print_esc("");
+      print(font_id_text(font(p)));
+    }
 
-void zprintfamandchar ( p ) 
-halfword p ; 
-{printfamandchar_regmem 
-  printesc ( 461 ) ;			/* fam */
-  printint ( mem [ p ] .hh.b0 ) ; 
-  printchar ( 32 ) ;			/*    */
-  print ( mem [ p ] .hh.b1 ) ; 
-} 
+    print_char(' ');
+    print(character(p));
+  }
+}
+/* sec 0176 */
+void print_mark_ (integer p)
+{ 
+  print_char('{');
 
-void zprintdelimiter ( p ) 
-halfword p ; 
-{printdelimiter_regmem 
-  integer a  ; 
-  a = mem [ p ] .qqqq .b0 * 256 + mem [ p ] .qqqq .b1 ; 
-  a = a * 4096 + mem [ p ] .qqqq .b2 * 256 + mem [ p ] .qqqq .b3 ; 
-  if ( a < 0 ) 
-  printint ( a ) ; 
-  else printhex ( a ) ; 
-} 
+  if ((p < hi_mem_min)||(p > mem_end))
+    print_esc("CLOBBERED.");
+  else
+    show_token_list(link(p), 0, max_print_line - 10);
 
-void zprintsubsidiarydata ( p , c ) 
-halfword p ; 
-ASCIIcode c ; 
-{printsubsidiarydata_regmem 
-  if ( ( poolptr - strstart [ strptr ] ) >= depththreshold ) 
+  print_char('}');
+}
+/* sec 0176 */
+void print_rule_dimen_ (scaled d)
+{
+  if ((d == -1073741824L)) /* - 2^30 */
+    print_char('*');
+  else
+    print_scaled(d);
+}
+/* sec 0177 */
+void print_glue_(scaled d, integer order, char * s)
+{
+  print_scaled(d); 
+
+  if ((order < normal) || (order > filll))
+    print_string("foul");
+  else if (order > 0)
   {
-    if ( mem [ p ] .hh .v.RH != 0 ) 
-    print ( 312 ) ; /* [] */
-  } 
-  else {
-      
-    {
-      strpool [ poolptr ] = c ; 
-      incr ( poolptr ) ; 
-    } 
-    tempptr = p ; 
-    switch ( mem [ p ] .hh .v.RH ) 
-    {case 1 : 
-      {
-	println () ; 
-	printcurrentstring () ; 
-	printfamandchar ( p ) ; 
-      } 
-      break ; 
-    case 2 : 
-      showinfo () ; 
-      break ; 
-    case 3 : 
-      if ( mem [ p ] .hh .v.LH == 0 ) 
-      {
-	println () ; 
-	printcurrentstring () ; 
-	print ( 854 ) ;				/* {} */
-      } 
-      else showinfo () ; 
-      break ; 
-      default: 
-      ; 
-      break ; 
-    } 
-    decr ( poolptr ) ; 
-  } 
-} 
+    print_string("fil");
 
-void zprintstyle ( c ) 
-integer c ; 
-{printstyle_regmem 
-  switch ( c / 2 ) 
-  {case 0 : 
-    printesc ( 855 ) ;		/* displaystyle  */
-    break ; 
-  case 1 : 
-    printesc ( 856 ) ;		/* textstyle */
-    break ; 
-  case 2 : 
-    printesc ( 857 ) ;		/* scriptstyle */
-    break ; 
-  case 3 : 
-    printesc ( 858 ) ;		/* scriptscriptstyle */
-    break ; 
-    default: 
-    print ( 859 ) ;			/* Unknown */
-    break ; 
-  } 
-} 
-
-void zprintskipparam ( n ) 
-integer n ; 
-{printskipparam_regmem 
-  switch ( n ) 
-  {case 0 : 
-    printesc ( 373 ) ;		/* lineskip */
-    break ; 
-  case 1 : 
-    printesc ( 374 ) ;		/* baselineskip */
-    break ; 
-  case 2 : 
-    printesc ( 375 ) ;		/* parskip */
-    break ; 
-  case 3 : 
-    printesc ( 376 ) ;		/* abovedisplayskip */
-    break ; 
-  case 4 : 
-    printesc ( 377 ) ;		/* belowdisplayskip */
-    break ; 
-  case 5 : 
-    printesc ( 378 ) ;		/* abovedisplayshortskip */
-    break ; 
-  case 6 : 
-    printesc ( 379 ) ;		/* belowdisplayshortskip */
-    break ; 
-  case 7 : 
-    printesc ( 380 ) ;		/* leftskip */
-    break ; 
-  case 8 : 
-    printesc ( 381 ) ;		/* rightskip */
-    break ; 
-  case 9 : 
-    printesc ( 382 ) ;		/* topskip */
-    break ; 
-  case 10 : 
-    printesc ( 383 ) ;		/* splittopskip */
-    break ; 
-  case 11 : 
-    printesc ( 384 ) ;		/* tabskip */
-    break ; 
-  case 12 : 
-    printesc ( 385 ) ;		/* spaceskip */
-    break ; 
-  case 13 : 
-    printesc ( 386 ) ;		/* xspaceskip */
-    break ; 
-  case 14 : 
-    printesc ( 387 ) ;		/* parfillskip */
-    break ; 
-  case 15 : 
-    printesc ( 388 ) ;		/* thinmuskip */
-    break ; 
-  case 16 : 
-    printesc ( 389 ) ;		/* medmuskip */
-    break ; 
-  case 17 : 
-    printesc ( 390 ) ;		/* thickmuskip */
-    break ; 
-    default: 
-    print ( 391 ) ;			/* [unknown glue parameter!] */
-    break ; 
-  } 
-} 
-
-void zshownodelist ( p ) 
-integer p ; 
-{/* 10 */ shownodelist_regmem 
-  integer n  ; 
-  real g  ; 
-/* begin if cur_length>depth_threshold then */
-  if ( ( poolptr - strstart [ strptr ] ) > depththreshold ) 
+    while (order > 1) {
+      print_char('l');
+      decr(order);
+    }
+  } else if (*s != '\0')
+    print_string(s);
+}
+/* sec 0178 */
+void print_spec_(integer p, char * s)
+{
+  if ((p < mem_min)||(p >= lo_mem_max)) 
+    print_char('*');
+  else
   {
-/*    if ( p > 0 )  */	/* was p>null !!! line 3662 in tex.web */
-    if ( p != 0 )		/* fixed 94/Mar/23 BUG FIX */
-						/* NOTE: still not fixed in 3.14159 ! */
-    print ( 312 ) ;		/* [] */
-    return ; 
-  } 
-  n = 0 ; 
-/*  while ( p > memmin ) { */	/* was p>memmin !!! line 3667 in tex.web */
-  while ( p != 0 ) {			/* want p != null - bkph 93/Dec/15 */
-								/* NOTE: still not fixed in 3.14159 ! */
-    println () ; 
-    printcurrentstring () ; 
-    if ( p > memend ) 
-    {
-      print ( 313 ) ; /* Bad link, display aborted. */
-      return ; 
-    } 
-    incr ( n ) ; 
-    if ( n > breadthmax ) 
-    {
-      print ( 314 ) ;	/* etc. */
-      return ; 
-    } 
-    if ( ( p >= himemmin ) ) 
-		printfontandchar ( p ) ; 
-    else switch ( mem [ p ] .hh.b0 ) 
-    {case 0 : 
-    case 1 : 
-    case 13 : 
-      {
-	if ( mem [ p ] .hh.b0 == 0 ) 
-		printesc ( 104 ) ;		/* h */
-	else if ( mem [ p ] .hh.b0 == 1 ) 
-		printesc ( 118 ) ;		/* v */
-	else printesc ( 316 ) ;		/* unset */
-	print ( 317 ) ;				/* box( */
-	printscaled ( mem [ p + 3 ] .cint ) ; 
-	printchar ( 43 ) ;			/* + */
-	printscaled ( mem [ p + 2 ] .cint ) ; 
-	print ( 318 ) ;				/* , shifted  */
-	printscaled ( mem [ p + 1 ] .cint ) ; 
-	if ( mem [ p ] .hh.b0 == 13 ) 
-	{
-	  if ( mem [ p ] .hh.b1 != 0 ) 
-	  {
-	    print ( 284 ) ;			/*  ( */
-	    printint ( mem [ p ] .hh.b1 + 1 ) ; 
-	    print ( 320 ) ;			/*  columns) */
-	  } 
-	  if ( mem [ p + 6 ] .cint != 0 ) 
-	  {
-	    print ( 321 ) ;			/* , stretch */
-	    printglue ( mem [ p + 6 ] .cint , mem [ p + 5 ] .hh.b1 , 0 ) ; 
-	  } 
-	  if ( mem [ p + 4 ] .cint != 0 ) 
-	  {
-	    print ( 322 ) ;			/* , shrink */
-	    printglue ( mem [ p + 4 ] .cint , mem [ p + 5 ] .hh.b0 , 0 ) ; 
-	  } 
-	} 
-	else {
-	    
-	  g = mem [ p + 6 ] .gr ; 
-	  if ( ( g != 0.0 ) && ( mem [ p + 5 ] .hh.b0 != 0 ) ) 
-	  {
-	    print ( 323 ) ;		/* , glue set */
-	    if ( mem [ p + 5 ] .hh.b0 == 2 ) 
-	    print ( 324 ) ;		/* -  */
-	    if ( fabs ( g ) > 20000.0 ) 
-	    {
-	      if ( g > 0.0 ) 
-	      printchar ( 62 ) ;	/* '>' */
-	      else print ( 325 ) ;	/* < - */
-	      printglue ( 20000 * 65536L , mem [ p + 5 ] .hh.b1 , 0 ) ; 
-	    } 
-	    else printglue ( round ( 65536L * g ) , mem [ p + 5 ] .hh.b1 , 0 ) 
-	    ; 
-	  } 
-	  if ( mem [ p + 4 ] .cint != 0 ) 
-	  {
-	    print ( 319 ) ;		/* shifted */
-	    printscaled ( mem [ p + 4 ] .cint ) ; 
-	  } 
-	} 
-	{
-	  {
-	    strpool [ poolptr ] = 46 ; 
-	    incr ( poolptr ) ; 
-	  } 
-	  shownodelist ( mem [ p + 5 ] .hh .v.RH ) ; 
-	  decr ( poolptr ) ; 
-	} 
-      } 
-      break ; 
-    case 2 : 
-      {
-	printesc ( 326 ) ;	/* rule( */
-	printruledimen ( mem [ p + 3 ] .cint ) ; 
-	printchar ( 43 ) ;	/* '+' */
-	printruledimen ( mem [ p + 2 ] .cint ) ; 
-	print ( 318 ) ;		/* )x */
-	printruledimen ( mem [ p + 1 ] .cint ) ; 
-      } 
-      break ; 
-    case 3 : 
-      {
-	printesc ( 327 ) ;	/* insert */
-	printint ( mem [ p ] .hh.b1 ) ; 
-	print ( 328 ) ;		/* , natural size */
-	printscaled ( mem [ p + 3 ] .cint ) ; 
-	print ( 329 ) ;		/* ; split( */
-	printspec ( mem [ p + 4 ] .hh .v.RH , 0 ) ; 
-	printchar ( 44 ) ;	/* ',' */
-	printscaled ( mem [ p + 2 ] .cint ) ; 
-	print ( 330 ) ;		/* (; float cost */
-	printint ( mem [ p + 1 ] .cint ) ; 
-	{
-	  {
-	    strpool [ poolptr ] = 46 ; 
-	    incr ( poolptr ) ; 
-	  } 
-	  shownodelist ( mem [ p + 4 ] .hh .v.LH ) ; 
-	  decr ( poolptr ) ; 
-	} 
-      } 
-      break ; 
-    case 8 : 
-      switch ( mem [ p ] .hh.b1 ) 
-      {case 0 : 
-	{
-	  printwritewhatsit ( 1279 , p ) ;		/* debug # (-1 to exit): */
-	  printchar ( 61 ) ;	/* = */
-	  printfilename ( mem [ p + 1 ] .hh .v.RH , mem [ p + 2 ] .hh .v.LH , 
-	  mem [ p + 2 ] .hh .v.RH ) ; 
-	} 
-	break ; 
-      case 1 : 
-	{
-	  printwritewhatsit ( 591 , p ) ;	/* write */
-	  printmark ( mem [ p + 1 ] .hh .v.RH ) ; 
-	} 
-	break ; 
-      case 2 : 
-	printwritewhatsit ( 1280 , p ) ;	/* closeout */
-	break ; 
-      case 3 : 
-	{
-	  printesc ( 1281 ) ;				/* special */
-	  printmark ( mem [ p + 1 ] .hh .v.RH ) ; 
-	} 
-	break ; 
-      case 4 : 
-	{
-	  printesc ( 1283 ) ;		/* setlanguage */
-	  printint ( mem [ p + 1 ] .hh .v.RH ) ; 
-	  print ( 1286 ) ;			/*  (hyphenmin */
-	  printint ( mem [ p + 1 ] .hh.b0 ) ; 
-	  printchar ( 44 ) ;		/* , */
-	  printint ( mem [ p + 1 ] .hh.b1 ) ; 
-	  printchar ( 41 ) ;		/* ) */
-	} 
-	break ; 
-	default: 
-	print ( 1287 ) ;		/* whatsit */
-	break ; 
-      } 
-      break ; 
-    case 10 : 
-      if ( mem [ p ] .hh.b1 >= 100 ) 
-      {
-	printesc ( 335 ) ;	/*  */
-	if ( mem [ p ] .hh.b1 == 101 ) 
-	printchar ( 99 ) ;	/* c */
-	else if ( mem [ p ] .hh.b1 == 102 ) 
-	printchar ( 120 ) ; /* x */
-	print ( 336 ) ;		/* leaders  */
-	printspec ( mem [ p + 1 ] .hh .v.LH , 0 ) ; 
-	{
-	  {
-	    strpool [ poolptr ] = 46 ; 
-	    incr ( poolptr ) ; 
-	  } 
-	  shownodelist ( mem [ p + 1 ] .hh .v.RH ) ; 
-	  decr ( poolptr ) ; 
-	} 
-      } 
-      else {
-	  
-	printesc ( 331 ) ;	/* glue */
-	if ( mem [ p ] .hh.b1 != 0 ) 
-	{
-	  printchar ( 40 ) ;	/* ( */
-	  if ( mem [ p ] .hh.b1 < 98 ) 
-		  printskipparam ( mem [ p ] .hh.b1 - 1 ) ; 
-	  else if ( mem [ p ] .hh.b1 == 98 ) 
-		  printesc ( 332 ) ;	/* nonscript */
-	  else printesc ( 333 ) ; /* mskip */
-	  printchar ( 41 ) ;	/* ) */
-	} 
-	if ( mem [ p ] .hh.b1 != 98 ) 
-	{
-	  printchar ( 32 ) ;	/*   */
-	  if ( mem [ p ] .hh.b1 < 98 ) 
-	  printspec ( mem [ p + 1 ] .hh .v.LH , 0 ) ; 
-	  else printspec ( mem [ p + 1 ] .hh .v.LH , 334 ) ; /* mu */
-	} 
-      } 
-      break ; 
-    case 11 : 
-      if ( mem [ p ] .hh.b1 != 99 ) 
-      {
-	printesc ( 337 ) ;	/* kern */
-	if ( mem [ p ] .hh.b1 != 0 ) 
-	printchar ( 32 ) ;		/*   */
-	printscaled ( mem [ p + 1 ] .cint ) ; 
-	if ( mem [ p ] .hh.b1 == 2 ) 
-	print ( 338 ) ;		/*  (for accent) */
-      } 
-      else {
-	printesc ( 339 ) ;	/* mkern */
-	printscaled ( mem [ p + 1 ] .cint ) ; 
-	print ( 334 ) ;		/* mu */
-      } 
-      break ; 
-    case 9 : 
-      {
-	printesc ( 340 ) ;	/* math */
-	if ( mem [ p ] .hh.b1 == 0 ) 
-		print ( 341 ) ;		/* on */
-	else print ( 342 ) ;	/* off */ 
-	if ( mem [ p + 1 ] .cint != 0 ) 
-	{
-	  print ( 343 ) ;	/* , surrounded */
-	  printscaled ( mem [ p + 1 ] .cint ) ; 
-	} 
-      } 
-      break ; 
-    case 6 : 
-      {
-	printfontandchar ( p + 1 ) ; 
-	print ( 344 ) ;		/* (ligature */
-	if ( mem [ p ] .hh.b1 > 1 ) 
-	printchar ( 124 ) ; /* | */
-	fontinshortdisplay = mem [ p + 1 ] .hh.b0 ; 
-	shortdisplay ( mem [ p + 1 ] .hh .v.RH ) ; 
-	if ( odd ( mem [ p ] .hh.b1 ) ) 
-	printchar ( 124 ) ; /* | */
-	printchar ( 41 ) ;	/* ) */
-      } 
-      break ; 
-    case 12 : 
-      {
-	printesc ( 345 ) ;	/* penalty  */
-	printint ( mem [ p + 1 ] .cint ) ; 
-      } 
-      break ; 
-    case 7 : 
-      {
-	printesc ( 346 ) ;	/* discretionary */
-	if ( mem [ p ] .hh.b1 > 0 ) 
-	{
-	  print ( 347 ) ;	/*  replacing  */
-	  printint ( mem [ p ] .hh.b1 ) ; 
-	} 
-	{
-	  {
-	    strpool [ poolptr ] = 46 ; 
-	    incr ( poolptr ) ; 
-	  } 
-	  shownodelist ( mem [ p + 1 ] .hh .v.LH ) ; 
-	  decr ( poolptr ) ; 
-	} 
-	{
-	  strpool [ poolptr ] = 124 ; 
-	  incr ( poolptr ) ; 
-	} 
-	shownodelist ( mem [ p + 1 ] .hh .v.RH ) ; 
-	decr ( poolptr ) ; 
-      } 
-      break ; 
-    case 4 : 
-      {
-	printesc ( 348 ) ;	/* mark */
-	printmark ( mem [ p + 1 ] .cint ) ; 
-      } 
-      break ; 
-    case 5 : 
-      {
-	printesc ( 349 ) ;	/* vadjust */
-	{
-	  {
-	    strpool [ poolptr ] = 46 ; 
-	    incr ( poolptr ) ; 
-	  } 
-	  shownodelist ( mem [ p + 1 ] .cint ) ; 
-	  decr ( poolptr ) ; 
-	} 
-      } 
-      break ; 
-    case 14 : 
-      printstyle ( mem [ p ] .hh.b1 ) ; 
-      break ; 
-    case 15 : 
-      {
-	printesc ( 522 ) ;		/* mathchoice */
-	{
-	  strpool [ poolptr ] = 68 ; 
-	  incr ( poolptr ) ; 
-	} 
-	shownodelist ( mem [ p + 1 ] .hh .v.LH ) ; 
-	decr ( poolptr ) ; 
-	{
-	  strpool [ poolptr ] = 84 ; 
-	  incr ( poolptr ) ; 
-	} 
-	shownodelist ( mem [ p + 1 ] .hh .v.RH ) ; 
-	decr ( poolptr ) ; 
-	{
-	  strpool [ poolptr ] = 83 ; 
-	  incr ( poolptr ) ; 
-	} 
-	shownodelist ( mem [ p + 2 ] .hh .v.LH ) ; 
-	decr ( poolptr ) ; 
-	{
-	  strpool [ poolptr ] = 115 ; 
-	  incr ( poolptr ) ; 
-	} 
-	shownodelist ( mem [ p + 2 ] .hh .v.RH ) ; 
-	decr ( poolptr ) ; 
-      } 
-      break ; 
-    case 16 : 
-    case 17 : 
-    case 18 : 
-    case 19 : 
-    case 20 : 
-    case 21 : 
-    case 22 : 
-    case 23 : 
-    case 24 : 
-    case 27 : 
-    case 26 : 
-    case 29 : 
-    case 28 : 
-    case 30 : 
-    case 31 : 
-      {
-	switch ( mem [ p ] .hh.b0 ) 
-	{case 16 : 
-	  printesc ( 860 ) ;		/* mathord */
-	  break ; 
-	case 17 : 
-	  printesc ( 861 ) ;		/* mathop */
-	  break ; 
-	case 18 : 
-	  printesc ( 862 ) ;		/* mathbin */
-	  break ; 
-	case 19 : 
-	  printesc ( 863 ) ;		/* mathrel */
-	  break ; 
-	case 20 : 
-	  printesc ( 864 ) ;		/* mathopen */
-	  break ; 
-	case 21 : 
-	  printesc ( 865 ) ;		/* mathclose */
-	  break ; 
-	case 22 : 
-	  printesc ( 866 ) ;		/* mathpunct */
-	  break ; 
-	case 23 : 
-	  printesc ( 867 ) ;		/* mathinner */
-	  break ; 
-	case 27 : 
-	  printesc ( 868 ) ;		/* overline */
-	  break ; 
-	case 26 : 
-	  printesc ( 869 ) ;		/* underline */
-	  break ; 
-	case 29 : 
-	  printesc ( 536 ) ;		/* vcenter */
-	  break ; 
-	case 24 : 
-	  {
-	    printesc ( 530 ) ;		/* radical */
-	    printdelimiter ( p + 4 ) ; 
-	  } 
-	  break ; 
-	case 28 : 
-	  {
-	    printesc ( 505 ) ;		/* accent */
-	    printfamandchar ( p + 4 ) ; 
-	  } 
-	  break ; 
-	case 30 : 
-	  {
-	    printesc ( 870 ) ;		/* left */
-	    printdelimiter ( p + 1 ) ; 
-	  } 
-	  break ; 
-	case 31 : 
-	  {
-	    printesc ( 871 ) ;		/* right */
-	    printdelimiter ( p + 1 ) ; 
-	  } 
-	  break ; 
-	} 
-	if ( mem [ p ] .hh.b1 != 0 ) 
-	if ( mem [ p ] .hh.b1 == 1 ) 
-		printesc ( 872 ) ;		/* limits */
-	else printesc ( 873 ) ;			/* nolimits */
-	if ( mem [ p ] .hh.b0 < 30 ) 
-	printsubsidiarydata ( p + 1 , 46 ) ; 
-	printsubsidiarydata ( p + 2 , 94 ) ; 
-	printsubsidiarydata ( p + 3 , 95 ) ; 
-      } 
-      break ; 
-    case 25 : 
-      {
-	printesc ( 874 ) ;		/* fraction */
-	if ( mem [ p + 1 ] .cint == 1073741824L )	/* 2^30 */
-	print ( 875 ) ;			/* = default */
-	else printscaled ( mem [ p + 1 ] .cint ) ; 
-	if ( ( mem [ p + 4 ] .qqqq .b0 != 0 ) || ( mem [ p + 4 ] .qqqq .b1 != 
-	0 ) || ( mem [ p + 4 ] .qqqq .b2 != 0 ) || ( mem [ p + 4 ] .qqqq .b3 
-	!= 0 ) ) 
-	{
-	  print ( 876 ) ;		/* , left */
-	  printdelimiter ( p + 4 ) ; 
-	} 
-	if ( ( mem [ p + 5 ] .qqqq .b0 != 0 ) || ( mem [ p + 5 ] .qqqq .b1 != 
-	0 ) || ( mem [ p + 5 ] .qqqq .b2 != 0 ) || ( mem [ p + 5 ] .qqqq .b3 
-	!= 0 ) ) 
-	{
-	  print ( 877 ) ;		/* , right */
-	  printdelimiter ( p + 5 ) ; 
-	} 
-	printsubsidiarydata ( p + 2 , 92 ) ; 
-	printsubsidiarydata ( p + 3 , 47 ) ; 
-      } 
-      break ; 
-      default: 
-      print ( 315 ) ; /* Unknown node type! */
-      break ; 
-    } 
-    p = mem [ p ] .hh .v.RH ; 
-  } 
-} 
+    print_scaled(width(p));
 
-/* NOTE: 262143L should be emptyflag */
+    if (*s != '\0')
+      print_string(s);
+
+    if (stretch(p) != 0)
+    {
+      print_string("plus");
+      print_glue(stretch(p), stretch_order(p), s);
+    }
+
+    if (shrink(p) != 0)
+    {
+      print_string("minus");
+      print_glue(shrink(p), shrink_order(p), s);
+    }
+  }
+}
+/* sec 0691 */
+void print_fam_and_char_(halfword p)
+{
+  print_esc("fam");
+  print_int(fam(p));
+  print_char(' ');
+  print(character(p));
+}
+/* sec 0691 */
+void print_delimiter_(halfword p)
+{
+  integer a;
+
+  a = small_fam(p) * 256 + small_char(p);
+  a = a * 4096 + large_fam(p) * 256 + large_char(p);
+
+  if (a < 0)
+    print_int(a);
+  else
+    print_hex(a);
+}
+/* sec 0692 */
+void print_subsidiary_data_(halfword p, ASCII_code c)
+{
+  if ((pool_ptr - str_start[str_ptr]) >= depth_threshold)
+  {
+    if (math_type(p) != 0)
+      print_string(" []");
+  }
+  else
+  {
+    append_char(c);
+    temp_ptr = p;
+
+    switch (math_type(p))
+    {
+      case math_char:
+        print_ln();
+        print_current_string();
+        print_fam_and_char(p);
+        break;
+
+      case sub_box:
+        show_info();
+        break;
+
+      case sub_mlist:
+        if (info(p) == 0)
+        {
+          print_ln();
+          print_current_string();
+          print_string("{}");
+        }
+        else
+          show_info();
+        break;
+
+      default:
+        break;
+    }
+
+    decr(pool_ptr);
+  }
+}
+/* sec 0694 */
+void print_style_(integer c)
+{
+  switch (c / 2)
+  {
+    case 0:
+      print_esc("displaystyle");
+      break;
+    case 1:
+      print_esc("textstyle");
+      break;
+    case 2:
+      print_esc("scriptstyle");
+      break;
+    case 3:
+      print_esc("scriptscriptstyle");
+      break;
+    default:
+      print_string("Unknown style!");
+      break;
+  }
+}
+/* sec 0225 */
+void print_skip_param_(integer n)
+{
+  switch(n)
+  {
+    case line_skip_code:
+      print_esc("lineskip");
+      break;
+
+    case baseline_skip_code:
+      print_esc("baselineskip");
+      break; 
+
+    case par_skip_code:
+      print_esc("parskip");
+      break;
+
+    case above_display_skip_code:
+      print_esc("abovedisplayskip");
+      break;
+
+    case below_display_skip_code:
+      print_esc("belowdisplayskip");
+      break;
+
+    case above_display_short_skip_code:
+      print_esc("abovedisplayshortskip");
+      break;
+
+    case below_display_short_skip_code:
+      print_esc("belowdisplayshortskip");
+      break;
+
+    case left_skip_code:
+      print_esc("leftskip");
+      break;
+
+    case right_skip_code:
+      print_esc("rightskip");
+      break;
+
+    case top_skip_code:
+      print_esc("topskip");
+      break;
+
+    case split_top_skip_code:
+      print_esc("splittopskip");
+      break;
+
+    case tab_skip_code:
+      print_esc("tabskip");
+      break;
+
+    case space_skip_code:
+      print_esc("spaceskip");
+      break;
+
+    case xspace_skip_code:
+      print_esc("xspaceskip");
+      break;
+
+    case par_fill_skip_code:
+      print_esc("parfillskip");
+      break;
+
+    case thin_mu_skip_code:
+      print_esc("thinmuskip");
+      break;
+
+    case med_mu_skip_code:
+      print_esc("medmuskip");
+      break; 
+
+    case thick_mu_skip_code:
+      print_esc("thickmuskip");
+      break;
+
+    default:
+      print_string("[unknown glue parameter!]");
+      break;
+  }
+}
+/* sec 0182 */
+void show_node_list_(integer p)
+{
+  integer n;
+  real g;
+
+  if (cur_length > depth_threshold)
+  {
+/*  if (p > 0) */  /* was p>null !!! line 3662 in tex.web */
+    if (p != 0)    /* fixed 94/Mar/23 BUG FIX NOTE: still not fixed in 3.14159 ! */
+    print_string(" []");
+    return; 
+  }
+
+  n = 0; 
+
+  while (p != 0) {      /* want p != null - bkph 93/Dec/15 NOTE: still not fixed in 3.14159 ! */
+    print_ln(); 
+    print_current_string(); 
+
+    if (p > mem_end)
+    {
+      print_string("Bad link, display aborted.");
+      return;
+    }
+
+    incr(n);
+
+    if (n > breadth_max)
+    {
+      print_string("etc.");
+      return;
+    }
+
+    if ((p >= hi_mem_min))
+      print_font_and_char(p);
+    else switch (type(p))
+    {
+      case hlist_node:
+      case vlist_node:
+      case unset_node:
+        {
+          if (type(p) == hlist_node)
+            print_esc("h");
+          else if (type(p) == vlist_node)
+            print_esc("v");
+          else print_esc("unset");
+
+          print_string("box(");
+          print_scaled(height(p));
+          print_char('+');
+          print_scaled(depth(p));
+          print_string(")x");
+          print_scaled(width(p));
+
+          if (type(p) == unset_node)
+          {
+            if (span_count(p) != 0)
+            {
+              print_string(" (");
+              print_int(span_count(p) + 1);
+              print_string(" columns)");
+            }
+
+            if (glue_stretch(p) != 0)
+            {
+              print_string(", stretch ");
+              print_glue(glue_stretch(p), glue_order(p), "");
+            }
+
+            if (glue_shrink(p) != 0)
+            {
+              print_string(", shrink ");
+              print_glue(glue_shrink(p), glue_sign(p), "");
+            }
+          }
+          else
+          {
+            g = glue_set(p);
+
+            if ((g != 0.0) && (glue_sign(p) != 0))
+            {
+              print_string(", glue set ");
+
+              if (glue_sign(p) == shrinking)
+                print_string("- ");
+
+              if (fabs(g)> 20000.0)
+              {
+                if (g > 0.0)
+                  print_char('>');
+                else
+                  print_string("< -");
+
+                print_glue(20000 * 65536L, glue_order(p), "");
+              }
+              else
+                print_glue(round(65536L * g), glue_order(p), "");
+            }
+
+            if (shift_amount(p) != 0)
+            {
+              print_string(", shifted ");
+              print_scaled(shift_amount(p));
+            }
+          }
+
+          {
+            {
+              str_pool[pool_ptr] = 46;
+              incr(pool_ptr);
+            }
+            show_node_list(mem[p + 5].hh.v.RH);
+            decr(pool_ptr);
+          }
+        }
+        break;
+
+      case rule_node:
+        {
+          print_esc("rule(");
+          print_rule_dimen(height(p));
+          print_char('+');
+          print_rule_dimen(depth(p));
+          print_string(")x");
+          print_rule_dimen(width(p));
+        }
+        break;
+
+      case ins_node:
+        {
+          print_esc("insert");
+          print_int(subtype(p));
+          print_string(", natural size ");
+          print_scaled(height(p));
+          print_string("; split(");
+          print_spec(split_top_ptr(p), "");
+          print_char(',');
+          print_scaled(depth(p));
+          print_string("); float cost ");
+          print_int(float_cost(p));
+          {
+            {
+              str_pool[pool_ptr] = 46;
+              incr(pool_ptr);
+            }
+            show_node_list(mem[p + 4].hh.v.LH);
+            decr(pool_ptr);
+          }
+        }
+        break;
+      case 8:
+        switch (subtype(p))
+        {
+          case open_node:
+            {
+              print_write_whatsit(1279, p);   /* debug # (-1 to exit): */
+              print_char('=');
+              print_file_name(open_name(p), open_area(p), open_ext(p));
+            }
+            break;
+
+          case write_node:
+            {
+              print_write_whatsit(591, p);  /* write */
+              print_mark(write_tokens(p));
+            }
+            break;
+
+          case close_node:
+            print_write_whatsit(1280, p); /* closeout */
+            break;
+
+          case special_node:
+            {
+              print_esc("special");
+              print_mark(write_tokens(p));
+            }
+            break;
+
+          case language_node:
+            {
+              print_esc("setlanguage");
+              print_int(what_lang(p));
+              print_string(" (hyphenmin ");
+              print_int(what_lhm(p));
+              print_char(',');
+              print_int(what_rhm(p));
+              print_char(')');
+            }
+            break;
+
+          default:
+            print_string("whatsit?");
+            break;
+        }
+        break;
+
+      case glue_node:
+        if (subtype(p) >= a_leaders)
+        {
+          print_esc("");
+
+          if (subtype(p) == c_leaders)
+            print_char('c');
+          else if (subtype(p) == x_leaders)
+            print_char('x');
+
+          print_string("leaders ");
+
+          print_spec(glue_ptr(p), "");
+          {
+            {
+              str_pool[pool_ptr] = 46;
+              incr(pool_ptr);
+            }
+            show_node_list(mem[p + 1].hh.v.RH);
+            decr(pool_ptr);
+          }
+        }
+        else
+        {
+          print_esc("glue");
+
+          if (subtype(p) != normal)
+          {
+            print_char('(');
+
+            if (subtype(p) < cond_math_glue)
+              print_skip_param(subtype(p) - 1);
+            else if (subtype(p) == cond_math_glue)
+              print_esc("nonscript");
+            else print_esc("mskip");
+
+            print_char(')');
+          }
+
+          if (subtype(p) != cond_math_glue)
+          {
+            print_char(' ');
+
+            if (subtype(p) < cond_math_glue)
+              print_spec(glue_ptr(p), "");
+            else
+              print_spec(glue_ptr(p), "mu");
+          }
+        }
+        break;
+
+      case kern_node:
+        if (subtype(p) != mu_glue)
+        {
+          print_esc("kern");
+
+          if (subtype(p) != normal)
+            print_char(' ');
+
+          print_scaled(width(p));
+
+          if (subtype(p) == acc_kern)
+            print_string(" (for accent)");
+        }
+        else
+        {
+          print_esc("mkern");
+          print_scaled(width(p));
+          print_string("mu");
+        }
+        break;
+
+      case math_node:
+        {
+          print_esc("math");
+
+          if (subtype(p) == before)
+            print_string("on");
+          else
+            print_string("off");
+
+          if (width(p) != 0)
+          {
+            print_string(", surrounded ");
+            print_scaled(width(p));
+          }
+        }
+        break;
+
+      case ligature_node:
+        {
+          print_font_and_char(lig_char(p));
+          print_string("(ligature ");
+
+          if (subtype(p) > 1)
+            print_char('|');
+
+          font_in_short_display = font(lig_char(p)); 
+          short_display(lig_ptr(p));
+
+          if (odd(subtype(p)))
+            print_char('|');
+
+          print_char(')');
+        }
+        break;
+
+      case penalty_node:
+        {
+          print_esc("penalty ");
+          print_int(penalty(p));
+        }
+        break;
+
+      case disc_node:
+        {
+          print_esc("discretionary");
+
+          if (replace_count(p) > 0)
+          {
+            print_string(" replacing ");
+            print_int(replace_count(p));
+          }
+
+          {
+            {
+              str_pool[pool_ptr] = 46;
+              incr(pool_ptr);
+            }
+            show_node_list(mem[p + 1].hh.v.LH);
+            decr(pool_ptr);
+          }
+          {
+            str_pool[pool_ptr]= 124;
+            incr(pool_ptr);
+          }
+          show_node_list(mem[p + 1].hh.v.RH);
+          decr(pool_ptr);
+        }
+        break;
+
+      case mark_node:
+        {
+          print_esc("mark");
+          print_mark(mark_ptr(p));
+        }
+        break;
+
+      case adjust_node:
+        {
+          print_esc("vadjust");
+          {
+            {
+              str_pool[pool_ptr] = 46;
+              incr(pool_ptr);
+            }
+            show_node_list(mem[p + 1].cint);
+            decr(pool_ptr);
+          }
+        }
+        break;
+
+      case style_node:
+        print_style(subtype(p));
+        break;
+
+      case choice_node:
+        {
+          print_esc("mathchoice");
+          append_char('D');
+          show_node_list(display_mlist(p));
+          decr(pool_ptr);
+          append_char('T');
+          show_node_list(text_mlist(p));
+          decr(pool_ptr);
+          append_char('S');
+          show_node_list(script_mlist(p));
+          decr(pool_ptr);
+          append_char('s');
+          show_node_list(script_script_mlist(p)); 
+          decr(pool_ptr); 
+        } 
+        break;
+
+      case ord_noad:
+      case op_noad:
+      case bin_noad:
+      case rel_noad:
+      case open_noad:
+      case close_noad:
+      case punct_noad:
+      case inner_noad:
+      case radical_noad:
+      case over_noad:
+      case under_noad:
+      case vcenter_noad:
+      case accent_noad:
+      case left_noad:
+      case right_noad:
+        {
+          switch (type(p))
+          {
+            case ord_noad:
+              print_esc("mathord");
+              break;
+
+            case op_noad:
+              print_esc("mathop");
+              break;
+
+            case bin_noad:
+              print_esc("mathbin");
+              break;
+
+            case rel_noad:
+              print_esc("mathrel");
+              break;
+
+            case open_noad:
+              print_esc("mathopen");
+              break;
+
+            case close_noad:
+              print_esc("mathclose");
+              break;
+
+            case punct_noad:
+              print_esc("mathpunct");
+              break;
+
+            case inner_noad:
+              print_esc("mathinner");
+              break;
+
+            case over_noad:
+              print_esc("overline");
+              break;
+
+            case under_noad:
+              print_esc("underline");
+              break;
+
+            case vcenter_noad:
+              print_esc("vcenter");
+              break;
+
+            case radical_noad:
+              {
+                print_esc("radical");
+                print_delimiter(left_delimiter(p));
+              }
+              break;
+
+            case accent_noad:
+              {
+                print_esc("accent");
+                print_fam_and_char(accent_chr(p));
+              }
+              break;
+
+            case left_noad:
+              {
+                print_esc("left");
+                print_delimiter(delimiter(p));
+              }
+              break;
+
+            case right_noad:
+              {
+                print_esc("right");
+                print_delimiter(delimiter(p));
+              }
+              break;
+          }
+
+          if (subtype(p) != normal)
+            if (subtype(p) == limits)
+              print_esc("limits");
+            else
+              print_esc("nolimits");
+
+          if (type(p) < left_noad)
+            print_subsidiary_data(nucleus(p), '.');
+
+          print_subsidiary_data(supscr(p), '^');
+          print_subsidiary_data(subscr(p), '_');
+        }
+        break;
+
+      case fraction_noad:
+        {
+          print_esc("fraction, thickness ");
+
+          if (thickness(p) == 1073741824L)  /* 2^30 */
+            print_string("= default");
+          else
+            print_scaled(thickness(p));
+
+          if ((small_fam(left_delimiter(p)) != 0) || (small_char(left_delimiter(p)) != 0) ||
+              (large_fam(left_delimiter(p)) != 0) || (large_char(left_delimiter(p)) != 0))
+          {
+            print_string(", left-delimiter ");
+            print_delimiter(left_delimiter(p));
+          }
+
+          if ((small_fam(right_delimiter(p)) != 0) || (small_char(right_delimiter(p)) != 0) ||
+              (large_fam(right_delimiter(p)) != 0)||(large_char(right_delimiter(p)) != 0))
+          {
+            print_string(", right-delimiter ");
+            print_delimiter(right_delimiter(p));
+          }
+
+          print_subsidiary_data(numerator(p), '\\');
+          print_subsidiary_data(denominator(p), '/');
+        }
+        break;
+
+      default:
+        print_string("Unknown node type!");
+        break;
+    }
+    p = link(p);
+  }
+}

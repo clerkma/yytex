@@ -1,5 +1,6 @@
 /* Copyright 1992 Karl Berry
    Copyright 2007 TeX Users Group
+   Copyright 2014 Clerk Ma
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -74,7 +75,7 @@ typedef union
     halfword junk;
     quarterword B0, B1;
 #else /* not WORDS_BIGENDIAN */
-  /* If 32-bit TeX/MF, have to have an extra two bytes of junk.  
+  /* If 32-bit TeX/MF, have to have an extra two bytes of junk.
      I would like to break this line, but I'm afraid that some
      preprocessors don't properly handle backslash-newline in # commands.  */
 #if (defined (TeX) && !defined (SMALLTeX)) || !defined (TeX) && !defined (SMALLMF)
@@ -138,11 +139,11 @@ typedef union
     fourquarters QQQQ;
   } v;
 #endif /* not WORDS_BIGENDIAN */
-} memoryword;
+} memory_word;
 
 /* Attempt to reduce size of font_info array ... (and hence format files) */
 
-typedef unsigned char unsignedchar  ;
+typedef unsigned char unsignedchar;
 
 typedef struct
 {
@@ -159,23 +160,22 @@ typedef struct
 #define fquarterword unsigned char
 
 typedef union {
-	integer cint ;
-/*	fourunsignedchars qqqq; */
-	ffourquarters qqqq;
+  integer cint ;
+/*  fourunsignedchars qqqq; */
+  ffourquarters qqqq;
 } fmemoryword;
 
 /* To keep the original structure accesses working, we must go through
    the extra names C forced us to introduce.  */
-#define	b0 u.B0
-#define	b1 u.B1
-#define	b2 u.B2
-#define	b3 u.B3
+#define b0 u.B0
+#define b1 u.B1
+#define b2 u.B2
+#define b3 u.B3
 
 #define rh v.RH
-#define lhfield	v.LH
+#define lhfield v.LH
 
 #ifndef WORDS_BIGENDIAN
 #define cint u.CINT
 #define qqqq v.QQQQ
 #endif
-

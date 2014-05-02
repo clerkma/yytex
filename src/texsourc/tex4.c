@@ -1,2361 +1,2238 @@
 #ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#pragma warning(disable:4115)	// kill rpcasync.h complaint
-#include <windows.h>
+  #define NOCOMM
+  #define NOSOUND
+  #define NODRIVERS
+  #define STRICT
+  #pragma warning(disable:4115) // kill rpcasync.h complaint
+  #include <windows.h>
+  #define MYLIBAPI __declspec(dllexport)
 #endif
 
-#ifdef _WINDOWS
-// We must define MYLIBAPI as __declspec(dllexport) before including
-// texwin.h, then texwin.h will see that we have already
-// defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-#define MYLIBAPI __declspec(dllexport)
-// #include "texwin.h"
-#endif
-
-#include "texwin.h"
-
-#pragma warning(disable:4131)	// old style declarator
-#pragma warning(disable:4135)	// conversion between different integral types 
-#pragma warning(disable:4127)	// conditional expression is constant
+#pragma warning(disable:4996)
+#pragma warning(disable:4131) // old style declarator
+#pragma warning(disable:4135) // conversion between different integral types 
+#pragma warning(disable:4127) // conditional expression is constant
 
 #include <setjmp.h>
-
-#pragma hdrstop
 
 #define EXTERN extern
 
 #include "texd.h"
 
-#pragma warning(disable:4244)				/* 96/Jan/10 */
+#pragma warning(disable:4244)       /* 96/Jan/10 */
 
-/* #pragma optimize("a", off) */				/* 98/Dec/10 experiment */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-void zcharwarning ( f , c ) 
-internalfontnumber f ; 
-eightbits c ; 
-{charwarning_regmem 
-  if ( eqtb [ (hash_size + 3198) ] .cint > 0 ) 
+/* sec 0581 */
+void char_warning_(internal_font_number f, eight_bits c)
+{ 
+  if (tracing_lost_chars > 0)
   {
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	if (showmissing == 0)						/* show on screen 94/June/10 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	    begindiagnostic () ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	if (showmissing) {			/* add ! before 94/June/10 */
-		printnl ( 262 ) ;		/* !  */
-		print ( 819 ) ;			/* Missing character: there is no */
-	}
-	else 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	printnl ( 819 ) ;			/* Missing character: there is no */
-    print ( c ) ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	if (shownumeric) {							/* bkph 93/Dec/21 */
-		printchar ( 32 ) ;		/*   */
-		printchar ( 40 ) ;		/* ( */
-		if (c / 100 > 0) {
-			printchar ( 48 + c / 100) ;
-/*			c = c % 100 ; */
-			c = c - (c / 100) * 100 ;			/* ? */
-			printchar ( 48 + c / 10) ;
-		}
-		else {
-/*			c = c % 100 ; */
-			c = c - (c / 100) * 100 ;			/* ? */
-			if (c / 10 > 0) printchar ( 48 + c / 10) ;
-		}
-		printchar ( 48 + c % 10) ;
-		printchar ( 41 ) ;		/* ) */
-/*		printchar ( 32 ) ; */
-	}
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-    print ( 820 ) ;								/* in font */
-    slowprint ( fontname [ f ] ) ; 
-    printchar ( 33 ) ;			/* ! */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*	if (showmissing) showcontext ( ) ; */		/* in tex2.c 94/June/10 */
-	if (showmissing) {
-		if (f != 0) showcontext ( ) ;			/* not if its the nullfont */
-	}
-	if (showmissing == 0)						/* show on screen 94/June/10 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-		enddiagnostic ( false ) ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	missingcharacters++;						/* bkph 93/Dec/16 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  } 
-} 
+    if (show_missing == 0)
+      begin_diagnostic();
 
-halfword znewcharacter ( f , c ) 
-internalfontnumber f ; 
-eightbits c ; 
-{/* 10 */ register halfword Result; newcharacter_regmem 
-  halfword p  ; 
-  if ( fontbc [ f ] <= c ) 
-  if ( fontec [ f ] >= c ) 
-  if ( ( fontinfo [ charbase [ f ] + c ] .qqqq .b0 > 0 ) ) 
-  {
-    p = getavail () ; 
-/*	long to unsigned short ... */
-    mem [ p ] .hh.b0 = f ; 
-    mem [ p ] .hh.b1 = c ; 
-    Result = p ; 
-    return(Result) ; 
-  } 
-  charwarning ( f , c ) ;	/* char_warning(f,c); l.11283 */
-  Result = 0 ;				/* new_character:=null */
-  return Result ; 
-} 
+    if (show_missing) /* add ! before 94/June/10 */
+    {
+      print_nl("! ");
+      print_string("Missing character: there is no ");
+    }
+    else
+      print_nl("Missing character: there is no ");
 
-/* following needs access to dvibuf=zdvibuf see coerce.h */
+    print(c);
 
-void dviswap ( ) 
-{dviswap_regmem 
+    if (show_numeric) /* bkph 93/Dec/21 */
+    {
+      print_char(' ');
+      print_char('(');
+
+      if (c / 100 > 0)
+      {
+        print_char(48 + c / 100);
+/*      c = c % 100; */
+        c = c - (c / 100) * 100;      /* ? */
+        print_char(48 + c / 10);
+      }
+      else
+      {
+/*      c = c % 100; */
+        c = c - (c / 100) * 100;      /* ? */
+        if (c / 10 > 0) print_char(48 + c / 10);
+      }
+      print_char(48 + c % 10);
+      print_char(')');
+/*    print_char(32); */
+    }
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  if (traceflag) {
-	showchar('\n');
-	sprintf(logline, "dviswap %d", dvigone);
-	showline(logline, 0);
+    print_string(" in font ");
+    slow_print(font_name[f]);
+    print_char('!');
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+/*  if (show_missing) show_context(); */    /* in tex2.c 94/June/10 */
+    if (show_missing)
+    {
+      if (f != 0)
+        show_context();     /* not if its the nullfont */
+    }
+
+    if (show_missing == 0)            /* show on screen 94/June/10 */
+      end_diagnostic(false);
+
+    missing_characters++;           /* bkph 93/Dec/16 */
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+  }
 }
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  if ( dvilimit == dvibufsize )	  {
-    writedvi ( 0 , halfbuf - 1 ) ; 
-    dvilimit = halfbuf ; 
-    dvioffset = dvioffset + dvibufsize ; 
-    dviptr = 0 ; 
-  } 
-  else {
-    writedvi ( halfbuf , dvibufsize - 1 ) ; 
-    dvilimit = dvibufsize ; 
-  } 
-  dvigone = dvigone + halfbuf ; 
-} 
+/* sec 0582 */
+halfword new_character_(internal_font_number f, eight_bits c)
+{
+  halfword p;
 
-/* following needs access to dvibuf=zdvibuf see coerce.h */
+  if (font_bc[f] <= c)
+    if (font_ec[f] >= c)
+      if (char_exists(char_info(f, c)))
+      {
+        p = get_avail();
+        font(p) = f;
+        character(p) = c;
+        return p;
+      }
 
-void zdvifour ( x )		/* attempt at speeding up bkph - is compiler smart ? */
-integer x ; 
-{dvifour_regmem 
-  if ( x >= 0 ) 
+  char_warning(f, c);
+  return 0;
+}
+/* sec 0598 */
+void dvi_swap (void)
+{ 
+  if (trace_flag)
   {
-/*    dvibuf [ dviptr ] = x / 16777216L ;  */ /* 2^24 */
-/*    dvibuf [ dviptr ] = ( x >> 24 ) ;  */
-    dvibuf [ dviptr ] = (unsigned char) ( x >> 24 ) ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  else {
-    x = x + 1073741824L ;		/* 2^30 40000000 hex */ 
-    x = x + 1073741824L ; 
-    {
-/*      dvibuf [ dviptr ] = ( x / 16777216L ) + 128 ;   */  /* 2^24 */
-      dvibuf [ dviptr ] = ( x >> 24 ) + 128 ;			/* set sign bit */
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-  } 
-/*  x = x % 16777216L ;  */  /* % 2^24 */
-  x = x & 16777215L ; 
+    show_char('\n');
+    sprintf(log_line, "dvi_swap %d", dvi_gone);
+    show_line(log_line, 0);
+  }
+
+  if (dvi_limit == dvi_buf_size)
   {
-/*    dvibuf [ dviptr ] = x / 65536L ;  */
-/*    dvibuf [ dviptr ] = ( x >> 16 ) ;  */
-    dvibuf [ dviptr ] = (unsigned char) ( x >> 16 ) ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-/*  x = x % 65536L ;  */	/* % 2^16 */
-  x = x & 65535L ;
+    write_dvi(0, half_buf - 1);
+    dvi_limit = half_buf;
+    dvi_offset = dvi_offset + dvi_buf_size;
+    dvi_ptr = 0;
+  }
+  else
   {
-/*    dvibuf [ dviptr ] = x / 256 ;  */
-/*    dvibuf [ dviptr ] = ( x >> 8 ) ;  */
-    dvibuf [ dviptr ] = (unsigned char) ( x >> 8 ) ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
+    write_dvi(half_buf, dvi_buf_size - 1);
+    dvi_limit = dvi_buf_size;
+  }
+
+  dvi_gone = dvi_gone + half_buf;
+}
+/* attempt at speeding up bkph - is compiler smart ? */
+/* sec 0600 */
+void dvi_four_(integer x)
+{ 
+  if (x >= 0)
+    dvi_out(x / 0100000000); // dvi_out((x >> 24));
+  else
   {
-/*    dvibuf [ dviptr ] = x % 256 ; */	/* % 2^8 */
-    dvibuf [ dviptr ] = x & 255 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-} 
+    x = x + 010000000000;
+    x = x + 010000000000;
+    dvi_out((x / 0100000000) + 128); // dvi_out((x >> 24) + 128);
+  }
 
-/* following needs access to dvibuf=zdvibuf see coerce.h */
+  x = x % 0100000000; // x = x & 16777215L;
+  dvi_out(x / 0200000); // dvi_out((x >> 16));
+  x = x % 0200000; // x = x & 65535L;
+  dvi_out(x / 0400); // dvi_out((x >> 8));
+  dvi_out(x % 0400); // dvi_out(x & 255);
+}
+/* following needs access to dvi_buf=zdvibuf see coerce.h */
+/* sec 0601 */
+void zdvipop(integer l)
+{
+  if ((l == dvi_offset + dvi_ptr) && (dvi_ptr > 0))
+    decr(dvi_ptr);
+  else
+    dvi_out(142);
+}
+/* following needs access to dvi_buf=zdvibuf see coerce.h */
+/* sec 0602 */
+void dvi_font_def_(internal_font_number f)
+{
+  pool_pointer k;
 
-void zdvipop ( l ) 
-integer l ; 
-{dvipop_regmem 
-  if ( ( l == dvioffset + dviptr ) && ( dviptr > 0 ) ) 
-  decr ( dviptr ) ; 
-  else {
-      
-    dvibuf [ dviptr ] = 142 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-} 
-
-/* following needs access to dvibuf=zdvibuf see coerce.h */
-
-void zdvifontdef ( f ) 
-internalfontnumber f ; 
-{dvifontdef_regmem 
-  poolpointer k  ; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef INCREASEFONTS
-	if (f <= 256) {
+  if (f <= 256)
   {
-    dvibuf [ dviptr ] = 243 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
+    dvi_out(fnt_def1);
+    dvi_out(f - 1);
+  }
+  else
   {
-    dvibuf [ dviptr ] = f - 1 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-	}
-	else {
-  {
-    dvibuf [ dviptr ] = 244 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-    dvibuf [ dviptr ] = (f - 1) >> 8;	/* top byte */
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-    dvibuf [ dviptr ] = (f - 1) & 255 ; /* bottom byte */
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-	}
+    dvi_out(fnt_def2);
+    dvi_out(((f - 1) >> 8));
+    dvi_out(((f - 1) & 255));
+  }
 #else
-  {
-    dvibuf [ dviptr ] = 243 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-    dvibuf [ dviptr ] = f - 1 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
+  dvi_out(fnt_def1);
+  dvi_out(f - 1);
 #endif
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* spit out the font checksum now */
-  {
-    dvibuf [ dviptr ] = fontcheck [ f ] .b0 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-    dvibuf [ dviptr ] = fontcheck [ f ] .b1 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-    dvibuf [ dviptr ] = fontcheck [ f ] .b2 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-    dvibuf [ dviptr ] = fontcheck [ f ] .b3 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  dvifour ( fontsize [ f ] ) ; 
-  dvifour ( fontdsize [ f ] ) ; 
-  {
-/*	long to unsigned char ... */
-    dvibuf [ dviptr ] =
-			( strstart [ fontarea [ f ] + 1 ] - strstart [ fontarea [ f ] ] ) ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-/*	long to unsigned char ... */
-    dvibuf [ dviptr ] =
-			( strstart [ fontname [ f ] + 1 ] - strstart [ fontname [ f ] ] ) ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-	  register integer for_end; 
-	  k = strstart [ fontarea [ f ] ] ; 
-	  for_end = strstart [ fontarea [ f ] + 1 ] - 1 ; 
-	  if ( k <= for_end) do 
-	  {
-		  dvibuf [ dviptr ] = strpool [ k ] ; 
-		  incr ( dviptr ) ; 
-		  if ( dviptr == dvilimit ) dviswap () ; 
-	  } 
-	  while ( k++ < for_end ) ;
-  } 
-  {
-	  register integer for_end; 
-	  k = strstart [ fontname [ f ] ] ; 
-	  for_end =   strstart [ fontname [ f ] + 1 ] - 1 ;
-	  if ( k <= for_end) do 
-	  {
-		  dvibuf [ dviptr ] = strpool [ k ] ; 
-		  incr ( dviptr ) ; 
-		  if ( dviptr == dvilimit ) dviswap () ; 
-	  } 
-	  while ( k++ < for_end ) ;
-  } 
-} 
 
-/* following needs access to dvibuf=zdvibuf see coerce.h */
+  dvi_out(font_check[f].b0);
+  dvi_out(font_check[f].b1);
+  dvi_out(font_check[f].b2);
+  dvi_out(font_check[f].b3);
+  dvi_four(font_size[f]); 
+  dvi_four(font_dsize[f]);
+  dvi_out(length(font_area[f]));
+  dvi_out(length(font_name[f]));
 
-void zmovement ( w , o ) 
-scaled w ; 
-eightbits o ; 
-{/* 10 40 45 2 1 */ movement_regmem 
-  smallnumber mstate  ; 
-  halfword p, q  ; 
-  integer k  ; 
-  q = getnode ( 3 ) ; 
-  mem [ q + 1 ] .cint = w ; 
-  mem [ q + 2 ] .cint = dvioffset + dviptr ; 
-  if ( o == 157 )					/* 157 == down1 */
-  {
-    mem [ q ] .hh .v.RH = downptr ; 
-    downptr = q ; 
-  } 
-  else {							/* 143 == right1 */
-      
-    mem [ q ] .hh .v.RH = rightptr ; 
-    rightptr = q ; 
-  } 
-  p = mem [ q ] .hh .v.RH ; 
-  mstate = 0 ; 
-  while ( p != 0 ) {	/* while p<>null do l.12153 */
-      
-    if ( mem [ p + 1 ] .cint == w ) 
-    switch ( mstate + mem [ p ] .hh .v.LH ) 
-    {case 3 : 
-    case 4 : 
-    case 15 : 
-    case 16 : 
-      if ( mem [ p + 2 ] .cint < dvigone ) 
-      goto lab45 ; 
-      else {
-	  
-	k = mem [ p + 2 ] .cint - dvioffset ; 
-	if ( k < 0 ) 
-	k = k + dvibufsize ; 
-	dvibuf [ k ] = dvibuf [ k ] + 5 ; 
-	mem [ p ] .hh .v.LH = 1 ; 
-	goto lab40 ; 
-      } 
-      break ; 
-    case 5 : 
-    case 9 : 
-    case 11 : 
-      if ( mem [ p + 2 ] .cint < dvigone ) 
-      goto lab45 ; 
-      else {
-	  
-	k = mem [ p + 2 ] .cint - dvioffset ; 
-	if ( k < 0 ) 
-	k = k + dvibufsize ; 
-	dvibuf [ k ] = dvibuf [ k ] + 10 ; 
-	mem [ p ] .hh .v.LH = 2 ; 
-	goto lab40 ; 
-      } 
-      break ; 
-    case 1 : 
-    case 2 : 
-    case 8 : 
-    case 13 : 
-      goto lab40 ; 
-      break ; 
-      default: 
-      ; 
-      break ; 
-    } 
-    else switch ( mstate + mem [ p ] .hh .v.LH ) 
-    {case 1 : 
-      mstate = 6 ; 
-      break ; 
-    case 2 : 
-      mstate = 12 ; 
-      break ; 
-    case 8 : 
-    case 13 : 
-      goto lab45 ; 
-      break ; 
-      default: 
-      ; 
-      break ; 
-    } 
-    p = mem [ p ] .hh .v.RH ; 
-  } 
-  lab45: ; 
-  mem [ q ] .hh .v.LH = 3 ; 
-  if ( abs ( w ) >= 8388608L )	/* 2^23 */
-  {
-    {
-      dvibuf [ dviptr ] = o + 3 ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    dvifour ( w ) ; 
-    return ; 
-  } 
-  if ( abs ( w ) >= 32768L ) 
-  {
-    {
-      dvibuf [ dviptr ] = o + 2 ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    if ( w < 0 ) 
-    w = w + 16777216L ;  /* 2^24 */
-    {
-/*      dvibuf [ dviptr ] = w / 65536L ;  */
-/*      dvibuf [ dviptr ] = ( w >> 16 ) ;  */
-      dvibuf [ dviptr ] = (unsigned char) ( w >> 16 ) ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-/*    w = w % 65536L ; */
-	w = w & 65535L ; 
-    goto lab2 ; 
-  } 
-  if ( abs ( w ) >= 128 ) 
-  {
-    {
-      dvibuf [ dviptr ] = o + 1 ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    if ( w < 0 ) 
-    w = w + 65536L ; 
-    goto lab2 ; 
-  } 
-  {
-    dvibuf [ dviptr ] = o ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  if ( w < 0 ) 
-  w = w + 256 ; 
-  goto lab1 ; 
-  lab2: {
-      
-/*    dvibuf [ dviptr ] = w / 256 ;  */
-/*    dvibuf [ dviptr ] = ( w >> 8 ) ;  */
-    dvibuf [ dviptr ] = (unsigned char) ( w >> 8 ) ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  lab1: {
-      
-/*    dvibuf [ dviptr ] = w % 256 ;  */
-    dvibuf [ dviptr ] = w & 255 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  return ; 
-  lab40: mem [ q ] .hh .v.LH = mem [ p ] .hh .v.LH ; 
-  if ( mem [ q ] .hh .v.LH == 1 ) 
-  {
-    {
-      dvibuf [ dviptr ] = o + 4 ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    while ( mem [ q ] .hh .v.RH != p ) {
-	
-      q = mem [ q ] .hh .v.RH ; 
-      switch ( mem [ q ] .hh .v.LH ) 
-      {case 3 : 
-	mem [ q ] .hh .v.LH = 5 ; 
-	break ; 
-      case 4 : 
-	mem [ q ] .hh .v.LH = 6 ; 
-	break ; 
-	default: 
-	; 
-	break ; 
-      } 
-    } 
-  } 
-  else {
-      
-    {
-      dvibuf [ dviptr ] = o + 9 ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    while ( mem [ q ] .hh .v.RH != p ) {
-	
-      q = mem [ q ] .hh .v.RH ; 
-      switch ( mem [ q ] .hh .v.LH ) 
-      {case 3 : 
-	mem [ q ] .hh .v.LH = 4 ; 
-	break ; 
-      case 5 : 
-	mem [ q ] .hh .v.LH = 6 ; 
-	break ; 
-	default: 
-	; 
-	break ; 
-      } 
-    } 
-  } 
-} 
+  for (k = str_start[font_area[f]]; k <= str_start[font_area[f] + 1] - 1; k++)
+    dvi_out(str_pool[k]);
 
-void zprunemovements ( l ) 
-integer l ; 
-{/* 30 10 */ prunemovements_regmem 
-  halfword p  ; 
-  while ( downptr != 0 ) {	/* while down_ptr<>null do l.12206 */
-      
-    if ( mem [ downptr + 2 ] .cint < l ) 
-    goto lab30 ; 
-    p = downptr ; 
-    downptr = mem [ p ] .hh .v.RH ; 
-    freenode ( p , 3 ) ; 
-  } 
-  lab30: while ( rightptr != 0 ) { /* done: while right_ptr<>null do */
-      
-    if ( mem [ rightptr + 2 ] .cint < l ) 
-    return ; 
-    p = rightptr ; 
-    rightptr = mem [ p ] .hh .v.RH ; 
-    freenode ( p , 3 ) ; 
-  } 
-} 
+  for (k = str_start[font_name[f]]; k <= str_start[font_name[f] + 1] - 1; k++)
+    dvi_out(str_pool[k]);
+}
+/* sec 0607 */
+void zmovement(scaled w, eight_bits o)
+{
+  small_number mstate;
+  halfword p, q;
+  integer k;
 
-/* following needs access to dvibuf=zdvibuf see coerce.h */
+  q = get_node(movement_node_size);
+  width(q) = w;
+  location(q) = dvi_offset + dvi_ptr;
 
-void zspecialout ( p ) 
-halfword p ; 
-{specialout_regmem 
-  char oldsetting  ; 
-  poolpointer k  ; 
-  if ( curh != dvih ) 
+  if (o == down1)
   {
-    movement ( curh - dvih , 143 ) ;	/* 143 == right1 */
-    dvih = curh ; 
-  } 
-  if ( curv != dviv ) 
+    link(q) = down_ptr;
+    down_ptr = q;
+  }
+  else
   {
-    movement ( curv - dviv , 157 ) ;	/* 157 == down1 */
-    dviv = curv ; 
-  } 
-  oldsetting = selector ; 
-  selector = 21 ; 
+    link(q) = right_ptr;
+    right_ptr = q;
+  }
+
+  p = link(q);
+  mstate = none_seen;
+
+  while (p != 0)
+  {
+    if (width(p) == w)
+      switch(mstate + info(p))
+      {
+        case none_seen + yz_OK:
+        case none_seen + y_OK:
+        case z_seen + yz_OK:
+        case z_seen + y_OK:
+          if (location(p) < dvi_gone)
+            goto lab45;
+          else
+          {
+            k = location(p) - dvi_offset;
+
+            if (k < 0)
+              k = k + dvi_buf_size;
+
+            dvi_buf[k] = dvi_buf[k] + y1 - down1;
+            info(p) = y_here;
+            goto lab40;
+          }
+          break;
+
+        case none_seen + z_OK:
+        case y_seen + yz_OK:
+        case y_seen + z_OK:
+          if (location(p) < dvi_gone)
+            goto lab45;
+          else
+          {
+            k = location(p) - dvi_offset;
+
+            if (k < 0)
+              k = k + dvi_buf_size;
+
+            dvi_buf[k] = dvi_buf[k] + z1 - down1;
+            info(p) = z_here;
+            goto lab40;
+          }
+          break;
+
+        case none_seen + y_here:
+        case none_seen + z_here:
+        case y_seen + z_here:
+        case z_seen + y_here:
+          goto lab40;
+          break;
+
+        default:
+          break;
+      }
+    else switch (mstate + info(p))
+    {
+      case none_seen + y_here:
+        mstate = y_seen;
+        break;
+
+      case none_seen + z_here:
+        mstate = z_seen;
+        break;
+
+      case y_seen + z_here:
+      case z_seen + y_here:
+        goto lab45;
+        break;
+
+      default:
+        break;
+    }
+    p = link(p);
+  }
+lab45:
+
+  info(q) = yz_OK;
+
+  if (abs(w) >= 8388608L) /* 2^23 */
+  {
+    dvi_out(o + 3);
+    dvi_four(w);
+    return;
+  }
+
+  if (abs(w) >= 32768L)
+  {
+    dvi_out(o + 2);
+
+    if (w < 0)
+      w = w + 16777216L;  /* 2^24 */
+    //dvi_out(w / 65536L);
+    dvi_out((w >> 16));
+/*    w = w % 65536L; */
+    w = w & 65535L;
+    goto lab2;
+  }
+
+  if (abs(w)>= 128)
+  {
+    dvi_out(o + 1);
+
+    if (w < 0)
+      w = w + 65536L;
+
+    goto lab2;
+  }
+
+  dvi_out(o);
+
+  if (w < 0)
+    w = w + 256;
+
+  goto lab1;
+lab2:
+  //dvi_out(w / 256);
+  dvi_out((w >> 8));
+lab1:
+  //dvi_out(w % 256);
+  dvi_out(w & 255);
+  return;
+lab40:
+  info(q) = info(p);
+
+  if (info(q) == y_here)
+  {
+    dvi_out(o + y0 - down1);
+
+    while (link(q) != p)
+    {
+      q = link(q);
+
+      switch (info(q))
+      {
+        case yz_OK:
+          info(q) = z_OK;
+          break;
+
+        case y_OK:
+          info(q) = d_fixed;
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+  else
+  {
+    dvi_out(o + z0 - down1);
+
+    while (link(q) != p)
+    {
+      q = link(q);
+
+      switch (info(q))
+      {
+        case yz_OK:
+          info(q) = y_OK;
+          break;
+
+        case z_OK:
+          info(q) = d_fixed;
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+}
+/* sec 0615 */
+void prune_movements_(integer l)
+{
+  halfword p;
+
+  while (down_ptr != 0)
+  {
+    if (location(down_ptr) < l)
+      goto lab30;
+
+    p = down_ptr;
+    down_ptr = link(p);
+    free_node(p, movement_node_size);
+  }
+
+lab30:
+  while (right_ptr != 0)
+  {
+    if (location(right_ptr) < l)
+      return;
+
+    p = right_ptr;
+    right_ptr = link(p);
+    free_node(p, movement_node_size);
+  }
+}
+/* following needs access to dvi_buf=zdvibuf see coerce.h */
+/* sec 1368 */
+void special_out_(halfword p)
+{
+  char old_setting;
+  pool_pointer k;
+
+  if (cur_h != dvi_h)
+  {
+    movement(cur_h - dvi_h, right1);
+    dvi_h = cur_h;
+  }
+
+  if (cur_v != dvi_v)
+  {
+    movement(cur_v - dvi_v, down1);
+    dvi_v = cur_v;
+  }
+
+  old_setting = selector;
+  selector = new_string;
+
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* About output \special{...} make some space in string pool 97/Mar/9 */
 #ifdef ALLOCATESTRING
-	if ( poolptr + 32000 > currentpoolsize)
-		strpool = reallocstrpool (incrementpoolsize);
+  if (pool_ptr + 32000 > current_pool_size)
+    str_pool = realloc_str_pool (increment_pool_size);
 /* We don't bother to check whether this worked - will catch later */
 #endif
-/* Potential problem here if currentpoolsize is not much more than poolptr! */
+/* Potential problem here if current_pool_size is not much more than pool_ptr! */
 /* Fixed 97/Mar/9 in version 2.0.3 */
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef ALLOCATESTRING
-/*  showtokenlist ( mem [ mem [ p + 1 ] .hh .v.RH ] .hh .v.RH , 0 ,
-	  currentpoolsize - poolptr ) ; */
-  showtokenlist ( mem [ mem [ p + 1 ] .hh .v.RH ] .hh .v.RH , 0 ,
-	  10000000L ) ;   
-/*	Above is safe, since print/printchar/printesc will extend string space */
+  show_token_list(link(write_tokens(p)), 0, 10000000L);
+/*  Above is safe, since print/print_char/print_esc will extend string space */
 #else
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  showtokenlist ( mem [ mem [ p + 1 ] .hh .v.RH ] .hh .v.RH , 0 ,
-      poolsize - poolptr ) ; 
+  show_token_list(link(write_tokens(p)), 0, pool_size - pool_ptr);
 #endif
+  selector = old_setting;
+  str_room(1);
 
-  selector = oldsetting ; 
+  if (cur_length < 256)  /* can use xxx1 ? */
   {
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* str_room(1) - is there space for one more character in string pool ? */
-#ifdef ALLOCATESTRING
-	if ( poolptr + 1 > currentpoolsize)
-		strpool = reallocstrpool (incrementpoolsize);
-	if ( poolptr + 1 > currentpoolsize)	{	/* in case it failed 94/Jan/24 */
-		overflow ( 257 , currentpoolsize - initpoolptr ) ; /* 97/Mar/7 */
-		return;			// abortflag set
-	}
-#else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-    if ( poolptr + 1 > poolsize ) {
-		overflow ( 257 , poolsize - initpoolptr ) ; /* pool size */
-		return;			// abortflag set
-	}
-#endif
-  } 
-  if ( ( poolptr - strstart [ strptr ] ) < 256 )	/* can use xxx1 ? */
-  {
-    {
-      dvibuf [ dviptr ] = 239 ;		/* xxx1 */
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    {
-/*	  long to unsigned char ... */
-      dvibuf [ dviptr ] = ( poolptr - strstart [ strptr ] ) ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-  } 
-  else {							/* use xxx4 instead */
-      
-    {
-      dvibuf [ dviptr ] = 242 ;		/* xxx4 */
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    dvifour ( ( poolptr - strstart [ strptr ] ) ) ; 
-  } 
-
-#ifdef IGNORED
-/*	debugging code for \special{src: ... } 98/Nov/11 */
-  {
-	  int k = strstart [ strptr ];
-	  int kend = poolptr;
-	  if (kend > k + 4) {
-		  if (strpool [k] == 's' &&
-			  strpool [k+1] == 'r' &&
-			  strpool [k+2] == 'c' &&
-			  strpool [k+3] == ':') {	/* \special{src: ... } */
-			  showchar('\n');
-			  s = logline;
-			  while (k < kend) {
-				  *s++ = strpool[k++];
-			  }
-			  *s++ = ' ';
-			  *s++ = '\0';
-			  showline(logline, 0)
-#ifndef _WINDOWS
-			  fflush(stdout);
-#endif
-			  if (curinput .namefield > 17)	{ /* redundant ? */
-				  print ( curinput .namefield );				  
-				  printchar ( 40 );				/* ( */
-				  printint ( line ) ;			/* line number */
-				  printchar ( 41 );				/* ) */
-				  printchar ( 32 );				/*   */
-				  printchar ( 58 );				/* : */
-			  }
-#ifndef _WINDOWS
-			  fflush(stdout);
-#endif
-		  }
-	  }
+    dvi_out(xxx1);
+    dvi_out(cur_length);
   }
-#endif
-
+  else
   {
-	  register integer for_end; 
-	  k = strstart [ strptr ] ; 
-	  for_end = poolptr - 1 ; 
-	  if ( k <= for_end) do 
-	  {
-		  dvibuf [ dviptr ] = strpool [ k ] ; 
-		  incr ( dviptr ) ; 
-		  if ( dviptr == dvilimit ) dviswap () ; 
-	  } 
-	  while ( k++ < for_end ) ;
-  } 
-  poolptr = strstart [ strptr ] ; 
-} 
-
-/* noew returns -1 if it fails */
-
-void zwriteout ( p ) 
-halfword p ; 
-{writeout_regmem 
-  char oldsetting  ; 
-/*  integer oldmode  ;  */
-  int oldmode  ;					/* 1995/Jan/7 */
-/*  smallnumber j  ;  */
-  int j  ;							/* 1995/Jan/7 */
-  halfword q, r  ; 
-/* q:=get_avail; info(q):=right_brace_token+"}";@/ */
-  q = getavail () ; 
-  mem [ q ] .hh .v.LH = 637 ; 
-/* r:=get_avail; link(q):=r; info(r):=end_write_token; ins_list(q);@/ */
-/* @d end_write_token==cs_token_flag+end_write */
-  r = getavail () ; 
-  mem [ q ] .hh .v.RH = r ; 
-/*  mem [ r ] .hh .v.LH = (hash_size + 4617) ;  */
-/*  mem [ r ] .hh .v.LH = (hash_size + 4095 + 522) ; */
-  mem [ r ] .hh .v.LH = (hash_size + hash_extra + 4095 + 522) ; 
-  begintokenlist ( q , 4 ) ; 
-  begintokenlist ( mem [ p + 1 ] .hh .v.RH , 15 ) ; 
-  q = getavail () ; 
-  mem [ q ] .hh .v.LH = 379 ; 
-  begintokenlist ( q , 4 ) ; 
-  oldmode = curlist .modefield ; 
-  curlist .modefield = 0 ; 
-  curcs = writeloc ; 
-  q = scantoks ( false , true ) ; 
-  ABORTCHECK;
-  gettoken () ; 
-/*  if ( curtok != (hash_size + 4617) )  */
-/*  if ( curtok != (hash_size + 4095 + 522) )  */
-  if ( curtok != (hash_size + hash_extra + 4095 + 522) ) 
-  {
-    {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 1291 ) ;		/* Unbalanced write command */
-    } 
-    {
-      helpptr = 2 ; 
-      helpline [ 1 ] = 1292 ;	/* On this page there's a \write with fewer real {'s than }'s. */
-      helpline [ 0 ] = 1006 ;	/* I can't handle that very well; good luck. */
-    } 
-    error () ; 
-	ABORTCHECK;
-    do {
-		gettoken () ; 
-/*    } while ( ! ( curtok == (hash_size + 4617) ) ) ;  */
-/*    } while ( ! ( curtok == (hash_size + 4095 + 522) ) ) ;  */
-    } while ( ! ( curtok == (hash_size + hash_extra + 4095 + 522) ) ) ; /*1996/Jan/10*/
-  } 
-  curlist .modefield = oldmode ; 
-  endtokenlist () ; 
-  ABORTCHECK;
-  oldsetting = selector ; 
-  j = mem [ p + 1 ] .hh .v.LH ; 
-  if ( writeopen [ j ] ) selector = j ; 
-  else {
-    if ( ( j == 17 ) && ( selector == 19 ) ) 
-    selector = 18 ; 
-    printnl ( 335 ) ;	/*  */
-  } 
-  tokenshow ( defref ) ; 
-  println () ; 
-  flushlist ( defref ) ; 
-  selector = oldsetting ; 
-} 
-
-void zoutwhat ( p ) 
-halfword p ; 
-{outwhat_regmem 
-/*  smallnumber j  ;  */
-  int j  ;						/* 1995/Jan/7 */
-  switch ( mem [ p ] .hh.b1 ) 
-  {case 0 : 
-  case 1 : 
-  case 2 : 
-    if ( ! doingleaders ) {
-      j = mem [ p + 1 ] .hh .v.LH ; 
-      if ( mem [ p ] .hh.b1 == 1 ) {
-		  writeout ( p );
-		  ABORTCHECK;
-	  }
-      else {
-		  if ( writeopen [ j ] ) 
-			  (void) aclose ( writefile [ j ] ) ; 
-		  if ( mem [ p ] .hh.b1 == 2 ) 
-			  writeopen [ j ] = false ; 
-		  else if ( j < 16 ) {
-			  curname = mem [ p + 1 ] .hh .v.RH ; 
-			  curarea = mem [ p + 2 ] .hh .v.LH ; 
-			  curext = mem [ p + 2 ] .hh .v.RH ; 
-			  if ( curext == 335 )	/* "" */
-				  curext = 785 ;	/* => ".tex" */
-			  packfilename ( curname , curarea , curext ) ; 
-			  while ( ! aopenout ( writefile [ j ] ) ) {
-				  promptfilename ( 1294 , 785 ) ; /* output file name  .tex */
-				  ABORTCHECK;
-	  }
-	  writeopen [ j ] = true ; 
-	} 
-      } 
-    } 
-    break ; 
-  case 3 : 
-    specialout ( p ) ; 
-    break ; 
-  case 4 : 
-    ; 
-    break ; 
-    default: 
-		{
-			confusion ( 1293 ) ; /* ext4 */
-			return;				// abortflag set
-		}
-		break ; 
-  } 
-} 
-
-/* following needs access to dvibuf=zdvibuf see coerce.h */
-
-void hlistout ( ) 
-{/* 21 13 14 15 */ hlistout_regmem 
-  scaled baseline  ; 
-  scaled leftedge  ; 
-  scaled saveh, savev  ; 
-  halfword thisbox  ; 
-/*  glueord gorder  ;  */
-  int gorder  ;						/* 95/Jan/7 */
-/*  char gsign  ;  */
-  int gsign  ;						/* 95/Jan/7 */
-  halfword p  ; 
-  integer saveloc  ; 
-  halfword leaderbox  ; 
-  scaled leaderwd  ; 
-  scaled lx  ; 
-  booleane outerdoingleaders  ; 
-  scaled edge  ; 
-/* ********************************************************************* */
-  real gluetemp  ;	/* new in 3.14159 */
-/* ********************************************************************* */
-  thisbox = tempptr ; 
-  gorder = mem [ thisbox + 5 ] .hh.b1 ; 
-  gsign = mem [ thisbox + 5 ] .hh.b0 ; 
-  p = mem [ thisbox + 5 ] .hh .v.RH ; 
-  incr ( curs ) ; 
-  if ( curs > 0 ) 
-  {
-    dvibuf [ dviptr ] = 141 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  if ( curs > maxpush ) 
-  maxpush = curs ; 
-  saveloc = dvioffset + dviptr ; 
-  baseline = curv ; 
-  leftedge = curh ; 
-/* while p<>null do l.12314 */
-  while ( p != 0 ) lab21: if ( ( p >= himemmin ) ) 
-  {
-    if ( curh != dvih ) 
-    {
-      movement ( curh - dvih , 143 ) ;		/* 143 == right1 */
-      dvih = curh ; 
-    } 
-    if ( curv != dviv ) 
-    {
-      movement ( curv - dviv , 157 ) ;		/* 157 == down1 */
-      dviv = curv ; 
-    } 
-    do {
-	f = mem [ p ] .hh.b0 ; 
-      c = mem [ p ] .hh.b1 ; 
-      if ( f != dvif ) 
-      {
-	if ( ! fontused [ f ] ) 
-	{
-	  dvifontdef ( f ) ; 
-	  fontused [ f ] = true ; 
-	} 
-	if ( f <= 64 ) 
-	{								/* fnt_num_0 --- fnt_num_63 */
-	  dvibuf [ dviptr ] = f + 170 ; 
-	  incr ( dviptr ) ; 
-	  if ( dviptr == dvilimit ) dviswap () ; 
-	} 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef INCREASEFONTS
-	else if ( f <= 256 ) {			/* if we allow greater than 256 fonts */
-#else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	else {							/* normal TeX 82 case */
-#endif
-	  {								/* fnt1 followed by f */
-	    dvibuf [ dviptr ] = 235 ; 
-	    incr ( dviptr ) ; 
-	    if ( dviptr == dvilimit ) dviswap () ; 
-	  } 
-	  {
-	    dvibuf [ dviptr ] = f - 1 ; 
-	    incr ( dviptr ) ; 
-	    if ( dviptr == dvilimit ) dviswap () ; 
-	  } 
-	} 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef INCREASEFONTS
-	else {							/* fnt2 followed by f / 256,  f % 256 */
-	  {
-	    dvibuf [ dviptr ] = 236 ;
-	    incr ( dviptr ) ; 
-	    if ( dviptr == dvilimit ) dviswap () ; 
-	  } 
-	  {
-	    dvibuf [ dviptr ] = (f - 1) >> 8 ;		/* top byte */
-	    incr ( dviptr ) ; 
-	    if ( dviptr == dvilimit ) dviswap () ; 
-	  }
-	  {
-	    dvibuf [ dviptr ] = (f - 1) & 255 ;		/* bottom byte */
-	    incr ( dviptr ) ; 
-	    if ( dviptr == dvilimit ) dviswap () ; 
-	  } 	  
-	}
-#endif
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-	  dvif = f ; 
-      } 
-      if ( c >= 128 ) 
-      {
-	dvibuf [ dviptr ] = 128 ; 
-	incr ( dviptr ) ; 
-	if ( dviptr == dvilimit ) dviswap () ; 
-      } 
-      {
-	dvibuf [ dviptr ] = c ; 
-	incr ( dviptr ) ; 
-	if ( dviptr == dvilimit ) dviswap () ; 
-      } 
-      curh = curh + fontinfo [ widthbase [ f ] + fontinfo [ charbase [ f ] + c 
-      ] .qqqq .b0 ] .cint ; 
-      p = mem [ p ] .hh .v.RH ; 
-    } while ( ! ( ! ( p >= himemmin ) ) ) ; 
-    dvih = curh ; 
-  } 
-  else {
-      
-    switch ( mem [ p ] .hh.b0 ) 
-    {case 0 : 
-    case 1 : 
-/* if list_ptr(p)=null then cur_h:=cur_h+width(p) l.12371 */
-      if ( mem [ p + 5 ] .hh .v.RH == 0 ) 
-      curh = curh + mem [ p + 1 ] .cint ; 
-      else {
-	  
-	saveh = dvih ; 
-	savev = dviv ; 
-	curv = baseline + mem [ p + 4 ] .cint ; 
-	tempptr = p ; 
-	edge = curh ; 
-	if ( mem [ p ] .hh.b0 == 1 ) vlistout () ; 
-	else hlistout () ;
-	ABORTCHECK;
-	dvih = saveh ; 
-	dviv = savev ; 
-	curh = edge + mem [ p + 1 ] .cint ; 
-	curv = baseline ; 
-      } 
-      break ; 
-    case 2 : 
-      {
-	ruleht = mem [ p + 3 ] .cint ; 
-	ruledp = mem [ p + 2 ] .cint ; 
-	rulewd = mem [ p + 1 ] .cint ; 
-	goto lab14 ; 
-      } 
-      break ; 
-    case 8 : 
-      outwhat ( p ) ;
-	  ABORTCHECK;
-      break ; 
-    case 10 : 
-      {
-	g = mem [ p + 1 ] .hh .v.LH ; 
-	rulewd = mem [ g + 1 ] .cint ; 
-	if ( gsign != 0 ) 
-	{
-	  if ( gsign == 1 ) 
-	  {
-	    if ( mem [ g ] .hh.b0 == gorder ) 
-/* *********************************************************************** */
-/*	    rulewd = rulewd + round ( mem [ thisbox + 6 ] .gr * mem [ g + 2 ] .cint ) ; */
-/* ******************** 3.14159 ******************************************* */
-	    {
-	      gluetemp = mem [ thisbox + 6 ] .gr * mem [ g + 2 ] .cint ; 
-	      if ( gluetemp > 1000000000.0 ) 
-	      gluetemp = 1000000000.0 ; 
-	      else if ( gluetemp < -1000000000.0 ) 
-	      gluetemp = -1000000000.0 ; 
-	      rulewd = rulewd + round ( gluetemp ) ; 
-	    } 
-/* ************************************************************************* */
-	  } 
-/*	  else { */
-/*	    if ( mem [ g ] .hh.b1 == gorder ) */
-/*	    rulewd = rulewd - round ( mem [ thisbox + 6 ] .gr * mem [ g + 3 ] .cint ) ; */
-/*	  }  */
-/* ******************** 3.14159 ******************************************* */
-	  else if ( mem [ g ] .hh.b1 == gorder ) 
-	  {
-	    gluetemp = mem [ thisbox + 6 ] .gr * mem [ g + 3 ] .cint ; 
-	    if ( gluetemp > 1000000000.0 ) 
-	    gluetemp = 1000000000.0 ; 
-	    else if ( gluetemp < -1000000000.0 ) 
-	    gluetemp = -1000000000.0 ; 
-	    rulewd = rulewd - round ( gluetemp ) ; 
-	  } 
-/* ************************************************************************* */
-	} 
-	if ( mem [ p ] .hh.b1 >= 100 ) 
-	{
-	  leaderbox = mem [ p + 1 ] .hh .v.RH ; 
-	  if ( mem [ leaderbox ] .hh.b0 == 2 ) 
-	  {
-	    ruleht = mem [ leaderbox + 3 ] .cint ; 
-	    ruledp = mem [ leaderbox + 2 ] .cint ; 
-	    goto lab14 ; 
-	  } 
-	  leaderwd = mem [ leaderbox + 1 ] .cint ; 
-	  if ( ( leaderwd > 0 ) && ( rulewd > 0 ) ) 
-	  {
-	    rulewd = rulewd + 10 ; 
-	    edge = curh + rulewd ; 
-	    lx = 0 ; 
-	    if ( mem [ p ] .hh.b1 == 100 ) 
-	    {
-	      saveh = curh ; 
-	      curh = leftedge + leaderwd * ( ( curh - leftedge ) / leaderwd ) 
-	      ; 
-	      if ( curh < saveh ) 
-	      curh = curh + leaderwd ; 
-	    } 
-	    else {
-		
-	      lq = rulewd / leaderwd ; 
-	      lr = rulewd % leaderwd ; 
-	      if ( mem [ p ] .hh.b1 == 101 ) 
-	      curh = curh + ( lr / 2 ) ; 
-	      else {
-		  
-		lx = ( 2 * lr + lq + 1 ) / ( 2 * lq + 2 ) ; 
-		curh = curh + ( ( lr - ( lq - 1 ) * lx ) / 2 ) ; 
-	      } 
-	    } 
-	    while ( curh + leaderwd <= edge ) {
-		
-	      curv = baseline + mem [ leaderbox + 4 ] .cint ; 
-	      if ( curv != dviv ) 
-	      {
-		movement ( curv - dviv , 157 ) ;	/* 157 == down1 */
-		dviv = curv ; 
-	      } 
-	      savev = dviv ; 
-	      if ( curh != dvih ) 
-	      {
-		movement ( curh - dvih , 143 ) ;	/* 143 == right1 */
-		dvih = curh ; 
-	      } 
-	      saveh = dvih ; 
-	      tempptr = leaderbox ; 
-	      outerdoingleaders = doingleaders ; 
-	      doingleaders = true ; 
-	      if ( mem [ leaderbox ] .hh.b0 == 1 ) vlistout () ; 
-	      else hlistout () ;
-		  ABORTCHECK;
-	      doingleaders = outerdoingleaders ; 
-	      dviv = savev ; 
-	      dvih = saveh ; 
-/* ****************************************************************** */
-/*	      curv = saveh ;  */	
-	      curv = baseline ;		/* changed in 3.1415 */
-/* ****************************************************************** */
-	      curh = saveh + leaderwd + lx ; 
-	    } 
-	    curh = edge - 10 ; 
-	    goto lab15 ; 
-	  } 
-	} 
-	goto lab13 ; 
-      } 
-      break ; 
-    case 11 : 
-    case 9 : 
-      curh = curh + mem [ p + 1 ] .cint ; 
-      break ; 
-    case 6 : 
-      {
-	mem [ memtop - 12 ] = mem [ p + 1 ] ; 
-	mem [ memtop - 12 ] .hh .v.RH = mem [ p ] .hh .v.RH ; 
-	p = memtop - 12 ; 
-	goto lab21 ; 
-      } 
-      break ; 
-      default: 
-      ; 
-      break ; 
-    } 
-    goto lab15 ; 
-    lab14: if ( ( ruleht == -1073741824L ) )	/* - 2^30 */
-    ruleht = mem [ thisbox + 3 ] .cint ; 
-    if ( ( ruledp == -1073741824L ) )			/* - 2^30 */
-    ruledp = mem [ thisbox + 2 ] .cint ; 
-    ruleht = ruleht + ruledp ; 
-    if ( ( ruleht > 0 ) && ( rulewd > 0 ) ) 
-    {
-      if ( curh != dvih ) 
-      {
-	movement ( curh - dvih , 143 ) ; 	/* 143 == right1 */
-	dvih = curh ; 
-      } 
-      curv = baseline + ruledp ; 
-      if ( curv != dviv ) 
-      {
-	movement ( curv - dviv , 157 ) ; 	/* 157 == down1 */
-	dviv = curv ; 
-      } 
-      {
-	dvibuf [ dviptr ] = 132 ; 
-	incr ( dviptr ) ; 
-	if ( dviptr == dvilimit ) dviswap () ; 
-      } 
-      dvifour ( ruleht ) ; 
-      dvifour ( rulewd ) ; 
-      curv = baseline ; 
-      dvih = dvih + rulewd ; 
-    } 
-    lab13: curh = curh + rulewd ; 
-    lab15: p = mem [ p ] .hh .v.RH ; 
-  } 
-  prunemovements ( saveloc ) ; 
-  if ( curs > 0 ) 
-  dvipop ( saveloc ) ; 
-  decr ( curs ) ; 
-} 
-
-/* following needs access to dvibuf=zdvibuf see coerce.h */
-
-void vlistout ( ) 
-{/* 13 14 15 */ vlistout_regmem 
-  scaled leftedge  ; 
-  scaled topedge  ; 
-  scaled saveh, savev  ; 
-  halfword thisbox  ; 
-/*  glueord gorder  ;  */
-  int gorder  ;					/* 95/Jan/7 */
-/*  char gsign  ;  */
-  int gsign  ;					/* 95/Jan/7 */
-  halfword p  ; 
-  integer saveloc  ; 
-  halfword leaderbox  ; 
-  scaled leaderht  ; 
-  scaled lx  ; 
-  booleane outerdoingleaders  ; 
-  scaled edge  ; 
-/* ************************************************************************ */
-  real gluetemp  ;	/* new in 3.14159 */
-/* ************************************************************************ */
-  thisbox = tempptr ; 
-  gorder = mem [ thisbox + 5 ] .hh.b1 ; 
-  gsign = mem [ thisbox + 5 ] .hh.b0 ; 
-  p = mem [ thisbox + 5 ] .hh .v.RH ; 
-  incr ( curs ) ; 
-  if ( curs > 0 ) 
-  {
-    dvibuf [ dviptr ] = 141 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  if ( curs > maxpush ) 
-  maxpush = curs ; 
-  saveloc = dvioffset + dviptr ; 
-  leftedge = curh ; 
-  curv = curv - mem [ thisbox + 3 ] .cint ; 
-  topedge = curv ; 
-  while ( p != 0 ) {	/* while p<>null do l.12494 OK */
-    if ( ( p >= himemmin ) ) {
-		confusion ( 822 ) ;		/* vlistout */
-		return;				// abortflag set
-	}
-    else {
-      switch ( mem [ p ] .hh.b0 ) 
-      {case 0 : 
-      case 1 : 
-/* if list_ptr(p)=null then cur_v:=cur_v+height(p)+depth(p) l.12529 */
-	if ( mem [ p + 5 ] .hh .v.RH == 0 ) 
-	curv = curv + mem [ p + 3 ] .cint + mem [ p + 2 ] .cint ; 
-	else {
-	    
-	  curv = curv + mem [ p + 3 ] .cint ; 
-	  if ( curv != dviv ) 
-	  {
-	    movement ( curv - dviv , 157 ) ; 	/* 157 == down1 */
-	    dviv = curv ; 
-	  } 
-	  saveh = dvih ; 
-	  savev = dviv ; 
-	  curh = leftedge + mem [ p + 4 ] .cint ; 
-	  tempptr = p ; 
-	  if ( mem [ p ] .hh.b0 == 1 ) vlistout () ; 
-	  else hlistout () ;
-	  ABORTCHECK;
-	  dvih = saveh ; 
-	  dviv = savev ; 
-	  curv = savev + mem [ p + 2 ] .cint ; 
-	  curh = leftedge ; 
-	} 
-	break ; 
-      case 2 : 
-	{
-	  ruleht = mem [ p + 3 ] .cint ; 
-	  ruledp = mem [ p + 2 ] .cint ; 
-	  rulewd = mem [ p + 1 ] .cint ; 
-	  goto lab14 ; 
-	} 
-	break ; 
-      case 8 : 
-		  outwhat ( p ) ;
-		  ABORTCHECK;
-		  break ; 
-      case 10 : 
-	{
-	  g = mem [ p + 1 ] .hh .v.LH ; 
-	  ruleht = mem [ g + 1 ] .cint ; 
-	  if ( gsign != 0 ) 
-	  {
-	    if ( gsign == 1 ) 
-	    {
-	      if ( mem [ g ] .hh.b0 == gorder ) 
-/* ************************************************************************ */
-/*	      ruleht = ruleht + round ( mem [ thisbox + 6 ] .gr * mem [ g + 2 ] .cint ) ; */
-/* ************************ 3.14159 **************************************** */
-	      {
-		gluetemp = mem [ thisbox + 6 ] .gr * mem [ g + 2 ] .cint ; 
-		if ( gluetemp > 1000000000.0 ) 
-		gluetemp = 1000000000.0 ; 
-		else if ( gluetemp < -1000000000.0 ) 
-		gluetemp = -1000000000.0 ; 
-		ruleht = ruleht + round ( gluetemp ) ; 
-	      } 
-/* ************************************************************************* */
-	    } 
-/* ************************************************************************* */
-/*	    else { */
-/*	      if ( mem [ g ] .hh.b1 == gorder )  */
-/*	      ruleht = ruleht - round ( mem [ thisbox + 6 ] .gr * mem [ g + 3 ] .cint ) ; */
-/*	    } */
-	    else if ( mem [ g ] .hh.b1 == gorder )		/* BUG FIX !!! */
-        {
-	      gluetemp = mem [ thisbox + 6 ] .gr * mem [ g + 3 ] .cint ; 
-	      if ( gluetemp > 1000000000.0 ) 
-	      gluetemp = 1000000000.0 ; 
-	      else if ( gluetemp < -1000000000.0 ) 
-	      gluetemp = -1000000000.0 ; 
-	      ruleht = ruleht - round ( gluetemp ) ; 
-	    } 
-/* ************************************************************************* */
-	  } 
-	  if ( mem [ p ] .hh.b1 >= 100 ) 
-	  {
-	    leaderbox = mem [ p + 1 ] .hh .v.RH ; 
-	    if ( mem [ leaderbox ] .hh.b0 == 2 ) 
-	    {
-	      rulewd = mem [ leaderbox + 1 ] .cint ; 
-	      ruledp = 0 ; 
-	      goto lab14 ; 
-	    } 
-	    leaderht = mem [ leaderbox + 3 ] .cint + mem [ leaderbox + 2 ] 
-	    .cint ; 
-	    if ( ( leaderht > 0 ) && ( ruleht > 0 ) ) 
-	    {
-	      ruleht = ruleht + 10 ; 
-	      edge = curv + ruleht ; 
-	      lx = 0 ; 
-	      if ( mem [ p ] .hh.b1 == 100 ) 
-	      {
-		savev = curv ; 
-		curv = topedge + leaderht * ( ( curv - topedge ) / leaderht ) 
-		; 
-		if ( curv < savev ) 
-		curv = curv + leaderht ; 
-	      } 
-	      else {
-		  
-		lq = ruleht / leaderht ; 
-		lr = ruleht % leaderht ; 
-		if ( mem [ p ] .hh.b1 == 101 ) 
-		curv = curv + ( lr / 2 ) ; 
-		else {
-		    
-		  lx = ( 2 * lr + lq + 1 ) / ( 2 * lq + 2 ) ; 
-		  curv = curv + ( ( lr - ( lq - 1 ) * lx ) / 2 ) ; 
-		} 
-	      } 
-	      while ( curv + leaderht <= edge ) {
-		  
-		curh = leftedge + mem [ leaderbox + 4 ] .cint ; 
-		if ( curh != dvih ) 
-		{
-		  movement ( curh - dvih , 143 ) ; 	/* 143 == right1 */
-		  dvih = curh ; 
-		} 
-		saveh = dvih ; 
-		curv = curv + mem [ leaderbox + 3 ] .cint ; 
-		if ( curv != dviv ) 
-		{
-		  movement ( curv - dviv , 157 ) ; 	/* 157 == down1 */
-		  dviv = curv ; 
-		} 
-		savev = dviv ; 
-		tempptr = leaderbox ; 
-		outerdoingleaders = doingleaders ; 
-		doingleaders = true ; 
-		if ( mem [ leaderbox ] .hh.b0 == 1 ) vlistout () ; 
-		else hlistout () ; 
-		ABORTCHECK;
-		doingleaders = outerdoingleaders ; 
-		dviv = savev ; 
-		dvih = saveh ; 
-/* ************************************************************************ */
-/*		curh = saveh ;  */
-		curh = leftedge ;  /* 3.1415 */
-/* ************************************************************************ */
-		curv = savev - mem [ leaderbox + 3 ] .cint + leaderht + lx ; 
-	      } 
-	      curv = edge - 10 ; 
-	      goto lab15 ; 
-	    } 
-	  } 
-	  goto lab13 ; 
-	} 
-	break ; 
-      case 11 : 
-	curv = curv + mem [ p + 1 ] .cint ; 
-	break ; 
-	default: 
-	; 
-	break ; 
-      } 
-      goto lab15 ; 
-      lab14: if ( ( rulewd == -1073741824L ) )		/* -2^30 */
-      rulewd = mem [ thisbox + 1 ] .cint ; 
-      ruleht = ruleht + ruledp ; 
-      curv = curv + ruleht ; 
-      if ( ( ruleht > 0 ) && ( rulewd > 0 ) ) 
-      {
-	if ( curh != dvih ) 
-	{
-	  movement ( curh - dvih , 143 ) ; 	/* 143 == right1 */
-	  dvih = curh ; 
-	} 
-	if ( curv != dviv ) 
-	{
-	  movement ( curv - dviv , 157 ) ; 	/* 157 == down1 */
-	  dviv = curv ; 
-	} 
-	{
-	  dvibuf [ dviptr ] = 137 ; 
-	  incr ( dviptr ) ; 
-	  if ( dviptr == dvilimit ) dviswap () ; 
-	} 
-	dvifour ( ruleht ) ; 
-	dvifour ( rulewd ) ; 
-      } 
-      goto lab15 ; 
-      lab13: curv = curv + ruleht ; 
-    } 
-    lab15: p = mem [ p ] .hh .v.RH ; 
-  } 
-  prunemovements ( saveloc ) ; 
-  if ( curs > 0 ) 
-  dvipop ( saveloc ) ; 
-  decr ( curs ) ; 
-} 
-
-/* following needs access to dvibuf=zdvibuf see coerce.h */
-
-void zshipout ( p ) 
-halfword p ; 
-{/* 30 */ shipout_regmem 
-  integer pageloc  ; 
-  char j, k  ; 
-  poolpointer s  ; 
-  char oldsetting  ; 
-  if ( eqtb [ (hash_size + 3197) ] .cint > 0 ) 
-  {
-    printnl ( 335 ) ;		/*  */
-    println () ; 
-    print ( 823 ) ;		/* Completed box being shipped out */
-  } 
-  if ( termoffset > maxprintline - 9 ) 
-  println () ; 
-  else if ( ( termoffset > 0 ) || ( fileoffset > 0 ) ) 
-  printchar ( 32 ) ;		/*   */
-  printchar ( 91 ) ;		/* [ */
-  j = 9 ; 
-  while ( ( eqtb [ (hash_size + 3218) + j ] .cint == 0 ) && ( j > 0 ) ) decr ( j ) ; 
-  {
-	  register integer for_end; 
-	  k = 0 ; 
-	  for_end = j ; 
-	  if ( k <= for_end) do 
-	  {
-		  printint ( eqtb [ (hash_size + 3218) + k ] .cint ) ; 
-		  if ( k < j ) 
-			  printchar ( 46 ) ;  	/* . */
-	  } 
-	  while ( k++ < for_end ) ;
-  } 
-#ifndef _WINDOWS
-  fflush ( stdout ) ; 
-#endif
-  if ( eqtb [ (hash_size + 3197) ] .cint > 0 ) 
-  {
-    printchar ( 93 ) ;		/* ] */
-    begindiagnostic () ; 
-    showbox ( p ) ; 
-    enddiagnostic ( true ) ; 
-  } 
-  if ( ( mem [ p + 3 ] .cint > 1073741823L ) || /* 2^30 - 1 */
-	   ( mem [ p + 2 ] .cint > 1073741823L ) ||
-	   ( mem [ p + 3 ] .cint + mem [ p + 2 ] .cint +
-		 eqtb [ (hash_size + 3749) ] .cint > 1073741823L ) ||
-	   ( mem [ p + 1 ] .cint + eqtb [ (hash_size + 3748) ] .cint > 1073741823L ) ) 
-  {
-    {
-      if ( interaction == 3 ) 
-      ; 
-      printnl ( 262 ) ;		/* !  */
-      print ( 827 ) ;		/* Huge page cannot be shipped out */
-    } 
-    {
-      helpptr = 2 ; 
-      helpline [ 1 ] = 828 ;	/* The page just created is more than 18 feet tall or */
-      helpline [ 0 ] = 829 ;	/* more than 18 feet wide, so I suspect something went wrong. */
-    } 
-    error () ; 
-	ABORTCHECK;
-    if ( eqtb [ (hash_size + 3197) ] .cint <= 0 ) 
-    {
-      begindiagnostic () ; 
-      printnl ( 830 ) ;		/* The following box has been deleted: */
-      showbox ( p ) ; 
-      enddiagnostic ( true ) ; 
-    } 
-    goto lab30 ; 
-  } 
-  if ( mem [ p + 3 ] .cint + mem [ p + 2 ] .cint + eqtb [ (hash_size + 3749) ] .cint > maxv 
-  ) 
-  maxv = mem [ p + 3 ] .cint + mem [ p + 2 ] .cint + eqtb [ (hash_size + 3749) ] .cint ; 
-  if ( mem [ p + 1 ] .cint + eqtb [ (hash_size + 3748) ] .cint > maxh ) 
-  maxh = mem [ p + 1 ] .cint + eqtb [ (hash_size + 3748) ] .cint ; 
-  dvih = 0 ; 
-  dviv = 0 ; 
-  curh = eqtb [ (hash_size + 3748) ] .cint ; 
-  dvif = 0 ; 
-  if ( outputfilename == 0 ) 
-  {
-    if ( jobname == 0 ) openlogfile () ; 
-    packjobname ( 788 ) ;		/* .dvi */
-    while ( ! bopenout ( dvifile ) ) {
-		promptfilename ( 789 , 788 ) ;	/* file name for output  .dvi */
-		ABORTCHECK;
-	}
-    outputfilename = bmakenamestring ( dvifile ) ; 
+    dvi_out(xxx4);
+    dvi_four(cur_length); 
   } 
 
-  if ( totalpages == 0 ) 
-  {
-    {
-      dvibuf [ dviptr ] = 247 ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    {
-      dvibuf [ dviptr ] = 2 ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    dvifour ( 25400000L ) ;	/* magic DVI scale factor */
-    dvifour ( 473628672L ) ;	/* 7227 * 65536 */
-    preparemag () ; 
-	ABORTCHECK;
-    dvifour ( eqtb [ (hash_size + 3180) ] .cint ) ; 
-    oldsetting = selector ; 
-    selector = 21 ; 
-    print ( 821 ) ;		/* TeX output  */
-    printint ( eqtb [ (hash_size + 3186) ] .cint ) ; 
-    printchar ( 46 ) ; /* . */
-    printtwo ( eqtb [ (hash_size + 3185) ] .cint ) ; 
-    printchar ( 46 ) ; /* . */
-    printtwo ( eqtb [ (hash_size + 3184) ] .cint ) ; 
-    printchar ( 58 ) ; /* : */
-    printtwo ( eqtb [ (hash_size + 3183) ] .cint / 60 ) ; 
-    printtwo ( eqtb [ (hash_size + 3183) ] .cint % 60 ) ; 
-    selector = oldsetting ; 
-    {
-/*	  long to unsigned char ... */
-      dvibuf [ dviptr ] = ( poolptr - strstart [ strptr ] ) ; 
-      incr ( dviptr ) ; 
-      if ( dviptr == dvilimit ) dviswap () ; 
-    } 
-    {
-		register integer for_end; 
-		s = strstart [ strptr ] ; 
-		for_end = poolptr - 1 ; 
-		if ( s <= for_end) do 
-		{
-			dvibuf [ dviptr ] = strpool [ s ] ; 
-			incr ( dviptr ) ; 
-			if ( dviptr == dvilimit ) dviswap () ; 
-		} 
-		while ( s++ < for_end ) ;
-	} 
-    poolptr = strstart [ strptr ] ; 
-  } // end of if totalpages == 0
+  for (k = str_start[str_ptr]; k <= pool_ptr - 1; k++)
+    dvi_out(str_pool[k]);
 
-  pageloc = dvioffset + dviptr ; 
-  {
-    dvibuf [ dviptr ] = 139 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  {
-	  register integer for_end; 
-	  k = 0 ; 
-	  for_end = 9 ; 
-	  if ( k <= for_end) do 
-		  dvifour ( eqtb [ (hash_size + 3218) + k ] .cint ) ; 
-  	  while ( k++ < for_end ) ;
-  } 
-  dvifour ( lastbop ) ; 
-  lastbop = pageloc ; 
-  curv = mem [ p + 3 ] .cint + eqtb [ (hash_size + 3749) ] .cint ; 
-  tempptr = p ; 
-  if ( mem [ p ] .hh.b0 == 1 ) vlistout () ; 
-  else hlistout () ; 
-  ABORTCHECK;
-  {
-    dvibuf [ dviptr ] = 140 ; 
-    incr ( dviptr ) ; 
-    if ( dviptr == dvilimit ) dviswap () ; 
-  } 
-  incr ( totalpages ) ; 
-  curs = -1 ; 
-  lab30: ; 
-  if ( eqtb [ (hash_size + 3197) ] .cint <= 0 ) 
-  printchar ( 93 ) ;  	/* ] */
-  deadcycles = 0 ; 
-#ifndef _WINDOWS
-  fflush ( stdout ) ; 
-#endif
-	;
-#ifdef STAT
-  if ( eqtb [ (hash_size + 3194) ] .cint > 1 ) 
-  {
-    printnl ( 824 ) ;				/* Memory usage before:  */
-    printint ( varused ) ; 
-    printchar ( 38 ) ;				/* & */
-    printint ( dynused ) ; 
-    printchar ( 59 ) ;				/* ; */
-  } 
-#endif /* STAT */
-  flushnodelist ( p ) ; 
-	;
-#ifdef STAT
-  if ( eqtb [ (hash_size + 3194) ] .cint > 1 ) 
-  {
-    print ( 825 ) ;					/* after */
-    printint ( varused ) ; 
-    printchar ( 38 ) ; 				/* & */
-    printint ( dynused ) ; 
-    print ( 826 ) ;					/* still utouched */
-    printint ( himemmin - lomemmax - 1 ) ; /* somewhat inaccurate free mem */
-    println () ; 
-  } 
-#endif /* STAT */
-} 
-
-void zscanspec ( c , threecodes ) 
-groupcode c ; 
-booleane threecodes ; 
-{/* 40 */ scanspec_regmem 
-  integer s  ; 
-  char speccode  ; 
-  if ( threecodes ) 
-	  s = savestack [ saveptr + 0 ] .cint ; 
-  if ( scankeyword ( 836 ) )		/* to */
-	  speccode = 0 ; 
-  else if ( scankeyword ( 837 ) )	/* spread */
-	  speccode = 1 ; 
-  else {
-    speccode = 1 ; 
-    curval = 0 ; 
-    goto lab40 ; 
-  } 
-  scandimen ( false , false , false ) ; 
-  ABORTCHECK;
-  lab40: if ( threecodes ) 
-  {
-    savestack [ saveptr + 0 ] .cint = s ;	/* s may be used without ... */
-    incr ( saveptr ) ; 
-  } 
-  savestack [ saveptr + 0 ] .cint = speccode ; 
-  savestack [ saveptr + 1 ] .cint = curval ; 
-  saveptr = saveptr + 2 ; 
-  newsavelevel ( c ) ; 
-  scanleftbrace () ; 
-} 
-
-halfword zhpack ( p , w , m ) 
-halfword p ; 
-scaled w ; 
-smallnumber m ; 
-{/* 21 50 10 */ register halfword Result; hpack_regmem 
-  halfword r  ; 
-  halfword q  ; 
-  scaled h, d, x  ; 
-  scaled s  ; 
-  halfword g  ; 
-/*  glueord o  ;  */
-  int o  ;							/* 95/Jan/7 */
-  internalfontnumber f  ; 
-  ffourquarters i  ; 
-  eightbits hd  ; 
-  lastbadness = 0 ; 
-  r = getnode ( 7 ) ; 
-  mem [ r ] .hh.b0 = 0 ; 
-  mem [ r ] .hh.b1 = 0 ; 
-  mem [ r + 4 ] .cint = 0 ; 
-  q = r + 5 ; 
-  mem [ q ] .hh .v.RH = p ; 
-  h = 0 ; 
-  d = 0 ; 
-  x = 0 ; 
-  totalstretch [ 0 ] = 0 ; 
-  totalshrink [ 0 ] = 0 ; 
-  totalstretch [ 1 ] = 0 ; 
-  totalshrink [ 1 ] = 0 ; 
-  totalstretch [ 2 ] = 0 ; 
-  totalshrink [ 2 ] = 0 ; 
-  totalstretch [ 3 ] = 0 ; 
-  totalshrink [ 3 ] = 0 ; 
-  while ( p != 0 ) { /* while p<>null do l.12862 */
-      
-    lab21: while ( ( p >= himemmin ) ) {
-	
-      f = mem [ p ] .hh.b0 ; 
-      i = fontinfo [ charbase [ f ] + mem [ p ] .hh.b1 ] .qqqq ; 
-      hd = i .b1 ; 
-      x = x + fontinfo [ widthbase [ f ] + i .b0 ] .cint ; 
-      s = fontinfo [ heightbase [ f ] + ( hd ) / 16 ] .cint ; 
-      if ( s > h ) 
-      h = s ; 
-      s = fontinfo [ depthbase [ f ] + ( hd ) % 16 ] .cint ; 
-      if ( s > d ) 
-      d = s ; 
-      p = mem [ p ] .hh .v.RH ; 
-    } 
-    if ( p != 0 )	/* if p<>null then l.12886 */
-    {
-      switch ( mem [ p ] .hh.b0 ) 
-      {case 0 : 
-      case 1 : 
-      case 2 : 
-      case 13 : 
-	{
-	  x = x + mem [ p + 1 ] .cint ; 
-	  if ( mem [ p ] .hh.b0 >= 2 ) 
-	  s = 0 ; 
-	  else s = mem [ p + 4 ] .cint ; 
-	  if ( mem [ p + 3 ] .cint - s > h ) 
-	  h = mem [ p + 3 ] .cint - s ; 
-	  if ( mem [ p + 2 ] .cint + s > d ) 
-	  d = mem [ p + 2 ] .cint + s ; 
-	} 
-	break ; 
-      case 3 : 
-      case 4 : 
-      case 5 : 
-/* if adjust_tail<>null then link(adjust_tail):=null; l.12865 / 12891 */
-	if ( adjusttail != 0 ) 
-	{
-	  while ( mem [ q ] .hh .v.RH != p ) q = mem [ q ] .hh .v.RH ; 
-	  if ( mem [ p ] .hh.b0 == 5 ) 
-	  {
-	    mem [ adjusttail ] .hh .v.RH = mem [ p + 1 ] .cint ; 
-	    while ( mem [ adjusttail ] .hh .v.RH != 0 ) adjusttail = mem [ 
-	    adjusttail ] .hh .v.RH ; 
-	    p = mem [ p ] .hh .v.RH ; 
-	    freenode ( mem [ q ] .hh .v.RH , 2 ) ; 
-	  } 
-	  else {
-	      
-	    mem [ adjusttail ] .hh .v.RH = p ; 
-	    adjusttail = p ; 
-	    p = mem [ p ] .hh .v.RH ; 
-	  } 
-	  mem [ q ] .hh .v.RH = p ; 
-	  p = q ; 
-	} 
-	break ; 
-      case 8 : 
-	; 
-	break ; 
-      case 10 : 
-	{
-	  g = mem [ p + 1 ] .hh .v.LH ; 
-	  x = x + mem [ g + 1 ] .cint ; 
-	  o = mem [ g ] .hh.b0 ; 
-	  totalstretch [ o ] = totalstretch [ o ] + mem [ g + 2 ] .cint ; 
-	  o = mem [ g ] .hh.b1 ; 
-	  totalshrink [ o ] = totalshrink [ o ] + mem [ g + 3 ] .cint ; 
-	  if ( mem [ p ] .hh.b1 >= 100 ) 
-	  {
-	    g = mem [ p + 1 ] .hh .v.RH ; 
-	    if ( mem [ g + 3 ] .cint > h ) 
-	    h = mem [ g + 3 ] .cint ; 
-	    if ( mem [ g + 2 ] .cint > d ) 
-	    d = mem [ g + 2 ] .cint ; 
-	  } 
-	} 
-	break ; 
-      case 11 : 
-      case 9 : 
-	x = x + mem [ p + 1 ] .cint ; 
-	break ; 
-      case 6 : 
-	{
-	  mem [ memtop - 12 ] = mem [ p + 1 ] ; 
-	  mem [ memtop - 12 ] .hh .v.RH = mem [ p ] .hh .v.RH ; 
-	  p = memtop - 12 ; 
-	  goto lab21 ; 
-	} 
-	break ; 
-	default: 
-	; 
-	break ; 
-      } 
-      p = mem [ p ] .hh .v.RH ; 
-    } 
-  } 
-  if ( adjusttail != 0 ) 
-  mem [ adjusttail ] .hh .v.RH = 0 ; 
-  mem [ r + 3 ] .cint = h ; 
-  mem [ r + 2 ] .cint = d ; 
-  if ( m == 1 ) 
-  w = x + w ; 
-  mem [ r + 1 ] .cint = w ; 
-  x = w - x ; 
-  if ( x == 0 ) 
-  {
-    mem [ r + 5 ] .hh.b0 = 0 ; 
-    mem [ r + 5 ] .hh.b1 = 0 ; 
-    mem [ r + 6 ] .gr = 0.0 ; 
-    goto lab10 ; 
-  } 
-  else if ( x > 0 ) 
-  {
-    if ( totalstretch [ 3 ] != 0 ) 
-    o = 3 ; 
-    else if ( totalstretch [ 2 ] != 0 ) 
-    o = 2 ; 
-    else if ( totalstretch [ 1 ] != 0 ) 
-    o = 1 ; 
-    else o = 0 ; 
-    mem [ r + 5 ] .hh.b1 = o ; 
-    mem [ r + 5 ] .hh.b0 = 1 ; 
-/* if total_stretch[o]<>0 then glue_set(r):=... l.12982 */
-    if ( totalstretch [ o ] != 0 ) 
-    mem [ r + 6 ] .gr = x / ((double) totalstretch [ o ] ) ; 
-    else {
-	
-      mem [ r + 5 ] .hh.b0 = 0 ; 
-      mem [ r + 6 ] .gr = 0.0 ; 
-    } 
-/* if o=normal then if list_ptr(r)<>null then l.12987 */
-    if ( o == 0 ) 
-    if ( mem [ r + 5 ] .hh .v.RH != 0 ) 
-    {
-      lastbadness = badness ( x , totalstretch [ 0 ] ) ; 
-      if ( lastbadness > eqtb [ (hash_size + 3189) ] .cint ) 
-      {
-	println () ; 
-	if ( lastbadness > 100 ) 
-		printnl ( 838 ) ;		/* Underfull */
-	else printnl ( 839 ) ;		/* Loose */
-	print ( 840 ) ;				/* \hbox (badness */
-	printint ( lastbadness ) ; 
-	if ( lastbadness > 100 ) underfullhbox++;		/* 1996/Feb/9 */
-	goto lab50 ; 
-      } 
-    } 
-    goto lab10 ; 
-  } 
-  else {
-      
-    if ( totalshrink [ 3 ] != 0 ) 
-    o = 3 ; 
-    else if ( totalshrink [ 2 ] != 0 ) 
-    o = 2 ; 
-    else if ( totalshrink [ 1 ] != 0 ) 
-    o = 1 ; 
-    else o = 0 ; 
-    mem [ r + 5 ] .hh.b1 = o ; 
-    mem [ r + 5 ] .hh.b0 = 2 ; 
-    if ( totalshrink [ o ] != 0 ) 
-    mem [ r + 6 ] .gr = ( - (integer) x ) / ((double) totalshrink [ o ] ) ; 
-    else {
-	
-      mem [ r + 5 ] .hh.b0 = 0 ; 
-      mem [ r + 6 ] .gr = 0.0 ; 
-    } 
-/* if (total_shrink[o]<-x)and(o=normal)and(list_ptr(r)<>null) then l.13946 */
-    if ( ( totalshrink [ o ] < - (integer) x ) && ( o == 0 ) && ( mem [ r + 5 
-    ] .hh .v.RH != 0 ) ) 
-    {
-      lastbadness = 1000000L ; 
-/*   set_glue_ratio_one(glue_set(r)); {use the maximum shrinkage} */
-      mem [ r + 6 ] .gr = 1.0 ; 
-/* if (-x-total_shrink[normal]>hfuzz)or(hbadness<100) then */
-      if ( ( - (integer) x - totalshrink [ 0 ] > eqtb [ (hash_size + 3738) ] .cint ) || ( 
-      eqtb [ (hash_size + 3189) ] .cint < 100 ) ) 
-      {
-	if ( ( eqtb [ (hash_size + 3746) ] .cint > 0 ) && ( - (integer) x - totalshrink [ 0 
-	] > eqtb [ (hash_size + 3738) ] .cint ) ) 
-	{
-	  while ( mem [ q ] .hh .v.RH != 0 ) q = mem [ q ] .hh .v.RH ; 
-	  mem [ q ] .hh .v.RH = newrule () ; 
-	  mem [ mem [ q ] .hh .v.RH + 1 ] .cint = eqtb [ (hash_size + 3746) ] .cint ; 
-	} 
-	println () ; 
-	printnl ( 846 ) ;		/* Overfull \hbox ( */
-	printscaled ( - (integer) x - totalshrink [ 0 ] ) ; 
-	print ( 847 ) ;			/* pt too wide */
-	overfullhbox++;			/* 1996/Feb/9 */
-	goto lab50 ; 
-      } 
-    } 
-    else if ( o == 0 ) 
-    if ( mem [ r + 5 ] .hh .v.RH != 0 ) 
-    {
-      lastbadness = badness ( - (integer) x , totalshrink [ 0 ] ) ; 
-      if ( lastbadness > eqtb [ (hash_size + 3189) ] .cint ) 
-      {
-	println () ; 
-	printnl ( 848 ) ;	/* Tight \hbox (badness  */
-	printint ( lastbadness ) ; 
-	goto lab50 ; 
-      } 
-    } 
-    goto lab10 ; 
-  } 
-  lab50: if ( outputactive ) 
-  print ( 841 ) ;	/* ) has occurred while \output is active */
-  else {
-      
-    if ( packbeginline != 0 ) 
-    {
-      if ( packbeginline > 0 ) 
-		  print ( 842 ) ;	/* ) in paragraph at lines  */
-      else print ( 843 ) ;	/* ) in alignment at lines  */
-      printint ( abs ( packbeginline ) ) ; 
-      print ( 844 ) ;	/* -- */
-    } 
-    else print ( 845 ) ;	/* ) detected at line  */
-    printint ( line ) ; 
-  } 
-  println () ; 
-  fontinshortdisplay = 0 ; 
-  shortdisplay ( mem [ r + 5 ] .hh .v.RH ) ; 
-  println () ; 
-  begindiagnostic () ; 
-  showbox ( r ) ; 
-  enddiagnostic ( true ) ; 
-  lab10: Result = r ; 
-  return Result ; 
-} 
-
-halfword zvpackage ( p , h , m , l ) 
-halfword p ; 
-scaled h ; 
-smallnumber m ; 
-scaled l ; 
-{/* 50 10 */ register halfword Result; vpackage_regmem 
-  halfword r  ; 
-  scaled w, d, x  ; 
-  scaled s  ; 
-  halfword g  ; 
-/*  glueord o  ;  */
-  int o  ;							/* 95/Jan/7 */
-  lastbadness = 0 ; 
-  r = getnode ( 7 ) ; 
-  mem [ r ] .hh.b0 = 1 ; 
-  mem [ r ] .hh.b1 = 0 ; 
-  mem [ r + 4 ] .cint = 0 ; 
-  mem [ r + 5 ] .hh .v.RH = p ; 
-  w = 0 ; 
-  d = 0 ; 
-  x = 0 ; 
-  totalstretch [ 0 ] = 0 ; 
-  totalshrink [ 0 ] = 0 ; 
-  totalstretch [ 1 ] = 0 ; 
-  totalshrink [ 1 ] = 0 ; 
-  totalstretch [ 2 ] = 0 ; 
-  totalshrink [ 2 ] = 0 ; 
-  totalstretch [ 3 ] = 0 ; 
-  totalshrink [ 3 ] = 0 ; 
-  while ( p != 0 ) {
-      
-    if ( ( p >= himemmin ) ) {
-		confusion ( 849 ) ;		/* vpack */
-		return 0;				// abortflag set
-	}
-    else switch ( mem [ p ] .hh.b0 ) 
-    {case 0 : 
-    case 1 : 
-    case 2 : 
-    case 13 : 
-      {
-	x = x + d + mem [ p + 3 ] .cint ; 
-	d = mem [ p + 2 ] .cint ; 
-	if ( mem [ p ] .hh.b0 >= 2 ) 
-	s = 0 ; 
-	else s = mem [ p + 4 ] .cint ; 
-	if ( mem [ p + 1 ] .cint + s > w ) 
-	w = mem [ p + 1 ] .cint + s ; 
-      } 
-      break ; 
-    case 8 : 
-      ; 
-      break ; 
-    case 10 : 
-      {
-	x = x + d ; 
-	d = 0 ; 
-	g = mem [ p + 1 ] .hh .v.LH ; 
-	x = x + mem [ g + 1 ] .cint ; 
-	o = mem [ g ] .hh.b0 ; 
-	totalstretch [ o ] = totalstretch [ o ] + mem [ g + 2 ] .cint ; 
-	o = mem [ g ] .hh.b1 ; 
-	totalshrink [ o ] = totalshrink [ o ] + mem [ g + 3 ] .cint ; 
-	if ( mem [ p ] .hh.b1 >= 100 ) 
-	{
-	  g = mem [ p + 1 ] .hh .v.RH ; 
-	  if ( mem [ g + 1 ] .cint > w ) 
-	  w = mem [ g + 1 ] .cint ; 
-	} 
-      } 
-      break ; 
-    case 11 : 
-      {
-	x = x + d + mem [ p + 1 ] .cint ; 
-	d = 0 ; 
-      } 
-      break ; 
-      default: 
-      ; 
-      break ; 
-    } 
-    p = mem [ p ] .hh .v.RH ; 
-  } 
-  mem [ r + 1 ] .cint = w ; 
-  if ( d > l ) 
-  {
-    x = x + d - l ; 
-    mem [ r + 2 ] .cint = l ; 
-  } 
-  else mem [ r + 2 ] .cint = d ; 
-  if ( m == 1 ) 
-  h = x + h ; 
-  mem [ r + 3 ] .cint = h ; 
-  x = h - x ; 
-  if ( x == 0 ) 
-  {
-    mem [ r + 5 ] .hh.b0 = 0 ; 
-    mem [ r + 5 ] .hh.b1 = 0 ; 
-    mem [ r + 6 ] .gr = 0.0 ; 
-    goto lab10 ; 
-  } 
-  else if ( x > 0 ) 
-  {
-    if ( totalstretch [ 3 ] != 0 ) 
-    o = 3 ; 
-    else if ( totalstretch [ 2 ] != 0 ) 
-    o = 2 ; 
-    else if ( totalstretch [ 1 ] != 0 ) 
-    o = 1 ; 
-    else o = 0 ; 
-    mem [ r + 5 ] .hh.b1 = o ; 
-    mem [ r + 5 ] .hh.b0 = 1 ; 
-    if ( totalstretch [ o ] != 0 ) 
-    mem [ r + 6 ] .gr = x / ((double) totalstretch [ o ] ) ; 
-    else {
-	
-      mem [ r + 5 ] .hh.b0 = 0 ; 
-      mem [ r + 6 ] .gr = 0.0 ; 
-    } 
-    if ( o == 0 ) 
-    if ( mem [ r + 5 ] .hh .v.RH != 0 ) 
-    {
-      lastbadness = badness ( x , totalstretch [ 0 ] ) ; 
-      if ( lastbadness > eqtb [ (hash_size + 3190) ] .cint ) 
-      {
-	println () ; 
-	if ( lastbadness > 100 ) 
-		printnl ( 838 ) ;			/* Underfull */
-	else printnl ( 839 ) ;			/* Loose */
-	print ( 850 ) ;					/* \vbox (badness */
-	printint ( lastbadness ) ; 
-	if ( lastbadness > 100 ) underfullvbox++;	/* 1996/Feb/9 */
-	goto lab50 ; 
-      } 
-    } 
-    goto lab10 ; 
-  } 
-  else {
-      
-    if ( totalshrink [ 3 ] != 0 ) 
-    o = 3 ; 
-    else if ( totalshrink [ 2 ] != 0 ) 
-    o = 2 ; 
-    else if ( totalshrink [ 1 ] != 0 ) 
-    o = 1 ; 
-    else o = 0 ; 
-    mem [ r + 5 ] .hh.b1 = o ; 
-    mem [ r + 5 ] .hh.b0 = 2 ; 
-    if ( totalshrink [ o ] != 0 ) 
-    mem [ r + 6 ] .gr = ( - (integer) x ) / ((double) totalshrink [ o ] ) ; 
-    else {
-	
-      mem [ r + 5 ] .hh.b0 = 0 ; 
-      mem [ r + 6 ] .gr = 0.0 ; 
-    } 
-/* if (total_shrink[o]<-x)and(o=normal)and(list_ptr(r)<>null) then l.13046 */
-    if ( ( totalshrink [ o ] < - (integer) x ) && ( o == 0 ) && ( mem [ r + 5 
-    ] .hh .v.RH != 0 ) ) 
-    {
-      lastbadness = 1000000L ; 
-      mem [ r + 6 ] .gr = 1.0 ; 
-      if ( ( - (integer) x - totalshrink [ 0 ] > eqtb [ (hash_size + 3739) ] .cint ) || ( 
-      eqtb [ (hash_size + 3190) ] .cint < 100 ) ) 
-      {
-	println () ; 
-	printnl ( 851 ) ;	/* Overfull \vbox ( */
-	printscaled ( - (integer) x - totalshrink [ 0 ] ) ; 
-	print ( 852 ) ;		/* pt too high */
-	overfullvbox++;		/* 1996/Feb/9 */
-	goto lab50 ; 
-      } 
-    } 
-/* else if o=normal then if list_ptr(r)<>null then l.13052  */
-    else if ( o == 0 ) 
-    if ( mem [ r + 5 ] .hh .v.RH != 0 ) 
-    {
-      lastbadness = badness ( - (integer) x , totalshrink [ 0 ] ) ; 
-      if ( lastbadness > eqtb [ (hash_size + 3190) ] .cint ) 
-      {
-	println () ; 
-	printnl ( 853 ) ;	/* Tight \vbox (badness  */
-	printint ( lastbadness ) ; 
-	goto lab50 ; 
-      } 
-    } 
-    goto lab10 ; 
-  } 
-  lab50: if ( outputactive ) 
-  print ( 841 ) ;	/* ) has occurred while \output is active */
-  else {
-      
-    if ( packbeginline != 0 ) 
-    {
-      print ( 843 ) ;	/* ) in alignment at lines  */
-      printint ( abs ( packbeginline ) ) ; 
-      print ( 844 ) ;	/* -- */
-    } 
-    else print ( 845 ) ;	/* ) detected at line  */
-    printint ( line ) ; 
-    println () ; 
-  } 
-  begindiagnostic () ; 
-  showbox ( r ) ; 
-  enddiagnostic ( true ) ; 
-  lab10: Result = r ; 
-  return Result ; 
-} 
-
-void zappendtovlist ( b ) 
-halfword b ; 
-{appendtovlist_regmem 
-  scaled d  ; 
-  halfword p  ; 
-  if ( curlist .auxfield .cint > -65536000L ) 
-  {
-    d = mem [ eqtb [ (hash_size + 783) ] .hh .v.RH + 1 ] .cint - curlist .auxfield .cint - 
-    mem [ b + 3 ] .cint ; 
-    if ( d < eqtb [ (hash_size + 3732) ] .cint ) 
-    p = newparamglue ( 0 ) ; 
-    else {
-	
-      p = newskipparam ( 1 ) ; 
-      mem [ tempptr + 1 ] .cint = d ; 
-    } 
-    mem [ curlist .tailfield ] .hh .v.RH = p ; 
-    curlist .tailfield = p ; 
-  } 
-  mem [ curlist .tailfield ] .hh .v.RH = b ; 
-  curlist .tailfield = b ; 
-  curlist .auxfield .cint = mem [ b + 2 ] .cint ; 
-} 
-
-halfword newnoad ( ) 
-{register halfword Result; newnoad_regmem 
-  halfword p  ; 
-  p = getnode ( 4 ) ; 
-  mem [ p ] .hh.b0 = 16 ; 
-  mem [ p ] .hh.b1 = 0 ; 
-  mem [ p + 1 ] .hh = emptyfield ; 
-  mem [ p + 3 ] .hh = emptyfield ; 
-  mem [ p + 2 ] .hh = emptyfield ; 
-  Result = p ; 
-  return Result ; 
-} 
-
-halfword znewstyle ( s ) 
-smallnumber s ; 
-{register halfword Result; newstyle_regmem 
-  halfword p  ; 
-  p = getnode ( 3 ) ; 
-  mem [ p ] .hh.b0 = 14 ; 
-  mem [ p ] .hh.b1 = s ; 
-  mem [ p + 1 ] .cint = 0 ; 
-  mem [ p + 2 ] .cint = 0 ; 
-  Result = p ; 
-  return Result ; 
-} 
-
-halfword newchoice ( ) 
-{register halfword Result; newchoice_regmem 
-  halfword p  ; 
-  p = getnode ( 3 ) ; 
-  mem [ p ] .hh.b0 = 15 ; 
-  mem [ p ] .hh.b1 = 0 ; 
-  mem [ p + 1 ] .hh .v.LH = 0 ; 
-  mem [ p + 1 ] .hh .v.RH = 0 ; 
-  mem [ p + 2 ] .hh .v.LH = 0 ; 
-  mem [ p + 2 ] .hh .v.RH = 0 ; 
-  Result = p ; 
-  return Result ; 
-} 
-
-void showinfo ( ) 
-{showinfo_regmem 
-  shownodelist ( mem [ tempptr ] .hh .v.LH ) ; 
-} 
-
-halfword zfractionrule ( t ) 
-scaled t ; 
-{register halfword Result; fractionrule_regmem 
-  halfword p  ; 
-  p = newrule () ; 
-  mem [ p + 3 ] .cint = t ; 
-  mem [ p + 2 ] .cint = 0 ; 
-  Result = p ; 
-  return Result ; 
-} 
-
-halfword zoverbar ( b , k , t ) 
-halfword b ; 
-scaled k ; 
-scaled t ; 
-{register halfword Result; overbar_regmem 
-  halfword p, q  ; 
-  p = newkern ( k ) ; 
-  mem [ p ] .hh .v.RH = b ; 
-  q = fractionrule ( t ) ; 
-  mem [ q ] .hh .v.RH = p ; 
-  p = newkern ( t ) ; 
-  mem [ p ] .hh .v.RH = q ; 
-  Result = vpackage ( p , 0 , 1 , 1073741823L ) ; /* 2^30 - 1 */
-  return Result ; 
-} 
-
-halfword zcharbox ( f , c ) 
-internalfontnumber f ; 
-quarterword c ; 
-{register halfword Result; charbox_regmem 
-  ffourquarters q  ; 
-  eightbits hd  ; 
-  halfword b, p  ; 
-  q = fontinfo [ charbase [ f ] + c ] .qqqq ; 
-  hd = q .b1 ; 
-  b = newnullbox () ; 
-  mem [ b + 1 ] .cint = fontinfo [ widthbase [ f ] + q .b0 ] .cint + fontinfo 
-  [ italicbase [ f ] + ( q .b2 ) / 4 ] .cint ; 
-  mem [ b + 3 ] .cint = fontinfo [ heightbase [ f ] + ( hd ) / 16 ] .cint ; 
-  mem [ b + 2 ] .cint = fontinfo [ depthbase [ f ] + ( hd ) % 16 ] .cint ; 
-/*	long to unsigned short ... */
-  p = getavail () ; 
-  mem [ p ] .hh.b1 = c ; 
-  mem [ p ] .hh.b0 = f ; 
-  mem [ b + 5 ] .hh .v.RH = p ; 
-  Result = b ; 
-  return Result ; 
-} 
-void zstackintobox ( b , f , c ) 
-halfword b ; 
-internalfontnumber f ; 
-quarterword c ; 
-{stackintobox_regmem 
-  halfword p  ; 
-  p = charbox ( f , c ) ; 
-  mem [ p ] .hh .v.RH = mem [ b + 5 ] .hh .v.RH ; 
-  mem [ b + 5 ] .hh .v.RH = p ; 
-  mem [ b + 3 ] .cint = mem [ p + 3 ] .cint ; 
-} 
-
-scaled zheightplusdepth ( f , c ) 
-internalfontnumber f ; 
-fquarterword c ;
-{register scaled Result; heightplusdepth_regmem 
-  ffourquarters q  ; 
-  eightbits hd  ; 
-  q = fontinfo [ charbase [ f ] + c ] .qqqq ; 
-  hd = q .b1 ; 
-  Result = fontinfo [ heightbase [ f ] + ( hd ) / 16 ] .cint + fontinfo [ 
-  depthbase [ f ] + ( hd ) % 16 ] .cint ; 
-  return Result ; 
-} 
-
-halfword zvardelimiter ( d , s , v ) 
-halfword d ; 
-smallnumber s ; 
-scaled v ; 
-{/* 40 22 */ register halfword Result; vardelimiter_regmem 
-  halfword b  ; 
-  internalfontnumber f, g  ; 
-  quarterword c, x, y  ; 
-  integer m, n  ; 
-  scaled u  ; 
-  scaled w  ; 
-  ffourquarters q  ; 
-  ffourquarters r  ; 
-  eightbits hd  ; 
-/*  smallnumber z  ;  */
-  int z  ;									/* 95/Jan/7 */
-/*  booleane largeattempt  ;  */
-  int largeattempt  ;						/* 95/Jan/7 */
-  f = 0 ; 
-  w = 0 ; 
-  largeattempt = false ; 
-  z = mem [ d ] .qqqq .b0 ; 
-  x = mem [ d ] .qqqq .b1 ; 
-  while ( true ) {
-    if ( ( z != 0 ) || ( x != 0 ) ) 
-    {
-      z = z + s + 16 ; 
-      do {
-	  z = z - 16 ; 
-	g = eqtb [ (hash_size + 1835) + z ] .hh .v.RH ; 
-	if ( g != 0 ) 
-	{
-	  y = x ; 
-	  if ( ( y >= fontbc [ g ] ) && ( y <= fontec [ g ] ) ) 
-	  {
-	    lab22: q = fontinfo [ charbase [ g ] + y ] .qqqq ; 
-	    if ( ( q .b0 > 0 ) ) 
-	    {
-	      if ( ( ( q .b2 ) % 4 ) == 3 ) 
-	      {
-		f = g ; 
-		c = y ; 
-		goto lab40 ; 
-	      } 
-	      hd = q .b1 ; 
-	      u = fontinfo [ heightbase [ g ] + ( hd ) / 16 ] .cint + fontinfo 
-	      [ depthbase [ g ] + ( hd ) % 16 ] .cint ; 
-	      if ( u > w ) 
-	      {
-		f = g ; 
-		c = y ; 
-		w = u ; 
-		if ( u >= v ) 
-		goto lab40 ; 
-	      } 
-	      if ( ( ( q .b2 ) % 4 ) == 2 ) 
-	      {
-		y = q .b3 ; 
-		goto lab22 ; 
-	      } 
-	    } 
-	  } 
-	} 
-      } while ( ! ( z < 16 ) ) ; 
-    } 
-    if ( largeattempt ) 
-    goto lab40 ; 
-    largeattempt = true ; 
-    z = mem [ d ] .qqqq .b2 ; 
-    x = mem [ d ] .qqqq .b3 ; 
-  } 
-  lab40: if ( f != 0 ) 
-  if ( ( ( q .b2 ) % 4 ) == 3 )		/* q may be used without ... */
-  {
-    b = newnullbox () ; 
-    mem [ b ] .hh.b0 = 1 ; 
-    r = fontinfo [ extenbase [ f ] + q .b3 ] .qqqq ; 
-    c = r .b3 ; 
-    u = heightplusdepth ( f , c ) ; 
-    w = 0 ; 
-    q = fontinfo [ charbase [ f ] + c ] .qqqq ; 
-    mem [ b + 1 ] .cint = fontinfo [ widthbase [ f ] + q .b0 ] .cint + 
-    fontinfo [ italicbase [ f ] + ( q .b2 ) / 4 ] .cint ; 
-    c = r .b2 ; 
-    if ( c != 0 ) 
-    w = w + heightplusdepth ( f , c ) ; 
-    c = r .b1 ; 
-    if ( c != 0 ) 
-    w = w + heightplusdepth ( f , c ) ; 
-    c = r .b0 ; 
-    if ( c != 0 ) 
-    w = w + heightplusdepth ( f , c ) ; 
-    n = 0 ; 
-    if ( u > 0 ) 
-    while ( w < v ) {
-	
-      w = w + u ; 
-      incr ( n ) ; 
-      if ( r .b1 != 0 ) 
-      w = w + u ; 
-    } 
-    c = r .b2 ; 
-    if ( c != 0 ) 
-    stackintobox ( b , f , c ) ; 
-    c = r .b3 ; 
-    {
-		register integer for_end; 
-		m = 1 ; 
-		for_end = n ; 
-		if ( m <= for_end) do 
-			stackintobox ( b , f , c ) ; 
-		while ( m++ < for_end ) ;
-	} 
-    c = r .b1 ; 
-    if ( c != 0 ) 
-    {
-      stackintobox ( b , f , c ) ; 
-      c = r .b3 ; 
-      {
-		  register integer for_end; 
-		  m = 1 ; 
-		  for_end = n ; 
-		  if ( m <= for_end) do 
-			  stackintobox ( b , f , c ) ; 
-		  while ( m++ < for_end ) ;
-	  } 
-    } 
-    c = r .b0 ; 
-    if ( c != 0 ) 
-		stackintobox ( b , f , c ) ; 
-    mem [ b + 2 ] .cint = w - mem [ b + 3 ] .cint ; 
-  } 
-  else b = charbox ( f , c ) ; 
-  else {		/* c may be used without ... */
-    b = newnullbox () ; 
-    mem [ b + 1 ] .cint = eqtb [ (hash_size + 3741) ] .cint ; 
-  } 
-  mem [ b + 4 ] .cint = half ( mem [ b + 3 ] .cint - mem [ b + 2 ] .cint ) - 
-  fontinfo [ 22 + parambase [ eqtb [ (hash_size + 1837) + s ] .hh .v.RH ] ] .cint ; 
-  Result = b ; 
-  return Result ; 
+  pool_ptr = str_start[str_ptr];
 }
+/* noew returns -1 if it fails */
+/* sec 1370 */
+void write_out_(halfword p)
+{
+  char old_setting;
+/*  integer oldmode;  */
+  int oldmode;          /* 1995/Jan/7 */
+/*  small_number j;  */
+  int j;              /* 1995/Jan/7 */
+  halfword q, r;
 
-/* zrebox etc used to follow here in tex4.c */
+  q = get_avail();
+  info(q) = right_brace_token + '}';
+  r = get_avail();
+  link(q) = r;
+  info(r) = end_write_token;
+  ins_list(q);
+  begin_token_list(write_tokens(p), write_text);
+  q = get_avail();
+  info(q) = left_brace_token + '{';
+  ins_list(q);
+  oldmode = mode;
+  mode = 0;
+  cur_cs = write_loc;
+  q = scan_toks(false, true);
+  get_token();
+
+  if (cur_tok != end_write_token)
+  {
+    print_err("Unbalanced write command");
+    help2("On this page there's a \\write with fewer real {'s than }'s.",
+        "I can't handle that very well; good luck.");
+    error();
+
+    do
+      {
+        get_token();
+      }
+    while(!(cur_tok == end_write_token)); /*1996/Jan/10*/
+  }
+
+  mode = oldmode;
+  end_token_list();
+  old_setting = selector;
+  j = write_stream(p);
+
+  if (write_open[j])
+    selector = j;
+  else
+  {
+    if ((j == 17) && (selector == term_and_log))
+      selector = log_only;
+
+    print_nl("");
+  }
+
+  token_show(def_ref);
+  print_ln();
+  flush_list(def_ref);
+  selector = old_setting;
+}
+/* sec 1373 */
+void out_what_(halfword p)
+{
+/*  small_number j;  */
+  int j;            /* 1995/Jan/7 */
+
+  switch (subtype(p))
+  {
+    case open_node:
+    case write_node:
+    case close_node:
+      if (!doing_leaders)
+      {
+        j = write_stream(p);
+
+        if (subtype(p) == write_node)
+        {
+          write_out(p);
+        }
+        else
+        {
+          if (write_open[j])
+            (void) a_close(write_file[j]); 
+
+          if (subtype(p) == close_node)
+            write_open[j]= false; 
+          else if (j < 16)
+          {
+            cur_name = open_name(p);
+            cur_area = open_area(p);
+            cur_ext = open_ext(p); 
+
+            if (cur_ext == 335)  /* "" */
+              cur_ext = 785;  /* => ".tex" */
+
+            pack_file_name(cur_name, cur_area, cur_ext);
+
+            while(! a_open_out(write_file[j]))
+            {
+              prompt_file_name("output file name", ".tex");
+            }
+
+            write_open[j] = true;
+          }
+        }
+      }
+      break; 
+
+    case special_node:
+      special_out(p); 
+      break;
+
+    case language_node:
+      ;
+      break;
+
+    default:
+      {
+        confusion("ext4");
+        return;       // abort_flag set
+      }
+      break;
+  }
+}
+/* following needs access to dvi_buf=zdvibuf see coerce.h */
+/* sec 0619 */
+void hlist_out (void)
+{
+  scaled base_line;
+  scaled left_edge;
+  scaled save_h, save_v;
+  halfword this_box;
+/*  glue_ord g_order;  */
+  int g_order;           /* 95/Jan/7 */
+/*  char g_sign;  */
+  int g_sign;            /* 95/Jan/7 */
+  halfword p;
+  integer save_loc;
+  halfword leader_box;
+  scaled leader_wd;
+  scaled lx;
+  bool outer_doing_leaders;
+  scaled edge;
+  real glue_temp;
+  real cur_glue;
+  scaled cur_g;
+
+  cur_g = 0;
+  cur_glue = 0.0;
+  this_box = temp_ptr;
+  g_order = glue_order(this_box);
+  g_sign = glue_sign(this_box);
+  p = list_ptr(this_box);
+  incr(cur_s);
+
+  if (cur_s > 0)
+    dvi_out(141);
+
+  if (cur_s > max_push)
+    max_push = cur_s;
+
+  save_loc = dvi_offset + dvi_ptr;
+  base_line = cur_v;
+  left_edge = cur_h;
+
+  while (p != 0)
+lab21:
+    if (is_char_node(p))
+    {
+      synch_h();
+      synch_v();
+
+      do
+        {
+          f = font(p);
+          c = character(p);
+
+          if (f != dvi_f)
+          {
+            if (!font_used[f])
+            {
+              dvi_font_def(f);
+              font_used[f] = true;
+            }
+
+            if (f <= 64 + font_base)
+              dvi_out(f - font_base - 1 + fnt_num_0);
+#ifdef INCREASEFONTS
+            /* if we allow greater than 256 fonts */
+            else if (f <= 256)
+            {
+              dvi_out(fnt1);
+              dvi_out(f - 1);
+            }
+#else
+            /* normal TeX 82 case */
+            else
+            {
+              dvi_out(fnt1);
+              dvi_out(f - 1);
+            }
+#endif
+
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+#ifdef INCREASEFONTS
+            /* fnt2 followed by f / 256,  f % 256 */
+            else
+            {
+              dvi_out(fnt2);
+              dvi_out(((f - 1) >> 8));  /* top byte */
+              dvi_out(((f - 1) & 255)); /* bottom byte */
+            }
+#endif
+/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+            dvi_f = f;
+          }
+
+          if (c >= 128)
+            dvi_out(set1);
+
+          dvi_out(c);
+          cur_h = cur_h + char_width(f, char_info(f, c));
+          p = link(p);
+        }
+      while(!(!(p >= hi_mem_min)));
+
+      dvi_h = cur_h;
+  }
+  else
+  {
+    switch (type(p))
+    {
+      case hlist_node:
+      case vlist_node:
+        if (list_ptr(p) == 0)
+          cur_h = cur_h + width(p);
+        else
+        {
+          save_h = dvi_h;
+          save_v = dvi_v;
+          cur_v = base_line + shift_amount(p);
+          temp_ptr = p;
+          edge = cur_h;
+
+          if (type(p) == vlist_node)
+            vlist_out();
+          else
+            hlist_out();
+
+          dvi_h = save_h;
+          dvi_v = save_v;
+          cur_h = edge + width(p);
+          cur_v = base_line;
+        }
+        break;
+
+      case rule_node:
+        {
+          rule_ht = height(p);
+          rule_dp = depth(p);
+          rule_wd = width(p);
+          goto lab14;
+        }
+        break;
+
+      case whatsit_node:
+        out_what(p);
+        break;
+
+      case glue_node:
+        {
+          g = glue_ptr(p);
+          rule_wd = width(g) - cur_g;
+
+          if (g_sign != normal)
+          {
+            if (g_sign == stretching)
+            {
+              if (stretch_order(g) == g_order)
+              {
+                cur_glue = cur_glue + stretch(g);
+                glue_temp = glue_set(this_box) * cur_glue;
+
+                if (glue_temp > 1000000000.0)
+                  glue_temp = 1000000000.0;
+                else if (glue_temp < -1000000000.0)
+                  glue_temp = -1000000000.0;
+
+                cur_g = round(glue_temp);
+              }
+            }
+            else if (shrink_order(g) == g_order)
+            {
+              cur_glue = cur_glue - shrink(g);
+              glue_temp = glue_set(this_box) * cur_glue;
+
+              if (glue_temp > 1000000000.0)
+                glue_temp = 1000000000.0;
+              else if (glue_temp < -1000000000.0)
+                glue_temp = -1000000000.0;
+
+              cur_g = round(glue_temp);
+            }
+          }
+
+          rule_wd = rule_wd + cur_g;
+
+          if (subtype(p) >= a_leaders)
+          {
+            leader_box = leader_ptr(p);
+
+            if (type(leader_box) == rule_node)
+            {
+              rule_ht = height(leader_box);
+              rule_dp = depth(leader_box);
+              goto lab14;
+            }
+
+            leader_wd = width(leader_box);
+
+            if ((leader_wd > 0) && (rule_wd > 0))
+            {
+              rule_wd = rule_wd + 10;
+              edge = cur_h + rule_wd;
+              lx = 0;
+
+              if (subtype(p) == a_leaders)
+              {
+                save_h = cur_h;
+                cur_h = left_edge + leader_wd * ((cur_h - left_edge) / leader_wd);
+
+                if (cur_h < save_h)
+                  cur_h = cur_h + leader_wd;
+              }
+              else
+              {
+                lq = rule_wd / leader_wd;
+                lr = rule_wd % leader_wd;
+
+                if (subtype(p) == c_leaders)
+                  cur_h = cur_h + (lr / 2);
+                else
+                {
+                  lx =(2 * lr + lq + 1) / (2 * lq + 2);
+                  cur_h = cur_h + ((lr - (lq - 1)* lx) / 2);
+                }
+              }
+
+              while (cur_h + leader_wd <= edge)
+              {
+                cur_v = base_line + shift_amount(leader_box);
+                synch_v();
+                save_v = dvi_v;
+                synch_h();
+                save_h = dvi_h;
+                temp_ptr = leader_box;
+                outer_doing_leaders = doing_leaders;
+                doing_leaders = true;
+
+                if (type(leader_box) == vlist_node)
+                  vlist_out();
+                else
+                  hlist_out();
+
+                doing_leaders = outer_doing_leaders;
+                dvi_v = save_v;
+                dvi_h = save_h;
+                cur_v = base_line;
+                cur_h = save_h + leader_wd + lx;
+              }
+
+              cur_h = edge - 10;
+              goto lab15;
+            }
+          }
+
+          goto lab13;
+        }
+        break;
+
+      case kern_node:
+      case math_node:
+        cur_h = cur_h + width(p);
+        break;
+
+      case ligature_node:
+        {
+          mem[lig_trick] = mem[lig_char(p)];
+          link(lig_trick) = link(p);
+          p = lig_trick;
+          goto lab21;
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    goto lab15;
+lab14:
+    if ((rule_ht == -1073741824L))  /* - 2^30 */
+      rule_ht = height(this_box);
+
+    if ((rule_dp == -1073741824L))     /* - 2^30 */
+      rule_dp = depth(this_box);
+
+    rule_ht = rule_ht + rule_dp;
+
+    if ((rule_ht > 0) && (rule_wd > 0))
+    {
+      synch_h();
+      cur_v = base_line + rule_dp;
+      synch_v();
+      dvi_out(set_rule);
+      dvi_four(rule_ht);
+      dvi_four(rule_wd);
+      cur_v = base_line;
+      dvi_h = dvi_h + rule_wd;
+    }
+lab13:
+    cur_h = cur_h + rule_wd;
+lab15:
+    p = link(p);
+  }
+
+  prune_movements(save_loc);
+
+  if (cur_s > 0)
+    dvi_pop(save_loc);
+
+  decr(cur_s);
+}
+/* following needs access to dvi_buf=zdvibuf see coerce.h */
+/* sec 0629 */
+void vlist_out (void)
+{
+  scaled left_edge;
+  scaled top_edge;
+  scaled save_h, save_v;
+  halfword this_box;
+/*  glue_ord g_order;  */
+  int g_order;         /* 95/Jan/7 */
+/*  char g_sign;  */
+  int g_sign;          /* 95/Jan/7 */
+  halfword p;
+  integer save_loc;
+  halfword leader_box;
+  scaled leader_ht;
+  scaled lx;
+  bool outer_doing_leaders;
+  scaled edge;
+  real glue_temp;
+  real cur_glue;
+  scaled cur_g;
+
+  cur_g = 0;
+  cur_glue = 0.0;
+  this_box = temp_ptr;
+  g_order = glue_order(this_box);
+  g_sign = glue_sign(this_box);
+  p = list_ptr(this_box);
+  incr(cur_s);
+
+  if (cur_s > 0)
+    dvi_out(141);
+
+  if (cur_s > max_push)
+    max_push = cur_s;
+
+  save_loc = dvi_offset + dvi_ptr;
+  left_edge = cur_h;
+  cur_v = cur_v - height(this_box);
+  top_edge = cur_v;
+
+  while (p != 0)
+  {
+    if ((p >= hi_mem_min))
+    {
+      confusion("vlistout");
+      return;       // abort_flag set
+    }
+    else
+    {
+      switch (type(p))
+      {
+        case hlist_node:
+        case vlist_node:
+          if (list_ptr(p) == 0)
+            cur_v = cur_v + height(p) + depth(p);
+          else
+          {
+            cur_v = cur_v + height(p);
+            synch_v();
+            save_h = dvi_h;
+            save_v = dvi_v;
+            cur_h = left_edge + shift_amount(p);
+            temp_ptr = p;
+
+            if (type(p) == vlist_node)
+              vlist_out();
+            else
+              hlist_out();
+
+            dvi_h = save_h;
+            dvi_v = save_v;
+            cur_v = save_v + depth(p);
+            cur_h = left_edge;
+          }
+          break;
+
+        case rule_node:
+          {
+            rule_ht = height(p);
+            rule_dp = depth(p);
+            rule_wd = width(p);
+            goto lab14;
+          }
+          break;
+
+        case whatsit_node:
+          out_what(p);
+          break;
+
+        case glue_node:
+          {
+            g = glue_ptr(p);
+            rule_ht = width(g) - cur_g;
+
+            if (g_sign != normal)
+            {
+              if (g_sign == stretching)
+              {
+                if (stretch_order(g) == g_order)
+                {
+                  cur_glue = cur_glue + stretch(g);
+                  glue_temp = glue_set(this_box) * cur_glue;
+
+                  if (glue_temp > 1000000000.0)
+                    glue_temp = 1000000000.0;
+                  else if (glue_temp < -1000000000.0)
+                    glue_temp = -1000000000.0;
+
+                  cur_g = round(glue_temp);
+                }
+              }
+              else if (shrink_order(g) == g_order)   /* BUG FIX !!! */
+              {
+                cur_glue = cur_glue - shrink(g);
+                glue_temp = glue_set(this_box) * cur_glue;
+
+                if (glue_temp > 1000000000.0)
+                  glue_temp = 1000000000.0;
+                else if (glue_temp < -1000000000.0)
+                  glue_temp = -1000000000.0;
+
+                cur_g = round(glue_temp);
+              }
+            }
+
+            rule_ht = rule_ht + cur_g;
+
+            if (subtype(p) >= a_leaders)
+            {
+              leader_box = leader_ptr(p);
+
+              if (type(leader_box) == rule_node)
+              {
+                rule_wd = width(leader_box);
+                rule_dp = 0;
+                goto lab14;
+              }
+
+              leader_ht = height(leader_box) + depth(leader_box);
+
+              if ((leader_ht > 0) && (rule_ht > 0))
+              {
+                rule_ht = rule_ht + 10;
+                edge = cur_v + rule_ht;
+                lx = 0;
+
+                if (subtype(p) == a_leaders)
+                {
+                  save_v = cur_v;
+                  cur_v = top_edge + leader_ht * ((cur_v - top_edge) / leader_ht);
+
+                  if (cur_v < save_v)
+                    cur_v = cur_v + leader_ht;
+                }
+                else
+                {
+                  lq = rule_ht / leader_ht;
+                  lr = rule_ht % leader_ht;
+
+                  if (subtype(p) == c_leaders)
+                    cur_v = cur_v + (lr / 2);
+                  else
+                  {
+                    lx = (2 * lr + lq + 1) / (2 * lq + 2);
+                    cur_v = cur_v + ((lr - (lq - 1) * lx) / 2);
+                  }
+                }
+
+                while (cur_v + leader_ht <= edge)
+                {
+                  cur_h = left_edge + shift_amount(leader_box);
+                  synch_h();
+                  save_h = dvi_h;
+                  cur_v = cur_v + height(leader_box);
+                  synch_v();
+                  save_v = dvi_v;
+                  temp_ptr = leader_box;
+                  outer_doing_leaders = doing_leaders;
+                  doing_leaders = true;
+
+                  if (type(leader_box) == vlist_node)
+                    vlist_out();
+                  else
+                    hlist_out();
+
+                  doing_leaders = outer_doing_leaders;
+                  dvi_v = save_v;
+                  dvi_h = save_h;
+                  cur_h = left_edge;
+                  cur_v = save_v - height(leader_box) + leader_ht + lx;
+                }
+
+                cur_v = edge - 10;
+                goto lab15;
+              }
+            }
+
+            goto lab13;
+          }
+          break;
+
+        case kern_node:
+          cur_v = cur_v + width(p);
+          break;
+
+        default:
+          break;
+      }
+      goto lab15;
+lab14:
+      if ((rule_wd == -1073741824L))    /* -2^30 */
+        rule_wd = width(this_box);
+
+      rule_ht = rule_ht + rule_dp;
+      cur_v = cur_v + rule_ht;
+
+      if ((rule_ht > 0) && (rule_wd > 0))
+      {
+        synch_h();
+        synch_v();
+        dvi_out(put_rule);
+        dvi_four(rule_ht);
+        dvi_four(rule_wd);
+      }
+
+      goto lab15;
+lab13:
+      cur_v = cur_v + rule_ht;
+    }
+lab15:
+    p = link(p);
+  }
+
+  prune_movements(save_loc);
+
+  if (cur_s > 0)
+    dvi_pop(save_loc);
+
+  decr(cur_s);
+}
+/* sec 0638 */
+/* following needs access to dvi_buf=zdvibuf see coerce.h */
+/*
+void error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data)
+{
+  printf ("YANDYTEX ERROR: error_no=%04X, detail_no=%u\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no);
+  longjmp(jumpbuffer, 1);
+}
+*/
+/* sec 0638 */
+void dvi_ship_out_(halfword p)
+{
+  integer page_loc;
+  char j, k;
+  pool_pointer s;
+  char old_setting;
+
+  if (tracing_output > 0)
+  {
+    print_nl("");
+    print_ln();
+    print_string("Completed box being shipped out");
+  }
+
+  if (term_offset > max_print_line - 9)
+    print_ln();
+  else if ((term_offset > 0) || (file_offset > 0))
+    print_char(' ');
+
+  print_char('[');
+  j = 9;
+
+  while((count(j) == 0) && (j > 0))
+    decr(j);
+
+  for (k = 0; k <= j; k++)
+  {
+    print_int(count(k));
+
+    if (k < j)
+      print_char('.');
+  }
+
+#ifndef _WINDOWS
+  fflush(stdout);
+#endif
+
+  if (tracing_output > 0)
+  {
+    print_char(']');
+    begin_diagnostic();
+    show_box(p);
+    end_diagnostic(true);
+  }
+
+  if ((height(p) > max_dimen) || (depth(p) > max_dimen) ||
+      (height(p) + depth(p) + v_offset > max_dimen) ||
+      (width(p) + h_offset > max_dimen))
+  {
+    print_err("Huge page cannot be shipped out");
+    help2("The page just created is more than 18 feet tall or",
+        "more than 18 feet wide, so I suspect something went wrong.");
+    error();
+
+    if (tracing_output <= 0)
+    {
+      begin_diagnostic();
+      print_nl("The following box has been deleted:");
+      show_box(p);
+      end_diagnostic(true);
+    }
+
+    goto lab30;
+  }
+
+  if (height(p) + depth(p) + v_offset > max_v)
+    max_v = height(p) + depth(p) + v_offset;
+
+  if (width(p) + h_offset > max_h)
+    max_h = width(p) + h_offset;
+
+  dvi_h = 0;
+  dvi_v = 0;
+  cur_h = h_offset;
+  dvi_f = null_font;
+
+  if (output_file_name == 0)
+  {
+    if (job_name == 0)
+      open_log_file();
+
+    pack_job_name(".dvi");
+
+    while(!b_open_out(dvi_file))
+    {
+      prompt_file_name("file name for output", ".dvi");
+    }
+
+    output_file_name = b_make_name_string(dvi_file);
+  }
+
+  if (total_pages == 0)
+  {
+    /* HPDF init.*/
+/*
+    yandy_pdf = HPDF_New(error_handler, NULL);
+    yandy_pdf->pdf_version = HPDF_VER_17;
+    HPDF_SetCompressionMode(yandy_pdf, HPDF_COMP_ALL);
+*/
+    dvi_out(pre);
+    dvi_out(id_byte);
+    dvi_four(25400000L);  /* magic DVI scale factor */
+    dvi_four(473628672L); /* 7227 * 65536 */
+    prepare_mag();
+    dvi_four(mag);
+    old_setting = selector;
+    selector = new_string;
+    print_string(" TeX output ");
+    print_int(year);
+    print_char('.');
+    print_two(month);
+    print_char('.');
+    print_two(day);
+    print_char(':');
+    print_two(tex_time / 60);
+    print_two(tex_time % 60);
+    selector = old_setting;
+    dvi_out(cur_length);
+
+    for (s = str_start[str_ptr]; s <= pool_ptr - 1; s++)
+      dvi_out(str_pool[s]);
+
+    pool_ptr = str_start[str_ptr];
+  }
+
+  page_loc = dvi_offset + dvi_ptr;
+  dvi_out(bop);
+
+/*
+  yandy_font = HPDF_GetFont (yandy_pdf, "Helvetica", NULL);
+  yandy_page = HPDF_AddPage (yandy_pdf);
+  HPDF_Page_SetWidth (yandy_page, hsize / 65536);
+  HPDF_Page_SetHeight (yandy_page, vsize / 65536);
+  HPDF_Page_SetFontAndSize (yandy_page, yandy_font, 10);
+  HPDF_Page_BeginText (yandy_page);
+  HPDF_Page_MoveTextPos(yandy_page, 10, 190);
+  HPDF_Page_ShowText (yandy_page, "The page");
+  HPDF_Page_EndText (yandy_page);
+*/
+
+  for (k = 0; k <= 9; k++)
+    dvi_four(count(k));
+
+  dvi_four(last_bop);
+  last_bop = page_loc;
+  cur_v = height(p) + v_offset;
+  temp_ptr = p;
+
+  if (type(p) == vlist_node)
+    vlist_out();
+  else
+    hlist_out();
+
+  dvi_out(eop); // do not need a endpage in haru.
+  incr(total_pages);
+  cur_s = -1;
+lab30:;
+  if (tracing_output <= 0)
+    print_char(']');
+
+  dead_cycles = 0;
+
+#ifndef _WINDOWS
+  fflush(stdout);
+#endif
+
+#ifdef STAT
+  if (tracing_stats > 1)
+  {
+    print_nl("Memory usage before: ");
+    print_int(var_used);
+    print_char('&');
+    print_int(dyn_used);
+    print_char(';');
+  }
+#endif /* STAT */
+
+  flush_node_list(p);
+
+#ifdef STAT
+  if (tracing_stats > 1)
+  {
+    print_string(" after: ");
+    print_int(var_used);
+    print_char('&');
+    print_int(dyn_used);
+    print_string("; still utouched: ");
+    print_int(hi_mem_min - lo_mem_max - 1); /* somewhat inaccurate free mem */
+    print_ln();
+  }
+#endif /* STAT */
+}
+void ship_out_(halfword p)
+{
+  dvi_ship_out_(p);
+}
+/* sec 0645 */
+void scan_spec_(group_code c, bool three_codes)
+{
+  integer s;
+  char spec_code;
+
+  if (three_codes)
+    s = saved(0);
+
+  if (scan_keyword("to"))
+    spec_code = exactly;
+  else if (scan_keyword("spread"))
+    spec_code = additional;
+  else
+  {
+    spec_code = additional;
+    cur_val = 0;
+    goto lab40;
+  }
+
+  scan_dimen(false, false, false);
+
+lab40:
+  if (three_codes)
+  {
+    saved(0) = s;
+    incr(save_ptr);
+  }
+
+  saved(0) = spec_code;
+  saved(1) = cur_val;
+  save_ptr = save_ptr + 2;
+  new_save_level(c);
+  scan_left_brace();
+}
+/* sec 0649 */
+halfword hpack_(halfword p, scaled w, small_number m)
+{
+  halfword r;
+  halfword q;
+  scaled h, d, x;
+  scaled s;
+  halfword g;
+/*  glue_ord o;  */
+  int o;              /* 95/Jan/7 */
+  internal_font_number f;
+  ffourquarters i;
+  eight_bits hd;
+
+  last_badness = 0;
+  r = get_node(box_node_size);
+  type(r) = hlist_node;
+  subtype(r) = 0;
+  shift_amount(r) = 0;
+  q = r + list_offset;
+  link(q) = p;
+  h = 0;
+  d = 0;
+  x = 0;
+  total_stretch[normal] = 0;
+  total_shrink[normal] = 0;
+  total_stretch[fil] = 0;
+  total_shrink[fil] = 0;
+  total_stretch[fill] = 0;
+  total_shrink[fill] = 0;
+  total_stretch[filll] = 0;
+  total_shrink[filll] = 0;
+
+  while (p != 0)
+  {
+lab21:
+    while ((p >= hi_mem_min))
+    {
+      f = font(p);
+      i = char_info(f, character(p));
+      hd = height_depth(i);
+      x = x + char_width(f, i);
+      s = char_height(f, hd);
+
+      if (s > h)
+        h = s;
+
+      s = char_depth(f, hd);
+
+      if (s > d)
+        d = s;
+
+      p = link(p);
+    }
+
+    if (p != 0)
+    {
+      switch (type(p))
+      {
+        case hlist_node:
+        case vlist_node:
+        case rule_node:
+        case unset_node:
+          {
+            x = x + width(p);
+
+            if (type(p) >= rule_node)
+              s = 0;
+            else
+              s = shift_amount(p);
+
+            if (height(p) - s > h)
+              h = height(p) - s;
+
+            if (depth(p) + s > d)
+              d = depth(p) + s;
+          }
+          break;
+
+        case ins_node:
+        case mark_node:
+        case adjust_node:
+          if (adjust_tail != 0)
+          {
+            while (link(q) != p)
+              q = link(q);
+
+            if (type(p) == adjust_node)
+            {
+              link(adjust_tail) = adjust_ptr(p);
+
+              while (link(adjust_tail)!= 0)
+                adjust_tail = link(adjust_tail);
+
+              p = link(p);
+              free_node(link(q), small_node_size);
+            }
+            else
+            {
+              link(adjust_tail) = p;
+              adjust_tail = p;
+              p = link(p);
+            }
+
+            link(q) = p;
+            p = q;
+          }
+          break;
+
+        case whatsit_node:
+          break;
+        case glue_node:
+          {
+            g = glue_ptr(p);
+            x = x + width(g);
+            o = stretch_order(g);
+            total_stretch[o] = total_stretch[o] + stretch(g);
+            o = shrink_order(g);
+            total_shrink[o] = total_shrink[o] + shrink(g);
+
+            if (subtype(p) >= a_leaders)
+            {
+              g = leader_ptr(p);
+
+              if (height(g) > h)
+                h = height(g);
+
+              if (depth(g) > d)
+                d = depth(g);
+            }
+          }
+          break;
+
+        case kern_node:
+        case math_node:
+          x = x + width(p);
+          break;
+
+        case ligature_node:
+          {
+            mem[lig_trick] = mem[lig_char(p)];
+            link(lig_trick) = link(p);
+            p = lig_trick;
+            goto lab21;
+          }
+          break;
+
+        default:
+          break;
+      }
+      p = link(p);
+    }
+  }
+
+  if (adjust_tail != 0)
+    link(adjust_tail) = 0;
+
+  height(r) = h;
+  depth(r) = d;
+
+  if (m == additional)
+    w = x + w;
+
+  width(r) = w;
+  x = w - x;
+
+  if (x == 0)
+  {
+    glue_sign(r) = normal;
+    glue_order(r) = normal;
+    glue_set(r) = 0.0;
+    goto lab10;
+  }
+  else if (x > 0)
+  {
+    if (total_stretch[filll] != 0)
+      o = filll;
+    else if (total_stretch[fill] != 0)
+      o = fill;
+    else if (total_stretch[fil] != 0)
+      o = fil;
+    else
+      o = normal;
+
+    glue_order(r) = o;
+    glue_sign(r) = stretching;
+
+    if (total_stretch[o] != 0)
+      glue_set(r) = x / ((double) total_stretch[o]);
+    else
+    {
+      glue_sign(r) = normal;
+      glue_set(r) = 0.0;
+    }
+
+    if (o == normal)
+      if (list_ptr(r) != 0)
+      {
+        last_badness = badness(x, total_stretch[normal]);
+
+        if (last_badness > hbadness)
+        {
+          print_ln();
+
+          if (last_badness > 100)
+            print_nl("Underfull");
+          else
+            print_nl("Loose");
+
+          print_string(" \\hbox (badness ");
+          print_int(last_badness);
+
+          if (last_badness > 100) /* Y&Y TeX */
+            underfull_hbox++;   /* 1996/Feb/9 */
+
+          goto lab50;
+        }
+      }
+      goto lab10;
+  }
+  else
+  {
+    if (total_shrink[filll] != 0)
+      o = filll;
+    else if (total_shrink[fill] != 0)
+      o = fill;
+    else if (total_shrink[fil] != 0)
+      o = fil;
+    else
+      o = normal;
+
+    glue_order(r) = o;
+    glue_sign(r) = shrinking;
+
+    if (total_shrink[o] != 0)
+      glue_set(r) =(- (integer) x) / ((double) total_shrink[o]);
+    else
+    {
+      glue_sign(r) = normal;
+      glue_set(r) = 0.0;
+    }
+
+    if ((total_shrink[o] < - (integer) x) && (o == 0) && (list_ptr(r) != 0))
+    {
+      last_badness = 1000000L;
+      glue_set(r) = 1.0;
+
+      if ((- (integer) x - total_shrink[normal] > hfuzz) || (hbadness < 100))
+      {
+          if ((overfull_rule > 0) && (- (integer) x - total_shrink[0] > hfuzz))
+          {
+              while(link(q) != 0)
+                q = link(q);
+ 
+              link(q) = new_rule();
+              width(link(q)) = overfull_rule;
+          }
+
+          print_ln();
+          print_nl("Overfull \\hbox (");
+          print_scaled(- (integer) x - total_shrink[normal]);
+          print_string("pt too wide");
+
+          overfull_hbox++;      /* 1996/Feb/9 */
+
+          goto lab50;
+      }
+    }
+    else if (o == normal)
+      if (list_ptr(r) != 0)
+      {
+        last_badness = badness(- (integer) x, total_shrink[normal]);
+
+        if (last_badness > hbadness)
+        {
+          print_ln();
+          print_nl("Tight \\hbox (badness ");
+          print_int(last_badness);
+          goto lab50;
+        }
+      }
+      goto lab10;
+  }
+lab50:
+  if (output_active)
+    print_string(") has occurred while \\output is active");
+  else
+  {
+    if (pack_begin_line != 0)
+    {
+      if (pack_begin_line > 0)
+        print_string(") in paragraph at lines ");
+      else
+        print_string(") in alignment at lines ");
+
+      print_int(abs(pack_begin_line));
+      print_string("--");
+    }
+    else
+      print_string(") detected at line ");
+
+    print_int(line);
+  }
+
+  print_ln();
+  font_in_short_display = null_font;
+  short_display(list_ptr(r));
+  print_ln();
+  begin_diagnostic();
+  show_box(r);
+  end_diagnostic(true);
+lab10:
+  return r;
+}
+/* sec 0668 */
+halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
+{
+  halfword r;
+  scaled w, d, x;
+  scaled s;
+  halfword g;
+/*  glue_ord o;  */
+  int o;              /* 95/Jan/7 */
+
+  last_badness = 0;
+  r = get_node(box_node_size);
+  type(r) = vlist_node;
+  subtype(r) = min_quarterword;
+  shift_amount(r) = 0;
+  list_ptr(r) = p;
+  w = 0;
+  d = 0;
+  x = 0;
+  total_stretch[normal] = 0;
+  total_shrink[normal] = 0;
+  total_stretch[fil] = 0;
+  total_shrink[fil] = 0;
+  total_stretch[fill] = 0;
+  total_shrink[fill] = 0;
+  total_stretch[filll] = 0;
+  total_shrink[filll] = 0;
+
+  while (p != 0)
+  {
+    if ((p >= hi_mem_min))
+    {
+      confusion("vpack");
+      return 0;       // abort_flag set
+    }
+    else switch (type(p))
+    {
+      case hlist_node:
+      case vlist_node:
+      case rule_node:
+      case unset_node:
+        {
+          x = x + d + height(p);
+          d = depth(p);
+
+          if (type(p) >= rule_node)
+            s = 0;
+          else
+            s = shift_amount(p);
+
+          if (width(p) + s > w)
+            w = width(p) + s;
+        }
+        break;
+
+      case whatsit_node:
+        break;
+
+      case glue_node:
+        {
+          x = x + d;
+          d = 0;
+          g = glue_ptr(p);
+          x = x + width(g);
+          o = stretch_order(g);
+          total_stretch[o] = total_stretch[o] + stretch(g);
+          o = shrink_order(g);
+          total_shrink[o] = total_shrink[o] + shrink(g);
+
+          if (subtype(p) >= a_leaders)
+          {
+            g = leader_ptr(p);
+
+            if (width(g) > w)
+              w = width(g);
+          }
+        }
+        break;
+
+      case kern_node:
+        {
+          x = x + d + width(p);
+          d = 0;
+        }
+        break;
+
+      default:
+        break;
+    }
+    p = link(p);
+  }
+
+  width(r) = w;
+
+  if (d > l)
+  {
+    x = x + d - l;
+    depth(r) = l;
+  }
+  else
+    depth(r) = d;
+
+  if (m == additional)
+    h = x + h;
+
+  height(r) = h;
+  x = h - x;
+
+  if (x == 0)
+  {
+    glue_sign(r) = normal;
+    glue_order(r) = normal;
+    glue_set(r) = 0.0;
+    goto lab10;
+  }
+  else if (x > 0)
+  {
+    if (total_stretch[filll] != 0)
+      o = filll;
+    else if (total_stretch[fill] != 0)
+      o = fill;
+    else if (total_stretch[fil] != 0)
+      o = fil;
+    else
+      o = normal;
+
+    glue_order(r) = o;
+    glue_sign(r) = stretching;
+
+    if (total_stretch[o] != 0)
+      glue_set(r) = x / ((double) total_stretch[o]);
+    else
+    {
+      glue_sign(r) = normal;
+      glue_set(r) = 0.0;
+    }
+
+    if (o == normal)
+      if (list_ptr(r) != 0)
+      {
+        last_badness = badness(x, total_stretch[normal]);
+
+        if (last_badness > vbadness)
+        {
+          print_ln();
+
+          if (last_badness > 100)
+            print_nl("Underfull");
+          else
+            print_nl("Loose");
+
+          print_string(" \\vbox (badness ");
+          print_int(last_badness);
+
+          if (last_badness > 100)
+            underfull_vbox++; /* 1996/Feb/9 */
+
+          goto lab50;
+        }
+      }
+      goto lab10;
+  }
+  else
+  {
+    if (total_shrink[filll] != 0)
+      o = filll;
+    else if (total_shrink[fill] != 0)
+      o = fill;
+    else if (total_shrink[fil] != 0)
+      o = fil;
+    else
+      o = normal;
+
+    glue_order(r) = o;
+    glue_sign(r) = shrinking;
+
+    if (total_shrink[o] != 0)
+      glue_set(r) =(- (integer) x)/ ((double) total_shrink[o]);
+    else
+    {
+      glue_sign(r) = normal;
+      glue_set(r) = 0.0;
+    }
+
+    if ((total_shrink[o] < - (integer) x) && (o == 0) && (list_ptr(r) != 0))
+    {
+      last_badness = 1000000L;
+      glue_set(r) = 1.0;
+
+      if ((- (integer) x - total_shrink[0] > vfuzz) || (vbadness < 100))
+      {
+        print_ln();
+        print_nl("Overfull \\vbox (");
+        print_scaled(- (integer) x - total_shrink[0]);
+        print_string("pt too high");
+
+        overfull_vbox++;    /* 1996/Feb/9 */
+
+        goto lab50;
+      }
+    }
+    else if (o == 0)
+      if (list_ptr(r) != 0)
+      {
+        last_badness = badness(- (integer) x, total_shrink[normal]);
+        if (last_badness > vbadness)
+        {
+          print_ln();
+          print_nl("Tight \\vbox (badness ");
+          print_int(last_badness);
+          goto lab50;
+        }
+      }
+    goto lab10;
+  }
+lab50:
+  if (output_active)
+    print_string(") has occurred while \\output is active");
+  else
+  {
+    if (pack_begin_line != 0)
+    {
+      print_string(") in alignment at lines ");
+      print_int(abs(pack_begin_line));
+      print_string("--");
+    }
+    else
+      print_string(") detected at line ");
+
+    print_int(line);
+    print_ln();
+  }
+
+  begin_diagnostic();
+  show_box(r);
+  end_diagnostic(true);
+lab10:
+  return r;
+}
+/* sec 0679 */
+void append_to_vlist_(halfword b)
+{
+  scaled d;
+  halfword p;
+
+  if (cur_list.aux_field.cint > ignore_depth)
+  {
+    d = width(baseline_skip) - prev_depth - height(b);
+
+    if (d < line_skip_limit)
+      p = new_param_glue(line_skip_code);
+    else
+    {
+      p = new_skip_param(baseline_skip_code);
+      width(temp_ptr) = d;
+    }
+    link(tail) = p;
+    tail = p;
+  }
+
+  link(tail) = b;
+  tail = b;
+  prev_depth = depth(b);
+}
+/* sec 0686 */
+halfword new_noad (void)
+{
+  halfword p;
+
+  p = get_node(noad_size);
+  type(p) = ord_noad;
+  subtype(p) = normal;
+  mem[nucleus(p)].hh = empty_field;
+  mem[subscr(p)].hh = empty_field;
+  mem[supscr(p)].hh = empty_field;
+
+  return p;
+}
+/* sec 0688 */
+halfword new_style_(small_number s)
+{
+  halfword p;
+
+  p = get_node(style_node_size);
+  type(p) = style_node;
+  subtype(p) = s;
+  width(p) = 0;
+  depth(p) = 0;
+
+  return p;
+}
+/* sec 0689 */
+halfword new_choice (void)
+{
+  halfword p;
+
+  p = get_node(style_node_size);
+  type(p) = choice_node;
+  subtype(p) = 0;
+  display_mlist(p) = 0;
+  text_mlist(p) = 0;
+  script_mlist(p) = 0;
+  script_script_mlist(p) = 0;
+
+  return p;
+}
+/* sec 0693 */
+void show_info (void)
+{
+  show_node_list(info(temp_ptr));
+}
+/* sec 0704 */
+halfword fraction_rule_(scaled t)
+{
+  halfword p;
+
+  p = new_rule();
+  height(p) = t;
+  depth(p) = 0;
+
+  return p;
+}
+/* sec 0705 */
+halfword overbar_(halfword b, scaled k, scaled t)
+{
+  halfword p, q;
+
+  p = new_kern(k);
+  link(p) = b;
+  q = fraction_rule(t);
+  link(q) = p;
+  p = new_kern(t);
+  link(p) = q;
+  return vpackage(p, 0, 1, 1073741823L); /* 2^30 - 1 */
+}
+/* sec 0709 */
+halfword char_box_(internal_font_number f, quarterword c)
+{
+  ffourquarters q;
+  eight_bits hd;
+  halfword b, p;
+
+  q = char_info(f, c);
+  hd = height_depth(q);
+  b = new_null_box();
+  width(b) = char_width(f, q) + char_italic(f, q);
+  height(b) = char_height(f, hd);
+  depth(b) = char_depth(f, hd);
+  p = get_avail();
+  character(p) = c;
+  font(p) = f;
+  list_ptr(b) = p;
+
+  return b;
+}
+/* sec 0711 */
+void stack_into_box_(halfword b, internal_font_number f, quarterword c)
+{
+  halfword p;
+
+  p = char_box(f, c);
+  link(p) = list_ptr(b);
+  list_ptr(b) = p;
+  height(b) = height(p);
+}
+/* sec 0712 */
+scaled height_plus_depth_(internal_font_number f, fquarterword c)
+{
+  ffourquarters q;
+  eight_bits hd;
+
+  q = char_info(f, c);
+  hd = height_depth(q);
+  return char_height(f, hd) + char_depth(f, hd);
+}
+/* sec 0706 */
+halfword var_delimiter_(halfword d, small_number s, scaled v)
+{
+  halfword b;
+  internal_font_number f, g;
+  quarterword c, x, y;
+  integer m, n;
+  scaled u;
+  scaled w;
+  ffourquarters q;
+  ffourquarters r;
+  eight_bits hd;
+/*  small_number z;  */
+  int z;                  /* 95/Jan/7 */
+/*  bool large_attempt;  */
+  int large_attempt;           /* 95/Jan/7 */
+
+  f = null_font;
+  w = 0;
+  large_attempt = false;
+  z = small_fam(d);
+  x = small_char(d);
+
+  while (true)
+  {
+    if ((z != 0) || (x != 0))
+    {
+      z = z + s + 16;
+
+      do
+        {
+          z = z - 16;
+          g = fam_fnt(z);
+
+          if (g != null_font)
+          {
+            y = x;
+
+            if ((y >= font_bc[g]) && (y <= font_ec[g]))
+            {
+lab22:
+              q = char_info(g, y);
+              
+              if ((q.b0 > 0))
+              {
+                if (char_tag(q) == ext_tag)
+                {
+                  f = g;
+                  c = y;
+                  goto lab40;
+                }
+
+                hd = height_depth(q);
+                u = char_height(g, hd) + char_depth(g, hd);
+
+                if (u > w)
+                {
+                  f = g;
+                  c = y;
+                  w = u;
+
+                  if (u >= v)
+                    goto lab40;
+                }
+
+                if (char_tag(q) == list_tag)
+                {
+                  y = rem_byte(q);
+                  goto lab22;
+                }
+              }
+            }
+          }
+        }
+      while (!(z < 16));
+    }
+
+    if (large_attempt)
+      goto lab40;
+
+    large_attempt = true;
+    z = large_fam(d);
+    x = large_char(d);
+  }
+lab40:
+  if (f != null_font)
+    if (char_tag(q) == ext_tag)
+    {
+      b = new_null_box();
+      type(b) = vlist_node;
+      r = font_info[exten_base[f] + rem_byte(q)].qqqq;
+      c = ext_rep(r);
+      u = height_plus_depth(f, c);
+      w = 0;
+      q = char_info(f, c);
+      width(b) = char_width(f, q) + char_italic(f, q);
+      c = ext_bot(r);
+
+      if (c != min_quarterword)
+        w = w + height_plus_depth(f, c);
+
+      c = ext_mid(r);
+
+      if (c != min_quarterword)
+        w = w + height_plus_depth(f, c);
+
+      c = ext_top(r);
+
+      if (c != min_quarterword)
+        w = w + height_plus_depth(f, c);
+
+      n = 0;
+
+      if (u > 0)
+        while(w < v)
+        {
+          w = w + u;
+          incr(n);
+
+          if (ext_mid(r) != min_quarterword)
+            w = w + u;
+        }
+
+      c = ext_bot(r);
+
+      if (c != min_quarterword)
+        stack_into_box(b, f, c);
+
+      c = ext_rep(r);
+
+      for (m = 1; m <= n; m++)
+        stack_into_box(b, f, c);
+
+      c = ext_mid(r);
+
+      if (c != min_quarterword)
+      {
+        stack_into_box(b, f, c);
+        c = ext_rep(r);
+
+        for (m = 1; m <= n; m++)
+          stack_into_box(b, f, c);
+      }
+
+      c = ext_top(r);
+
+      if (c != 0)
+        stack_into_box(b, f, c);
+      
+      depth(b) = w - height(b);
+    }
+    else
+      b = char_box(f, c);
+  else
+  {
+    b = new_null_box();
+    width(b) = null_delimiter_space;
+  }
+
+  shift_amount(b) = half(height(b) - depth(b)) - axis_height(s);
+
+  return b;
+}
+/* rebox_ etc used to follow here in tex4.c */
