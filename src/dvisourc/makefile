@@ -1,4 +1,5 @@
 # Copyright 2007 TeX Users Group
+# Copyright 2014 Clerk Ma
 # You may freely use, modify and/or distribute this file.
 
 # Makefile for DVIPSONE
@@ -27,7 +28,7 @@ LINK = link
 # -Zd line number information for debugging ?
 # -Zi generate debugging information 98/March/5
 # Release version
-CFLAGS=/c /YX /Ox /Ge /Gy /Gf /W4
+CFLAGS=/c /Ox /GF /Gy /W4
 # Debugging version
 # CFLAGS=/c /YX /Ge /Gy /Gf /W4 /Od /Zi
 
@@ -39,16 +40,18 @@ LFLAGS=/MAP /RELEASE
 # Debugging version
 # LFLAGS=/MAP /DEBUG /PDB:dvipsone.pdb
 
-# objs = cextra.obj citex.obj openinou.obj local.obj \
-objs = 	dvipsone.obj  dviextra.obj \
-	 dvianal.obj dvispeci.obj dvitiff.obj dvipslog.obj 
+# objs = cextra.obj citex.obj openinou.obj local.obj 
+objs = dvipsone.obj  dviextra.obj \
+	 dvianal.obj dvispeci.obj dvitiff.obj dvipslog.obj dvipsone.res
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 # dvipsone.exe: $(objs) lib/libdos.lib
 dvipsone.exe: $(objs) 
 #   	$(LINK) $(LFLAGS) dvipsone dvipslog dviextra dvianal dvispeci dvitiff
-   	$(LINK) $(LFLAGS) $(objs) setargv.obj
+	$(LINK) $(LFLAGS) $(objs) setargv.obj
+	copy dvipsone.exe ..\yandy\bin\dvipsone.exe
+
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
@@ -69,6 +72,9 @@ dvispeci.obj: dvispeci.c dvipsone.h
 
 dvitiff.obj: dvitiff.c dvipsone.h
 	$(CC) $(CFLAGS) dvitiff.c
+
+dvipsone.res: dvipsone.rc
+	rc dvipsone.rc
 
 .SUFFIXES:
 .SUFFIXES: .obj .c
