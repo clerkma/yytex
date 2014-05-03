@@ -1937,7 +1937,8 @@ int free_memory (void)
   format_file = string_file = source_direct = NULL;
   if (dvi_file_name != NULL) free(dvi_file_name);
   if (log_file_name != NULL) free(log_file_name);
-  log_file_name = dvi_file_name = NULL;       /* 00/Jun/18 */
+  if (pdf_file_name != NULL) free(pdf_file_name);
+  pdf_file_name = log_file_name = dvi_file_name = NULL;       /* 00/Jun/18 */
   return 0;
 }
 
@@ -1972,7 +1973,7 @@ void complainarg (int c, char *s)
 
 /* only  01234567.9 still left to take ... maybe recycle u */
 
-char *allowedargs = "+bcdfijnpqrstvwyzABCDFGIJKLMNOPQRSTVWXYZ23456789?a=e=g=h=k=l=m=o=u=x=E=H=P=U=";
+char *allowedargs = "+bcdfijnpqrstvwyzABCDFGIJKLMNOPQRSTVWXYZ023456789?a=e=g=h=k=l=m=o=u=x=E=H=P=U=";
 
 /* char takeargs="gmueoazhluEH"; */ /* subset that takes args! needed here */
 
@@ -2662,6 +2663,10 @@ int analyze_flag (int c, char *optarg)
       if (strcmp(dvi_directory, "") == 0)
         complainarg(c, optarg);
       break;
+    case '0':
+      if (optarg == 0)
+        pdf_output_flag = true;
+      break;
     case 'l':
       if (optarg == 0)
         log_directory = "";
@@ -2860,6 +2865,7 @@ int init_commands (int ac, char **av)
 /*  NOTE: some defaults changed 1993/Nov/18 */
 /*  want_version = show_use = switchflag = return_flag = false;
   is_initex = trace_flag = deslash = non_ascii = false; */
+  pdf_output_flag   = false;
   is_initex         = false; /* check for dumping format file */
   allow_patterns    = false; /* using \pattern after format file loaded */
   reset_exceptions  = false;
@@ -3278,11 +3284,12 @@ int main_init (int ac, char **av)
 
   check_fixed_align(trace_flag);       /* sanity check 1994/Jan/8 */
 
-  format_file   = NULL;       /* to be set in openinou.c 94/Jun/21 */
-  string_file   = NULL;       /* to be set in openinou.c 96/Jan/15 */
-  source_direct = NULL;       /* to be set in openinou.c 98/Sep/29 */
-  dvi_file_name = NULL;       /* to be set in openinou.c 00/Jun/18 */
-  log_file_name = NULL;       /* to be set in openinou.c 00/Jun/18 */
+  format_file   = NULL;
+  string_file   = NULL;
+  source_direct = NULL;
+  dvi_file_name = NULL;
+  log_file_name = NULL;
+  pdf_file_name = NULL;
 
   first_pass_count  = 0;
   second_pass_count = 0;

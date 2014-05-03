@@ -675,6 +675,7 @@ EXTERN str_number output_file_name;   // DVI file
 EXTERN str_number texmf_log_name;   // LOG file
 EXTERN byte_file dvi_file; 
 EXTERN byte_file tfm_file;
+EXTERN byte_file pdf_file;
 EXTERN char * dvi_file_name;
 EXTERN char * pdf_file_name;
 EXTERN char * log_file_name;
@@ -2528,5 +2529,11 @@ EXTERN HPDF_Doc  yandy_pdf;
 EXTERN HPDF_Page yandy_page;
 EXTERN HPDF_Font yandy_font;
 bool pdf_doing_string;
-
+bool pdf_doing_text;
+bool pdf_output_flag;
+EXTERN void pdf_ship_out(pointer p);
+EXTERN void pdf_vlist_out (void);
+EXTERN void pdf_hlist_out (void);
+EXTERN void pdf_font_def(internal_font_number f);
+EXTERN void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data);
 /********BINDING WITH LIBHARU*********/

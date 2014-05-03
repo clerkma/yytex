@@ -1144,13 +1144,6 @@ lab15:
 }
 /* sec 0638 */
 /* following needs access to dvi_buf=zdvibuf see coerce.h */
-/*
-void error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data)
-{
-  printf ("YANDYTEX ERROR: error_no=%04X, detail_no=%u\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no);
-  longjmp(jumpbuffer, 1);
-}
-*/
 /* sec 0638 */
 void dvi_ship_out_(halfword p)
 {
@@ -1245,12 +1238,6 @@ void dvi_ship_out_(halfword p)
 
   if (total_pages == 0)
   {
-    /* HPDF init.*/
-/*
-    yandy_pdf = HPDF_New(error_handler, NULL);
-    yandy_pdf->pdf_version = HPDF_VER_17;
-    HPDF_SetCompressionMode(yandy_pdf, HPDF_COMP_ALL);
-*/
     dvi_out(pre);
     dvi_out(id_byte);
     dvi_four(25400000L);  /* magic DVI scale factor */
@@ -1279,18 +1266,6 @@ void dvi_ship_out_(halfword p)
 
   page_loc = dvi_offset + dvi_ptr;
   dvi_out(bop);
-
-/*
-  yandy_font = HPDF_GetFont (yandy_pdf, "Helvetica", NULL);
-  yandy_page = HPDF_AddPage (yandy_pdf);
-  HPDF_Page_SetWidth (yandy_page, hsize / 65536);
-  HPDF_Page_SetHeight (yandy_page, vsize / 65536);
-  HPDF_Page_SetFontAndSize (yandy_page, yandy_font, 10);
-  HPDF_Page_BeginText (yandy_page);
-  HPDF_Page_MoveTextPos(yandy_page, 10, 190);
-  HPDF_Page_ShowText (yandy_page, "The page");
-  HPDF_Page_EndText (yandy_page);
-*/
 
   for (k = 0; k <= 9; k++)
     dvi_four(count(k));
@@ -1346,7 +1321,10 @@ lab30:;
 }
 void ship_out_(halfword p)
 {
-  dvi_ship_out_(p);
+  if (pdf_output_flag)
+    pdf_ship_out(p);
+  else
+    dvi_ship_out_(p);
 }
 /* sec 0645 */
 void scan_spec_(group_code c, bool three_codes)
