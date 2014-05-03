@@ -26,6 +26,7 @@
   #include <windows.h>
   #define MYLIBAPI __declspec(dllexport)
 #endif
+
 #pragma warning(disable:4996)
 #include <kpathsea/config.h>
 #include <kpathsea/c-ctype.h>

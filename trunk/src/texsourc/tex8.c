@@ -268,6 +268,7 @@ void after_math (void)
         back_error();
       }
     }
+
     cur_mlist = p;
     cur_style = display_style;
     mlist_penalties = false;
@@ -432,7 +433,7 @@ lab20:
     {
       get_token();
     }
-  while (!(cur_tok != 2592));
+    while (!(cur_tok != space_token));
 
   if ((cur_cs == 0) || (cur_cs > frozen_control_sequence))
   {

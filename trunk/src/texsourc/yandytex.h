@@ -91,7 +91,6 @@ extern bool eoln (FILE * file);
 extern bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode);
 extern bool open_output (FILE **f, char *fopen_mode);
 extern int check_fclose (FILE * f);
-extern void argv();
 
 #define show_line(str,flag) fputs(str,stdout)
 #define show_char(chr) putc(chr, stdout)

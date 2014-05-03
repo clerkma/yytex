@@ -3014,9 +3014,7 @@ void primitive_ (str_number s, quarterword c, halfword o)
   eq_type(cur_val) = c;
   equiv(cur_val) = o;
 }
-#endif /* INITEX */
-
-/* more weird constants ? page 394 */
+#endif
 
 #ifdef INITEX
 /* sec 0944 */
@@ -4256,11 +4254,11 @@ void init_prim (void)
   primitive("skipdef", shorthand_def, 4);
   primitive("muskipdef", shorthand_def, 5);
   primitive("toksdef", shorthand_def, 6);
-  primitive("catcode", def_code, (hash_size + 1883));
-  primitive("mathcode", def_code, (hash_size + 2907));
-  primitive("lccode", def_code, (hash_size + 2139));
-  primitive("uccode", def_code, (hash_size + 2395));
-  primitive("sfcode", def_code, (hash_size + 2651));
+  primitive("catcode", def_code, cat_code_base);
+  primitive("mathcode", def_code, math_code_base);
+  primitive("lccode", def_code, lc_code_base);
+  primitive("uccode", def_code, uc_code_base);
+  primitive("sfcode", def_code, sf_code_base);
   primitive("delcode", def_code, (hash_size + 3474));
   primitive("textfont", def_family, (hash_size + 1835));
   primitive("scriptfont", def_family, (hash_size + 1851));
