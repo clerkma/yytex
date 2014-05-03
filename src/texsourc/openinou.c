@@ -508,6 +508,20 @@ bool open_output (FILE **f, char *fopen_mode)
     unixify(log_line);
     dvi_file_name = xstrdup(log_line);
   }
+  else if (strstr((char *) name_of_file + 1, ".pdf") != NULL)
+  {
+    if (qualified(name_of_file + 1))
+      *log_line = '\0';
+    else
+    {
+      (void) _getcwd(log_line, sizeof(log_line));
+      strcat(log_line, PATH_SEP_STRING);
+    }
+
+    strcat(log_line, (char*) name_of_file + 1);
+    unixify(log_line);
+    pdf_file_name = xstrdup(log_line);
+  }
   else if (strstr((char *)name_of_file + 1, ".log") != NULL)
   {
     if (qualified(name_of_file + 1))
