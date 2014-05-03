@@ -44,19 +44,23 @@ LFLAGS=/MAP
 objs = texmf.obj itex.obj openinou.obj subroute.obj local.obj \
 	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
 	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
-	yandy_pool.obj yandytex.res md5.obj md5file.obj
+	yandy_pool.obj yandytex.res md5.obj md5file.obj \
+	yandy_pdf_backend.obj
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 texmf.exe: $(objs) 
 	$(LINK) $(LFLAGS) texmf itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
-	yandy_pool yandytex.res md5 md5file kpathsea\kpathsea.lib \
-	libharu\libhpdf.lib libpng\libpng.lib zlib\zlib.lib 
+	yandy_pool yandytex.res md5 md5file yandy_pdf_backend \
+	kpathsea\kpathsea.lib libharu\libhpdf.lib libpng\libpng.lib zlib\zlib.lib
 	copy texmf.exe yandytex.exe
 	del ..\yandy\bin\texmf.exe
 	copy texmf.exe ..\yandy\bin\texmf.exe
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+yandy_pdf_backend.obj: yandy_pdf_backend.c
+	$(CC) $(CFLAGS) yandy_pdf_backend.c
+
 md5.obj: libmd5\md5.c
 	$(CC) -Ilibmd5 $(CFLAGS) libmd5\md5.c
 

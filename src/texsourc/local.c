@@ -50,10 +50,6 @@
 
 #define USEMEMSET       /* 98/Jan/23 */
 
-#ifndef _WINDOWS
-/* #define HEAPWALK */      /* debugging 96/Oct/22 */
-#endif
-
 #ifdef USEOUREALLOC
   #define REALLOC ourrealloc
 #else
@@ -70,14 +66,7 @@
 #endif
 #pragma warning(default:4032) // different type when promoted
 
-
-/* Argument handling, etc.  */ /* from common.h - setup `main' in texmf.c */
-/* extern int gargc; */
-/* extern char **gargv; */
-
-int wantcopyrght=1;
-
-/* appears in reverse order in EXE file */
+int wantcopyrght = 1;
 
 char *compiletime  =  __TIME__;
 char *compiledate  =  __DATE__;
@@ -94,25 +83,15 @@ char *yandyversion = "2.2.3";
 char *application  = "Y&Y TeX"; /* 96/Jan/17 */
 char *tex_version  = "This is TeX, Version 3.14159265";
 
-/* #define COPYHASH 1890382 */
-/* #define COPYHASH 13862905 */
-/* #define COPYHASH 10558802 */
-/* #define COPYHASH 7254699 */
-/* #define COPYHASH 3950596 */
-/* #define COPYHASH 646493 */
-#define COPYHASH 12905299
-
 clock_t start_time, main_time, finish_time;
 
-char * dvi_directory = ""; /* user specified directory for dvi file */
-char * log_directory = ""; /* user specified directory for log file */
-char * aux_directory = ""; /* user specified directory for aux file */
-char * fmt_directory = ""; /* user specified directory for fmt file */
-char * pdf_directory = ""; /* user specified directory for pdf file */
+char * dvi_directory = "";
+char * log_directory = "";
+char * aux_directory = "";
+char * fmt_directory = "";
+char * pdf_directory = "";
 
 char * texpath = "";   /* path to executable - used if env vars not set */
-
-// #define MAXLINE 256
 
 char log_line[MAXLINE];  // used also in tex9.c
 
@@ -124,7 +103,8 @@ bool reorder_arg_flag = true; /* put command line flags/arguments first */
 /* Mapping from Windows ANSI to DOS code page 850 96/Jan/20 */
 /* Used in tex0.c with wintodos[c-128]                      */
 
-unsigned char wintodos[128] = {
+unsigned char wintodos[128] =
+{
     0,   0,   0, 159,   0,   0,   0,   0,
    94,   0,   0,   0,   0,   0,   0,   0,
     0,  96,  39,   0,   0,   7,   0,   0,
@@ -146,6 +126,7 @@ unsigned char wintodos[128] = {
 void show_usage (void)
 {
   char * s = log_line;
+
   sprintf (s, "\n"
       " yandytex [-?ivnwdrzpK] [-m=ini_mem] [-e=hyph_size] [-h=trie_size]\n"
       "          [-x=xchr_file] [-k=key_file] [-o=dvi_dir] [-l=log_dir] [-a=aux_dir]\n"
@@ -166,8 +147,7 @@ void show_usage (void)
       "    -k    use `key replacement' defined in file\n"
       "    -o    write DVI file in specified directory (default current directory)\n"
       "    -l    write LOG file in specified directory (default current directory)\n"
-      "    -a    write AUX file in specified directory (default current directory)");
-  strcat(s, "\n");
+      "    -a    write AUX file in specified directory (default current directory)\n");
   show_line(log_line, 1);
 
 #ifndef _WINDOWS
@@ -186,9 +166,8 @@ void show_usage (void)
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-/* Sep 27 1990 => 1990 Sep 27 */
-/* 012456789      0123456789  */
-
+// Sep 27 1990 => 1990 Sep 27
+// 012456789      0123456789
 void scivilize (char * date)
 {
   int k;
@@ -210,8 +189,7 @@ void scivilize (char * date)
   return;
 }
 
-/* Thu Sep 27 06:26:35 1990 => 1990 Sep 27 06:26:35 */
-
+// Thu Sep 27 06:26:35 1990 => 1990 Sep 27 06:26:35
 void lcivilize (char * date)
 {
   int k;
@@ -232,7 +210,6 @@ void lcivilize (char * date)
   return;
 }
 
-// void stamp_it (FILE *outfile)
 // now writes result into given buffer
 void stamp_it (char *s)
 {
@@ -250,7 +227,7 @@ void stampcopy (char *s)
 {
   if (wantcopyrght)
   {
-    sprintf(s, "%s %s", copyright, www);    /* 99/Oct/25 */
+    sprintf(s, "%s %s", copyright, www);
   }
 }
 
@@ -417,7 +394,6 @@ void read_repl_sub (FILE * repl_input)
 
 /* Following used both to read xchr[] file and key replacement file */
 /* the flag is 0 for -x=... and the flag is 1 for -k=... */
-
 int read_xchr_file (char *filename, int flag, char *argv[])
 {
   FILE *pinput;
@@ -602,49 +578,6 @@ void testfloating (void)
 }
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-char *debugfile;      /* NULL or name of file to try and open */
-
-#ifdef SHOWHEAPERROR
- char *heapstrings[] =
- {
-    "", "Empty", "OK", "Bad Begin", "Bad Node", "End", "Bad Pointer"
- };
-#endif
-
-/* Attempt to get at problem with eqtb ... temporarily abandoned */
-#ifdef CHECKEQTB
-void check_eqtb (char *act)
-{
-  int k, count=0;
-  memory_word *eqtb = zeqtb;
-
-  for (k = hash_size + 780 + hash_extra; k < hash_size + 780 + eqtb_extra; k++)
-  {
-    if (eqtb[k].cint != 0)
-    {
-      if (count == 0)
-      {
-        show_char('\n');
-        show_line("EQTB ", 0);
-      }
-
-      sprintf(log_line, "%d ", k);
-      show_line(log_line, 0);
-
-      if (count++ > 256)
-        break;
-    }
-  }
-
-  if (count != 0)
-    show_char('\n');
-}
-#endif
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
 #define MAXSPLITS 3
 
 /* ad hoc default minimum growth in memory realloc is 62% */
@@ -654,84 +587,9 @@ int total_allocated = 0;  /* total memory allocated so far */
 int ini_max_address = 0;  /* maximum address when starting */
 int max_address     = 0;  /* maximum address seen in allocated memory */
 
-/* see texd.h */
-
-// DON'T USE THIS in DLL VERSION
-
-#ifndef _WINDOWS
-#ifdef HEAPWALK
-unsigned int heapthreshold = 0; /* smallest size block interested in ... */
-
-unsigned int heap_dump (FILE *output, int verbose)
-{
-  unsigned int total=0;
-  struct _heapinfo hinfo;
-  int heapstatus;
-  int end_block=0;
-  int n;
-
-  if (verbose)
-    fprintf(output, "HEAP DUMP:\n");
-
-/*  if ((n = _heapchk ()) != _HEAPOK) { */
-  n = _HEAPOK;
-#ifdef SHOWHEAPERROR
-  n = _heapchk();
-#endif
-  if (n != _HEAPOK)
-  {
-    fprintf(stderr, "WARNING: Heap corrupted (%d)\n", n);
-#ifdef SHOWHEAPERROR
-    fprintf(stderr, "HEAP %s (%s)\n", heapstrings[-n], "heap_dump");
-#endif
-  }
-  hinfo._pentry = NULL;
-
-  while ((heapstatus = _heapwalk(&hinfo)) == _HEAPOK)
-  {
-    if (end_block > 0 && (int) hinfo._pentry > end_block + 1024)
-    {
-//      if (verbose) printf("GAP of %d bytes!\n", (int) hinfo._pentry - end_block);
-    }
-    end_block = (int) hinfo._pentry + hinfo._size;
-    if (hinfo._useflag == _USEDENTRY) total += hinfo._size;
-    if (hinfo._size >= heapthreshold && verbose)
-      fprintf(output, "%6s block at %p (%7d) of size %6X (%7d) => (%7d)\n",
-          (hinfo._useflag == _USEDENTRY ? "USED" : "...."),
-          hinfo._pentry, hinfo._pentry, hinfo._size, hinfo._size,
-          end_block);
-  }
-
-  switch (heapstatus)
-  {
-    case _HEAPEMPTY:
-      if (verbose) fprintf(output, "OK - empty heap\n");
-      break;
-    case _HEAPEND:
-      if (verbose) fprintf(output, "OK - end of heap (%u bytes used)\n", total);
-      break;
-    case _HEAPBADPTR:
-      fprintf(output, "ERROR - %s\n", "bad pointer to heap");
-      break;
-    case _HEAPBADBEGIN:
-      fprintf(output, "ERROR - %s\n", "bad start of heap");
-      break;
-    case _HEAPBADNODE:
-      fprintf(output, "ERROR - %s\n", "bad node in heap");
-      break;
-  }
-  return total;
-}
-#endif
-#endif
 
 void show_maximums (FILE *output)
 {
-#ifdef HEAPWALK
-  unsigned heaptotal = 0;           /* no longer used */
-  heaptotal = heap_dump(stdout, 0);      /* 94/Apr/3 */
-#endif
-
   sprintf(log_line, "Max allocated %d --- max address %d\n", total_allocated, max_address);
 //  if (output != NULL) fputs(log_line, output); // log file
 //  else if (flag == 0) show_line(log_line, 0); // informative
@@ -764,16 +622,7 @@ void *ourrealloc (void *old, size_t new_size)
 
   if (old_size >= new_size && old_size < new_size + 4)
     return old;
-/*  _heapmin(); */  /* release unused heap space to the system - no op ? */
-#ifdef HEAPSHOW
-  if (trace_flag)
-  {
-    show_line("BEFORE REALLOC: \n", 0);
-#ifdef HEAPWALK
-    (void) heap_dump(stdout, 1);     /* debugging 96/Jan/18 */
-#endif
-  }
-#endif
+
   mnew = _expand (old, new_size);      /* first try and expand in place */
 
   if (mnew != NULL)
@@ -789,15 +638,7 @@ void *ourrealloc (void *old, size_t new_size)
 /*  *********************************************************************** */
 /*  do this if you want to call the real realloc next -  */
   mnew = realloc (old, new_size);
-#ifdef HEAPSHOW
-  if (trace_flag)
-  {
-    show_line("AFTER REALLOC: \n", 0);
-#ifdef HEAPWALK
-    (void) heap_dump(stdout, 1);     /* debugging 96/Jan/18 */
-#endif
-  }
-#endif
+
   if (mnew != NULL)
     return mnew;
 /*  we are screwed typically if we ever drop through here - no more space */
@@ -824,21 +665,12 @@ void memory_error (char *s, int n)
   {
     fprintf(log_file, "\n! Unable to allocate %d bytes for %s\n", n, s);
     show_maximums(log_file);
-
-#ifdef HEAPWALK
-    if (heap_flag)
-      (void) heap_dump(log_file, 1);
-#endif
   }
 
   sprintf(log_line, "\n! Unable to allocate %d bytes for %s\n", n, s);
   show_line(log_line, 1);
   show_maximums(stderr);
 
-#ifdef HEAPWALK
-  if (heap_flag)
-    (void) heap_dump(stderr, 1);
-#endif
 /*  exit (1); */      /* 94/Jan/22 */
 /*  return to let TeX do its thing (such as complain about runaway) */
 /*  don't set abort_flag here */
@@ -871,11 +703,6 @@ void probe_show (void)
 {
   probe_memory();
   show_maximums(stdout);
-
-#ifdef HEAPWALK
-  if (heap_flag)
-    (void) heap_dump(stdout, 1);
-#endif
 }
 
 size_t roundup (size_t n)
@@ -1107,6 +934,7 @@ memory_word *allocate_main_memory (int size)
 
   if (trace_flag)
     probe_show();     /* 94/Mar/25 */
+
   return zzzaa;             /* same as zmem, mem 94/Jan/24 */
 }
 #endif  /* end of ALLOCATEMAIN */
@@ -1271,7 +1099,7 @@ memory_word *realloc_main (int losize, int hisize)
 #ifdef ALLOCATEFONT
 /* font_mem_size = 10000L ==> font_info array 100k * 8 = 800 kilobytes */
 
-int current_font_mem_size=0;
+int current_font_mem_size = 0;
 
 /* fmemoryword can be either halfword or memory_word */
 fmemoryword * realloc_font_info (int size)
@@ -1357,9 +1185,9 @@ int current_pool_size = 0;
 packed_ASCII_code * realloc_str_pool (int size)
 {
   int k, minsize;
-  int newsize=0;
-  int n=0;
-  packed_ASCII_code *newstrpool=NULL;
+  int newsize = 0;
+  int n = 0;
+  packed_ASCII_code *newstrpool = NULL;
 
   if (trace_flag)
   {
@@ -1390,24 +1218,31 @@ packed_ASCII_code * realloc_str_pool (int size)
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newstrpool == NULL) {
+  if (newstrpool == NULL)
+  {
     memory_error("string pool", n);
     return str_pool;           /* try and continue !!! */
   }
+
   str_pool = newstrpool;
   update_statistics ((int) str_pool, n, current_pool_size);
   current_pool_size = newsize;
-  if (trace_flag) {
+
+  if (trace_flag)
+  {
     sprintf(log_line, "New Address %s == %d\n", "string pool", str_pool);
     show_line(log_line, 0);
   }
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
+  
+  if (trace_flag)
+    probe_show();     /* 94/Mar/25 */
+
   return str_pool;
 }
 #endif
 
 #ifdef ALLOCATESTRING
-int current_max_strings=0;
+int current_max_strings = 0;
 
 pool_pointer *realloc_str_start (int size)
 {
@@ -1465,9 +1300,9 @@ pool_pointer *realloc_str_start (int size)
 #ifdef ALLOCATEINI
 
 /* returns -1 if it fails */
-
+/* size == trie_size */
 int allocate_ini (int size)
-{    /* size == trie_size */
+{
   int n, nl, no, nc, nr, nh, nt;
     nh = nr = nl = (size + 1) *  sizeof(trie_pointer);
     no = (size + 1) *  sizeof(trie_op_code);
@@ -1512,7 +1347,7 @@ int allocate_ini (int size)
 #endif
 
 #ifdef ALLOCATESAVESTACK
-int current_save_size=0;
+int current_save_size = 0;
 
 memory_word *realloc_save_stack (int size)
 {
@@ -1520,20 +1355,29 @@ memory_word *realloc_save_stack (int size)
   int n=0, newsize=0;
   memory_word *newsave_stack=NULL;
 
-  if (trace_flag) {
+  if (trace_flag)
+  {
     sprintf(log_line, "Old Address %s == %d\n", "save stack", save_stack);
     show_line(log_line, 0);
   }
-  if (current_save_size == save_size) {  /* arbitrary limit */
+
+  if (current_save_size == save_size)  /* arbitrary limit */
+  {
 /*    memory_error ("save stack", (save_size + 1) * sizeof(memory_word)); */
 /*    exit (1); */
     return save_stack;       /* let TeX handle the error */
   }
-  minsize =  current_save_size / 100 * percent_grow;
-  if (size < minsize) size = minsize;
-  if (size < initial_save_size) size = initial_save_size;
 
-  for (k = 0; k < MAXSPLITS; k++) {
+  minsize =  current_save_size / 100 * percent_grow;
+
+  if (size < minsize)
+    size = minsize;
+
+  if (size < initial_save_size)
+    size = initial_save_size;
+
+  for (k = 0; k < MAXSPLITS; k++)
+  {
     newsize = current_save_size + size;
     if (newsize > save_size) newsize = save_size;
     n = (newsize + 1) * sizeof (memory_word); /* save_stack[save_size + 1] */
@@ -1544,26 +1388,31 @@ memory_word *realloc_save_stack (int size)
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newsave_stack == NULL) {
+  if (newsave_stack == NULL)
+  {
     memory_error("save stack", n);
     return save_stack;           /* try and continue !!! */
   }
+
   save_stack = newsave_stack;
   update_statistics ((int) save_stack, n, current_save_size);
   current_save_size = newsize;
-  if (trace_flag) {
+
+  if (trace_flag)
+  {
     sprintf(log_line, "Current%s %d\n", "save_size", current_save_size);
     show_line(log_line, 0);
     sprintf(log_line, "New Address %s == %d\n", "save stack", save_stack);
     show_line(log_line, 0);
   }
+
   if (trace_flag) probe_show();      /* 94/Mar/25 */
   return save_stack;
 }
 #endif
 
 #ifdef ALLOCATEINPUTSTACK
-int current_stack_size=0;       /* input stack size */
+int current_stack_size = 0;       /* input stack size */
 
 in_state_record *realloc_input_stack (int size)
 {
@@ -1614,7 +1463,7 @@ in_state_record *realloc_input_stack (int size)
 #endif
 
 #ifdef ALLOCATENESTSTACK
-int current_nest_size=0;        /* current nest size */
+int current_nest_size = 0;        /* current nest size */
 
 list_state_record *realloc_nest_stack (int size)
 {
@@ -1716,7 +1565,7 @@ halfword *realloc_param_stack (int size)
 #endif
 
 #ifdef ALLOCATEBUFFER
-int current_buf_size=0;
+int current_buf_size = 0;
 
 ASCII_code *realloc_buffer (int size)
 {
@@ -1768,58 +1617,6 @@ ASCII_code *realloc_buffer (int size)
   }
   if (trace_flag)  probe_show();     /* 94/Mar/25 */
   return buffer;
-}
-#endif
-
-/* we used to allocate this one only to reduce the size of the PE file */
-/* not used anymore - NO advantage */
-
-#ifdef ALLOCATEDVIBUF
-eight_bits *allocatedvibuf (int size)
-{
-  eight_bits *dvi_buf;
-  int n;
-
-  n = (size + 1) * sizeof(eight_bits);
-  if (trace_flag) trace_memory("dvi_buf", n);
-  dvi_buf = (eight_bits *) malloc (roundup(n));
-  if (dvi_buf == NULL) {
-    memory_error("dvi_buf", n);
-    return NULL;
-  }
-  if (trace_flag) {
-    sprintf(log_line, "Address dvi_buf %d\n", dvi_buf);
-    show_line(log_line, 0);
-  }
-  update_statistics ((int) dvi_buf, n, 0);
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
-  return dvi_buf;
-}
-#endif
-
-/* we used to allocate this one only to reduce the size of the PE file */
-/* it can be done without loss in performance, since register eqtb = zeqtb */
-#ifdef ALLOCATEZEQTB
-memory_word *allocatezeqtb (int k)
-{
-  memory_word *zeqtb;
-  int n;
-
-  n = k * sizeof (memory_word);  /* 13507 * 8 = 108 kilobytes */
-  if (trace_flag)  trace_memory("eqtb", n);
-  zeqtb = (memory_word *) malloc (roundup(n));
-  if (zeqtb == NULL)  {
-    memory_error("eqtb", n);
-//    exit (1);           /* serious error */   
-    return NULL;
-  }
-  if (trace_flag) {
-    sprintf(log_line, "Address zeqtb %d\n", zeqtb);
-    show_line(log_line, 0);
-  }
-  update_statistics ((int) zeqtb, n, 0);
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
-  return zeqtb;
 }
 #endif
 
@@ -2018,7 +1815,7 @@ int allocate_memory (void)
 int free_memory (void)
 {
   int n;
-  unsigned heaptotal=0;
+  unsigned heaptotal = 0;
 /*  unsigned total; */
 
   if (trace_flag) show_line("free_memory ", 0);
@@ -2158,9 +1955,9 @@ bool prime (int x)
   return true;
 }
 
-int quitflag=0;
-bool show_use=false;
-bool floating=false;
+int quitflag  = 0;
+bool show_use = false;
+bool floating = false;
 
 void complainarg (int c, char *s)
 {
@@ -2175,7 +1972,7 @@ void complainarg (int c, char *s)
 
 /* only  01234567.9 still left to take ... maybe recycle u */
 
-char *allowedargs="+bcdfijnpqrstvwyzABCDFGIJKLMNOPQRSTVWXYZ23456789?a=e=g=h=k=l=m=o=u=x=E=H=P=U=";
+char *allowedargs = "+bcdfijnpqrstvwyzABCDFGIJKLMNOPQRSTVWXYZ23456789?a=e=g=h=k=l=m=o=u=x=E=H=P=U=";
 
 /* char takeargs="gmueoazhluEH"; */ /* subset that takes args! needed here */
 
@@ -2388,7 +2185,8 @@ void check_fixed_align (int flag)
 #endif
 }
 
-void check_alloc_align (int flag) {
+void check_alloc_align (int flag)
+{
   if (test_align ((int) eqtb, sizeof(eqtb[0]), "ALLOCATED ALIGNMENT"))
     show_line("PLEASE RECOMPILE ME!\n", 1);
 #ifdef CHECKALIGNMENT
@@ -2416,29 +2214,6 @@ void check_alloc_align (int flag) {
   test_align ((int) trie_taken, sizeof(trie_taken[0]), "trie_taken");
 #endif
 }
-
-#ifdef HEAPSHOW
-void showaddresses (void)
-{         /* 96/Jan/20 */
-  int c;
-  int d;
-  sprintf(log_line, "STACK %d %d (grows %s) ", &c, &d, (&d > &c) ? "upward" : "downward");
-  show_line(log_line, 0);
-  sprintf(log_line, "eqtb %d hash %d ", zeqtb, zzzae);
-  show_line(log_line, 0);
-  sprintf(log_line, "dvi_buf %d xchr %d xord %d nest %d\n", zdvibuf, xchr, xord, nest);
-  show_line(log_line, 0);
-  sprintf(log_line, "save_stack %d input_stack %d line_stack %d param_stack %d\n",
-       save_stack, input_stack, line_stack, param_stack);
-  show_line(log_line, 0);
-  sprintf(log_line, "font_check %d font_size %d font_dsize %d font_params %d font_name %d\n",
-       font_check, font_size, font_dsize, font_params, font_name);
-  show_line(log_line, 0);
-  sprintf(log_line, "main %d font_info %d str_pool %d str_start %d hyph_word %d hyph_list %d\n",
-      zmem, font_info, str_pool, str_start, hyph_word, hyph_list);
-  show_line(log_line, 0);
-}
-#endif
 
 /* *** *** *** *** *** *** *** NEW APPROACH TO `ENV VARS' *** *** *** *** */
 
@@ -2911,10 +2686,6 @@ int analyze_flag (int c, char *optarg)
   }
   return 0;
 }
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-//char *yytexcmd="yandytex.cmd";
-char *yytexcmd="YANDYTEX.CMD";    /* name of command line file */
 
 /* Try and read default command file - YANDYTEX.CMD */
 /* in current directory and then in directory of YANDYTEX */
@@ -3559,10 +3330,8 @@ int main_init (int ac, char **av)
   return 0;         // success
 }
 
-/* #define CLOCKS_PER_SEC 1000 */
 #define CLK_TCK  CLOCKS_PER_SEC
 
-/* void show_inter_val (clock_t start, clock_t end) { */
 void show_inter_val (clock_t interval)
 {
   int seconds, tenths, hundredth, thousands;
