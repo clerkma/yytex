@@ -2527,10 +2527,13 @@ extern int load_pool_strings (integer spare_size);
 
 EXTERN HPDF_Doc  yandy_pdf;
 EXTERN HPDF_Page yandy_page;
-EXTERN HPDF_Font yandy_font;
+EXTERN HPDF_Font yandy_font[1024];
 bool pdf_doing_string;
 bool pdf_doing_text;
 bool pdf_output_flag;
+EXTERN tree *avl_tree;
+EXTERN void init_tfm_map(void);
+EXTERN void free_tfm_map(void);
 EXTERN void pdf_ship_out(pointer p);
 EXTERN void pdf_vlist_out (void);
 EXTERN void pdf_hlist_out (void);

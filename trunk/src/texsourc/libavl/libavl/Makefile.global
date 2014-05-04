@@ -1,0 +1,361 @@
+#  ======================================================================================
+#  File         : Makefile
+#  Author       : Adrien Oliva
+#  Last Change  : 01/02/2013 | 10:16:07 AM | Wednesday,January
+#  Description  : Build script for LibAvl library
+#  ======================================================================================
+
+#       DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+#                   Version 2, December 2004 
+#
+# Copyright (C) 2013 Adrien Oliva <adrien.oliva@yapbreak.fr>
+#
+# Everyone is permitted to copy and distribute verbatim or modified 
+# copies of this license document, and changing it is allowed as long 
+# as the name is changed. 
+#
+#           DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE 
+#  TERMS AND CONDITIONS FOR COPYING, DISTRIBUTION AND MODIFICATION 
+#
+# 0. You just DO WHAT THE FUCK YOU WANT TO.
+
+###############################################################################
+# Debug level, piloting by LOGLEVEL variable
+# To set a LOGLEVEL at compilation time, use the following command:
+# 		make LOGLEVEL=<var>
+# where <var> is
+#   		0	none
+#   		1	error log
+#   		2	warning log
+#   		3	info log
+#   		4	debug log
+#   		5	enter function log
+#
+# by default, LOGLEVEL=5
+ifndef LOGLEVEL
+LOGLEVEL	= 5
+endif
+
+
+###############################################################################
+# Set default options
+ifndef RANDOM
+RANDOM		= 1
+endif
+ifndef COLOR
+COLOR		= 1
+endif
+ifndef COVERAGE
+COVERAGE	= 1
+endif
+ifndef PROFILE
+PROFILE		= 1
+endif
+###############################################################################
+
+CC		= gcc
+CXX		= g++
+LD		= g++
+
+DEBUG	= -ggdb3 \
+		  -O0 \
+		  -W \
+		  -Wall \
+		  -Wextra \
+		  -Wunused-value \
+		  -Waddress \
+		  -Wmain \
+		  -Wmissing-braces \
+		  -Wmissing-noreturn \
+		  -Wpointer-arith \
+		  -Wreturn-type \
+		  -Wshadow \
+		  -Wsign-conversion \
+		  -Wstack-protector \
+		  -Wswitch-default \
+		  -Wundef \
+		  -Wuninitialized \
+		  -Wunused-parameter
+
+RELEASE = -O3
+
+COV		= -fprofile-arcs -ftest-coverage
+PROF	= -pg
+
+CFLAGS	= -DLOGLEVEL=$(LOGLEVEL)
+LDFLAGS	=
+
+ifeq ($(RANDOM), 1)
+CFLAGS	+= -DWITH_RANDOM
+endif
+ifeq ($(COLOR), 1)
+CFLAGS	+= -DWITH_COLOR
+endif
+ifeq ($(COVERAGE), 1)
+CFLAGS	+= $(COV)
+LDFLAGS	+= $(COV)
+endif
+ifeq ($(PROFILE), 1)
+CFLAGS	+= $(PROF)
+LDFLAGS	+= $(PROF)
+endif
+ifeq ($(LOGLEVEL), 0)
+CFLAGS	+= $(DEBUG)
+else
+CFLAGS	+= $(RELEASE)
+endif
+
+
+VALFLAGS= -v \
+		  --trace-children=yes \
+		  --smc-check=all \
+		  --read-var-info=yes \
+		  --leak-check=full \
+		  --show-reachable=yes \
+		  --track-origins=yes \
+		  --malloc-fill=ff \
+		  --free-fill=42
+MAKFLAGS= LOGLEVEL=$(LOGLEVEL) \
+		  RANDOM=$(RANDOM) \
+		  COLOR=$(COLOR) \
+		  PROFILE=$(PROFILE) \
+		  COVERAGE=$(COVERAGE)
+
+CSRC	= $(wildcard *.c)
+CPPSRC	= $(wildcard *.cpp)
+HEADER	= $(wildcard *.h)
+COBJ	= $(CSRC:.c=.o)
+CPPOBJ	= $(CPPSRC:.cpp=.o)
+LOBJ	= $(wildcard *.lo)
+
+OBJ		= $(CPPOBJ) $(COBJ) $(LOBJ)
+SRC		= $(CSRC) $(CPPSRC)
+
+GCOV		= $(wildcard *.gcov)
+GCDA		= $(wildcard *.gcda)
+GCNO		= $(wildcard *.gcno)
+
+PROFILE		= $(wildcard *.profile)
+
+.PHONY: all clean distclean rebuild\
+		test run valgrind coverage profiling\
+		release\
+		help
+
+%.o: %.cpp
+	@(echo -e "CXX\t$@")
+	@($(CXX) -o $@ -c $< $(CFLAGS))
+
+%.lo: %.cpp
+	@(echo -e "CXX\t$@")
+	@($(CXX) -o $@ -c $< $(CFLAGS) -fpic)
+
+%.o: %.c
+	@(echo -e "CC\t$@")
+	@($(CC) -o $@ -c $< $(CFLAGS))
+
+%.lo: %.c
+	@(echo -e "CC\t$@")
+	@($(CC) -o $@ -c $< $(CFLAGS) -fpic)
+
+%.x: %.o
+	@(echo -e "LD\t$@")
+	@($(LD) -o $@ $^ $(LDFLAGS))
+
+lib%.so: %.lo
+	@(echo -e "LD\t$@")
+	@($(LD) -o $@ $^ $(LDFLAGS) --shared)
+
+# Phony
+all: $(TARGET)
+
+clean:
+	@( if [ ! -z "$(OBJ)" ]; then \
+		echo -e "RM\t$(OBJ)"; \
+		$(RM) $(OBJ); \
+	fi )
+	@( if [ -f "gmon.out" ]; then \
+		echo -e "RM\tgmon.out"; \
+		$(RM) gmon.out; \
+	fi )
+	@( if [ ! -z "$(GCDA)" ]; then \
+		echo -e "RM\t$(GCDA)"; \
+		$(RM) $(GCDA); \
+	fi )
+	@( if [ ! -z "$(GCNO)" ]; then \
+		echo -e "RM\t$(GCNO)"; \
+		$(RM) $(GCNO); \
+	fi )
+	@( if [ -d unitTests ]; then \
+		cd unitTests && $(MAKE) $@; \
+	fi )
+
+distclean: clean
+	@( if [ ! -z "$(TARGET)" ]; then \
+		echo -e "RM\t$(TARGET)"; \
+		$(RM) $(TARGET); \
+	fi )
+	@( if [ ! -z "$(UNIT_TESTS)" ]; then \
+		echo -e "RM\t$(UNIT_TESTS)"; \
+		$(RM) $(UNIT_TESTS); \
+	fi )
+	@( if [ ! -z "$(GCOV)" ]; then \
+		echo -e "RM\t$(GCOV)"; \
+		$(RM) $(GCOV); \
+	fi )
+	@( if [ ! -z "$(PROFILE)" ]; then \
+		echo -e "RM\t$(PROFILE)"; \
+		$(RM) $(PROFILE); \
+	fi )
+	@( if [ -d unitTests ]; then \
+		cd unitTests && $(MAKE) $@; \
+	fi )
+
+rebuild: clean
+	@( $(MAKE) $(MAKFLAGS) )
+
+rebuildtest: clean
+	@( $(MAKE) $(MAKFLAGS) test )
+
+ifneq ($(UNIT_TESTS), )
+test: $(UNIT_TESTS)
+	@( echo "To launch tests, run \"make run\""; )
+else
+test:
+	@( if [ -d unitTests ]; then \
+		cd unitTests && $(MAKE) $(MAKFLAGS) $@; \
+	else \
+		echo "No unit tests folder"; \
+	fi )
+endif
+
+run_tests	= echo "Run $(test_run)...";\
+			  ./$(test_run);
+
+ifneq ($(UNIT_TESTS), )
+run: test
+	@($(foreach test_run,$(UNIT_TESTS),$(run_tests)))
+else
+run:
+	@( if [ -d unitTests ]; then \
+		cd unitTests && $(MAKE) $(MAKFLAGS) $@; \
+	else \
+		echo "No unit test folder"; \
+	fi )
+endif
+
+valgrind_tests	= echo "Valgrind $(test_run)..."; \
+				  valgrind $(VALFLAGS) ./$(test_run);
+
+ifneq ($(UNIT_TESTS), )
+valgrind:
+	@(echo "Compile project without profiling info")
+	@($(MAKE) clean)
+	@($(MAKE) $(MAKFLAGS) PROFILE=0 test)
+	@($(foreach test_run,$(UNIT_TESTS),$(valgrind_tests)))
+else
+valgrind:
+	@( if [ -d unitTests ]; then \
+		cd unitTests && $(MAKE) $@; \
+	else \
+		echo "No unit test folder"; \
+	fi )
+endif
+
+get_coverage	= 	cd unitTests &&\
+					gcov ../$(source_file) | grep -m 1 -A 1 $(source_file) 2> /dev/null;\
+					if [ -f $(source_file).gcov ]; then\
+						mv $(source_file).gcov ../ &&\
+						rm *.gcov &&\
+						echo "Coverage report available on $(source_file).gcov";\
+					else\
+						echo "No coverage info found. Please rebuild your solution with COVERAGE flag set to 1";\
+					fi;\
+					cd ..
+
+ifneq ($(UNIT_TESTS), )
+coverage: run
+else
+coverage:
+	@( if [ -d unitTests ]; then \
+		cd unitTests && $(MAKE) $(MAKFLAGS) COVERAGE=1 $@ && cd ..; \
+		$(foreach source_file,$(SRC),$(get_coverage)); \
+	else \
+		echo "No unit test found"; \
+	fi )
+endif
+
+get_profile		= 	if [ -f gmon.out ]; then\
+						gprof "$(test_run)" gmon.out > ../$(test_run).profile &&\
+						echo "Profile report for $(test_run) is available at $(test_run).profile";\
+					else\
+						echo "No profiling info found. Please rebuild your solution with PROFILE flag set to 1";\
+					fi;
+
+ifneq ($(UNIT_TESTS), )
+profiling: run
+	@( $(foreach test_run,$(UNIT_TESTS),$(get_profile)) )
+else
+profiling:
+	@( if [ -d unitTests ]; then \
+		cd unitTests && $(MAKE) $(MAKFLAGS) PROFILE=1 $@; \
+	else \
+		echo "No unit test found"; \
+	fi )
+endif
+
+release:
+	@( echo "Clean project")
+	@( $(MAKE) clean )
+	@( $(MAKE) $(MAKFLAGS) LOGLEVEL=0 PROFILE=0 COVERAGE=0 )
+
+help:
+	@(  echo "Wonderfull Makefile system help center"; \
+		echo ""; \
+		echo "make                 - compile project (library or exe)"; \
+		echo "make rebuild         - rebuild project completely"; \
+		echo "make rebuildtest     - rebuild project completely with unit tests"; \
+		echo "make release         - compile project in release mode."; \
+		echo "                        /!\ a clean is performed during this operation"; \
+		echo "make clean           - clean object file, profile and coverage temporary file"; \
+		echo "make distclean       - clean project, delete binary, coverage and profile report"; \
+		echo "make help            - show this help and quit"; \
+		echo "";\
+		echo "TEST TOOLS"; \
+		echo "----------"; \
+		echo ""; \
+		echo "make test            - compile unit test set for project"; \
+		echo "                       unit tests must be in a unitTests folder"; \
+		echo "make run             - compile and run unit test"; \
+		echo "make valgrind        - perform a valgrind test on unit test set"; \
+		echo "                        /!\ a clean is performed during this operation"; \
+		echo "make coverage        - create coverage data based on unit tests set"; \
+		echo "make profiling       - create profiling data based on unit tests set"; \
+		echo "                       /!\ if you just run \"make valgrind\", you need to rebuild"; \
+		echo "                           project with PROFILE=1"; \
+		echo ""; \
+		echo "OPTIONS"; \
+		echo "-------"; \
+		echo ""; \
+		echo "LOGLEVEL=x           - compile source with flag -DLOGLEVEL=x"; \
+		echo "                       with syslog.h system, you can use the following"; \
+		echo "                       value:"; \
+		echo "                           0 - no log, debug options are disabled"; \
+		echo "                           1 - Error log"; \
+		echo "                           2 - Warning log"; \
+		echo "                           3 - Info log"; \
+		echo "                           4 - Debug log"; \
+		echo "                           5 - Enter function log"; \
+		echo "                       === Set to 5 by default ==="; \
+		echo "RANDOM=x             - compile source with flag -DWITH_RANDOM if set to 1."; \
+		echo "                       This flag activate random string generator in unit tests"; \
+		echo "                       === Activate by default ==="; \
+		echo "COLOR=x              - compile source with flag -DWITH_COLOR if set to 1."; \
+		echo "                       This flag activate colored log on stdout"; \
+		echo "                       === Activate by default ==="; \
+		echo "PROFILE=x            - allow code profiling if set to 1."; \
+		echo "                       === Activate by default ==="; \
+		echo "COVERAGE=x           - allow code coverage analysis if set to 1."; \
+		echo "                       === Activate by default ==="; \
+		echo "" )
+

@@ -1,0 +1,16 @@
+libavl
+======
+
+Libavl is a library to manage AVL structure to store and organize
+everykind of data. You just need to implement function to compare,
+to desallocate and to print your structure.
+
+Please report bug at <adrien.oliva@yapbreak.fr>
+
+Tracker on http://redmine.yapbreak.fr
+
+Licence
+=======
+
+This work is published under the term of WTF-PL. You can find a copy
+of licence term in LICENSE file.
