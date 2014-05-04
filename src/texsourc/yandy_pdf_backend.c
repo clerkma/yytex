@@ -40,7 +40,87 @@
 int dot_string = 0;
 HPDF_Doc  yandy_pdf;
 HPDF_Page yandy_page;
-HPDF_Font yandy_font;
+HPDF_Font yandy_font[1024];
+tree *avl_tree = NULL;
+
+struct tfm_map
+{
+  char * tfm_name;
+  unsigned int key;
+};
+
+int tfm_cmp(void * a, void * b)
+{
+  struct tfm_map * aa = (struct tfm_map *) a;
+  struct tfm_map * bb = (struct tfm_map *) b;
+
+  if (!aa || !bb)
+    return 0;
+
+  return strcmp(aa->tfm_name, bb->tfm_name);
+}
+
+void tfm_print(void *d)
+{
+  struct tfm_map * dd = (struct tfm_map *) d;
+
+  if (dd)
+    printf("{ %s => %d }\n", dd->tfm_name, dd->key);
+}
+
+void tfm_delete(void *d)
+{
+  struct tfm_map *dd = (struct tfm_map *) d;
+
+  if (dd)
+  {
+    free(dd);
+  }
+}
+
+void tfm_copy(void *src, void *dst)
+{
+  struct tfm_map *s = (struct tfm_map *) src;
+  struct tfm_map *d = (struct tfm_map *) dst;
+  d->tfm_name = s->tfm_name;
+  d->key = s->key;
+}
+
+void init_tfm_map(void)
+{
+  avl_tree = init_dictionnary(tfm_cmp, tfm_print, tfm_delete, tfm_copy);
+}
+
+void free_tfm_map(void)
+{
+  delete_tree(avl_tree);
+}
+
+int insert_font_index(char * name)
+{
+  struct tfm_map nn;
+  nn.tfm_name = name;
+  nn.key = avl_tree->count + 1;
+  return insert_elmt(avl_tree, &nn, sizeof(struct tfm_map));
+}
+
+int get_font_index(char * name)
+{
+  struct tfm_map nn;
+  nn.tfm_name = name;
+  nn.key      = 0;
+  if (is_present(avl_tree, &nn))
+  {
+    if (get_data(avl_tree, &nn, sizeof(struct tfm_map)))
+      return nn.key;
+    else
+      return 0;
+  }
+  else
+  {
+    return nn.key;
+  }
+}
 
 char * pdf_char_to_string(unsigned char i)
 {
@@ -189,6 +269,23 @@ void pdf_begin_string(void)
   pdf_doing_string = true;
 }
 
+void pdf_begin_text(void)
+{
+  HPDF_Page_BeginText(yandy_page);
+  pdf_doing_text = true;
+  pdf_f = null_font;
+  pdf_doing_string = false;
+}
+
+void pdf_end_text(void)
+{
+  if (pdf_doing_text)
+  {
+    HPDF_Page_EndText(yandy_page);
+    pdf_doing_text = false;
+  }
+}
+
 void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data)
 {
   printf ("YANDYTEX ERROR: error_no=%04X, detail_no=%u\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no);
@@ -198,33 +295,46 @@ void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user
 void pdf_font_def(internal_font_number f)
 {
   int k;
-  //char temp[256];
-  const char * font_name = NULL;
+  const char * fnt_name = NULL;
   char * afm_name = NULL;
   char * pfb_name = NULL;
+  char * buffer = malloc(length(font_name[f]));
   
-  //for (k = str_start[font_name[f]]; k <= str_start[font_name[f] + 1] - 1; k++)
-  //  printf("%d\n", font_name[f]);
-  //memmove(temp, str_pool + str_start[font_name[f]], length(font_name[f]));
-  //memcpy(temp, (const char *)(str_pool + str_start[font_name[f]]), length(font_name[f]));
-  //printf("ZZZ: %s.\n", temp);
-  //for (k = str_start[font_area[f]]; k <= str_start[font_area[f] + 1] - 1; k++)
-  //temp[] = (str_pool[k]);
-  //afm_name = kpse_find_file(strcat(temp, ".afm"), kpse_afm_format, 0);
-  //pfb_name = kpse_find_file(strcat(temp, ".pfb"), kpse_type1_format, 0);
+  strncpy(buffer, str_pool + str_start[font_name[f]], length(font_name[f]));
+  buffer[length(font_name[f])] = '\0';
 
-  //if (afm_name != NULL && pfb_name != NULL)
+  if ((k = get_font_index(buffer)) != 0)
   {
-  //  font_name = HPDF_LoadType1FontFromFile (yandy_pdf, afm_name, pfb_name);
-  //  font_name = HPDF_LoadType1FontFromFile(yandy_pdf, "cmr10.afm", "cmr10.pfb");
-  //  yandy_font[f] = HPDF_GetFont(yandy_pdf, font_name, NULL);
+    printf("PDF_FONT_DEF2.\n");
+    HPDF_Page_SetFontAndSize(yandy_page, yandy_font[get_font_index(buffer)], (font_size[f] / 65535));
   }
-  //else
-  //{
-  //  yandy_font = HPDF_GetFont(yandy_pdf, "Times-Roman", NULL);
-  //}
+  else
+  {
+    printf("PDF_FONT_DEF3.\n");
+    strncpy(buffer, str_pool + str_start[font_name[f]], length(font_name[f]));
+    buffer[length(font_name[f])] = '\0';
+    afm_name = kpse_find_file(strcat(buffer, ".afm"), kpse_afm_format, 0);
+    printf("PDF_FONT_DEF3: %s.\n", afm_name);
+    free(buffer);
+    strncpy(buffer, str_pool + str_start[font_name[f]], length(font_name[f]));
+    buffer[length(font_name[f])] = '\0';
+    pfb_name = kpse_find_file(strcat(buffer, ".pfb"), kpse_type1_format, 0);
+    printf("PDF_FONT_DEF3: %s.\n", pfb_name);
 
-  HPDF_Page_SetFontAndSize(yandy_page, yandy_font, (font_size[f] / 65535));
+    if (get_font_index(buffer) == 0 && afm_name != NULL && pfb_name != NULL)
+    {
+      k = insert_font_index(buffer);
+      printf("PDF_FONT_DEF4: %d.\n", k);
+      fnt_name = HPDF_LoadType1FontFromFile (yandy_pdf, afm_name, pfb_name);
+      yandy_font[k] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
+    }
+    else
+    {
+      k = get_font_index(buffer);
+    }
+    
+    HPDF_Page_SetFontAndSize(yandy_page, yandy_font[k], (font_size[f] / 65535));
+  }
 }
 
 void pdf_ship_out(halfword p)
@@ -320,11 +430,12 @@ void pdf_ship_out(halfword p)
 
   if (total_pages == 0)
   {
+    init_tfm_map();
     yandy_pdf = HPDF_New(pdf_error_handler, NULL);
     yandy_pdf->pdf_version = HPDF_VER_17;
     HPDF_SetCompressionMode(yandy_pdf, HPDF_COMP_ALL);
     HPDF_SetInfoAttr(yandy_pdf, HPDF_INFO_PRODUCER, "Y&YTeX 2.2.3");
-    yandy_font = HPDF_GetFont(yandy_pdf, HPDF_LoadType1FontFromFile(yandy_pdf, "cmr10.afm", "cmr10.pfb"), NULL);
+    yandy_font[0] = HPDF_GetFont(yandy_pdf, "Times-Roman", NULL);
   }
 
   //page_loc = dvi_offset + dvi_ptr;

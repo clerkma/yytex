@@ -3826,16 +3826,6 @@ void show_font_info (void)
 
 /*  Fast flag combinations: nothing, bG, bcG, bcDG */
 
-/* constants for _heapchk/_heapset/_heapwalk routines */
-/* #define _HEAPEMPTY (-1) */
-/* #define _HEAPOK  (-2) */
-/* #define _HEAPBADBEGIN  (-3) */
-/* #define _HEAPBADNODE (-4) */
-/* #define _HEAPEND (-5) */
-/* #define _HEAPBADPTR  (-6) */
-
-/* new arg -H=8 for horizontal tab *//* tab_step = 0 means no tab replacement */
-
 /* buffercopy no longer used */
 
 /* To Knuthian reset right when command line interpreted */

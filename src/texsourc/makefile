@@ -25,7 +25,7 @@ RC = rc
 # Release version
 # CFLAGS=/c /Ge /Gy /Gf /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG /Ilib /YX
 CFLAGS=/nologo /c /MT /GF /Gy /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG \
-	/I"kpathsea" /I"libharu/include" /I"libharu/win32/include" 
+	/I"kpathsea" /I"libharu/include" /I"libharu/win32/include" /I"libavl/libavl"
 # Debugging version
 # CFLAGS=/c /Ge /Gy /Gf /Od /Zi /W4 /DMSDOS /DTeX /DPHARLAP /Ilib /YX
 
@@ -45,7 +45,7 @@ objs = texmf.obj itex.obj openinou.obj subroute.obj local.obj \
 	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
 	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
 	yandy_pool.obj yandytex.res md5.obj md5file.obj \
-	yandy_pdf_backend.obj
+	yandy_pdf_backend.obj avl.obj
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
@@ -53,11 +53,15 @@ texmf.exe: $(objs)
 	$(LINK) $(LFLAGS) texmf itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
 	yandy_pool yandytex.res md5 md5file yandy_pdf_backend \
+	avl \
 	kpathsea\kpathsea.lib libharu\libhpdf.lib libpng\libpng.lib zlib\zlib.lib
 	copy texmf.exe yandytex.exe
 	del ..\yandy\bin\texmf.exe
 	copy texmf.exe ..\yandy\bin\texmf.exe
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+avl.obj: libavl/libavl/avl.c
+	$(CC) $(CFLAGS) libavl/libavl/avl.c
+
 yandy_pdf_backend.obj: yandy_pdf_backend.c
 	$(CC) $(CFLAGS) yandy_pdf_backend.c
 

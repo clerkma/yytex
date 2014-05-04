@@ -30,6 +30,7 @@
 #include <kpathsea/lib.h>
 #include <kpathsea/types.h>
 #include "hpdf.h"
+#include "avl.h"
 
 typedef signed char schar;
 typedef long        integer;
