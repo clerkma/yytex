@@ -20,10 +20,11 @@
 
 #define WORDS_BIGENDIAN 0
 
+//#pragma warning(disable:4032)
 #pragma warning(disable:4996) //
 #pragma warning(disable:4701) //
-#pragma warning(disable:4100)
-#pragma warning(disable:4244)
+//#pragma warning(disable:4100)
+//#pragma warning(disable:4244)
 #pragma warning(disable:4131) // old style declarator
 #pragma warning(disable:4135) // conversion between different integral types
 #pragma warning(disable:4127) // conditional expression is constant
@@ -47,6 +48,7 @@
 #include <setjmp.h>
 #include <time.h>
 #include <signal.h>
+#include <conio.h>
 #include "hpdf.h"
 #include "avl.h"
 
@@ -97,11 +99,12 @@ typedef enum
 #define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)
 #define a_close(f)	check_fclose (f)
 
+#define MAXLINE 256         // for log_line buffer
+
 extern bool trace_flag;
 extern bool open_trace_flag;
 
 extern integer zround (double);
-extern bool test_eof (FILE * file);
 extern bool eoln (FILE * file);
 extern bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode);
 extern bool open_output (FILE **f, char *fopen_mode);

@@ -16,18 +16,6 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-#pragma warning(disable:4996)
-#pragma warning(disable:4131) // old style declarator
-#pragma warning(disable:4135) // conversion between different integral types 
-#pragma warning(disable:4127) // conditional expression is constant
-
-#include <kpathsea/config.h>
-#include <kpathsea/c-ctype.h>
-#include <kpathsea/line.h>
-#include <kpathsea/readable.h>
-#include <kpathsea/variable.h>
-#include <kpathsea/absolute.h>
-
 #define EXTERN extern
 
 #include "texd.h"
@@ -43,16 +31,6 @@
 #else
   #define REALLOC realloc
 #endif
-
-#include <time.h>
-#include <malloc.h> /* _msize, _expand, HEAPOK et.c */
-#include <direct.h> /* for _getcwd() */
-
-#pragma warning(disable:4032) // different type when promoted
-#ifndef _WINDOWS
-  #include <conio.h>            /* for _getch() */
-#endif
-#pragma warning(default:4032) // different type when promoted
 
 int wantcopyrght = 1;
 
@@ -2323,26 +2301,24 @@ void knuthify (void)
 char * xchrfile = NULL;
 char * replfile = NULL;
 
-/* analyze command line flag or argument */
-/* c is the flag letter itself, while optarg is start of arg if any */
-
 char * short_options = "viKLZMdp2t?u";
 
 static struct option long_options[] =
 {
-  {"verbose",     no_argument, 0, 'v'},
-  {"initex",      no_argument, 0, 'i'},
-  {"knuthify",    no_argument, 0, 'K'},
-  {"cstyle",      no_argument, 0, 'L'},
-  {"showtfm",     no_argument, 0, 'Z'},
-  {"showmissing", no_argument, 0, 'M'},
-  {"deslash",     no_argument, 0, 'd'},
-  {"patterns",    no_argument, 0, 'p'},
-  {"suppressflig",no_argument, 0, '2'},
-  {"trace",       no_argument, 0, 't'},
-  {"help",        no_argument, 0, '?'},
-  {"usage",       no_argument, 0, 'u'},
-  {NULL,          0,           0, 0}
+  //{"interaction",   1, 0, 0},
+  {"verbose",       0, 0, 'v'},
+  {"initex",        0, 0, 'i'},
+  {"knuthify",      0, 0, 'K'},
+  {"cstyle",        0, 0, 'L'},
+  {"showtfm",       0, 0, 'Z'},
+  {"showmissing",   0, 0, 'M'},
+  {"deslash",       0, 0, 'd'},
+  {"patterns",      0, 0, 'p'},
+  {"suppressflig",  0, 0, '2'},
+  {"trace",         0, 0, 't'},
+  {"help",          0, 0, '?'},
+  {"usage",         0, 0, 'u'},
+  {NULL,            0, 0, 0}
 };
 
 int analyze_flag (int c, char *optarg)
@@ -2446,13 +2422,6 @@ int analyze_flag (int c, char *optarg)
     case '2':
       suppress_f_ligs = true; /* 99/Jan/5 f-lig */
       break;
-/* following are pretty obscure */
-/*  case 'y': cache_file_flag = false; */ /* 96/Nov/16 */
-/*            break; */
-/*  case 'r': return_flag = false; */ /* flipped 93/Nov/18 */
-/*            break; */
-/*  case 'z': trimeof = false; */ /* 93/Nov/24 */
-/*            break; */
     case 'z':
       full_file_name_flag = false; // 00 Jun 18
       break;
@@ -2632,26 +2601,6 @@ int analyze_flag (int c, char *optarg)
   return 0;
 }
 
-/* Try and read default command file - YANDYTEX.CMD */
-/* in current directory and then in directory of YANDYTEX */
-/* (does not make sense in TeX file directory) */
-/* since we don't yet know where that is ! */
-/* can't conveniently include this in output file either - not open yet */
-
-/* used both for yytex.cmd and @ indirect command line files */
-/* can this be reentered ? */
-
-/* supply extension if none */
-void yy_extension (char *fname, char *ext)
-{
-  char *s, *t;
-  if ((s = strrchr(fname, '.')) == NULL ||
-    ((t = strrchr(fname, '\\')) != NULL && s < t)) {
-      strcat(fname, ".");
-      strcat(fname, ext);
-  }
-}
-
 /* remove file name - keep only path - inserts '\0' to terminate */
 
 void strip_name (char *pathname)
@@ -2677,29 +2626,19 @@ char *programpath = ""; /* pathname of program */
 int read_command_line (int ac, char **av)
 { 
   int c;
-  char *optargnew;  /* equal to optarg, unless that starts with `='      */
-                    /* in which case it is optarg+1 to step over the `=' */
-                    /* if optarg = 0, then optargnew = 0 also            */
+  char *optargnew;
   int option_idx = 0;
 
   if (ac < 2)
     return 0;
 
-/*  while ((c = getopt(ac, av, "+vitrdczp?m:h:x:E:")) != EOF) {              */
-/*  NOTE: keep `Y' in there for `do not reorder arguments !                  */
-/*  WARNING: if adding flags, change also `allowedargs' and  `takeargs' !!!! */
-/*  while ((c = getopt(ac, av, allowedargs)) != EOF)
+  while ((c = getopt_long_only(ac, av, short_options, long_options, &option_idx)) != EOF)
   {
     if (optarg != 0 && *optarg == '=')
-      optargnew = optarg+1;
+      optargnew = optarg + 1;
     else
       optargnew = optarg;
 
-    analyze_flag (c, optargnew);
-  }
-*/
-  while ((c = getopt_long_only(ac, av, short_options, long_options, &option_idx)) != EOF)
-  {
     analyze_flag (c, optargnew);
   }
 

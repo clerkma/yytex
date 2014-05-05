@@ -35,7 +35,7 @@ CFLAGS=/nologo /c /MT /GF /Gy /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG \
 # LFLAGS=@yandytex.nt /MAP lib\libdos.lib
 # Release version
 # LFLAGS=/MAP lib\libdos.lib
-LFLAGS=/MAP
+LFLAGS=/NOLOGO /MAP
 # /MACHINE:X86
 # debugging version
 # LFLAGS=@yandytex.nt /MAP /DEBUG /PDB:yandytex.pdb lib\libdos.lib
@@ -49,7 +49,7 @@ objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
-texmf.exe: $(objs) 
+yandytex.exe: $(objs)
 	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
 	yandy_pool yandytex.res md5 md5file yandy_pdf_backend \
@@ -74,59 +74,59 @@ yandytex.res: yandytex.rc
 	rc yandytex.rc
 
 yandytex.obj: yandytex.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 	$(CC) /DINITEX /DINI $(CFLAGS) yandytex.c
 
 itex.obj: itex.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 	$(CC) /DINITEX $(CFLAGS) itex.c
 
 openinou.obj: openinou.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 	$(CC) $(CFLAGS) openinou.c
 
 subroute.obj: subroute.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 	$(CC) $(CFLAGS) subroute.c
 
 local.obj: local.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 	$(CC) /DINITEX $(CFLAGS) local.c
 
 # NOTE: cannot compile tex5.c and tex6.c with full optimizations ...
 
 tex0.obj: tex0.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex1.obj: tex1.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex2.obj: tex2.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex3.obj: tex3.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex4.obj: tex4.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex5.obj: tex5.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex6.obj: tex6.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex7.obj: tex7.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex8.obj: tex8.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 tex9.obj: tex9.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 yandy_pool.obj: yandy_pool.c \
-	texd.h texmf.h texmfmem.h coerce.h
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 .SUFFIXES:
 .SUFFIXES: .obj .c
