@@ -36,35 +36,12 @@
 
 #include "texd.h"
 
-#include <io.h>    // needed for _finddata_t
-#include <ctype.h> // needed for isascii and isalpha
-
 #define NAME_MAX 255      // max size of name component
 
 #define PATH_SEP              '/'
 #define PATH_SEP_STRING       "/"
 #define PATH_DELIMITER        ';'
 #define PATH_DELIMITER_STRING ";"
-
-// default paths to look for things
-
-#define TEXPATH    "C:/yandy/yandytex/"
-#define TEXFORMATS "C:/yandy/yandytex/fmt"
-#define TEXPOOL    "C:/yandy/yandytex/pool"
-#define TEXFONTS   "C:/yandy/yandytex/tfm"
-#define TEXINPUTS  TEXPATH "tex//;" "C:/tex;" "C:/texinput"
-
-extern bool usesourcedirectory; /* in local.c */
-
-extern bool workingdirectory;   /* in local.c */
-
-string truncate_pathname (string name);
-
-// the following do *not* use MALLOC
-extern char * xconcat  (char *buffer, char *s1, char *s2);           /* openinou.c */
-extern char * xconcat3 (char *buffer, char *s1, char *s2, char *s3); /* openinou.c */
-
-/////////////////////////////////////////////////////////////////////////
 
 // used only in jump_out in tex0.c, and in texbody in itex.c
 // and main in texmf.c and a few other abort situations in texmf.c
@@ -160,12 +137,6 @@ char * read_a_line (FILE *f,  char *line, int limit)
     return(NULL);          /* true EOF */
 }
 
-/* Modified 97/May/17 to avoid malloc for each line read */
-
-#ifndef MALLOCLINE
-  #define MAXLINE 256
-#endif
-
 /* Unixify filename and path (turn \ into /) --- assumes null terminated */
 /* NEED HACK! */
 char *unixify (char * t)
@@ -196,8 +167,3 @@ char *unixify (char * t)
 #endif /* DOS */
   return t;
 }
-
-/* NOTE: _dos_find... prevents running under Windows NT as console app ??? */
-/* Yes, so lets flush it! use _findfirst, _findnext, _findclose instead */
-
-char *get_env_shroud (char *);    /* in texmf.c */
