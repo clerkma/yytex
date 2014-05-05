@@ -17,22 +17,10 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-#ifdef _WINDOWS
-  #define NOCOMM
-  #define NOSOUND
-  #define NODRIVERS
-  #define STRICT
-  #pragma warning(disable:4115) // kill rpcasync.h complaint
-  #include <windows.h>
-  #define MYLIBAPI __declspec(dllexport)
-#endif
-
 #pragma warning(disable:4996)
 #pragma warning(disable:4131) // old style declarator
 #pragma warning(disable:4135) // conversion between different integral types
 #pragma warning(disable:4127) // conditional expression is constant
-
-#include <setjmp.h>
 
 #define EXTERN extern
 
@@ -46,12 +34,6 @@
 #define ENDFMTCHECKSUM   69069L
 
 extern clock_t start_time, main_time, finish_time; /* in local.c */
-
-/* imported from pascal.h */
-/* localized here to avoid conflict with io.h in other code */
-
-#define read(f, b) ((b) = getc (f))
-
 
 #ifdef INITEX
   void do_initex (void); /* later in this file */

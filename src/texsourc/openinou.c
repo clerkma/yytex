@@ -17,25 +17,11 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-#ifdef _WINDOWS
-  #define NOCOMM
-  #define NOSOUND
-  #define NODRIVERS
-  #define STRICT
-  #pragma warning(disable:4115) // kill rpcasync.h complaint
-  #include <windows.h>
-  #define MYLIBAPI __declspec(dllexport)
+#ifdef MSDOS
+  #include <direct.h>           /* for _getcwd() */
+#else
+  #include <unistd.h>
 #endif
-
-#pragma warning(disable:4996)
-#include <kpathsea/kpathsea.h>
-#pragma warning(disable:4131) // old style declarator
-#pragma warning(disable:4135) // conversion between different integral types
-#pragma warning(disable:4127) // conditional expression is constant
-
-#include <setjmp.h>
-
-#include <direct.h>           /* for _getcwd() */
 
 #define EXTERN extern
 
@@ -501,7 +487,11 @@ bool open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
+#ifdef MSDOS
       (void) _getcwd(log_line, sizeof(log_line));
+#else
+      (void) getcwd(log_line, sizeof(log_line));
+#endif
       strcat(log_line, PATH_SEP_STRING);
     }
 
@@ -515,7 +505,11 @@ bool open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
+#ifdef MSDOS
       (void) _getcwd(log_line, sizeof(log_line));
+#else
+      (void) getcwd(log_line, sizeof(log_line));
+#endif
       strcat(log_line, PATH_SEP_STRING);
     }
 
@@ -529,7 +523,11 @@ bool open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
+#ifdef MSDOS
       (void) _getcwd(log_line, sizeof(log_line));
+#else
+      (void) getcwd(log_line, sizeof(log_line));
+#endif
       strcat(log_line, PATH_SEP_STRING);
     }
 
