@@ -79,8 +79,8 @@ char *copyright    = "\nCopyright (C) 1993--2000 Y&Y, Inc.\n"
                      "it under the terms of the GNU General Public License as published by\n"
                      "the Free Software Foundation; either version 2 of the License, or\n"
                      "(at your option) any later version.\n\n  ";
-char *yandyversion = "2.2.3";
-char *application  = "Y&Y TeX"; /* 96/Jan/17 */
+char *yandyversion = "2.2.4";
+char *application  = "Y&Y TeX";
 char *tex_version  = "This is TeX, Version 3.14159265";
 
 clock_t start_time, main_time, finish_time;
@@ -131,9 +131,9 @@ void show_usage (void)
       " yandytex [-?ivnwdrzpK] [-m=ini_mem] [-e=hyph_size] [-h=trie_size]\n"
       "          [-x=xchr_file] [-k=key_file] [-o=dvi_dir] [-l=log_dir] [-a=aux_dir]\n"
       "          [+format_file] [tex_file]\n\n"
-      "    -?    show this usage summary\n"
-      "    -i    start up as iniTeX (create format file)\n"
-      "    -v    be verbose (show implementation version number)\n"
+      "    --help    -?    show this usage summary\n"
+      "    --initex  -i    start up as iniTeX (create format file)\n"
+      "    --verbose -v    be verbose (show implementation version number)\n"
       "    -n    do not allow `non ASCII' characters in input files (complain instead)\n"
       "    -w    do not show `non ASCII' characters in hexadecimal (show as is)\n"
       "    -d    do not allow DOS style file names - i.e. do not convert \\ to /\n"
@@ -242,19 +242,8 @@ void read_xchr_sub (FILE * xchr_input)
   int k, from, to, count = 0;
   char *s;
 
-#ifdef USEMEMSET
-  memset (xchr, NOTDEF, MAXCHRS);           /* mark unused */
-#else
-  for (k = 0; k < MAXCHRS; k++)
-    xchr[k] = -1; /* mark unused */
-#endif
-
-#ifdef USEMEMSET
-  memset (xord, NOTDEF, MAXCHRS);           /* mark unused */
-#else
-  for (k = 0; k < MAXCHRS; k++)
-    xord[k] = -1;  /* mark unused */
-#endif
+  memset (xchr, NOTDEF, MAXCHRS);
+  memset (xord, NOTDEF, MAXCHRS);
 
 #ifdef ALLOCATEBUFFER
   while (fgets(buffer, current_buf_size, xchr_input) != NULL)
@@ -270,9 +259,9 @@ void read_xchr_sub (FILE * xchr_input)
 
     if (from >= 0 && from < MAXCHRS && to >= 0 && to < MAXCHRS)
     {
-      if (xchr[from]== (unsigned char) NOTDEF)
+      if (xchr[from] == (unsigned char) NOTDEF)
       {
-        xchr[from]= (unsigned char) to;
+        xchr[from] = (unsigned char) to;
       }
       else
       {
@@ -280,33 +269,33 @@ void read_xchr_sub (FILE * xchr_input)
         show_line(log_line, 0);
       }
 
-      if (xord[to]== NOTDEF)
+      if (xord[to] == NOTDEF)
       {
-        xord[to]= (unsigned char) from;
+        xord[to] = (unsigned char) from;
       }
       else
       {
         sprintf(log_line, "NOTE: %s collision: %d => %d, %d\n", "xord", to, xord[to], from);
         show_line(log_line, 0);
       }
+
       count++;
     }
   }
 
-/*  now fill in the gaps */ /* not clear this is a good idea ... */
   for (k = 0; k < MAXCHRS; k++)
   {
-    if (xchr[k]== NOTDEF)   /* if it has not been filled */
+    if (xchr[k] == NOTDEF)   /* if it has not been filled */
     {
-      if (xord[k]== NOTDEF) /* see whether used already */
+      if (xord[k] == NOTDEF) /* see whether used already */
       {
-        xchr[k]= (unsigned char) k; /* no, so make identity */
-        xord[k]= (unsigned char) k; /* no, so make identity */
+        xchr[k] = (unsigned char) k; /* no, so make identity */
+        xord[k] = (unsigned char) k; /* no, so make identity */
       }
     }
   }
 
-  xchr[NOTDEF]= NOTDEF;         /* fixed point of mapping */
+  xchr[NOTDEF] = NOTDEF;         /* fixed point of mapping */
 
   if (trace_flag)
   {
@@ -315,7 +304,7 @@ void read_xchr_sub (FILE * xchr_input)
 
     for (k = 0; k < MAXCHRS; k++)
     {
-      if (xchr[k]!= NOTDEF)
+      if (xchr[k] != NOTDEF)
       {
         sprintf(log_line, "%d => %d\n", k, xchr[k]);
         show_line(log_line, 0);
@@ -334,34 +323,45 @@ void read_repl_sub (FILE * repl_input)
   int charnum[10];
   char *s, *t;
   
-#ifdef USEMEMSET
   memset(replacement, 0, MAXCHRS * sizeof(replacement[ 0]));
-#else
-  for (k = 0; k < MAXCHRS; k++)
-    replacement[k] = NULL;
-#endif
 
-  while (fgets(buffer, PATH_MAX, repl_input) != NULL) {
+
+  while (fgets(buffer, PATH_MAX, repl_input) != NULL)
+  {
     if (*buffer == '%' || *buffer == ';' || *buffer == '\n')
       continue;
 
     if ((m = sscanf (buffer, "%d%n %s", &chrs, &n, &charname)) == 0)
       continue;
-    else if (m == 2) {
-      if (*charname == '"') {   /* deal with quoted string "..." */
+    else if (m == 2)
+    {
+      if (*charname == '"')   /* deal with quoted string "..." */
+      {
         s = buffer + n;
         t = charname;
-        while (*s != '"' && *s != '\0') s++;  /* step up to " */
-        if (*s++ == '\0') continue;       /* sanity check */
-        while (*s != '\0') {  
-          if (*s == '"') {
+
+        while (*s != '"' && *s != '\0')
+          s++;  /* step up to " */
+
+        if (*s++ == '\0')
+          continue;       /* sanity check */
+
+        while (*s != '\0')
+        {
+          if (*s == '"')
+          {
             s++;            /* is it "" perhaps ? */
-            if (*s != '"') break;   /* no, end of string */
+
+            if (*s != '"')
+              break;   /* no, end of string */
           }
+
           *t++ = *s++;          /* copy over */
         }
+
         *t = '\0';              /* and terminate */
       }
+
       if (chrs >= 0 && chrs < MAXCHRS)
         replacement[chrs] = xstrdup(charname);
     }
@@ -381,10 +381,15 @@ void read_repl_sub (FILE * repl_input)
       show_line(log_line, 1);
     }
   }
-  if (trace_flag) {                  /* debugging output */
+
+  if (trace_flag)
+  {
     show_line("Key replacement table\n", 0);
-    for (k = 0; k < MAXCHRS; k++) {
-      if (replacement[k] != NULL) {
+
+    for (k = 0; k < MAXCHRS; k++)
+    {
+      if (replacement[k] != NULL)
+      {
         sprintf(log_line, "%d\t%s\n", k, replacement[k]);
         show_line(log_line, 0);
       }
@@ -670,10 +675,6 @@ void memory_error (char *s, int n)
   sprintf(log_line, "\n! Unable to allocate %d bytes for %s\n", n, s);
   show_line(log_line, 1);
   show_maximums(stderr);
-
-/*  exit (1); */      /* 94/Jan/22 */
-/*  return to let TeX do its thing (such as complain about runaway) */
-/*  don't set abort_flag here */
 }
 
 void trace_memory (char *s, int n)
@@ -2061,11 +2062,14 @@ int test_align (int address, int size, char *name)
 
 void check_fixed_align (int flag)
 {
-  if (test_align ((int) &mem_top, 4, "FIXED ALIGNMENT")) {
+  if (test_align ((int) &mem_top, 4, "FIXED ALIGNMENT"))
+  {
     show_line("PLEASE RECOMPILE ME!\n", 1);
   }
 #ifdef CHECKALIGNMENT
-  if (!flag) return;
+  if (!flag)
+    return;
+
   test_align ((int) &mem_top, 4, "mem_top");
   test_align ((int) &mem_max, 4, "mem_max");
   test_align ((int) &mem_min, 4, "mem_min");
@@ -2216,38 +2220,28 @@ void check_alloc_align (int flag)
 #endif
 }
 
-/* *** *** *** *** *** *** *** NEW APPROACH TO `ENV VARS' *** *** *** *** */
-
-/* grab `env var' from `dviwindo.ini' - or from DOS environment 94/May/19  */
-/* controlled by USEDVIWINDOINI environment variable            94/June/19 */
-
-bool usedviwindo        = true;               /* use [Environment] section in `dviwindo.ini' */
 bool backwardflag       = false;              /* don't cripple all advanced features */
 bool shorten_file_name  = false;              /* don't shorten file names to 8+3 for DOS */
-char *inifilename       = "dviwindo.ini";     /* name of ini file we look for */
-char *dviwindo          = "";                 /* full file name for dviwindo.ini with path */
-char *envsection        = "[Environment]";    /* Env var section in `dviwindo.ini' */
-char *wndsection        = "[Window]";         /* Window section in `dviwindo.ini' */
-char *workdirect        = "WorkingDirectory"; /* key in [Window] section */
 bool usesourcedirectory = true;               /* use source file directory as local when WorkingDirectory is set */
 bool workingdirectory   = false;              /* if working directory set in ini */
 
 /* cache to prevent allocating twice in a row */
 
-char *lastname=NULL, *lastvalue=NULL;
+char *lastname = NULL, *lastvalue = NULL;
 
 /* get value of env var - try first in dviwindo.ini then DOS env */
 /* returns allocated string -- these strings are not freed again */
 /* is it safe to do that now ? 98/Jan/31 */
 char *grabenv (char *varname)
 {
-  char line[PATH_MAX];
-  FILE *pinput;
   char *s;
-  int m, n;
 
-  if (varname == NULL) return NULL;    /* sanity check */
-  if (*varname == '\0') return NULL;   /* sanity check */
+  if (varname == NULL)
+    return NULL;
+
+  if (*varname == '\0')
+    return NULL;
+
 /*  speedup to avoid double lookup when called from set_paths in ourpaths.c */
 /*  if (lastname != NULL && strcmp(lastname, varname) == 0) { */
   if (lastname != NULL && _strcmpi(lastname, varname) == 0)
@@ -2257,72 +2251,28 @@ char *grabenv (char *varname)
       sprintf(log_line, "Cache hit: %s=%s\n", lastname, lastvalue);
       show_line(log_line, 0);
     }
-/*    return lastvalue; */        /* save some time here */
+
     return xstrdup(lastvalue);
-/*    duplicate so can free safely 98/Jan/31 */
   }
 
-/*  hmm, following was not xstrdup(...) */ /* not cached */
-  if (usedviwindo == 0 || *dviwindo == '\0') {
-/*    return getenv(varname); */
-    s = getenv(varname);
-    if (s == NULL) return NULL;
-    else return xstrdup(s);       /* make safe 98/Jan/31 */
-  }
+  s = getenv(varname);
 
-  if (share_flag == 0) pinput = fopen(dviwindo, "r");
-  else pinput = _fsopen(dviwindo, "r", share_flag);
+  if (s != NULL)
+  {
+    if (lastname != NULL)
+      free(lastname);
 
-  if (pinput != NULL) {
-    m = strlen(envsection);
-/*    search for [Environment] section */ /* should be case insensitive */
-    while (fgets (line, sizeof(line), pinput) != NULL) {
-      if (*line == ';') continue;
-      if (*line == '\n') continue;
-      if (_strnicmp(line, envsection, m) == 0) {  /* 98/Jan/31 */
-/*        search for varname=... */ /* should be case sensitive ? */
-        n = strlen(varname);
-        while (fgets (line, sizeof(line), pinput) != NULL) {
-          if (*line == ';') continue;
-          if (*line == '[') break;
-/*          if (*line == '\n') break; */  /* ??? */
-          if (*line <= ' ') continue;   /* 95/June/23 */
-/*          if (strncmp(line, varname, n) == 0 && */
-          if (_strnicmp(line, varname, n) == 0 &&
-            *(line+n) == '=') { /* found it ? */
-              (void) fclose (pinput);
-/*              flush trailing white space */
-              s = line + strlen(line) - 1;
-              while (*s <= ' ' && s > line) *s-- = '\0';
-              if (trace_flag) { /* DEBUGGING ONLY */
-                sprintf(log_line, "%s=%s\n", varname, line+n+1);
-                show_line(log_line, 0);
-              }
-              s = line+n+1;
-              if (lastname != NULL) free(lastname);
-              lastname = xstrdup (varname);
-              if (lastvalue != NULL) free(lastvalue);
-              lastvalue = xstrdup(s);
-              return xstrdup(s);    /* 98/Jan/31 */
-          }   /* end of matching varname */
-        }     /* end of while fgets */
-/*        break; */ /* ? not found in designated section */    
-      }       /* end of search for [Environment] section */
-    }
-    (void) fclose (pinput);
-  }           /* end of if fopen */
-  s = getenv(varname);    /* failed, so try and get from environment */
-/*  if (s != NULL) return s;  */
-  if (s != NULL) {
-/*    sdup = xstrdup(s); */   /* just to be safe --- 1995/Jan/31 */
-    if (lastname != NULL) free(lastname);
     lastname = xstrdup (varname);
-    if (lastvalue != NULL) free(lastvalue);
-    lastvalue = xstrdup(s);   /* remember in case asked again ... */
-/*    return sdup; */
-    return xstrdup(s);    /* 98/Jan/31 */
+
+    if (lastvalue != NULL)
+      free(lastvalue);
+
+    lastvalue = xstrdup(s);
+
+    return xstrdup(s);
   }
-  else return NULL;   /* return NULL if not found anywhere */
+  else
+    return NULL;
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -2331,9 +2281,12 @@ void flush_trailing_slash (char *directory)
 {
   char *s;
 /*  flush trailing \ or / in directory, if any 1993/Dec/12 */
-  if (strcmp(directory, "") != 0) {
+  if (strcmp(directory, "") != 0)
+  {
     s = directory + strlen(directory) - 1;
-    if (*s == '\\' || *s == '/') *s = '\0';
+
+    if (*s == '\\' || *s == '/')
+      *s = '\0';
   }
 }
 
@@ -2375,32 +2328,34 @@ void knuthify (void)
   knuth_flag = true;       /* so other code can know about this */
 } /* end of knuthify */
 
-/* following have already been used up */
-
-/* abcdefghijklmnopqrstuvwxyz */
-
-/* ABCDEFGHIJKLMNOPQRSTUVWXYZ */
-
-/* ........ */
-
-int nohandler = 0;    /* experiment to avoid Ctrl-C interrupt handler */
-
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 /* following made global so analyze_flag can be made separate procedure */
 
-// char *xchrfile=""; /* save space use xstrdup */
-char *xchrfile = NULL; /* save space use xstrdup */
-// char *replfile="";/* save space use xstrdup */
-char *replfile = NULL;/* save space use xstrdup */
-
-/* abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ */
+char * xchrfile = NULL;
+char * replfile = NULL;
 
 /* analyze command line flag or argument */
 /* c is the flag letter itself, while optarg is start of arg if any */
 
-/* when making changes, revise allowedargs */
+char * short_options = "viKLZMdp2t?u";
 
+static struct option long_options[] =
+{
+  {"verbose",     no_argument, 0, 'v'},
+  {"initex",      no_argument, 0, 'i'},
+  {"knuthify",    no_argument, 0, 'K'},
+  {"cstyle",      no_argument, 0, 'L'},
+  {"showtfm",     no_argument, 0, 'Z'},
+  {"showmissing", no_argument, 0, 'M'},
+  {"deslash",     no_argument, 0, 'd'},
+  {"patterns",    no_argument, 0, 'p'},
+  {"suppressflig",no_argument, 0, '2'},
+  {"trace",       no_argument, 0, 't'},
+  {"help",        no_argument, 0, '?'},
+  {"usage",       no_argument, 0, 'u'},
+  {NULL,          0,           0, 0}
+};
 
 int analyze_flag (int c, char *optarg)
 {
@@ -2488,9 +2443,6 @@ int analyze_flag (int c, char *optarg)
       break;
 /*  case 'X':  truncate_long_lines = false; */ /* 98/Feb/2 */
               /* break; */
-    case 'W':
-      usedviwindo = false; /* 94/May/19 */
-      break;
     case 'J':
       show_line_break_stats = false; /* 96/Feb/8 */
       break;
@@ -2731,74 +2683,6 @@ char *programpath = ""; /* pathname of program */
 
 /* The following does not deslashify arguments ? Do we need to ? */
 
-int read_commands (char *filename)
-{
-  char commandfile[PATH_MAX]; 
-  FILE *command;
-  char line[PATH_MAX];
-  char *linedup;      /* need to copy line to preserve args */
-  char *s;
-/*  char *sn; */
-  char *optarg;
-  int c;
-
-/*  Try first in current directory (or use full name as specified) */
-  strcpy(commandfile, filename);
-  yy_extension(commandfile, "cmd");
-  if (share_flag == 0)
-	  command = fopen(commandfile, "r");
-  else
-	  command = _fsopen(commandfile, "r", share_flag);
-  if (command == NULL) {
-/*    If that fails, try in YANDYTeX program directory */
-    strcpy(commandfile, programpath);
-/*    don't need fancy footwork, since programpath non-empty */
-    strcat(commandfile, "\\");
-    strcat(commandfile, filename);
-    yy_extension(commandfile, "cmd");
-    if (share_flag == 0)
-		command = fopen(commandfile, "r");
-    else
-		command = _fsopen(commandfile, "r", share_flag);
-    if (command == NULL) {
-/*      perrormod(commandfile); */      /* debugging only */
-/*      strcpy(commandfile, ""); */   /* indicate failed */
-      return 0;       /* no command line file YYTEX.CMD */
-    }
-  }
-
-/*  allow for multiple lines --- ignore args that don't start with `-' */
-  while (fgets(line, PATH_MAX, command) != NULL) {
-/*    sprintf(log_line, "From %s:\t%s", commandfile, line); */
-/*    skip over comment lines and blank lines */
-    if (*line == '%' || *line == ';' || *line == '\n') continue;
-    if (strchr(line, '\n') == NULL) strcat(line, "\n");
-/*    sfplogline, rintf("From %s:\t%s", commandfile, line); */
-    linedup = xstrdup (line);         /* 93/Nov/15 */
-    if (linedup == NULL) {
-      show_line("ERROR: out of memory\n", 1);    /* read_commands */
-//      exit(1);
-      return -1;    // failure
-    }
-    s = strtok(linedup, " \t\n\r");       /* 93/Nov/15 */
-    while (s != NULL) {
-      if (*s == '-' || *s == '/') {
-        c = *(s+1);
-        optarg = s+2;
-/*        if (*optarg = '=') optarg++; */
-        if (*optarg == '=') optarg++;
-        if (analyze_flag(c, optarg) < 0) return -1;  // failure ???
-      }
-/*      else break; */              /* ignore non-flag items */
-      s = strtok(NULL, " \t\n\r");      /* go to next token */
-    }
-/*    If you want to see command lines in file - put -v in the file */
-/*    if (verbose_flag != 0) sprintf(log_line, "From %s:\t%s", commandfile, line); */
-  }
-  (void) fclose(command);   /* no longer needed */
-  return 1;       // success
-}
-
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 /* try and read commands on command line */
@@ -2808,55 +2692,71 @@ int read_command_line (int ac, char **av)
   char *optargnew;  /* equal to optarg, unless that starts with `='      */
                     /* in which case it is optarg+1 to step over the `=' */
                     /* if optarg = 0, then optargnew = 0 also            */
+  int option_idx = 0;
 
-//  show_line("read_command_line\n", 0);
-  if (ac < 2) return 0;     /* no args to analyze ? 94/Apr/10 */
+  if (ac < 2)
+    return 0;
 
 /*  while ((c = getopt(ac, av, "+vitrdczp?m:h:x:E:")) != EOF) {              */
 /*  NOTE: keep `Y' in there for `do not reorder arguments !                  */
 /*  WARNING: if adding flags, change also `allowedargs' and  `takeargs' !!!! */
-  while ((c = getopt(ac, av, allowedargs)) != EOF) {
+/*  while ((c = getopt(ac, av, allowedargs)) != EOF)
+  {
     if (optarg != 0 && *optarg == '=')
       optargnew = optarg+1;
     else
       optargnew = optarg;
+
     analyze_flag (c, optargnew);
   }
-  if (show_use || quitflag == 3) {
-//    showversion (stdout);
+*/
+  while ((c = getopt_long_only(ac, av, short_options, long_options, &option_idx)) != EOF)
+  {
+    analyze_flag (c, optargnew);
+  }
+
+  if (show_use || quitflag == 3)
+  {
     stamp_it(log_line);
     strcat(log_line, "\n");
     show_line(log_line, 0);
     stampcopy(log_line);
     strcat(log_line, "\n");
     show_line(log_line, 0);
-    if (show_use) show_usage();
-    else if (quitflag == 3) {
+
+    if (show_use)
+      show_usage();
+    else if (quitflag == 3)
+    {
       strcat(log_line, "\n");
       show_line(log_line, 0);
     }
-//    exit (0);
+
     return -1;        // failure
   } 
-#ifdef DEBUG
-  if (floating) testfloating();   /* debugging */
-#endif
 
-  if (replfile != NULL && *replfile != '\0') {  /* read user defined replacement */
-    if (read_xchr_file(replfile, 1, av)) {
-      if (trace_flag) show_line("KEY REPLACE ON\n", 0);
+  if (replfile != NULL && *replfile != '\0')
+  {
+    if (read_xchr_file(replfile, 1, av))
+    {
+      if (trace_flag)
+        show_line("KEY REPLACE ON\n", 0);
+
       key_replace = true;
     }
   } 
-/*  key_replace used in texmf.c (input_line) */
-  if (xchrfile != NULL && *xchrfile != '\0') {  /* read user defined xchr[] */
-    if (read_xchr_file(xchrfile, 0, av)) {
-      if (trace_flag) show_line("NON ASCII ON\n", 0);
+
+  if (xchrfile != NULL && *xchrfile != '\0')
+  {
+    if (read_xchr_file(xchrfile, 0, av))
+    {
+      if (trace_flag)
+        show_line("NON ASCII ON\n", 0);
+
       non_ascii = true;
     }
   } 
-/*  non_ascii used in texmf.c (t_open_in & input_line & call_edit) */
-/*  see also xchr [] & xord [] use in tex3.c and itex.c */
+
   return 0;
 }
 
@@ -3226,14 +3126,15 @@ int main_init (int ac, char **av)
 
   kpse_set_program_name(av[0], NULL);
 
-  if (sizeof(memory_word) != 8) /* compile time test */
+  // compile time test
+  if (sizeof(memory_word) != 8)
   {
     sprintf(log_line, "ERROR: Bad word size %d!\n", sizeof(memory_word));
     show_line(log_line, 1);
   }
 
-  start_time = clock();    /* get time */
-  main_time = start_time;   /* fill in, in case file never opened */
+  start_time = clock();
+  main_time = start_time;
 
   initbuffer[0] = '\0';         /* paranoia 94/Apr/10 */
 
@@ -3305,8 +3206,6 @@ int main_init (int ac, char **av)
 
   if (trace_flag)
     show_line("Entering init (local)\n", 0);
-
-/*   Print version *after* banner ? */ /* does this get in log file ? */
 
   probe_memory();             /* show top address */
   ini_max_address = max_address;       /* initial max address */
@@ -3417,12 +3316,6 @@ int endit (int flag)
 
   return flag;
 }
-
-/********************************************************************************/
-
-/* addition 98/Mar/31 print_csnames Frank Mittelbach */
-
-#define MAXCOLUMN 78
 
 void print_cs_name (FILE *output, int h)
 {

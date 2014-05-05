@@ -291,6 +291,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     if (path_index == TFMFILEPATH)
     {
       tfm_temp = getc (*f);
+      //ungetc(tfm_temp, *f);
     } 
 
 #ifdef MSDOS
@@ -446,7 +447,7 @@ bool open_output (FILE **f, char *fopen_mode)
   {
     if (open_trace_flag)
     {
-      sprintf(log_line, "After prepend %s\n", name_of_file+1);
+      sprintf(log_line, "After prepend %s\n", name_of_file + 1);
       show_line(log_line, 0);
     }
   }

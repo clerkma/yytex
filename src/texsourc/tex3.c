@@ -2469,6 +2469,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   fileopened = true; 
   {
 /*  tfm_temp = getc(tfm_file);  */ /* done already in open_input, but why? */
+    //tfm_temp = getc(tfm_file);
     {
       lf = tfm_temp;
       if (lf > 127)

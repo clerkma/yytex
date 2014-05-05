@@ -2874,7 +2874,7 @@ void do_initex (void)
 /* sec 0047 */
 bool get_strings_started (void)
 {
-  integer k, l;
+  integer k;
   str_number g;
 
   pool_ptr = 0;
