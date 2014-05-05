@@ -59,7 +59,7 @@ extern bool input_line (FILE *);
    passed in as a global variable, `name_of_file'.  */
    
 #define b_open_in(f)  open_input  (&(f), TFMFILEPATH, FOPEN_RBIN_MODE)
-#define w_open_in(f)  open_input  (&(f), dump_path, FOPEN_RBIN_MODE)
+#define w_open_in(f)  open_input  (&(f), TEXFORMATPATH, FOPEN_RBIN_MODE)
 #define b_open_out(f) open_output (&(f), FOPEN_WBIN_MODE)
 #define w_open_out    b_open_out
 #define b_close       a_close

@@ -18,7 +18,7 @@
    02110-1301 USA.  */
 
 #ifdef MSDOS
-  #include <direct.h>           /* for _getcwd() */
+  #include <direct.h> /* for _getcwd() */
 #else
   #include <unistd.h>
 #endif
@@ -95,17 +95,10 @@ char *xconcat3 (char *buffer, char *s1, char *s2, char *s3)
 // assumes path does not end in PATH_SEP
 void patch_in_path (unsigned char *buffer, unsigned char *name, unsigned char *path)
 {
-#ifdef BUILDNAMEDIRECT
   if (*path == '\0')
     strcpy((char *) buffer, (char *) name);
   else
     xconcat3((char *) buffer, (char *) path, PATH_SEP_STRING, (char *) name);
-#else
-  string temp_name;
-  temp_name = concat3(path, PATH_SEP_STRING, name);
-  strcpy (buffer, temp_name);
-  free (temp_name);
-#endif
 }
 
 int qualified (unsigned char * name)
@@ -205,7 +198,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
   if (path_index == TEXINPUTPATH &&
     strncmp (name_of_file + 1, "HackyInputFileNameForCoreDump.tex", 33) == 0)
     funny_core_dump();
-#endif /* FUNNY_CORE_DUMP and not BibTeX */
+#endif
 
 #ifdef MSDOS
   if (return_flag)
@@ -292,19 +285,6 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     {
       if (show_tfm_flag && log_opened)
       {
-#ifdef WRAPLINES
-        int old_setting = selector;
-        char *s = name_of_file + 1;
-        selector = log_only;
-        print_char(' ');
-        print_char('(');
-
-        while (*s != '\0')
-          print_char (*s++);
-
-        print_char(')');
-        selector = old_setting;
-#else
         int n; 
         n = strlen((char *) name_of_file + 1);
 
@@ -317,8 +297,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
           putc(' ', log_file);
 
         fprintf(log_file, "(%s)", name_of_file + 1);
-        file_offset += n+3;
-#endif  /*  end of WRAPLINES */
+        file_offset += n + 3;
       }
     }
 /*    code added 98/Sep/29 to catch first file input */
@@ -362,21 +341,13 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 /* This nonsense probably only works for Unix anyway. bkph */
 /* For one thing, MakeTeXTFM etc is more than 8 characters ! */
 
-#ifdef MSDOS
-  #define NO_MAKETEX
-#endif
-
-#define TEXONLY
-
 char *get_env_shroud (char *);    /* defined in texmf.c */
 
-/* char outputdirectory[PATH_MAX]; */       /* defined in local.c */
-
-extern char * dvi_directory; /* defined in local.c */
-extern char * log_directory; /* defined in local.c */
-extern char * aux_directory; /* defined in local.c */
-extern char * fmt_directory; /* defined in local.c */
-extern char * pdf_directory; /* defined in local.c */
+extern char * dvi_directory;
+extern char * log_directory;
+extern char * aux_directory;
+extern char * fmt_directory;
+extern char * pdf_directory;
 
 /* At least check for I/O error (such as disk full) when closing */
 /* Would be better to check while writing - but this is better than nothing */
@@ -385,10 +356,9 @@ extern char * pdf_directory; /* defined in local.c */
 /* now a_close returns -1 on error --- which could be used by caller */
 /* probably want to ignore on input files ... */
 
-void perrormod (char *s);       /* in local.c */
+extern void perrormod (char *s);       /* in local.c */
 
 // check_fclose not used by anything
-/* 1993/Nov/20 - bkph */
 int check_fclose (FILE * f)
 {
   if (f == NULL)
@@ -397,14 +367,13 @@ int check_fclose (FILE * f)
   if (ferror(f) || fclose (f))
   {
     perrormod("\n! I/O Error");
-    uexit (1);    // ???
+    uexit (1);
   }
 
   return 0;
 }
 
-/* open_output moved down here to avoid potential pragma problem */
-
+// open_output moved down here to avoid potential pragma problem
 bool open_output (FILE **f, char *fopen_mode)
 {
   unsigned temp_length;

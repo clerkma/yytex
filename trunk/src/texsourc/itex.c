@@ -17,11 +17,6 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-#pragma warning(disable:4996)
-#pragma warning(disable:4131) // old style declarator
-#pragma warning(disable:4135) // conversion between different integral types
-#pragma warning(disable:4127) // conditional expression is constant
-
 #define EXTERN extern
 
 #include "texd.h"

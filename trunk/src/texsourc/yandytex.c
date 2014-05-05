@@ -43,8 +43,6 @@
 #endif
 
 
-/* following may be found in local.c --- used for key replacement */
-
 extern char * replacement[];    /* pointers to replacement strings */
 
 #ifdef FUNNY_CORE_DUMP
@@ -55,7 +53,7 @@ extern char * replacement[];    /* pointers to replacement strings */
 
 /* What we were invoked as and with.  */
 static char *program_name = NULL;
-int gargc;      /* number of args - set to zero after initialization */
+int    gargc;   /* number of args - set to zero after initialization */
 char **gargv;   /* char *gargv[] -- bkph ? */
 
 /* The entry point: set up for reading the command line, which will

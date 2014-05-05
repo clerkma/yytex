@@ -1,8 +1,19 @@
+/* Copyright 2014 Clerk Ma
 
-#pragma warning(disable:4996)
-#pragma warning(disable:4131) // old style declarator
-#pragma warning(disable:4135) // conversion between different integral types 
-#pragma warning(disable:4127) // conditional expression is constant
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+   02110-1301 USA.  */
 
 #define EXTERN extern
 
@@ -487,7 +498,6 @@ void sprint_cs_(halfword p)
   }
 }
 /* sec 0518 */
-/* ! I can't find file `  c:/foo/  accents  .tex  '. */
 void print_file_name_(integer n, integer a, integer e)
 {
   slow_print(a);
@@ -515,8 +525,6 @@ void print_write_whatsit_(str_number s, halfword p)
   else print_char('-');
 }
 /* sec 0081 */
-// called from itex.c and tex0.c only  NASTY NASTY!
-// now uses uses non-local goto (longjmp) 1999/Nov/7
 void jump_out (void) 
 {
   close_files_and_terminate();
@@ -1052,6 +1060,7 @@ char * add_string (char *s, char * str_string)
   s += n;
   strcpy(s, "\r\n");
   s += 2;
+
   return s;
 }
 
@@ -1153,7 +1162,7 @@ void term_input (char * term_str, int term_help_lines)
 //    free(helpstring);
 //  }
   show_line("\n", 0);    // force it to show what may be buffered up ???
-  helpstring = NULL;
+  helpstring = NULL;  
 
 #ifdef _WINDOWS
   if (term_str != NULL)
@@ -1656,6 +1665,7 @@ halfword get_avail (void)
         overflow("main memory size", mem_max + 1 - mem_min);
         return 0;           // abort_flag set
       }
+
       incr(mem_end);        /* then grab from new area */
       p = mem_end;          /* 1993/Dec/14 */
     }
