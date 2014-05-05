@@ -114,7 +114,7 @@ typedef struct
 typedef union
 {
 #ifdef TeX
-  glueratio gr;
+  glue_ratio gr;
   twohalves hh;
 #else
   twohalves hhfield;

@@ -20,26 +20,40 @@
 
 #define WORDS_BIGENDIAN 0
 
+#pragma warning(disable:4996) //
+#pragma warning(disable:4701) //
+#pragma warning(disable:4100)
+#pragma warning(disable:4244)
+#pragma warning(disable:4131) // old style declarator
+#pragma warning(disable:4135) // conversion between different integral types
+#pragma warning(disable:4127) // conditional expression is constant
+
 /* ``Standard'' headers.  */
 #include <kpathsea/c-auto.h>
 #include <kpathsea/c-std.h>
 #include <kpathsea/c-pathmx.h>
 #include <kpathsea/c-fopen.h>
+#include <kpathsea/c-ctype.h>
 #include <kpathsea/c-proto.h>
+#include <kpathsea/config.h>
 #include <kpathsea/getopt.h>
 #include <kpathsea/lib.h>
+#include <kpathsea/line.h>
+#include <kpathsea/readable.h>
 #include <kpathsea/types.h>
+#include <kpathsea/tex-file.h>
+#include <kpathsea/variable.h>
+#include <kpathsea/absolute.h>
+#include <setjmp.h>
+#include <time.h>
+#include <signal.h>
 #include "hpdf.h"
 #include "avl.h"
 
-typedef signed char schar;
 typedef long        integer;
 typedef double      glue_ratio;
-typedef double      glueratio;
 typedef boolean     bool;
-typedef char *      ccharpointer;
 typedef double      real;
-typedef FILE *      file_ptr;
 typedef FILE *      alpha_file;
 typedef unsigned char ASCII_code;
 typedef unsigned short KANJI_code;

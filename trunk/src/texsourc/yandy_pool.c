@@ -1,19 +1,9 @@
-#ifdef _WINDOWS
-  #define NOCOMM
-  #define NOSOUND
-  #define NODRIVERS
-  #define STRICT
-  #pragma warning(disable:4115) // kill rpcasync.h complaint
-  #include <windows.h>
-  #define MYLIBAPI __declspec(dllexport)
-#endif
 
 #pragma warning(disable:4996)
 #pragma warning(disable:4131) // old style declarator
 #pragma warning(disable:4135) // conversion between different integral types 
 #pragma warning(disable:4127) // conditional expression is constant
 
-#include <setjmp.h>
 #include <time.h>
 
 #define EXTERN extern

@@ -41,7 +41,7 @@ LFLAGS=/MAP
 # LFLAGS=@yandytex.nt /MAP /DEBUG /PDB:yandytex.pdb lib\libdos.lib
 # LFLAGS=/MAP /DEBUG /PDB:yandytex.pdb
 
-objs = texmf.obj itex.obj openinou.obj subroute.obj local.obj \
+objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
 	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
 	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
 	yandy_pool.obj yandytex.res md5.obj md5file.obj \
@@ -50,14 +50,13 @@ objs = texmf.obj itex.obj openinou.obj subroute.obj local.obj \
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 texmf.exe: $(objs) 
-	$(LINK) $(LFLAGS) texmf itex openinou subroute local \
+	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
 	yandy_pool yandytex.res md5 md5file yandy_pdf_backend \
 	avl \
 	kpathsea\kpathsea.lib libharu\libhpdf.lib libpng\libpng.lib zlib\zlib.lib
-	copy texmf.exe yandytex.exe
-	del ..\yandy\bin\texmf.exe
-	copy texmf.exe ..\yandy\bin\texmf.exe
+	del ..\yandy\bin\yandytex.exe
+	copy yandytex.exe ..\yandy\bin\yandytex.exe
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 avl.obj: libavl/libavl/avl.c
 	$(CC) $(CFLAGS) libavl/libavl/avl.c
@@ -74,9 +73,9 @@ md5file.obj: md5file.c
 yandytex.res: yandytex.rc
 	rc yandytex.rc
 
-texmf.obj: texmf.c \
+yandytex.obj: yandytex.c \
 	texd.h texmf.h texmfmem.h coerce.h
-	$(CC) /DINITEX /DINI $(CFLAGS) texmf.c
+	$(CC) /DINITEX /DINI $(CFLAGS) yandytex.c
 
 itex.obj: itex.c \
 	texd.h texmf.h texmfmem.h coerce.h
@@ -88,7 +87,7 @@ openinou.obj: openinou.c \
 
 subroute.obj: subroute.c \
 	texd.h texmf.h texmfmem.h coerce.h
-	$(CC) $(CFLAGS) subroute.c	
+	$(CC) $(CFLAGS) subroute.c
 
 local.obj: local.c \
 	texd.h texmf.h texmfmem.h coerce.h

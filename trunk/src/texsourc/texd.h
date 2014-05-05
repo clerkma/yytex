@@ -666,7 +666,7 @@ EXTERN str_number cur_ext;
 EXTERN pool_pointer area_delimiter; 
 EXTERN pool_pointer ext_delimiter; 
 EXTERN integer format_default_length; 
-EXTERN ccharpointer TEX_format_default; 
+EXTERN char * TEX_format_default; 
 EXTERN bool name_in_progress; 
 EXTERN bool log_opened; 
 EXTERN bool quoted_file_name;

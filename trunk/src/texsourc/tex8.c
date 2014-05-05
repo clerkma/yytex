@@ -1,19 +1,8 @@
-#ifdef _WINDOWS
-  #define NOCOMM
-  #define NOSOUND
-  #define NODRIVERS
-  #define STRICT
-  #pragma warning(disable:4115) // kill rpcasync.h complaint
-  #include <windows.h>
-  #define MYLIBAPI __declspec(dllexport)
-#endif
 
 #pragma warning(disable:4996)
 #pragma warning(disable:4131) // old style declarator
 #pragma warning(disable:4135) // conversion between different integral types 
 #pragma warning(disable:4127) // conditional expression is constant
-
-#include <setjmp.h>
 
 #define EXTERN extern
 
@@ -21,9 +10,6 @@
 
 #pragma warning(disable:4244)       /* 96/Jan/10 */
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-/* math_fraction etc used to be in tex7.c */
 /* sec 1181 */
 void math_fraction (void)
 {
@@ -970,11 +956,7 @@ void open_or_close_in (void)
 /*  string 785 is  .tex */
     else if ((cur_ext != 785) && (name_length + 5 < PATHMAX))
       {
-        name_of_file[name_length + 1] = '.';
-        name_of_file[name_length + 2] = 't';
-        name_of_file[name_length + 3] = 'e';
-        name_of_file[name_length + 4] = 'x';
-        name_of_file[name_length + 5] = ' ';
+        strncpy((char *) name_of_file + name_length + 1, ".tex ", 5);
         name_length = name_length + 4;
 
         if (a_open_in(read_file[n], TEXINPUTPATH))
@@ -1172,6 +1154,7 @@ lab50:
       "And type `I\\tracingonline=1\\show...' to show boxes and",
       "lists on your terminal as well as in the transcript file.");
   }
+
   error();
 }
 /* sec 1349 */
