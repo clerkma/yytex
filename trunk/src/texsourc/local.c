@@ -22,9 +22,8 @@
 
 /* Most Y & Y changes are localized here -- init() */
 
-#define USEOUREALLOC      /* 96/Jan/20 */
-
-#define USEMEMSET       /* 98/Jan/23 */
+#define USEOUREALLOC
+#define USEMEMSET
 
 #ifdef USEOUREALLOC
   #define REALLOC ourrealloc
@@ -94,26 +93,37 @@ void show_usage (void)
   char * s = log_line;
 
   sprintf (s, "\n"
-      " yandytex [-?ivnwdrzpK] [-m=ini_mem] [-e=hyph_size] [-h=trie_size]\n"
-      "          [-x=xchr_file] [-k=key_file] [-o=dvi_dir] [-l=log_dir] [-a=aux_dir]\n"
-      "          [+format_file] [tex_file]\n\n"
-      "    --help    -?    show this usage summary\n"
-      "    --initex  -i    start up as iniTeX (create format file)\n"
-      "    --verbose -v    be verbose (show implementation version number)\n"
+      " Useage: yanytex [OPTION]... [+format_file] [tex_file]\n\n"
+      "    --help    -?\n"
+      "        show this usage summary\n"
+      "    --initex  -i\n"
+      "        start up as iniTeX (create format file)\n"
+      "    --verbose -v\n"
+      "        be verbose (show implementation version number)\n"
       "    -n    do not allow `non ASCII' characters in input files (complain instead)\n"
       "    -w    do not show `non ASCII' characters in hexadecimal (show as is)\n"
       "    -d    do not allow DOS style file names - i.e. do not convert \\ to /\n"
       "    -r    do not allow Mac style termination - i.e. do not convert \\r to \\n\n"
-      "    -p    allow use of \\patterns after loading format (iniTeX only)\n"
-      "    -K    disable all extensions to basic TeX\n"
-      "    -m    initial main memory size in kilo words (iniTeX only)\n"
-      "    -e    hyphenation exception dictionary size (iniTeX only)\n"
-      "    -h    hyphenation pattern trie size (iniTeX only)\n"
-      "    -x    use `non ASCII' character mapping (xchr[]) defined in file\n"
-      "    -k    use `key replacement' defined in file\n"
-      "    -o    write DVI file in specified directory (default current directory)\n"
-      "    -l    write LOG file in specified directory (default current directory)\n"
-      "    -a    write AUX file in specified directory (default current directory)\n");
+      "    --patterns    -p\n"
+      "        allow use of \\patterns after loading format (iniTeX only)\n"
+      "    --knuthify    -K\n"
+      "        disable all extensions to basic TeX\n"
+      "    --main-memory -m\n"
+      "        initial main memory size in kilo words (iniTeX only)\n"
+      "    --hyph-size   -e\n"
+      "        hyphenation exception dictionary size (iniTeX only)\n"
+      "    --trie-size   -h\n"
+      "        hyphenation pattern trie size (iniTeX only)\n"
+      "    --xchr-file   -x\n"
+      "        use `non ASCII' character mapping (xchr[]) defined in file\n"
+      "    --key-file    -k\n"
+      "        use `key replacement' defined in file\n"
+      "    --dvi-dir     -o\n"
+      "        write DVI file in specified directory (default current directory)\n"
+      "    --log-dir     -l\n"
+      "        write LOG file in specified directory (default current directory)\n"
+      "    --aux-dir     -a\n"
+      "        write AUX file in specified directory (default current directory)\n");
   show_line(log_line, 1);
 
 #ifndef _WINDOWS
@@ -529,26 +539,6 @@ int read_xchr_file (char *filename, int flag, char *argv[])
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-/* Following may be useful if link without floating point emulation */
-
-#ifdef DEBUG
-void testfloating (void)
-{
-  double dx = 1.0;
-  double dxold = 0.0;
-  int k = 0;
-
-  while (1.0 + dx != 1.0)
-  {
-    dxold = dx;
-    dx = dx / 2.0;
-    k++;
-  }
-  sprintf(log_line, "Floating test: dx = %lg (k = %d)\n", dxold, k - 1);
-  show_line(log_line, 0);
-}
-#endif
-
 #define MAXSPLITS 3
 
 /* ad hoc default minimum growth in memory realloc is 62% */
@@ -581,8 +571,9 @@ void *ourrealloc (void *old, size_t new_size)
 {
   void * mnew;
   size_t old_size, overlap;
-
-/*  round up to nearest multiple of four bytes *//* avoid unlikely alignment */
+  
+  /*  round up to nearest multiple of four bytes */
+  /* avoid unlikely alignment */
   if ((new_size % 4) != 0)
     new_size = ((new_size / 4) + 1) * 4;
 
@@ -594,7 +585,7 @@ void *ourrealloc (void *old, size_t new_size)
   if (old_size >= new_size && old_size < new_size + 4)
     return old;
 
-  mnew = _expand (old, new_size);      /* first try and expand in place */
+  mnew = _expand (old, new_size); /* first try and expand in place MSVC */
 
   if (mnew != NULL)
   {
@@ -693,7 +684,9 @@ size_t roundup (size_t n)
 int allocate_tries (int trie_max)
 {
   int n, nl, no, nc;
-/*  if (trie_max > trie_size) {
+
+/*  if (trie_max > trie_size)
+  {
     sprintf(log_line, "ERROR: invalid trie size (%d > %d)\n",
       trie_max, trie_size);
       show_line(log_line, 1);
@@ -701,7 +694,8 @@ int allocate_tries (int trie_max)
   } */ /* ??? removed 1993/dec/17 */
   if (trie_max > 1000000)
     trie_max = 1000000; /* some sort of sanity limit */
-/*  important + 1 because original was halfword trie_trl[trie_size + 1] etc. */
+
+  /*  important + 1 because original was halfword trie_trl[trie_size + 1] etc. */
   nl = (trie_max + 1) * sizeof(halfword);    /* trie_trl[trie_size + 1] */
   no = (trie_max + 1) * sizeof(halfword);    /* trie_tro[trie_size + 1] */
   nc = (trie_max + 1) * sizeof(quarterword); /* trie_trc[trie_size + 1] */
@@ -710,8 +704,8 @@ int allocate_tries (int trie_max)
   if (trace_flag)
     trace_memory("hyphen trie", n);
 
-  trie_trl = (halfword *)    malloc (roundup(nl));
-  trie_tro = (halfword *)    malloc (roundup(no));
+  trie_trl = (halfword *) malloc (roundup(nl));
+  trie_tro = (halfword *) malloc (roundup(no));
   trie_trc = (quarterword *) malloc (roundup(nc));
 
   if (trie_trl == NULL || trie_tro == NULL || trie_trc == NULL)
@@ -729,19 +723,21 @@ int allocate_tries (int trie_max)
   update_statistics ((int) trie_trl, nl, 0);
   update_statistics ((int) trie_tro, no, 0);
   update_statistics ((int) trie_trc, nc, 0);
-/*  sprintf(log_line, "trie_size %d trie_max %d\n", trie_size, trie_max); */ /* debug */
+
+  /*  sprintf(log_line, "trie_size %d trie_max %d\n", trie_size, trie_max); */ /* debug */
   trie_size = trie_max;           /* BUG FIX 98/Jan/5 */
 
   if (trace_flag)
     probe_show();     /* 94/Mar/25 */
-  return 0;               // success
+
+  return 0; // success
 }
 #endif
 
 #ifdef ALLOCATEHYPHEN
-bool prime (int);       /* test function later in this file */
+bool prime (int); /* test function later in this file */
 
-int current_prime = 0;         /* remember in case reallocated later */
+int current_prime = 0; /* remember in case reallocated later */
 
 /* we don't return an address here, since TWO memory regions allocated */
 /* plus, we don't really reallocate, we FLUSH the old information totally */
@@ -757,6 +753,7 @@ int realloc_hyphen (int hyphen_prime)
     show_line(log_line, 1);
     return -1;
   }
+
 /*  need not/cannot preserve old contents when hyphen prime is changed */
 /*  if (hyph_list != NULL) free(hyph_list); */
 /*  if (hyph_word != NULL) free(hyph_word); */
@@ -786,6 +783,7 @@ int realloc_hyphen (int hyphen_prime)
     sprintf(log_line, "Addresses hyph_word %d hyph_list %d\n", hyph_word, hyph_list);
     show_line(log_line, 0);
   }
+
 /*  cannot preserve old contents when hyphen prime is changed */
 #ifdef USEMEMSET
   memset(hyph_word, 0, (hyphen_prime + 1) * sizeof (hyph_word[0]));
@@ -798,7 +796,8 @@ int realloc_hyphen (int hyphen_prime)
 #else
   for (k = 0; k <= hyphen_prime; k++) hyph_list[k]= 0;
 #endif
-  hyph_count = 0;   /* or use reset_hyphen() in itex.c */
+
+  hyph_count = 0; /* or use reset_hyphen() in itex.c */
 
   if (current_prime != 0)
   {
@@ -810,6 +809,7 @@ int realloc_hyphen (int hyphen_prime)
     update_statistics ((int) hyph_word, nw, 0);
     update_statistics ((int) hyph_list, nl, 0);
   }
+
   current_prime = hyphen_prime;
 
   if (trace_flag)
@@ -833,7 +833,8 @@ memory_word *allocate_main_memory (int size)
 {
   int n;
 
-/*  Using -i *and* pre-loading format */ /* in this case get called twice */
+/*  Using -i *and* pre-loading format */
+/*  in this case get called twice */
 /*  Get rid of initial blank memory again or use realloc ... */
 /*  Could we avoid this by detecting presence of & before allocating ? */
 /*  Also, if its already large enough, maybe we can avoid this ? */
@@ -845,19 +846,7 @@ memory_word *allocate_main_memory (int size)
   }
 
   mem_top = mem_bot + size;
-
-#ifdef ALLOCATEHIGH         /* NOT USED ANYMORE */
-  if (mem_extra_high != 0 && !is_initex)
-    mem_max = mem_top + mem_extra_high;
-#endif
-
   mem_max = mem_top;
-
-#ifdef ALLOCATELOW          /* NOT USED ANYMORE */
-  if (mem_extra_low != 0 && !is_initex)
-    mem_start = mem_bot - mem_extra_low;  /* increase main memory */
-#endif
-
   mem_start = 0;     /* bottom of memory allocated by system */
 /*  mem_min = mem_start; */ /* bottom of area made available to TeX */
   mem_min = 0;       /* bottom of area made available to TeX */
@@ -894,17 +883,16 @@ memory_word *allocate_main_memory (int size)
     show_line(log_line, 0);
   }
 
-  update_statistics ((int) mainmemory, n,
-    (current_mem_size + 1) * sizeof (memory_word));
+  update_statistics ((int) mainmemory, n, (current_mem_size + 1) * sizeof (memory_word));
 /*  current_mem_size = (mem_max - mem_start + 1); */
   current_mem_size = mem_max - mem_start;   /* total number of words - 1 */
 
   if (trace_flag)
     probe_show();     /* 94/Mar/25 */
 
-  return zzzaa;             /* same as zmem, mem 94/Jan/24 */
+  return zzzaa; /* same as zmem, mem 94/Jan/24 */
 }
-#endif  /* end of ALLOCATEMAIN */
+#endif
 
 #ifdef ALLOCATEMAIN
 /* int firstallocation = 1; */
@@ -916,12 +904,9 @@ memory_word *allocate_main_memory (int size)
 memory_word *realloc_main (int losize, int hisize)
 {  
   int k, minsize;
-  int newsize = 0;        /* to quieten compiler */
-  int n = 0;          /* to quieten compiler */
-  memory_word * newmemory = NULL; /* to quieten compiler */
-
-/*  if (losize == 0 && hisize > 0) runawayflag = 1;
-  else runawayflag = 0; */ /* 94/Jan/22 */
+  int newsize = 0;
+  int n = 0;
+  memory_word * newmemory = NULL;
 
   if (trace_flag)
   {
@@ -945,12 +930,14 @@ memory_word *realloc_main (int losize, int hisize)
     show_line(log_line, 0);
   }
 
-  if (current_mem_size + 1 == max_mem_size) /* if we REALLY run up to limit ! */
+  /* if we REALLY run up to limit ! */
+  if (current_mem_size + 1 == max_mem_size)
   {
     memory_error("main memory", (max_mem_size + 1) * sizeof(memory_word));
 //    abort_flag++;  // ???
     return NULL;
   }
+
 /*  first allocation should expand *both* lo and hi */
   if (hisize == 0 && mem_end == mem_max)
     hisize = losize;
@@ -1073,8 +1060,8 @@ fmemoryword * realloc_font_info (int size)
 {
   fmemoryword *newfontinfo = NULL;
   int k, minsize;
-  int newsize = 0;  /* to quieten compiler */
-  int n = 0;        /* to quieten compiler */
+  int newsize = 0;
+  int n = 0;
 
   if (trace_flag)
   {
@@ -1168,20 +1155,35 @@ packed_ASCII_code * realloc_str_pool (int size)
 /*    exit (1); */
     return str_pool;   /* pass it back to TeX 99/Fabe/4 */
   }
-/*  minsize =  current_pool_size / 2; */
-  minsize =  current_pool_size / 100 * percent_grow;
-  if (size < minsize) size = minsize;
-  if (size < initial_pool_size) size = initial_pool_size;
 
-  for (k = 0; k < MAXSPLITS; k++) {
+  minsize =  current_pool_size / 100 * percent_grow;
+
+  if (size < minsize)
+    size = minsize;
+
+  if (size < initial_pool_size)
+    size = initial_pool_size;
+
+  for (k = 0; k < MAXSPLITS; k++)
+  {
     newsize = current_pool_size + size;
-    if (newsize > pool_size) newsize = pool_size;
+
+    if (newsize > pool_size)
+      newsize = pool_size;
 /* important + 1 since  packed_ASCII_code str_pool[pool_size + 1]; in original */
     n = (newsize + 1) * sizeof (packed_ASCII_code);
-    if (trace_flag) trace_memory("str_pool", n);
+
+    if (trace_flag)
+      trace_memory("str_pool", n);
+
     newstrpool = (packed_ASCII_code *) REALLOC (str_pool, n); /* 95/Sep/24 */
-    if (newstrpool != NULL) break;    /* did we get it ? */
-    if (current_pool_size == 0) break;  /* initial allocation must work */
+
+    if (newstrpool != NULL)
+      break;    /* did we get it ? */
+
+    if (current_pool_size == 0)
+      break;  /* initial allocation must work */
+
     size = size / 2;          /* else can retry smaller */
   }
 
@@ -1214,8 +1216,8 @@ int current_max_strings = 0;
 pool_pointer *realloc_str_start (int size)
 {
   int k, minsize;
-  int n=0;
-  int newsize=0;
+  int n = 0;
+  int newsize = 0;
   pool_pointer *newstrstart=NULL;
 
   if (trace_flag)
@@ -1230,86 +1232,116 @@ pool_pointer *realloc_str_start (int size)
 /*    exit (1); */
     return str_start;    /* pass it back to TeX 99/Fabe/4 */
   }
-/*  minsize = current_max_strings / 2; */
+
   minsize = current_max_strings / 100 * percent_grow;
-  if (size < minsize) size = minsize;
-  if (size < initial_max_strings) size = initial_max_strings;
+
+  if (size < minsize)
+    size = minsize;
+
+  if (size < initial_max_strings)
+    size = initial_max_strings;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
     newsize = current_max_strings + size;
-    if (newsize > max_strings) newsize = max_strings;
+
+    if (newsize > max_strings)
+      newsize = max_strings;
 /*    important + 1 since str_start[maxstring + 1] originally */
     n = (newsize + 1) * sizeof (pool_pointer);
-    if (trace_flag) trace_memory("str_start", n);
+
+    if (trace_flag)
+      trace_memory("str_start", n);
+
     newstrstart = (pool_pointer *) REALLOC (str_start, n);
-    if (newstrstart != NULL) break;   /* did we get it ? */
-    if (current_max_strings == 0) break;  /* initial allocation must work */
+
+    if (newstrstart != NULL)
+      break;   /* did we get it ? */
+
+    if (current_max_strings == 0)
+      break;  /* initial allocation must work */
+
     size = size / 2;          /* otherwise can try smaller */
   }
 
-  if (newstrstart == NULL) {
+  if (newstrstart == NULL)
+  {
     memory_error("string pointer", n);
     return str_start;          /* try and continue */
   }
+
   str_start = newstrstart;
   update_statistics((int) str_start, n, current_max_strings * sizeof (pool_pointer));
   current_max_strings = newsize;
-  if (trace_flag) {
+
+  if (trace_flag)
+  {
     sprintf(log_line, "New Address %s == %d\n", "string start", str_start);
     show_line(log_line, 0);
   }
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
+
+  if (trace_flag)
+    probe_show();     /* 94/Mar/25 */
+
   return str_start;
 }
 #endif
 
 #ifdef ALLOCATEINI
-
 /* returns -1 if it fails */
 /* size == trie_size */
 int allocate_ini (int size)
 {
   int n, nl, no, nc, nr, nh, nt;
-    nh = nr = nl = (size + 1) *  sizeof(trie_pointer);
-    no = (size + 1) *  sizeof(trie_op_code);
-    nc = (size + 1) *  sizeof(packed_ASCII_code);
+
+  nh = nr = nl = (size + 1) *  sizeof(trie_pointer);
+  no = (size + 1) *  sizeof(trie_op_code);
+  nc = (size + 1) *  sizeof(packed_ASCII_code);
 /*    nt = (size + 1) *  sizeof(bool); */
-    nt = (size + 1) *  sizeof(char);
-    n = nl + no + nc + nr + nh + nt;
+  nt = (size + 1) *  sizeof(char);
+  n = nl + no + nc + nr + nh + nt;
 /*    n = (size + 1) * (sizeof(packed_ASCII_code) + sizeof(trie_op_code) +
       3 *  sizeof(trie_pointer) + sizeof (char)); */
-    if (trace_flag) trace_memory ("iniTeX hyphen trie", n);
-    trie_l = (trie_pointer *) malloc (roundup(nl));
-    trie_o = (trie_op_code *) malloc (roundup(no));
-    trie_c = (packed_ASCII_code *) malloc (roundup(nc));
-    trie_r = (trie_pointer *) malloc (roundup(nr));
-    trie_hash = (trie_pointer *) malloc (roundup(nh));
+  if (trace_flag)
+    trace_memory ("iniTeX hyphen trie", n);
+
+  trie_l = (trie_pointer *) malloc (roundup(nl));
+  trie_o = (trie_op_code *) malloc (roundup(no));
+  trie_c = (packed_ASCII_code *) malloc (roundup(nc));
+  trie_r = (trie_pointer *) malloc (roundup(nr));
+  trie_hash = (trie_pointer *) malloc (roundup(nh));
 /*    trie_taken = (bool *) malloc (nt); */
-    trie_taken = (char *) malloc (roundup(nt));
-    if (trie_c == NULL || trie_o == NULL || trie_l == NULL || trie_r == NULL ||
-      trie_hash == NULL || trie_taken == NULL) {
-      memory_error("iniTeX hyphen trie", n);
-//      exit (1);           /* serious error */     
-      return -1;
-    }
-    if (trace_flag) {
-      sprintf(log_line, "Addresses trie_l %d trie_o %d trie_c %d\n", 
-          trie_l, trie_o, trie_c);
-      show_line(log_line, 0);
-      sprintf(log_line, "Addresses trie_r %d trie_hash %d trie_taken %d\n", 
-          trie_r, trie_hash, trie_taken);
-      show_line(log_line, 0);
-    }
-    update_statistics ((int) trie_l, nl, 0);
-    update_statistics ((int) trie_o, no, 0);
-    update_statistics ((int) trie_c, nc, 0);
-    update_statistics ((int) trie_r, nr, 0);
-    update_statistics ((int) trie_hash, nh, 0);
-    update_statistics ((int) trie_taken, nt, 0);
+  trie_taken = (char *) malloc (roundup(nt));
+  
+  if (trie_c == NULL || trie_o == NULL || trie_l == NULL || trie_r == NULL ||
+      trie_hash == NULL || trie_taken == NULL)
+  {
+    memory_error("iniTeX hyphen trie", n);
+//      exit (1);           /* serious error */
+    return -1;
+  }
+  
+  if (trace_flag)
+  {
+    sprintf(log_line, "Addresses trie_l %d trie_o %d trie_c %d\n",
+      trie_l, trie_o, trie_c);
+    show_line(log_line, 0);
+    sprintf(log_line, "Addresses trie_r %d trie_hash %d trie_taken %d\n",
+      trie_r, trie_hash, trie_taken);
+    show_line(log_line, 0);
+  }
+
+  update_statistics ((int) trie_l, nl, 0);
+  update_statistics ((int) trie_o, no, 0);
+  update_statistics ((int) trie_c, nc, 0);
+  update_statistics ((int) trie_r, nr, 0);
+  update_statistics ((int) trie_hash, nh, 0);
+  update_statistics ((int) trie_taken, nt, 0);
 /*    trie_size = size; */ /* ??? */
-    if (trace_flag)  probe_show();     /* 94/Mar/25 */
-    return 0;               // success
+  if (trace_flag)
+    probe_show();     /* 94/Mar/25 */
+
+  return 0;               // success
 }
 #endif
 
@@ -1319,8 +1351,8 @@ int current_save_size = 0;
 memory_word *realloc_save_stack (int size)
 {
   int k, minsize;
-  int n=0, newsize=0;
-  memory_word *newsave_stack=NULL;
+  int n = 0, newsize = 0;
+  memory_word *newsave_stack = NULL;
 
   if (trace_flag)
   {
@@ -1346,12 +1378,23 @@ memory_word *realloc_save_stack (int size)
   for (k = 0; k < MAXSPLITS; k++)
   {
     newsize = current_save_size + size;
-    if (newsize > save_size) newsize = save_size;
+
+    if (newsize > save_size)
+      newsize = save_size;
+
     n = (newsize + 1) * sizeof (memory_word); /* save_stack[save_size + 1] */
-    if (trace_flag) trace_memory("save_stack", n);
+
+    if (trace_flag)
+      trace_memory("save_stack", n);
+
     newsave_stack = (memory_word *) REALLOC (save_stack, n);
-    if (newsave_stack != NULL) break;    /* did we get it ? */
-    if (current_save_size == 0) break;  /* initial allocation must work */
+
+    if (newsave_stack != NULL)
+      break;    /* did we get it ? */
+
+    if (current_save_size == 0)
+      break;  /* initial allocation must work */
+
     size = size / 2;          /* else can retry smaller */
   }
 
@@ -1367,13 +1410,15 @@ memory_word *realloc_save_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Current%s %d\n", "save_size", current_save_size);
+    sprintf(log_line, "Current %s %d\n", "save_size", current_save_size);
     show_line(log_line, 0);
     sprintf(log_line, "New Address %s == %d\n", "save stack", save_stack);
     show_line(log_line, 0);
   }
 
-  if (trace_flag) probe_show();      /* 94/Mar/25 */
+  if (trace_flag)
+    probe_show();
+
   return save_stack;
 }
 #endif
@@ -1384,47 +1429,74 @@ int current_stack_size = 0;       /* input stack size */
 in_state_record *realloc_input_stack (int size)
 {
   int k, minsize;
-  int n=0, newsize=0;
-  in_state_record *newinputstack=NULL;
+  int n = 0, newsize = 0;
+  in_state_record *newinputstack = NULL;
 
-  if (trace_flag) {
+  if (trace_flag)
+  {
     sprintf(log_line, "Old Address %s == %d\n",  "input stack", input_stack);
     show_line(log_line, 0);
   }
-  if (current_stack_size == stack_size) {  /* arbitrary limit */
+
+  if (current_stack_size == stack_size)  /* arbitrary limit */
+  {
 /*    memory_error ("input stack", (stack_size + 1) * sizeof(in_state_record)); */
 /*    exit (1); */
     return input_stack;
   }
-  minsize =  current_stack_size / 100 * percent_grow;
-  if (size < minsize) size = minsize;
-  if (size < initial_stack_size) size = initial_stack_size;
 
-  for (k = 0; k < MAXSPLITS; k++) {
+  minsize =  current_stack_size / 100 * percent_grow;
+
+  if (size < minsize)
+    size = minsize;
+
+  if (size < initial_stack_size)
+    size = initial_stack_size;
+
+  for (k = 0; k < MAXSPLITS; k++)
+  {
     newsize = current_stack_size + size;
-    if (newsize > stack_size) newsize = stack_size;
+
+    if (newsize > stack_size)
+      newsize = stack_size;
+
     n = (newsize + 1) * sizeof (in_state_record); /* input_stack[stack_size + 1] */
-    if (trace_flag) trace_memory("input_stack", n);
+
+    if (trace_flag)
+      trace_memory("input_stack", n);
+
     newinputstack = (in_state_record *) REALLOC (input_stack, n);
-    if (newinputstack != NULL) break;   /* did we get it ? */
-    if (current_stack_size == 0) break; /* initial allocation must work */
+
+    if (newinputstack != NULL)
+      break;   /* did we get it ? */
+
+    if (current_stack_size == 0)
+      break; /* initial allocation must work */
+
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newinputstack == NULL) {
+  if (newinputstack == NULL)
+  {
     memory_error("input stack", n);
     return input_stack;            /* try and continue !!! */
   }
+
   input_stack = newinputstack;
   update_statistics ((int) input_stack, n, current_stack_size);
   current_stack_size = newsize;
-  if (trace_flag) {
-    sprintf(log_line, "Current%s %d\n", "stack_size", current_stack_size);
+
+  if (trace_flag)
+  {
+    sprintf(log_line, "Current %s %d\n", "stack_size", current_stack_size);
     show_line(log_line, 0);
     sprintf(log_line, "New Address %s == %d\n", "input stack", input_stack);
     show_line(log_line, 0);
   }
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
+
+  if (trace_flag)
+    probe_show();     /* 94/Mar/25 */
+
   return input_stack;
 }
 #endif
@@ -1435,47 +1507,74 @@ int current_nest_size = 0;        /* current nest size */
 list_state_record *realloc_nest_stack (int size)
 {
   int k, minsize;
-  int n=0, newsize=0;
-  list_state_record *newnest=NULL;
+  int n = 0, newsize = 0;
+  list_state_record *newnest = NULL;
 
-  if (trace_flag) {
+  if (trace_flag)
+  {
     sprintf(log_line, "Old Address %s == %d\n",  "nest stack", nest);
     show_line(log_line, 0);
   }
-  if (current_nest_size == nest_size) {  /* arbitrary limit */
+
+  if (current_nest_size == nest_size)  /* arbitrary limit */
+  {
 /*    memory_error ("nest stack", (nest_size + 1) * sizeof(list_state_record)); */
 /*    exit (1); */
     return nest;        /* let TeX handle the error */
   }
-  minsize =  current_nest_size / 100 * percent_grow;
-  if (size < minsize) size = minsize;
-  if (size < initial_nest_size) size = initial_nest_size;
 
-  for (k = 0; k < MAXSPLITS; k++) {
+  minsize =  current_nest_size / 100 * percent_grow;
+
+  if (size < minsize)
+    size = minsize;
+
+  if (size < initial_nest_size)
+    size = initial_nest_size;
+
+  for (k = 0; k < MAXSPLITS; k++)
+  {
     newsize = current_nest_size + size;
-    if (newsize > nest_size) newsize = nest_size;
+
+    if (newsize > nest_size)
+      newsize = nest_size;
+
     n = (newsize + 1) * sizeof (list_state_record); /* nest[nest_size + 1] */
-    if (trace_flag) trace_memory("nest stack", n);
+
+    if (trace_flag)
+      trace_memory("nest stack", n);
+
     newnest = (list_state_record *) REALLOC (nest, n);
-    if (newnest != NULL) break;   /* did we get it ? */
-    if (current_nest_size == 0) break;  /* initial allocation must work */
+
+    if (newnest != NULL)
+      break;   /* did we get it ? */
+
+    if (current_nest_size == 0)
+      break;  /* initial allocation must work */
+
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newnest == NULL) {
+  if (newnest == NULL)
+  {
     memory_error("nest stack", n);
     return nest;            /* try and continue !!! */
   }
+
   nest = newnest;
   update_statistics ((int) nest, n, current_nest_size);
   current_nest_size = newsize;
-  if (trace_flag) {
-    sprintf(log_line, "Current%s %d\n", "nest_size", current_nest_size);
+
+  if (trace_flag)
+  {
+    sprintf(log_line, "Current %s %d\n", "nest_size", current_nest_size);
     show_line(log_line, 0);
     sprintf(log_line, "New Address %s == %d\n", "nest stack", nest);
     show_line(log_line, 0);
   }
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
+
+  if (trace_flag)
+    probe_show();
+
   return nest;
 }
 #endif
@@ -1486,47 +1585,74 @@ int current_param_size=0;       /* current param size */
 halfword *realloc_param_stack (int size)
 {
   int k, minsize;
-  int n=0, newsize=0;
-  halfword *newparam=NULL;
+  int n = 0, newsize = 0;
+  halfword *newparam = NULL;
 
-  if (trace_flag) {
+  if (trace_flag)
+  {
     sprintf(log_line, "Old Address %s == %d\n",  "param stack", param_stack);
     show_line(log_line, 0);
   }
-  if (current_param_size == param_size) {  /* arbitrary limit */
+
+  if (current_param_size == param_size) /* arbitrary limit */
+  {
 /*    memory_error ("param stack", (param_size + 1) * sizeof(halfword)); */
 /*    exit (1); */
     return param_stack;        /* let TeX handle the error */
   }
-  minsize =  current_param_size / 100 * percent_grow;
-  if (size < minsize) size = minsize;
-  if (size < initial_param_size) size = initial_param_size;
 
-  for (k = 0; k < MAXSPLITS; k++) {
+  minsize =  current_param_size / 100 * percent_grow;
+
+  if (size < minsize)
+    size = minsize;
+
+  if (size < initial_param_size)
+    size = initial_param_size;
+
+  for (k = 0; k < MAXSPLITS; k++)
+  {
     newsize = current_param_size + size;
-    if (newsize > param_size) newsize = param_size;
+
+    if (newsize > param_size)
+      newsize = param_size;
+
     n = (newsize + 1) * sizeof (halfword); /* param_stack[param_size + 1] */
-    if (trace_flag) trace_memory("param stack", n);
+
+    if (trace_flag)
+      trace_memory("param stack", n);
+
     newparam = (halfword *) REALLOC (param_stack, n); 
-    if (newparam != NULL) break;    /* did we get it ? */
-    if (current_param_size == 0) break; /* initial allocation must work */
+
+    if (newparam != NULL)
+      break;    /* did we get it ? */
+
+    if (current_param_size == 0)
+      break; /* initial allocation must work */
+
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newparam == NULL) {
+  if (newparam == NULL)
+  {
     memory_error("param stack", n);
     return param_stack;            /* try and continue !!! */
   }
+
   param_stack = newparam;
   update_statistics ((int) param_stack, n, current_param_size);
   current_param_size = newsize;
-  if (trace_flag) {
-    sprintf(log_line, "Current%s %d\n", "param_size", current_param_size);
+
+  if (trace_flag)
+  {
+    sprintf(log_line, "Current %s %d\n", "param_size", current_param_size);
     show_line(log_line, 0);
     sprintf(log_line, "New Address %s == %d\n", "param stack", param_stack);
     show_line(log_line, 0);
   }
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
+
+  if (trace_flag)
+    probe_show();     /* 94/Mar/25 */
+
   return param_stack;
 }
 #endif
@@ -1537,37 +1663,59 @@ int current_buf_size = 0;
 ASCII_code *realloc_buffer (int size)
 {
   int k, minsize;
-  int n=0, newsize=0;
-  ASCII_code *newbuffer=NULL;
+  int n = 0, newsize = 0;
+  ASCII_code *newbuffer = NULL;
 
-  if (trace_flag) {
+  if (trace_flag)
+  {
     sprintf(log_line, "Old Address %s == %d\n", "buffer", buffer);
     show_line(log_line, 0);
   }
-  if (current_buf_size == buf_size) {  /* arbitrary limit */
+
+  if (current_buf_size == buf_size)  /* arbitrary limit */
+  {
 /*    memory_error ("buffer", buf_size); */
 /*    exit (1); */
     return buffer;    /* pass it back to TeX 99/Fabe/4 */
   }
-  minsize =  current_buf_size / 100 * percent_grow;
-  if (size < minsize) size = minsize;
-  if (size < initial_buf_size) size = initial_buf_size;
 
-  for (k = 0; k < MAXSPLITS; k++) {
+  minsize =  current_buf_size / 100 * percent_grow;
+
+  if (size < minsize)
+    size = minsize;
+
+  if (size < initial_buf_size)
+    size = initial_buf_size;
+
+  for (k = 0; k < MAXSPLITS; k++)
+  {
     newsize = current_buf_size + size;
-    if (newsize > buf_size) newsize = buf_size;
+
+    if (newsize > buf_size)
+      newsize = buf_size;
+
     n = (newsize + 1) * sizeof(ASCII_code);  /* buffer[buf_size + 1] */
-    if (trace_flag) trace_memory("buffer", n);
+
+    if (trace_flag)
+      trace_memory("buffer", n);
+
     newbuffer = (ASCII_code *) REALLOC (buffer, n);
-    if (newbuffer != NULL) break;   /* did we get it ? */
-    if (current_buf_size == 0) break;   /* initial allocation must work */
+
+    if (newbuffer != NULL)
+      break;   /* did we get it ? */
+
+    if (current_buf_size == 0)
+      break;   /* initial allocation must work */
+
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newbuffer == NULL) {
+  if (newbuffer == NULL)
+  {
     memory_error("buffer", n);
     return buffer;            /* try and continue !!! */
   }
+
   buffer = newbuffer;
   update_statistics ((int) buffer, n, current_buf_size);
 #ifdef USEMEMSET
@@ -1576,13 +1724,18 @@ ASCII_code *realloc_buffer (int size)
   for (k = current_buf_size; k < newsize; k++) buffer[k]= 0;
 #endif
   current_buf_size = newsize;
-  if (trace_flag) {
-    sprintf(log_line, "Current%s %d\n", "buffer", current_buf_size);
+
+  if (trace_flag)
+  {
+    sprintf(log_line, "Current %s %d\n", "buffer", current_buf_size);
     show_line(log_line, 0);
     sprintf(log_line, "New Address %s == %d\n", "buffer", buffer);
     show_line(log_line, 0);
   }
-  if (trace_flag)  probe_show();     /* 94/Mar/25 */
+
+  if (trace_flag)
+    probe_show();
+
   return buffer;
 }
 #endif
@@ -1696,7 +1849,8 @@ int allocate_memory (void)
 /*  need to create space because iniTeX writes in before reading pool file */
 /*  for a start, puts in strings for 256 characters */
 /*  maybe taylor allocations to actual pool file 1300 strings 27000 bytes ? */
-  if (is_initex) {
+  if (is_initex)
+  {
     if (trace_flag) show_line("ini TeX pool and string allocation\n", 0);
     str_pool = realloc_str_pool (initial_pool_size); 
     str_start = realloc_str_start (initial_max_strings);
@@ -1720,7 +1874,8 @@ int allocate_memory (void)
   mem_max = mem_top;
 /*  allocate main memory here if this is iniTeX */
 /*  otherwise wait for format undumping in itex.c ... */  
-  if (is_initex) {
+  if (is_initex)
+  {
 /*    avoid this if format specified on command line ??? */
 /*    allocate_main_memory(mem_initex); */   /* made variable ! */
     mem = allocate_main_memory(mem_initex);  /* made variable ! */
@@ -2301,12 +2456,16 @@ void knuthify (void)
 char * xchrfile = NULL;
 char * replfile = NULL;
 
-char * short_options = "viKLZMdp2t?u";
+char * short_options = "m:e:h:vpiKLZMdp2t?uo:l:a:";
 
 static struct option long_options[] =
 {
+  {"main-memory",   1, 0, 'm'},
+  {"hyph-size",     1, 0, 'e'},
+  {"trie-size",     1, 0, 'h'},
   //{"interaction",   1, 0, 0},
   {"verbose",       0, 0, 'v'},
+  {"patterns",      0, 0, 'p'},
   {"initex",        0, 0, 'i'},
   {"knuthify",      0, 0, 'K'},
   {"cstyle",        0, 0, 'L'},
@@ -2318,6 +2477,9 @@ static struct option long_options[] =
   {"trace",         0, 0, 't'},
   {"help",          0, 0, '?'},
   {"usage",         0, 0, 'u'},
+  {"dvi-dir",       1, 0, 'o'},
+  {"log-dir",       1, 0, 'l'},
+  {"aux-dir",       1, 0, 'a'},
   {NULL,            0, 0, 0}
 };
 
@@ -2644,12 +2806,12 @@ int read_command_line (int ac, char **av)
 
   if (show_use || quitflag == 3)
   {
-    stamp_it(log_line);
-    strcat(log_line, "\n");
-    show_line(log_line, 0);
-    stampcopy(log_line);
-    strcat(log_line, "\n");
-    show_line(log_line, 0);
+    //stamp_it(log_line);
+    //strcat(log_line, "\n");
+    //show_line(log_line, 0);
+    //stampcopy(log_line);
+    //strcat(log_line, "\n");
+    //show_line(log_line, 0);
 
     if (show_use)
       show_usage();
@@ -2770,7 +2932,7 @@ int init_commands (int ac, char **av)
 
   if (optind == 0)
     optind = ac;
-
+/*
   if (want_version)
   {
     stamp_it(log_line);
@@ -2780,7 +2942,7 @@ int init_commands (int ac, char **av)
     strcat(log_line, "\n");
     show_line(log_line, 0);
   }
-
+*/
 /*  if we aren't including current directory in any directory lists */
 /*  then makes no sense to avoid them separately for TFM files ... */
 /*  (that is, the ./ is already omitted from the dir list in that case */
@@ -2830,12 +2992,19 @@ void initial_memory (void)
   }
   if (mem_initex == 0)
     mem_initex = default_mem_top;
+
   if (trie_size == 0)
     trie_size = default_trie_size;
 /* Just in case user mistakenly specified words instead of kilo words */
-  if (mem_extra_high > 10000L * 1024L) mem_extra_high = mem_extra_high / 1024;
-  if (mem_extra_low > 10000L * 1024L) mem_extra_low = mem_extra_low / 1024;
-  if (mem_initex > 10000L * 1024L) mem_initex = mem_initex / 1024;
+  if (mem_extra_high > 10000L * 1024L)
+    mem_extra_high = mem_extra_high / 1024;
+
+  if (mem_extra_low > 10000L * 1024L)
+    mem_extra_low = mem_extra_low / 1024;
+
+  if (mem_initex > 10000L * 1024L)
+    mem_initex = mem_initex / 1024;
+
 #ifdef ALLOCATEHIGH         /* not used anymore */
   if (mem_extra_high > 2048L * 1024L) { /* extend SW area by 16 mega byte! */
     show_line("WARNING: There may be no benefit to asking for so much memory\n", 0);
@@ -2848,33 +3017,43 @@ void initial_memory (void)
     mem_extra_low = 2048 * 1024; /* limit VLR to 4 x SW */
   }
 #endif
-  if (mem_initex > 2048L * 1024L) { /* extend main memory by 16 mega byte! */
+  if (mem_initex > 2048L * 1024L) /* extend main memory by 16 mega byte! */
+  {
     show_line("WARNING: There may be no benefit to asking for so much memory\n", 0);
 /* mem_initex = 2048 * 1024; */
   }
- #ifdef ALLOCATEDVIBUF
-  if (dvi_buf_size == 0) dvi_buf_size = default_dvi_buf_size;
-/* if less than 1024 assume user specified kilo-bytes, not bytes */
-  if (dvi_buf_size < 1024) dvi_buf_size = dvi_buf_size * 1024;
-  if (dvi_buf_size % 8 != 0)        /* check multiple of eight */
-    dvi_buf_size = (dvi_buf_size / 8 + 1) * 8;
- #endif
-  if (new_hyphen_prime < 0) new_hyphen_prime = 0;
-  if (new_hyphen_prime > 0) {
+
+  if (new_hyphen_prime < 0)
+    new_hyphen_prime = 0;
+
+  if (new_hyphen_prime > 0)
+  {
     if (! is_initex)
       show_line("ERROR: Can only set hyphen prime in iniTeX\n", 1);
-    else {
-      if (new_hyphen_prime % 2 == 0) new_hyphen_prime++;
-      while (!prime(new_hyphen_prime)) new_hyphen_prime = new_hyphen_prime+2;
-      if (trace_flag) {
+    else
+    {
+      if (new_hyphen_prime % 2 == 0)
+        new_hyphen_prime++;
+
+      while (!prime(new_hyphen_prime))
+        new_hyphen_prime = new_hyphen_prime + 2;
+
+      if (trace_flag)
+      {
         sprintf(log_line, "Using %d as hyphen prime\n", new_hyphen_prime);
         show_line(log_line, 0);
       }
     }
   }
-  if (percent_grow > 100) percent_grow = percent_grow - 100;
-  if (percent_grow > 100) percent_grow = 100;   /* upper limit - double */
-  if (percent_grow < 10) percent_grow = 10;   /* lower limit - 10% */
+
+  if (percent_grow > 100)
+    percent_grow = percent_grow - 100;
+
+  if (percent_grow > 100)
+    percent_grow = 100;   /* upper limit - double */
+
+  if (percent_grow < 10)
+    percent_grow = 10;   /* lower limit - 10% */
 }
 
 /**********************************************************************/
@@ -2902,11 +3081,19 @@ void checkpause (int flag)
 /*  stop only in S (scroll) and T (TeX) mode */
   if (interaction >= 0 && interaction < 2)
     flag = 0;    /* 98/Jun/30 */
+
   s = grabenv("DEBUGPAUSE");
-  if (s != NULL) sscanf(s, "%d", &debug_pause);
-  if (flag < 0) return;
-  if (debug_pause) {
-    if (debug_pause || flag > 0) {
+
+  if (s != NULL)
+    sscanf(s, "%d", &debug_pause);
+
+  if (flag < 0)
+    return;
+
+  if (debug_pause)
+  {
+    if (debug_pause || flag > 0)
+    {
       show_line("\n", 0);
 #ifndef _WINDOWS
       show_line("Press any key to continue . . .\n", 0);
@@ -2915,7 +3102,6 @@ void checkpause (int flag)
     }
   }
 }
-
 
 /*************************************************************************/
 
@@ -2959,40 +3145,68 @@ void deslash_all (int ac, char **av)
   char buffer[PATH_MAX];  
   char *s;
 
-/* environment variables for output directories (as in PC TeX) */
+  if ((s = grabenv("TEXDVI")) != NULL)
+    dvi_directory = s;
 
-  if ((s = grabenv("TEXDVI")) != NULL) dvi_directory = s;
-  if ((s = grabenv("TEXLOG")) != NULL) log_directory = s;
-  if ((s = grabenv("TEXAUX")) != NULL) aux_directory = s;
-  if ((s = grabenv("TEXFMT")) != NULL) fmt_directory = s;
-  if ((s = grabenv("TEXPDF")) != NULL) pdf_directory = s;
+  if ((s = grabenv("TEXLOG")) != NULL)
+    log_directory = s;
 
-  strcpy(buffer, av[0]);            /* get path to executable */
+  if ((s = grabenv("TEXAUX")) != NULL)
+    aux_directory = s;
+
+  if ((s = grabenv("TEXFMT")) != NULL)
+    fmt_directory = s;
+
+  if ((s = grabenv("TEXPDF")) != NULL)
+    pdf_directory = s;
+
+  strcpy(buffer, av[0]); /* get path to executable */
 
   if ((s = strrchr(buffer, '\\')) != NULL) *(s+1) = '\0';
   else if ((s = strrchr(buffer, '/')) != NULL) *(s+1) = '\0';
   else if ((s = strrchr(buffer, ':')) != NULL) *(s+1) = '\0';
+
   s = buffer + strlen(buffer) - 1;
+
   if (*s == '\\' || *s == '/') *s = '\0';   /* flush trailing PATH_SEP */
+
   texpath = xstrdup(buffer);
 
 /*  Hmm, we may be operating on DOS environment variables here !!! */
 
-  if (strcmp(dvi_directory, "") != 0) flush_trailing_slash (dvi_directory);
-  if (strcmp(log_directory, "") != 0) flush_trailing_slash (log_directory);
-  if (strcmp(aux_directory, "") != 0) flush_trailing_slash (aux_directory);
-  if (strcmp(fmt_directory, "") != 0) flush_trailing_slash (fmt_directory);
-  if (strcmp(pdf_directory, "") != 0) flush_trailing_slash (pdf_directory);
+  if (strcmp(dvi_directory, "") != 0)
+    flush_trailing_slash (dvi_directory);
+
+  if (strcmp(log_directory, "") != 0)
+    flush_trailing_slash (log_directory);
+
+  if (strcmp(aux_directory, "") != 0)
+    flush_trailing_slash (aux_directory);
+
+  if (strcmp(fmt_directory, "") != 0)
+    flush_trailing_slash (fmt_directory);
+
+  if (strcmp(pdf_directory, "") != 0)
+    flush_trailing_slash (pdf_directory);
 
   if (deslash)
   {
-      unixify (texpath);          /* 94/Jan/25 */
-/* if output directories given, deslashify them also 1993/Dec/12 */
-      if (strcmp(dvi_directory, "") != 0) unixify(dvi_directory);
-      if (strcmp(log_directory, "") != 0) unixify(log_directory);
-      if (strcmp(aux_directory, "") != 0) unixify(aux_directory);
-      if (strcmp(fmt_directory, "") != 0) unixify(fmt_directory);
-      if (strcmp(pdf_directory, "") != 0) unixify(pdf_directory);
+      unixify (texpath);
+
+      if (strcmp(dvi_directory, "") != 0)
+        unixify(dvi_directory);
+
+      if (strcmp(log_directory, "") != 0)
+        unixify(log_directory);
+
+      if (strcmp(aux_directory, "") != 0)
+        unixify(aux_directory);
+
+      if (strcmp(fmt_directory, "") != 0)
+        unixify(fmt_directory);
+
+      if (strcmp(pdf_directory, "") != 0)
+        unixify(pdf_directory);
   }
 
 /*  deslash TeX source file (and format, if format specified) */
@@ -3002,33 +3216,45 @@ void deslash_all (int ac, char **av)
 /*  if (trace_flag || debug_flag)
     sprintf(log_line, "optind %d ac %d\n", optind, ac); */   /* debugging */ 
 /*  if (optind < ac) { */           /* bkph */
-  if (optind < ac && optind > 0) {      /* paranoia 94/Apr/10 */
-    if (deslash) {
-      if (trace_flag || debug_flag) {
+  if (optind < ac && optind > 0)
+  {
+    if (deslash)
+    {
+      if (trace_flag || debug_flag)
+      {
         sprintf(log_line, "deslash: k %d argv[k] %s (argc %d)\n",
           optind, av[optind], ac);
         show_line(log_line, 0);
       }
+
       unixify(av[optind]);
     }
+
     if (pseudo_tilde != 0 || pseudo_space != 0)
-      hidetwiddle (av[optind]);     /* 95/Sep/25 */
-/* For Windows NT, lets allow + instead of & for format specification */
-    if (*av[optind] == '&' || *av[optind] == '+') {
-      format_spec = 1; /* format file specified */
-      format_name = xstrdup(av[optind]+1); /* 94/Oct/25 */
-/*      uppercase (format_name); */    /* why ? 98/Jan/31 */
-      if (optind + 1 < ac) {
-        if (deslash) {
-          if (trace_flag || debug_flag) {
+      hidetwiddle (av[optind]);
+
+    /* For Windows NT, lets allow + instead of & for format specification */
+    if (*av[optind] == '&' || *av[optind] == '+')
+    {
+      format_spec = 1;
+      format_name = xstrdup(av[optind] + 1);
+
+      if (optind + 1 < ac)
+      {
+        if (deslash)
+        {
+          if (trace_flag || debug_flag)
+          {
             sprintf(log_line, "deslash: k %d argv[k] %s (argc %d)\n",
               optind+1, av[optind+1], ac);
             show_line(log_line, 0);
           }
-          unixify(av[optind+1]);
+
+          unixify(av[optind + 1]);
         }
+
         if (pseudo_tilde != 0 || pseudo_space != 0)
-          hidetwiddle (av[optind+1]); /* 95/Sep/25 */
+          hidetwiddle (av[optind+1]);
       }
     }         
   }
@@ -3038,11 +3264,8 @@ void deslash_all (int ac, char **av)
 /* are file names or format names - what if type in control sequences? */
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
 /* main entry point follows */
-
 /* this gets called pretty much right away in `main' in texmf.c */
-
 /* note: those optarg == 0 test don't really work ... */
 /* note: optarg starts at = in case of x=... */
 
@@ -3199,9 +3422,9 @@ void show_inter_val (clock_t interval)
         show_line("0", 0);          /* 95/Mar/1 */
 }
 
-/* final cleanup opportunity */ /* flag is non-zero if error exit */
+/* final cleanup opportunity */
+/* flag is non-zero if error exit */
 /* shows various times, warning about missing chars */
-
 int endit (int flag)
 {
   finish_time = clock();
@@ -3243,7 +3466,7 @@ int endit (int flag)
 
   return flag;
 }
-
+// printf control sequences' name
 void print_cs_name (FILE *output, int h)
 {
   int c, textof, n;
@@ -3274,11 +3497,9 @@ void print_cs_name (FILE *output, int h)
   }
 
 }
-
+// prototype
 int compare_strn (int, int, int, int); /* in tex9.c */
-
 /* compare two csnames in qsort */
-
 int compare_cs (const void *cp1, const void *cp2)
 {
   int c1, c2, l1, l2, k1, k2, textof1, textof2;
@@ -3295,7 +3516,7 @@ int compare_cs (const void *cp1, const void *cp2)
   return compare_strn (k1, l1, k2, l2);
 }
 
-char *csused = NULL;
+char * csused = NULL;
 
 /* Allocate table of indeces to allow sorting on csname */
 /* Allocate flags to remember which ones already listed at start */
@@ -3413,7 +3634,6 @@ void print_cs_names (FILE *output, int pass)
 /* compare two strings in str_pool (not null terminated) */
 /* k1 and k2 are positions in string pool */
 /* l1 and l2 are lengths of strings */
-
 int compare_strn (int k1, int l1, int k2, int l2)
 {
   int c1, c2;
@@ -3439,9 +3659,7 @@ int compare_strn (int k1, int l1, int k2, int l2)
 
   return 0;         /* strings match */
 }
-
 /* compare two font names and their at sizes in qsort */
-
 int compare_fnt (const void *fp1, const void *fp2)
 {
   int f1, f2, l1, l2, k1, k2, s;
@@ -3465,9 +3683,7 @@ int compare_fnt (const void *fp1, const void *fp2)
 
   return 0;         /* should not ever get here */
 }
-
 /* compare two font names */
-
 int compare_fnt_name (int f1, int f2)
 {
   int l1, l2, k1, k2, s;
@@ -3481,11 +3697,8 @@ int compare_fnt_name (int f1, int f2)
 
   return s;
 }
-
 /* decode checksum information */
-
-unsigned long checkdefault = 0x59265920;  /* default signature */
-
+unsigned long checkdefault = 0x59265920; /* default signature */
 int decode_fourty (unsigned long checksum, char *codingvector)
 {
   int c;
@@ -3535,7 +3748,6 @@ double sclpnt (long x)
 }
 
 // Shows list of fonts in log file
-
 void dvi_font_show(internal_font_number f, int suppressname)
 {
   int a, l, k, n;
@@ -3582,9 +3794,7 @@ void dvi_font_show(internal_font_number f, int suppressname)
 
   putc('\n', log_file);
 }
-
 /* Allocate table of indeces to allow sorting on font name */
-
 void show_font_info (void)
 {
   int k, m, fcount, repeatflag;
