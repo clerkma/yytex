@@ -21,26 +21,15 @@
 
 #include "texd.h"
 
-/* Hand-coded routines for TeX or Metafont in C.  This code was (mostly)
-   written by Tim Morgan, drawing from other Unix ports of TeX.  */
 
-/* Either `texd.h' or `mfd.h' will include `../common/texmf.h'.  */
-
-/* Note: INITEX definition in makefile only affects included *.h files */
-
-/* Instantiate data in `texd.h' or `mfd.h' here.  */
-
-#ifdef TeX
-  #define dump_default_var    TEX_format_default
-  #define dump_default        " plain.fmt"
-  #define dump_format         " %s.fmt"
-  #define dump_ext_length     4
-  #define dump_default_length format_default_length
-  #define virgin_program      "virtex"
-  #define main_program        texbody
-  #define edit_value          tex_edit_value
-  #define edit_var            "UFYFEJU" /* shrouded 93/Nov/20 */
-#endif
+#define dump_default_var    TEX_format_default
+#define dump_default        " plain.fmt"
+//#define dump_format         " %s.fmt"
+#define dump_ext_length     4
+#define dump_default_length format_default_length
+#define main_program        texbody
+#define edit_value          tex_edit_value
+#define edit_var            "UFYFEJU" /* shrouded 93/Nov/20 */
 
 
 extern char * replacement[];    /* pointers to replacement strings */
@@ -123,7 +112,7 @@ int main (int ac, char *av[])
 #else
   else exit (flag);   // avoid circularity!
 #endif
-} /* end of main */
+}
 
 /* This is supposed to ``open the terminal for input'', but what we
    really do is copy command line arguments into TeX's or Metafont's
