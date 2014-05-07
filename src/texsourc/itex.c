@@ -1934,7 +1934,7 @@ bool load_fmt_file (void)
       else
         font_ptr = x;
     }
-    frozenfontptr = font_ptr; /* remember number of fonts frozen into format */
+    frozen_font_ptr = font_ptr; /* remember number of fonts frozen into format */
     if (undumpthings(font_check[0], font_ptr + 1))
       return -1;
     if (undumpthings(font_size[0], font_ptr + 1))

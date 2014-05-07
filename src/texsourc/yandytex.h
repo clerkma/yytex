@@ -50,6 +50,7 @@
 #include <signal.h>
 #include <conio.h>
 #include "hpdf.h"
+#include "hpdf_utils.h"
 #include "avl.h"
 
 typedef long        integer;

@@ -21,6 +21,20 @@
 
 bool pdf_doing_string;
 bool pdf_doing_text;
+static integer ten_pow[10] =
+{
+  1,
+  10,
+  100,
+  1000,
+  10000,
+  100000,
+  1000000,
+  10000000,
+  100000000,
+  1000000000
+};
+integer scaled_out;
 HPDF_Doc  yandy_pdf;
 HPDF_Page yandy_page;
 HPDF_Font yandy_font[1024];
@@ -34,13 +48,13 @@ struct tfm_map
 
 int tfm_cmp(void * a, void * b)
 {
-  struct tfm_map * aa = (struct tfm_map *) a;
-  struct tfm_map * bb = (struct tfm_map *) b;
+  char * aa = ((struct tfm_map *) (a))->tfm_name;
+  char * bb = ((struct tfm_map *) (b))->tfm_name;
 
   if (!aa || !bb)
     return 0;
 
-  return strcmp(aa->tfm_name, bb->tfm_name);
+  return (strcmp(aa, bb));
 }
 
 void tfm_print(void *d)
@@ -84,27 +98,44 @@ int insert_font_index(char * name)
   struct tfm_map nn;
   nn.tfm_name = name;
   nn.key = avl_tree->count + 1;
+
   return insert_elmt(avl_tree, &nn, sizeof(struct tfm_map));
 }
 
 int get_font_index(char * name)
 {
   struct tfm_map nn;
+
   nn.tfm_name = name;
-  nn.key      = 0;
+  nn.key = 0;
+
   if (is_present(avl_tree, &nn))
   {
-    if (get_data(avl_tree, &nn, sizeof(struct tfm_map)))
-      return nn.key;
-    else
-      return 0;
-  }
-  else
-  {
+    get_data(avl_tree, &nn, sizeof(struct tfm_map));
+
     return nn.key;
   }
-}
 
+  return 0;
+}
+// report error.
+void pdf_error(const char * t, const char * p)
+{
+  normalize_selector();
+  print_err("Y&Y TeX error");
+
+  if (t != NULL)
+  {
+    print('(');
+    print_string(t);
+    print(')');
+  }
+
+  print_string(": ");
+  print_string(p);
+  succumb();
+}
+// char to string.
 char * pdf_char_to_string(unsigned char i)
 {
   char * str = (char *) malloc(2);
@@ -112,75 +143,169 @@ char * pdf_char_to_string(unsigned char i)
   str[1] = 0;
   return str;
 }
-
+// output one char: normal.
 void pdf_out(unsigned char i)
 {
-  char temp[2] = {i, '\0'};
   HPDF_PageAttr attr = (HPDF_PageAttr) yandy_page->attr;
-  HPDF_Stream_WriteStr(attr->stream, temp);
+  HPDF_Stream_WriteChar(attr->stream, i);
 }
-
-void pdf_print_octal(integer n)
+// octal number: 032, 009 etc.
+void pdf_print_octal(integer s)
 {
-  unsigned int k = 0;
-
-  do
-    {
-      dig[k] = n % 8;
-      n = n / 8;
-      incr(k);
-    }
-  while (n != 0);
-
-  if (k == 1)
-  {
-    pdf_out('0');
-    pdf_out('0');
-  }
-
-  if (k == 2)
-  {
-    pdf_out('0');
-  }
-
-  while (k > 0)
-  {
-    decr(k);
-    pdf_out('0' + dig[k]);
-  }
+  char buf[HPDF_INT_LEN + 1];
+  HPDF_PageAttr attr = (HPDF_PageAttr) yandy_page->attr;
+  sprintf(buf, "%03o", s);
+  HPDF_Stream_Write(attr->stream, (HPDF_BYTE *)buf, strlen(buf));
 }
-
-void pdf_print_char(unsigned char c)
+// output one char: normal or octal.
+void pdf_print_char(unsigned char s)
 {
-  if ((c < 32) || (c == 92) || (c == 40) || (c == 41) || (c > 127))
+  // 32 = '', 92 = '\', 40 = '(', 41 = ')'
+  if ((s <= 32) || (s == 92) || (s == 40) || (s == 41) || (s > 127))
   {
     pdf_out(92);
-    pdf_print_octal(c);
+    pdf_print_octal(s);
   }
   else
   {
-    pdf_out(c);
+    pdf_out(s);
   }
 }
-
+// equivlent: pdf_print in pdfTeX.
 void pdf_print_string(char * s)
 {
   HPDF_PageAttr attr = (HPDF_PageAttr) yandy_page->attr;
   HPDF_Stream_WriteStr(attr->stream, s);
 }
-
-void hpdf_print_char(unsigned char c)
+// print one integer value: signed or unsigned.
+void pdf_print_int(int s)
 {
-  if ((c < 32) || (c == 92) || (c == 40) || (c == 41) || (c > 127))
+  char buf[HPDF_INT_LEN + 1];
+  HPDF_PageAttr attr = (HPDF_PageAttr) yandy_page->attr;
+  char* p = HPDF_IToA(buf, s, buf + HPDF_INT_LEN);
+  HPDF_Stream_Write(attr->stream, (HPDF_BYTE *)buf, (HPDF_UINT)(p - buf));
+}
+// translate sp to bp.
+HPDF_REAL pdf_sp_to_bp(scaled s)
+{
+  // 1 bp = 65781.76 sp
+  return (HPDF_REAL) s / 65781.76;
+}
+// divides scaled s by scaled m.
+scaled divide_scaled(scaled s, scaled m, integer dd)
+{
+  scaled q, r;
+  integer sign, i;
+
+  sign = 1;
+
+  if (s < 0)
   {
-    pdf_print_string(" [(!\\051)] TJ\012");
+    sign = -sign;
+    s = -s;
   }
+
+  if (m < 0)
+  {
+    sign = -sign;
+    m = -m;
+  }
+
+  if (m == 0)
+    pdf_error("arithmetic", "divided by zero");
+  else if (m >= 0x7FFFFFFF / 10)
+    pdf_error("arithmetic", "number too big");
+
+  q = s / m;
+  r = s % m;
+
+  for (i = 1; i <= dd; i++)
+  {
+    q = 10 * q + (10 * r) / m;
+    r = (10 * r) % m;
+  }
+
+  if (2 * r >= m)
+  {
+    incr(q);
+    r = r - m;
+  }
+
+  scaled_out = sign * (s - (r / ten_pow[dd]));
+  return sign * q;
+}
+scaled round_xn_over_d(scaled x, integer n, integer d)
+{
+  bool positive;
+  nonnegative_integer t, u, v;
+
+  if (x >= 0)
+    positive = true; 
   else
   {
-    HPDF_Page_ShowText(yandy_page, pdf_char_to_string(c));
+    x = - (integer) x;
+    positive = false;
+  }
+
+  t = (x % 32767L) * n;
+  u = (x / 32768L) * n + (t / 32768L);
+  v = (u % d) * 32768L + (t % 32768L); 
+
+  if (u / d >= 32768L)
+    arith_error = true; 
+  else
+    u = 32768L * (u / d) + (v / d);
+
+  v = v % d;
+
+  if (2 * v >= d)
+    incr(u);
+
+  if (positive)
+    return u;
+  else
+    return -u;
+}
+// advance char width
+void adv_char_width(internal_font_number f, eight_bits c)
+{
+  scaled w, s_out;
+  integer s;
+
+  w = char_width(f, char_info(f, c));
+  divide_scaled(w, font_size[f], 4);
+  pdf_delta_h = pdf_delta_h + scaled_out;
+}
+// print real value
+void pdf_print(integer m, integer d)
+{
+  if (m < 0)
+  {
+    pdf_out('-');
+    m = -m;
+  }
+
+  pdf_print_int(m / ten_pow[d]);
+  m = m % ten_pow[d];
+
+  if (m > 0)
+  {
+    pdf_out('.');
+    decr(d);
+
+    while (m < ten_pow[d])
+    {
+      pdf_out('0');
+      decr(d);
+    }
+
+    while (m % 10 == 0)
+      m = m / 10;
+
+    pdf_print_int(m);
   }
 }
-
+// end the current string
 void pdf_end_string(void)
 {
   if (pdf_doing_string)
@@ -189,13 +314,14 @@ void pdf_end_string(void)
     pdf_doing_string = false;
   }
 }
-
+// begin to draw a string
 void pdf_begin_string(internal_font_number f)
 {
-  scaled s, v;
+  scaled s_out, v, v_out;
+  integer s;
 
   if (!pdf_doing_text)
-    pdf_begin_text();
+//    pdf_begin_text();
 
   if (f != dvi_f)
   {
@@ -203,57 +329,25 @@ void pdf_begin_string(internal_font_number f)
     pdf_font_def(f);
   }
 
+  s = divide_scaled(cur_h - pdf_delta_h, font_size[f], 3);
+  s_out = scaled_out;
+
+  if (abs(s) < 0100000)
   {
-    s = cur_h - pdf_delta_h;
-    v = pdf_v - cur_v;
+    s_out = divide_scaled(round_xn_over_d(cur_h - pdf_delta_h, 1000, 1000),
+      font_size[f], 3);
+
+    if (s < 0)
+      s_out = -s_out;
   }
 
-  if ((f != pdf_f) || (v != 0) || (s >= 0100000))
-  {
-    pdf_end_string();
-    //pdf_set_textmatrix();
-    pdf_f = f;
-    s = 0;
-  }
-
-  if (!pdf_doing_string)
-  {
-    pdf_print_string(" [");
-    if (s == 0)
-      pdf_out('(');
-  }
-
-  if (s != 0)
-  {
-    if (pdf_doing_string)
-      pdf_out(')');
-    //pdf_print_int(-s);
-    pdf_out('(');
-    pdf_delta_h = cur_h;
-  }
-
-  pdf_doing_string = true;
+//  if (cur_v - pdf_v >= )
 }
-void pdf_begin_text(void)
-{
-  HPDF_Page_BeginText(yandy_page);
-  pdf_doing_text = true;
-  pdf_f = null_font;
-  pdf_doing_string = false;
-}
-
-void pdf_end_text(void)
-{
-  if (pdf_doing_text)
-  {
-    HPDF_Page_EndText(yandy_page);
-    pdf_doing_text = false;
-  }
-}
-
 void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data)
 {
-  printf ("YANDYTEX ERROR: error_no=%04X, detail_no=%u\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no);
+  printf ("Y&Y TeX error: error_no=%04X, detail_no=%u\n",
+    (HPDF_UINT)error_no,
+    (HPDF_UINT)detail_no);
   longjmp(jumpbuffer, 1);
 }
 
@@ -272,21 +366,13 @@ void pdf_font_def(internal_font_number f)
   memcpy(duffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
   memcpy(cuffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
 
-  //if ((k = get_font_index(buffer)) != 0)
-  //{
-  //  printf("PDF_FONT_DEF2: %s-%d.\n", buffer,get_font_index(buffer));
-  //  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[get_font_index(buffer)], (font_size[f] / 65535));
-  //}
-  //else
-  k = get_font_index(buffer);
-
+  k = 0;//get_font_index(buffer);
+  //printf("PDF_FONT_DEF2: %d--%s.\n", k, buffer);
+/*
   if (k == 0)
   {
-    afm_name = kpse_find_file(strcat(buffer, ".afm"), kpse_afm_format, 0);
-    printf("PDF_FONT_DEF3: %s.\n", afm_name);    
-    //printf("PDF_FONT_DEF3: %s.\n", pfb_name);
-    pfb_name = kpse_find_file(strcat(duffer, ".pfb"), kpse_type1_format, 0);
-    printf("PDF_FONT_DEF3: %s.\n", pfb_name);
+    afm_name = kpse_find_file(strcat(buffer, ".afm"), kpse_afm_format, 1);
+    pfb_name = kpse_find_file(strcat(duffer, ".pfb"), kpse_type1_format, 1);
 
     if (afm_name != NULL && pfb_name != NULL)
     {
@@ -296,20 +382,14 @@ void pdf_font_def(internal_font_number f)
       fnt_name = HPDF_LoadType1FontFromFile (yandy_pdf, afm_name, pfb_name);
       yandy_font[k] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
     }
-    else
-    {
-      k = 0; //get_font_index(buffer);
-    }
   }
-  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[k], (font_size[f] / 65535));
+*/
+  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], (font_size[f] / 65535));
 }
 
 void pdf_ship_out(halfword p)
 {
-  integer page_loc;
   char j, k;
-  pool_pointer s;
-  char old_setting;
 
   if (tracing_output > 0)
   {
@@ -376,9 +456,7 @@ void pdf_ship_out(halfword p)
     max_h = width(p) + h_offset;
 
   dvi_h = 0;
-  pdf_delta_h = 0;
   dvi_v = 0;
-  pdf_delta_v = 0;
   cur_h = h_offset;
   dvi_f = null_font;
 
@@ -400,23 +478,16 @@ void pdf_ship_out(halfword p)
   if (total_pages == 0)
   {
     init_tfm_map();
-    yandy_pdf = HPDF_New(pdf_error_handler, NULL);
-    yandy_pdf->pdf_version = HPDF_VER_17;
-    //HPDF_SetCompressionMode(yandy_pdf, HPDF_COMP_ALL);
-    HPDF_SetInfoAttr(yandy_pdf, HPDF_INFO_PRODUCER, "Y&YTeX 2.2.3");
-    yandy_font[0] = HPDF_GetFont(yandy_pdf, "Times-Roman", NULL);
+    yandy_pdf = HPDF_New (pdf_error_handler, NULL);
+    HPDF_SetCompressionMode (yandy_pdf, HPDF_COMP_ALL);
+    yandy_pdf -> pdf_version = HPDF_VER_17;
+    HPDF_SetInfoAttr(yandy_pdf, HPDF_INFO_PRODUCER, "Y&Y TeX");
+    yandy_font[0] = HPDF_GetFont (yandy_pdf, "Times-Roman", NULL);
   }
 
-  //page_loc = dvi_offset + dvi_ptr;
-  //dvi_out(bop);
   yandy_page = HPDF_AddPage (yandy_pdf);
-  HPDF_Page_SetSize(yandy_page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT);
+  HPDF_Page_SetSize (yandy_page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT);
 
-  //for (k = 0; k <= 9; k++)
-  //  dvi_four(count(k));
-  //
-  //dvi_four(last_bop);
-  //last_bop = page_loc;
   cur_v = height(p) + v_offset;
   temp_ptr = p;
 
@@ -425,7 +496,6 @@ void pdf_ship_out(halfword p)
   else
     pdf_hlist_out();
 
-  //dvi_out(eop);
   incr(total_pages);
   cur_s = -1;
 lab30:;
@@ -440,124 +510,8 @@ lab30:;
 
   flush_node_list(p);
 }
-/*
-void pdf_ship_out(pointer p)
-{
-  integer i, j, k;
 
-  if (tracing_output > 0)
-  {
-    print_nl("");
-    print_ln();
-    print_string("Completed box being shipped out");
-  }
 
-  if (term_offset > max_print_line - 9)
-    print_ln();
-  else if ((term_offset > 0) || (file_offset > 0))
-    print_char(' ');
-
-  print_char('[');
-  j = 9;
-
-  while((count(j) == 0) && (j > 0))
-    decr(j);
-
-  for (k = 0; k <= j; k++)
-  {
-    print_int(count(k));
-
-    if (k < j)
-      print_char('.');
-  }
-
-#ifndef _WINDOWS
-  fflush(stdout);
-#endif
-
-  if (tracing_output > 0)
-  {
-    print_char(']');
-    begin_diagnostic();
-    show_box(p);
-    end_diagnostic(true);
-  }
-
-  if ((height(p) > max_dimen) || (depth(p) > max_dimen) ||
-      (height(p) + depth(p) + v_offset > max_dimen) ||
-      (width(p) + h_offset > max_dimen))
-  {
-    print_err("Huge page cannot be shipped out");
-    help2("The page just created is more than 18 feet tall or",
-        "more than 18 feet wide, so I suspect something went wrong.");
-    error();
-
-    if (tracing_output <= 0)
-    {
-      begin_diagnostic();
-      print_nl("The following box has been deleted:");
-      show_box(p);
-      end_diagnostic(true);
-    }
-
-    goto lab30;
-  }
-
-  if (height(p) + depth(p) + v_offset > max_v)
-    max_v = height(p) + depth(p) + v_offset;
-
-  if (width(p) + h_offset > max_h)
-    max_h = width(p) + h_offset;
-
-  pdf_h = 0;
-  pdf_v = 0;
-  cur_h = h_offset;
-  pdf_f = null_font;
-
- if (output_file_name == 0)
-  {
-    if (job_name == 0)
-      open_log_file();
-
-    pack_job_name(".pdf");
-
-    while(!b_open_out(dvi_file))
-    {
-      prompt_file_name("file name for output", ".pdf");
-    }
-
-    output_file_name = b_make_name_string(dvi_file);
-  }
-
-  if (total_pages == 0)
-  {
-    yandy_pdf = HPDF_New(pdf_error_handler, NULL);
-    yandy_pdf->pdf_version = HPDF_VER_17;
-    HPDF_SetCompressionMode(yandy_pdf, HPDF_COMP_ALL);
-  }
-
-  yandy_page = HPDF_AddPage (yandy_pdf);
-  HPDF_Page_SetWidth (yandy_page, (HPDF_REAL)hsize / 65536);
-  HPDF_Page_SetHeight (yandy_page, (HPDF_REAL)vsize / 65536);
-
-  cur_v = height(p) + v_offset;
-  temp_ptr = p;
-
-  incr(total_pages);
-  cur_s = -1;
-lab30:;
-  if (tracing_output <= 0)
-    print_char(']');
-
-  dead_cycles = 0;
-
-#ifndef _WINDOWS
-  fflush(stdout);
-#endif
-
-  flush_node_list(p);
-}
-*/
 void pdf_hlist_out (void)
 {
   scaled base_line;
@@ -569,7 +523,7 @@ void pdf_hlist_out (void)
 /*  char g_sign;  */
   int g_sign;            /* 95/Jan/7 */
   halfword p;
-  integer save_loc;
+  //integer save_loc;
   halfword leader_box;
   scaled leader_wd;
   scaled lx;
@@ -587,13 +541,6 @@ void pdf_hlist_out (void)
   p = list_ptr(this_box);
   incr(cur_s);
 
-  //if (cur_s > 0)
-  //  dvi_out(141);
-
-  //if (cur_s > max_push)
-  //  max_push = cur_s;
-
-  //save_loc = dvi_offset + dvi_ptr;
   base_line = cur_v;
   left_edge = cur_h;
 
@@ -601,10 +548,6 @@ void pdf_hlist_out (void)
 lab21:
     if (is_char_node(p))
     {
-      //HPDF_Page_BeginText(yandy_page);
-      //HPDF_Page_SetTextMatrix(yandy_page, 1, 0, 0, 1, (cur_h/65536 + 72), (841.89 - (cur_v/65536 + 72)));
-      //HPDF_Page_MoveTextPos(yandy_page, (cur_h/65536 + 72), (841.89 - (cur_v/65536 + 72)));
-      //pdf_print_string(" [(");
       do
         {
           f = font(p);
@@ -614,34 +557,22 @@ lab21:
           {
             if (!font_used[f])
             {
-              //dvi_font_def(f);
-              pdf_font_def(f);
-              //if (dvi_f != null_font)
-              //  pdf_print_string(")] TJ\012");
-              //pdf_print_string(" [(");
               font_used[f] = true;
             }
 
             dvi_f = f;
           }
 
-          //pdf_print_char(c);
-          if (!pdf_doing_text)
           HPDF_Page_BeginText(yandy_page);
-          HPDF_Page_MoveTextPos(yandy_page, (cur_h/65536 + 72), (841.89 - (cur_v/65536 + 72)));
-          //HPDF_Page_ShowText(yandy_page, pdf_char_to_string(c));
-          hpdf_print_char(c);
+          pdf_font_def(f);
+          HPDF_Page_MoveTextPos(yandy_page, pdf_sp_to_bp(cur_h) + 72, (841.89 - (pdf_sp_to_bp(cur_v) + 72)));
+          HPDF_Page_ShowText(yandy_page, pdf_char_to_string(c));
           HPDF_Page_EndText(yandy_page);
-          //pdf_begin_string(f);
-          //pdf_print_char(c);
-          //printf("HLISTOUT: %c.\n", c);
           cur_h = cur_h + char_width(f, char_info(f, c));
-          pdf_delta_h = pdf_delta_h + char_width(f, char_info(f, c));
           p = link(p);
         }
       while(((p >= hi_mem_min)));
-      //pdf_print_string(")] TJ\012");
-      //HPDF_Page_EndText(yandy_page);
+
       dvi_h = cur_h;
   }
   else
@@ -767,9 +698,11 @@ lab21:
               while (cur_h + leader_wd <= edge)
               {
                 cur_v = base_line + shift_amount(leader_box);
-                synch_v();
+                //synch_v();
+                dvi_v = cur_v;
                 save_v = dvi_v;
-                synch_h();
+                //synch_h();
+                dvi_h = cur_h;
                 save_h = dvi_h;
                 temp_ptr = leader_box;
                 outer_doing_leaders = doing_leaders;
@@ -826,12 +759,7 @@ lab14:
 
     if ((rule_ht > 0) && (rule_wd > 0))
     {
-      //synch_h();
       cur_v = base_line + rule_dp;
-      //synch_v();
-      //dvi_out(set_rule);
-      //dvi_four(rule_ht);
-      //dvi_four(rule_wd);
       HPDF_Page_SetLineWidth(yandy_page, rule_ht / 65535);
       HPDF_Page_MoveTo (yandy_page, (cur_h / 65535 + 72), (841.89 - cur_v / 65535 - 72));
       HPDF_Page_LineTo (yandy_page, (cur_h / 65535 + 72 + rule_wd / 65535), (841.89 - cur_v / 65535 - 72));
@@ -844,11 +772,6 @@ lab13:
 lab15:
     p = link(p);
   }
-
-  //prune_movements(save_loc);
-
-  //if (cur_s > 0)
-  //  dvi_pop(save_loc);
 
   decr(cur_s);
 }
@@ -865,7 +788,7 @@ void pdf_vlist_out (void)
 /*  char g_sign;  */
   int g_sign;          /* 95/Jan/7 */
   halfword p;
-  integer save_loc;
+  //integer save_loc;
   halfword leader_box;
   scaled leader_ht;
   scaled lx;
@@ -883,13 +806,6 @@ void pdf_vlist_out (void)
   p = list_ptr(this_box);
   incr(cur_s);
 
-  //if (cur_s > 0)
-  //  dvi_out(141);
-
-  //if (cur_s > max_push)
-  //  max_push = cur_s;
-
-  //save_loc = dvi_offset + dvi_ptr;
   left_edge = cur_h;
   cur_v = cur_v - height(this_box);
   top_edge = cur_v;
@@ -912,7 +828,8 @@ void pdf_vlist_out (void)
           else
           {
             cur_v = cur_v + height(p);
-            synch_v();
+            //synch_v();
+            dvi_v = cur_v;
             save_h = dvi_h;
             save_v = dvi_v;
             cur_h = left_edge + shift_amount(p);
@@ -1025,10 +942,12 @@ void pdf_vlist_out (void)
                 while (cur_v + leader_ht <= edge)
                 {
                   cur_h = left_edge + shift_amount(leader_box);
-                  synch_h();
+                  //synch_h();
+                  dvi_h = cur_h;
                   save_h = dvi_h;
                   cur_v = cur_v + height(leader_box);
-                  synch_v();
+                  //synch_v();
+                  dvi_v = cur_v;
                   save_v = dvi_v;
                   temp_ptr = leader_box;
                   outer_doing_leaders = doing_leaders;
@@ -1072,11 +991,6 @@ lab14:
 
       if ((rule_ht > 0) && (rule_wd > 0))
       {
-        //synch_h();
-        //synch_v();
-        //dvi_out(put_rule);
-        //dvi_four(rule_ht);
-        //dvi_four(rule_wd);
         HPDF_Page_SetLineWidth(yandy_page, rule_ht / 65535);
         HPDF_Page_MoveTo (yandy_page, (cur_h / 65535 + 72), (841.89 - cur_v / 65535 - 72));
         HPDF_Page_LineTo (yandy_page, (cur_h / 65535 + 72 + rule_wd / 65535), (841.89 - cur_v / 65535 - 72));
@@ -1090,11 +1004,6 @@ lab13:
 lab15:
     p = link(p);
   }
-
-  //prune_movements(save_loc);
-
-  //if (cur_s > 0)
-  //  dvi_pop(save_loc);
 
   decr(cur_s);
 }

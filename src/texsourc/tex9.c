@@ -317,11 +317,12 @@ void close_files_and_terminate (void)
     }
     else
     {
+      //HPDF_SaveToFile(yandy_pdf, "texput.pdf");
       HPDF_SaveToFile(yandy_pdf, pdf_file_name);
       
       print_nl("Output written on ");
 
-      if (full_file_name_flag && dvi_file_name != NULL)
+      if (full_file_name_flag && pdf_file_name != NULL)
         print_char_string((unsigned char *) pdf_file_name);
       else
         slow_print(output_file_name);

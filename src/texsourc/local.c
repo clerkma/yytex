@@ -36,7 +36,6 @@ int wantcopyrght = 1;
 char *compiletime  =  __TIME__;
 char *compiledate  =  __DATE__;
 char *www          = "http://www.tug.org/yandy";
-char *rights       = "All Rights Reserved.";
 char *copyright    = "\nCopyright (C) 1993--2000 Y&Y, Inc.\n"
                      "Copyright (C) 2007 TeX Users Group.\n"
                      "Copyright (C) 2014 Clerk Ma.\n\n"
@@ -44,7 +43,7 @@ char *copyright    = "\nCopyright (C) 1993--2000 Y&Y, Inc.\n"
                      "it under the terms of the GNU General Public License as published by\n"
                      "the Free Software Foundation; either version 2 of the License, or\n"
                      "(at your option) any later version.\n\n  ";
-char *yandyversion = "2.2.4";
+char *yandyversion = "2.3.0";
 char *application  = "Y&Y TeX";
 char *tex_version  = "This is TeX, Version 3.14159265";
 
@@ -1936,11 +1935,10 @@ int allocate_memory (void)
 /* free in reverse order 93/Nov/26 */
 int free_memory (void)
 {
-  int n;
-  unsigned heaptotal = 0;
-/*  unsigned total; */
+  unsigned heap_total = 0;
 
-  if (trace_flag) show_line("free_memory ", 0);
+  if (trace_flag)
+    show_line("free_memory ", 0);
 
   if (verbose_flag || trace_flag)
     show_maximums(stdout); 
@@ -1948,119 +1946,151 @@ int free_memory (void)
   if (trace_flag)
   {
     sprintf(log_line, "Heap total: %u bytes --- max address %u\n", 
-        heaptotal, max_address);
+        heap_total, max_address);
     show_line(log_line, 0);
   }
 
-  if (trace_flag) {
+  if (trace_flag)
+  {
     sprintf(log_line, "Main Memory: variable node %d (%d - %d) one word %d (%d - %d)\n",
       lo_mem_max - mem_min, mem_min, lo_mem_max, mem_end  - hi_mem_min, hi_mem_min, mem_end);
     show_line(log_line, 0);
   }
-/*  following only needed to check consistency of heap ... useful debugging */
-  if (trace_flag) show_line("Freeing memory again\n", 0);
 
-/*  if (trace_flag)
-    show_line(log_line, "Zero Glue Reference Count %d\n", mem[0].hh.v.RH); */
+  /*  following only needed to check consistency of heap ... useful debugging */
+  if (trace_flag)
+    show_line("Freeing memory again\n", 0);
 
-/*  the following checks the heap integrity */
-
-/*  if ((n = _heapchk ()) != _HEAPOK) { */      /* 94/Feb/18 */
-  n = _HEAPOK;
-#ifdef SHOWHEAPERROR
-  n = _heapchk();
-  if (n != _HEAPOK) {     /* 94/Feb/18 */
-    sprintf(log_line, "WARNING: Heap corrupted (%d)\n", n);
-    show_line(log_line, 1);
-    sprintf(log_line, "HEAP %s (%s)\n", heapstrings[-n], "free_memory");
-    show_line(log_line, 0);
-    return n;   /* non-zero and negative */ /* unreachable ??? */
-  }
-#endif
 /*  only free memory if safe ... additional check */
 #ifdef ALLOCATEINI
   if (is_initex)
   {
-    if (trie_taken != NULL) free(trie_taken);
-    if (trie_hash  != NULL) free(trie_hash);
-    if (trie_r     != NULL) free(trie_r);
-    if (trie_c     != NULL) free(trie_c);
-    if (trie_o     != NULL) free(trie_o);
-    if (trie_l     != NULL) free(trie_l);
+    if (trie_taken != NULL)
+      free(trie_taken);
+
+    if (trie_hash != NULL)
+      free(trie_hash);
+
+    if (trie_r != NULL)
+      free(trie_r);
+
+    if (trie_c != NULL)
+      free(trie_c);
+
+    if (trie_o != NULL)
+      free(trie_o);
+
+    if (trie_l != NULL)
+      free(trie_l);
+
     trie_taken = NULL;
     trie_hash = trie_l = trie_r = NULL;
     trie_c = NULL;
     trie_o = NULL;
   }
-#endif  
+#endif
+
 #ifdef ALLOCATETRIES
-  if (trie_trc != NULL) free (trie_trc);
-  if (trie_tro != NULL) free (trie_tro);
-  if (trie_trl != NULL) free (trie_trl);
+  if (trie_trc != NULL)
+    free (trie_trc);
+
+  if (trie_tro != NULL)
+    free (trie_tro);
+
+  if (trie_trl != NULL)
+    free (trie_trl);
+
   trie_trc = NULL;
   trie_tro = trie_trl = NULL;
 #endif
+
 #ifdef ALLOCATEHYPHEN
-  if (hyph_list != NULL) free(hyph_list);
-  if (hyph_word != NULL) free(hyph_word);
+  if (hyph_list != NULL)
+    free(hyph_list);
+
+  if (hyph_word != NULL)
+    free(hyph_word);
+
   hyph_list = NULL;
   hyph_word = NULL;
 #endif
+
 #ifdef ALLOCATEMAIN
 /*  if (zzzaa != NULL) free(zzzaa); */  /* NO: zzzaa may be offset ! */
-  if (mainmemory != NULL) free(mainmemory);
+  if (mainmemory != NULL)
+    free(mainmemory);
+
   mainmemory = NULL;
 #endif
+
 #ifdef ALLOCATEFONT
-  if (font_info != NULL) free(font_info);
+  if (font_info != NULL)
+    free(font_info);
+
   font_info = NULL;
 #endif
+
 #ifdef ALLOCATESTRING
-  if (str_start != NULL) free(str_start);
-  if (str_pool != NULL) free(str_pool);
+  if (str_start != NULL)
+    free(str_start);
+
+  if (str_pool != NULL)
+    free(str_pool);
+
   str_start = NULL;
   str_pool = NULL;
 #endif
 
-#ifdef ALLOCATEHASH
-  if (zzzae != NULL) free(zzzae);
-  zzzae = NULL;
-#endif
-
-#ifdef ALLOCATEDVIBUF
-  if (zdvibuf != NULL) free(zdvibuf);
-  zdvibuf = NULL;
-#endif
-#ifdef ALLOCATEZEQTB
-  if (zeqtb != NULL) free(zeqtb);
-  zeqtb = NULL;
-#endif
-
 #ifdef ALLOCATEPARAMSTACK
-  if (param_stack != NULL) free(param_stack);
+  if (param_stack != NULL)
+    free(param_stack);
+
   param_stack = NULL;
 #endif
+
 #ifdef ALLOCATENESTSTACK
-  if (nest != NULL) free(nest);
+  if (nest != NULL)
+    free(nest);
+
   nest = NULL;
 #endif
+
 #ifdef ALLOCATEINPUTSTACK
-  if (input_stack != NULL) free(input_stack);
+  if (input_stack != NULL)
+    free(input_stack);
+
   input_stack = NULL;
 #endif
+
 #ifdef ALLOCATESAVESTACK
-  if (save_stack != NULL) free(save_stack);
+  if (save_stack != NULL)
+    free(save_stack);
+
   save_stack = NULL;
 #endif
 /*  if (buffercopy != NULL) free (buffercopy); */ /* 94/Jun/27 */
-  if (format_file != NULL) free(format_file);   /* 96/Jan/16 */
-  if (string_file != NULL) free(string_file);   /* 96/Jan/16 */
-  if (source_direct != NULL) free(source_direct); /* 98/Sep/29 */
+  if (format_file != NULL)
+    free(format_file);
+
+  if (string_file != NULL)
+    free(string_file);
+
+  if (source_direct != NULL)
+    free(source_direct);
+
   format_file = string_file = source_direct = NULL;
-  if (dvi_file_name != NULL) free(dvi_file_name);
-  if (log_file_name != NULL) free(log_file_name);
-  if (pdf_file_name != NULL) free(pdf_file_name);
+
+  if (dvi_file_name != NULL)
+    free(dvi_file_name);
+
+  if (log_file_name != NULL)
+    free(log_file_name);
+
+  if (pdf_file_name != NULL)
+    free(pdf_file_name);
+
   pdf_file_name = log_file_name = dvi_file_name = NULL;       /* 00/Jun/18 */
+
   return 0;
 }
 
@@ -2068,13 +2098,21 @@ bool prime (int x)
 {
   int k;
   int sum = 1;    /* 1 + 3 + 5 + k = (k + 1) * (k + 1) / 4 */
-  if (x % 2 == 0) return false;
-  for (k = 3; k < x; k = k + 2) {
-    if (x % k == 0) return false;
-/*    if (k * k > x) return true; */
-    if (sum * 4 > x) return true;
+
+  if (x % 2 == 0)
+    return false;
+
+  for (k = 3; k < x; k = k + 2)
+  {
+    if (x % k == 0)
+      return false;
+
+    if (sum * 4 > x)
+      return true;
+
     sum += k;
   }
+
   return true;
 }
 
@@ -2086,12 +2124,10 @@ void complainarg (int c, char *s)
 {
   sprintf(log_line, "ERROR: Do not understand `%c' argument value `%s'\n", c, s);
   show_line(log_line, 1);
-  show_use = 1;           // 2000 June 21
+  show_use = 1;
 }
 
 /* following is list of allowed command line flags and args */
-
-/* char *allowedargs="+vitrdcyzpsqnwbfXABCDFGKLMNOQRSTYWZ?g=m=u=e=o=a=x=k=h=l=u=E=H="; */
 
 /* only  01234567.9 still left to take ... maybe recycle u */
 
@@ -2100,7 +2136,7 @@ char *allowedargs = "+bcdfijnpqrstvwyzABCDFGIJKLMNOPQRSTVWXYZ023456789?a=e=g=h=k
 /* char takeargs="gmueoazhluEH"; */ /* subset that takes args! needed here */
 
 void reorderargs (int ac, char **av)
-{      /* put in 1993/Dec/28 */
+{
   int n, m;
   char *s, *t;
 //  char takeargs[128];   /* large enough for all command line arg chars */
@@ -2170,12 +2206,18 @@ void reorderargs (int ac, char **av)
 int test_align (int address, int size, char *name)
 {
   int n;
-  if (size > 4) n = address % 4;
-  else n = address % size;
-  if (n != 0) {
+
+  if (size > 4)
+    n = address % 4;
+  else
+    n = address % size;
+
+  if (n != 0)
+  {
     sprintf(log_line, "OFFSET %d (ELEMENT %d) in %s\n", n, size, name);
     show_line(log_line, 0);
   }
+
   return n;
 }
 
@@ -2187,6 +2229,7 @@ void check_fixed_align (int flag)
   {
     show_line("PLEASE RECOMPILE ME!\n", 1);
   }
+
 #ifdef CHECKALIGNMENT
   if (!flag)
     return;
@@ -2315,6 +2358,7 @@ void check_alloc_align (int flag)
 {
   if (test_align ((int) eqtb, sizeof(eqtb[0]), "ALLOCATED ALIGNMENT"))
     show_line("PLEASE RECOMPILE ME!\n", 1);
+
 #ifdef CHECKALIGNMENT
   if (!flag) return;
 #ifndef ALLOCZEQTB
@@ -2396,12 +2440,10 @@ char *grabenv (char *varname)
     return NULL;
 }
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
 void flush_trailing_slash (char *directory)
 {
   char *s;
-/*  flush trailing \ or / in directory, if any 1993/Dec/12 */
+
   if (strcmp(directory, "") != 0)
   {
     s = directory + strlen(directory) - 1;
@@ -2456,13 +2498,14 @@ void knuthify (void)
 char * xchrfile = NULL;
 char * replfile = NULL;
 
-char * short_options = "m:e:h:vpiKLZMdp2t?uo:l:a:";
+char * short_options = "m:e:h:0:vpiKLZMdp2t?uo:l:a:";
 
 static struct option long_options[] =
 {
   {"main-memory",   1, 0, 'm'},
   {"hyph-size",     1, 0, 'e'},
   {"trie-size",     1, 0, 'h'},
+  {"output-format", 1, 0, '0'},
   //{"interaction",   1, 0, 0},
   {"verbose",       0, 0, 'v'},
   {"patterns",      0, 0, 'p'},
@@ -2731,18 +2774,35 @@ int analyze_flag (int c, char *optarg)
         dvi_directory = "";
       else
         dvi_directory = xstrdup(optarg);
+
       if (strcmp(dvi_directory, "") == 0)
         complainarg(c, optarg);
+
       break;
     case '0':
-      if (optarg == 0)
-        pdf_output_flag = true;
+      {
+        char * format_spec;
+
+        if (optarg != 0)
+          format_spec = xstrdup(optarg);
+
+        if (!strcmp(format_spec, "pdf"))
+          pdf_output_flag = true;
+        else if (!strcmp(format_spec, "dvi"))
+          pdf_output_flag = false;
+        else
+        {
+          sprintf(log_line, "ERROR: Do not understand argument value `%s'\n", format_spec);
+          show_line(log_line, 1);
+        }
+      }
       break;
     case 'l':
       if (optarg == 0)
         log_directory = "";
       else
         log_directory = xstrdup(optarg);
+
       if (strcmp(log_directory, "") == 0)
         complainarg(c, optarg);
       break;
@@ -2768,22 +2828,19 @@ int analyze_flag (int c, char *optarg)
 void strip_name (char *pathname)
 {
   char *s;
+
   if ((s = strrchr(pathname, '\\')) != NULL);
   else if ((s = strrchr(pathname, '/')) != NULL);
   else if ((s = strrchr(pathname, ':')) != NULL) s++;
   else s = pathname;
+
   *s = '\0';
 }
 
-/* char commandfile[PATH_MAX]; */ /* keep around so can open later */
-
 char *programpath = ""; /* pathname of program */
-                    /* redundant with texpath ? */
 
 /* The following does not deslashify arguments ? Do we need to ? */
-
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
 /* try and read commands on command line */
 int read_command_line (int ac, char **av)
 { 
@@ -2821,7 +2878,7 @@ int read_command_line (int ac, char **av)
       show_line(log_line, 0);
     }
 
-    return -1;        // failure
+    return -1; // failure
   } 
 
   if (replfile != NULL && *replfile != '\0')

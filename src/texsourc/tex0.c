@@ -1396,9 +1396,9 @@ scaled xn_over_d_(scaled x, integer n, integer d)
     positive = false;
   }
 
-  t =(x % 32767L) * n;
-  u =(x / 32768L)* n +(t / 32768L);
-  v =(u % d)* 32768L +(t % 32768L); 
+  t = (x % 32767L) * n;
+  u = (x / 32768L) * n + (t / 32768L);
+  v = (u % d) * 32768L + (t % 32768L); 
 
   if (u / d >= 32768L)
     arith_error = true; 

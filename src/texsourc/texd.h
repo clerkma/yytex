@@ -698,20 +698,19 @@ EXTERN char * log_file_name;
 
 EXTERN font_index fmem_ptr; 
 EXTERN internal_font_number font_ptr;
-EXTERN internal_font_number frozenfontptr;        /* 99/Mar/26 */
+EXTERN internal_font_number frozen_font_ptr;
 /* There are about 24 integer size items per font, or about 100 bytes */
 EXTERN ffourquarters font_check[font_max + 1]; 
 
 EXTERN scaled font_size[font_max + 1]; 
 EXTERN scaled font_dsize[font_max + 1]; 
-EXTERN font_index font_params[font_max + 1];    /* in 3.14159 */
+EXTERN font_index font_params[font_max + 1];
 EXTERN str_number font_name[font_max + 1]; 
 EXTERN str_number font_area[font_max + 1]; 
-EXTERN eight_bits font_bc[font_max + 1]; /* already padded 511 + 1 = 512 */
-EXTERN eight_bits font_ec[font_max + 1]; /* already padded 511 + 1 = 512 */
+EXTERN eight_bits font_bc[font_max + 1];
+EXTERN eight_bits font_ec[font_max + 1];
 EXTERN halfword font_glue[font_max + 1]; 
 /* use char instead of bool to save space, but is it worth slow down ? */
-/* EXTERN char font_used[font_max + 1];  */
 EXTERN bool font_used[font_max + 1]; 
 
 /* might want to make some of following only one character wide also ? */
@@ -720,9 +719,9 @@ EXTERN bool font_used[font_max + 1];
 EXTERN integer hyphen_char[font_max + 1]; 
 EXTERN integer skew_char[font_max + 1]; 
 EXTERN font_index bchar_label[font_max + 1]; 
-EXTERN short font_bchar[font_max + 1];  /* already padded 1023 + 1 = 1024 */
+EXTERN short font_bchar[font_max + 1];
 /* don't change above to int or format file will be incompatible */
-EXTERN short font_false_bchar[font_max + 1];  /* already padded 1023 + 1 = 1024 */
+EXTERN short font_false_bchar[font_max + 1];
 /* don't change above to int or format file will be incompatible */
 EXTERN integer char_base[font_max + 1]; 
 EXTERN integer width_base[font_max + 1]; 
@@ -745,8 +744,8 @@ EXTERN integer dead_cycles;
 EXTERN bool doing_leaders; 
 
 /* EXTERN quarterword c, f;  */
-/* EXTERN integer c, f */; /* padded out */
-EXTERN int c, f; /* padded out */       /* 95/Jan/7 */
+/* EXTERN integer c, f */;
+EXTERN int c, f;
 
 EXTERN scaled rule_ht, rule_dp, rule_wd; 
 EXTERN halfword g; 
@@ -1225,9 +1224,11 @@ extern int load_pool_strings (integer spare_size);
 EXTERN HPDF_Doc  yandy_pdf;
 EXTERN HPDF_Page yandy_page;
 EXTERN HPDF_Font yandy_font[1024];
-bool pdf_doing_string;
-bool pdf_doing_text;
-bool pdf_output_flag;
+EXTERN bool pdf_doing_string;
+EXTERN bool pdf_doing_text;
+//EXTERN integer ten_pow[10];
+EXTERN integer scaled_out;
+EXTERN bool pdf_output_flag;
 EXTERN tree *avl_tree;
 EXTERN void init_tfm_map(void);
 EXTERN void free_tfm_map(void);

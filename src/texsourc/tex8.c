@@ -850,7 +850,7 @@ void new_font_(small_number a)
       {
         if (s == font_size[f])
         {
-          if (ignore_frozen == 0 || f > frozenfontptr)
+          if (ignore_frozen == 0 || f > frozen_font_ptr)
           {
             if (trace_flag)
             {
@@ -863,7 +863,7 @@ void new_font_(small_number a)
       }
       else if (font_size[f] == xn_over_d(font_dsize[f], - (integer) s, 1000))
       {
-        if (ignore_frozen == 0 || f > frozenfontptr) /* 99/Mar/26 */
+        if (ignore_frozen == 0 || f > frozen_font_ptr) /* 99/Mar/26 */
         {
           if (trace_flag)
           {
