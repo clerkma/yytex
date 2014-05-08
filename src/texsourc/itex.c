@@ -31,10 +31,9 @@
 extern clock_t start_time, main_time, finish_time; /* in local.c */
 
 #ifdef INITEX
-  void do_initex (void); /* later in this file */
+  void do_initex (void);
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* sec 0004 */
 void initialize (void)
 {
@@ -164,6 +163,7 @@ void initialize (void)
   shown_mode = 0;
   page_contents = 0;
   page_tail = page_head;
+
 #ifdef ALLOCATEMAIN
   if (is_initex) /* in iniTeX we did already allocate mem [] */
 #endif
@@ -246,14 +246,17 @@ void initialize (void)
   cur_loop = 0;
   cur_head = 0;
   cur_tail = 0;
+
+
 /*  *not* OK with ALLOCATEHYPHEN, since may not be allocated yet */
 #ifndef ALLOCATEHYPHEN
   for (z = 0; z <= hyphen_prime; z++)
   {
-    hyph_word[z]= 0;
-    hyph_list[z]= 0;
+    hyph_word[z] = 0;
+    hyph_list[z] = 0;
   }
 #endif
+
   hyph_count = 0;
   output_active = false;
   insert_penalties = 0;
@@ -270,19 +273,13 @@ void initialize (void)
     write_open[k] = false;
 
   edit_name_start = 0;
+
 #ifdef INITEX
-/* initex stuff split off for convenience of optimization adjustments */
   if (is_initex)
   {
     do_initex();
   }
-#else
-/* trap the -i on command line situation if INITEX was NOT defined */
-  if (is_initex)
-  {
-    show_line("Sorry, somebody forgot to make an INITEX!\n", 1);
-  }
-#endif /* not INITEX */
+#endif
 }
 
 /* do the part of initialize() that requires mem_top, mem_max or mem[] */
@@ -1011,7 +1008,7 @@ void prefixed_command (void)
   while (cur_cmd == prefix)
   {
     if (!odd(a / cur_chr))
-      a = a + cur_chr;      /*   small_number a;  */
+      a = a + cur_chr;
 
     do
       {
@@ -1897,6 +1894,7 @@ bool load_fmt_file (void)
       sprintf(log_line, "Read from fmt fmem_ptr = %d\n", x);
       show_line(log_line, 0);
     }
+
     if (x > current_font_mem_size) /* 93/Nov/28 dynamic allocate font_info */
     {
       if (trace_flag)
@@ -2319,11 +2317,10 @@ int texbody (void)
 {
   history = 3;
 
-  //set_paths(TEXFORMATPATHBIT + TEXINPUTPATHBIT + TFMFILEPATHBIT);
-
-  if (ready_already == 314159L) /* magic number */
+  if (ready_already == 314159L)
     goto lab1;
-/*  These tests are almost all compile time tests and so could be eliminated */
+
+  /*  These tests are almost all compile time tests and so could be eliminated */
   bad = 0;
 
   if ((half_error_line < 30) || (half_error_line > error_line - 15))
@@ -2372,8 +2369,7 @@ int texbody (void)
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
   if (mem_max > mem_top + mem_extra_high)     /* not compile time */
     bad = 14;       /* ha ha */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*  if ((0 < 0)||(font_max > 255)) */
+
   if ((0 < min_quarterword) || (font_max > max_quarterword))  /* 93/Dec/3 */
     bad = 15;
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -2398,7 +2394,7 @@ int texbody (void)
 
   if (format_default_length > PATHMAX)
     bad = 31;
-/*  if (2 * 262143L < mem_top - mem_min) */
+
   if (max_halfword < (mem_top - mem_min) / 2)
     bad = 41;
 
@@ -2409,7 +2405,7 @@ int texbody (void)
     show_line(log_line, 1);
 
     if (!knuth_flag)
-      bad_formator_pool(format_file, "the format file", "TEXFORMATS");  /* 96/Jan/17 */
+      bad_formator_pool(format_file, "the format file", "TEXFORMATS");
 
     goto lab9999;     // abort
   }
@@ -2429,7 +2425,7 @@ int texbody (void)
   }
 #endif
 
-  ready_already = 314159L;      /* magic number */
+  ready_already = 314159L; /* magic number */
 
 lab1:
   selector = term_only;
@@ -2437,11 +2433,13 @@ lab1:
   term_offset = 0;
   file_offset = 0;
   show_line(tex_version, 0);
-#ifdef _M_AMD64
-  sprintf(log_line, " (%s %s/x64)", application, yandyversion);
+
+#ifdef _WIN64
+  sprintf(log_line, " (%s %s/Windows 64bit)", application, yandyversion);
 #else
-  sprintf(log_line, " (%s %s/x86)", application, yandyversion);
+  sprintf(log_line, " (%s %s/Windows 32bit)", application, yandyversion);
 #endif
+
   show_line(log_line, 0);
 
   if (format_ident > 0)
@@ -2526,8 +2524,8 @@ lab1:
 
     fix_date_and_time();
 
-    magic_offset = str_start[886] - 9 * ord_noad;  /* following: */
-/*  "0234000122*4000133**3**344*0400400*000000234000111*1111112341011" */
+    magic_offset = str_start[886] - 9 * ord_noad;
+    /* "0234000122*4000133**3**344*0400400*000000234000111*1111112341011" */
 
     if (interaction == batch_mode)
       selector = no_print;
@@ -2580,7 +2578,6 @@ lab9999:
 
 #ifdef ALLOCATEMAIN
 /* add a block of variable size node space below mem_bot */
-/* used in tex0.c, local.c, itex.c */
 void add_variable_space(int size)
 {
   halfword p;
@@ -2588,7 +2585,7 @@ void add_variable_space(int size)
   integer t;
 
   if (mem_min == 0)
-    t = mem_min;  /* bottom of present block */
+    t = mem_min;
   else
     t = mem_min + 1;
 
@@ -2602,16 +2599,16 @@ void add_variable_space(int size)
     mem_min = mem_start;
   }
 
-  p = mem[rover + 1].hh.v.LH;
+  p = llink(rover);
   q = mem_min + 1;
-  mem[mem_min].hh.v.RH = 0; /* insert blank word below ??? */
-  mem[mem_min].hh.v.LH = 0; /* insert blank word below ??? */
-  mem[p + 1].hh.v.RH = q;
-  mem[rover + 1].hh.v.LH = q;
-  mem[q + 1].hh.v.RH = rover;
-  mem[q + 1].hh.v.LH = p;
-  mem[q].hh.v.RH = empty_flag;
-  mem[q].hh.v.LH = t - q; /* block size */
+  link(mem_min) = 0; /* insert blank word below ??? */
+  info(mem_min) = 0; /* insert blank word below ??? */
+  rlink(p) = q;
+  llink(rover) = q;
+  rlink(q) = rover;
+  llink(q) = p;
+  link(q) = empty_flag;
+  info(q) = t - q; /* block size */
   rover = q;
 }
 #endif
@@ -2646,7 +2643,7 @@ void reset_hyphen (void)
   for (z = 0; z <= hyphen_prime; z++)
   {
     hyph_word[z] = 0;
-    hyph_list[z] = 0; /* hyph_list[z]:=null; l.18131 */
+    hyph_list[z] = 0;
   }
 
   hyph_count = 0;
@@ -2834,10 +2831,7 @@ void do_initex (void)
   font_glue[null_font]        = 0;
   font_params[null_font]      = 7;
   param_base[null_font]       = -1;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***  */
-  reset_trie();         /* shared 93/Nov/26 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***  */
-
+  reset_trie();
   text(frozen_protection) = 1184; /* "inaccessible" */
   format_ident = 1251;
   text(end_write) = 1290;
@@ -2845,7 +2839,7 @@ void do_initex (void)
   eq_type(end_write) = outer_call;
   equiv(end_write) = 0;
 }
-#endif /* INITEX */
+#endif
 
 #ifdef INITEX
 /* sec 0047 */
@@ -3115,7 +3109,6 @@ void first_fit_ (trie_pointer p)
     {
       if (trie_size <= h + 256)
       {
-        /* pattern memory - NOT DYNAMIC */
         overflow("pattern memory", trie_size);
 /*      not dynamic ---- but can be set -h=... from command line in ini-TeX */
         return;     // abort_flag set

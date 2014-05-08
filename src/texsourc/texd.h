@@ -751,13 +751,7 @@ EXTERN scaled rule_ht, rule_dp, rule_wd;
 EXTERN halfword g; 
 EXTERN integer lq, lr; 
 
-#ifdef ALLOCATEDVIBUF
-  EXTERN eight_bits *zdvibuf; 
-#else
-  /* EXTERN eight_bits dvi_buf[dvi_buf_size + 1]; */
-  /* EXTERN eight_bits dvi_buf[dvi_buf_size + 4]; */ /* padded out  */
-  EXTERN eight_bits zdvibuf[dvi_buf_size + 4];  /* padded out 1996/Jan/18 */
-#endif
+EXTERN eight_bits dvi_buf[dvi_buf_size + 4];
 
 EXTERN dvi_index half_buf; 
 EXTERN dvi_index dvi_limit; 

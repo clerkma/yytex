@@ -1676,8 +1676,6 @@ void show_all_strings (void)
     show_string(k);
 }
 
-// int notfirst=0;    // debugging only
-
 /********************************** 2000 August 15 end ****************************/
 /* sec 0517 */
 void end_name (void) 
@@ -1935,9 +1933,9 @@ void scan_file_name (void)
     }
   while (!(cur_cmd != spacer));
 
-  quoted_file_name = 0;         /* 98/March/15 */
+  quoted_file_name = false;
 
-  if (allow_quoted_names) /* check whether quoted name */
+  if (allow_quoted_names)
   {
     if (cur_chr == '"')
     {
@@ -1950,20 +1948,16 @@ void scan_file_name (void)
   {
     if ((cur_cmd > other_char) || (cur_chr > 255)) 
     {
-      back_input(); /* not a character put it back and leave */
+      back_input();
       goto lab30; 
     } 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*  convert tilde '~' to pseudo tilde */
-/*  if (pseudo_tilde != 0 && cur_chr == '~') cur_chr = pseudo_tilde; */
-/*  convert space ' ' to pseudo space */
-/*  if (pseudo_space != 0 && cur_chr == ' ') cur_chr = pseudo_space; */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
     if (!more_name(cur_chr))    /* up to next white space */
       goto lab30;
 
     get_x_token();
   }
+
 lab30:
   end_name();
   name_in_progress = false;
@@ -2022,7 +2016,7 @@ void show_tex_inputs (void)
 
 /**********************************************************************/
 /* sec 0530 */
-/*  s - what can't be found, e - default */
+/* s - what can't be found, e - default */
 void prompt_file_name_(char * s, str_number e) 
 {
   integer k;
@@ -2433,7 +2427,6 @@ void show_tex_fonts (void)
 }
 
 /**********************************************************************/
-
 /* called only from tex8.c */
 /* sec 0560 */
 internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)

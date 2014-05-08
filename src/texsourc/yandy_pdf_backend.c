@@ -51,10 +51,10 @@ int tfm_cmp(void * a, void * b)
   char * aa = ((struct tfm_map *) (a))->tfm_name;
   char * bb = ((struct tfm_map *) (b))->tfm_name;
 
-  if (!aa || !bb)
-    return 0;
+  //if (aa == NULL || bb == NULL)
+  //  return 0;
 
-  return (strcmp(aa, bb));
+  return (strcmp(aa, bb)) ;
 }
 
 void tfm_print(void *d)
@@ -107,16 +107,15 @@ int get_font_index(char * name)
   struct tfm_map nn;
 
   nn.tfm_name = name;
-  nn.key = 0;
+  nn.key = -1;
 
   if (is_present(avl_tree, &nn))
   {
-    get_data(avl_tree, &nn, sizeof(struct tfm_map));
-
-    return nn.key;
+    if (get_data(avl_tree, &nn, sizeof(struct tfm_map)))
+      return nn.key;
   }
-
-  return 0;
+  else
+  return -1;
 }
 // report error.
 void pdf_error(const char * t, const char * p)
@@ -343,6 +342,20 @@ void pdf_begin_string(internal_font_number f)
 
 //  if (cur_v - pdf_v >= )
 }
+// end a text section.
+void pdf_end_text()
+{
+  if (pdf_doing_text)
+  {
+    pdf_end_string();
+    HPDF_Page_EndText(yandy_page);
+    pdf_doing_text = false;
+  }
+}
+// draw a rule.
+void pdf_set_rule(scaled x, scaled y, scaled w, scaled h)
+{
+}
 void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data)
 {
   printf ("Y&Y TeX error: error_no=%04X, detail_no=%u\n",
@@ -366,9 +379,9 @@ void pdf_font_def(internal_font_number f)
   memcpy(duffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
   memcpy(cuffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
 
-  k = 0;//get_font_index(buffer);
+  k = get_font_index(buffer);
   //printf("PDF_FONT_DEF2: %d--%s.\n", k, buffer);
-/*
+
   if (k == 0)
   {
     afm_name = kpse_find_file(strcat(buffer, ".afm"), kpse_afm_format, 1);
@@ -383,7 +396,7 @@ void pdf_font_def(internal_font_number f)
       yandy_font[k] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
     }
   }
-*/
+
   HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], (font_size[f] / 65535));
 }
 
@@ -992,9 +1005,9 @@ lab14:
       if ((rule_ht > 0) && (rule_wd > 0))
       {
         HPDF_Page_SetLineWidth(yandy_page, rule_ht / 65535);
-        HPDF_Page_MoveTo (yandy_page, (cur_h / 65535 + 72), (841.89 - cur_v / 65535 - 72));
-        HPDF_Page_LineTo (yandy_page, (cur_h / 65535 + 72 + rule_wd / 65535), (841.89 - cur_v / 65535 - 72));
-        HPDF_Page_Stroke (yandy_page);
+        HPDF_Page_MoveTo(yandy_page, (cur_h / 65535 + 72), (841.89 - cur_v / 65535 - 72));
+        HPDF_Page_LineTo(yandy_page, (cur_h / 65535 + 72 + rule_wd / 65535), (841.89 - cur_v / 65535 - 72));
+        HPDF_Page_Stroke(yandy_page);
       }
 
       goto lab15;

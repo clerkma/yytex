@@ -20,7 +20,6 @@
 #include "texd.h"
 
 /* following bit used to be end of tex1.c */
-
 #ifdef STAT
 /* sec 0284 */
 void restore_trace_(halfword p, char * s)
@@ -33,7 +32,7 @@ void restore_trace_(halfword p, char * s)
   print_char('}');
   end_diagnostic(false);
 }
-#endif /* STAT */
+#endif
 /* sec 0281 */
 void unsave (void)
 {
@@ -90,7 +89,7 @@ void unsave (void)
         else if (xeq_level[p] != level_one)
         {
           eqtb[p] = save_stack[save_ptr];
-          xeq_level[p] = l;     /* l may be used without having been ... */
+          xeq_level[p] = l;
 #ifdef STAT
           if (tracing_restores > 0)
             restore_trace(p, "restoring");
@@ -138,6 +137,7 @@ void prepare_mag (void)
     int_error(mag);
     geq_word_define(int_base + mag_code, 1000);
   }
+
   mag_set = mag;
 }
 /* sec 0295 */
@@ -433,7 +433,7 @@ void show_context (void)
 lab30:
   cur_input = input_stack[input_ptr];
 }
-#pragma optimize("g", off)          /* 98/Dec/10 experiment */
+//#pragma optimize("g", off)          /* 98/Dec/10 experiment */
 /* sec 0323 */
 void begin_token_list_ (halfword p, quarterword t)
 {
@@ -507,7 +507,7 @@ void begin_token_list_ (halfword p, quarterword t)
   else
     cur_input.loc_field = p;
 }
-#pragma optimize("", on)          /* 98/Dec/10 experiment */
+//#pragma optimize("", on)          /* 98/Dec/10 experiment */
 /* sec 0324 */
 void end_token_list (void) 
 { 
@@ -1689,8 +1689,8 @@ void find_font_dimen_(bool writing)
     }
   else if (n > 0)
     cur_val = n + param_base[f];    /* 98/Oct/5 */
-  else
-    cur_val = (&font_check[f] - &font_info[0]); /* 98/Oct/5 */
+//  else
+//    cur_val = (&font_check[f] - &font_info[0]); /* 98/Oct/5 */
 /*  checksum =  (((font_check[f].b0) << 8 | font_check[f].b1) << 8 |
         font_check[f].b2) << 8 | font_check[f].b3; */
   }
@@ -2602,4 +2602,4 @@ lab40:
         goto lab20;
       }
 }
-#pragma optimize ("", on)             /* 96/Sep/12 */
+//#pragma optimize ("", on)             /* 96/Sep/12 */

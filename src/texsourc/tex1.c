@@ -19,9 +19,8 @@
 
 #include "texd.h"
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* sec 0198 */
-void show_box_(halfword p)
+void show_box_(pointer p)
 {
   depth_threshold = show_box_depth;
   breadth_max = show_box_breadth;
@@ -44,7 +43,7 @@ void show_box_(halfword p)
   print_ln();
 }
 /* sec 0200 */
-void delete_token_ref_(halfword p)
+void delete_token_ref_(pointer p)
 {
   if (token_ref_count(p) == 0)
     flush_list(p);
@@ -52,7 +51,7 @@ void delete_token_ref_(halfword p)
     decr(token_ref_count(p));
 }
 /* sec 0201 */
-void delete_glue_ref_(halfword p)
+void delete_glue_ref_(pointer p)
 {
   if (glue_ref_count(p) == 0)
     free_node(p, glue_spec_size);
@@ -60,11 +59,12 @@ void delete_glue_ref_(halfword p)
     decr(glue_ref_count(p));
 }
 /* sec 0202 */
-void flush_node_list_(halfword p)
+void flush_node_list_(pointer p)
 {
-  halfword q;
+  pointer q;
 
-  while (p != 0) {      /* while p<>null */
+  while (is_char_node(p))
+  {
     q = link(p);
 
     if (is_char_node(p))
@@ -226,25 +226,27 @@ void flush_node_list_(halfword p)
           }
           break;
       }
+
       free_node(p, small_node_size);
 lab30:;
     }
+
     p = q;
   }
 }
 /* sec 0204 */
-halfword copy_node_list_(halfword p)
+pointer copy_node_list_(pointer p)
 {
-  register halfword Result;
-  halfword h;
-  halfword q;
-  halfword r;
+  pointer h;
+  pointer q;
+  pointer r;
   char words;
 
   h = get_avail();
   q = h;
 
-  while (p != 0) {      /* while p<>null do l.3969 */
+  while (p != 0)
+  {
     words = 1;
 
     if ((p >= hi_mem_min)) 
@@ -385,8 +387,7 @@ halfword copy_node_list_(halfword p)
   q = link(h);
   free_avail(h);
 
-  Result = q;
-  return Result;
+  return q;
 }
 /* sec 0211 */
 void print_mode_(integer m)
@@ -428,6 +429,7 @@ void print_mode_(integer m)
       }
     }
   }
+
   print_string(" mode");
 }
 /* sec 0216 */
@@ -441,7 +443,7 @@ void push_nest (void)
     if (nest_ptr == current_nest_size)
       nest = realloc_nest_stack(increment_nest_size);
 
-    if (nest_ptr == current_nest_size) /* check again after allocation */
+    if (nest_ptr == current_nest_size)
     {
       overflow("semantic nest size", current_nest_size);
       return;     // abort_flag set
@@ -449,11 +451,12 @@ void push_nest (void)
 #else
     if (nest_ptr == nest_size)
     {
-      overflow("semantic nest size", nest_size); /* semantic next size - not dynamic */
+      overflow("semantic nest size", nest_size);
       return;     // abort_flag set
     }
 #endif
   }
+
   nest[nest_ptr]= cur_list;
   incr(nest_ptr);
   head = get_avail();
@@ -2347,11 +2350,11 @@ halfword id_lookup_(integer j, integer l)
         if (trace_flag)
         {
           str_pool[pool_ptr] = '\0';
-          sprintf(log_line, " tex1 cs_count++ '%s' ", &str_pool[pool_ptr-l-d]);
+          sprintf(log_line, " tex1 cs_count++ '%s' ", &str_pool[pool_ptr - l - d]);
           show_line(log_line, 0);      /* debugging */
         }
 #endif /* STAT */
-      } 
+      }
 
       goto lab40; 
     } 
@@ -2385,6 +2388,7 @@ void new_save_level_(group_code c)
      }
 #endif
   }
+
   save_type(save_ptr) = level_boundary;
   save_level(save_ptr) = (quarterword) cur_group; 
   save_index(save_ptr) = cur_boundary;

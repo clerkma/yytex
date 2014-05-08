@@ -45,10 +45,17 @@
 #include <kpathsea/tex-file.h>
 #include <kpathsea/variable.h>
 #include <kpathsea/absolute.h>
+#include <stdarg.h>
 #include <setjmp.h>
 #include <time.h>
 #include <signal.h>
-#include <conio.h>
+#ifdef MSDOS
+  #include <direct.h> /* for _getcwd() */
+  #include <conio.h>  /* for _getch() */
+  #define getch _getch
+#else
+  #include <unistd.h>
+#endif
 #include "hpdf.h"
 #include "hpdf_utils.h"
 #include "avl.h"
