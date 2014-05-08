@@ -21,8 +21,6 @@
 
 #define PATH_SEP '/'
 
-// used only in jump_out in tex0.c, and in texbody in itex.c
-// and main in texmf.c and a few other abort situations in texmf.c
 // texk/web2c/lib/uexit.c
 void uexit (int unix_code)
 {

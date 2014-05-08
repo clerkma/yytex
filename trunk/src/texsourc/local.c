@@ -584,7 +584,11 @@ void *ourrealloc (void *old, size_t new_size)
   if (old_size >= new_size && old_size < new_size + 4)
     return old;
 
+#ifdef MSDOS
   mnew = _expand (old, new_size); /* first try and expand in place MSVC */
+#else
+  mnew = realloc (old, new_size);
+#endif
 
   if (mnew != NULL)
   {
@@ -1792,24 +1796,6 @@ int allocate_memory (void)
   }
 #endif
 
-/* no real reason to allocate dvi_buf - no need to ever grow it */
-#ifdef ALLOCATEDVIBUF
-/*  zdvibuf = NULL; */
-  zdvibuf = allocatedvibuf (dvi_buf_size);
-  if (zdvibuf == NULL) return -1;
-#endif
-
-#ifdef ALLOCATEZEQTB
-/*  zeqtb = NULL; */
-#ifdef INCREASEFONTS
-/*  zeqtb = allocatezeqtb (13507 + eqtb_extra); */  /* 94/Mar/29 */
-  zeqtb = allocatezeqtb (hash_size + 4007 + eqtb_extra);  /* 94/Mar/29 */
-#else
-/*  zeqtb = allocatezeqtb (13507); */
-  zeqtb = allocatezeqtb (hash_size + 4007); 
-#endif
-#endif
-
 #ifdef ALLOCATEINPUTSTACK
   input_stack = NULL;        /* new 1999/Jan/21 */
   current_stack_size = 0;
@@ -2276,10 +2262,6 @@ void check_fixed_align (int flag)
   test_align ((int) &depth_threshold, 4, "depth_threshold");
   test_align ((int) &breadth_max, 4, "breadth_max");
   test_align ((int) &nest, sizeof(nest[0]), "nest");
-
-#ifdef ALLOCZEQTB
-  test_align ((int) &zeqtb, sizeof(zeqtb[0]), "zeqtb");  /* not any more ? */
-#endif
 /*  test_align ((int) &xeq_level, sizeof(xeq_level[0]), "xeq_level"); */
   test_align ((int) &zzzad, sizeof(zzzad[0]), "zzzad");
 /*  test_align ((int) &hash, sizeof(hash[0]), "hash"); */

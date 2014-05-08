@@ -17,12 +17,6 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-#ifdef MSDOS
-  #include <direct.h> /* for _getcwd() */
-#else
-  #include <unistd.h>
-#endif
-
 #define EXTERN extern
 
 #include "texd.h"

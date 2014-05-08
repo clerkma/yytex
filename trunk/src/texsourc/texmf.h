@@ -23,8 +23,6 @@
 
 #include "yandytex.h"
 
-#include <stdarg.h>
-
 #ifdef _MSC_VER
   #define INLINE __inline
 #else
@@ -33,10 +31,7 @@
 
 #ifdef TeX
   #define dump_file  fmt_file
-  #define dump_path  TEXFORMATPATH
-  #define mwrite_out write_dvi
   #define out_file   dvi_file
-  #define out_buf    dvi_buf
 #endif /* not TeX */
 
 /* File types. */
@@ -46,13 +41,6 @@ typedef FILE * word_file;
 /* Read a line of input as quickly as possible.  */
 extern bool input_line (FILE *);
 #define input_ln(stream, flag) input_line(stream)
-
-/* We need to read an integer from stdin if we're debugging.  */
-#ifdef DEBUG
-  #define getint() inputint(stdin)
-#else
-  #define getint()
-#endif
 
 /* `b_open_in' (and out) is used only for reading (and writing) .tfm
    files; `w_open_in' (and out) only for dump files.  The filenames are

@@ -140,7 +140,6 @@ void dvi_four_(integer x)
   dvi_out(x / 0400); // dvi_out((x >> 8));
   dvi_out(x % 0400); // dvi_out(x & 255);
 }
-/* following needs access to dvi_buf=zdvibuf see coerce.h */
 /* sec 0601 */
 void zdvipop(integer l)
 {
@@ -149,7 +148,6 @@ void zdvipop(integer l)
   else
     dvi_out(142);
 }
-/* following needs access to dvi_buf=zdvibuf see coerce.h */
 /* sec 0602 */
 void dvi_font_def_(internal_font_number f)
 {
@@ -407,30 +405,17 @@ lab30:
     free_node(p, movement_node_size);
   }
 }
-/* following needs access to dvi_buf=zdvibuf see coerce.h */
 /* sec 1368 */
 void special_out_(halfword p)
 {
   char old_setting;
   pool_pointer k;
 
-  if (cur_h != dvi_h)
-  {
-    movement(cur_h - dvi_h, right1);
-    dvi_h = cur_h;
-  }
-
-  if (cur_v != dvi_v)
-  {
-    movement(cur_v - dvi_v, down1);
-    dvi_v = cur_v;
-  }
-
+  synch_h();
+  synch_v();
   old_setting = selector;
   selector = new_string;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* About output \special{...} make some space in string pool 97/Mar/9 */
 #ifdef ALLOCATESTRING
   if (pool_ptr + 32000 > current_pool_size)
     str_pool = realloc_str_pool (increment_pool_size);
@@ -446,6 +431,7 @@ void special_out_(halfword p)
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
   show_token_list(link(write_tokens(p)), 0, pool_size - pool_ptr);
 #endif
+
   selector = old_setting;
   str_room(1);
 
@@ -590,7 +576,6 @@ void out_what_(halfword p)
       break;
   }
 }
-/* following needs access to dvi_buf=zdvibuf see coerce.h */
 /* sec 0619 */
 void hlist_out (void)
 {
@@ -898,7 +883,6 @@ lab15:
 
   decr(cur_s);
 }
-/* following needs access to dvi_buf=zdvibuf see coerce.h */
 /* sec 0629 */
 void vlist_out (void)
 {
@@ -1140,8 +1124,6 @@ lab15:
 
   decr(cur_s);
 }
-/* sec 0638 */
-/* following needs access to dvi_buf=zdvibuf see coerce.h */
 /* sec 0638 */
 void dvi_ship_out_(halfword p)
 {

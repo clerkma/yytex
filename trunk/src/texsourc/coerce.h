@@ -27,21 +27,6 @@
 /* in this case, just let mem be alias for zmem */
 /* BUT: allow continued use of register for eqtb at least ! */
 #define mem zmem
-#ifndef ALLOCATEZEQTB
-/* if eqtb is NOT allocated, can just let eqtb be an alias for zeqtb */
-//#define eqtb zeqtb        /* EXPERIMENT 1996/JAN/18 */
-#else
-/* uncomment `register memory_word *eqtb=zeqtb' */
-/* but with present compiler its faster to not do it this way 99/Jan/18 */
-#endif
-
-#ifndef ALLOCATEDVIBUF
-/* if dvi_buf is NOT allocated, can just let dvi_buf be an alias for zdvibuf */
-  #define dvi_buf zdvibuf      /* EXPERIMENT 1996/JAN/18 */
-#else
-/* uncomment `register memory_word *dvi_buf=zdvibuf' */
-/* but with present compiler its faster to not do it this way 99/Jan/18 */
-#endif
 
 void print_err (const char * s);
 void initialize (void);
@@ -555,11 +540,6 @@ void give_err_help(void);
 bool open_fmt_file(void);
 bool load_fmt_file(void);
 void close_files_and_terminate(void);
-#ifdef ALLOCATEDVIBUF
-  #define closefilesandterminate_regmem  register eight_bits *dvi_buf=zdvibuf;
-#else
-  #define closefilesandterminate_regmem  /* register memory_word *eqtb=zeqtb; */
-#endif
 void final_cleanup(void);
 void init_prim(void);
 void debug_help(void);

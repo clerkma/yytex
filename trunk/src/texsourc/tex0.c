@@ -57,6 +57,7 @@ INLINE void dvi_out_(ASCII_code op)
 {
   dvi_buf[dvi_ptr] = op;
   incr(dvi_ptr);
+
   if (dvi_ptr == dvi_limit)
     dvi_swap();
 }
@@ -69,10 +70,12 @@ INLINE void succumb (void)
   {
     error();
   }
+
 #ifdef DEBUG
   if (interaction > 0)
     debug_help();
 #endif
+
   history = 3;
   jump_out();
 }
