@@ -143,25 +143,23 @@ typedef union
 
 /* Attempt to reduce size of font_info array ... (and hence format files) */
 
-typedef unsigned char unsignedchar;
-
 typedef struct
 {
   struct
   {
 #ifdef WORDS_BIGENDIAN
-    unsignedchar B0, B1, B2, B3;
+    unsigned char B0, B1, B2, B3;
 #else
-    unsignedchar B3, B2, B1, B0;
+    unsigned char B3, B2, B1, B0;
 #endif
   } u;
 } ffourquarters; /* was fourunsignedchars; */
 
 #define fquarterword unsigned char
 
-typedef union {
-  integer cint ;
-/*  fourunsignedchars qqqq; */
+typedef union
+{
+  integer cint;
   ffourquarters qqqq;
 } fmemoryword;
 

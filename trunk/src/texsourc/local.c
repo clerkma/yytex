@@ -398,10 +398,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
     show_line(log_line, 0);
   }
 
-  if (share_flag == 0)
-    pinput = fopen (infile, "r");
-  else
-    pinput = _fsopen (infile, "r", share_flag);    /* 94/July/12 */
+  pinput = fopen (infile, "r");
 
   if (pinput == NULL)
   {
@@ -417,17 +414,14 @@ int read_xchr_file (char *filename, int flag, char *argv[])
         sprintf(log_line, "Trying %s\n", infile);
         show_line(log_line, 0);
       }
-
-      if (share_flag == 0)
-        pinput = fopen (infile, "r");
-      else
-        pinput = _fsopen (infile, "r", share_flag);  /* 94/July/12 */
+      
+      pinput = fopen (infile, "r");
     }
   }
 
   if (pinput == NULL)
   {
-    strcpy (infile, argv[0]);     /* try TeX program path */
+    strcpy(infile, argv[0]);     /* try TeX program path */
 
     if ((s = strrchr (infile, '\\')) != NULL) *(s+1) = '\0';
     else if ((s = strrchr (infile, '/')) != NULL) *(s+1) = '\0';
@@ -441,10 +435,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
       show_line(log_line, 0);
     }
 
-    if (share_flag == 0)
-      pinput = fopen (infile, "r");
-    else
-      pinput = _fsopen (infile, "r", share_flag);    /* 94/July/12 */
+    pinput = fopen (infile, "r");
 
     if (pinput == NULL)
     {
@@ -461,10 +452,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
           show_line(log_line, 0);
         }
 
-        if (share_flag == 0)
-          pinput = fopen (infile, "r");
-        else
-          pinput = _fsopen (infile, "r", share_flag); /* 94/July/12 */
+        pinput = fopen (infile, "r");
       }
     }
   }
@@ -486,10 +474,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
       show_line(log_line, 0);
     }
 
-    if (share_flag == 0)
-      pinput = fopen (infile, "r");
-    else
-      pinput = _fsopen (infile, "r", share_flag);
+    pinput = fopen (infile, "r");
 
     if (pinput == NULL)
     {
@@ -506,10 +491,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
           show_line(log_line, 0);
         }
 
-        if (share_flag == 0)
-          pinput = fopen (infile, "r");
-        else
-          pinput = _fsopen (infile, "r", share_flag);
+        pinput = fopen (infile, "r");
       }
     }
   }
@@ -2393,8 +2375,7 @@ char *grabenv (char *varname)
   if (*varname == '\0')
     return NULL;
 
-/*  speedup to avoid double lookup when called from set_paths in ourpaths.c */
-  if (lastname != NULL && _strcmpi(lastname, varname) == 0)
+  if (lastname != NULL && strcasecmp(lastname, varname) == 0)
   {
     if (trace_flag)
     {
@@ -2455,10 +2436,7 @@ void knuthify (void)
   c_style_flag      = false; /* don't add file name to error msg */
   show_fmt_flag     = false; /* don't show format file in log */
   show_tfm_flag     = false; /* don't show metric file in log */
-/* font_max = 255; */ /* revert to TeX 82 limit */
-/* if you want this, change in tex.h definition of font_max to `int' */
-/* and add define FONTMAX 511, and in local.c add font_max = FONTMAX; */
-  tab_step = 0;
+  tab_step          = 0;
   show_line_break_stats = false;   /* do not show line break stats */
   show_fonts_used = false;
   default_rule = 26214;      /* revert to default rule thickness */
@@ -2474,7 +2452,7 @@ void knuthify (void)
   full_file_name_flag = false;   // 00 Jun 18
   save_strings_flag = false;    // 00 Aug 15
   knuth_flag = true;       /* so other code can know about this */
-} /* end of knuthify */
+}
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
@@ -2483,7 +2461,7 @@ void knuthify (void)
 char * xchrfile = NULL;
 char * replfile = NULL;
 
-char * short_options = "m:e:h:0:vpiKLZMdp2t?uo:l:a:";
+char * short_options = "m:e:h:0:H:g:P:vpiKLZMdp2t?uo:l:a:";
 
 static struct option long_options[] =
 {
@@ -2491,6 +2469,9 @@ static struct option long_options[] =
   {"hyph-size",     1, 0, 'e'},
   {"trie-size",     1, 0, 'h'},
   {"output-format", 1, 0, '0'},
+  {"tab-step",      1, 0, 'H'},
+  {"percent-grow",  1, 0, 'g'},
+  {"default-rule",  1, 0, 'P'},
   //{"interaction",   1, 0, 0},
   {"verbose",       0, 0, 'v'},
   {"patterns",      0, 0, 'p'},
@@ -2650,7 +2631,6 @@ int analyze_flag (int c, char *optarg)
     case 'G':
       file_method = false; /* 94/Feb/13 */
       break;
-//  case 'V': share_flag = _SH_DENYNO; break; /* 0x40 - deny none mode */ 
 /*  case 'X': nohandler++; break; */
 /*  case 'f': waitflush = false; break; */
 /*  case 'F': floating = true; break; */
@@ -2684,16 +2664,6 @@ int analyze_flag (int c, char *optarg)
         complainarg(c, optarg);
       break;
 #endif
-#ifdef ALLOCATEDVIBUF
-    case 'u':
-      if (optarg == 0)
-        dvi_buf_size = default_dvi_buf_size;
-      else
-        dvi_buf_size = atoi(optarg); /* 94/Mar/24 */
-      if (dvi_buf_size == 0)
-        complainarg(c, optarg);
-      break;
-#endif
     case 'g':
       if (optarg == 0)
         percent_grow = 62;
@@ -2712,9 +2682,6 @@ int analyze_flag (int c, char *optarg)
       else if (pseudo_tilde < 128)
         pseudo_tilde = 128;
       break;
-/*  case 'H':  if (optarg == 0) heapthreshold = 1024; else heapthreshold = atoi(optarg);
- *             if (heapthreshold == 0) complainarg(c, optarg); else heap_flag = 1;
- *             break; */
     case 'H':
       if (optarg == 0)
         tab_step = 8;
@@ -2766,7 +2733,7 @@ int analyze_flag (int c, char *optarg)
       break;
     case '0':
       {
-        char * format_spec;
+        char * format_spec = NULL;
 
         if (optarg != 0)
           format_spec = xstrdup(optarg);
@@ -2893,12 +2860,9 @@ int read_command_line (int ac, char **av)
 
 int init_commands (int ac, char **av)
 {
-/*  NOTE: some defaults changed 1993/Nov/18 */
-/*  want_version = show_use = switchflag = return_flag = false;
-  is_initex = trace_flag = deslash = non_ascii = false; */
   pdf_output_flag   = false;
-  is_initex         = false; /* check for dumping format file */
-  allow_patterns    = false; /* using \pattern after format file loaded */
+  is_initex         = false; 
+  allow_patterns    = false;
   reset_exceptions  = false;
   non_ascii         = false;
   key_replace       = false;
@@ -2925,27 +2889,26 @@ int init_commands (int ac, char **av)
   test_dir_access   = true;  /* test if readable item is perhaps a sub-dir */
   dir_method        = true;  /* in dir_p: _findfirst instead of use fopen (nul) */
   file_method       = true;  /* use file_p (_findfirst) not readable (access) */
-/*  waitflush = true; */  /* flushed 97/Dec/24 */
   c_style_flag      = false; /* use c-style error output */
   show_fmt_flag     = true;  /* show format file in log */
   show_tfm_flag     = false; /* don't show metric file in log */
   shorten_file_name     = false; /* don't shorten file names to 8+3 */
   show_texinput_flag    = true;  /* show TEXINPUTS and TEXFONTS */
-  truncate_long_lines   = true; /* truncate long lines */
-  tab_step              = 0;      /* do not replace tabs with spaces */
+  truncate_long_lines   = true;  /* truncate long lines */
+  tab_step              = 0;     /* do not replace tabs with spaces */
   format_specific       = true;  /* do format specific TEXINPUTS 95/Jan/7 */
   encoding_specific     = true;  /* do encoding specific TEXFONTS 98/Jan/31 */
   show_line_break_stats = true;  /* show line break statistics 96/Feb/8 */
-  show_fonts_used       = true; /* show fonts used in LOG file 97/Dec/24 */
+  show_fonts_used       = true;  /* show fonts used in LOG file 97/Dec/24 */
   allow_quoted_names    = true;  /* allow quoted names with spaces 98/Mar/15 */
-  show_cs_names         = false;  /* don't show csnames on start 98/Mar/31 */
-  knuth_flag            = false;    /* allow extensions to TeX */
-  cache_file_flag       = true; /* default is to cache full file names 96/Nov/16 */
+  show_cs_names         = false; /* don't show csnames on start 98/Mar/31 */
+  knuth_flag            = false; /* allow extensions to TeX */
+  cache_file_flag       = true;  /* default is to cache full file names 96/Nov/16 */
   full_file_name_flag   = true;  /* new default 2000 June 18 */
-  save_strings_flag     = true; // 2000 Aug 15
-  errout                = stdout;    /* as opposed to stderr say --- used ??? */
+  save_strings_flag     = true;
+  errout                = stdout; /* as opposed to stderr say --- used ??? */
   abort_flag            = 0;      // not yet hooked up ???
-  err_level             = 0;     // not yet hooked up ???
+  err_level             = 0;      // not yet hooked up ???
   new_hyphen_prime      = 0;
 #ifdef VARIABLETRIESIZE
 /*  trie_size = default_trie_size; */
@@ -2954,23 +2917,16 @@ int init_commands (int ac, char **av)
   mem_extra_high = 0;
   mem_extra_low  = 0;
   mem_initex     = 0;
-#ifdef ALLOCATEDVIBUF
-  dvi_buf_size = 0;
-#endif
-/*  share_flag = _SH_DENYNO; */ /* 0x40 - deny none mode */
-/*  share_flag = _SH_COMPAT; */ /* 0x00 - compatability mode */
-  share_flag = 0; /* revert to fopen for now */
 
-/*  strncpy(programpath, argv[0], PATH_MAX); */ /* 94/July/12 */
   programpath = xstrdup(av[0]); /* extract path executable */
-  strip_name(programpath); /* strip off yandytex.exe */
+  strip_name(programpath);      /* strip off yandytex.exe */
 
   format_name = "plain"; /* format name if specified on command line */
 
   encoding_name = "";
 
-  if (read_command_line(ac, av) < 0)  /* move out to subr 94/Apr/10 */
-    return -1;            // in case of error
+  if (read_command_line(ac, av) < 0)
+    return -1;
 
   if (optind == 0)
     optind = ac;
@@ -3047,18 +3003,6 @@ void initial_memory (void)
   if (mem_initex > 10000L * 1024L)
     mem_initex = mem_initex / 1024;
 
-#ifdef ALLOCATEHIGH         /* not used anymore */
-  if (mem_extra_high > 2048L * 1024L) { /* extend SW area by 16 mega byte! */
-    show_line("WARNING: There may be no benefit to asking for so much memory\n", 0);
-    mem_extra_high = 2048 * 1024; /* limit to SW to 4 x VLR */
-  }
-#endif
-#ifdef ALLOCATELOW          /* not used anymore */
-  if (mem_extra_low > 2048L * 1024L) { /* extend VL area by 16 mega byte! */
-    show_line("WARNING: There may be no benefit to asking for so much memory\n", 0);
-    mem_extra_low = 2048 * 1024; /* limit VLR to 4 x SW */
-  }
-#endif
   if (mem_initex > 2048L * 1024L) /* extend main memory by 16 mega byte! */
   {
     show_line("WARNING: There may be no benefit to asking for so much memory\n", 0);
@@ -3109,9 +3053,9 @@ void perrormod (char *s)
 void yandy_pause (void)
 {
 #ifndef _WINDOWS
-  fflush(stdout);     /* ??? */
-  fflush(stderr);     /* ??? */
-  (void) _getch();    /* ??? */
+  fflush(stdout); /* ??? */
+  fflush(stderr); /* ??? */
+  (void) getch(); /* ??? */
 #endif
 }
 
@@ -3319,7 +3263,9 @@ int main_init (int ac, char **av)
   kpse_set_program_name(av[0], NULL);
 
   // compile time test
-  if (sizeof(memory_word) != 8)
+  // MSVC: __int64 8bytes
+  // GCC:  long    8bytes
+  if (sizeof(memory_word) != sizeof(integer) * 2)
   {
     sprintf(log_line, "ERROR: Bad word size %d!\n", sizeof(memory_word));
     show_line(log_line, 1);
