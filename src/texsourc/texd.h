@@ -36,10 +36,10 @@
 #undef  DEBUG
 #include "texmf.h"
 
-/* #define max_halfword 65535L  */  /* for 32 bit memory word */
-/* #define max_halfword 262143L */  /* for 36 bit memory word */
-#define min_halfword -2147483647L   /* for 64 bit memory word (signed) */
-#define max_halfword  2147483647L   /* for 64 bit memory word (signed) */
+// #define max_halfword 65535L  /* for 32 bit memory word */
+// #define max_halfword 262143L /* for 36 bit memory word */
+#define min_halfword -2147483647L /* for 64 bit memory word (signed) */
+#define max_halfword  2147483647L /* for 64 bit memory word (signed) */
 
 #define block_size 1000 /* block_size for variable length node alloc */
 
@@ -86,19 +86,6 @@
   #define mem_min 0
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* buf_size is max size of input line and max size of csname               */
-/* make sure its multiple of four bytes long                               */
-/* want to increase this so it can handle whole paragraph imported from WP */
-#ifdef INCREASEFIXED
-/* #define buf_size 8192 */
-/* #define buf_size 12000 */    /* 1996/Jan/17 */
-/* #define buf_size 16384 */    /* 1998/June/30 */
-/* #define buf_size 20000 */    /* 1999/Jan/7 */
-#else
-/* #define buf_size 3000  */
-#endif
-
 #ifdef ALLOCATEBUFFER
   #define initial_buf_size   1000
   #define increment_buf_size 2000
@@ -118,16 +105,12 @@ EXTERN integer max_buf_stack;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef INCREASEFIXED
-  #define max_in_open 127       /* 1996/Jan/20 - really ? */
+  #define max_in_open 127
 #else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* #define stack_size 300 */    /* Unix C version default */
   #define max_in_open 15
-/* #define save_size 1000 */    /* 3.14159 C version */
-/* #define save_size 4000 */    /* 3.14159 C version */
 #endif
-
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
 /* maximum internal font number - cannot be greated than max_quarter_word! */
 #ifdef INCREASEFONTS
   #define font_max 1023     /* 1996/Jan/17 */
@@ -229,32 +212,6 @@ EXTERN integer max_buf_stack;
   #error ERROR: hash_extra not equal to (255 - font_max)
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-/* some sanity check when using narrow hash table ... */
-
-/* using SHORTHASH limits hash_size to be less than 65536 */
-/* using SHORTHASH limits max_strings to be less than 65536 */
-/* if you ever need more string pointers, then #undef SHORTHASH --- */
-/* you'll use more memory (about 130k byte) and format file larger (8k) */
-
-#ifdef SHORTHASH
-/* can only do this if INCREASEFONTS defined up above ... */
-#if (max_quarterword < 65535L)
-#error ERROR: max_quarterword < 65535L
-#endif
-/* with narrowed hash table can only have 65535 string pointers */
-/* #if (max_strings > max_quarterword) */ /* this test does not work */
-#undef max_strings
-#define max_strings max_quarterword
-/* #endif */
-/* with narrowed hash table can only have 65535 hash table entries */
-#if (hash_size > max_quarterword)
-#undef hash_size
-#define hash_size max_quarterword
-#endif
-#endif /* end of if SHORTHASH */
-
 /* NOTE: if you define/undefine SHORTFONT have to redo formats */
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -264,7 +221,8 @@ EXTERN integer max_buf_stack;
   typedef unsigned char quarterword;
 #endif
 
-/* possible alternative ? */ /* min_halfword = 0 and double max_halfword ? */
+/* possible alternative ? */
+/* min_halfword = 0 and double max_halfword ? */
 /* typedef unsigned long halfword; NO NO: since mem_min may be < 0 */
 typedef integer halfword;
 typedef char twochoices;
@@ -1087,7 +1045,6 @@ EXTERN int default_rule;
 EXTERN char * format_file;
 EXTERN char * source_direct;     /* 1998/Sep/29 */
 EXTERN char * string_file;
-EXTERN int share_flag;
 EXTERN char * format_name;
 EXTERN char * encoding_name;
 EXTERN bool format_specific;

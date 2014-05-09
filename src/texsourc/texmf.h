@@ -29,10 +29,8 @@
   #define INLINE inline
 #endif
 
-#ifdef TeX
-  #define dump_file  fmt_file
-  #define out_file   dvi_file
-#endif /* not TeX */
+#define dump_file  fmt_file
+#define out_file   dvi_file
 
 /* File types. */
 typedef FILE * byte_file;

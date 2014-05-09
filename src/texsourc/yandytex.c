@@ -24,7 +24,6 @@
 
 #define dump_default_var    TEX_format_default
 #define dump_default        " plain.fmt"
-//#define dump_format         " %s.fmt"
 #define dump_ext_length     4
 #define dump_default_length format_default_length
 #define main_program        texbody
@@ -66,15 +65,14 @@ int main (int ac, char *av[])
   _setmaxstdio(2048);
 #endif
 
-  gargc = ac;         /* make available globally */
-  gargv = av;         /* make available globally */
+  gargc = ac;
+  gargv = av;
 
-
-  if (main_init(gargc, gargv))   /* in local.c */
-    return -1;        // failure
+  if (main_init(gargc, gargv))
+    return -1; // failure
 
   dump_default_var = dump_default;
-  dump_default_length = strlen (dump_default_var + 1);  /* 93/Nov/20 */
+  dump_default_length = strlen(dump_default_var + 1);
 
   jump_used = 0;
 
@@ -82,7 +80,7 @@ int main (int ac, char *av[])
 
   if (ret == 0)
   {
-    flag = main_program();    // texbody in itex.c
+    flag = main_program();
 
     if (trace_flag)
     {
@@ -112,11 +110,6 @@ int main (int ac, char *av[])
 #endif
 }
 
-/* This is supposed to ``open the terminal for input'', but what we
-   really do is copy command line arguments into TeX's or Metafont's
-   buffer, so they can handle them.  If nothing is available, or we've
-   been called already (and hence, gargc==0), we return with
-   `last=first'.  */
 /* texk/web2c/lib/texmfmp.c */
 void t_open_in (void)
 {
@@ -128,15 +121,13 @@ void t_open_in (void)
 /* command line arguments? 94/Apr/10 */
   if (gargc > optind && optind > 0)
   {
-    for (i = optind; i < gargc; i++)      /* 94/Apr/10 */
+    for (i = optind; i < gargc; i++)
 #else
-/* We do have command line arguments. */
-    if (gargc > 1)
-    {
-      for (i = 1; i < gargc; i++)
+  if (gargc > 1)
+  {
+    for (i = 1; i < gargc; i++)
 #endif
     {
-/*  the following won't happen if pseudo_space is set ... */
       if (allow_quoted_names && strchr(gargv[i], ' ') != NULL)
       {
         (void) strcat ((char *) &buffer[first], "\"");
@@ -148,30 +139,25 @@ void t_open_in (void)
 
       (void) strcat ((char *) &buffer[first], " ");
     }
-
-      gargc = 0;  /* Don't do this again.  */
+    
+    gargc = 0;  /* Don't do this again.  */
   }
 
   /* Find the end of the buffer.  */
   for (last = first; buffer[last]; ++last) ;
 
-  /* Make `last' be one past the last non-blank non-formfeed character
-     in `buffer'.  */
   for (--last; last >= first
-      && ISSPACE (buffer[last]) && buffer[last] != '\f'; --last);
+      && ISBLANK (buffer[last]) && buffer[last] != '\r'; --last)
+      ;
   last++;
 
-/* do we want to check line for non-ASCII at this point ? */
-
-  /* One more time, this time converting to TeX's internal character
-     representation.  */ /* for command line input in this case */
-/* #ifdef NONASCII */
+/* One more time, this time converting to TeX's internal character
+   representation.  */ /* for command line input in this case */
   if (non_ascii)
   {
     for (i = first; i < last; i++)
       buffer[i] = xord[buffer[i]];
   }
-/* #endif */
 }
 
 /* All our interrupt handler has to do is set TeX's or Metafont's global
@@ -283,7 +269,7 @@ void complain_line (FILE *output)
     if (output == stdout)
       show_line(log_line, 0);
     else
-      fputs(log_line, output);     // never
+      fputs(log_line, output); // never
 
   show_line("  (File may have a line termination problem.)", 0);
 }
@@ -451,6 +437,7 @@ bool input_line (FILE *f)
 #endif
   {
     i = getc (f);
+
     if (i < ' ')    /* isolate the more expensive tests */
     {
       if (i == EOF || i == '\n' || (i == '\r' && return_flag))
@@ -463,6 +450,7 @@ bool input_line (FILE *f)
         if (last >= current_buf_size)
         {
           buffer = realloc_buffer(increment_buf_size);  
+
           if (last >= current_buf_size)
             break;
         }
@@ -502,6 +490,7 @@ bool input_line (FILE *f)
         if (last >= current_buf_size)
         {
           buffer = realloc_buffer(increment_buf_size);
+
           if (last >= current_buf_size)
             break;
         }
@@ -515,6 +504,7 @@ bool input_line (FILE *f)
       if (last >= current_buf_size)
       {
         buffer = realloc_buffer(increment_buf_size);
+
         if (last >= current_buf_size)
           break;
       }
@@ -788,6 +778,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
   }
 
   *s = 0;         /* terminate the command string */
+
   if (strlen(command) + 1 >= commandlen) /* should not happen! */
   {
     sprintf(log_line, "Command too long (%d > %d)\n", strlen(command) + 1, commandlen);
@@ -795,21 +786,14 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
     uexit(1);
   }
 
-/*  You must explicitly flush (using fflush or _flushall) or close any stream before calling system. */
-#ifdef MSDOS
-  _flushall();
-#else
-  fflush(NULL);
-#endif
+  flushall();
 /*  Try and execute the command.  */
 /*  There may be problem here with long names and spaces ??? */
 /*  Use _exec or _spawn instead ??? */
 
   if (system (command) != 0)
   {
-//    fprintf (errout, "\n");
     show_line("\n", 0);
-//    fprintf (errout,
     sprintf(log_line, "! Error in call: %s\n", command); /* shroud ? */
     show_line(log_line, 1);
 /*    errno seems to be 0 typically, so perror says "no error" */

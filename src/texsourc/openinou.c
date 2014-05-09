@@ -397,7 +397,6 @@ bool open_output (FILE **f, char *fopen_mode)
 
 /* Is the filename openable as given?  */
 
-/*  if share_flag is non-zero and we are opening for reading use fsopen */
 /*  but we can assume this is opening here for *output* */
   *f = fopen((char *) name_of_file + 1, fopen_mode);
 
@@ -419,7 +418,7 @@ bool open_output (FILE **f, char *fopen_mode)
 #endif
       if (deslash)
         unixify((char *) temp_name);     /* deslashify 93/Dec/28 */
-/*  If share_flag is non-zero and we are opening for reading use fsopen */
+
 /*  but we can assume this is opening here for *output* */
       *f = fopen((char*)temp_name, fopen_mode);
 /*  If this succeeded, change name_of_file accordingly.  */
@@ -437,11 +436,7 @@ bool open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
-#ifdef MSDOS
-      (void) _getcwd(log_line, sizeof(log_line));
-#else
       (void) getcwd(log_line, sizeof(log_line));
-#endif
       strcat(log_line, PATH_SEP_STRING);
     }
 
@@ -455,11 +450,7 @@ bool open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
-#ifdef MSDOS
-      (void) _getcwd(log_line, sizeof(log_line));
-#else
       (void) getcwd(log_line, sizeof(log_line));
-#endif
       strcat(log_line, PATH_SEP_STRING);
     }
 
@@ -473,11 +464,7 @@ bool open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
-#ifdef MSDOS
-      (void) _getcwd(log_line, sizeof(log_line));
-#else
       (void) getcwd(log_line, sizeof(log_line));
-#endif
       strcat(log_line, PATH_SEP_STRING);
     }
 

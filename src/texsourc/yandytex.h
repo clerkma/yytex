@@ -50,11 +50,11 @@
 #include <time.h>
 #include <signal.h>
 #ifdef MSDOS
-  #include <direct.h> /* for _getcwd() */
-  #include <conio.h>  /* for _getch() */
-  #define getch _getch
+#include <kpathsea/win32lib.h>
+#include <conio.h>
+#define getch _getch
 #else
-  #include <unistd.h>
+#include <unistd.h>
 #endif
 #include "hpdf.h"
 #include "hpdf_utils.h"

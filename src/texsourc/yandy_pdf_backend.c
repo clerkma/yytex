@@ -51,9 +51,6 @@ int tfm_cmp(void * a, void * b)
   char * aa = ((struct tfm_map *) (a))->tfm_name;
   char * bb = ((struct tfm_map *) (b))->tfm_name;
 
-  //if (aa == NULL || bb == NULL)
-  //  return 0;
-
   return (strcmp(aa, bb)) ;
 }
 
@@ -113,9 +110,11 @@ int get_font_index(char * name)
   {
     if (get_data(avl_tree, &nn, sizeof(struct tfm_map)))
       return nn.key;
+    else
+      return 0;
   }
-  else
-  return -1;
+
+  return 0;
 }
 // report error.
 void pdf_error(const char * t, const char * p)
@@ -370,34 +369,29 @@ void pdf_font_def(internal_font_number f)
   const char * fnt_name;
   char * afm_name;
   char * pfb_name;
-  char buffer[256], cuffer[256], duffer[256];
+  char buffer[256];
   
-  memset(buffer, 0, sizeof(buffer));
-  memset(duffer, 0, sizeof(duffer));
-  memset(cuffer, 0, sizeof(cuffer));
   memcpy(buffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
-  memcpy(duffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
-  memcpy(cuffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
+  buffer[length(font_name[f])] = '\0';
 
   k = get_font_index(buffer);
-  //printf("PDF_FONT_DEF2: %d--%s.\n", k, buffer);
+  printf("DEF: %s--%d.\n", buffer, k);
 
   if (k == 0)
   {
-    afm_name = kpse_find_file(strcat(buffer, ".afm"), kpse_afm_format, 1);
-    pfb_name = kpse_find_file(strcat(duffer, ".pfb"), kpse_type1_format, 1);
+    afm_name = kpse_find_file(strcat(strdup(buffer), ".afm"), kpse_afm_format, 1);
+    printf("path: %s.\n", afm_name);
+    pfb_name = kpse_find_file(strcat(strdup(buffer), ".pfb"), kpse_type1_format, 1);
 
     if (afm_name != NULL && pfb_name != NULL)
     {
-      printf("PDF_FONT_DEF4_NAME: %s.\n", cuffer);
-      k = insert_font_index(cuffer);
-      printf("PDF_FONT_DEF4: %d.\n", k);
+      k = insert_font_index(buffer);
       fnt_name = HPDF_LoadType1FontFromFile (yandy_pdf, afm_name, pfb_name);
       yandy_font[k] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
     }
   }
 
-  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], (font_size[f] / 65535));
+  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[k], (font_size[f] / 65535));
 }
 
 void pdf_ship_out(halfword p)
@@ -568,6 +562,8 @@ lab21:
 
           if (f != dvi_f)
           {
+            pdf_font_def(f);
+
             if (!font_used[f])
             {
               font_used[f] = true;
@@ -575,9 +571,9 @@ lab21:
 
             dvi_f = f;
           }
-
+          
+          HPDF_Page_SetFontAndSize (yandy_page, yandy_font[dvi_f], 10);
           HPDF_Page_BeginText(yandy_page);
-          pdf_font_def(f);
           HPDF_Page_MoveTextPos(yandy_page, pdf_sp_to_bp(cur_h) + 72, (841.89 - (pdf_sp_to_bp(cur_v) + 72)));
           HPDF_Page_ShowText(yandy_page, pdf_char_to_string(c));
           HPDF_Page_EndText(yandy_page);
