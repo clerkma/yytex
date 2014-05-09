@@ -48,9 +48,7 @@ char **gargv;   /* char *gargv[] -- bkph ? */
 /* The entry point: set up for reading the command line, which will
    happen in `t_open_in', then call the main body.  */
 
-#ifdef MSDOS
-  int main_init(int, char **);     /* in local.c */
-#endif /* INIVIR */
+int main_init(int, char **);     /* in local.c */
 
 int jump_used = 0;
 
@@ -798,7 +796,11 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
   }
 
 /*  You must explicitly flush (using fflush or _flushall) or close any stream before calling system. */
+#ifdef MSDOS
   _flushall();
+#else
+  fflush(NULL);
+#endif
 /*  Try and execute the command.  */
 /*  There may be problem here with long names and spaces ??? */
 /*  Use _exec or _spawn instead ??? */

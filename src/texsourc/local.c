@@ -579,7 +579,11 @@ void *ourrealloc (void *old, size_t new_size)
   if (old == NULL)
     return malloc (new_size);  /* no old block - use malloc */
 
+#ifdef MSDOS
   old_size = _msize (old);
+#else
+  old_size = malloc_usable_size (old);
+#endif
 
   if (old_size >= new_size && old_size < new_size + 4)
     return old;
@@ -2390,7 +2394,6 @@ char *grabenv (char *varname)
     return NULL;
 
 /*  speedup to avoid double lookup when called from set_paths in ourpaths.c */
-/*  if (lastname != NULL && strcmp(lastname, varname) == 0) { */
   if (lastname != NULL && _strcmpi(lastname, varname) == 0)
   {
     if (trace_flag)
@@ -3103,7 +3106,7 @@ void perrormod (char *s)
   show_line(log_line, 1);
 }
 
-void pause (void)
+void yandy_pause (void)
 {
 #ifndef _WINDOWS
   fflush(stdout);     /* ??? */
@@ -3136,7 +3139,7 @@ void checkpause (int flag)
       show_line("\n", 0);
 #ifndef _WINDOWS
       show_line("Press any key to continue . . .\n", 0);
-      pause();
+      yandy_pause();
 #endif
     }
   }

@@ -1,44 +1,28 @@
-//#include "hpdf.h"
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef MSDOS
-  #define ALLOCATEINI        /* allocate iniTeX (550 k) trie_c, trie_o, trie_l, trie_r, trie_hash, trie_taken */
-  #define ALLOCATEMAIN       /* allocate main memory for TeX (2 Meg) zmem = zzzaa */
-  #define ALLOCATEFONT       /* allocate font_info (800 k) (dynamically now) */
-  #define ALLOCATETRIES      /* allocate hyphenation trie stuff (270 k) trie_trl, trie_tro, trie_trc */
-  #define ALLOCATEHYPHEN     /* allocate hyphenation exception tables */
-  #define VARIABLETRIESIZE   /* allow trie_size to be variable */
-  #define ALLOCATESTRING     /* allocate strings and string pointers (184 k)str_pool & str_start */
-  #define ALLOCATESAVESTACK  /* experiment to dynamically deal with save_stack 99/Jan/4 */
-  #define ALLOCATEINPUTSTACK /* experiment to dynamically deal with input_stack 99/Jan/21 */
-  #define ALLOCATENESTSTACK  /* experiment to dynamically deal with nest_stack 99/Jan/21 */
-  #define ALLOCATEPARAMSTACK /* experiment to dynamically deal with param_stack 99/Jan/21 */
-  #define ALLOCATEBUFFER     /* experiment to dynamically deal with input buffer 99/Jan/22 */
-  /* NOT *//* allow increasing high area of main memory */ /* FLUSH */
-  #undef ALLOCATEHIGH
-  /* NOT *//* allow increasing low area of main memory */ /* FLUSH */
-  #undef ALLOCATELOW
-  /* NOT */ /* allocate hash table (zzzae) (78k) */
-  #undef ALLOCATEHASH
-  /* NOT */ /* allocate dvi_buf (16k) */ /* changed in 1.3 1996/Jan/18 */
-  /* #define ALLOCATEDVIBUF */
-  #undef ALLOCATEDVIBUF
-  /* increase fixed allocations */
-  #define INCREASEFIXED
-  /* increase number of fonts - quarterword 16 bit - max_quarterword limit */
-  /* there may still be some bugs with this however ... also may slow down */
-  /* also: should split use of quarterword for (i) font from (ii) char */
-  /* for example, xeq_level ? hyphenation trie_trc ? */
-  #define INCREASEFONTS
-  /* NOT NOT *//* allocate eqtb (108k) */ /* changed in 1.3 1996/Jan/18 */
-  #undef ALLOCATEZEQTB
-  /* make font_info array fmemoryword == 32 bit instead of memory_word = 64 bit */
-  #define SHORTFONTINFO
-  /* make hash table htwohalves == 32 bit instead of twohalves == 64 bit */
-  // #define SHORTHASH  --- changed 2000/Feb/22 increase max_strings from 64K to 512M
-  #undef SHORTHASH
-  /* increase trie_op_size from 751 to 3001 96/Oct/12 */
-  #define INCREASETRIEOP
-#endif
+#define ALLOCATEINI        /* allocate iniTeX (550 k) trie_c, trie_o, trie_l, trie_r, trie_hash, trie_taken */
+#define ALLOCATEMAIN       /* allocate main memory for TeX (2 Meg) zmem = zzzaa */
+#define ALLOCATEFONT       /* allocate font_info (800 k) (dynamically now) */
+#define ALLOCATETRIES      /* allocate hyphenation trie stuff (270 k) trie_trl, trie_tro, trie_trc */
+#define ALLOCATEHYPHEN     /* allocate hyphenation exception tables */
+#define VARIABLETRIESIZE   /* allow trie_size to be variable */
+#define ALLOCATESTRING     /* allocate strings and string pointers (184 k)str_pool & str_start */
+#define ALLOCATESAVESTACK  /* experiment to dynamically deal with save_stack 99/Jan/4 */
+#define ALLOCATEINPUTSTACK /* experiment to dynamically deal with input_stack 99/Jan/21 */
+#define ALLOCATENESTSTACK  /* experiment to dynamically deal with nest_stack 99/Jan/21 */
+#define ALLOCATEPARAMSTACK /* experiment to dynamically deal with param_stack 99/Jan/21 */
+#define ALLOCATEBUFFER     /* experiment to dynamically deal with input buffer 99/Jan/22 */
+#define INCREASEFIXED
+/* increase number of fonts - quarterword 16 bit - max_quarterword limit */
+/* there may still be some bugs with this however ... also may slow down */
+/* also: should split use of quarterword for (i) font from (ii) char */
+/* for example, xeq_level ? hyphenation trie_trc ? */
+#define INCREASEFONTS
+/* make font_info array fmemoryword == 32 bit instead of memory_word = 64 bit */
+#define SHORTFONTINFO
+/* make hash table htwohalves == 32 bit instead of twohalves == 64 bit */
+/* increase trie_op_size from 751 to 3001 96/Oct/12 */
+#define INCREASETRIEOP
+
 
 /* With old PharLap linker it was important to avoid large fixed allocation */
 /* Now may be better to use fixed arrays rather than allocate them */
