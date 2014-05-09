@@ -36,7 +36,6 @@ extern int shorten_file_name;       /* in local.c bkph */
   extern void funny_core_dump();
 #endif
 
-#ifdef MSDOS
 
 #ifdef BUILDNAMEDIRECT
 // similar to concat, but AVOIDS using malloc, pass in place to put result
@@ -82,9 +81,6 @@ char *xconcat3 (char *buffer, char *s1, char *s2, char *s3)
 }
 #endif
 
-#endif
-
-#ifdef MSDOS
 // separated out 1996/Jan/20 to make easier to read
 // assumes path does not end in PATH_SEP
 void patch_in_path (unsigned char *buffer, unsigned char *name, unsigned char *path)
@@ -127,7 +123,7 @@ int prepend_path_if (unsigned char *buffer, unsigned char *name, char *ext, unsi
 
   return 1;
 }
-#endif      /* end of MSDOS */
+
 
 //  Following works on null-terminated strings
 void check_short_name (unsigned char *s)
@@ -194,13 +190,11 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     funny_core_dump();
 #endif
 
-#ifdef MSDOS
   if (return_flag)
   {
     if (strcmp(fopen_mode, "r") == 0)
       fopen_mode = "rb";    /* so can catch `return' bkph */
   }
-#endif /* MSDOS */
 
   name_of_file[name_length + 1] = '\0'; /* null terminate */
 
@@ -209,13 +203,11 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
   if (pseudo_tilde != 0 || pseudo_space != 0)
     retwiddle(name_of_file + 1);
 
-#ifdef MSDOS
 /* 8 + 3 file names on Windows NT 95/Feb/20 */
   if (shorten_file_name)
   {
     check_short_name(name_of_file + 1);
   }
-#endif  /* MSDOS */
   
   if (open_trace_flag)
   {
@@ -267,7 +259,6 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       //ungetc(tfm_temp, *f);
     } 
 
-#ifdef MSDOS
     if (strstr((char *) name_of_file + 1, ".fmt") != NULL)
     {
       if (format_file == NULL)
@@ -319,7 +310,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
         show_line(log_line, 0);
       }
     }
-#endif  /* end of MSDOS */
+
     openable = true;
   }
 
@@ -379,15 +370,12 @@ bool open_output (FILE **f, char *fopen_mode)
     retwiddle(name_of_file + 1);
   }
 
-#ifdef MSDOS
 /* 8 + 3 file names on Windows NT 95/Feb/20 */
   if (shorten_file_name)
   {
     check_short_name(name_of_file + 1);
   }
-#endif
 
-#ifdef MSDOS
   if (prepend_path_if (name_of_file + 1, name_of_file + 1, ".dvi", (unsigned char *) dvi_directory) ||
       prepend_path_if (name_of_file + 1, name_of_file + 1, ".log", (unsigned char *) log_directory) ||
       prepend_path_if (name_of_file + 1, name_of_file + 1, ".aux", (unsigned char *) aux_directory) ||
@@ -400,7 +388,6 @@ bool open_output (FILE **f, char *fopen_mode)
       show_line(log_line, 0);
     }
   }
-#endif
 
   if (open_trace_flag)
   {

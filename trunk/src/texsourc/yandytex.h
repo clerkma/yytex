@@ -60,7 +60,7 @@
 #include "hpdf_utils.h"
 #include "avl.h"
 
-typedef long        integer;
+typedef int         integer;
 typedef double      glue_ratio;
 typedef boolean     bool;
 typedef double      real;
