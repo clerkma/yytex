@@ -20,8 +20,6 @@
 
 #include "texd.h"
 
-/* Most Y & Y changes are localized here -- init() */
-
 #define USEOUREALLOC
 #define USEMEMSET
 
@@ -100,7 +98,8 @@ void show_usage (void)
       "    --verbose -v\n"
       "        be verbose (show implementation version number)\n"
       "    -n    do not allow `non ASCII' characters in input files (complain instead)\n"
-      "    -w    do not show `non ASCII' characters in hexadecimal (show as is)\n"
+      "    --showhex -w\n"
+      "         do not show `non ASCII' characters in hexadecimal (show as is)\n"
       "    -d    do not allow DOS style file names - i.e. do not convert \\ to /\n"
       "    -r    do not allow Mac style termination - i.e. do not convert \\r to \\n\n"
       "    --patterns    -p\n"
@@ -2421,11 +2420,6 @@ void flush_trailing_slash (char *directory)
 
 void knuthify (void)
 {
-/*  show_current = false; */ /* show ultimate limits */
-/*  reorder_arg_flag = false; */ /* don't reorder command line */
-/*  deslash = false; */ /* don't unixify file names */
-/*  return_flag = false; */ /* don't allow just ^^M termination */
-/*  trimeof = false; */ /* don't trim ^^Z Ctrl-Z at end of file */
   restrict_to_ascii = false; /* don't complain non ASCII */
   allow_patterns    = false; /* don't allow pattern redefinition */
   show_in_hex       = true;  /* show character code in hex */
@@ -2446,11 +2440,11 @@ void knuthify (void)
   truncate_long_lines = false;
   allow_quoted_names = false;
   show_cs_names = false;
-  font_dimen_zero = false;      /* 98/Oct/5 */
-  ignore_frozen = false;     /* 98/Oct/5 */
-  suppress_f_ligs = false;      /* 99/Jan/5 */
-  full_file_name_flag = false;   // 00 Jun 18
-  save_strings_flag = false;    // 00 Aug 15
+  font_dimen_zero = false;
+  ignore_frozen = false;
+  suppress_f_ligs = false;
+  full_file_name_flag = false;
+  save_strings_flag = false;
   knuth_flag = true;       /* so other code can know about this */
 }
 
@@ -2461,7 +2455,7 @@ void knuthify (void)
 char * xchrfile = NULL;
 char * replfile = NULL;
 
-char * short_options = "m:e:h:0:H:g:P:vpiKLZMdp2t?uo:l:a:";
+char * short_options = "m:e:h:0:H:g:P:wvpiKLZMdp2t?uo:l:a:";
 
 static struct option long_options[] =
 {
@@ -2473,6 +2467,7 @@ static struct option long_options[] =
   {"percent-grow",  1, 0, 'g'},
   {"default-rule",  1, 0, 'P'},
   //{"interaction",   1, 0, 0},
+  {"showhex",       0, 0, 'w'},
   {"verbose",       0, 0, 'v'},
   {"patterns",      0, 0, 'p'},
   {"initex",        0, 0, 'i'},
@@ -2631,9 +2626,6 @@ int analyze_flag (int c, char *optarg)
     case 'G':
       file_method = false; /* 94/Feb/13 */
       break;
-/*  case 'X': nohandler++; break; */
-/*  case 'f': waitflush = false; break; */
-/*  case 'F': floating = true; break; */
 /* *********** following command line options take arguments **************  */
     case 'm':
       if (optarg == 0)
@@ -2774,8 +2766,6 @@ int analyze_flag (int c, char *optarg)
   }
   return 0;
 }
-
-/* remove file name - keep only path - inserts '\0' to terminate */
 
 void strip_name (char *pathname)
 {
@@ -2950,8 +2940,6 @@ int init_commands (int ac, char **av)
   return 0;
 }
 
-/* E sets environment variable ? */
-
 void initial_memory (void)
 {
   /* set initial memory allocations */
@@ -3048,45 +3036,6 @@ void perrormod (char *s)
 {
   sprintf(log_line, "`%s': %s\n", s, strerror(errno));
   show_line(log_line, 1);
-}
-
-void yandy_pause (void)
-{
-#ifndef _WINDOWS
-  fflush(stdout); /* ??? */
-  fflush(stderr); /* ??? */
-  (void) getch(); /* ??? */
-#endif
-}
-
-void checkpause (int flag)
-{            /* 95/Oct/28 */
-  char *s;
-  int debug_pause = 0;
-/*  don't stop if in Q (quiet) or R (run) mode */
-/*  stop only in S (scroll) and T (TeX) mode */
-  if (interaction >= 0 && interaction < 2)
-    flag = 0;    /* 98/Jun/30 */
-
-  s = grabenv("DEBUGPAUSE");
-
-  if (s != NULL)
-    sscanf(s, "%d", &debug_pause);
-
-  if (flag < 0)
-    return;
-
-  if (debug_pause)
-  {
-    if (debug_pause || flag > 0)
-    {
-      show_line("\n", 0);
-#ifndef _WINDOWS
-      show_line("Press any key to continue . . .\n", 0);
-      yandy_pause();
-#endif
-    }
-  }
 }
 
 /*************************************************************************/
@@ -3450,7 +3399,7 @@ int endit (int flag)
     show_line("\n", 0);
   }
 
-  checkpause(flag);
+  //checkpause(flag);
 
   return flag;
 }

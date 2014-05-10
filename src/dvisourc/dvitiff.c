@@ -5132,7 +5132,7 @@ int DecodeLZW (FILE *output, FILE *input, unsigned char *lpBuffer)
 
 /* implement gray scale response curve ? */ /* although ignored by some apps */
 
-/* II*  or MM*  followed by four byte offset to first IFD (often == 8) */
+/* II* or MM* followed by four byte offset to first IFD (often == 8) */
 
 /* IFD: 2 byte count of fields, followed by 12 byte tag fields */
 /* after that, four byte offset to next IFD (or zero) (or junk!) */
