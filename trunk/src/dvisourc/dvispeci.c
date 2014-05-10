@@ -36,11 +36,7 @@
 #include <setjmp.h>
 
 #ifdef _WINDOWS
-// We must define MYLIBAPI as __declspec(dllexport) before including
-// dvipsone.h, then dvipsone.h will see that we have already
-// defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-#define MYLIBAPI __declspec(dllexport)
-// #include "dvipsone.h"
+  #define MYLIBAPI __declspec(dllexport)
 #endif
 
 #include "dvipsone.h"
@@ -53,12 +49,6 @@
 #pragma warning(disable:4127) // conditional expression is constant
 
 #pragma hdrstop
-
-/* malloc.h not really needed */ /* stdlib for getenv */
-
-/* #include <errno.h> */
-/* #include <stdlib.h> */
-/* #include <math.h> */
 
 #include <time.h>     /* for struct tm etc. */
 #include <sys/types.h>

@@ -17,7 +17,7 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-#define EXTERN /* Instantiate data in `texd.h' or `mfd.h' here ! */
+#define EXTERN
 
 #include "texd.h"
 
@@ -140,7 +140,7 @@ void t_open_in (void)
       (void) strcat ((char *) &buffer[first], " ");
     }
     
-    gargc = 0;  /* Don't do this again.  */
+    gargc = 0;
   }
 
   /* Find the end of the buffer.  */
@@ -786,7 +786,8 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
     uexit(1);
   }
 
-  flushall();
+  //flushall();
+  fflush(NULL);
 /*  Try and execute the command.  */
 /*  There may be problem here with long names and spaces ??? */
 /*  Use _exec or _spawn instead ??? */

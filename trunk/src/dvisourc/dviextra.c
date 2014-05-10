@@ -40,11 +40,7 @@
 #include <setjmp.h>
 
 #ifdef _WINDOWS
-// We must define MYLIBAPI as __declspec(dllexport) before including
-// dvipsone.h, then dvipsone.h will see that we have already
-// defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-#define MYLIBAPI __declspec(dllexport)
-// #include "dvipsone.h"
+  #define MYLIBAPI __declspec(dllexport)
 #endif
 
 #include "dvipsone.h"
@@ -112,29 +108,19 @@ unsigned long len;      /* counter of bytes in binary input */
 
 /* Fonts, that --- in Oblique or Narrow form --- are synthetic: */
 
-char *syntheticfonts[] ={
-  "Helvetica", "Courier", "AvantGarde",
-  "Univers", "Optima", "Futura", "NewsGothic",
+char *syntheticfonts[] =
+{
+  "Helvetica",
+  "Courier",
+  "AvantGarde",
+  "Univers",
+  "Optima",
+  "Futura",
+  "NewsGothic",
   "EuroStyle",      /* added 97/Oct/23 */
   "TektonMM",       /* added 99/Apr/12 */
   ""
 };
-
-/* The seventy-five ComputerModern font names - needed for uniqueID ? */
-
-/*
-unsigned char *cmfonts[] = {
-  "b10", "bsy10", "bx5", "bx6", "bx7", "bx8", "bx9", "bx10", "bx12",
-  "bxsl10", "bxti10", "csc10", "dunh10", "ex10", "ff10", "fi10",
-  "fib8", "inch", "itt10", "mi5", "mi6", "mi7", "mi8", "mi9",
-  "mi10", "mi12", "mib10", "r5", "r6", "r7", "r8", "r9", "r10",
-  "r12", "r17", "sl8", "sl9", "sl10", "sl12", "sltt10", "ss8",
-  "ss9", "ss10", "ss12", "ss17", "ssbx10", "ssdc10", "ssi8",
-  "ssi9", "ssi10", "ssi12", "ssi17", "ssq8", "ssqi8", "sy5", "sy6",
-  "sy7", "sy8", "sy9", "sy10", "tcsc10", "tex8", "tex9", "tex10",
-  "ti7", "ti8", "ti9", "ti10", "ti12", "tt8", "tt9", "tt10",
-  "tt12", "u10", "vtt10"
-}; */
 
 /* char *basecharacters="aceinousyzACEINOUSYZ"; *//* just basic 58 - Latin 1 */
 
@@ -219,31 +205,33 @@ static char *standardencoding[] = {
 /* If sharing character names, copy upper part from StandardEncoding */
 
 #ifdef SHAREENCODING
-static char *textext[TEXCHRS] = {     /* TEXCHRS is 128 */
-"Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi", "Sigma", "Upsilon",
-"Phi", "Psi", "Omega", "ff", "fi", "fl", "ffi", "ffl",
-"dotlessi", "dotlessj", "grave", "acute", "caron", "breve", "macron", "ring",
-"cedilla", "germandbls", "ae", "oe", "oslash", "AE", "OE", "Oslash",
-"suppress"
+static char *textext[TEXCHRS] =
+{
+  "Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi", "Sigma", "Upsilon",
+  "Phi", "Psi", "Omega", "ff", "fi", "fl", "ffi", "ffl",
+  "dotlessi", "dotlessj", "grave", "acute", "caron", "breve", "macron", "ring",
+  "cedilla", "germandbls", "ae", "oe", "oslash", "AE", "OE", "Oslash",
+  "suppress"
 };
 #else
-static char *textext[TEXCHRS] = {       /* TEXCHRS is 128 */
-"Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi", "Sigma", "Upsilon",
-"Phi", "Psi", "Omega", "ff", "fi", "fl", "ffi", "ffl",
-"dotlessi", "dotlessj", "grave", "acute", "caron", "breve", "macron", "ring",
-"cedilla", "germandbls", "ae", "oe", "oslash", "AE", "OE", "Oslash",
-"suppress", "exclam", "quotedblright", "numbersign", "dollar", "percent", "ampersand", "quoteright",
-"parenleft", "parenright", "asterisk", "plus", "comma", "hyphen", "period", "slash",
-"zero", "one", "two", "three", "four", "five", "six", "seven",
-"eight", "nine", "colon", "semicolon", "exclamdown", "equal", "questiondown", "question",
-"at", "A", "B", "C", "D", "E", "F", "G",
-"H", "I", "J", "K", "L", "M", "N", "O",
-"P", "Q", "R", "S", "T", "U", "V", "W",
-"X", "Y", "Z", "bracketleft", "quotedblleft", "bracketright", "circumflex", "dotaccent",
-"quoteleft", "a", "b", "c", "d", "e", "f", "g",
-"h", "i", "j", "k", "l", "m", "n", "o",
-"p", "q", "r", "s", "t", "u", "v", "w",
-"x", "y", "z", "endash", "emdash", "hungarumlaut", "tilde", "dieresis"
+static char *textext[TEXCHRS] =
+{
+  "Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi", "Sigma", "Upsilon",
+  "Phi", "Psi", "Omega", "ff", "fi", "fl", "ffi", "ffl",
+  "dotlessi", "dotlessj", "grave", "acute", "caron", "breve", "macron", "ring",
+  "cedilla", "germandbls", "ae", "oe", "oslash", "AE", "OE", "Oslash",
+  "suppress", "exclam", "quotedblright", "numbersign", "dollar", "percent", "ampersand", "quoteright",
+  "parenleft", "parenright", "asterisk", "plus", "comma", "hyphen", "period", "slash",
+  "zero", "one", "two", "three", "four", "five", "six", "seven",
+  "eight", "nine", "colon", "semicolon", "exclamdown", "equal", "questiondown", "question",
+  "at", "A", "B", "C", "D", "E", "F", "G",
+  "H", "I", "J", "K", "L", "M", "N", "O",
+  "P", "Q", "R", "S", "T", "U", "V", "W",
+  "X", "Y", "Z", "bracketleft", "quotedblleft", "bracketright", "circumflex", "dotaccent",
+  "quoteleft", "a", "b", "c", "d", "e", "f", "g",
+  "h", "i", "j", "k", "l", "m", "n", "o",
+  "p", "q", "r", "s", "t", "u", "v", "w",
+  "x", "y", "z", "endash", "emdash", "hungarumlaut", "tilde", "dieresis"
 };
 #endif
 
@@ -264,74 +252,76 @@ static char *textext[TEXCHRS] = {       /* TEXCHRS is 128 */
 /* Now that we may not be using it if ENCODING env var is set */
 
 #ifdef SHAREENCODING
-static char *ansiencoding[256] = {
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "quotesinglbase", "florin", "quotedblbase", "ellipsis", "dagger", "daggerdbl",
-"circumflex", "perthousand", "Scaron", "guilsinglleft", "OE", "caron", "", "",
-"", "quoteleft", "quoteright", "quotedblleft", "quotedblright", "bullet", "endash", "emdash",
-"tilde", "trademark", "scaron", "guilsinglright", "oe", "dotlessi", "", "Ydieresis",
-"nbspace", "exclamdown", "cent", "sterling", "currency", "yen", "brokenbar", "section",
-"dieresis", "copyright", "ordfeminine", "guillemotleft", "logicalnot", "hyphen", "registered", "macron",
-"degree", "plusminus", "twosuperior", "threesuperior", "acute", "mu", "paragraph", "periodcentered",
-"cedilla", "onesuperior", "ordmasculine", "guillemotright", "onequarter", "onehalf", "threequarters", "questiondown",
- "Agrave", "Aacute", "Acircumflex", "Atilde", "Adieresis", "Aring", "AE", "Ccedilla",
-"Egrave", "Eacute", "Ecircumflex", "Edieresis", "Igrave", "Iacute", "Icircumflex", "Idieresis",
-"Eth", "Ntilde", "Ograve", "Oacute", "Ocircumflex", "Otilde", "Odieresis", "multiply",
-"Oslash", "Ugrave", "Uacute", "Ucircumflex", "Udieresis", "Yacute", "Thorn", "germandbls",
-"agrave", "aacute", "acircumflex", "atilde", "adieresis", "aring", "ae", "ccedilla",
-"egrave", "eacute", "ecircumflex", "edieresis", "igrave", "iacute", "icircumflex", "idieresis",
-"eth", "ntilde", "ograve", "oacute", "ocircumflex", "otilde", "odieresis", "divide",
-"oslash", "ugrave", "uacute", "ucircumflex", "udieresis", "yacute", "thorn", "ydieresis"
+static char *ansiencoding[256] =
+{
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "quotesinglbase", "florin", "quotedblbase", "ellipsis", "dagger", "daggerdbl",
+  "circumflex", "perthousand", "Scaron", "guilsinglleft", "OE", "caron", "", "",
+  "", "quoteleft", "quoteright", "quotedblleft", "quotedblright", "bullet", "endash", "emdash",
+  "tilde", "trademark", "scaron", "guilsinglright", "oe", "dotlessi", "", "Ydieresis",
+  "nbspace", "exclamdown", "cent", "sterling", "currency", "yen", "brokenbar", "section",
+  "dieresis", "copyright", "ordfeminine", "guillemotleft", "logicalnot", "hyphen", "registered", "macron",
+  "degree", "plusminus", "twosuperior", "threesuperior", "acute", "mu", "paragraph", "periodcentered",
+  "cedilla", "onesuperior", "ordmasculine", "guillemotright", "onequarter", "onehalf", "threequarters", "questiondown",
+  "Agrave", "Aacute", "Acircumflex", "Atilde", "Adieresis", "Aring", "AE", "Ccedilla",
+  "Egrave", "Eacute", "Ecircumflex", "Edieresis", "Igrave", "Iacute", "Icircumflex", "Idieresis",
+  "Eth", "Ntilde", "Ograve", "Oacute", "Ocircumflex", "Otilde", "Odieresis", "multiply",
+  "Oslash", "Ugrave", "Uacute", "Ucircumflex", "Udieresis", "Yacute", "Thorn", "germandbls",
+  "agrave", "aacute", "acircumflex", "atilde", "adieresis", "aring", "ae", "ccedilla",
+  "egrave", "eacute", "ecircumflex", "edieresis", "igrave", "iacute", "icircumflex", "idieresis",
+  "eth", "ntilde", "ograve", "oacute", "ocircumflex", "otilde", "odieresis", "divide",
+  "oslash", "ugrave", "uacute", "ucircumflex", "udieresis", "yacute", "thorn", "ydieresis"
 };
 #else
-static char *ansiencoding[] = {
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"", "", "", "", "", "", "", "",
-"space", "exclam", "quotedbl", "numbersign", "dollar", "percent", "ampersand", "quotesingle",
-"parenleft", "parenright", "asterisk", "plus", "comma", "hyphen", "period", "slash",
-"zero", "one", "two", "three", "four", "five", "six", "seven",
-"eight", "nine", "colon", "semicolon", "less", "equal", "greater", "question",
-"at", "A", "B", "C", "D", "E", "F", "G",
-"H", "I", "J", "K", "L", "M", "N", "O",
-"P", "Q", "R", "S", "T", "U", "V", "W",
-"X", "Y", "Z", "bracketleft", "backslash", "bracketright", "asciicircum", "underscore",
-"grave", "a", "b", "c", "d", "e", "f", "g",
-"h", "i", "j", "k", "l", "m", "n", "o",
-"p", "q", "r", "s", "t", "u", "v", "w",
-"x", "y", "z", "braceleft", "bar", "braceright", "asciitilde", "",
-"", "", "quotesinglbase", "florin", "quotedblbase", "ellipsis", "dagger", "daggerdbl",
-"circumflex", "perthousand", "Scaron", "guilsinglleft", "OE", "caron", "", "",
-"", "quoteleft", "quoteright", "quotedblleft", "quotedblright", "bullet", "endash", "emdash",
-"tilde", "trademark", "scaron", "guilsinglright", "oe", "dotlessi", "", "Ydieresis",
-"nbspace", "exclamdown", "cent", "sterling", "currency", "yen", "brokenbar", "section",
-"dieresis", "copyright", "ordfeminine", "guillemotleft", "logicalnot", "hyphen", "registered", "macron",
-"degree", "plusminus", "twosuperior", "threesuperior", "acute", "mu", "paragraph", "periodcentered",
-"cedilla", "onesuperior", "ordmasculine", "guillemotright", "onequarter", "onehalf", "threequarters", "questiondown",
- "Agrave", "Aacute", "Acircumflex", "Atilde", "Adieresis", "Aring", "AE", "Ccedilla",
-"Egrave", "Eacute", "Ecircumflex", "Edieresis", "Igrave", "Iacute", "Icircumflex", "Idieresis",
-"Eth", "Ntilde", "Ograve", "Oacute", "Ocircumflex", "Otilde", "Odieresis", "multiply",
-"Oslash", "Ugrave", "Uacute", "Ucircumflex", "Udieresis", "Yacute", "Thorn", "germandbls",
-"agrave", "aacute", "acircumflex", "atilde", "adieresis", "aring", "ae", "ccedilla",
-"egrave", "eacute", "ecircumflex", "edieresis", "igrave", "iacute", "icircumflex", "idieresis",
-"eth", "ntilde", "ograve", "oacute", "ocircumflex", "otilde", "odieresis", "divide",
-"oslash", "ugrave", "uacute", "ucircumflex", "udieresis", "yacute", "thorn", "ydieresis"
+static char *ansiencoding[] =
+{
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "space", "exclam", "quotedbl", "numbersign", "dollar", "percent", "ampersand", "quotesingle",
+  "parenleft", "parenright", "asterisk", "plus", "comma", "hyphen", "period", "slash",
+  "zero", "one", "two", "three", "four", "five", "six", "seven",
+  "eight", "nine", "colon", "semicolon", "less", "equal", "greater", "question",
+  "at", "A", "B", "C", "D", "E", "F", "G",
+  "H", "I", "J", "K", "L", "M", "N", "O",
+  "P", "Q", "R", "S", "T", "U", "V", "W",
+  "X", "Y", "Z", "bracketleft", "backslash", "bracketright", "asciicircum", "underscore",
+  "grave", "a", "b", "c", "d", "e", "f", "g",
+  "h", "i", "j", "k", "l", "m", "n", "o",
+  "p", "q", "r", "s", "t", "u", "v", "w",
+  "x", "y", "z", "braceleft", "bar", "braceright", "asciitilde", "",
+  "", "", "quotesinglbase", "florin", "quotedblbase", "ellipsis", "dagger", "daggerdbl",
+  "circumflex", "perthousand", "Scaron", "guilsinglleft", "OE", "caron", "", "",
+  "", "quoteleft", "quoteright", "quotedblleft", "quotedblright", "bullet", "endash", "emdash",
+  "tilde", "trademark", "scaron", "guilsinglright", "oe", "dotlessi", "", "Ydieresis",
+  "nbspace", "exclamdown", "cent", "sterling", "currency", "yen", "brokenbar", "section",
+  "dieresis", "copyright", "ordfeminine", "guillemotleft", "logicalnot", "hyphen", "registered", "macron",
+  "degree", "plusminus", "twosuperior", "threesuperior", "acute", "mu", "paragraph", "periodcentered",
+  "cedilla", "onesuperior", "ordmasculine", "guillemotright", "onequarter", "onehalf", "threequarters", "questiondown",
+  "Agrave", "Aacute", "Acircumflex", "Atilde", "Adieresis", "Aring", "AE", "Ccedilla",
+  "Egrave", "Eacute", "Ecircumflex", "Edieresis", "Igrave", "Iacute", "Icircumflex", "Idieresis",
+  "Eth", "Ntilde", "Ograve", "Oacute", "Ocircumflex", "Otilde", "Odieresis", "multiply",
+  "Oslash", "Ugrave", "Uacute", "Ucircumflex", "Udieresis", "Yacute", "Thorn", "germandbls",
+  "agrave", "aacute", "acircumflex", "atilde", "adieresis", "aring", "ae", "ccedilla",
+  "egrave", "eacute", "ecircumflex", "edieresis", "igrave", "iacute", "icircumflex", "idieresis",
+  "eth", "ntilde", "ograve", "oacute", "ocircumflex", "otilde", "odieresis", "divide",
+  "oslash", "ugrave", "uacute", "ucircumflex", "udieresis", "yacute", "thorn", "ydieresis"
 };
 #endif
 
@@ -347,7 +337,8 @@ void initializeencoding(int ansitexflag)
 {
   int k;
 #ifdef SHAREENCODING
-  for (k = 33; k < 123; k++) textext[k] = standardencoding[k];
+  for (k = 33; k < 123; k++)
+    textext[k] = standardencoding[k];
 /*  now for the fixups */
 /*  textext[32] = "suppress"; */
   textext[34] = standardencoding[186];  /* "quotedblright" */
@@ -427,6 +418,7 @@ void extgiveup(int code)
     sprintf(s, " in font %s", filefontname);
     s += strlen(s);
   }
+
   strcat(logline, "\n");
   showline(logline, 1);
 /*  exit(code); */
@@ -538,7 +530,7 @@ int extgetline(FILE *input, char *buff)
         showline(buff, 1);
         showline("\n", 0);
       }
-/*      read to end of line (or EOF) before going on ? */     
+/*      read to end of line (or EOF) before going on ? */
       while ((c = getnextnon(input)) != '\n') {
         if (c == EOF) return EOF;
       }
@@ -1052,20 +1044,12 @@ int nextbytein(FILE *input)
 unsigned char decryptbyte (unsigned char cipher, unsigned short *crypter)
 {
   unsigned char plain;
-/*  plain = (cipher ^  (unsigned char) (*crypter >> 8)); */
+
   plain = (unsigned char) ((cipher ^  (unsigned char) (*crypter >> 8)));
-/*  *crypter = (cipher + *crypter) * CRYPT_MUL + CRYPT_ADD; */
   *crypter = (unsigned short) ((cipher + *crypter) * CRYPT_MUL + CRYPT_ADD);
+
   return plain;
 }
-
-/*
-unsigned char encryptbyte (unsigned char plain, unsigned short *crypter) {
-  unsigned char cipher;
-  cipher = (plain ^ (unsigned char) (*crypter >> 8));
-  *crypter = (cipher + *crypter) * CRYPT_MUL + CRYPT_ADD;
-  return cipher;
-} */
 
 /* read byte and decrypt */
 unsigned char indecrypt(FILE *input)
@@ -1074,10 +1058,9 @@ unsigned char indecrypt(FILE *input)
   unsigned char plain;
 
   cipher = (unsigned char) nextbytein(input);
-/*  plain = (cipher ^ (unsigned char) (cryptin >> 8)); */
   plain = (unsigned char) ((cipher ^ (unsigned char) (cryptin >> 8)));
-/*  cryptin = (cipher + cryptin) * CRYPT_MUL + CRYPT_ADD; */
   cryptin = (unsigned short) ((cipher + cryptin) * CRYPT_MUL + CRYPT_ADD);
+
   return plain;
 }
 
@@ -2596,22 +2579,12 @@ int gobbleencoding (FILE *input)
         c = *s++;
         if (c >= '0' && c <= '9') c = c - '0';
         else if (c >= 'A' && c <= 'Z') c = c - 'A' + 10;
-        else if (c >= 'a' && c <= 'z') c = c - 'a' + 10;        
+        else if (c >= 'a' && c <= 'z') c = c - 'a' + 10;
         else {
           s--; break;
         }
         chr = chr * base + c;
       }
-/*      if (base == 8) {
-        if (sscanf(s, "%d#%o", &base, &chr) < 2) {        
-          fputs(line, errout); break;
-        }
-      }
-      else if (base == 16) {
-        if (sscanf(s, "%d#%x", &base, &chr) < 2) {        
-          fputs(line, errout); break;
-        }
-      } */
     }           /* end of radixed number case */
     else if (sscanf(s, "%d", &chr) < 1) {
       sprintf(logline, " Expecting %s, not: `%s' ", "number", s);
@@ -2669,7 +2642,8 @@ int gobbleencoding (FILE *input)
 /* (so maybe the `lowercase' is not needed ?) */ /* or use _strnicmp(...) */
 /* May be useful when PostScript FontName same as filename, but uppercase */
 
-int istexfont (char *fname) {
+int istexfont (char *fname)
+{
   if (_strnicmp (fname, "cm", 2) == 0 ||  /* Computer Modern (visible) */
     _strnicmp (fname, "lcm", 3) == 0 || /* SliTeX (visible) */
     _strnicmp (fname, "icm", 3) == 0 || /* Computer Modern invisible */

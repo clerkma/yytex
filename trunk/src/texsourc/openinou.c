@@ -38,8 +38,7 @@ extern int shorten_file_name;       /* in local.c bkph */
 
 
 #ifdef BUILDNAMEDIRECT
-// similar to concat, but AVOIDS using malloc, pass in place to put result
-char *xconcat (char *buffer, char *s1, char *s2)
+char * xconcat (char *buffer, char *s1, char *s2)
 {
   int n1 = strlen(s1);
   int n2 = strlen(s2);
@@ -57,8 +56,7 @@ char *xconcat (char *buffer, char *s1, char *s2)
 
   return buffer;
 }
-// similar to concat3, but avoids using malloc, pass in place to put result
-char *xconcat3 (char *buffer, char *s1, char *s2, char *s3)
+char * xconcat3 (char *buffer, char *s1, char *s2, char *s3)
 {
   int n1 = strlen(s1);
   int n2 = strlen(s2);
@@ -196,14 +194,13 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       fopen_mode = "rb";    /* so can catch `return' bkph */
   }
 
-  name_of_file[name_length + 1] = '\0'; /* null terminate */
+  name_of_file[name_length + 1] = '\0';
 
 /* reinsert '~' and ' ' in file names -  95/June/5 */
 /* done late to prevent problems with  null_terminate / space_terminate */  
   if (pseudo_tilde != 0 || pseudo_space != 0)
     retwiddle(name_of_file + 1);
 
-/* 8 + 3 file names on Windows NT 95/Feb/20 */
   if (shorten_file_name)
   {
     check_short_name(name_of_file + 1);
@@ -211,26 +208,26 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
   
   if (open_trace_flag)
   {
-    sprintf(log_line, " Open `%s' for input ", name_of_file + 1); /* Pascal */
+    sprintf(log_line, " Open `%s' for input ", name_of_file + 1);
     show_line(log_line, 0);
   }
 
   switch (path_index)
   {
     case TEXINPUTPATH:
-      file_name = kpse_find_file((const_string)name_of_file + 1, kpse_tex_format, 0);
+      file_name = kpse_find_file((const_string) name_of_file + 1, kpse_tex_format, 0);
       break;
     case TEXFORMATPATH:
-      file_name = kpse_find_file((const_string)name_of_file + 1, kpse_fmt_format, 0);
+      file_name = kpse_find_file((const_string) name_of_file + 1, kpse_fmt_format, 0);
       break;
     case TFMFILEPATH:
-      file_name = kpse_find_file((const_string)name_of_file + 1, kpse_tfm_format, 0);
+      file_name = kpse_find_file((const_string) name_of_file + 1, kpse_tfm_format, 0);
       break;
   }
 
   if (file_name != NULL)
   {
-    strcpy ((char *)name_of_file + 1, file_name);
+    strcpy ((char *) name_of_file + 1, file_name);
     *f = xfopen((char *) file_name, fopen_mode);
 
 #ifdef MSDOS
@@ -256,7 +253,6 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     if (path_index == TFMFILEPATH)
     {
       tfm_temp = getc (*f);
-      //ungetc(tfm_temp, *f);
     } 
 
     if (strstr((char *) name_of_file + 1, ".fmt") != NULL)

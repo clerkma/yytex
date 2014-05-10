@@ -709,7 +709,7 @@ EXTERN scaled pdf_delta_h, pdf_delta_v;
 EXTERN scaled cur_h, cur_v; 
 EXTERN internal_font_number dvi_f; 
 EXTERN internal_font_number pdf_f;
-EXTERN integer cur_s; 
+EXTERN integer cur_s; /* sec 616 */
 EXTERN scaled total_stretch[4], total_shrink[4]; /* padded already */
 EXTERN integer last_badness; 
 EXTERN halfword adjust_tail; 

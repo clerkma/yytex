@@ -107,11 +107,10 @@ typedef enum
 #define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)
 #define a_close(f)	check_fclose (f)
 
-#define MAXLINE 256         // for log_line buffer
+#define MAXLINE 256 // for log_line buffer
 
 extern bool trace_flag;
 extern bool open_trace_flag;
-
 extern integer zround (double);
 extern bool eoln (FILE * file);
 extern bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode);
