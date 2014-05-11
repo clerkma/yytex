@@ -2416,7 +2416,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   internal_font_number f;
   internal_font_number g;
   eight_bits a, b, c, d;
-  ffourquarters qw;
+  ffour_quarters qw;
   scaled sw;
   integer bchlabel;
   short bchar;

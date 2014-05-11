@@ -907,7 +907,7 @@ small_number reconstitute_(small_number j, small_number n, halfword bchar, halfw
 {
   halfword p;
   halfword t;
-  ffourquarters q;
+  ffour_quarters q;
   halfword cur_rh;
   halfword test_char;
   scaled w;

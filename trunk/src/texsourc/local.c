@@ -1748,18 +1748,18 @@ int allocate_memory (void)
 /* they are all rather small, and typically don't need expansion */
 /* WE ASSUME THIS DOESN'T HAPPEN, SO WON'T BOTHER WITH UPDATESTATISTICS */
 #ifdef ALLOCATEHASH
-/*  n = 9767 * sizeof (twohalves);  *//* 60 kilo bytes */   
-/*  n = (hash_size + 267) * sizeof (twohalves); */  /* 60 kilo bytes */
-/*  n = (9767 + eqtb_extra) * sizeof (twohalves); */
+/*  n = 9767 * sizeof (two_halves);  *//* 60 kilo bytes */   
+/*  n = (hash_size + 267) * sizeof (two_halves); */  /* 60 kilo bytes */
+/*  n = (9767 + eqtb_extra) * sizeof (two_halves); */
 #ifdef SHORTHASH
-  n = (hash_size + 267 + eqtb_extra) * sizeof (htwohalves);   /* 95/Feb/19 */
-  zzzae = (htwohalves *) malloc (roundup(n));
+  n = (hash_size + 267 + eqtb_extra) * sizeof (htwo_halves);   /* 95/Feb/19 */
+  zzzae = (htwo_halves *) malloc (roundup(n));
 #else
-  n = (hash_size + 267 + eqtb_extra) * sizeof (twohalves);  /* 95/Feb/19 */
-  zzzae = (twohalves *) malloc (roundup(n));
+  n = (hash_size + 267 + eqtb_extra) * sizeof (two_halves);  /* 95/Feb/19 */
+  zzzae = (two_halves *) malloc (roundup(n));
 #endif
   if (trace_flag)  trace_memory("hash table", n);
-/*  zzzae = (twohalves *) malloc ((hash_size + 267) * sizeof (twohalves)); */
+/*  zzzae = (two_halves *) malloc ((hash_size + 267) * sizeof (two_halves)); */
   if (zzzae == NULL)
   {
     memory_error("hash table", n);
@@ -2634,15 +2634,6 @@ int analyze_flag (int c, char *optarg)
     case 'Y':
       reorder_arg_flag = false; /* local */
       break;
-    case 'b':
-      test_dir_access = false; /* 94/Feb/10 */
-      break;
-    case 'D':
-      dir_method = false; /* 94/Feb/10 */
-      break;
-    case 'G':
-      file_method = false; /* 94/Feb/13 */
-      break;
 /* *********** following command line options take arguments **************  */
     case 'm':
       if (optarg == 0)
@@ -2894,9 +2885,6 @@ int init_commands (int ac, char **av)
   show_missing      = true;
   current_flag      = true;
   current_tfm       = true;  /* search for TFMs in current dir as well */
-  test_dir_access   = true;  /* test if readable item is perhaps a sub-dir */
-  dir_method        = true;  /* in dir_p: _findfirst instead of use fopen (nul) */
-  file_method       = true;  /* use file_p (_findfirst) not readable (access) */
   c_style_flag      = false; /* use c-style error output */
   show_fmt_flag     = true;  /* show format file in log */
   show_tfm_flag     = false; /* don't show metric file in log */
@@ -3402,7 +3390,7 @@ int endit (int flag)
     if (total_pages > 0)
     {
       show_inter_val ((finish_time - main_time) / total_pages);
-      show_line(" sec per page", 0);
+      show_line(" sec per page.", 0);
     }
 
     show_line("\n", 0);

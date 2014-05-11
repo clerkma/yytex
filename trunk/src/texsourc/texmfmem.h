@@ -22,40 +22,57 @@
    that the (un)dumping routines do suffices to put things in the right
    place in memory.
 
-   A memory_word can be broken up into a `twohalves' or a
-   `fourquarters', and a `twohalves' can be further broken up.  Here is
+   A memory_word can be broken up into a `two_halves' or a
+   `four_quarters', and a `two_halves' can be further broken up.  Here is
    a picture.  ..._M = most significant byte, ..._L = least significant
    byte.
    
    If BigEndian:
-   twohalves.v:  RH_M  RH_L  LH_M  LH_L
-   twohalves.u:  JNK1  JNK2    B0    B1
-   fourquarters:   B0    B1    B2    B3
+   two_halves.v:  RH_M  RH_L  LH_M  LH_L
+   two_halves.u:  JNK1  JNK2    B0    B1
+   four_quarters:   B0    B1    B2    B3
    
    If LittleEndian:
-   twohalves.v:  LH_L  LH_M  RH_L  RH_M
-   twohalves.u:    B1    B0  JNK1  JNK2
-   fourquarters:   B3    B2    B1    B0
+   two_halves.v:  LH_L  LH_M  RH_L  RH_M
+   two_halves.u:    B1    B0  JNK1  JNK2
+   four_quarters:   B3    B2    B1    B0
    
    The halfword fields are four bytes if we are building a TeX or MF;
    this leads to further complications:
    
    BigEndian:
-   twohalves.v:  RH_MM RH_ML RH_LM RH_LL LH_MM LH_ML LH_LM LH_LL
-   twohalves.u:  ---------JUNK----------  B0    B1
-   fourquarters:   B0    B1    B2    B3
+   two_halves.v:  RH_MM RH_ML RH_LM RH_LL LH_MM LH_ML LH_LM LH_LL
+   two_halves.u:  ---------JUNK----------  B0    B1
+   four_quarters:   B0    B1    B2    B3
 
    LittleEndian:
-   twohalves.v:  LH_LL LH_LM LH_ML LH_MM RH_LL RH_LM RH_ML RH_MM
-   twohalves.u:  junkx junky  B1    B0
-   fourquarters: ---------JUNK----------  B3    B2    B1    B0
+   two_halves.v:  LH_LL LH_LM LH_ML LH_MM RH_LL RH_LM RH_ML RH_MM
+   two_halves.u:  junkx junky  B1    B0
+   four_quarters: ---------JUNK----------  B3    B2    B1    B0
 
    I guess TeX and Metafont never refer to the B1 and B0 in the
-   fourquarters structure as the B1 and B0 in the twohalves.u structure.
+   four_quarters structure as the B1 and B0 in the two_halves.u structure.
    
    This file can't be part of texmf.h, because texmf.h gets included by
    {tex,mf}d.h before the `halfword' etc. types are defined.  So we
    include it from the change file instead.
+*/
+
+/*
+  meaning      structure                      @TeX                @draft          
+               ----------------------------------------------------------------------
+  integer      |            int            || 4: long           | 8: long long      |   min_quarterword 0
+               ---------------------------------------------------------------------- max_quarterword FFFF
+  scaled       |            sc             || 4: long           | 8: long long      |   min_halfword    
+               ----------------------------------------------------------------------
+  glue_ratio   |            gr             || 4: float          | 8: double         |
+               ----------------------------------------------------------------------
+  halfword     |     lh      |     rh      || 2: unsigned short | 4: unsigned long  |
+               ----------------------------------------------------------------------
+  half+quarter |  b0  |  b1  |     rh      ||                                       |
+               ----------------------------------------------------------------------
+  quarter      |  b0  |  b1  |  b2  |  b3  || 1: unsigned char  | 2: unsigned short |
+               ----------------------------------------------------------------------
 */
 
 typedef union
@@ -84,7 +101,7 @@ typedef union
     quarterword B1, B0;
 #endif /* not WORDS_BIGENDIAN */
   } u;
-} twohalves;
+} two_halves;
 
 /* new in Y&Y TeX 1.3 1996/Jan/18 used for hash [...] if SHORTHASH defined */
 typedef struct {
@@ -96,7 +113,7 @@ typedef struct {
     quarterword LH, RH;
 #endif
   } v;
-} htwohalves;
+} htwo_halves;
 
 typedef struct
 {
@@ -108,20 +125,20 @@ typedef struct
     quarterword B3, B2, B1, B0;
 #endif
   } u;
-} fourquarters;
+} four_quarters;
 
 
 typedef union
 {
 #ifdef TeX
   glue_ratio gr;
-  twohalves hh;
+  two_halves hh;
 #else
-  twohalves hhfield;
+  two_halves hhfield;
 #endif
 #ifdef WORDS_BIGENDIAN
   integer cint;
-  fourquarters qqqq;
+  four_quarters qqqq;
 #else /* not WORDS_BIGENDIAN */
   struct
   {
@@ -136,7 +153,7 @@ typedef union
 #if defined (TeX) && !defined (SMALLTeX) || !defined (TeX) && !defined (SMALLMF)
     halfword junk;
 #endif /* big TeX or big MF */
-    fourquarters QQQQ;
+    four_quarters QQQQ;
   } v;
 #endif /* not WORDS_BIGENDIAN */
 } memory_word;
@@ -153,14 +170,14 @@ typedef struct
     unsigned char B3, B2, B1, B0;
 #endif
   } u;
-} ffourquarters; /* was fourunsignedchars; */
+} ffour_quarters; /* was fourunsignedchars; */
 
 #define fquarterword unsigned char
 
 typedef union
 {
   integer cint;
-  ffourquarters qqqq;
+  ffour_quarters qqqq;
 } fmemoryword;
 
 /* To keep the original structure accesses working, we must go through
@@ -169,9 +186,6 @@ typedef union
 #define b1 u.B1
 #define b2 u.B2
 #define b3 u.B3
-
-#define rh v.RH
-#define lhfield v.LH
 
 #ifndef WORDS_BIGENDIAN
 #define cint u.CINT
