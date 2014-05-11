@@ -334,11 +334,11 @@ void close_files_and_terminate (void)
       if (total_pages != 1)
         print_char('s');
 
-      print_string(", ");
+      //print_string(", ");
       //print_int(dvi_offset + dvi_ptr);
-      print_int(yandy_pdf->sig_bytes);
-      print_string(" bytes).");
-      //print_string(").");
+      //print_int(yandy_pdf->mmgr->mpool->used_size);
+      //print_string(" bytes).");
+      print_string(").");
       b_close(dvi_file);
     }
 

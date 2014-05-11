@@ -365,6 +365,7 @@ void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user
 
 void pdf_font_def(internal_font_number f)
 {
+  /*
   int k;
   const char * fnt_name;
   char * afm_name;
@@ -390,8 +391,8 @@ void pdf_font_def(internal_font_number f)
       yandy_font[k] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
     }
   }
-
-  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[k], (font_size[f] / 65535));
+  */
+  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], (font_size[f] / 65535));
 }
 
 void pdf_ship_out(halfword p)
@@ -493,6 +494,7 @@ void pdf_ship_out(halfword p)
   }
 
   yandy_page = HPDF_AddPage (yandy_pdf);
+  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], 10);
   HPDF_Page_SetSize (yandy_page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT);
 
   cur_v = height(p) + v_offset;
@@ -562,8 +564,6 @@ lab21:
 
           if (f != dvi_f)
           {
-            pdf_font_def(f);
-
             if (!font_used[f])
             {
               font_used[f] = true;
@@ -572,8 +572,7 @@ lab21:
             dvi_f = f;
           }
           
-          HPDF_Page_SetFontAndSize (yandy_page, yandy_font[dvi_f], 10);
-          HPDF_Page_BeginText(yandy_page);
+          HPDF_Page_BeginText(yandy_page);HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], 10);
           HPDF_Page_MoveTextPos(yandy_page, pdf_sp_to_bp(cur_h) + 72, (841.89 - (pdf_sp_to_bp(cur_v) + 72)));
           HPDF_Page_ShowText(yandy_page, pdf_char_to_string(c));
           HPDF_Page_EndText(yandy_page);
