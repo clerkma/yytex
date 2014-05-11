@@ -122,7 +122,7 @@ EXTERN integer max_buf_stack;
 /* free the limit on font memory ! */ /* (2^32 - 1) / sizeof(memory_word) */
 #ifdef ALLOCATEFONT
 /* #define font_mem_size 262140L */
-  #define font_mem_size (max_halfword / sizeof(memory_word) -1)
+  #define font_mem_size (max_halfword / sizeof(memory_word) - 1)
 #else
   #define font_mem_size 100000L
 #endif
@@ -325,9 +325,8 @@ EXTERN halfword temp_ptr;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef ALLOCATEMAIN
-  EXTERN memory_word * mainmemory;   /* remembered so can be free() later */
-  EXTERN memory_word * zzzaa;
-  #define zmem zzzaa
+  EXTERN memory_word * main_memory;   /* remembered so can be free() later */
+  EXTERN memory_word * mem;
 #else
   /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
   EXTERN memory_word 
@@ -1043,8 +1042,7 @@ EXTERN int pseudo_space;
 EXTERN int allow_quoted_names;
 EXTERN int default_rule;
 EXTERN char * format_file;
-EXTERN char * source_direct;     /* 1998/Sep/29 */
-EXTERN char * string_file;
+EXTERN char * source_direct;
 EXTERN char * format_name;
 EXTERN char * encoding_name;
 EXTERN bool format_specific;

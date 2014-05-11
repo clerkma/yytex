@@ -49,12 +49,10 @@
 #include <setjmp.h>
 #include <time.h>
 #include <signal.h>
-#ifdef MSDOS
-#include <kpathsea/win32lib.h>
-#include <conio.h>
-#define getch _getch
+#ifdef _WIN32
+  #include <kpathsea/win32lib.h>
 #else
-#include <unistd.h>
+  #include <unistd.h>
 #endif
 #include "hpdf.h"
 #include "hpdf_utils.h"
