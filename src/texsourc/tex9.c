@@ -343,7 +343,6 @@ void close_files_and_terminate (void)
     }
 
     HPDF_Free(yandy_pdf);
-    free_tfm_map();
   }
   else
   {

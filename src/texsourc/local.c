@@ -785,7 +785,7 @@ int realloc_hyphen (int hyphen_prime)
   for (k = 0; k <= hyphen_prime; k++) hyph_list[k]= 0;
 #endif
 
-  hyph_count = 0; /* or use reset_hyphen() in itex.c */
+  hyph_count = 0;
 
   if (current_prime != 0)
   {
@@ -1116,7 +1116,8 @@ fmemoryword * realloc_font_info (int size)
   current_font_mem_size = newsize;
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
+
   return font_info;
 }
 #endif
@@ -1192,7 +1193,7 @@ packed_ASCII_code * realloc_str_pool (int size)
   }
   
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
   return str_pool;
 }
@@ -1269,7 +1270,7 @@ pool_pointer *realloc_str_start (int size)
   }
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
   return str_start;
 }
@@ -1298,7 +1299,6 @@ int allocate_ini (int size)
   trie_c = (packed_ASCII_code *) malloc (roundup(nc));
   trie_r = (trie_pointer *) malloc (roundup(nr));
   trie_hash = (trie_pointer *) malloc (roundup(nh));
-/*    trie_taken = (bool *) malloc (nt); */
   trie_taken = (char *) malloc (roundup(nt));
   
   if (trie_c == NULL || trie_o == NULL || trie_l == NULL || trie_r == NULL ||
@@ -1327,9 +1327,9 @@ int allocate_ini (int size)
   update_statistics ((int) trie_taken, nt, 0);
 /*    trie_size = size; */ /* ??? */
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
-  return 0;               // success
+  return 0; // success
 }
 #endif
 
@@ -1568,7 +1568,7 @@ list_state_record *realloc_nest_stack (int size)
 #endif
 
 #ifdef ALLOCATEPARAMSTACK
-int current_param_size=0;       /* current param size */
+int current_param_size = 0;
 
 halfword *realloc_param_stack (int size)
 {
@@ -1706,11 +1706,13 @@ ASCII_code *realloc_buffer (int size)
 
   buffer = newbuffer;
   update_statistics ((int) buffer, n, current_buf_size);
+
 #ifdef USEMEMSET
   memset(buffer + current_buf_size, 0, newsize - current_buf_size);
 #else
   for (k = current_buf_size; k < newsize; k++) buffer[k]= 0;
 #endif
+
   current_buf_size = newsize;
 
   if (trace_flag)
@@ -2061,7 +2063,7 @@ int free_memory (void)
   if (pdf_file_name != NULL)
     free(pdf_file_name);
 
-  pdf_file_name = log_file_name = dvi_file_name = NULL;       /* 00/Jun/18 */
+  pdf_file_name = log_file_name = dvi_file_name = NULL;
 
   return 0;
 }

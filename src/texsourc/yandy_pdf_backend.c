@@ -38,84 +38,7 @@ integer scaled_out;
 HPDF_Doc  yandy_pdf;
 HPDF_Page yandy_page;
 HPDF_Font yandy_font[1024];
-tree *avl_tree = NULL;
 
-struct tfm_map
-{
-  char * tfm_name;
-  unsigned int key;
-};
-
-int tfm_cmp(void * a, void * b)
-{
-  char * aa = ((struct tfm_map *) (a))->tfm_name;
-  char * bb = ((struct tfm_map *) (b))->tfm_name;
-
-  return (strcmp(aa, bb)) ;
-}
-
-void tfm_print(void *d)
-{
-  struct tfm_map * dd = (struct tfm_map *) d;
-
-  if (dd)
-    printf("{ %s => %d }\n", dd->tfm_name, dd->key);
-}
-
-void tfm_delete(void *d)
-{
-  struct tfm_map *dd = (struct tfm_map *) d;
-
-  if (dd)
-  {
-    free(dd);
-  }
-}
-
-void tfm_copy(void *src, void *dst)
-{
-  struct tfm_map *s = (struct tfm_map *) src;
-  struct tfm_map *d = (struct tfm_map *) dst;
-  d->tfm_name = s->tfm_name;
-  d->key = s->key;
-}
-
-void init_tfm_map(void)
-{
-  avl_tree = init_dictionnary(tfm_cmp, tfm_print, tfm_delete, tfm_copy);
-}
-
-void free_tfm_map(void)
-{
-  delete_tree(avl_tree);
-}
-
-int insert_font_index(char * name)
-{
-  struct tfm_map nn;
-  nn.tfm_name = name;
-  nn.key = avl_tree->count + 1;
-
-  return insert_elmt(avl_tree, &nn, sizeof(struct tfm_map));
-}
-
-int get_font_index(char * name)
-{
-  struct tfm_map nn;
-
-  nn.tfm_name = name;
-  nn.key = -1;
-
-  if (is_present(avl_tree, &nn))
-  {
-    if (get_data(avl_tree, &nn, sizeof(struct tfm_map)))
-      return nn.key;
-    else
-      return 0;
-  }
-
-  return 0;
-}
 // report error.
 void pdf_error(const char * t, const char * p)
 {
@@ -485,7 +408,6 @@ void pdf_ship_out(halfword p)
 
   if (total_pages == 0)
   {
-    init_tfm_map();
     yandy_pdf = HPDF_New (pdf_error_handler, NULL);
     HPDF_SetCompressionMode (yandy_pdf, HPDF_COMP_ALL);
     yandy_pdf -> pdf_version = HPDF_VER_17;

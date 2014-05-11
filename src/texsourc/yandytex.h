@@ -56,7 +56,6 @@
 #endif
 #include "hpdf.h"
 #include "hpdf_utils.h"
-#include "avl.h"
 
 typedef int         integer;
 typedef double      glue_ratio;
