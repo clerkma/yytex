@@ -52,7 +52,6 @@ lab20:
     init_col();
   }
 }
-/* used in itex.c only */
 /* sec 0826 */
 halfword finite_shrink_(halfword p)
 {
@@ -903,7 +902,6 @@ lab31:
 
   prev_graf = best_line - 1;
 }
-/* Reconstitute ligatures during hyphenation pass */
 /* sec 0906 */
 small_number reconstitute_(small_number j, small_number n, halfword bchar, halfword hchar)
 {
@@ -1167,7 +1165,6 @@ lab30:
 
   return j;
 }
-/* #pragma optimize ("g", off) */ /* not needed for MSVC it seems ... */
 /* sec 0895 */
 void hyphenate (void)
 {
@@ -1507,8 +1504,6 @@ lab50:
   link(s) = q;
   flush_list(init_list);
 }
-/* #pragma optimize ("g", off) */ /* not needed for MSVC it seems ... */
-/* used only in itex.c */
 /* sec 0934 */
 void new_hyph_exceptions (void)
 {
@@ -1881,7 +1876,6 @@ lab45:
 lab30:
   return best_place;
 }
-/* called only from tex7.c */
 /* sec 0977 */
 halfword vsplit_(eight_bits n, scaled h)
 {
@@ -2052,7 +2046,6 @@ void ensure_vbox_(eight_bits n)
       box_error(n);
     }
 }
-/* called only from tex7.c */
 /* sec 1012 */
 void fire_up_(halfword c)
 {
@@ -2326,4 +2319,3 @@ void fire_up_(halfword c)
     box(255) = 0;
   }
 }
-/* used to continue here with build_page etc in tex6.c */

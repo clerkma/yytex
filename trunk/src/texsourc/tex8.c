@@ -62,7 +62,7 @@ void math_fraction (void)
       scan_delimiter(right_delimiter(incompleat_noad), false);
     }
 
-    switch(c % delimited_code)
+    switch (c % delimited_code)
     {
       case above_code:
         scan_dimen(false, false, false);
@@ -291,7 +291,8 @@ void after_math (void)
 
     if (w + q > z)
     {
-      if ((e != 0) && ((w - total_shrink[normal] + q <= z) || (total_shrink[fil] != 0) || (total_shrink[fill] != 0) || (total_shrink[filll] != 0)))
+      if ((e != 0) && ((w - total_shrink[normal] + q <= z) || (total_shrink[fil] != 0) ||
+        (total_shrink[fill] != 0) || (total_shrink[filll] != 0)))
       {
         free_node(b, box_node_size);
         b = hpack(p, z - q, 0);
@@ -428,7 +429,7 @@ lab20:
     {
       get_token();
     }
-    while (!(cur_tok != space_token));
+  while (!(cur_tok != space_token));
 
   if ((cur_cs == 0) || (cur_cs > frozen_control_sequence))
   {
@@ -492,7 +493,7 @@ void do_register_command_ (small_number a)
     p = cur_chr;
     scan_eight_bit_int();
 
-    switch(p)
+    switch (p)
     {
       case int_val:
         l = cur_val + count_base;
@@ -511,8 +512,8 @@ void do_register_command_ (small_number a)
         break;
     }
   }
-lab40:;
 
+lab40:
   if (q == tex_register)
     scan_optional_equals();
   else
@@ -629,7 +630,6 @@ lab40:;
       eq_define(l, glue_ref, cur_val);
   }
 }
-/* called only from itex.c */
 /* sec 1243 */
 void alter_aux (void)
 {
@@ -672,7 +672,7 @@ void alter_prev_graf (void)
   nest[nest_ptr] = cur_list;
   p = nest_ptr;
 
-  while(abs(nest[p].mode_field) != vmode)
+  while (abs(nest[p].mode_field) != vmode)
     decr(p);
 
   scan_optional_equals();
@@ -756,7 +756,7 @@ void new_font_(small_number a)
   else
   {
     old_setting = selector;
-    selector = 21;
+    selector = new_string;
     print_string("FONT");
     print(u - active_base);
     selector = old_setting;
@@ -787,7 +787,7 @@ void new_font_(small_number a)
       help2("I can only handle fonts at positive sizes that are",
         "less than 2048pt, so I've changed what you said to 10pt.");
       error();
-      s = 10 * 65536L;    /* 10pt */
+      s = 10 * 65536L;
     }
   }
   else if (scan_keyword("scaled"))
@@ -810,7 +810,7 @@ void new_font_(small_number a)
 
   flushable_string = str_ptr - 1;
 
-  if (trace_flag) /* debugging stuff only 98/Oct/5 */
+  if (trace_flag)
   {
     int i, k1, k2, l1, l2;
     char *sch = log_line;
@@ -863,7 +863,7 @@ void new_font_(small_number a)
       }
       else if (font_size[f] == xn_over_d(font_dsize[f], - (integer) s, 1000))
       {
-        if (ignore_frozen == 0 || f > frozen_font_ptr) /* 99/Mar/26 */
+        if (ignore_frozen == 0 || f > frozen_font_ptr)
         {
           if (trace_flag)
           {
@@ -955,30 +955,24 @@ void open_or_close_in (void)
     scan_file_name();
     pack_file_name(cur_name, cur_area, cur_ext);
 
-/* *** some changes in following in 3.14159 *** */
-/*  if current extension is *not* empty, try to open using name as is */
-/*  string 335 is "" the empty string */
     if ((cur_ext != 335) && a_open_in(read_file[n], TEXINPUTPATH))
       read_open[n] = 1;
-/*  we get here if extension is "", or file with extension failed to open */
-/*  if current extension is not `tex,' and `tex' is not irrelevant, try it */
-/*  string 785 is  .tex */
     else if ((cur_ext != 785) && (name_length + 5 < PATHMAX))
+    {
+      strncpy((char *) name_of_file + name_length + 1, ".tex ", 5);
+      name_length = name_length + 4;
+
+      if (a_open_in(read_file[n], TEXINPUTPATH))
+        read_open[n] = just_open;
+      else
       {
-        strncpy((char *) name_of_file + name_length + 1, ".tex ", 5);
-        name_length = name_length + 4;
+        name_length = name_length - 4;
+        name_of_file[name_length + 1] = ' ';
 
-        if (a_open_in(read_file[n], TEXINPUTPATH))
-          read_open[n] = just_open;
-        else
-        {
-          name_length = name_length - 4;      /* remove ".tex" again */
-          name_of_file[name_length + 1] = ' ';
-
-          if ((cur_ext == 335) && a_open_in(read_file[n], TEXINPUTPATH))
-            read_open[n] = 1;
-        }
+        if ((cur_ext == 335) && a_open_in(read_file[n], TEXINPUTPATH))
+          read_open[n] = 1;
       }
+    }
   }
 }
 /* sec 1279 */
@@ -1072,7 +1066,7 @@ void show_whatever (void)
 {
   halfword p;
 
-  switch(cur_chr)
+  switch (cur_chr)
   {
     case show_lists:
       {
@@ -1201,9 +1195,7 @@ void new_write_whatsit_(small_number w)
 /* sec 1348 */
 void do_extension (void)
 {
-/*  integer i, j, k;  */
   integer k;
-/*  halfword p, q, r;  */
   halfword p;
 
   switch(cur_chr)

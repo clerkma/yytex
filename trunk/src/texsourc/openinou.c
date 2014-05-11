@@ -230,7 +230,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     strcpy ((char *) name_of_file + 1, file_name);
     *f = xfopen((char *) file_name, fopen_mode);
 
-#ifdef MSDOS
+#ifdef _WIN32
     if (name_of_file[1] == '.' && (name_of_file[2] == PATH_SEP || name_of_file[2] == '\\'))
 #else
     if (name_of_file[1] == '.' && name_of_file[2] == PATH_SEP)

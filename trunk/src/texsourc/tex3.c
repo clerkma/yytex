@@ -2118,7 +2118,7 @@ void open_log_file (void)
   old_setting = selector;
 
   if (job_name == 0)
-    job_name = 790;   /* default:  texput */
+    job_name = 790;
 
   pack_job_name(".log");
 
@@ -2133,31 +2133,29 @@ void open_log_file (void)
   log_opened = true;
 
   {
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  if (want_version)
-  {
-    stamp_it(log_line);         // ??? use log_line ???
-    strcat(log_line, "\n");
-    (void) fputs(log_line, log_file);
-    stampcopy(log_line);
-    strcat(log_line, "\n");
-    (void) fputs(log_line, log_file);
-  }
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*  also change following in itex.c - bkph */
-  (void) fputs(tex_version, log_file); 
-  (void) fprintf(log_file, " (%s %s)", application, yandyversion);
+    if (want_version)
+    {
+      stamp_it(log_line);
+      strcat(log_line, "\n");
+      (void) fputs(log_line, log_file);
+      stampcopy(log_line);
+      strcat(log_line, "\n");
+      (void) fputs(log_line, log_file);
+    }
+    
+    (void) fputs(tex_version, log_file); 
+    (void) fprintf(log_file, " (%s %s)", application, yandyversion);
 
-  if (format_ident > 0)
-    slow_print(format_ident);     /* bkph */
+    if (format_ident > 0)
+      slow_print(format_ident);
 
-  print_string("  ");
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  if (civilize_flag)
-    print_int(year);
-  else
-    print_int(day);
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+    print_string("  ");
+
+    if (civilize_flag)
+      print_int(year);
+    else
+      print_int(day);
+
     print_char(' ');
     months = " JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 
@@ -2165,16 +2163,16 @@ void open_log_file (void)
       (void) putc(months[k],  log_file);
 
     print_char(' ');
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
     if (civilize_flag)
       print_int(day);
     else
       print_int(year);
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
     print_char(' ');
-    print_two(tex_time / 60);  /* hour */
+    print_two(tex_time / 60);
     print_char(':');
-    print_two(tex_time % 60);  /* minute */
+    print_two(tex_time % 60);
   }
 
   input_stack[input_ptr] = cur_input;
@@ -2188,122 +2186,107 @@ void open_log_file (void)
     print(buffer[k]);
 
   print_ln(); 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* a good place to show the fmt file name or pool file name ? 94/June/21 */
+
   if (show_fmt_flag)
   {
-    if (string_file != NULL)
-    {
-      fprintf(log_file, "(%s)\n", string_file);
-      free(string_file);  /* this was allocated by strdup in openinou */
-      string_file = NULL;   /* for safety */
-    }
-
     if (format_file != NULL)
     {
       fprintf(log_file, "(%s)\n", format_file);
-      free(format_file);  /* this was allocated by strdup in openinou */
-      format_file = NULL;   /* for safety */
+      free(format_file);
+      format_file = NULL;
     }
   }
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
   selector = old_setting + 2;
 }
 
 /**************************** start of insertion 98/Feb/7 **************/
-
 // Attempt to deal with foo.bar.tex given as foo.bar on command line
 // Makes copy of job_name with extension
 
-void morenamecopy(ASCII_code c)
+void more_name_copy(ASCII_code c)
 {
 #ifdef ALLOCATESTRING
   if (pool_ptr + 1 > current_pool_size)
     str_pool = realloc_str_pool (increment_pool_size);
 
-  if (pool_ptr + 1 > current_pool_size) /* in case it failed 94/Jan/24 */
+  if (pool_ptr + 1 > current_pool_size)
   {
-    overflow("pool size", current_pool_size - init_pool_ptr); /* 97/Mar/7 */
-    return;     // abort_flag set
+    overflow("pool size", current_pool_size - init_pool_ptr);
+    return;
   }
 #else
   if (pool_ptr + 1 > pool_size)
   {
-    overflow("pool size", pool_size - init_pool_ptr); /* pool size */
-    return;     // abort_flag set
+    overflow("pool size", pool_size - init_pool_ptr);
+    return;
   }
 #endif
+
   str_pool[pool_ptr] = c; 
   incr(pool_ptr);
 }
 
-int endnamecopy(void)
+int end_name_copy(void)
 {
 #ifdef ALLOCATESTRING
-    if (str_ptr + 1 > current_max_strings)
-      str_start = realloc_str_start(increment_max_strings + 1);
+  if (str_ptr + 1 > current_max_strings)
+    str_start = realloc_str_start(increment_max_strings + 1);
 
-    if (str_ptr + 1 > current_max_strings) /* in case it failed 94/Jan/24 */
-    {
-      overflow("number of strings", current_max_strings - init_str_ptr);  /* 97/Mar/7 */
-      return 0;     // abort_flag set
-    }
+  if (str_ptr + 1 > current_max_strings)
+  {
+    overflow("number of strings", current_max_strings - init_str_ptr);
+    return 0;
+  }
 #else
-    if (str_ptr + 1 > max_strings)
-    {
-      overflow("number of strings", max_strings - init_str_ptr); /* number of strings */
-      return 0;     // abort_flag set
-    }
+  if (str_ptr + 1 > max_strings)
+  {
+    overflow("number of strings", max_strings - init_str_ptr);
+    return 0;
+  }
 #endif
-    return make_string();
+
+  return make_string();
 }
 
-/* add extension to job_name */
-void jobnameappend (void)
+void job_name_append (void)
 { 
   int k, n;
-/*  copy job_name */
+
   k = str_start[job_name];
   n = str_start[job_name + 1];
 
   while (k < n)
-    morenamecopy(str_pool[k++]);
-/*  copy `extension' */
+    more_name_copy(str_pool[k++]);
+
   k = str_start[cur_ext];
   n = str_start[cur_ext + 1];
 
   while (k < n)
-    morenamecopy(str_pool[k++]);
+    more_name_copy(str_pool[k++]);
 
-  job_name = endnamecopy();
+  job_name = end_name_copy();
 }
 
 /**************************** end of insertion 98/Feb/7 **************/
 /* sec 0537 */
-void start_input (void)
+void start_input(void)
 {
-  bool addedextension = false;
+  bool added_extension = false;
 
   scan_file_name();
   pack_file_name(cur_name, cur_area, cur_ext); 
 
-  while (true)        /* loop until we get a valid file name */
+  while (true)
   {
-    addedextension = false;
+    added_extension = false;
     begin_file_reading(); 
-/* *** *** *** *** *** following is new in 3.14159 *** *** *** *** *** *** */
-/*  if current extension is *not* empty, try to open using name as is */
-/*  string 335 is "" the empty string */
-/*  should be updated to current Kpathsea. */
+
     if ((cur_ext != 335) && a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
       goto lab30;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*  we get here if extension is "", or file with extension failed to open */
-/*  if current extension is not `tex,' and `tex' is not irrelevant, try it */
-/*  string 785 is .tex */
+
     if ((cur_ext != 785) && (name_length + 5 < PATHMAX))
     {
-      //strcpy(name_of_file + name_length + 1, ".tex ");
       name_of_file[name_length + 1] = '.';
       name_of_file[name_length + 2] = 't';
       name_of_file[name_length + 3] = 'e';
@@ -2311,57 +2294,53 @@ void start_input (void)
       name_of_file[name_length + 5] = ' ';
       name_length = name_length + 4;
 
-      addedextension = true;
+      added_extension = true;
 
       if (a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
         goto lab30;
 
-      name_length = name_length - 4;      /* strip extension again */
-      name_of_file[name_length + 1] = ' ';  /* ' ' */
-      addedextension = false;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+      name_length = name_length - 4;
+      name_of_file[name_length + 1] = ' ';
+      added_extension = false;
     }
-/* *** *** *** *** major changes here in 3.14159 *** *** *** *** *** *** */
-/*  string 335 is "" the empty string */
+
     if ((cur_ext == 335) && a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
       goto lab30;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
     end_file_reading();
     prompt_file_name("input file name", ".tex");
-  }   /* end of while(true)trying to get valid file name */
+  }
 
-/* maybe set  pseudo_tilde = 0  at this point ? 95/Sep/26 */
 lab30: 
   cur_input.name_field = a_make_name_string(input_file[cur_input.index_field]);
 
-  if (job_name == 0)       /* only the first time */
+  if (job_name == 0)
   {
-    job_name = cur_name;        /* here we set the job_name */
-/*  did file name have an `extension' already and we added ".tex" ? */
-    if (cur_ext != 335 && addedextension)     /* 98/Feb/7 */
-      jobnameappend();   /* append `extension' to job_name */
+    job_name = cur_name;
+
+    if (cur_ext != 335 && added_extension)
+      job_name_append();
 
     open_log_file();
   }
 
-  if (term_offset + length(cur_input.name_field) > max_print_line - 2) /* was 3 ? */
+  if (term_offset + length(cur_input.name_field) > max_print_line - 2)
     print_ln();
   else if ((term_offset > 0) || (file_offset > 0))
     print_char(' ');
 
   print_char('(');
-//  print_char('@');       // debugging only marker
   incr(open_parens);
 
   if (open_parens > max_open_parens)
-    max_open_parens = open_parens;    /* 1999/Jan/17 */
+    max_open_parens = open_parens;
 
   slow_print(cur_input.name_field);
-//  print_char('@');       // debugging only marker
+
 #ifndef _WINDOWS
   fflush(stdout);
 #endif
+
   cur_input.state_field = new_line;
 
   {
@@ -2385,7 +2364,7 @@ lab30:
 /* show TEXFONTS=... or format specific  */
 /* only show this if name was not fully qualified ? */
 void show_tex_fonts (void)
-{     /* 98/Jan/28 */
+{
   char *s, *t, *v, *u;
   int n;
 
@@ -2425,9 +2404,6 @@ void show_tex_fonts (void)
 
   print_char(')');
 }
-
-/**********************************************************************/
-/* called only from tex8.c */
 /* sec 0560 */
 internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)
 {
@@ -2987,14 +2963,14 @@ lab45:;
           font_info[param_base[f] + k - 1].cint = sw - alpha;
         else goto lab11;
       }
-/*  use test_eof() here instead ? */
+
     if (feof(tfm_file))
       goto lab11;
 
     for (k = np + 1; k <= 7; k++)
       font_info[param_base[f] + k - 1].cint = 0;
   }
-/* @<Make final adjustments...@>= l.11174 */
+
   if (np >= 7)
     font_params[f] = np;
   else
@@ -3006,7 +2982,7 @@ lab45:;
   if (bchlabel < nl)
     bchar_label[f] = bchlabel + lig_kern_base[f];
   else
-    bchar_label[f]= non_address; /* i.e. 0 --- 96/Jan/15 */
+    bchar_label[f] = non_address;
 
   font_bchar[f] = bchar;
   font_false_bchar[f] = bchar;
@@ -3024,7 +3000,7 @@ lab45:;
   font_area[f] = aire;
   font_bc[f] = bc;
   font_ec[f] = ec;
-  font_glue[f] = 0;  /* font_glue[f]:=null; l.11184 */
+  font_glue[f] = 0;
   char_base[f] = char_base[f];
   width_base[f] = width_base[f];
   lig_kern_base[f] = lig_kern_base[f];
@@ -3035,11 +3011,12 @@ lab45:;
   font_ptr = f;
   g = f;
   goto lab30;
+
 lab11:
   print_err("Font ");
   sprint_cs(u); 
   print_char('=');
-  print_file_name(nom, aire, 335);  /* "" */
+  print_file_name(nom, aire, 335);
 
   if (s >= 0)
   {
@@ -3058,10 +3035,10 @@ lab11:
   else
     print_string(" not loadable: Metric (TFM) file not found");
 
-  if (aire == 335) /* "" only if path not specified */
+  if (aire == 335)
   {
     if (show_texinput_flag)
-      show_tex_fonts();   /* 98/Jan/31 */
+      show_tex_fonts();
   }
 
   help5("I wasn't able to read the size data for this font,",
@@ -3070,6 +3047,7 @@ lab11:
       "You might try inserting a different font spec;",
       "e.g., type `I\\font<same font id>=<substitute font name>'.");
   error();
+
 lab30:
   if (fileopened)
     b_close(tfm_file);

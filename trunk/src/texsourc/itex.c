@@ -21,10 +21,6 @@
 
 #include "texd.h"
 
-#pragma warning(disable:4244) /* 96/Jan/10 */
-
-#include <time.h>
-
 #define BEGINFMTCHECKSUM 367403084L
 #define ENDFMTCHECKSUM   69069L
 
@@ -45,13 +41,11 @@ void initialize (void)
   hyph_pointer z;
 #endif
 
-/* We already initialized xchr if we are using non_ascii setup */
-/* Normally, there is no translation of character code numbers */
   if (!non_ascii)
   {
     for (i = 0; i <= 255; i++)
       xchr[i] = (char) i;
-/* This is a kind of joke, since the characters are given as numeric codes ! */
+
 #ifdef JOKE
     xchr[32] = ' ';  xchr[33] = '!';  xchr[34] = '"';  xchr[35] = '#';
     xchr[36] = '$';  xchr[37] = '%';  xchr[38] = '&';  xchr[39] = '\'';
@@ -83,10 +77,9 @@ void initialize (void)
 
     for (i = 127; i <= 255; i++)
       xchr[i]= chr(i);
-#endif /* end of JOKE */
+#endif
   }
-/* end of plain ASCII case (otherwise have read in xchr vector before) */
-/* Fill in background of `delete' for inverse mapping                  */
+
   for (i = 0; i <= 255; i++)
     xord[chr(i)] = 127;
 
@@ -97,33 +90,29 @@ void initialize (void)
   for (i = 0; i <= 126; i++)
     xord[xchr[i]] = i;
 #endif
-  
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* Now invert the xchr mapping to get xord mapping */
+
   for (i = 0; i <= 255; i++)
     xord[xchr[i]] = (char) i;
 
-  xord[127] = 127; /* hmm, a fixed point ? why ? */
+  xord[127] = 127;
 
-  flag = 0; /* 93/Dec/28 - bkph */
+  flag = 0;
 
   if (trace_flag != 0)
   {
-/*  entries in xord / xchr */
     for (k = 0; k < 256; k++)
       if (xord[k] != k)
       {
         flag = 1;
         break;
       }
-/* 127 here means mapping undefined */
+
     if (flag)
     {
       show_line("Inverted mapping xord[] pairs:\n", 0);
 
       for (k = 0; k < 256; k++)
       {
-/*  entries in xord / xchr */
         if (xord[k] != 127)
         {
           sprintf(log_line, "%d => %d\n", k, xord[k]);
@@ -132,8 +121,8 @@ void initialize (void)
       }
     }
   }
-/* may now set in local.c bkph */
-  if (interaction < 0)
+
+  if (interaction < batch_mode)
     interaction = error_stop_mode;
 
   deletions_allowed = true;
@@ -143,7 +132,7 @@ void initialize (void)
   use_err_help = false;
   interrupt = 0;
   OK_to_interrupt = true;
-/* darn, need to know mem_top, mem_max etc for the following ... */
+
 #ifdef DEBUG
   was_mem_end = mem_min;
 /*  was_lo_max = mem_min; */
@@ -151,7 +140,8 @@ void initialize (void)
 /*  was_hi_min = mem_max; */
   was_hi_min = mem_top;
   panicking = false;
-#endif /* DEBUG */
+#endif
+
   nest_ptr = 0;
   max_nest_stack = 0;
   mode = 1;
@@ -165,10 +155,10 @@ void initialize (void)
   page_tail = page_head;
 
 #ifdef ALLOCATEMAIN
-  if (is_initex) /* in iniTeX we did already allocate mem [] */
+  if (is_initex)
 #endif
     mem[page_head].hh.v.RH = 0;
-/*  last_glue = 262143L;  */ /* NO! */
+
   last_glue = empty_flag;
   last_penalty = 0;
   last_kern = 0;
@@ -983,7 +973,7 @@ lab30:                /* common exit point */
 
   q = passive;
 
-  while (q != 0) /* while q<>null do l.16979 */
+  while (q != 0)
   {
     cur_p = link(q);
     free_node(q, 2);
@@ -1579,7 +1569,7 @@ void prefixed_command (void)
         return;       // abort_flag set
       }
       break;
-  } /* end of cur_cmd switch */
+  }
 
 lab30:
   if (after_token != 0)
@@ -1605,7 +1595,7 @@ void bad_formator_pool (char *name, char *defaultname, char *envvar)
   show_line(log_line, 0);
 
   {
-    char *s;            /* extra info 99/April/28 */
+    char *s;
 
     if ((s = grabenv(envvar)) != NULL)
     {
@@ -1618,6 +1608,7 @@ void bad_formator_pool (char *name, char *defaultname, char *envvar)
       show_line(log_line, 0);
     }
   }
+
 #ifndef _WINDOWS
   fflush(stdout);
 #endif
@@ -1625,7 +1616,6 @@ void bad_formator_pool (char *name, char *defaultname, char *envvar)
 /* sec 1303 */
 bool load_fmt_file (void)
 {
-  register bool Result;
   integer j, k;
   halfword p, q;
   integer x;
@@ -2178,22 +2168,20 @@ bool load_fmt_file (void)
       format_ident = x;
   }
   undump_int(x);
-/*  test_eof(fmt_file)? */
   
-  if ((x != ENDFMTCHECKSUM) || feof(fmt_file)) /* magic checksum --- change ? */
+  if ((x != ENDFMTCHECKSUM) || feof(fmt_file))
     goto lab6666;
 
-  Result = true;
-  return(Result);
+  return true;
 
 lab6666:;
   sprintf(log_line, "(Fatal format file error; I'm stymied)\n");
   show_line(log_line, 1);
-/* added following bit of explanation 96/Jan/10 */
+
   if (!knuth_flag)
     bad_formator_pool(format_file, "the format file", "TEXFORMATS");
-  Result = false;
-  return Result;
+
+  return false;
 }
 /* sec 1335 */
 void final_cleanup (void)
@@ -2275,8 +2263,9 @@ void final_cleanup (void)
         delete_glue_ref(last_glue);
       store_fmt_file(); // returns a value ?
     }
-#endif /* INITEX */
-    if (!is_initex)       /* 2000/March/3 */
+#endif
+
+    if (!is_initex)
       print_nl("(\\dump is performed only by INITEX)");
   }
 }
@@ -2307,20 +2296,13 @@ void show_frozen (void)
   fprintf(log_file, ") ");
 }
 
-/* Main entry point called from texmf.c int main(int ac, char *av[]) */
-/* call from main_program in texmf.c */
-/* This in turn calls initialize() */
-
-#pragma warning(disable:4127)   // conditional expression is constant
-
 int texbody (void)
 {
-  history = 3;
+  history = fatal_error_stop;
 
   if (ready_already == 314159L)
     goto lab1;
 
-  /*  These tests are almost all compile time tests and so could be eliminated */
   bad = 0;
 
   if ((half_error_line < 30) || (half_error_line > error_line - 15))
@@ -2332,17 +2314,17 @@ int texbody (void)
   if (dvi_buf_size % 8 != 0)
     bad = 3;
 
-  if (1100 > mem_top)
-    bad = 4;   /* not compile time */
+  if (mem_bot + 1100 > mem_top)
+    bad = 4;
 
   if (hash_prime > (hash_size + hash_extra))
     bad = 5;
 
   if (max_in_open >= 128)
-    bad = 6;   /* p.14 */
+    bad = 6;
 
-  if (mem_top < 267)
-    bad = 7;    /* where from ? *//* not compile time */
+  if (mem_top < 256 + 11)
+    bad = 7;
 
 #ifdef INITEX
   if (is_initex)
@@ -2366,15 +2348,15 @@ int texbody (void)
 
   if ((mem_min < min_halfword) || (mem_max >= max_halfword) || (mem_bot - mem_min >= max_halfword))
     bad = 14;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-  if (mem_max > mem_top + mem_extra_high)     /* not compile time */
-    bad = 14;       /* ha ha */
 
-  if ((0 < min_quarterword) || (font_max > max_quarterword))  /* 93/Dec/3 */
+  if (mem_max > mem_top + mem_extra_high)
+    bad = 14;
+
+  if ((0 < min_quarterword) || (font_max > max_quarterword))
     bad = 15;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
 #ifdef INCREASEFONTS
-  if (font_max > 1024)                /* 96/Jan/17 */
+  if (font_max > 1024)
 #else
   if (font_max > 256)
 #endif
@@ -2407,7 +2389,7 @@ int texbody (void)
     if (!knuth_flag)
       bad_formator_pool(format_file, "the format file", "TEXFORMATS");
 
-    goto lab9999;     // abort
+    goto lab9999;
   }
 
   initialize();
@@ -2416,7 +2398,7 @@ int texbody (void)
   if (is_initex)
   {
     if (!get_strings_started())
-      goto lab9999;   // abort
+      goto lab9999;
 
     init_prim();
     init_str_ptr = str_ptr;
@@ -2425,7 +2407,7 @@ int texbody (void)
   }
 #endif
 
-  ready_already = 314159L; /* magic number */
+  ready_already = 314159L;
 
 lab1:
   selector = term_only;
@@ -2434,11 +2416,17 @@ lab1:
   file_offset = 0;
   show_line(tex_version, 0);
 
-#ifdef _WIN64
-  sprintf(log_line, " (%s %s/Windows 64bit)", application, yandyversion);
+  {
+#ifdef _WIN32
+  #ifdef _WIN64
+    sprintf(log_line, " (%s %s/Windows 64bit)", application, yandyversion);
+  #else
+    sprintf(log_line, " (%s %s/Windows 32bit)", application, yandyversion);
+  #endif
 #else
-  sprintf(log_line, " (%s %s/Windows 32bit)", application, yandyversion);
+    sprintf(log_line, " (%s %s/Linux)", application, yandyversion);
 #endif
+  }
 
   show_line(log_line, 0);
 
@@ -2461,9 +2449,9 @@ lab1:
       input_ptr = 0;
       max_in_stack = 0;
       in_open = 0;
-      high_in_open = 0; /* max_in_open name already used 1999 Jan 17 */
+      high_in_open = 0;
       open_parens = 0;
-      max_open_parens = 0;  /* max_open_parens */
+      max_open_parens = 0;
       max_buf_stack = 0;
       param_ptr = 0;
       max_param_stack = 0;
@@ -2474,9 +2462,9 @@ lab1:
       memset (buffer, 0, buf_size);
 #endif
 
-      first = 0;              /* 1999/Jan/22 */
+      first = 0;
       scanner_status = 0;
-      warning_index = 0; /* warning_index:=null; l.7068 */
+      warning_index = 0;
       first = 1;
       cur_input.state_field = 33;
       cur_input.start_field = 1;
@@ -2487,13 +2475,12 @@ lab1:
       align_state = 1000000L;
 
       if (!init_terminal())
-        goto lab9999; // abort
+        goto lab9999;
 
       cur_input.limit_field = last;
       first = last + 1;
     }
-
-/*    For Windows NT, lets allow + instead of & for format specification */
+    
     if ((format_ident == 0) ||
         (buffer[cur_input.loc_field] == '&') ||
         (buffer[cur_input.loc_field] == '+'))
@@ -2502,12 +2489,12 @@ lab1:
         initialize();
 
       if (!open_fmt_file ())
-        goto lab9999; // abort
+        goto lab9999;
 
       if (!load_fmt_file ())
       {
         w_close(fmt_file);
-        goto lab9999; // abort
+        goto lab9999;
       }
 
       w_close(fmt_file);
@@ -2523,9 +2510,7 @@ lab1:
       buffer[cur_input.limit_field] = end_line_char;
 
     fix_date_and_time();
-
     magic_offset = str_start[886] - 9 * ord_noad;
-    /* "0234000122*4000133**3**344*0400400*000000234000111*1111112341011" */
 
     if (interaction == batch_mode)
       selector = no_print;
@@ -2537,21 +2522,19 @@ lab1:
       start_input();
   }
 
-/*  show font TFMs frozen into format file */
-/*  moved here after start_input to ensure the log file is open */
-  if (show_tfm_flag && log_opened && font_ptr > 0)    /* 98/Sep/28 */
+  if (show_tfm_flag && log_opened && font_ptr > 0)
     show_frozen();
 
   main_time = clock();
   history = 0;
 
   if (show_cs_names)
-    print_cs_names(stdout, 0);    /* 98/Mar/31 */
+    print_cs_names(stdout, 0);
 
-  main_control();     /* read-eval-print loop :-) in tex8.c */
+  main_control();
 
   if (show_cs_names)
-    print_cs_names(stdout, 1);    /* 98/Mar/31 */
+    print_cs_names(stdout, 1);
 
   final_cleanup();
 

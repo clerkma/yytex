@@ -19,7 +19,6 @@
 
 #include "texd.h"
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* sec 0994 */
 void build_page (void)
 {
@@ -437,7 +436,6 @@ void app_space (void)
   link(tail) = q;
   tail = q;
 }
-/* called from tex8.c only */
 /* sec 1047 */
 void insert_dollar_sign (void)
 {
@@ -615,7 +613,6 @@ void off_save (void)
     error();
   }
 }
-/* only called from tex8.c */
 /* sec 1069 */
 void extra_right_brace (void)
 {
@@ -738,7 +735,6 @@ void box_end_(integer box_context)
     else
       ship_out(cur_box);
 }
-/* called only from tex8.c */
 /* sec 1079 */
 void begin_box_(integer box_context)
 {
@@ -950,7 +946,6 @@ void new_graf_(bool indented)
   if (nest_ptr == 1)
     build_page();
 }
-/* procedure indent_in_hmode; l.21058 */
 /* sec 1093 */
 void indent_in_hmode (void)
 {
@@ -974,7 +969,6 @@ void indent_in_hmode (void)
     tail_append(p);
   }
 }
-/* only called from tex8.c */
 /* sec 1095 */
 void head_for_vmode (void)
 {
@@ -1014,7 +1008,6 @@ void end_graf (void)
     error_count = 0;
   }
 }
-/* only called form tex8.c */
 /* sec 1099 */
 void begin_insert_or_adjust (void)
 {
@@ -1066,7 +1059,6 @@ void append_penalty (void)
   if (mode == vmode)
     build_page();
 }
-/* only called from tex8.c */
 /* sec 1105 */
 void delete_last (void)
 {
@@ -1119,8 +1111,6 @@ void delete_last (void)
       }
   }
 }
-/* only called from tex8.c */
-/* procedure unpackage; l.21256 */
 /* sec 1110 */
 void unpackage (void)
 {
@@ -1203,7 +1193,6 @@ void append_discretionary (void)
     space_factor = 1000;
   }
 }
-/* only called form tex8.c */
 /* sec 1119 */
 void build_discretionary (void)
 {
@@ -1294,7 +1283,6 @@ lab30:
   mode = -hmode;
   space_factor = 1000;
 }
-/* called only from tex8.c */
 /* sec 1123 */
 void make_accent (void)
 {
@@ -1416,7 +1404,6 @@ void noalign_error (void)
       "an alignment. Proceed, and I'll ignore this case.");
   error();
 }
-/* only called from tex8.c */
 /* sec 1129 */
 void omit_error (void)
 {
@@ -1452,7 +1439,6 @@ void do_endv (void)
   else
     off_save();
 }
-/* only called form tex8.c */
 /* sec 1135 */
 void cs_error (void)
 {
@@ -1997,9 +1983,6 @@ void sub_sup (void)
   }
   scan_math(p);
 }
-/* used to continue here with math_fraction etc in tex7.c */
-/*****************************************************************************/
-/* moved down here to avoid pragma optimize questions 96/Sep/12 */
 /* sec 1086 */
 void package_(small_number c)
 {
@@ -2030,7 +2013,7 @@ void package_(small_number c)
       height(cur_box) = h;
     }
   }
+
   pop_nest();
   box_end(saved(0));
 }
-//#pragma optimize ("", on)           /* 96/Sep/12 */

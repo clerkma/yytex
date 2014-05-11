@@ -118,7 +118,6 @@ void t_open_in (void)
   buffer[first] = 0;  /* In case there are no arguments.  */
 
 #ifdef MSDOS
-/* command line arguments? 94/Apr/10 */
   if (gargc > optind && optind > 0)
   {
     for (i = optind; i < gargc; i++)
@@ -634,31 +633,28 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
   unsigned int commandlen;
   ASCII_code *texfilename;
   ASCII_code *log_file_name;
-  pool_pointer lgstart;         /* 1994/Jan/94 */
-  integer lglength;           /* 1994/Jan/94 */
+  pool_pointer lgstart;
+  integer lglength;
 
-  if (log_opened)           /* 1994/Aug/10 */
+  if (log_opened)
   {
     lgstart = str_start[texmf_log_name];
     lglength = length(texmf_log_name);
     log_file_name = stringpool + lgstart;
   }
-  else                /* 1994/Aug/10 */
+  else
   {
     lglength = 0;
     log_file_name = (unsigned char *) "";
   }
 
   sdone = ddone = ldone = 0;
-/*  filename += fnstart; */
   texfilename = stringpool + fnstart;
 
-/*  Close any open input files, since we're going to kill the job.  */
-/*  and since the editor will need access to them... */
   for (i = 1; i <= in_open; i++)
     (void) fclose (input_file[i]);
 
-  n = fcloseall();            /* paranoia 1994/Aug/10 */
+  n = fcloseall();
 
   if (n > 0 && verbose_flag)
   {
@@ -666,12 +662,10 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
     show_line(log_line, 0);
   }
 
-/*  Replace the default with the value of the appropriate environment
-    variable, if it's set.  */
-/*  s = getenv (edit_var);   */   /* 93/Nov/20 */
   s = get_env_shroud (edit_var);  
+
   if (s != NULL)
-    edit_value = s;  /* OK, replace wired in default */
+    edit_value = s;
 
 /*  Construct the command string.  */
 /*  The `11' is the maximum length a 32 bit integer might be, plus one for null.  */
@@ -687,14 +681,17 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 /*  remove quotes around [...] string for WinEdt ? */
 
   u = edit_value;
-  while ((c = *u++) != 0) {
-    if (c == '%') {         /* handle special codes */
+
+  while ((c = *u++) != 0)
+  {
+    if (c == '%')
+    {
       switch (c = *u++)
       {
         case 'd':
           if (ddone)
           {
-#ifdef MSDOS
+#ifdef _WIN32
             sprintf(log_line, "! bad command syntax (%c).\n", 'd');
             show_line(log_line, 1);
 #else
@@ -703,16 +700,19 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 #endif
             uexit(1); 
           }
+
           (void) sprintf (s, "%d", linenumber);
+
           while (*s != '\0')
             s++;
-          ddone = 1;      /* indicate already used %d */
+
+          ddone = 1;
           break;
 
         case 's':
           if (sdone)
           {
-#ifdef MSDOS
+#ifdef __WIN32
             sprintf(log_line, "! bad command syntax (%c).\n", 's'); 
             show_line(log_line, 1);
 #else
@@ -721,25 +721,24 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 #endif
             uexit(1); 
           }
+
           t = (char *) texfilename;
           n = fnlength;
 
-/* following modified to allow non ASCII - bkph */ /* for file names */
           if (non_ascii)
-/*        for (i = 0; i < fnlength; i++)  *s++ = xchr [filename[i]]; */
             for (i = 0; i < n; i++)
               *s++ = xchr [*t++];
           else
-/*        for (i = 0; i < fnlength; i++)  *s++ = (char) filename[i]; */
             for (i = 0; i < n; i++)
               *s++ = (char) *t++;
-          sdone = 1;      /* indicate already used %s */
+
+          sdone = 1;
           break;
 
-        case 'l':           /* 1994/Jan/28 */
+        case 'l':
           if (ldone)
           {
-#ifdef MSDOS
+#ifdef __WIN32
             sprintf(log_line, "! bad command syntax (%c).\n", 'l'); 
             show_line(log_line, 1);
 #else
@@ -748,38 +747,38 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 #endif
             uexit(1); 
           }
-          t = (char *) log_file_name;
-          n = lglength;       /* 1994/Jan/28 */
 
-/* following modified to allow non ASCII - bkph */ /* for file names */
+          t = (char *) log_file_name;
+          n = lglength;
+
           if (non_ascii)
-/*      for (i = 0; i < fnlength; i++)  *s++ = xchr [filename[i]]; */
             for (i = 0; i < n; i++)
               *s++ = xchr [*t++];
           else
-/*      for (i = 0; i < fnlength; i++)  *s++ = (char) filename[i]; */
             for (i = 0; i < n; i++)
               *s++ = (char) *t++;
-          ldone = 1;      /* indicate already used %l */
+
+          ldone = 1;
           break;
 
-        case '\0':      /*  '%'  at end of line */
+        case '\0':
           *s++ = '%'; 
-          u--;  /* Back up to the null to force termination.  */
+          u--;
           break;
 
-        default:      /* something other than 's', 'd', 'l' follows */
+        default:
           *s++ = '%';
           *s++ = c;
           break;
       }
     }
-    else *s++ = c;      /* ordinary character pass it through */
+    else
+      *s++ = c;
   }
 
-  *s = 0;         /* terminate the command string */
+  *s = 0; /* terminate the command string */
 
-  if (strlen(command) + 1 >= commandlen) /* should not happen! */
+  if (strlen(command) + 1 >= commandlen)
   {
     sprintf(log_line, "Command too long (%d > %d)\n", strlen(command) + 1, commandlen);
     show_line(log_line, 1);
@@ -788,26 +787,25 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 
   //flushall();
   fflush(NULL);
-/*  Try and execute the command.  */
-/*  There may be problem here with long names and spaces ??? */
-/*  Use _exec or _spawn instead ??? */
 
   if (system (command) != 0)
   {
     show_line("\n", 0);
-    sprintf(log_line, "! Error in call: %s\n", command); /* shroud ? */
+    sprintf(log_line, "! Error in call: %s\n", command);
     show_line(log_line, 1);
-/*    errno seems to be 0 typically, so perror says "no error" */
-#ifdef MSDOS
+
+#ifdef __WIN32
     if (errno != 0)
-      perrormod("! DOS says");      /* 94/Aug/10 - bkph */
+      perrormod("! DOS says");
 #endif
+
     sprintf(log_line, "  (TEXEDIT=%s)\n", edit_value);
     show_line(log_line, 0);
     show_line("  (Editor specified may be missing or path may be wrong)\n", 0);
     show_line("  (or there may be missing -- or extraneous -- quotation signs)\n", 0);
   }
-  uexit(1);       /*  Quit, since we found an error.  */
+
+  uexit(1);
 }
 
 

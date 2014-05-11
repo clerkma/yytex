@@ -99,7 +99,7 @@ void show_usage (void)
       "        be verbose (show implementation version number)\n"
       "    -n    do not allow `non ASCII' characters in input files (complain instead)\n"
       "    --showhex -w\n"
-      "         do not show `non ASCII' characters in hexadecimal (show as is)\n"
+      "        do not show `non ASCII' characters in hexadecimal (show as is)\n"
       "    -d    do not allow DOS style file names - i.e. do not convert \\ to /\n"
       "    -r    do not allow Mac style termination - i.e. do not convert \\r to \\n\n"
       "    --patterns    -p\n"
@@ -560,7 +560,7 @@ void *ourrealloc (void *old, size_t new_size)
   if (old == NULL)
     return malloc (new_size);  /* no old block - use malloc */
 
-#ifdef MSDOS
+#ifdef _WIN32
   old_size = _msize (old);
 #else
   old_size = malloc_usable_size (old);
@@ -569,7 +569,7 @@ void *ourrealloc (void *old, size_t new_size)
   if (old_size >= new_size && old_size < new_size + 4)
     return old;
 
-#ifdef MSDOS
+#ifdef _WIN32
   mnew = _expand (old, new_size); /* first try and expand in place MSVC */
 #else
   mnew = realloc (old, new_size);
@@ -827,7 +827,7 @@ memory_word *allocate_main_memory (int size)
 /*  Could we avoid this by detecting presence of & before allocating ? */
 /*  Also, if its already large enough, maybe we can avoid this ? */
 /*  don't bother if current_mem_size == mem_max - mem_start ? */
-  if (mainmemory != NULL)
+  if (main_memory != NULL)
   {
     if (trace_flag)
       show_line("Reallocating initial memory allocation\n", 1);
@@ -843,11 +843,11 @@ memory_word *allocate_main_memory (int size)
   if (trace_flag)
     trace_memory("main memory", n);
 
-/*  mainmemory = (memory_word *) malloc (n); */  /* 94/March/24 */
-/*  normally mainmemory == NULL here so acts like malloc ... */
-  mainmemory = (memory_word *) REALLOC (mainmemory, n);
+/*  main_memory = (memory_word *) malloc (n); */  /* 94/March/24 */
+/*  normally main_memory == NULL here so acts like malloc ... */
+  main_memory = (memory_word *) REALLOC (main_memory, n);
 
-  if (mainmemory == NULL)
+  if (main_memory == NULL)
   {
     memory_error("initial main memory", n);
 //    exit (1);             /* serious error */
@@ -856,29 +856,29 @@ memory_word *allocate_main_memory (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Address main memory == %d\n", mainmemory);
+    sprintf(log_line, "Address main memory == %d\n", main_memory);
     show_line(log_line, 0);
   }
 
-  zzzaa = mainmemory;
+  mem = main_memory;
 
   if (mem_start != 0 && !is_initex)
-    zzzaa = mainmemory - mem_start;
+    mem = main_memory - mem_start;
 
   if (trace_flag)
   {
-    sprintf(log_line, "Offset address main memory == %d\n", zzzaa);
+    sprintf(log_line, "Offset address main memory == %d\n", mem);
     show_line(log_line, 0);
   }
 
-  update_statistics ((int) mainmemory, n, (current_mem_size + 1) * sizeof (memory_word));
+  update_statistics ((int) main_memory, n, (current_mem_size + 1) * sizeof (memory_word));
 /*  current_mem_size = (mem_max - mem_start + 1); */
   current_mem_size = mem_max - mem_start;   /* total number of words - 1 */
 
   if (trace_flag)
     probe_show();     /* 94/Mar/25 */
 
-  return zzzaa; /* same as zmem, mem 94/Jan/24 */
+  return mem;
 }
 #endif
 
@@ -914,7 +914,7 @@ memory_word *realloc_main (int losize, int hisize)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n", "main memory", mainmemory);
+    sprintf(log_line, "Old Address %s == %d\n", "main memory", main_memory);
     show_line(log_line, 0);
   }
 
@@ -973,7 +973,7 @@ memory_word *realloc_main (int losize, int hisize)
     if (trace_flag)
       trace_memory("main memory", n);
 
-    newmemory = (memory_word *) REALLOC (mainmemory, n);
+    newmemory = (memory_word *) REALLOC (main_memory, n);
 
     if (newmemory != NULL)
       break; /* did we get it ? */
@@ -987,7 +987,7 @@ memory_word *realloc_main (int losize, int hisize)
   if (newmemory == NULL)
   {
     memory_error("main memory", n);
-    return zzzaa;           /* try and continue with TeX !!! */
+    return mem;
   }
 
   if (trace_flag)
@@ -1009,7 +1009,7 @@ memory_word *realloc_main (int losize, int hisize)
       (current_mem_size + 1) * sizeof(memory_word));
 /*  could reduce words moved by (mem_max - mem_end) */
   }
-  mainmemory = newmemory;       /* remember for free later */
+  main_memory = newmemory;       /* remember for free later */
 
   if (losize > 0)
     mem_start = mem_start - losize; /* update lower limit */
@@ -1017,7 +1017,7 @@ memory_word *realloc_main (int losize, int hisize)
   if (hisize > 0)
     mem_max = mem_max + hisize;   /* update upper limit */
 
-  update_statistics ((int) mainmemory, n,
+  update_statistics ((int) main_memory, n,
     (current_mem_size + 1) * sizeof (memory_word));
   current_mem_size = newsize;
 
@@ -1027,14 +1027,14 @@ memory_word *realloc_main (int losize, int hisize)
   }
 
   if (mem_start != 0)
-    zzzaa = mainmemory - mem_start; /* ??? sign ??? */
+    mem = main_memory - mem_start;
   else
-    zzzaa = mainmemory;
+    mem = main_memory;
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
-  return zzzaa;
+  return mem;
 }
 #endif
 
@@ -1782,25 +1782,25 @@ int allocate_memory (void)
 #endif
 
 #ifdef ALLOCATEINPUTSTACK
-  input_stack = NULL;        /* new 1999/Jan/21 */
+  input_stack = NULL;
   current_stack_size = 0;
   input_stack = realloc_input_stack (initial_stack_size);  /* + 1 */
 #endif
 
 #ifdef ALLOCATENESTSTACK
-  nest = NULL;          /* new 1999/Jan/21 */
+  nest = NULL;
   current_nest_size = 0;
   nest = realloc_nest_stack (initial_nest_size);  /* + 1 */
 #endif
 
 #ifdef ALLOCATEPARAMSTACK
-  param_stack = NULL;          /* new 1999/Jan/21 */
+  param_stack = NULL;
   current_param_size = 0;
   param_stack = realloc_param_stack (initial_param_size); /* + 1 */
 #endif
 
 #ifdef ALLOCATESAVESTACK
-  save_stack = NULL;       /* new 1999/Jan/7 */
+  save_stack = NULL;
   current_save_size = 0;
   save_stack = realloc_save_stack (initial_save_size);
 #endif
@@ -1821,7 +1821,9 @@ int allocate_memory (void)
 /*  maybe taylor allocations to actual pool file 1300 strings 27000 bytes ? */
   if (is_initex)
   {
-    if (trace_flag) show_line("ini TeX pool and string allocation\n", 0);
+    if (trace_flag)
+      show_line("ini TeX pool and string allocation\n", 0);
+
     str_pool = realloc_str_pool (initial_pool_size); 
     str_start = realloc_str_start (initial_max_strings);
   }
@@ -1833,12 +1835,13 @@ int allocate_memory (void)
   current_font_mem_size = 0;
 /*  if not iniTeX, then do initial allocation on fmt file read in itex.c */
 /*  if ini-TeX we need to do it here - no format file read later */
-  if (is_initex) font_info = realloc_font_info (initial_font_mem_size);
+  if (is_initex)
+    font_info = realloc_font_info (initial_font_mem_size);
 #endif
-    
+
 #ifdef ALLOCATEMAIN
-  mainmemory = NULL;
-  zzzaa = NULL;
+  main_memory = NULL;
+  mem = NULL;
   mem_min = mem_bot;        /* just to avoid complaints in texbody */
   mem_top = mem_initex;
   mem_max = mem_top;
@@ -1866,6 +1869,7 @@ int allocate_memory (void)
   {
     if (new_hyphen_prime)
       hyphen_prime = new_hyphen_prime;
+
     if (realloc_hyphen(hyphen_prime)) /* allocate just in case no format */
       return -1;
   }
@@ -1906,7 +1910,7 @@ int allocate_memory (void)
 /* free in reverse order 93/Nov/26 */
 int free_memory (void)
 {
-  unsigned heap_total = 0;
+  unsigned int heap_total = 0;
 
   if (trace_flag)
     show_line("free_memory ", 0);
@@ -1988,10 +1992,10 @@ int free_memory (void)
 
 #ifdef ALLOCATEMAIN
 /*  if (zzzaa != NULL) free(zzzaa); */  /* NO: zzzaa may be offset ! */
-  if (mainmemory != NULL)
-    free(mainmemory);
+  if (main_memory != NULL)
+    free(main_memory);
 
-  mainmemory = NULL;
+  main_memory = NULL;
 #endif
 
 #ifdef ALLOCATEFONT
@@ -2043,13 +2047,10 @@ int free_memory (void)
   if (format_file != NULL)
     free(format_file);
 
-  if (string_file != NULL)
-    free(string_file);
-
   if (source_direct != NULL)
     free(source_direct);
 
-  format_file = string_file = source_direct = NULL;
+  format_file = source_direct = NULL;
 
   if (dvi_file_name != NULL)
     free(dvi_file_name);
@@ -2100,74 +2101,90 @@ void complainarg (int c, char *s)
 
 /* following is list of allowed command line flags and args */
 
-/* only  01234567.9 still left to take ... maybe recycle u */
-
 char *allowedargs = "+bcdfijnpqrstvwyzABCDFGIJKLMNOPQRSTVWXYZ023456789?a=e=g=h=k=l=m=o=u=x=E=H=P=U=";
-
-/* char takeargs="gmueoazhluEH"; */ /* subset that takes args! needed here */
 
 void reorderargs (int ac, char **av)
 {
   int n, m;
   char *s, *t;
-//  char takeargs[128];   /* large enough for all command line arg chars */
   char takeargs[256];   /* large enough for all command line arg chars */
 
-/*  assumes arg pointers av[] are writeable */
-/*  for (n = 1; n < ac; n++) sprintf(log_line, "%s ", av[n]); */
-
-  if (ac < 3) { /* need more than one arg to reorder anything 94/Feb/25 */
-/*    show_line("No arguments?\n", 0); */  /* debugging */
-    return;             /* no args ! */
+  if (ac < 3)
+  {
+    return; /* no args ! */
   }
 
   s = allowedargs;
   t = takeargs;   /* list of those that take args */
-  while (*s != '\0' && *(s+1) != '\0') {
-    if (*(s+1) == '=') *t++ = *s++;   /* copy over --- without the = */
+
+  while (*s != '\0' && *(s+1) != '\0')
+  {
+    if (*(s+1) == '=')
+      *t++ = *s++;   /* copy over --- without the = */
+
     s++;
   }
+
   *t = '\0';
-  if (trace_flag) {
+
+  if (trace_flag)
+  {
     show_line(takeargs, 0);
     show_char('\n');
   }
   
   n = 1;
-  for (;;) {              /* scan to end of command line args */
-    if (*av[n] != '-') break;
-/*    does it take an argument ? and is this argument next ? */
-    if (n+1 < ac &&
-      *(av[n]+2) == '\0' &&
-/*        strchr("gmuhleoxE", *(av[n]+1)) != NULL) */
-        strchr(takeargs, *(av[n]+1)) != NULL)
-          n += 2; /* step over it */
-    else n++;
-    if (n == ac) break;
+
+  for (;;)
+  {
+    if (*av[n] != '-')
+      break;
+
+    if (n + 1 < ac && *(av[n] + 2) == '\0' &&
+      strchr(takeargs, *(av[n]+1)) != NULL)
+      n += 2; /* step over it */
+    else
+      n++;
+
+    if (n == ac)
+      break;
   }
 
-  for (;;) {              /* look for more command line args */
-    if (n == ac) break;
+  for (;;)
+  {
+    if (n == ac)
+      break;
+
     m = n;
-/*    while (*av[m] != '-' && m < ac) m++; */ /* first command */
-    while (m < ac && *av[m] != '-') m++;  /* first command */
-    if (m == ac) break;
+
+    while (m < ac && *av[m] != '-')
+      m++;  /* first command */
+
+    if (m == ac)
+      break;
 /* does it take an argument ? and is this argument next ? */
 /* check first whether the `-x' is isolated, or arg follows directly */
 /* then check whether this is one of those that takes an argument */
-    if (m+1 < ac &&
-      *(av[m]+2) == '\0' &&
-        strchr(takeargs, *(av[m]+1)) != NULL) {
+    if (m+1 < ac && *(av[m]+2) == '\0' &&
+      strchr(takeargs, *(av[m]+1)) != NULL)
+    {
       s = av[m];      /*  move command down before non-command */
-      t = av[m+1];
-      for (; m > n; m--)  av[m+1] = av[m-1];
+      t = av[m + 1];
+
+      for (; m > n; m--)
+        av[m + 1] = av[m - 1];
+
       av[n] = s;
-      av[n+1] = t;
+      av[n + 1] = t;
       n += 2;       /* step over moved args */
     }
-    else {
+    else
+    {
       s = av[m];      /*  move command down before non-command */
-      for (; m > n; m--)  av[m] = av[m-1];
+
+      for (; m > n; m--)
+        av[m] = av[m - 1];
+
       av[n] = s;
       n++;        /* step over moved args */
     }
@@ -2361,7 +2378,6 @@ bool workingdirectory   = false;              /* if working directory set in ini
 
 char *lastname = NULL, *lastvalue = NULL;
 
-/* get value of env var - try first in dviwindo.ini then DOS env */
 /* returns allocated string -- these strings are not freed again */
 /* is it safe to do that now ? 98/Jan/31 */
 char *grabenv (char *varname)
@@ -2455,7 +2471,7 @@ void knuthify (void)
 char * xchrfile = NULL;
 char * replfile = NULL;
 
-char * short_options = "m:e:h:0:H:g:P:wvpiKLZMdp2t?uo:l:a:";
+char * short_options = "m:e:h:0:H:g:P:o:l:a:wvpiKLZMdp2t?u";
 
 static struct option long_options[] =
 {
@@ -2466,7 +2482,9 @@ static struct option long_options[] =
   {"tab-step",      1, 0, 'H'},
   {"percent-grow",  1, 0, 'g'},
   {"default-rule",  1, 0, 'P'},
-  //{"interaction",   1, 0, 0},
+  {"dvi-dir",       1, 0, 'o'},
+  {"log-dir",       1, 0, 'l'},
+  {"aux-dir",       1, 0, 'a'},
   {"showhex",       0, 0, 'w'},
   {"verbose",       0, 0, 'v'},
   {"patterns",      0, 0, 'p'},
@@ -2481,9 +2499,6 @@ static struct option long_options[] =
   {"trace",         0, 0, 't'},
   {"help",          0, 0, '?'},
   {"usage",         0, 0, 'u'},
-  {"dvi-dir",       1, 0, 'o'},
-  {"log-dir",       1, 0, 'l'},
-  {"aux-dir",       1, 0, 'a'},
   {NULL,            0, 0, 0}
 };
 
@@ -2687,6 +2702,7 @@ int analyze_flag (int c, char *optarg)
         xchrfile = xstrdup("xchr.map");
       else
         xchrfile = xstrdup(optarg);
+
       if (xchrfile == NULL || *xchrfile == '\0')
         complainarg(c, optarg);
       break;
@@ -2695,15 +2711,16 @@ int analyze_flag (int c, char *optarg)
         replfile = xstrdup("repl.key");
       else
         replfile = xstrdup(optarg);
+
       if (replfile == NULL || *replfile == '\0')
         complainarg(c, optarg);
       break;
-/* more obscure stuff - ppssibly recycle */
     case 'P':
       if (optarg == 0)
-        default_rule = 26214; /* 95/Oct/9 */
+        default_rule = 26214;
       else
-        default_rule = atoi(optarg); /* 95/Oct/9 */
+        default_rule = atoi(optarg);
+
       if (default_rule == 0)
         complainarg(c, optarg);
       break;
@@ -2771,19 +2788,18 @@ void strip_name (char *pathname)
 {
   char *s;
 
-  if ((s = strrchr(pathname, '\\')) != NULL);
-  else if ((s = strrchr(pathname, '/')) != NULL);
-  else if ((s = strrchr(pathname, ':')) != NULL) s++;
-  else s = pathname;
+  if ((s = strrchr(pathname, '\\')) != NULL)
+    ;
+  else if ((s = strrchr(pathname, '/')) != NULL)
+    ;
+  else if ((s = strrchr(pathname, ':')) != NULL)
+    s++;
+  else
+    s = pathname;
 
   *s = '\0';
 }
 
-char *programpath = ""; /* pathname of program */
-
-/* The following does not deslashify arguments ? Do we need to ? */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* try and read commands on command line */
 int read_command_line (int ac, char **av)
 { 
   int c;
@@ -2805,9 +2821,9 @@ int read_command_line (int ac, char **av)
 
   if (show_use || quitflag == 3)
   {
-    //stamp_it(log_line);
-    //strcat(log_line, "\n");
-    //show_line(log_line, 0);
+    stamp_it(log_line);
+    strcat(log_line, "\n");
+    show_line(log_line, 0);
     //stampcopy(log_line);
     //strcat(log_line, "\n");
     //show_line(log_line, 0);
@@ -2908,10 +2924,8 @@ int init_commands (int ac, char **av)
   mem_extra_low  = 0;
   mem_initex     = 0;
 
-  programpath = xstrdup(av[0]); /* extract path executable */
-  strip_name(programpath);      /* strip off yandytex.exe */
-
-  format_name = "plain"; /* format name if specified on command line */
+  //format_name = xstrdup(av[0]);
+  format_name = "plain";
 
   encoding_name = "";
 
@@ -2935,7 +2949,7 @@ int init_commands (int ac, char **av)
 /*  then makes no sense to avoid them separately for TFM files ... */
 /*  (that is, the ./ is already omitted from the dir list in that case */
   if (!current_flag && !current_tfm)
-    current_tfm = true; /* 94/Jan/24 */
+    current_tfm = true;
 
   return 0;
 }
@@ -3211,9 +3225,6 @@ int main_init (int ac, char **av)
 
   kpse_set_program_name(av[0], NULL);
 
-  // compile time test
-  // MSVC: __int64 8bytes
-  // GCC:  long    8bytes
   if (sizeof(memory_word) != sizeof(integer) * 2)
   {
     sprintf(log_line, "ERROR: Bad word size %d!\n", sizeof(memory_word));
@@ -3226,7 +3237,7 @@ int main_init (int ac, char **av)
   initbuffer[0] = '\0';         /* paranoia 94/Apr/10 */
 
 /*  reset all allocatable memory pointers to NULL - in case we drop out */
-  mainmemory = NULL;
+  main_memory = NULL;
   font_info = NULL;
   str_pool = NULL;
   str_start = NULL;
@@ -3236,7 +3247,7 @@ int main_init (int ac, char **av)
 #endif
 
 #ifdef ALLOCATEBUFFER
-  buffer = NULL;        /* new 1999/Jan/7 need to do early */
+  buffer = NULL;
   current_buf_size = 0;
   buffer = realloc_buffer (initial_buf_size);
 #endif
@@ -3268,12 +3279,11 @@ int main_init (int ac, char **av)
     reorderargs(ac, av);  
 
   if (init_commands(ac, av))
-    return -1;          // failure
+    return -1;
 
-  check_fixed_align(trace_flag);       /* sanity check 1994/Jan/8 */
+  check_fixed_align(trace_flag);
 
   format_file   = NULL;
-  string_file   = NULL;
   source_direct = NULL;
   dvi_file_name = NULL;
   log_file_name = NULL;
@@ -3289,7 +3299,7 @@ int main_init (int ac, char **av)
   overfull_vbox     = 0;
   underfull_vbox    = 0;
 
-  closed_already=0;        // so can only do once
+  closed_already = 0;
 
   if (trace_flag)
     show_line("Entering init (local)\n", 0);
@@ -3314,13 +3324,13 @@ int main_init (int ac, char **av)
   if (allocate_memory() != 0)   /* NOW, try and ALLOCATE MEMORY if needed */
     return -1;         // if failed to allocate
 
-/*   following is more or less useless since most all things not yet alloc */
-   check_alloc_align(trace_flag);    /* sanity check 1994/Jan/8 */
+  /* following is more or less useless since most all things not yet alloc */
+  check_alloc_align(trace_flag);    /* sanity check 1994/Jan/8 */
 
   if (trace_flag)
     show_line("Leaving init (local)\n", 0);
 
-  return 0;         // success
+  return 0;
 }
 
 #define CLK_TCK  CLOCKS_PER_SEC
@@ -3356,12 +3366,9 @@ void show_inter_val (clock_t interval)
         show_line(log_line, 0);
       }
       else
-        show_line("0", 0);          /* 95/Mar/1 */
+        show_line("0", 0);
 }
 
-/* final cleanup opportunity */
-/* flag is non-zero if error exit */
-/* shows various times, warning about missing chars */
 int endit (int flag)
 {
   finish_time = clock();
@@ -3399,8 +3406,6 @@ int endit (int flag)
     show_line("\n", 0);
   }
 
-  //checkpause(flag);
-
   return flag;
 }
 // printf control sequences' name
@@ -3435,7 +3440,7 @@ void print_cs_name (FILE *output, int h)
 
 }
 // prototype
-int compare_strn (int, int, int, int); /* in tex9.c */
+int compare_strn (int, int, int, int);
 /* compare two csnames in qsort */
 int compare_cs (const void *cp1, const void *cp2)
 {
@@ -3457,7 +3462,7 @@ char * csused = NULL;
 
 /* Allocate table of indeces to allow sorting on csname */
 /* Allocate flags to remember which ones already listed at start */
-/* pass = 0 --> fmt */
+/* pass = 0 --> fmt   */
 /* pass = 1 --> after */
 void print_cs_names (FILE *output, int pass)
 {
@@ -3511,7 +3516,7 @@ void print_cs_names (FILE *output, int pass)
       fprintf(output, log_line);
   }
 
-  if (ccount > 0) /* don't bother to get into trouble */
+  if (ccount > 0)
   {
     cnumtable = (int *) malloc (ccount * sizeof(int));
 
@@ -3519,7 +3524,7 @@ void print_cs_names (FILE *output, int pass)
       return;
 
     ccount = 0;
-/*    for (h = 515; h < (hash_size + 780); h++) { */
+
     for (h = hash_base + 1; h < nfcs; h++)
     {
       if (pass == 1 && csused[h])
@@ -3670,8 +3675,8 @@ int decode_fourty (unsigned long checksum, char *codingvector)
       }
       codingvector[6] = '\0';
     }
-/*  sprintf(log_line, "Reconstructed vector %s\n", codingvector); */
-  return 0;         /* encoding info returned in codingvector */
+
+  return 0;
 }
 
 double sclpnt (long x)
@@ -3775,25 +3780,3 @@ void show_font_info (void)
 
   free((void *)fnumtable);
 }
-
-/*  NOTE: current_tfm = false (-c)
-  not checking for TFM in current directory saves 0.1 sec
-  (0.2 if file_method = false (-G) */
-
-/*  NOTE: test_dir_access = false (-b):
-  not checking whether readable file is a directory saves maybe 0.5 sec
-  BUT only if file_method = false (-G) - otherwise its irrelevant */
-
-/*  NOTE: dir_method = false (-D) --- method for checking whether directory
-  using fopen instead of _findfirst in dir_p slows job maybe 0.05 sec
-  BUT not if current_tfm = false (-c) */
-
-/*  NOTE: file_method = false (-G) --- method for checking file accessible
-  using _access (readable) instead of _findfirst (file_p) costs 0.5 sec */
-
-/*  Fast flag combinations: nothing, bG, bcG, bcDG */
-
-/* buffercopy no longer used */
-
-/* To Knuthian reset right when command line interpreted */
-

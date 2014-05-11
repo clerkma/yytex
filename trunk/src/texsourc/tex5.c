@@ -527,7 +527,6 @@ void make_fraction_(halfword q)
   new_hlist(q) = hpack(x, 0, 1);
 }
 /***************************************************************************/
-/* moved to end to avoid questions about pragma optimize 96/Sep/12 */
 scaled make_op_ (halfword);
 /***************************************************************************/
 /* sec 0752 */
@@ -639,7 +638,6 @@ lab20:
       }
 }
 /***************************************************************************/
-/* moved to end to avoid questions about pragma optimize 96/Sep/12 */
 void make_scripts_ (halfword, scaled);
 /***************************************************************************/
 /* sec 0762 */
@@ -1461,8 +1459,6 @@ void init_col (void)
     begin_token_list(u_part(cur_align), u_template);
   }
 }
-/* fin_col() moved to end to hide in pragma (g, "off") */
-/* may need to move more ? everything calling new_null_box() ? */
 /* sec 0799 */
 void fin_row (void)
 {
@@ -2078,10 +2074,6 @@ bool fin_col (void)
 
   return false;
 }
-/* #pragma optimize ("g", on) */        /* for MC VS compiler */
-/* #pragma optimize ("g",) */         /* 94/Jan/25 */
-/* #pragma optimize ("", on) */           /* 96/Sep/12 */
-/* #pragma optimize("g", off) */          /* for MC VS compiler */
 /* sec 0749 */
 scaled make_op_(halfword q)
 {
@@ -2190,10 +2182,6 @@ scaled make_op_(halfword q)
 
   return delta;
 }
-/* #pragma optimize ("g", on) */        /* for MC VS compiler */
-/* #pragma optimize ("g",) */         /* 94/Jan/25 */
-/* #pragma optimize ("", on) */           /* 96/Sep/12 */
-/* #pragma optimize ("g", off) */
 /* sec 0756 */
 void make_scripts_(halfword q, scaled delta)
 {
@@ -2305,6 +2293,3 @@ void make_scripts_(halfword q, scaled delta)
     link(p) = x;
   }
 }
-/* #pragma optimize ("g", on) */        /* 96/Sep/12 */
-/* #pragma optimize ("g") */          /* 94/Jan/25 */
-/* #pragma optimize ("", on) */           /* 96/Sep/12 */

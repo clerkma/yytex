@@ -35,7 +35,7 @@ itex.o: itex.c $(headers)
 openinou.o: openinou.c $(headers)
 	$(CC) -c $(CFLAGS) openinou.c
 
-subroute.o: subroute.o $(headers)
+subroute.o: subroute.c $(headers)
 	$(CC) -c $(CFLAGS) subroute.c
 
 local.o: local.c $(headers)

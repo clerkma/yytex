@@ -26,7 +26,7 @@
 /* WARNING: with dynamic allocation cannot use memory_word *mem=zmem */
 /* in this case, just let mem be alias for zmem */
 /* BUT: allow continued use of register for eqtb at least ! */
-#define mem zmem
+//#define mem zmem
 
 void print_err (const char * s);
 void initialize (void);
