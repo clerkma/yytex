@@ -451,7 +451,6 @@ void special_out_(halfword p)
 
   pool_ptr = str_start[str_ptr];
 }
-/* noew returns -1 if it fails */
 /* sec 1370 */
 void write_out_(halfword p)
 {

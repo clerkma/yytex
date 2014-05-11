@@ -1708,10 +1708,6 @@ void find_font_dimen_(bool writing)
     error();
   }
 }
-/* NOTE: the above use of /fontdimen0 to access the checksum is a kludge */
-/* In future would be better to do this by allocating one more slot for */
-/* for parameters when a font is read rather than carry checksum separately */
-/* The above gets the value byte order reversed ... 98/Oct/5 */
 /* sec 0413 */
 void scan_something_internal_(small_number level, bool negative)
 {
@@ -2091,8 +2087,6 @@ void scan_something_internal_(small_number level, bool negative)
   else if ((cur_val_level >= glue_val) && (cur_val_level <= mu_val))
     add_glue_ref(cur_val);
 }
-/*****************************************************************************/
-/* Moved here to avoid question about pragma optimize 96/Sep/12 */
 /* sec 0341 */
 void get_next (void)
 {
@@ -2602,4 +2596,3 @@ lab40:
         goto lab20;
       }
 }
-//#pragma optimize ("", on)             /* 96/Sep/12 */

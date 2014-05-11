@@ -272,7 +272,7 @@ void print_ (integer s)
 
   if (s >= str_ptr)
     s = 259; /* ??? */
-  else 
+  else
   {
     if (s < 256)
     {
@@ -330,6 +330,7 @@ void print_ (integer s)
               incr(j);
             }
           }
+
           new_line_char = nl; /* restore eol */
           return;
       }
@@ -351,7 +352,6 @@ void print_string_ (unsigned char *s)
     print_char(*s++);
 }
 /* sec 0060 */
-// print string number s from string pool by calling print_
 void slow_print_ (integer s)
 {
   pool_pointer j;
@@ -372,7 +372,6 @@ void slow_print_ (integer s)
   }
 }
 /* sec 0062 */
-// print newline followed by string number s (unless at start of line)
 void print_nl_ (const char * s)
 {
   if (((term_offset > 0) && (odd(selector))) ||
@@ -382,7 +381,6 @@ void print_nl_ (const char * s)
   print_string(s);
 }
 /* sec 0063 */
-// print string number s preceded by escape character
 void print_esc_ (const char * s)
 {
   integer c;
@@ -476,7 +474,8 @@ void print_cs_ (integer p)
     print_esc("NONEXISTENT.");
   else
   {
-    print_esc(""); print(text(p));
+    print_esc("");
+    print(text(p));
     print_char(' ');
   }
 }
@@ -488,7 +487,8 @@ void sprint_cs_(halfword p)
       print(p - active_base);
     else if (p < null_cs)
     {
-      print_esc(""); print(p - single_base);
+      print_esc("");
+      print(p - single_base);
     }
     else
     {
@@ -520,7 +520,9 @@ void print_size_ (integer s)
 /* sec 1355 */
 void print_write_whatsit_(str_number s, halfword p)
 {
-  print_esc(""); print(s);
+  print_esc("");
+  print(s);
+
   if (write_stream(p) < 16)
     print_int(write_stream(p)); 
   else if (write_stream(p) == 16)
@@ -892,7 +894,6 @@ bool init_terminal (void)
   }
 }
 /* sec 0043 */
-// Make string from str_start[str_ptr] to pool_ptr
 str_number make_string (void)
 {
 #ifdef ALLOCATESTRING
@@ -1299,7 +1300,6 @@ scaled round_decimals_(small_number k)
   return ((a + 1) / 2);
 }
 /* sec 0103 */
-/* This has some minor speedup changes - no real advantage probably ... */
 void print_scaled_(scaled s)
 {
   scaled delta;
@@ -2344,7 +2344,7 @@ void print_delimiter_(halfword p)
   integer a;
 
   a = small_fam(p) * 256 + small_char(p);
-  a = a * 4096 + large_fam(p) * 256 + large_char(p);
+  a = a * 0x1000 + large_fam(p) * 256 + large_char(p);
 
   if (a < 0)
     print_int(a);
@@ -2506,9 +2506,9 @@ void show_node_list_(integer p)
 
   if (cur_length > depth_threshold)
   {
-/*  if (p > 0) */  /* was p>null !!! line 3662 in tex.web */
     if (p != 0)    /* fixed 94/Mar/23 BUG FIX NOTE: still not fixed in 3.14159 ! */
-    print_string(" []");
+      print_string(" []");
+
     return; 
   }
 
