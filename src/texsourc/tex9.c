@@ -317,7 +317,6 @@ void close_files_and_terminate (void)
     }
     else
     {
-      //HPDF_SaveToFile(yandy_pdf, "texput.pdf");
       HPDF_SaveToFile(yandy_pdf, pdf_file_name);
       
       print_nl("Output written on ");

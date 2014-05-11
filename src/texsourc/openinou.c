@@ -191,7 +191,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
   if (return_flag)
   {
     if (strcmp(fopen_mode, "r") == 0)
-      fopen_mode = "rb";    /* so can catch `return' bkph */
+      fopen_mode = "rb";
   }
 
   name_of_file[name_length + 1] = '\0';
@@ -217,9 +217,11 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     case TEXINPUTPATH:
       file_name = kpse_find_file((const_string) name_of_file + 1, kpse_tex_format, 0);
       break;
+
     case TEXFORMATPATH:
       file_name = kpse_find_file((const_string) name_of_file + 1, kpse_fmt_format, 0);
       break;
+
     case TFMFILEPATH:
       file_name = kpse_find_file((const_string) name_of_file + 1, kpse_tfm_format, 0);
       break;
@@ -283,7 +285,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     }
 /*    code added 98/Sep/29 to catch first file input */
 /*    is there a problem if this file bombs ? */
-    else if (source_direct == NULL) /* 98/Sep/29 */
+    else if (source_direct == NULL)
     {
       char *s;
 
@@ -298,7 +300,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       if ((s = strrchr(source_direct, '/')) == NULL)
         *source_direct = '\0';
       else
-        *(s+1) = '\0';
+        *(s + 1) = '\0';
 
       if (trace_flag)
       {
@@ -312,7 +314,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 
   {
     unsigned temp_length = strlen((char *) name_of_file + 1);
-    name_of_file[temp_length + 1] = ' ';  /* space terminate */
+    name_of_file[temp_length + 1] = ' ';
   }
 
   return openable;
@@ -391,8 +393,6 @@ bool open_output (FILE **f, char *fopen_mode)
     show_line(log_line, 0);
   }
 
-/* Is the filename openable as given?  */
-
 /*  but we can assume this is opening here for *output* */
   *f = fopen((char *) name_of_file + 1, fopen_mode);
 
@@ -400,8 +400,6 @@ bool open_output (FILE **f, char *fopen_mode)
   if (*f == NULL)
   {
     string temp_dir = get_env_shroud ("UFYNGPVU");
-
-/*    if (deslash) unixify(temp_dir); */    /* deslashify 93/Dec/28 */
 
     if (temp_dir != NULL)
     {
@@ -412,8 +410,9 @@ bool open_output (FILE **f, char *fopen_mode)
 /*    string temp_name = concat3 (temp_dir, "/", name_of_file + 1); */
       string temp_name = concat3 (temp_dir, PATH_SEP_STRING, name_of_file + 1);
 #endif
+
       if (deslash)
-        unixify((char *) temp_name);     /* deslashify 93/Dec/28 */
+        unixify((char *) temp_name);
 
 /*  but we can assume this is opening here for *output* */
       *f = fopen((char*)temp_name, fopen_mode);
