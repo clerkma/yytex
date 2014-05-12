@@ -342,6 +342,7 @@ void close_files_and_terminate (void)
     }
 
     HPDF_Free(yandy_pdf);
+    font_name_hash_free(gentbl);
   }
   else
   {

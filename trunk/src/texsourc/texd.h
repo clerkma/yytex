@@ -255,7 +255,7 @@ typedef integer trie_op_code;
 /* sec 0925 */
 typedef integer trie_pointer; 
 /* typedef short hyph_pointer; */   /* increased 1996/Oct/20 ??? */
-typedef integer hyph_pointer; 
+typedef integer hyph_pointer;
 
 EXTERN integer bad;
 EXTERN ASCII_code xord[256];
@@ -1145,6 +1145,8 @@ extern int load_pool_strings (integer spare_size);
 #define help6(...)  tex_help(6, __VA_ARGS__)
 
 /********BINDING WITH LIBHARU*********/
+typedef struct _mapping_table mapping_table;
+typedef struct _mapping_entry mapping_entry;
 EXTERN HPDF_Doc  yandy_pdf;
 EXTERN HPDF_Page yandy_page;
 EXTERN HPDF_Font yandy_font[1024];
@@ -1152,6 +1154,9 @@ EXTERN bool pdf_doing_string;
 EXTERN bool pdf_doing_text;
 EXTERN integer scaled_out;
 EXTERN bool pdf_output_flag;
+EXTERN mapping_table * gentbl;
+EXTERN mapping_table * font_name_hash_init (void);
+EXTERN void font_name_hash_free (mapping_table * tbl);
 EXTERN void pdf_ship_out(pointer p);
 EXTERN void pdf_vlist_out (void);
 EXTERN void pdf_hlist_out (void);

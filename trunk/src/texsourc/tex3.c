@@ -1525,8 +1525,8 @@ lab50:
 /* sec 0515 */
 void begin_name (void)
 {
-  area_delimiter = 0; /* index between `file area' and `file name' */
-  ext_delimiter = 0;  /* index between `file name' and `file extension' */
+  area_delimiter = 0;
+  ext_delimiter = 0;
 }
 /* This gathers up a file name and makes a string of it */
 /* Also tries to break it into `file area' `file name' and `file extension' */
@@ -1544,26 +1544,18 @@ bool more_name_(ASCII_code c)
     return true;    /* accept ending quote, but throw away */
   }
   else
-  {
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*  convert pseudo tilde back to '~' 95/Sep/26 */ /* moved here 97/June/5 */
-/*  if (pseudo_tilde != 0 && c == pseudo_tilde) c = '~'; */
-/*  convert pseudo space back to ' ' 97/June/5 */ /* moved here 97/June/5 */
-/*  if (pseudo_space != 0 && c == pseudo_space) c = ' '; */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */      
+  {   
     str_room(1);
     append_char(c);
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-//  if ((c == 47))   /* / */
-//  for DOS/Windows
-    if ((c == '/' || c == '\\' || c == ':')) /* 94/Mar/1 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+    //  for DOS/Windows
+    if ((c == '/' || c == '\\' || c == ':')) 
     {
       area_delimiter = cur_length;
       ext_delimiter = 0;
     } 
     else if (c == '.')
       ext_delimiter = cur_length;
+
     return true;
   }
 }
@@ -1582,8 +1574,6 @@ int find_string (int start, int end)
 {
   int k, nlen = end - start;
   char *s;
-
-//  int trace_flag = 1;     // debugging only
 
   if (trace_flag)
   {
@@ -1686,19 +1676,17 @@ void end_name (void)
 
   if (str_ptr + 3 > current_max_strings)
   {
-    overflow("number of strings", current_max_strings - init_str_ptr);  /* 97/Mar/7 */
+    overflow("number of strings", current_max_strings - init_str_ptr);
     return;     // abort_flag set
   }
 #else
   if (str_ptr + 3 > max_strings)
   {
-    overflow("number of strings", max_strings - init_str_ptr); /* number of strings */
+    overflow("number of strings", max_strings - init_str_ptr);
     return;     // abort_flag set
   }
 #endif
 
-//  if (notfirst++ == 0) show_all_strings();  // debugging only
-  
   if (area_delimiter == 0)   // no area delimiter ':' '/' or '\' found
     cur_area = 335;     // "" default area 
   else

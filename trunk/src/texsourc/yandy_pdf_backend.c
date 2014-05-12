@@ -35,9 +35,101 @@ static integer ten_pow[10] =
   1000000000
 };
 integer scaled_out;
+integer pdf_font_sum = 0;
 HPDF_Doc  yandy_pdf;
 HPDF_Page yandy_page;
 HPDF_Font yandy_font[1024];
+
+mapping_table * gentbl;
+
+#define mapping_size 31627
+
+struct _mapping_table
+{
+  mapping_entry * entries[mapping_size];
+};
+
+struct _mapping_entry
+{
+  mapping_entry * next;
+  char * key;
+  int    val;
+};
+
+unsigned int font_name_hash(const char * s)
+{
+  const char * p;
+  unsigned int h = 0, g;
+
+  for (p = s; *p != '\0'; p++)
+  {
+    h = (h << 4) + *p;
+
+    if ((g = h & 0xf0000000))
+    {
+      h = h ^ (g >> 24);
+      h = h ^ g;
+    }
+  }
+
+  return h;
+}
+
+mapping_table * font_name_hash_init (void)
+{
+  mapping_table * temp_table;
+  int i;
+
+  temp_table = (mapping_table *) malloc(sizeof(mapping_table));
+
+  for (i = 0; i < mapping_size; i++)
+    temp_table->entries[i] = NULL;
+
+  return temp_table;
+}
+
+void font_name_hash_free (mapping_table * tbl)
+{
+  int i;
+  mapping_entry *e, *next;
+
+  for (i = 0; i < mapping_size; i++)
+    for (e = tbl->entries[i]; e; e = next)
+    {
+      next = e->next;
+      free(e->key);
+      free(e);
+    }
+
+  free(tbl);
+}
+
+void font_name_hash_insert (mapping_table * tbl, const char *key, int val)
+{
+  int i;
+  mapping_entry * e;
+
+  i = font_name_hash(key) % mapping_size;
+  e = (mapping_entry *) malloc(sizeof(mapping_entry));
+  e->next = tbl->entries[i];
+  e->key  = (char *) strdup(key);
+  e->val  = val;
+  tbl->entries[i] = e;
+}
+
+int font_name_hash_lookup (mapping_table * tbl, const char *key)
+{
+  int i;
+  mapping_entry *e;
+
+  i = font_name_hash(key) % mapping_size;
+
+  for (e = tbl->entries[i]; e; e = e-> next)
+    if (!strcmp(key, e->key))
+      return e->val;
+
+  return -1;
+}
 
 // report error.
 void pdf_error(const char * t, const char * p)
@@ -286,36 +378,47 @@ void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user
   longjmp(jumpbuffer, 1);
 }
 
-void pdf_font_def(internal_font_number f)
+void pdf_font_def (internal_font_number f)
 {
-  /*
   int k;
   const char * fnt_name;
   char * afm_name;
   char * pfb_name;
-  char buffer[256];
+  char * fnt_buffer = (char *) malloc(length(font_name[f]) + 1);
   
-  memcpy(buffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
-  buffer[length(font_name[f])] = '\0';
+  memcpy(fnt_buffer, (const char *) str_pool + str_start[font_name[f]], length(font_name[f]));
+  fnt_buffer[length(font_name[f])] = '\0';
 
-  k = get_font_index(buffer);
-  printf("DEF: %s--%d.\n", buffer, k);
+  k = font_name_hash_lookup(gentbl, fnt_buffer);
 
-  if (k == 0)
+  if (k == -1)
   {
-    afm_name = kpse_find_file(strcat(strdup(buffer), ".afm"), kpse_afm_format, 1);
-    printf("path: %s.\n", afm_name);
-    pfb_name = kpse_find_file(strcat(strdup(buffer), ".pfb"), kpse_type1_format, 1);
+    {
+      char * afm_temp = (char *) malloc(strlen(fnt_buffer) + 5);
+      char * pfb_temp = (char *) malloc(strlen(fnt_buffer) + 5);
+      strcpy(afm_temp, fnt_buffer); strcpy(afm_temp + strlen(fnt_buffer), ".afm");
+      strcpy(pfb_temp, fnt_buffer); strcpy(pfb_temp + strlen(fnt_buffer), ".pfb");
+      afm_name = kpse_find_file(afm_temp, kpse_afm_format, 1);
+      pfb_name = kpse_find_file(pfb_temp, kpse_type1_format, 1);
+      free(afm_temp);
+      free(pfb_temp);
+    }
 
     if (afm_name != NULL && pfb_name != NULL)
     {
-      k = insert_font_index(buffer);
+      font_name_hash_insert(gentbl, fnt_buffer, pdf_font_sum + 1);
+      pdf_font_sum += 1;
       fnt_name = HPDF_LoadType1FontFromFile (yandy_pdf, afm_name, pfb_name);
-      yandy_font[k] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
+      yandy_font[pdf_font_sum] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
+      HPDF_Page_SetFontAndSize(yandy_page, yandy_font[pdf_font_sum], (font_size[f] / 65535));
     }
   }
-  */
-  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], (font_size[f] / 65535));
+  else
+  {
+    HPDF_Page_SetFontAndSize(yandy_page, yandy_font[k], (font_size[f] / 65535));
+  }
+
+  free(fnt_buffer);
 }
 
 void pdf_ship_out(halfword p)
@@ -408,6 +511,7 @@ void pdf_ship_out(halfword p)
 
   if (total_pages == 0)
   {
+    gentbl = font_name_hash_init();
     yandy_pdf = HPDF_New (pdf_error_handler, NULL);
     HPDF_SetCompressionMode (yandy_pdf, HPDF_COMP_ALL);
     yandy_pdf -> pdf_version = HPDF_VER_17;
@@ -416,7 +520,6 @@ void pdf_ship_out(halfword p)
   }
 
   yandy_page = HPDF_AddPage (yandy_pdf);
-  HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], 10);
   HPDF_Page_SetSize (yandy_page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT);
 
   cur_v = height(p) + v_offset;
@@ -494,7 +597,8 @@ lab21:
             dvi_f = f;
           }
           
-          HPDF_Page_BeginText(yandy_page);HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], 10);
+          HPDF_Page_BeginText(yandy_page);
+          pdf_font_def(f);
           HPDF_Page_MoveTextPos(yandy_page, pdf_sp_to_bp(cur_h) + 72, (841.89 - (pdf_sp_to_bp(cur_v) + 72)));
           HPDF_Page_ShowText(yandy_page, pdf_char_to_string(c));
           HPDF_Page_EndText(yandy_page);
