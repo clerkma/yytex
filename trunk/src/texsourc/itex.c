@@ -157,7 +157,7 @@ void initialize (void)
 #ifdef ALLOCATEMAIN
   if (is_initex)
 #endif
-    mem[page_head].hh.v.RH = 0;
+    link(page_head) = 0;
 
   last_glue = empty_flag;
   last_penalty = 0;

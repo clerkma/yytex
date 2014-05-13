@@ -25,23 +25,32 @@
 /* sec 0041 */
 #define cur_length (pool_ptr - str_start[str_ptr])
 /* sec 0054 */
-#define no_print     16
-#define term_only    17
-#define log_only     18
-#define term_and_log 19
-#define pseudo       20
-#define new_string   21
-#define max_selector 21
+enum 
+{
+  no_print     = 16,
+  term_only    = 17,
+  log_only     = 18,
+  term_and_log = 19,
+  pseudo       = 20,
+  new_string   = 21,
+  max_selector = 21,
+};
 /* sec 0073 */
-#define batch_mode      0
-#define nonstop_mode    1
-#define scroll_mode     2
-#define error_stop_mode 3
+enum
+{
+  batch_mode      = 0,
+  nonstop_mode    = 1,
+  scroll_mode     = 2,
+  error_stop_mode = 3,
+};
 /* sec 0076 */
-#define spotless             0
-#define warning_issued       1
-#define error_message_issued 2
-#define fatal_error_stop     3
+enum
+{
+  spotless             = 0,
+  warning_issued       = 1,
+  error_message_issued = 2,
+  fatal_error_stop     = 3,
+};
 /* sec 0105 */
 #define nx_plux_y(...)   mult_and_add(..., 07777777777L)
 #define mult_integers(a) mult_and_add(a,0,017777777777L)
