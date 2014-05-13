@@ -87,7 +87,7 @@ typedef union
   } v;
 
   struct
-  { /* Make B0,B1 overlap the most significant bytes of LH.  */
+  {
 #ifdef WORDS_BIGENDIAN
     halfword junk;
     quarterword B0, B1;
@@ -170,7 +170,7 @@ typedef struct
     unsigned char B3, B2, B1, B0;
 #endif
   } u;
-} ffour_quarters; /* was fourunsignedchars; */
+} ffour_quarters;
 
 #define fquarterword unsigned char
 

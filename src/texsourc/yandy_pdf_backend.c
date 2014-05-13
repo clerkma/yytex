@@ -151,9 +151,9 @@ void pdf_error(const char * t, const char * p)
 // char to string.
 char * pdf_char_to_string(unsigned char i)
 {
-  char * str = (char *) malloc(2);
+  char str[2];
   str[0] = i;
-  str[1] = 0;
+  str[1] = '\0';
   return str;
 }
 // output one char: normal.
@@ -412,6 +412,10 @@ void pdf_font_def (internal_font_number f)
       yandy_font[pdf_font_sum] = HPDF_GetFont(yandy_pdf, fnt_name, NULL);
       HPDF_Page_SetFontAndSize(yandy_page, yandy_font[pdf_font_sum], (font_size[f] / 65535));
     }
+    else
+    {
+      HPDF_Page_SetFontAndSize(yandy_page, yandy_font[0], (font_size[f] / 65535));
+    }
   }
   else
   {
@@ -552,12 +556,9 @@ void pdf_hlist_out (void)
   scaled left_edge;
   scaled save_h, save_v;
   halfword this_box;
-/*  glue_ord g_order;  */
-  int g_order;           /* 95/Jan/7 */
-/*  char g_sign;  */
-  int g_sign;            /* 95/Jan/7 */
+  int g_order;
+  int g_sign;
   halfword p;
-  //integer save_loc;
   halfword leader_box;
   scaled leader_wd;
   scaled lx;

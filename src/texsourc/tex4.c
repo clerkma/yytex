@@ -419,23 +419,16 @@ void special_out_(halfword p)
 #ifdef ALLOCATESTRING
   if (pool_ptr + 32000 > current_pool_size)
     str_pool = realloc_str_pool (increment_pool_size);
-/* We don't bother to check whether this worked - will catch later */
-#endif
-/* Potential problem here if current_pool_size is not much more than pool_ptr! */
-/* Fixed 97/Mar/9 in version 2.0.3 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef ALLOCATESTRING
+
   show_token_list(link(write_tokens(p)), 0, 10000000L);
-/*  Above is safe, since print/print_char/print_esc will extend string space */
 #else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
   show_token_list(link(write_tokens(p)), 0, pool_size - pool_ptr);
 #endif
 
   selector = old_setting;
   str_room(1);
 
-  if (cur_length < 256)  /* can use xxx1 ? */
+  if (cur_length < 256)
   {
     dvi_out(xxx1);
     dvi_out(cur_length);
@@ -488,7 +481,7 @@ void write_out_(halfword p)
       {
         get_token();
       }
-    while(!(cur_tok == end_write_token)); /*1996/Jan/10*/
+    while(!(cur_tok == end_write_token));
   }
 
   mode = oldmode;

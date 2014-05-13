@@ -19,7 +19,6 @@
 
 #include "texd.h"
 
-/* rebox_ used to be in tex4.c */
 /* sec 0715 */
 halfword rebox_(halfword b, scaled w)
 {
@@ -275,6 +274,7 @@ void make_vcenter_(halfword q)
     confusion("vcenter");
     return;         // abort_flag set
   }
+
   delta = height(v) + depth(v);
   height(v) = axis_height(cur_size) + half(delta);
   depth(v) = delta - height(v);
