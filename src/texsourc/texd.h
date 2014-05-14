@@ -22,6 +22,7 @@
 /* make hash table htwo_halves == 32 bit instead of two_halves == 64 bit */
 /* increase trie_op_size from 751 to 3001 96/Oct/12 */
 #define INCREASETRIEOP
+#define COMPACTFORMAT
 
 
 /* With old PharLap linker it was important to avoid large fixed allocation */
@@ -976,6 +977,7 @@ EXTERN halfword after_token;
 EXTERN bool long_help_seen;
 EXTERN str_number format_ident;
 EXTERN word_file fmt_file;
+EXTERN gzFile gz_fmt_file;
 EXTERN integer ready_already;
 
 EXTERN alpha_file write_file[16]; /* hard wired limit in TeX */

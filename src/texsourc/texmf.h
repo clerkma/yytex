@@ -50,6 +50,7 @@ extern bool input_line (FILE *);
 #define w_open_out    b_open_out
 #define b_close       a_close
 #define w_close       a_close
+#define gz_w_close    gzclose
 
 /* sec 0241 */
 #define fix_date_and_time() get_date_and_time (&(tex_time), &(day), &(month), &(year))
