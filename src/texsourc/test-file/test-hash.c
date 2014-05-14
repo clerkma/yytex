@@ -15,7 +15,7 @@ struct _mapping_entry
 {
   mapping_entry * next;
   char * key;
-  int  * val;
+  int    val;
 };
 
 unsigned int font_name_hash(const char * s)
@@ -98,12 +98,18 @@ mapping_table * gentbl;
 int main (void)
 {
   gentbl = font_name_hash_init();
-  font_name_hash_insert(gentbl, "cmr10", 1022);
-  font_name_hash_insert(gentbl, "cmr17", 100);
-  font_name_hash_insert(gentbl, "cmmi10", 99);
   printf("cmmi10: %d.\n", font_name_hash_lookup(gentbl, "cmmi10"));
   printf("cmr10: %d.\n", font_name_hash_lookup(gentbl, "cmr10"));
   printf("cmr17: %d.\n", font_name_hash_lookup(gentbl, "cmr17"));
+  printf("cmr5: %d.\n", font_name_hash_lookup(gentbl, "cmr5"));
+  font_name_hash_insert(gentbl, "cmr10", 1022);
+  font_name_hash_insert(gentbl, "cmr17", 100);
+  font_name_hash_insert(gentbl, "cmmi10", 99);
+  font_name_hash_insert(gentbl, "cmr5", 12);
+  printf("cmmi10: %d.\n", font_name_hash_lookup(gentbl, "cmmi10"));
+  printf("cmr10: %d.\n", font_name_hash_lookup(gentbl, "cmr10"));
+  printf("cmr17: %d.\n", font_name_hash_lookup(gentbl, "cmr17"));
+  printf("cmr5: %d.\n", font_name_hash_lookup(gentbl, "cmr5"));
   font_name_hash_free(gentbl);
   return 0;
 }
