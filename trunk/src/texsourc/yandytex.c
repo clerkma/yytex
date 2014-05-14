@@ -28,10 +28,10 @@
 #define dump_default_length format_default_length
 #define main_program        texbody
 #define edit_value          tex_edit_value
-#define edit_var            "UFYFEJU" /* shrouded 93/Nov/20 */
+#define edit_var            "UFYFEJU"
 
 
-extern char * replacement[];    /* pointers to replacement strings */
+extern char * replacement[];
 
 #ifdef FUNNY_CORE_DUMP
   void funny_core_dump (void);
@@ -898,7 +898,11 @@ int do_dump (char *p, int item_size, int nitems, FILE *out_file)
   swap_items (p, nitems, item_size);
 #endif
 
+#ifdef COMPACTFORMAT
+  if (gzwrite(gz_fmt_file, p, (item_size * nitems)) != (item_size * nitems))
+#else
   if ((int) fwrite (p, item_size, nitems, out_file) != nitems)
+#endif
   {
     show_line("\n", 0);
     sprintf(log_line, "! Could not write %d %d-byte item%s.\n",
@@ -920,7 +924,11 @@ int do_dump (char *p, int item_size, int nitems, FILE *out_file)
 /* Here is the dual of the writing routine.  */
 int do_undump (char *p, int item_size, int nitems, FILE *in_file)
 {
+#ifdef COMPACTFORMAT
+  if (gzread(gz_fmt_file, (void *) p, (unsigned int) (item_size * nitems)) <= 0)
+#else
   if ((int) fread((void *) p, item_size, nitems, in_file) != nitems)
+#endif
   {
     show_line("\n", 0);
     sprintf(log_line, "! Could not read %d %d-byte item%s.\n",

@@ -263,6 +263,10 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       {
         format_file = xstrdup((char *) name_of_file + 1);
       }
+
+#ifdef COMPACTFORMAT
+      gz_fmt_file = gzdopen(fileno(*f), "rbR9");
+#endif
     }
     else if (strstr((char *)name_of_file+1, ".tfm") != NULL)
     {
@@ -424,6 +428,13 @@ bool open_output (FILE **f, char *fopen_mode)
 #endif
     }
   }
+
+#ifdef COMPACTFORMAT
+  if (strstr((char *) name_of_file + 1, ".fmt") != NULL)
+  {
+    gz_fmt_file = gzdopen(fileno(*f), "wbR9");
+  }
+#endif
 
   if (strstr((char *) name_of_file + 1, ".dvi") != NULL)
   {

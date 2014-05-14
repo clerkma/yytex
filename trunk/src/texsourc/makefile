@@ -25,7 +25,7 @@ RC = rc
 # Release version
 # CFLAGS=/c /Ge /Gy /Gf /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG /Ilib /YX
 CFLAGS=/nologo /c /MT /GF /Gy /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG \
-	/I"kpathsea" /I"libharu/include" /I"libharu/win32/include"
+	/I"kpathsea" /I"libharu/include" /I"libharu/win32/include" /I"zlib"
 # Debugging version
 # CFLAGS=/c /Ge /Gy /Gf /Od /Zi /W4 /DMSDOS /DTeX /DPHARLAP /Ilib /YX
 

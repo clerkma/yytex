@@ -54,6 +54,7 @@
 #else
   #include <unistd.h>
 #endif
+#include <zlib.h>
 #include "hpdf.h"
 #include "hpdf_utils.h"
 
@@ -100,9 +101,9 @@ typedef enum
 #define fabs(x)  ((x) >= 0.0 ? (x) : -(x))
 #define PATHMAX  PATH_MAX
 #define toint(x) ((integer) (x))
-#define a_open_in(f,p) open_input (&(f), p, FOPEN_R_MODE)
+#define a_open_in(f, p) open_input (&(f), p, FOPEN_R_MODE)
 #define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)
-#define a_close(f)	check_fclose (f)
+#define a_close(f)	    check_fclose (f)
 
 #define MAXLINE 256 // for log_line buffer
 

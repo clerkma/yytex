@@ -2493,11 +2493,19 @@ lab1:
 
       if (!load_fmt_file ())
       {
+#ifdef COMPACTFORMAT
+        gzclose(gz_fmt_file);
+#else
         w_close(fmt_file);
+#endif
         goto lab9999;
       }
 
+#ifdef COMPACTFORMAT
+      gzclose(gz_fmt_file);
+#else
       w_close(fmt_file);
+#endif
 
       while ((cur_input.loc_field < cur_input.limit_field) &&
           (buffer[cur_input.loc_field] == ' '))
@@ -3608,6 +3616,7 @@ void store_fmt_file (void)
   print_int(dyn_used);
 
   k = active_base;
+
   do
     {
       j = k;
@@ -3880,12 +3889,17 @@ lab32:
       dump_int(trie_used[k]);
     }
   }
+
   dump_int(interaction);
   dump_int(format_ident);
   dump_int(ENDFMTCHECKSUM); /* magic checksum end of FMT file --- change ??? */ 
   tracing_stats = 0;
 
+#ifdef COMPACTFORMAT
+  gzclose(gz_fmt_file);
+#else
   w_close(fmt_file);
+#endif
 }
 #endif /* INITEX */
 
