@@ -5,13 +5,6 @@
 
 # Makefile for Y&YTeX
 
-# TO SET UP DEBUGGING INFO:
-# (1) add -Zi to CFLAGS for CL
-# (2) add /MAP /DEBUG /PDB:yandytex.pdb for LINK
-
-# NOTE: full optimization causes some problems especially in TEX5.C & TEX6.C
-# NOTE: assuming no aliasing causes some problems especially in TEXMF.C
-
 CC = cl
 LINK = link
 RC = rc
@@ -25,7 +18,8 @@ RC = rc
 # Release version
 # CFLAGS=/c /Ge /Gy /Gf /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG /Ilib /YX
 CFLAGS=/nologo /c /MT /GF /Gy /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG \
-	/I"kpathsea" /I"libharu/include" /I"libharu/win32/include" /I"zlib"
+	/I"kpathsea" /I"libharu/include" /I"libharu/win32/include" /I"zlib" \
+	/I"libmd5"
 # Debugging version
 # CFLAGS=/c /Ge /Gy /Gf /Od /Zi /W4 /DMSDOS /DTeX /DPHARLAP /Ilib /YX
 
@@ -44,15 +38,14 @@ LFLAGS=/NOLOGO /MAP
 objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
 	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
 	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
-	yandy_pool.obj yandytex.res md5.obj md5file.obj \
-	yandy_pdf_backend.obj
+	yandy_pool.obj yandytex.res md5.obj yandy_pdf_backend.obj
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 yandytex.exe: $(objs)
 	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
-	yandy_pool yandytex.res md5 md5file yandy_pdf_backend \
+	yandy_pool yandytex.res md5 yandy_pdf_backend \
 	kpathsea\kpathsea.lib libharu\libhpdf.lib libpng\libpng.lib zlib\zlib.lib
 	del ..\yandy\bin\yandytex.exe
 	copy yandytex.exe ..\yandy\bin\yandytex.exe
@@ -62,9 +55,6 @@ yandy_pdf_backend.obj: yandy_pdf_backend.c
 
 md5.obj: libmd5\md5.c
 	$(CC) -Ilibmd5 $(CFLAGS) libmd5\md5.c
-
-md5file.obj: md5file.c
-	$(CC) -Ilibmd5 $(CFLAGS) md5file.c
 
 yandytex.res: yandytex.rc
 	rc yandytex.rc
