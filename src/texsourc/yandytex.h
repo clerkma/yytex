@@ -54,7 +54,8 @@
 #else
   #include <unistd.h>
 #endif
-#include <zlib.h>
+#include "zlib.h"
+#include "md5.h"
 #include "hpdf.h"
 #include "hpdf_utils.h"
 
