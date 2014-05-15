@@ -18,8 +18,7 @@ LDFLAGS = -lkpathsea -lhpdf -lpng -lz
 objects = yandytex.o itex.o openinou.o subroute.o local.o \
 	tex0.o tex1.o tex2.o tex3.o tex4.o \
 	tex5.o tex6.o tex7.o tex8.o tex9.o \
-	yandy_pool.o md5.o md5file.o \
-	yandy_pdf_backend.o
+	yandy_pool.o md5.o yandy_pdf_backend.o
 
 headers = yandytex.h texd.h coerce.h texmf.h texmfmem.h
 
@@ -76,9 +75,6 @@ yandy_pool.o: yandy_pool.c $(headers)
 
 md5.o: libmd5/md5.c $(headers)
 	$(CC) -c $(CFLAGS) libmd5/md5.c
-
-md5file.o: md5file.c $(headers)
-	$(CC) -c $(CFLAGS) md5file.c
 
 yandy_pdf_backend.o: yandy_pdf_backend.c $(headers)
 	$(CC) -c $(CFLAGS) yandy_pdf_backend.c
