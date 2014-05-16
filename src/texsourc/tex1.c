@@ -2357,7 +2357,7 @@ halfword id_lookup_(integer j, integer l)
       }
 
       goto lab40; 
-    } 
+    }
     p = next(p);
   } 
 
