@@ -2396,7 +2396,7 @@ void show_tex_fonts (void)
 internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)
 {
   font_index k;
-  bool fileopened;
+  bool file_opened;
 /*  halfword lf, lh, bc, ec, nw, nh, nd, ni, nl, nk, ne, np;  */
   halfword lf, lh, nw, nh, nd, ni, nl, nk, ne, np;
 /*  halfword bc, ec; */
@@ -2406,127 +2406,58 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   eight_bits a, b, c, d;
   ffour_quarters qw;
   scaled sw;
-  integer bchlabel;
+  integer bch_label;
   short bchar;
   scaled z;
   integer alpha;
   char beta;
 
   g = 0;
-  fileopened = false;
+  file_opened = false;
   pack_file_name(nom, aire, 805); /* .tfm */
 
-  if (!b_open_in(tfm_file)) /* new in C version d */
+  if (!b_open_in(tfm_file))
   {
     goto lab11;
   } 
-/*   was just: goto lab11; */
-  fileopened = true; 
+
+  file_opened = true; 
+
   {
-/*  tfm_temp = getc(tfm_file);  */ /* done already in open_input, but why? */
-    //tfm_temp = getc(tfm_file);
-    {
-      lf = tfm_temp;
-      if (lf > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      lf = lf * 256 + tfm_temp;
-    }
+    read_sixteen(lf);
     tfm_temp = getc(tfm_file);
-    {
-      lh = tfm_temp;
-      if (lh > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      lh = lh * 256 + tfm_temp;
-    }
+    read_sixteen(lh);
     tfm_temp = getc(tfm_file);
-    {
-      bc = tfm_temp;
-      if (bc > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      bc = bc * 256 + tfm_temp;
-    }
+    read_sixteen(bc);
     tfm_temp = getc(tfm_file);
-    {
-      ec = tfm_temp;
-      if (ec > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      ec = ec * 256 + tfm_temp;
-    }
+    read_sixteen(ec);
+
     if ((bc > ec + 1)||(ec > 255))
       goto lab11;
+
     if (bc > 255)
     {
       bc = 1;
       ec = 0;
     }
+
     tfm_temp = getc(tfm_file);
-    {
-      nw = tfm_temp;
-      if (nw > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      nw = nw * 256 + tfm_temp;
-    }
+    read_sixteen(nw);
     tfm_temp = getc(tfm_file);
-    {
-      nh = tfm_temp;
-      if (nh > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      nh = nh * 256 + tfm_temp;
-    }
+    read_sixteen(nh);
     tfm_temp = getc(tfm_file);
-    {
-      nd = tfm_temp;
-      if (nd > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      nd = nd * 256 + tfm_temp;
-    }
+    read_sixteen(nd);
     tfm_temp = getc(tfm_file);
-    {
-      ni = tfm_temp;
-      if (ni > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      ni = ni * 256 + tfm_temp;
-    }
+    read_sixteen(ni);
     tfm_temp = getc(tfm_file);
-    {
-      nl = tfm_temp;
-      if (nl > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      nl = nl * 256 + tfm_temp;
-    }
+    read_sixteen(nl);
     tfm_temp = getc(tfm_file);
-    {
-      nk = tfm_temp;
-      if (nk > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      nk = nk * 256 + tfm_temp;
-    }
+    read_sixteen(nk);
     tfm_temp = getc(tfm_file);
-    {
-      ne = tfm_temp;
-      if (ne > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      ne = ne * 256 + tfm_temp;
-    }
+    read_sixteen(ne);
     tfm_temp = getc(tfm_file);
-    {
-      np = tfm_temp;
-      if (np > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      np = np * 256 + tfm_temp;
-    }
+    read_sixteen(np);
+
     if (lf != 6 + lh + (ec - bc + 1) + nw + nh + nd + ni + nl + nk + ne + np)
       goto lab11;
 
@@ -2538,9 +2469,9 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
 
   if (np < 7)
     lf = lf + 7 - np;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
 #ifdef ALLOCATEFONT
-  if ((fmem_ptr + lf > current_font_mem_size))   /* 93/Nov/28 */
+  if ((fmem_ptr + lf > current_font_mem_size))
     font_info = realloc_font_info (increment_font_mem_size + lf);
 
   if ((font_ptr == font_max) || (fmem_ptr + lf > current_font_mem_size))
@@ -2595,32 +2526,11 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   {
     if (lh < 2)
       goto lab11;
-/*  build the font checksum now */
-    {
-      tfm_temp = getc(tfm_file);
-      a = tfm_temp;
-      qw.b0 = a;
-      tfm_temp = getc(tfm_file);
-      b = tfm_temp;
-      qw.b1 = b;
-      tfm_temp = getc(tfm_file);
-      c = tfm_temp;
-      qw.b2 = c;
-      tfm_temp = getc(tfm_file);
-      d = tfm_temp;
-      qw.b3 = d;
-      font_check[f] = qw;
-    }
-
+    
+    /*  build the font checksum now */
+    store_four_quarters(font_check[f]);
     tfm_temp = getc(tfm_file);
-    {
-      z = tfm_temp;
-      if (z > 127)
-        goto lab11;
-      tfm_temp = getc(tfm_file);
-      z = z * 256 + tfm_temp;
-    }
-
+    read_sixteen(z);
     tfm_temp = getc(tfm_file);
     z = z * 256 + tfm_temp;
     tfm_temp = getc(tfm_file);
@@ -2651,38 +2561,24 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
 
   for (k = fmem_ptr; k <= width_base[f] - 1; k++)
   {
-    {
-      tfm_temp = getc(tfm_file);
-      a = tfm_temp;
-      qw.b0 = a;
-      tfm_temp = getc(tfm_file);
-      b = tfm_temp;
-      qw.b1 = b;
-      tfm_temp = getc(tfm_file);
-      c = tfm_temp;
-      qw.b2 = c;
-      tfm_temp = getc(tfm_file);
-      d = tfm_temp;
-      qw.b3 = d;
-      font_info[k].qqqq = qw;
-    }
+    store_four_quarters(font_info[k].qqqq);
 
     if ((a >= nw) || (b / 16 >= nh) || (b % 16 >= nd) || (c / 4 >= ni))
       goto lab11;
 
     switch (c % 4)
     {
-      case 1 :
+      case lig_tag:
         if (d >= nl)
           goto lab11;
         break;
 
-      case 3 :
+      case ext_tag:
         if (d >= ne)
           goto lab11;
         break;
 
-      case 2 :
+      case list_tag:
         {
           {
             if ((d < bc)||(d > ec))
@@ -2691,12 +2587,12 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
 
           while (d < k + bc - fmem_ptr)
           {
-            qw = font_info[char_base[f]+ d].qqqq;
+            qw = char_info(f, d);
  
-            if (((qw.b2)% 4)!= 2)
+            if (char_tag(qw) != list_tag)
               goto lab45;
 
-            d = qw.b3;
+            d = rem_byte(qw);
           }
 
           if (d == k + bc - fmem_ptr)
@@ -2709,6 +2605,7 @@ lab45:;
         break;
     }
   }
+
   {
     {
       alpha = 16;
@@ -2755,29 +2652,15 @@ lab45:;
     if (font_info[italic_base[f]].cint != 0)
       goto lab11;
   }
-/*  read ligature/kern program */
-  bchlabel = 32767;     /* '77777 */
+
+  bch_label = 32767;     /* '77777 */
   bchar = 256;
 
   if (nl > 0)
   {
     for (k = lig_kern_base[f]; k <= kern_base[f] + 256 * (128) - 1; k++)
     {
-      {
-        tfm_temp = getc(tfm_file);
-        a = tfm_temp;
-        qw.b0 = a;
-        tfm_temp = getc(tfm_file);
-        b = tfm_temp;
-        qw.b1 = b;
-        tfm_temp = getc(tfm_file);
-        c = tfm_temp;
-        qw.b2 = c;
-        tfm_temp = getc(tfm_file);
-        d = tfm_temp;
-        qw.b3 = d;
-        font_info[k].qqqq = qw; /* store_four_quarters(font_info[k].qqqq */
-      }
+      store_four_quarters(font_info[k].qqqq);
 
       if (a > 128)
       {
@@ -2817,6 +2700,7 @@ lab45:;
         }
         else if (256 * (c - 128) + d >= nk)
           goto lab11;           /* error in TFM, abort */
+
         if (a < 128)
           if (k - lig_kern_base[f] + a + 1 >= nl)
             goto lab11;         /* error in TFM, abort */
@@ -2824,7 +2708,7 @@ lab45:;
     }
 
     if (a == 255)
-      bchlabel = 256 * c + d;
+      bch_label = 256 * c + d;
   }
 
   for (k = kern_base[f] + 256 * (128); k <= exten_base[f] - 1; k++)
@@ -2845,26 +2729,11 @@ lab45:;
       font_info[k].cint = sw - alpha;
     else goto lab11;
   }
-/*  read extensible character recipes */
-/*  for k:=exten_base[f] to param_base[f]-1 do */
+
+  /*  read extensible character recipes */
   for (k = exten_base[f]; k <= param_base[f] - 1; k++)
   {
-    {
-      tfm_temp = getc(tfm_file);
-      a = tfm_temp;
-      qw.b0 = a;
-      tfm_temp = getc(tfm_file);
-      b = tfm_temp;
-      qw.b1 = b;
-      tfm_temp = getc(tfm_file);
-      c = tfm_temp;
-      qw.b2 = c;
-      tfm_temp = getc(tfm_file);
-      d = tfm_temp;
-      qw.b3 = d;
-/*    store_four_quarters(font_info[k].qqqq); */
-      font_info[k].qqqq = qw;
-    }
+    store_four_quarters(font_info[k].qqqq);
 
     if (a != 0)
     {
@@ -2904,6 +2773,7 @@ lab45:;
       if (!(qw.b0 > 0))
         goto lab11;
     }
+
     {
       {
         if ((d < bc) || (d > ec))
@@ -2916,6 +2786,7 @@ lab45:;
         goto lab11;
     }
   }
+
   {
     for (k = 1; k <= np; k++)
       if (k == 1)
@@ -2967,8 +2838,8 @@ lab45:;
   hyphen_char[f] = default_hyphen_char;
   skew_char[f] = default_skew_char;
 
-  if (bchlabel < nl)
-    bchar_label[f] = bchlabel + lig_kern_base[f];
+  if (bch_label < nl)
+    bchar_label[f] = bch_label + lig_kern_base[f];
   else
     bchar_label[f] = non_address;
 
@@ -3018,7 +2889,7 @@ lab11:
     print_int(- (integer) s);
   } 
 
-  if (fileopened)
+  if (file_opened)
     print_string(" not loadable: Bad metric (TFM) file");
   else
     print_string(" not loadable: Metric (TFM) file not found");
@@ -3037,7 +2908,7 @@ lab11:
   error();
 
 lab30:
-  if (fileopened)
+  if (file_opened)
     b_close(tfm_file);
 
   return g;

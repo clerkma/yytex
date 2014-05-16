@@ -3214,7 +3214,11 @@ int main_init (int ac, char **av)
   int k;
 
   kpse_set_program_name(av[0], NULL);
-
+  kpse_init_format(kpse_afm_format);
+  kpse_set_suffixes(kpse_afm_format, false, ".afm", NULL);
+  kpse_init_format(kpse_type1_format);
+  kpse_set_suffixes(kpse_type1_format, false, ".pfb", NULL);
+  
   if (sizeof(memory_word) != sizeof(integer) * 2)
   {
     sprintf(log_line, "ERROR: Bad word size %d!\n", sizeof(memory_word));
@@ -3294,16 +3298,14 @@ int main_init (int ac, char **av)
   if (trace_flag)
     show_line("Entering init (local)\n", 0);
 
-  probe_memory();             /* show top address */
-  ini_max_address = max_address;       /* initial max address */
+  probe_memory(); /* show top address */
+  ini_max_address = max_address; /* initial max address */
 
   if (trace_flag)
     show_maximums(stdout);
 
   initial_memory();
-
   deslash_all(ac, av);    /* deslash and note if format specified */
-
   no_interrupts = 0;
 
   if (format_spec && mem_spec_flag)

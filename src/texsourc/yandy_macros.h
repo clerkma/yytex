@@ -855,6 +855,31 @@ enum
 #define quad(f)          param(quad_code, f)
 #define extra_space(f)   param(extra_space_code, f)
 /* sec 0564 */
+#define read_sixteen(a)         \
+  {                             \
+    a = tfm_temp;               \
+    if (a > 127)                \
+      goto lab11;               \
+    tfm_temp = getc(tfm_file);  \
+    a = a * 256 + tfm_temp;     \
+  }
+#define store_four_quarters(val)  \
+  {                               \
+    tfm_temp = getc(tfm_file);    \
+    a = tfm_temp;                 \
+    qw.b0 = a;                    \
+    tfm_temp = getc(tfm_file);    \
+    b = tfm_temp;                 \
+    qw.b1 = b;                    \
+    tfm_temp = getc(tfm_file);    \
+    c = tfm_temp;                 \
+    qw.b2 = c;                    \
+    tfm_temp = getc(tfm_file);    \
+    d = tfm_temp;                 \
+    qw.b3 = d;                    \
+    val = qw;                     \
+  }
+/* sec 0571 */
 /* sec 0585 */
 #define set1      128 // c[1]
 #define set2      129 // c[2]

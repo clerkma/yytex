@@ -393,16 +393,8 @@ void pdf_font_def (internal_font_number f)
 
   if (k == -1)
   {
-    {
-      char * afm_temp = (char *) malloc(strlen(fnt_buffer) + 5);
-      char * pfb_temp = (char *) malloc(strlen(fnt_buffer) + 5);
-      strcpy(afm_temp, fnt_buffer); strcpy(afm_temp + strlen(fnt_buffer), ".afm");
-      strcpy(pfb_temp, fnt_buffer); strcpy(pfb_temp + strlen(fnt_buffer), ".pfb");
-      afm_name = kpse_find_file(afm_temp, kpse_afm_format, 1);
-      pfb_name = kpse_find_file(pfb_temp, kpse_type1_format, 1);
-      free(afm_temp);
-      free(pfb_temp);
-    }
+    afm_name = kpse_find_file(fnt_buffer, kpse_afm_format, 1);
+    pfb_name = kpse_find_file(fnt_buffer, kpse_type1_format, 1);
 
     if (afm_name != NULL && pfb_name != NULL)
     {
