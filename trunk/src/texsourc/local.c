@@ -532,9 +532,7 @@ int max_address     = 0;  /* maximum address seen in allocated memory */
 void show_maximums (FILE *output)
 {
   sprintf(log_line, "Max allocated %d --- max address %d\n", total_allocated, max_address);
-//  if (output != NULL) fputs(log_line, output); // log file
-//  else if (flag == 0) show_line(log_line, 0); // informative
-//  else if (flag == 1) show_line(log_line, 1); // error
+
   if (output == stderr)
     show_line(log_line, 1);
   else if (output == stdout)
@@ -583,17 +581,18 @@ void *ourrealloc (void *old, size_t new_size)
           mnew, new_size, old, old_size);
       show_line(log_line, 0);
     }
+
     return mnew;
   }
-/*  *********************************************************************** */
-/*  do this if you want to call the real realloc next -  */
+
+  /*  do this if you want to call the real realloc next -  */
   mnew = realloc (old, new_size);
 
   if (mnew != NULL)
     return mnew;
-/*  we are screwed typically if we ever drop through here - no more space */
-/*  *********************************************************************** */
-  mnew = malloc (new_size);          /* otherwise find new space */
+
+  /*  we are screwed typically if we ever drop through here - no more space */
+  mnew = malloc (new_size); /* otherwise find new space */
 
   if (mnew == NULL)
     return mnew;        /* if unable to allocate */
@@ -603,8 +602,9 @@ void *ourrealloc (void *old, size_t new_size)
   else
     overlap = new_size;
 
-  memcpy (mnew, old, overlap);         /* copy old data to new area */
-  free(old);                  /* free the old area */
+  memcpy (mnew, old, overlap); /* copy old data to new area */
+  free(old); /* free the old area */
+
   return mnew;
 }
 #endif
@@ -673,20 +673,12 @@ int allocate_tries (int trie_max)
 {
   int n, nl, no, nc;
 
-/*  if (trie_max > trie_size)
-  {
-    sprintf(log_line, "ERROR: invalid trie size (%d > %d)\n",
-      trie_max, trie_size);
-      show_line(log_line, 1);
-    exit (1);
-  } */ /* ??? removed 1993/dec/17 */
   if (trie_max > 1000000)
-    trie_max = 1000000; /* some sort of sanity limit */
+    trie_max = 1000000;
 
-  /*  important + 1 because original was halfword trie_trl[trie_size + 1] etc. */
-  nl = (trie_max + 1) * sizeof(halfword);    /* trie_trl[trie_size + 1] */
-  no = (trie_max + 1) * sizeof(halfword);    /* trie_tro[trie_size + 1] */
-  nc = (trie_max + 1) * sizeof(quarterword); /* trie_trc[trie_size + 1] */
+  nl = (trie_max + 1) * sizeof(halfword);
+  no = (trie_max + 1) * sizeof(halfword);
+  nc = (trie_max + 1) * sizeof(quarterword);
   n = nl + no + nc;
 
   if (trace_flag)
@@ -708,15 +700,14 @@ int allocate_tries (int trie_max)
     show_line(log_line, 0);
   }
 
-  update_statistics ((int) trie_trl, nl, 0);
-  update_statistics ((int) trie_tro, no, 0);
-  update_statistics ((int) trie_trc, nc, 0);
+  update_statistics((int) trie_trl, nl, 0);
+  update_statistics((int) trie_tro, no, 0);
+  update_statistics((int) trie_trc, nc, 0);
 
-  /*  sprintf(log_line, "trie_size %d trie_max %d\n", trie_size, trie_max); */ /* debug */
-  trie_size = trie_max;           /* BUG FIX 98/Jan/5 */
+  trie_size = trie_max;
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
   return 0; // success
 }
@@ -753,12 +744,8 @@ int realloc_hyphen (int hyphen_prime)
   if (trace_flag)
     trace_memory("hyphen exception", n);
 
-/*  initially hyph_word will be NULL so this acts like malloc */
-/*  hyph_word = (str_number *) malloc (nw); */
-  hyph_word = (str_number *) REALLOC (hyph_word, nw);  /* 94/Mar/24 */
-/*  initially hyph_list will be NULL so this acts like malloc */
-/*  hyph_list = (halfword *) malloc (nl); */
-  hyph_list = (halfword *) REALLOC (hyph_list, nl);   /* 94/Mar/24 */
+  hyph_word = (str_number *) REALLOC (hyph_word, nw);
+  hyph_list = (halfword *) REALLOC (hyph_list, nl);
 
   if (hyph_word == NULL || hyph_list == NULL)
   {
@@ -789,21 +776,21 @@ int realloc_hyphen (int hyphen_prime)
 
   if (current_prime != 0)
   {
-    update_statistics ((int) hyph_word, nw, (current_prime + 1) * sizeof(str_number));
-    update_statistics ((int) hyph_list, nl, (current_prime + 1) * sizeof(halfword));
+    update_statistics((int) hyph_word, nw, (current_prime + 1) * sizeof(str_number));
+    update_statistics((int) hyph_list, nl, (current_prime + 1) * sizeof(halfword));
   }
   else
   {
-    update_statistics ((int) hyph_word, nw, 0);
-    update_statistics ((int) hyph_list, nl, 0);
+    update_statistics((int) hyph_word, nw, 0);
+    update_statistics((int) hyph_list, nl, 0);
   }
 
   current_prime = hyphen_prime;
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
-  return 0;               // success
+  return 0; // success
 }
 #endif
 
@@ -821,12 +808,6 @@ memory_word *allocate_main_memory (int size)
 {
   int n;
 
-/*  Using -i *and* pre-loading format */
-/*  in this case get called twice */
-/*  Get rid of initial blank memory again or use realloc ... */
-/*  Could we avoid this by detecting presence of & before allocating ? */
-/*  Also, if its already large enough, maybe we can avoid this ? */
-/*  don't bother if current_mem_size == mem_max - mem_start ? */
   if (main_memory != NULL)
   {
     if (trace_flag)
@@ -843,8 +824,6 @@ memory_word *allocate_main_memory (int size)
   if (trace_flag)
     trace_memory("main memory", n);
 
-/*  main_memory = (memory_word *) malloc (n); */  /* 94/March/24 */
-/*  normally main_memory == NULL here so acts like malloc ... */
   main_memory = (memory_word *) REALLOC (main_memory, n);
 
   if (main_memory == NULL)
@@ -2373,8 +2352,7 @@ void check_alloc_align (int flag)
 
 bool backwardflag       = false;              /* don't cripple all advanced features */
 bool shorten_file_name  = false;              /* don't shorten file names to 8+3 for DOS */
-bool usesourcedirectory = true;               /* use source file directory as local when WorkingDirectory is set */
-bool workingdirectory   = false;              /* if working directory set in ini */
+bool usesourcedirectory = true;               /* use source file directory as local when WorkingDirectory is set */             /* if working directory set in ini */
 
 /* cache to prevent allocating twice in a row */
 
@@ -2563,9 +2541,6 @@ int analyze_flag (int c, char *optarg)
       break;
     case 'n':
       restrict_to_ascii = true; /* 0 - 127 1994/Jan/21 */
-      break;
-    case '6':
-      workingdirectory = true; /* use source dir 98/Sep/29 */
       break;
     case '7':
       usesourcedirectory = false; /* use working dir 98/Sep/29 */
@@ -3185,7 +3160,7 @@ void deslash_all (int ac, char **av)
           if (trace_flag || debug_flag)
           {
             sprintf(log_line, "deslash: k %d argv[k] %s (argc %d)\n",
-              optind+1, av[optind+1], ac);
+              optind + 1, av[optind + 1], ac);
             show_line(log_line, 0);
           }
 
@@ -3193,7 +3168,7 @@ void deslash_all (int ac, char **av)
         }
 
         if (pseudo_tilde != 0 || pseudo_space != 0)
-          hidetwiddle (av[optind+1]);
+          hidetwiddle (av[optind + 1]);
       }
     }         
   }
@@ -3210,15 +3185,10 @@ void deslash_all (int ac, char **av)
 
 int main_init (int ac, char **av)
 {
-  char initbuffer[PATH_MAX];
   int k;
 
   kpse_set_program_name(av[0], NULL);
-  kpse_init_format(kpse_afm_format);
-  kpse_set_suffixes(kpse_afm_format, false, ".afm", NULL);
-  kpse_init_format(kpse_type1_format);
-  kpse_set_suffixes(kpse_type1_format, false, ".pfb", NULL);
-  
+
   if (sizeof(memory_word) != sizeof(integer) * 2)
   {
     sprintf(log_line, "ERROR: Bad word size %d!\n", sizeof(memory_word));
@@ -3226,42 +3196,39 @@ int main_init (int ac, char **av)
   }
 
   start_time = clock();
-  main_time = start_time;
-
-  initbuffer[0] = '\0';         /* paranoia 94/Apr/10 */
+  main_time  = start_time;
 
 /*  reset all allocatable memory pointers to NULL - in case we drop out */
   main_memory = NULL;
-  font_info = NULL;
-  str_pool = NULL;
-  str_start = NULL;
+  font_info   = NULL;
+  str_pool    = NULL;
+  str_start   = NULL;
 
 #ifdef ALLOCATESAVESTACK
   save_stack = NULL; 
 #endif
 
 #ifdef ALLOCATEBUFFER
-  buffer = NULL;
+  buffer           = NULL;
   current_buf_size = 0;
-  buffer = realloc_buffer (initial_buf_size);
+  buffer           = realloc_buffer (initial_buf_size);
 #endif
 
-  hyph_list = NULL;
-  hyph_word = NULL;
+  hyph_list  = NULL;
+  hyph_word  = NULL;
   trie_taken = NULL;
-  trie_hash = NULL;
-  trie_r = NULL;
-  trie_c = NULL;
-  trie_o = NULL;
-  trie_l = NULL;
-  trie_trc = NULL;
-  trie_tro = NULL;
-  trie_trl = NULL;
+  trie_hash  = NULL;
+  trie_r     = NULL;
+  trie_c     = NULL;
+  trie_o     = NULL;
+  trie_l     = NULL;
+  trie_trc   = NULL;
+  trie_tro   = NULL;
+  trie_trl   = NULL;
 
   log_opened = false;       /* so can tell whether opened */
   interaction = -1;         /* default state => 3 */
   missing_characters = 0;   /* none yet! */
-  workingdirectory = false; /* set from dviwindo.ini & command line */
   font_dimen_zero = true;   /* \fontdimen0 for checksum 98/Oct/5 */
   ignore_frozen = false;    /* default is not to ignore 98/Oct/5 */
   suppress_f_ligs = false;  /* default is not to ignore f-ligs */
@@ -3292,8 +3259,7 @@ int main_init (int ac, char **av)
   underfull_hbox    = 0;
   overfull_vbox     = 0;
   underfull_vbox    = 0;
-
-  closed_already = 0;
+  closed_already    = 0;
 
   if (trace_flag)
     show_line("Entering init (local)\n", 0);
@@ -3305,7 +3271,7 @@ int main_init (int ac, char **av)
     show_maximums(stdout);
 
   initial_memory();
-  deslash_all(ac, av);    /* deslash and note if format specified */
+  deslash_all(ac, av); /* deslash and note if format specified */
   no_interrupts = 0;
 
   if (format_spec && mem_spec_flag)

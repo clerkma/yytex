@@ -17,6 +17,8 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
+/* openinout.c: open input and output files. */
+
 #define EXTERN extern
 
 #include "texd.h"
@@ -24,11 +26,7 @@
 #define PATH_SEP        '/'
 #define PATH_SEP_STRING "/"
 
-/* openinout.c: open input and output files. */
-
 #define BUILDNAMEDIRECT         /* avoid malloc for string concat */
- 
-extern char *unixify (char *);      /* in pathsrch.c bkph */
 
 extern int shorten_file_name;       /* in local.c bkph */
 
@@ -328,8 +326,6 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 /* This nonsense probably only works for Unix anyway. bkph */
 /* For one thing, MakeTeXTFM etc is more than 8 characters ! */
 
-char *get_env_shroud (char *);    /* defined in texmf.c */
-
 extern char * dvi_directory;
 extern char * log_directory;
 extern char * aux_directory;
@@ -342,8 +338,6 @@ extern char * pdf_directory;
 
 /* now a_close returns -1 on error --- which could be used by caller */
 /* probably want to ignore on input files ... */
-
-extern void perrormod (char *s);       /* in local.c */
 
 // check_fclose not used by anything
 int check_fclose (FILE * f)
@@ -403,7 +397,7 @@ bool open_output (FILE **f, char *fopen_mode)
 /* Can't open as given.  Try the envvar.  */
   if (*f == NULL)
   {
-    string temp_dir = get_env_shroud ("UFYNGPVU");
+    string temp_dir = kpse_var_value("TEXMFOUTPUT");
 
     if (temp_dir != NULL)
     {
@@ -411,7 +405,6 @@ bool open_output (FILE **f, char *fopen_mode)
       unsigned char temp_name[PATH_MAX];
       xconcat3((char *) temp_name, temp_dir, PATH_SEP_STRING, (char *) name_of_file + 1);
 #else
-/*    string temp_name = concat3 (temp_dir, "/", name_of_file + 1); */
       string temp_name = concat3 (temp_dir, PATH_SEP_STRING, name_of_file + 1);
 #endif
 
