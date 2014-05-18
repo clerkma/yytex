@@ -3188,6 +3188,7 @@ int main_init (int ac, char **av)
   int k;
 
   kpse_set_program_name(av[0], NULL);
+  xputenv("engine", "yandytex");
 
   if (sizeof(memory_word) != sizeof(integer) * 2)
   {
