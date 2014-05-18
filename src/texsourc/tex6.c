@@ -108,14 +108,7 @@ void try_break_ (integer pi, small_number break_type)
   prev_r = active;
   old_l = 0;
   do_all_six(copy_to_cur_active);
-/*
-  cur_active_width[1] = active_width[1];
-  cur_active_width[2] = active_width[2];
-  cur_active_width[3] = active_width[3];
-  cur_active_width[4] = active_width[4];
-  cur_active_width[5] = active_width[5];
-  cur_active_width[6] = active_width[6];
-*/
+
   while (true)
   {
 lab22:
@@ -124,14 +117,6 @@ lab22:
     if (type(r) == delta_node)
     {
       do_all_six(update_width);
-/*
-      cur_active_width[1] = cur_active_width[1] + mem[r + 1].cint;
-      cur_active_width[2] = cur_active_width[2] + mem[r + 2].cint;
-      cur_active_width[3] = cur_active_width[3] + mem[r + 3].cint;
-      cur_active_width[4] = cur_active_width[4] + mem[r + 4].cint;
-      cur_active_width[5] = cur_active_width[5] + mem[r + 5].cint;
-      cur_active_width[6] = cur_active_width[6] + mem[r + 6].cint;
-*/
       prev_prev_r = prev_r;
       prev_r = r;
       goto lab22;
@@ -148,14 +133,6 @@ lab22:
           {
             no_break_yet = false;
             do_all_six(set_break_width_to_background);
-/*
-            break_width[1] = background[1];
-            break_width[2] = background[2];
-            break_width[3] = background[3];
-            break_width[4] = background[4];
-            break_width[5] = background[5];
-            break_width[6] = background[6];
-*/
             s = cur_p;
 
             if (break_type > unhyphenated)
@@ -284,26 +261,10 @@ lab30:;
           if (type(prev_r) == delta_node)
           {
             do_all_six(convert_to_break_width);
-/*
-            mem[prev_r + 1].cint = mem[prev_r + 1].cint - cur_active_width[1] + break_width[1];
-            mem[prev_r + 2].cint = mem[prev_r + 2].cint - cur_active_width[2] + break_width[2];
-            mem[prev_r + 3].cint = mem[prev_r + 3].cint - cur_active_width[3] + break_width[3];
-            mem[prev_r + 4].cint = mem[prev_r + 4].cint - cur_active_width[4] + break_width[4];
-            mem[prev_r + 5].cint = mem[prev_r + 5].cint - cur_active_width[5] + break_width[5];
-            mem[prev_r + 6].cint = mem[prev_r + 6].cint - cur_active_width[6] + break_width[6];
-*/
           }
           else if (prev_r == active)
           {
             do_all_six(store_break_width);
-/*
-            active_width[1] = break_width[1];
-            active_width[2] = break_width[2];
-            active_width[3] = break_width[3];
-            active_width[4] = break_width[4];
-            active_width[5] = break_width[5];
-            active_width[6] = break_width[6];
-*/
           }
           else
           {
@@ -312,14 +273,6 @@ lab30:;
             type(q) = delta_node;
             subtype(q) = 0;
             do_all_six(new_delta_to_break_width);
-/*
-            mem[q + 1].cint = break_width[1]- cur_active_width[1];
-            mem[q + 2].cint = break_width[2]- cur_active_width[2];
-            mem[q + 3].cint = break_width[3]- cur_active_width[3];
-            mem[q + 4].cint = break_width[4]- cur_active_width[4];
-            mem[q + 5].cint = break_width[5]- cur_active_width[5];
-            mem[q + 6].cint = break_width[6]- cur_active_width[6];
-*/
             link(prev_r) = q;
             prev_prev_r = prev_r;
             prev_r = q;
@@ -389,14 +342,6 @@ lab30:;
             type(q) = delta_node;
             subtype(q) = 0;
             do_all_six(new_delta_from_break_width);
-/*
-            mem[q + 1].cint = cur_active_width[1] - break_width[1];
-            mem[q + 2].cint = cur_active_width[2] - break_width[2];
-            mem[q + 3].cint = cur_active_width[3] - break_width[3];
-            mem[q + 4].cint = cur_active_width[4] - break_width[4];
-            mem[q + 5].cint = cur_active_width[5] - break_width[5];
-            mem[q + 6].cint = cur_active_width[6] - break_width[6];
-*/
             link(prev_r) = q;
             prev_prev_r = prev_r;
             prev_r = q;
@@ -603,20 +548,6 @@ lab60:
         {
           do_all_six(update_active);
           do_all_six(copy_to_cur_active);
-/*
-          active_width[1] = active_width[1] + mem[r + 1].cint;
-          active_width[2] = active_width[2] + mem[r + 2].cint;
-          active_width[3] = active_width[3] + mem[r + 3].cint;
-          active_width[4] = active_width[4] + mem[r + 4].cint;
-          active_width[5] = active_width[5] + mem[r + 5].cint;
-          active_width[6] = active_width[6] + mem[r + 6].cint;
-          cur_active_width[1] = active_width[1];
-          cur_active_width[2] = active_width[2];
-          cur_active_width[3] = active_width[3];
-          cur_active_width[4] = active_width[4];
-          cur_active_width[5] = active_width[5];
-          cur_active_width[6] = active_width[6];
-*/
           link(active) = link(r);
           free_node(r, delta_node_size);
         }
@@ -628,14 +559,6 @@ lab60:
         if (r == active)
         {
           do_all_six(downdate_width);
-/*
-          cur_active_width[1] = cur_active_width[1] - mem[prev_r + 1].cint;
-          cur_active_width[2] = cur_active_width[2] - mem[prev_r + 2].cint;
-          cur_active_width[3] = cur_active_width[3] - mem[prev_r + 3].cint;
-          cur_active_width[4] = cur_active_width[4] - mem[prev_r + 4].cint;
-          cur_active_width[5] = cur_active_width[5] - mem[prev_r + 5].cint;
-          cur_active_width[6] = cur_active_width[6] - mem[prev_r + 6].cint;
-*/
           link(prev_prev_r) = active;
           free_node(prev_r, delta_node_size);
           prev_r = prev_prev_r;
@@ -644,20 +567,6 @@ lab60:
         {
           do_all_six(update_width);
           do_all_six(combine_two_deltas);
-/*
-          cur_active_width[1] = cur_active_width[1] + mem[r + 1].cint;
-          cur_active_width[2] = cur_active_width[2] + mem[r + 2].cint;
-          cur_active_width[3] = cur_active_width[3] + mem[r + 3].cint;
-          cur_active_width[4] = cur_active_width[4] + mem[r + 4].cint;
-          cur_active_width[5] = cur_active_width[5] + mem[r + 5].cint;
-          cur_active_width[6] = cur_active_width[6] + mem[r + 6].cint;
-          mem[prev_r + 1].cint = mem[prev_r + 1].cint + mem[r + 1].cint;
-          mem[prev_r + 2].cint = mem[prev_r + 2].cint + mem[r + 2].cint;
-          mem[prev_r + 3].cint = mem[prev_r + 3].cint + mem[r + 3].cint;
-          mem[prev_r + 4].cint = mem[prev_r + 4].cint + mem[r + 4].cint;
-          mem[prev_r + 5].cint = mem[prev_r + 5].cint + mem[r + 5].cint;
-          mem[prev_r + 6].cint = mem[prev_r + 6].cint + mem[r + 6].cint;
-*/
           link(prev_r) = link(r);
           free_node(r, delta_node_size);
         }
@@ -680,8 +589,6 @@ lab10:
         }
       }
 #endif /* STAT */
-/*  must exit here, there are no internal return - except for confusion */
-/*  savedbadness = b; */      /* 96/Feb/9 - for test in itex.c */
 }
 /* end of the old tex5.c here */
 /* sec 0877 */
@@ -947,7 +854,7 @@ lab22:
   {
     k = bchar_label[hf];
 
-    if (k == non_address)    /* i.e. 0 ---  96/Jan/15 */
+    if (k == non_address)
       goto lab30;
     else
       q = font_info[k].qqqq;
@@ -968,6 +875,7 @@ lab22:
       q = font_info[k].qqqq;
     }
   }
+
   if (cur_rh < non_char)
     test_char = cur_rh;
   else
@@ -1228,13 +1136,14 @@ void hyphenate (void)
 
       while (s != 0)
       {
-        hyf[mem[s].hh.v.LH] = 1;
-        s = mem[s].hh.v.RH;
+        hyf[info(s)] = 1;
+        s = link(s);
       }
 
       decr(hn);
       goto lab40;
     }
+
 lab30:;
     if (h > 0)
       decr(h);
@@ -1324,7 +1233,7 @@ lab41:;
           init_lig = false;
         }
 
-        free_node(ha, small_node_size);
+      free_node(ha, small_node_size);
     }
   else
   {
@@ -1735,14 +1644,6 @@ halfword vert_break_(halfword p, scaled h, scaled d)
 
   least_cost = awful_bad;
   do_all_six(set_height_zero);
-/*
-  active_width[1] = 0;
-  active_width[2] = 0;
-  active_width[3] = 0;
-  active_width[4] = 0;
-  active_width[5] = 0;
-  active_width[6] = 0;
-*/
   prev_dp = 0;
 
   while (true)
@@ -1810,18 +1711,20 @@ halfword vert_break_(halfword p, scaled h, scaled d)
           b = 0;
         else
           b = badness(h - cur_height, active_width[2]);
-      else if (active_width[1] - h > active_width[6])
-        b = awful_bad;
       else
-        b = badness(cur_height - h, active_width[6]);
+        if (active_width[1] - h > active_width[6])
+          b = awful_bad;
+        else
+          b = badness(cur_height - h, active_width[6]);
 
       if (b < awful_bad)
         if (pi <= eject_penalty)
           b = pi;
-        else if (b < inf_bad)
-          b = b + pi;
         else
-          b = deplorable;
+          if (b < inf_bad)
+            b = b + pi;
+          else
+            b = deplorable;
 
       if (b <= least_cost)
       {
@@ -1873,6 +1776,7 @@ lab45:
     prev_p = p;
     p = link(prev_p);
   }
+
 lab30:
   return best_place;
 }
@@ -1997,15 +1901,8 @@ void freeze_page_specs_(small_number s)
   page_max_depth = max_depth;
   page_depth = 0;
   do_all_six(set_page_so_far_zero);
-/*
-  page_so_far[1] = 0;
-  page_so_far[2] = 0;
-  page_so_far[3] = 0;
-  page_so_far[4] = 0;
-  page_so_far[5] = 0;
-  page_so_far[6] = 0;
-*/
   least_page_cost = awful_bad;
+
 #ifdef STAT
   if (tracing_pages > 0)
   {

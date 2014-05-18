@@ -21,21 +21,14 @@
 
 #include "texd.h"
 
-
 #define dump_default_var    TEX_format_default
 #define dump_default        " plain.fmt"
 #define dump_ext_length     4
 #define dump_default_length format_default_length
 #define main_program        texbody
 #define edit_value          tex_edit_value
-#define edit_var            "UFYFEJU"
-
 
 extern char * replacement[];
-
-#ifdef FUNNY_CORE_DUMP
-  void funny_core_dump (void);
-#endif
 
 /* The main program, etc.  */
 
@@ -143,11 +136,12 @@ void t_open_in (void)
   }
 
   /* Find the end of the buffer.  */
-  for (last = first; buffer[last]; ++last) ;
+  for (last = first; buffer[last]; ++last)
+    ;
 
-  for (--last; last >= first
-      && ISBLANK (buffer[last]) && buffer[last] != '\r'; --last)
-      ;
+  for (--last; last >= first && ISBLANK (buffer[last]) && buffer[last] != '\r'; --last)
+    ;
+
   last++;
 
 /* One more time, this time converting to TeX's internal character
@@ -200,8 +194,8 @@ void get_date_and_time (integer *sys_minutes,
   }
 
   tmptr = localtime (&clock);
-/*  MS C runtime library has trouble for clock >= 2^31 !!! */
-  if (tmptr == NULL)           /* debugging 95/Dec/30*/
+
+  if (tmptr == NULL)
   {
     sprintf(log_line, "Cannot convert time (%0ld)!\n", clock);
     show_line(log_line, 1);
@@ -356,8 +350,10 @@ bool input_line_finish (void)
 /* What about control-Z that gets read in binary mode ? - bkph */
 // #ifdef MYDEBUG
 /*  while (last > first && buffer[last - 1] <= ' ')  --last; */
-  while (last > first) {
+  while (last > first)
+  {
     i = buffer[last - 1];
+
     if (i == ' ' || i == '\t')
       --last;
 /*    else if (trimeof && i == 26) --last;   */   /* 93/Nov/24 */
@@ -619,7 +615,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
     show_line(log_line, 0);
   }
 
-  s = kpse_var_value(edit_var);  
+  s = kpse_var_value(edit_value);  
 
   if (s != NULL)
     edit_value = s;
@@ -900,7 +896,7 @@ int do_undump (char *p, int item_size, int nitems, FILE *in_file)
    TeX from virtex, and is triggered by a magic file name requested as
    input (see `open_input', above).  */
 
-void funny_core_dump ()
+void funny_core_dump (void)
 {
   int pid, w;
   union wait status;

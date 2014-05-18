@@ -26,12 +26,12 @@
 #define PATH_SEP        '/'
 #define PATH_SEP_STRING "/"
 
-#define BUILDNAMEDIRECT         /* avoid malloc for string concat */
+#define BUILDNAMEDIRECT /* avoid malloc for string concat */
 
 extern int shorten_file_name;       /* in local.c bkph */
 
 #ifdef FUNNY_CORE_DUMP
-  extern void funny_core_dump();
+  extern void funny_core_dump(void);
 #endif
 
 
@@ -43,8 +43,8 @@ char * xconcat (char *buffer, char *s1, char *s2)
 
   if (buffer == s2)
   {
-    memmove (buffer + n1, buffer, n2 + 1);
-    strncpy (buffer, s1, n1);
+    memmove(buffer + n1, buffer, n2 + 1);
+    strncpy(buffer, s1, n1);
   }
   else
   {
@@ -62,9 +62,9 @@ char * xconcat3 (char *buffer, char *s1, char *s2, char *s3)
 
   if (buffer == s3)
   {
-    memmove (buffer + n1 + n2, buffer, n3 + 1);
-    strncpy (buffer, s1, n1);
-    strncpy (buffer + n1, s2, n2);
+    memmove(buffer + n1 + n2, buffer, n3 + 1);
+    strncpy(buffer, s1, n1);
+    strncpy(buffer + n1, s2, n2);
   }
   else
   {
@@ -112,14 +112,13 @@ int prepend_path_if (unsigned char *buffer, unsigned char *name, char *ext, unsi
   if (qualified(name))
     return 0;
 
-  if (strstr((char *)name, ext) == NULL)
+  if (strstr((char *) name, ext) == NULL)
     return 0;
 
   patch_in_path(buffer, name, path);
 
   return 1;
 }
-
 
 //  Following works on null-terminated strings
 void check_short_name (unsigned char *s)
@@ -162,8 +161,6 @@ void check_short_name (unsigned char *s)
 /* kpathsea/tilde.c */
 void retwiddle (unsigned char *s)
 {
-/* assumes null terminated - 97/June/5 */
-/*  while (*s != '\0' && *s != ' ') { */
   while (*s != '\0')
   {
     if (*s == (unsigned char) pseudo_tilde)
@@ -182,7 +179,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 
 #if defined (FUNNY_CORE_DUMP) && !defined (BibTeX)
   if (path_index == TEXINPUTPATH &&
-    strncmp (name_of_file + 1, "HackyInputFileNameForCoreDump.tex", 33) == 0)
+    strncmp(name_of_file + 1, "HackyInputFileNameForCoreDump.tex", 33) == 0)
     funny_core_dump();
 #endif
 
@@ -194,8 +191,8 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 
   name_of_file[name_length + 1] = '\0';
 
-/* reinsert '~' and ' ' in file names -  95/June/5 */
-/* done late to prevent problems with  null_terminate / space_terminate */  
+  /* reinsert '~' and ' ' in file names -  95/June/5 */
+  /* done late to prevent problems with  null_terminate / space_terminate */  
   if (pseudo_tilde != 0 || pseudo_space != 0)
     retwiddle(name_of_file + 1);
 
@@ -252,7 +249,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       
     if (path_index == TFMFILEPATH)
     {
-      tfm_temp = getc (*f);
+      tfm_temp = getc(*f);
     } 
 
     if (strstr((char *) name_of_file + 1, ".fmt") != NULL)
@@ -266,7 +263,7 @@ bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       gz_fmt_file = gzdopen(fileno(*f), "rb9");
 #endif
     }
-    else if (strstr((char *)name_of_file+1, ".tfm") != NULL)
+    else if (strstr((char *)name_of_file + 1, ".tfm") != NULL)
     {
       if (show_tfm_flag && log_opened)
       {
@@ -366,17 +363,17 @@ bool open_output (FILE **f, char *fopen_mode)
     retwiddle(name_of_file + 1);
   }
 
-/* 8 + 3 file names on Windows NT 95/Feb/20 */
+  /* 8 + 3 file names on Windows NT 95/Feb/20 */
   if (shorten_file_name)
   {
     check_short_name(name_of_file + 1);
   }
 
-  if (prepend_path_if (name_of_file + 1, name_of_file + 1, ".dvi", (unsigned char *) dvi_directory) ||
-      prepend_path_if (name_of_file + 1, name_of_file + 1, ".log", (unsigned char *) log_directory) ||
-      prepend_path_if (name_of_file + 1, name_of_file + 1, ".aux", (unsigned char *) aux_directory) ||
-      prepend_path_if (name_of_file + 1, name_of_file + 1, ".fmt", (unsigned char *) fmt_directory) ||
-      prepend_path_if (name_of_file + 1, name_of_file + 1, ".pdf", (unsigned char *) pdf_directory))
+  if (prepend_path_if(name_of_file + 1, name_of_file + 1, ".dvi", (unsigned char *) dvi_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".log", (unsigned char *) log_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".aux", (unsigned char *) aux_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".fmt", (unsigned char *) fmt_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".pdf", (unsigned char *) pdf_directory))
   {
     if (open_trace_flag)
     {
