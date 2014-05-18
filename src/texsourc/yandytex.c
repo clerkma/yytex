@@ -416,6 +416,7 @@ bool input_line_finish (void)
    We set `last' to `first' and return `false' if we get to eof.
    Otherwise, we return `true' and set last = first +
    length(line except trailing whitespace).  */
+/* texmfmp.c */
 
 bool input_line (FILE *f)
 {
@@ -435,13 +436,13 @@ bool input_line (FILE *f)
   while (last < buf_size) 
 #endif
   {
-    i = getc (f);
+    i = getc(f);
 
-    if (i < ' ')    /* isolate the more expensive tests */
+    if (i < ' ')
     {
       if (i == EOF || i == '\n' || (i == '\r' && return_flag))
         break;
-      else if (i == '\t' && tab_step != 0)  // deal with tab
+      else if (i == '\t' && tab_step != 0)
       {
         buffer[last++] = (ASCII_code) ' ';
 
@@ -467,15 +468,18 @@ bool input_line (FILE *f)
 #ifdef ALLOCATEBUFFER
           if (last >= current_buf_size)
           {
-            buffer = realloc_buffer(increment_buf_size);  
+            buffer = realloc_buffer(increment_buf_size);
+
             if (last >= current_buf_size)
               break;
           }
 #endif
         }
+
         continue;
       }
     }
+
     if (key_replace && (u = replacement[i]) != NULL)
     {
 #ifdef ALLOCATEBUFFER
@@ -499,6 +503,7 @@ bool input_line (FILE *f)
     else       /* normal case */
     {
       buffer[last++] = (ASCII_code) i;
+
 #ifdef ALLOCATEBUFFER
       if (last >= current_buf_size)
       {
@@ -509,17 +514,14 @@ bool input_line (FILE *f)
       }
 #endif
     }
-  }   // end of for(;;) or while loop
-
-//  can break out of above on EOF '\n' or '\r
-//  sprintf(log_line, "BREAK on %d at %ld\n", i, ftell(f));
-//  show_line(log_line, 0); // debugging only
+  }
 
   if (return_flag)    /* let return terminate line as well as newline */
   {
     if (i == '\r')      /* see whether return followed by newline */
     {
       i = getc (f);       /* in which case throw away the newline */
+
       if (i != '\n')
       {
         ungetc (i, f);
@@ -529,91 +531,46 @@ bool input_line (FILE *f)
     }
   }
 
-//  sprintf(log_line, "first %d last %d\n", first, last);
-//  show_line(log_line, 0);   // debugging only
-//  strncpy(log_line, &buffer[first], last - first + 1);
-//  log_line[last-first] = '\n';
-//  log_line[last-first+1] = '\0';
-//  show_line(log_line, 0);   // debugging only
-
-//  Turn Ctrl-Z at end of file into newline 2000 June 22
-//  if (i == EOF && trimeof != 0 && buffer[last-1] == 26) last--; /* ^Z */
-  if (i == EOF && trimeof && buffer[last-1] == 26)
+  //  Turn Ctrl-Z at end of file into newline 2000 June 22
+  if (i == EOF && trimeof && buffer[last - 1] == 26)
   {
-//    buffer[last-1] = 10;  /* ^J */
-//    buffer[last] = '\0';
     last--;
-//    sprintf(log_line, "CTRL-Z first %d last %d\n", first, last);
-//    show_line(log_line, 0); // debugging only
   }
+
   if (i == EOF && last == first)
-    return false;   /* EOF and line empty - true end of file */
+    return false;
 
 /*  Didn't get the whole line because buffer was too small?  */
 /*  This shouldn't happen anymore 99/Jan/23 */
   if (i != EOF && i != '\n' && i != '\r')
   {
     complain_line(errout);
+
     if (log_opened)
-      complain_line(log_file);  /* ? 93/Nov/20 */
-/*    This may no longer be needed ... now that we grow it */
-    if (truncate_long_lines)        /* 98/Feb/3 */
+      complain_line(log_file);
+
+    /* This may no longer be needed ... now that we grow it */
+    if (truncate_long_lines)
     {
-      while (i != EOF && i != '\n' && i != '\r')  {
+      while (i != EOF && i != '\n' && i != '\r')
+      {
         i = getc (f);     // discard rest of line
       }
+
       last--;       /* just in case */
     }
     else
       uexit(1);      /* line too long */
   }
+
   return input_line_finish();
-} /* end of input_line */
+}
 
 
 /* This string specifies what the `e' option does in response to an
    error message.  */ 
 
 static char *edit_value = "c:\\yandy\\WinEdt\\WinEdt.exe [Open('%s');SelLine(%d,7)]";
-
-void unshroud_string (char *real_var, char *var, int n)
-{
-  int c;
-  char *s=real_var;
-  char *t=var;
-  
-/*  while ((c = *t++) != '\0' && n-- > 0) *s++ = (char) (c - 1); */
-  while ((c = *t++) != '\0' && --n > 0)
-    *s++ = (char) (c - 1);
-  if (n >= 0)
-    *s = (char) c;
-  else
-    *s = '\0';       /* terminate it anyway */
-} /* 93/Nov/20 */
-
-char *get_env_shroud (char *var)
-{
-  char real_var[32];
-  char *real_value;
-
-  unshroud_string (real_var, var, sizeof(real_var));
-/*  real_value = getenv(real_var); */     /* 1994/Mar/1 */
-  real_value = grabenv(real_var);       /* 1994/Mar/1 */
-
-  if (trace_flag)
-  {
-    sprintf(log_line, "\nset %s=", real_var);
-    show_line(log_line, 0);
-    if (real_value != NULL)
-    {
-      show_line(real_value, 0);
-    }
-    show_line("\n", 0);
-  }
-/*  return get_env_shroud (real_var); */  /* serious bug ! since 93/Nov/20 */
-/*  return getenv (real_var); */    /* fixed 93/Dec/28 */
-  return real_value;          /* 94/Mar/1 */
-}   /* 93/Nov/20 */
 
 /* This procedure is due to sjc@s1-c.  TeX (or Metafont) calls it when
    the user types `e' in response to an error, invoking a text editor on
@@ -662,23 +619,15 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
     show_line(log_line, 0);
   }
 
-  s = get_env_shroud (edit_var);  
+  s = kpse_var_value(edit_var);  
 
   if (s != NULL)
     edit_value = s;
 
-/*  Construct the command string.  */
-/*  The `11' is the maximum length a 32 bit integer might be, plus one for null.  */
-/*  Plus 2 for quotes if needed 99/May/31 */
-/*  command = (string) xmalloc (strlen (edit_value) + fnlength + 11); */
   commandlen = strlen (edit_value) + fnlength + lglength + 10 + 1 + 2;
   command = (string) xmalloc (commandlen); 
-/*  make more space for log_file_name 1994/Jan/26 */
-/*  So we can construct it as we go.  */
-  s = command;
 
-/*  should we manipulate edit_value first ? Add quotes if space in exe name ? */
-/*  remove quotes around [...] string for WinEdt ? */
+  s = command;
 
   u = edit_value;
 
