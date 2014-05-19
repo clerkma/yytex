@@ -16,13 +16,6 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-/* #define USEREGISTERS tells compiler use registers for mem and eqtb bkph */
-/* this may make executable slightly smaller and slightly faster ... */
-/* HOWEVER, won't work anymore for mem with dynamic memory allocation ... */
-/* so can use registers now *only* for eqtb ... NOT for mem ... */
-/* It is OK for eqtb, because, even though we may allocate eqtb, */
-/* we won't ever reallocate it ... */
-
 void print_err (const char * s);
 void initialize (void);
 void print_ln (void);
@@ -292,39 +285,21 @@ void char_warning_(internal_font_number, eight_bits);
 #define char_warning(f, c) char_warning_((internal_font_number) (f), (eight_bits) (c))
 halfword new_character_(internal_font_number, eight_bits);
 #define new_character(f, c) new_character_((internal_font_number) (f), (eight_bits) (c))
-#ifdef ALLOCATEDVIBUF
-  void dvi_swap(void);
-  void dvi_four_(integer);
-  #define dvi_four(x) dvi_four_((integer) (x))
-  void zdvipop(integer);
-  #define dvi_pop(l) zdvipop((integer) (l))
-  void dvi_font_def_(internal_font_number);
-  #define dvi_font_def(f) dvi_font_def_((internal_font_number) (f))
-  void zmovement(scaled, eight_bits);
-  #define movement(w, o) zmovement((scaled) (w), (eight_bits) (o))
-  void special_out_(halfword);
-  #define special_out(p) special_out_((halfword) (p))
-  void hlist_out(void);
-  void vlist_out(void);
-  void ship_out_(halfword);
-  #define ship_out(p) ship_out_((halfword) (p))
-#else /* not ALLOCATEDVIBUF */
-  void dvi_swap(void);
-  void dvi_four_(integer);
-  #define dvi_four(x) dvi_four_((integer) (x))
-  void zdvipop(integer);
-  #define dvi_pop(l) zdvipop((integer) (l))
-  void dvi_font_def_(internal_font_number);
-  #define dvi_font_def(f) dvi_font_def_((internal_font_number) (f))
-  void zmovement(scaled, eight_bits);
-  #define movement(w, o) zmovement((scaled) (w), (eight_bits) (o))
-  void special_out_(halfword);
-  #define special_out(p) special_out_((halfword) (p))
-  void hlist_out(void);
-  void vlist_out(void);
-  void ship_out_(halfword);
-  #define ship_out(p) ship_out_((halfword) (p))
-#endif
+void dvi_swap(void);
+void dvi_four_(integer);
+#define dvi_four(x) dvi_four_((integer) (x))
+void zdvipop(integer);
+#define dvi_pop(l) zdvipop((integer) (l))
+void dvi_font_def_(internal_font_number);
+#define dvi_font_def(f) dvi_font_def_((internal_font_number) (f))
+void zmovement(scaled, eight_bits);
+#define movement(w, o) zmovement((scaled) (w), (eight_bits) (o))
+void special_out_(halfword);
+#define special_out(p) special_out_((halfword) (p))
+void hlist_out(void);
+void vlist_out(void);
+void ship_out_(halfword);
+#define ship_out(p) ship_out_((halfword) (p))
 void prune_movements_(integer);
 #define prune_movements(l) prune_movements_((integer) (l))
 void write_out_(halfword);
@@ -538,9 +513,7 @@ void close_files_and_terminate(void);
 void final_cleanup(void);
 void init_prim(void);
 void debug_help(void);
-int texbody(void);          /* 1993/Dec/16 bkph */
-
-/* may want to consider copying other addresses to local registers ... */
+int texbody(void);
 
 /*
  * The C compiler ignores most unnecessary casts (i.e., casts of something

@@ -30,11 +30,7 @@
 /* hence ALLOCATEZQTB, ALLOCATEDVIBUF and ALLOCATEMINOR are NOT defined */
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-#undef  TRIP
-#undef  TRAP
 #define STAT
-#undef  DEBUG
 #include "texmf.h"
 
 // #define max_halfword 65535L  /* for 32 bit memory word */
@@ -93,7 +89,7 @@
   #define buf_size           2000000L /* arbitrary limit <= max_halfword */
   EXTERN ASCII_code *        buffer;
 #else
-  #define buf_size           20000 /* 1999/Jan/7 */
+  #define buf_size           20000
   EXTERN ASCII_code          buffer[buf_size + 4]; /* padded out to ...  + 4 */
 #endif
 EXTERN integer first; 
@@ -104,55 +100,41 @@ EXTERN integer max_buf_stack;
 #define half_error_line 50
 #define max_print_line  79
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef INCREASEFIXED
   #define max_in_open 127
 #else
   #define max_in_open 15
 #endif
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-/* maximum internal font number - cannot be greated than max_quarter_word! */
+/* maximum internal font number - cannot be greated than max_quarterword! */
 #ifdef INCREASEFONTS
-  #define font_max 1023     /* 1996/Jan/17 */
+  #define font_max 1023
 #else
   #define font_max 255
 #endif
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* free the limit on font memory ! */ /* (2^32 - 1) / sizeof(memory_word) */
+/* free the limit on font memory ! */
 #ifdef ALLOCATEFONT
-/* #define font_mem_size 262140L */
   #define font_mem_size (max_halfword / sizeof(memory_word) - 1)
 #else
   #define font_mem_size 100000L
 #endif
 
-/* our real font_mem_size is 268435456 --- ridiculously large, of course */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-/* below is new dynamic allocation - bkph 93/Nov/28 */  /* enough for lplain */
+/* below is new dynamic allocation - bkph 93/Nov/28 */
 #ifdef ALLOCATEFONT
   #define initial_font_mem_size   20000
   #define increment_font_mem_size 40000
 #endif
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* max_strings max number of strings */ /* (2^32 - 1) / sizeof (integer) */
+/* max_strings max number of strings */
 #ifdef ALLOCATESTRING
-/* #define max_strings 262140L */
-// #define max_strings (max_halfword / sizeof(integer) -1)
   #define max_strings (max_halfword / sizeof(pool_pointer) - 1)
-/* #define pool_size 4032000L */
   #define pool_size (max_halfword - 1)
-/* #define stringmargin 32768L */
-  #define stringmargin 10000
 #else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* #define max_strings 15000 */
-#define max_strings 16384
-#define pool_size 124000L
+  #define max_strings 16384
+  #define pool_size 124000L
 #endif
 #define string_vacancies 100000L
 
@@ -165,8 +147,7 @@ EXTERN integer max_buf_stack;
   #define trie_size 30000     /* 3.14159 C version */
 #endif
 
-/* increase trieop to accomadate more hyphenation patterns 96/OCt/12 */
-
+/* increase trie_op to accomadate more hyphenation patterns 96/OCt/12 */
 #ifdef INCREASETRIEOP
   #define trie_op_size      3001
   #define neg_trie_op_size -3001
@@ -182,12 +163,10 @@ EXTERN integer max_buf_stack;
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* dvi_buf_size must be multiple of 8 - half is written out at a time */
 #ifdef ALLOCATEDVIBUF
-  #define default_dvi_buf_size 16384 
-/* #define default_dvi_buf_size 32768 */    /* ? */
+  #define default_dvi_buf_size 16384
   EXTERN int dvi_buf_size;
 #else
-  #define dvi_buf_size 16384      /* 3.14159 C version */
-/* #define dvi_buf_size 32768 */        /* ? */
+  #define dvi_buf_size 16384
 #endif
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -445,11 +424,11 @@ EXTERN bool no_new_control_sequence;
 EXTERN integer cs_count;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* using allocated save stack slows it down 1% to 2% */
-/* despite reallocation, we still limit it to something finite */
-/* to avoid soaking up all of machine memory in case of infinite loop */
+/* using allocated save stack slows it down 1% to 2%                       */
+/* despite reallocation, we still limit it to something finite             */
+/* to avoid soaking up all of machine memory in case of infinite loop      */
 #ifdef ALLOCATESAVESTACK
-  #define save_size           65536     /* arbitrary - ridiculously large */
+  #define save_size           65536 /* arbitrary - ridiculously large */
   #define initial_save_size   1000
   #define increment_save_size 2000
   EXTERN memory_word *save_stack;
@@ -478,14 +457,14 @@ EXTERN integer mag_set;
 /* EXTERN integer cur_cmd;  */ /* padded out */
 EXTERN int cur_cmd; /* padded out */      /* 95/Jan/7 */
 
-/* EXTERN halfword cur_chr;  */ /* itex, tex0, tex, tex3, tex5, tex6, tex7, tex8 */
-EXTERN int cur_chr;             /* 95/Jan/7 */
+/* EXTERN halfword cur_chr;  */
+EXTERN int cur_chr;
 
 EXTERN halfword cur_cs;
 EXTERN halfword cur_tok;
 
 #ifdef ALLOCATENESTSTACK
-  #define nest_size           65536         /* arbitrary - ridiculously large */
+  #define nest_size           65536 /* arbitrary - ridiculously large */
   #define initial_nest_size   100
   #define increment_nest_size 200
   EXTERN list_state_record * nest;
@@ -520,13 +499,11 @@ EXTERN integer max_param_stack;
 #endif
 EXTERN integer input_ptr;
 EXTERN integer max_in_stack;
-
 EXTERN integer high_in_open;      /* 1997/Jan/17 */
 EXTERN in_state_record cur_input;
 
-/* EXTERN integer in_open;  */      /* used in itex, tex2, texmf */
-EXTERN int in_open;         /* 95/Jan/7 */
-
+/* EXTERN integer in_open;  */
+EXTERN int in_open;
 EXTERN integer open_parens;
 EXTERN integer max_open_parens;
 EXTERN alpha_file input_file[max_in_open + 1];
@@ -597,8 +574,8 @@ EXTERN bool name_in_progress;
 EXTERN bool log_opened;
 EXTERN bool quoted_file_name;
 EXTERN str_number job_name;
-EXTERN str_number output_file_name;   // DVI file
-EXTERN str_number texmf_log_name;   // LOG file
+EXTERN str_number output_file_name;
+EXTERN str_number texmf_log_name;
 EXTERN byte_file dvi_file;
 EXTERN byte_file tfm_file;
 EXTERN byte_file pdf_file;
@@ -606,33 +583,25 @@ EXTERN char * dvi_file_name;
 EXTERN char * pdf_file_name;
 EXTERN char * log_file_name;
 
-/*******************************************************************/
-
 /* SHORTFONTINFO halves the memory word used to store font info */
 /* if it is not defined we use ordinary TeX memory words */
 
 #ifdef SHORTFONTINFO
-/* keep definition of fmemoryword in texmfmem.h */
-/* keep definition of ffour_quarters in texfmem.h */
-/* keep definition of fquarterword in texfmem.h */
 #else
-/* go back to original definition as TeX memory word */
-#undef fmemoryword
-#define fmemoryword memory_word
-/* go back to original definition as four_quarters of a TeX word */
-#undef ffour_quarters
-#define ffour_quarters four_quarters
-/* go back to original definition as quaterword */
-#undef fquarterword
-#define fquarterword quarterword
+  /* go back to original definition as TeX memory word */
+  #undef fmemoryword
+  #define fmemoryword memory_word
+  /* go back to original definition as four_quarters of a TeX word */
+  #undef ffour_quarters
+  #define ffour_quarters four_quarters
+  /* go back to original definition as quaterword */
+  #undef fquarterword
+  #define fquarterword quarterword
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef ALLOCATEFONT
   EXTERN fmemoryword * font_info;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #else
-/* EXTERN memory_word font_info[font_mem_size + 1];  */
   EXTERN fmemoryword font_info[font_mem_size + 1];
 #endif
 
@@ -641,7 +610,6 @@ EXTERN internal_font_number font_ptr;
 EXTERN internal_font_number frozen_font_ptr;
 /* There are about 24 integer size items per font, or about 100 bytes */
 EXTERN ffour_quarters font_check[font_max + 1];
-
 EXTERN scaled font_size[font_max + 1];
 EXTERN scaled font_dsize[font_max + 1];
 EXTERN font_index font_params[font_max + 1];
@@ -692,7 +660,6 @@ EXTERN halfword g;
 EXTERN integer lq, lr;
 
 EXTERN eight_bits dvi_buf[dvi_buf_size + 4];
-
 EXTERN dvi_index half_buf;
 EXTERN dvi_index dvi_limit;
 EXTERN dvi_index dvi_ptr;
@@ -987,18 +954,14 @@ EXTERN halfword write_loc;
 EXTERN pool_pointer edit_name_start;
 /* EXTERN integer edit_name_length, edit_line, tfm_temp;  */
 EXTERN integer edit_name_length, edit_line;
-/* EXTERN integer tfm_temp; */    /* only used in tex3.c */
-EXTERN int tfm_temp;        /* only used in tex3.c 95/Jan/7 */
+EXTERN int tfm_temp;
 
 /* new stuff defined in local.c - bkph */
-
 EXTERN bool is_initex;
 EXTERN bool verbose_flag;
 EXTERN bool trace_flag;
 EXTERN bool debug_flag;
-EXTERN bool heap_flag;
 EXTERN bool open_trace_flag;
-EXTERN bool cache_file_flag;
 EXTERN bool knuth_flag;
 EXTERN bool no_interrupts;
 EXTERN bool c_style_flag;

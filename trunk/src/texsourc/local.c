@@ -2844,7 +2844,6 @@ int init_commands (int ac, char **av)
   open_trace_flag   = false;
   trace_flag        = false;
   verbose_flag      = false;
-  heap_flag         = false;
   restrict_to_ascii = false;
   show_in_hex       = false; /* default is not to show as hex code ^^ 00/Jun/18 */
   show_in_dos       = false; /* default is not to translate to DOS 850 */ 
@@ -2874,7 +2873,6 @@ int init_commands (int ac, char **av)
   allow_quoted_names    = true;  /* allow quoted names with spaces 98/Mar/15 */
   show_cs_names         = false; /* don't show csnames on start 98/Mar/31 */
   knuth_flag            = false; /* allow extensions to TeX */
-  cache_file_flag       = true;  /* default is to cache full file names 96/Nov/16 */
   full_file_name_flag   = true;  /* new default 2000 June 18 */
   save_strings_flag     = true;
   errout                = stdout; /* as opposed to stderr say --- used ??? */
