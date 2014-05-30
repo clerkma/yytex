@@ -4020,7 +4020,7 @@ lab32:
   w_close(fmt_file);
 #endif
 }
-#endif /* INITEX */
+#endif
 
 #ifdef INITEX
 /* sec 01336 */

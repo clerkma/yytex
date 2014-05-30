@@ -2515,12 +2515,6 @@ int analyze_flag (int c, char *optarg)
     case 'Z':
       show_tfm_flag = true; /* show TFM in log file 94/Jun/21 */
       break;
-    case 'c':
-      current_tfm = false; /* not look current dir for TFM */
-      break;
-    case 'C':
-      current_flag = false; /* not look current dir for files */
-      break;
     case 'M':
       show_missing = false; /* do not show missing 94/June/10 */
       break;
@@ -2857,8 +2851,6 @@ int init_commands (int ac, char **av)
   civilize_flag     = true;
   show_numeric      = true;
   show_missing      = true;
-  current_flag      = true;
-  current_tfm       = true;  /* search for TFMs in current dir as well */
   c_style_flag      = false; /* use c-style error output */
   show_fmt_flag     = true;  /* show format file in log */
   show_tfm_flag     = false; /* don't show metric file in log */
@@ -2879,10 +2871,12 @@ int init_commands (int ac, char **av)
   abort_flag            = 0;      // not yet hooked up ???
   err_level             = 0;      // not yet hooked up ???
   new_hyphen_prime      = 0;
+
 #ifdef VARIABLETRIESIZE
 /*  trie_size = default_trie_size; */
   trie_size = 0;
 #endif
+
   mem_extra_high = 0;
   mem_extra_low  = 0;
   mem_initex     = 0;
@@ -2908,11 +2902,6 @@ int init_commands (int ac, char **av)
     show_line(log_line, 0);
   }
 */
-/*  if we aren't including current directory in any directory lists */
-/*  then makes no sense to avoid them separately for TFM files ... */
-/*  (that is, the ./ is already omitted from the dir list in that case */
-  if (!current_flag && !current_tfm)
-    current_tfm = true;
 
   return 0;
 }
