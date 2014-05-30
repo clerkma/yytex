@@ -24,12 +24,6 @@
 #define INCREASETRIEOP
 #define COMPACTFORMAT
 
-
-/* With old PharLap linker it was important to avoid large fixed allocation */
-/* Now may be better to use fixed arrays rather than allocate them */
-/* hence ALLOCATEZQTB, ALLOCATEDVIBUF and ALLOCATEMINOR are NOT defined */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #define STAT
 #include "texmf.h"
 
@@ -54,7 +48,7 @@
 
 /* mem_bot smallest index in mem array dumped by iniTeX mem_top >= mem_min */
 #define mem_bot 0
-/* mem_top largest index in mem array dumped by iniTeX mem_top <= mem_max */
+
 #ifdef ALLOCATEMAIN
   EXTERN integer mem_top;
   #define max_mem_size (max_halfword / sizeof(memory_word) - 1)
@@ -127,8 +121,6 @@ EXTERN integer max_buf_stack;
   #define increment_font_mem_size 40000
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* max_strings max number of strings */
 #ifdef ALLOCATESTRING
   #define max_strings (max_halfword / sizeof(pool_pointer) - 1)
   #define pool_size (max_halfword - 1)
@@ -136,15 +128,14 @@ EXTERN integer max_buf_stack;
   #define max_strings 16384
   #define pool_size 124000L
 #endif
+
 #define string_vacancies 100000L
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* #if defined (ALLOCATEINITRIE) && defined (ALLOCATEHYPHEN) */
 #ifdef VARIABLETRIESIZE
   EXTERN integer trie_size;
   #define default_trie_size 60000
 #else
-  #define trie_size 30000     /* 3.14159 C version */
+  #define trie_size 30000
 #endif
 
 /* increase trie_op to accomadate more hyphenation patterns 96/OCt/12 */
@@ -160,7 +151,6 @@ EXTERN integer max_buf_stack;
   #define max_trie_op       500
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* dvi_buf_size must be multiple of 8 - half is written out at a time */
 #ifdef ALLOCATEDVIBUF
   #define default_dvi_buf_size 16384
@@ -169,25 +159,15 @@ EXTERN integer max_buf_stack;
   #define dvi_buf_size 16384
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* WARNING: increasing hash table for cs names is not trivial */
 /* size of hash table for control sequence name  < (mem_max - mem_min) / 10 */
-/* #define hash_size 9500 */
-/* #define hash_size 25000 */   /* 96/Jan/10 */
-#define hash_size 32768       /* 96/Jan/17 */
+/* #define hash_size 9500  */
+/* #define hash_size 25000 */
+#define hash_size 32768
 /* trick to try and get around eqtb_extra problem */
-/* 1024 fonts = font_max + 2 */
-/* #define hash_extra -256 */
 #define hash_extra (255 - font_max)
 /* hash prime about 85% of hash_size (+ hash_extra) */
-/* #define hashprime 7919  */
-/* #define hash_prime 21247 */    /* 96/Jan/10 */
-#define hash_prime 27197      /* 96/Jan/17 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+#define hash_prime 27197
 
-/* CONSTRAINT: reconcile increase font use by stealing from hash table ... */
-
-/* Probably require eqtb_extra to be zero, so hash_extra = 255 - font_max */
 #if (hash_extra != 255 - font_max)
   #error ERROR: hash_extra not equal to (255 - font_max)
 #endif
@@ -234,7 +214,7 @@ typedef integer dvi_index;
 typedef integer trie_op_code;
 /* sec 0925 */
 typedef integer trie_pointer; 
-/* typedef short hyph_pointer; */   /* increased 1996/Oct/20 ??? */
+/* typedef short hyph_pointer; */
 typedef integer hyph_pointer;
 
 EXTERN integer bad;
@@ -243,7 +223,6 @@ EXTERN ASCII_code xchr[256];
 EXTERN unsigned char name_of_file[PATHMAX + 4];
 EXTERN integer name_length;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef ALLOCATESTRING
   #define initial_pool_size     40000
   #define increment_pool_size   80000
@@ -255,7 +234,6 @@ EXTERN integer name_length;
   EXTERN packed_ASCII_code      str_pool[pool_size + 1]; 
   EXTERN pool_pointer           str_start[max_strings + 1]; 
 #endif
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 EXTERN pool_pointer pool_ptr;
 EXTERN str_number   str_ptr;
@@ -267,46 +245,32 @@ EXTERN alpha_file pool_file;
 #endif
 
 EXTERN alpha_file log_file; 
-/* EXTERN char selector; */
-/* EXTERN integer selector; */ /* padded out */
-EXTERN int selector;      /* padded out */ /* 95/Jan/7 */
-/* EXTERN char dig[23]; */
-EXTERN char dig[23 + 1];  /* padded out */
+EXTERN int selector;
+EXTERN char dig[23 + 1];
 EXTERN integer tally;
 EXTERN integer term_offset;
 EXTERN integer file_offset;
-EXTERN ASCII_code trick_buf[error_line + 1]; /* already padded 79 + 1 */
+EXTERN ASCII_code trick_buf[error_line + 1];
 EXTERN integer trick_count;
 EXTERN integer first_count;
-/* EXTERN char interaction;  */
-/* EXTERN integer interaction; */ /* padded out */
-EXTERN int interaction; /* padded out */      /* 95/Jan/7 */
+EXTERN int interaction;
 EXTERN bool deletions_allowed;
 EXTERN bool set_box_allowed;
-/* EXTERN char history; */
-/* EXTERN integer history; */ /* padded out */
-EXTERN int history; /* padded out */        /* 95/Jan/7 */
-/* EXTERN schar error_count;  */
-/* EXTERN integer error_count; */ /* padded out */
-EXTERN int error_count; /* padded out */      /* 95/Jan/7 */
+EXTERN int history;
+EXTERN int error_count;
 EXTERN char * help_line[6];
-/* EXTERN char help_ptr; */
-/* EXTERN integer help_ptr; */ /* padded out */
-EXTERN int help_ptr; /* padded out */       /* 95/Jan/7 */
+EXTERN int help_ptr;
 EXTERN bool use_err_help;
-/* EXTERN integer interrupt;  */
 EXTERN volatile integer interrupt;  /* bkph - do avoid compiler optimization */
 EXTERN bool OK_to_interrupt;
 EXTERN bool arith_error;
 EXTERN scaled tex_remainder;
 EXTERN halfword temp_ptr;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef ALLOCATEMAIN
   EXTERN memory_word * main_memory;   /* remembered so can be free() later */
   EXTERN memory_word * mem;
 #else
-  /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
   EXTERN memory_word 
   /* #define zmem (zzzaa - (int)(mem_min)) */
   /*  zzzaa[mem_max - mem_min + 1]; */
@@ -324,13 +288,11 @@ EXTERN halfword rover;
 
 /* NOTE: the following really also need to be dynamically allocated */
 #ifdef DEBUG
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef ALLOCATEMAIN
-  EXTERN char * zzzab;
-#else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* EXTERN bool  */    /* save (4 - 1) * mem_max - mem_min */
-EXTERN char
+  #ifdef ALLOCATEMAIN
+    EXTERN char * zzzab;
+  #else
+
+  EXTERN char
 /* #define freearr (zzzab - (int)(mem_min)) */
 /*  zzzab[mem_max - mem_min + 1];  */
 #define freearr (zzzab - (int)(mem_bot))
@@ -355,15 +317,9 @@ EXTERN bool panicking;
 EXTERN integer font_in_short_display;
 EXTERN integer depth_threshold;
 EXTERN integer breadth_max;
-/* EXTERN list_state_record nest[nest_size + 1];  */
-/* EXTERN short shown_mode; */
-/* EXTERN integer shown_mode; */ /* padded out */
-EXTERN int shown_mode; /* padded out */   /* 95/Jan/7 */
-/* EXTERN char old_setting; */
-/* EXTERN integer old_setting; */ /* padded out */
-EXTERN int old_setting; /* padded out */    /* 95/Jan/7 */
+EXTERN int shown_mode;
+EXTERN int old_setting;
 
-/* eqtn_extra is no longer used --- it should be 0 96/Jan/10 */
 #ifdef INCREASEFONTS
   #define eqtb_extra (font_max - 255 + hash_extra)
 #else
@@ -375,16 +331,14 @@ EXTERN int old_setting; /* padded out */    /* 95/Jan/7 */
   #error ERROR: eqtb_extra is not zero (need hash_extra equal 255 - font_max)
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef ALLOCATEZEQTB
-EXTERN memory_word * zeqtb;
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+  EXTERN memory_word * zeqtb;
 #else
-#ifdef INCREASEFONTS
-EXTERN memory_word eqtb[(hash_size + 4007) + eqtb_extra];
-#else
-EXTERN memory_word zeqtb[(hash_size + 4007)];
-#endif
+  #ifdef INCREASEFONTS
+    EXTERN memory_word eqtb[(hash_size + 4007) + eqtb_extra];
+  #else
+    EXTERN memory_word zeqtb[(hash_size + 4007)];
+  #endif
 #endif
 
 #ifdef INCREASEFONTS
@@ -392,31 +346,32 @@ EXTERN memory_word zeqtb[(hash_size + 4007)];
 #else
   #define xeq_level (zzzad - (int_base))
 #endif
-/* zzzad[844]; */
-EXTERN quarterword zzzad[844]; /* ??? attempt to fix 99/Jan/5 */
+
+EXTERN quarterword zzzad[844];
 /* region 5 & 6 int_base to eqtb_size: 13507 - 12663 */
 
 #ifdef ALLOCATEHASH
-#ifdef SHORTHASH
-EXTERN htwo_halves *zzzae;
-#else
-EXTERN two_halves *zzzae;
-#endif
-#define hash (zzzae - 514)
-#else /* not allocating hash table */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-#ifdef SHORTHASH
-EXTERN htwo_halves 
-#else
-EXTERN two_halves 
-#endif
-#define hash (zzzae - 514)
+  #ifdef SHORTHASH
+    EXTERN htwo_halves *zzzae;
+  #else
+    EXTERN two_halves *zzzae;
+  #endif
 
-#ifdef INCREASEFONTS
-  zzzae[hash_size + 267 + eqtb_extra];
+  #define hash (zzzae - 514)
 #else
-  zzzae[hash_size + 267];
-#endif
+  #ifdef SHORTHASH
+    EXTERN htwo_halves 
+  #else
+    EXTERN two_halves 
+  #endif
+
+  #define hash (zzzae - 514)
+
+  #ifdef INCREASEFONTS
+    zzzae[hash_size + 267 + eqtb_extra];
+  #else
+    zzzae[hash_size + 267];
+  #endif
 #endif
 
 EXTERN halfword hash_used;
@@ -428,68 +383,55 @@ EXTERN integer cs_count;
 /* despite reallocation, we still limit it to something finite             */
 /* to avoid soaking up all of machine memory in case of infinite loop      */
 #ifdef ALLOCATESAVESTACK
-  #define save_size           65536 /* arbitrary - ridiculously large */
+  #define save_size           65536
   #define initial_save_size   1000
   #define increment_save_size 2000
-  EXTERN memory_word *save_stack;
+  EXTERN memory_word * save_stack;
 #else
-  #define save_size 8000        /* 1999/Jan/6 enough for even CRC */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+  #define save_size 8000
   EXTERN memory_word save_stack[save_size + 1];
 #endif
 
 EXTERN integer save_ptr;
 EXTERN integer max_save_stack;
-
-/* The following could really be char instead of quarterword ... */
-/* EXTERN quarterword cur_level;  */
-/* EXTERN integer cur_level; */ /* padded out */
-EXTERN int cur_level; /* padded out */    /* 95/Jan/7 */
-
-/* EXTERN group_code cur_group;  */
-/* EXTERN integer cur_group;  */ /* padded out */
-EXTERN int cur_group; /* padded out */      /* 95/Jan/7 */
-
+EXTERN int cur_level;
+EXTERN int cur_group;
 EXTERN integer cur_boundary;
 EXTERN integer mag_set;
-
-/* EXTERN eight_bits cur_cmd;  */
-/* EXTERN integer cur_cmd;  */ /* padded out */
-EXTERN int cur_cmd; /* padded out */      /* 95/Jan/7 */
-
-/* EXTERN halfword cur_chr;  */
+EXTERN int cur_cmd;
 EXTERN int cur_chr;
-
 EXTERN halfword cur_cs;
 EXTERN halfword cur_tok;
 
 #ifdef ALLOCATENESTSTACK
-  #define nest_size           65536 /* arbitrary - ridiculously large */
+  #define nest_size           65536
   #define initial_nest_size   100
   #define increment_nest_size 200
   EXTERN list_state_record * nest;
 #else
-  #define nest_size 200       /* 1999/Jan/7 */
+  #define nest_size 200
   EXTERN list_state_record nest[nest_size + 1];
 #endif
+
 EXTERN integer nest_ptr;
 EXTERN integer max_nest_stack;
 EXTERN list_state_record cur_list;
 
 #ifdef ALLOCATEPARAMSTACK
-  #define param_size 65536        /* arbitrary - ridiculously large */
-  #define initial_param_size 100
+  #define param_size           65536
+  #define initial_param_size   100
   #define increment_param_size 200
   EXTERN halfword * param_stack;
 #else
-  #define param_size 500        /* 1997/Jan/17 */
+  #define param_size 500
 EXTERN halfword param_stack[param_size + 1];
 #endif
+
 EXTERN integer param_ptr;
 EXTERN integer max_param_stack;
 
 #ifdef ALLOCATEINPUTSTACK
-  #define stack_size           65536          /* arbitrary - ridiculously large */
+  #define stack_size           65536
   #define initial_stack_size   100
   #define increment_stack_size 200
   EXTERN in_state_record * input_stack;
@@ -497,70 +439,37 @@ EXTERN integer max_param_stack;
   #define stack_size 800
   EXTERN in_state_record input_stack[stack_size + 1];
 #endif
+
 EXTERN integer input_ptr;
 EXTERN integer max_in_stack;
-EXTERN integer high_in_open;      /* 1997/Jan/17 */
+EXTERN integer high_in_open;
 EXTERN in_state_record cur_input;
-
-/* EXTERN integer in_open;  */
 EXTERN int in_open;
 EXTERN integer open_parens;
 EXTERN integer max_open_parens;
 EXTERN alpha_file input_file[max_in_open + 1];
 EXTERN integer line;
 EXTERN integer line_stack[max_in_open + 1];
-
-/* EXTERN char scanner_status;  */
-/* EXTERN integer scanner_status;  */ /* padded out */
-EXTERN int scanner_status; /* padded out */ /* 95/Jan/7 */
-
+EXTERN int scanner_status;
 EXTERN halfword warning_index;
 EXTERN halfword def_ref;
-
 EXTERN integer align_state;
 EXTERN integer base_ptr;
 EXTERN halfword par_loc;
 EXTERN halfword par_token;
 EXTERN bool force_eof;
-/* EXTERN halfword cur_mark[5];  */
 EXTERN halfword cur_mark[6];
-
-/* EXTERN char long_state; */
-/* EXTERN integer long_state; */ /* padded out */
-EXTERN int long_state; /* padded out */ /* 95/Jan/7 */
-
-/* EXTERN halfword pstack[9];  */
+EXTERN int long_state;
 EXTERN halfword pstack[10];
-
-/* EXTERN integer cur_val; */
-EXTERN int cur_val;           /* 95/Jan/7 */
-
-/* EXTERN char cur_val_level;  */
-/* EXTERN integer cur_val_level; */ /* padded out */
-EXTERN int cur_val_level; /* padded out */ /* 95/Jan/7 */
-
-/* EXTERN small_number radix;  */
-/* EXTERN integer radix;  */ /* padded out */
-EXTERN int radix; /* padded out */    /* 95/Jan/7 */
-
-/* EXTERN glue_ord cur_order;  */
-/* EXTERN integer cur_order;  */ /* padded out */
-EXTERN int cur_order; /* padded out */    /* 95/Jan/7 */
-
+EXTERN int cur_val;
+EXTERN int cur_val_level;
+EXTERN int radix;
+EXTERN int cur_order;
 EXTERN alpha_file read_file[16];  /* hard wired limit in TeX */
-/* EXTERN char read_open[17];  */
-EXTERN char read_open[20]; /* padded out */
-
+EXTERN char read_open[20];
 EXTERN halfword cond_ptr;
-
-/* EXTERN char if_limit; */
-/* EXTERN integer if_limit; */ /* padded out */
-EXTERN int if_limit; /* padded out */   /* 95/Jan/7 */
-
-/* EXTERN small_number cur_if; */
-/* EXTERN integer cur_if; */ /* padded out */
-EXTERN int cur_if; /* padded out */   /* 95/Jan/7 */
-
+EXTERN int if_limit;
+EXTERN int cur_if;
 EXTERN integer if_line;
 EXTERN integer skip_line;
 EXTERN str_number cur_name;
@@ -583,8 +492,6 @@ EXTERN char * dvi_file_name;
 EXTERN char * pdf_file_name;
 EXTERN char * log_file_name;
 
-/* SHORTFONTINFO halves the memory word used to store font info */
-/* if it is not defined we use ordinary TeX memory words */
 
 #ifdef SHORTFONTINFO
 #else
@@ -608,7 +515,6 @@ EXTERN char * log_file_name;
 EXTERN font_index fmem_ptr;
 EXTERN internal_font_number font_ptr;
 EXTERN internal_font_number frozen_font_ptr;
-/* There are about 24 integer size items per font, or about 100 bytes */
 EXTERN ffour_quarters font_check[font_max + 1];
 EXTERN scaled font_size[font_max + 1];
 EXTERN scaled font_dsize[font_max + 1];
@@ -618,12 +524,7 @@ EXTERN str_number font_area[font_max + 1];
 EXTERN eight_bits font_bc[font_max + 1];
 EXTERN eight_bits font_ec[font_max + 1];
 EXTERN halfword font_glue[font_max + 1];
-/* use char instead of bool to save space, but is it worth slow down ? */
 EXTERN bool font_used[font_max + 1];
-
-/* might want to make some of following only one character wide also ? */
-/* except some use -1 as special case value */
-/* well, at least make them short instead of integer */
 EXTERN integer hyphen_char[font_max + 1];
 EXTERN integer skew_char[font_max + 1];
 EXTERN font_index bchar_label[font_max + 1];
@@ -640,9 +541,7 @@ EXTERN integer lig_kern_base[font_max + 1];
 EXTERN integer kern_base[font_max + 1];
 EXTERN integer exten_base[font_max + 1];
 EXTERN integer param_base[font_max + 1];
-
 EXTERN ffour_quarters null_character;
-
 EXTERN integer total_pages;
 EXTERN scaled max_v;
 EXTERN scaled max_h;
@@ -650,15 +549,10 @@ EXTERN integer max_push;
 EXTERN integer last_bop;
 EXTERN integer dead_cycles;
 EXTERN bool doing_leaders;
-
-/* EXTERN quarterword c, f;  */
-/* EXTERN integer c, f */;
 EXTERN int c, f;
-
 EXTERN scaled rule_ht, rule_dp, rule_wd;
 EXTERN halfword g;
 EXTERN integer lq, lr;
-
 EXTERN eight_bits dvi_buf[dvi_buf_size + 4];
 EXTERN dvi_index half_buf;
 EXTERN dvi_index dvi_limit;
@@ -675,30 +569,19 @@ EXTERN scaled cur_h, cur_v;
 EXTERN internal_font_number dvi_f;
 EXTERN internal_font_number pdf_f;
 EXTERN integer cur_s; /* sec 616 */
-EXTERN scaled total_stretch[4], total_shrink[4]; /* padded already */
+EXTERN scaled total_stretch[4], total_shrink[4];
 EXTERN integer last_badness;
 EXTERN halfword adjust_tail;
 EXTERN integer pack_begin_line;
 EXTERN two_halves empty_field;
 EXTERN four_quarters null_delimiter;
 EXTERN halfword cur_mlist;
-
-/* EXTERN small_number cur_style; */
-/* EXTERN integer cur_style; */  /* padded out */ /* tex5.c, tex7.c */
-EXTERN int cur_style;  /* padded out */     /* 95/Jan/7 */
-
-/* EXTERN small_number cur_size; */
-/* EXTERN integer cur_size;  */ /* padded out */
-EXTERN int cur_size;  /* padded out */        /* 95/Jan/7 */
-
+EXTERN int cur_style;
+EXTERN int cur_size;
 EXTERN scaled cur_mu;
 EXTERN bool mlist_penalties;
 EXTERN internal_font_number cur_f;
-
-/* EXTERN quarterword cur_c; */
-/* EXTERN integer cur_c; */  /* padded out */
-EXTERN int cur_c;  /* padded out */     /* 95/Jan/7 */
-
+EXTERN int cur_c;
 EXTERN ffour_quarters cur_i;
 EXTERN integer magic_offset;
 EXTERN halfword cur_align;
@@ -735,66 +618,39 @@ EXTERN integer fewest_demerits;
 EXTERN halfword best_line;
 EXTERN integer actual_looseness;
 EXTERN integer line_diff;
-/* EXTERN short hc[64+2]; */  /* padded OK 66 * 2 = 132 which is divisible by 4 */
-EXTERN int hc[66];  /* padded OK 66 * 2 = 132 which is divisible by 4 */
-
-/* EXTERN small_number hn; */
-/* EXTERN integer hn; */  /* padded out */
-EXTERN int hn;  /* padded out */      /* 95/Jan/7 */
-
+EXTERN int hc[66];
+EXTERN int hn;
 EXTERN halfword ha, hb;
-
-/* EXTERN internal_font_number hf;  */
-EXTERN int hf;              /* 95/Jan/7 */
-
-/* EXTERN short hu[64+2]; */    /* padded OK */
-EXTERN int hu[66];    /* padded OK */ 
-
-/* EXTERN integer hyf_char;  */
-EXTERN int hyf_char;            /* 95/Jan/7 */
-
-/* init_cur_lang new in 3.14159 */
-/* EXTERN ASCII_code cur_lang, init_cur_lang; */
-/* EXTERN integer cur_lang, init_cur_lang; */ /* padded out */
-EXTERN int cur_lang, init_cur_lang; /* padded out */    /* 95/Jan/7 */
-
+EXTERN int hf;
+EXTERN int hu[66];
+EXTERN int hyf_char;
+EXTERN int cur_lang, init_cur_lang;
 EXTERN integer lhyf, rhyf;
-/* EXTERN init_l_hyf, init_r_hyf; */ /* new in 3.14159 */
-EXTERN integer init_l_hyf, init_r_hyf;  /* new in 3.14159 */
-
+EXTERN integer init_l_hyf, init_r_hyf;
 EXTERN halfword hyfbchar;
-/* EXTERN char hyf[65];  */
-EXTERN char hyf[68]; /* padded out */
+EXTERN char hyf[68];
 EXTERN halfword init_list;
 EXTERN bool init_lig;
 EXTERN bool init_lft;
-
-/* EXTERN small_number hyphen_passed; */
-/* EXTERN integer hyphen_passed; */  /* padded out */
-EXTERN int hyphen_passed;  /* padded out */     /* 95/Jan/7 */
-
-/* EXTERN halfword cur_l, cur_r; */   /* make int's ? 95/Jan/7 */
-EXTERN int cur_l, cur_r;    /* make int's ? 95/Jan/7 */
-
+EXTERN int hyphen_passed;
+EXTERN int cur_l, cur_r;
 EXTERN halfword cur_q;
 EXTERN halfword lig_stack;
 EXTERN bool ligature_present;
 EXTERN bool lft_hit, rt_hit;
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* could perhaps use packed_ASCII_code for trie_trc ? */
 #ifdef ALLOCATETRIES
   EXTERN halfword * trie_trl;
   EXTERN halfword * trie_tro;
   EXTERN quarterword * trie_trc;
 #else
-  /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
   EXTERN halfword trie_trl[trie_size + 1];
   EXTERN halfword trie_tro[trie_size + 1];
   EXTERN quarterword trie_trc[trie_size + 1];
 #endif
-EXTERN small_number hyf_distance[trie_op_size + 1]; /* already padded 751 + 1 */
-EXTERN small_number hyf_num[trie_op_size + 1];    /* already padded 751 + 1 */
+
+EXTERN small_number hyf_distance[trie_op_size + 1];
+EXTERN small_number hyf_num[trie_op_size + 1];
 EXTERN trie_op_code hyf_next[trie_op_size + 1];
 EXTERN integer op_start[256];
 
@@ -804,31 +660,25 @@ EXTERN integer op_start[256];
   #define default_hyphen_prime 1009
   EXTERN str_number * hyph_word;
   EXTERN halfword * hyph_list;
-  /* EXTERN hyphen_prime; */
   EXTERN integer hyphen_prime;
 #else
   #define hyphen_prime 607
-  /* EXTERN str_number hyph_word[608];  */
   EXTERN str_number hyph_word[hyphen_prime + 1];
-  /* EXTERN halfword hyph_list[608];  */
   EXTERN halfword hyph_list[hyphen_prime + 1];
 #endif
 
-/* EXTERN hyph_pointer hyph_count;  */
-/* EXTERN integer hyph_count; */  /* padded out */
-EXTERN int hyph_count;  /* padded out */    /* 95/Jan/7 */
+EXTERN int hyph_count;
 
 #ifdef INITEX
-EXTERN integer trie_op_hash_C[trie_op_size - neg_trie_op_size + 1];
-#define trie_op_hash (trie_op_hash_C - (int)(neg_trie_op_size)) 
-EXTERN trie_op_code trie_used[256];
-EXTERN ASCII_code trie_op_lang[trie_op_size + 1];   /* already padded 751 + 1 */
-EXTERN trie_op_code trie_op_val[trie_op_size + 1];
-EXTERN integer trie_op_ptr;
-#endif /* INITEX */
+  EXTERN integer trie_op_hash_C[trie_op_size - neg_trie_op_size + 1];
+  #define trie_op_hash (trie_op_hash_C - (int)(neg_trie_op_size)) 
+  EXTERN trie_op_code trie_used[256];
+  EXTERN ASCII_code trie_op_lang[trie_op_size + 1];
+  EXTERN trie_op_code trie_op_val[trie_op_size + 1];
+  EXTERN integer trie_op_ptr;
+#endif
 
 EXTERN trie_op_code max_op_used;
-EXTERN bool smallop;
 
 #ifdef INITEX
   #ifdef ALLOCATEINI
@@ -849,7 +699,6 @@ EXTERN bool smallop;
 
 #ifdef INITEX
   #ifdef ALLOCATEINI
-    /* EXTERN bool *trie_taken; */ /* save (4 - 1) * trie_size = 90,000 byte */
     EXTERN char *trie_taken;
   #else
     EXTERN bool trie_taken[trie_size + 1];
@@ -859,14 +708,10 @@ EXTERN bool smallop;
   EXTERN trie_pointer trie_max;
   EXTERN bool trie_not_ready;
 #endif /* INITEX */
+
 EXTERN scaled best_height_plus_depth;
 EXTERN halfword page_tail;
-
-/* EXTERN char page_contents; */
-/* EXTERN integer page_contents; */ /* padded out */
-EXTERN int page_contents; /* padded out */      /* 95/Jan/7 */
-
-/* ********************************************************************* */
+EXTERN int page_contents;
 
 /* do *some* sanity checking here --- rather than in TeX later 96/Jan/18 */
 /* (cannot catch everything here, since some is now dynamic) */
@@ -915,8 +760,6 @@ EXTERN int page_contents; /* padded out */      /* 95/Jan/7 */
   #error (max_quarterword - min_quarterword) < 255 BAD 19
 #endif
 
-/* ********************************************************************* */
-
 EXTERN scaled page_max_depth;
 EXTERN halfword best_page_break;
 EXTERN integer least_page_cost;
@@ -945,14 +788,14 @@ EXTERN bool long_help_seen;
 EXTERN str_number format_ident;
 EXTERN word_file fmt_file;
 EXTERN gzFile gz_fmt_file;
+/* sec 1331 */
 EXTERN integer ready_already;
-
-EXTERN alpha_file write_file[16]; /* hard wired limit in TeX */
+/* sec 1342 */
+EXTERN alpha_file write_file[16];
 EXTERN bool write_open[18];
-
+/* sec 1345 */
 EXTERN halfword write_loc;
 EXTERN pool_pointer edit_name_start;
-/* EXTERN integer edit_name_length, edit_line, tfm_temp;  */
 EXTERN integer edit_name_length, edit_line;
 EXTERN int tfm_temp;
 
@@ -973,8 +816,6 @@ EXTERN bool allow_patterns;
 EXTERN bool show_fonts_used;
 EXTERN bool reset_exceptions;
 EXTERN bool show_current;
-EXTERN bool current_flag;
-EXTERN bool current_tfm;
 EXTERN bool return_flag;
 EXTERN bool want_version;
 EXTERN bool civilize_flag;
@@ -992,9 +833,9 @@ EXTERN int show_in_hex;
 EXTERN int show_in_dos;
 EXTERN int show_fmt_flag;
 EXTERN int show_tfm_flag;
-EXTERN bool show_texinput_flag;  /* 1998/Jan/28 */
-EXTERN bool truncate_long_lines; /* 1998/Feb/2 */
-EXTERN bool show_cs_names;       /* 1998/Mar/31 */
+EXTERN bool show_texinput_flag;
+EXTERN bool truncate_long_lines;
+EXTERN bool show_cs_names;
 EXTERN int tab_step;
 EXTERN int pseudo_tilde;
 EXTERN int pseudo_space;
