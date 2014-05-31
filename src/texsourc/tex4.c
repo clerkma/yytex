@@ -1344,7 +1344,7 @@ halfword hpack_(halfword p, scaled w, small_number m)
 /*  glue_ord o;  */
   int o;              /* 95/Jan/7 */
   internal_font_number f;
-  ffour_quarters i;
+  four_quarters i;
   eight_bits hd;
 
   last_badness = 0;
@@ -1985,7 +1985,7 @@ halfword overbar_(halfword b, scaled k, scaled t)
 /* sec 0709 */
 halfword char_box_(internal_font_number f, quarterword c)
 {
-  ffour_quarters q;
+  four_quarters q;
   eight_bits hd;
   halfword b, p;
 
@@ -2013,9 +2013,9 @@ void stack_into_box_(halfword b, internal_font_number f, quarterword c)
   height(b) = height(p);
 }
 /* sec 0712 */
-scaled height_plus_depth_(internal_font_number f, fquarterword c)
+scaled height_plus_depth_(internal_font_number f, quarterword c)
 {
-  ffour_quarters q;
+  four_quarters q;
   eight_bits hd;
 
   q = char_info(f, c);
@@ -2031,8 +2031,8 @@ halfword var_delimiter_(halfword d, small_number s, scaled v)
   integer m, n;
   scaled u;
   scaled w;
-  ffour_quarters q;
-  ffour_quarters r;
+  four_quarters q;
+  four_quarters r;
   eight_bits hd;
 /*  small_number z;  */
   int z;                  /* 95/Jan/7 */

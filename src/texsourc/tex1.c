@@ -127,10 +127,10 @@ void flush_node_list_(pointer p)
           break;
         case glue_node:
           {
-            if (mem[mem[p + 1].hh.v.LH].hh.v.RH == 0)
-              free_node(mem[p + 1].hh.v.LH, 4);
+            if (mem[mem[p + 1].hh.lh].hh.rh == 0)
+              free_node(mem[p + 1].hh.lh, 4);
             else
-              decr(mem[mem[p + 1].hh.v.LH].hh.v.RH);
+              decr(mem[mem[p + 1].hh.lh].hh.rh);
           }
 
           if (leader_ptr(p) != 0)
@@ -603,14 +603,14 @@ void show_activities (void)
       case 1:
         {
           print_nl("spacefactor ");
-          print_int(a.hh.v.LH);
+          print_int(a.hh.lh);
 
           if (m > 0)
           {
-            if (a.hh.v.RH > 0)
+            if (a.hh.rh > 0)
             {
               print_string(", current language ");
-              print_int(a.hh.v.RH);
+              print_int(a.hh.rh);
             }
           }
         }
@@ -2177,7 +2177,7 @@ void show_eqtb_(halfword n)
 
                     print_char('=');
                     print_esc("");
-                    print(hash[font_id_base + equiv(n)].v.RH);
+                    print(hash[font_id_base + equiv(n)].rh);
                   }
                   else
                     if (n < math_code_base)

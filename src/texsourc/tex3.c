@@ -633,15 +633,15 @@ halfword str_toks_(pool_pointer b)
           q = get_avail();
         else
         {
-          avail = mem[q].hh.v.RH;
-          mem[q].hh.v.RH = 0;
+          avail = mem[q].hh.rh;
+          mem[q].hh.rh = 0;
 #ifdef STAT
           incr(dyn_used); 
 #endif /* STAT */
         }
       } 
-      mem[p].hh.v.RH = q;
-      mem[q].hh.v.LH = t;
+      mem[p].hh.rh = q;
+      mem[q].hh.lh = t;
       p = q;
     }
     incr(k);
@@ -669,8 +669,8 @@ halfword the_toks (void)
     if (cur_val_level == ident_val)
     {
       q = get_avail();
-      mem[p].hh.v.RH = q;
-      mem[q].hh.v.LH = cs_token_flag + cur_val;
+      mem[p].hh.rh = q;
+      mem[q].hh.lh = cs_token_flag + cur_val;
       p = q;
     }
     else if (cur_val != 0)
@@ -685,15 +685,15 @@ halfword the_toks (void)
               q = get_avail();
             else
             {
-              avail = mem[q].hh.v.RH;
-              mem[q].hh.v.RH = 0;
+              avail = mem[q].hh.rh;
+              mem[q].hh.rh = 0;
 #ifdef STAT
               incr(dyn_used);
 #endif /* STAT */
             }
           }
-          mem[p].hh.v.RH = q;
-          mem[q].hh.v.LH = mem[r].hh.v.LH;
+          mem[p].hh.rh = q;
+          mem[q].hh.lh = mem[r].hh.lh;
           p = q;
         }
         r = link(r);
@@ -865,14 +865,14 @@ halfword scan_toks_(bool macrodef, bool xpand)
           hashbrace = cur_tok;
           {
             q = get_avail();
-            mem[p].hh.v.RH = q;
-            mem[q].hh.v.LH = cur_tok;
+            mem[p].hh.rh = q;
+            mem[q].hh.lh = cur_tok;
             p = q;
           }
           {
             q = get_avail();
-            mem[p].hh.v.RH = q;
-            mem[q].hh.v.LH = end_match_token;
+            mem[p].hh.rh = q;
+            mem[q].hh.lh = end_match_token;
             p = q;
           }
           goto lab30;
@@ -900,16 +900,16 @@ halfword scan_toks_(bool macrodef, bool xpand)
       }
       {
         q = get_avail();
-        mem[p].hh.v.RH = q;
-        mem[q].hh.v.LH = cur_tok;
+        mem[p].hh.rh = q;
+        mem[q].hh.lh = cur_tok;
         p = q;
       }
     }
 lab31:
     {
       q = get_avail();
-      mem[p].hh.v.RH = q;
-      mem[q].hh.v.LH = end_match_token;
+      mem[p].hh.rh = q;
+      mem[q].hh.lh = end_match_token;
       p = q;
     }
 
@@ -999,8 +999,8 @@ lab32:
       }
     {
       q = get_avail();
-      mem[p].hh.v.RH = q;
-      mem[q].hh.v.LH = cur_tok;
+      mem[p].hh.rh = q;
+      mem[q].hh.lh = cur_tok;
       p = q;
     }
   }
@@ -1010,8 +1010,8 @@ lab40:
   if (hashbrace != 0)
   {
     q = get_avail();
-    mem[p].hh.v.RH = q;
-    mem[q].hh.v.LH = hashbrace;
+    mem[p].hh.rh = q;
+    mem[q].hh.lh = hashbrace;
     p = q;
   }
   Result = p;
@@ -1035,8 +1035,8 @@ void read_toks_(integer n, halfword r)
 
   {
     q = get_avail();
-    mem[p].hh.v.RH = q;
-    mem[q].hh.v.LH = end_match_token;
+    mem[p].hh.rh = q;
+    mem[q].hh.lh = end_match_token;
     p = q;
   }
 
@@ -1134,8 +1134,8 @@ void read_toks_(integer n, halfword r)
 
         {
           q = get_avail();
-          mem[p].hh.v.RH = q;
-          mem[q].hh.v.LH = cur_tok;
+          mem[p].hh.rh = q;
+          mem[q].hh.lh = cur_tok;
           p = q;
         }
       }
@@ -2404,7 +2404,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   internal_font_number f;
   internal_font_number g;
   eight_bits a, b, c, d;
-  ffour_quarters qw;
+  four_quarters qw;
   scaled sw;
   integer bch_label;
   short bchar;

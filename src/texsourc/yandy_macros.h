@@ -66,8 +66,8 @@ enum
 #define pointer halfword
 #define null    min_halfword
 /* sec 0118 */
-#define link(p) mem[(p)].hh.v.RH
-#define info(p) mem[(p)].hh.v.LH
+#define link(p) mem[(p)].hh.rh
+#define info(p) mem[(p)].hh.lh
 /* sec 0124 */
 #define empty_flag  max_halfword
 #define is_empty(a) (link(a) = empty_flag)
@@ -349,15 +349,15 @@ enum
 #define tail            cur_list.tail_field
 #define aux             cur_list.aux_field
 #define prev_depth      aux.cint
-#define space_factor    aux.hh.v.LH
-#define clang           aux.hh.v.RH
+#define space_factor    aux.hh.lh
+#define clang           aux.hh.rh
 #define incompleat_noad aux.cint
 #define prev_graf       cur_list.pg_field
 #define mode_line       cur_list.ml_field
 /* sec 0221 */
 #define eq_level_field(a) a.hh.b1
 #define eq_type_field(a)  a.hh.b0
-#define equiv_field(a)    a.hh.v.RH
+#define equiv_field(a)    a.hh.rh
 #define eq_level(a)       eq_level_field(eqtb[a])
 #define eq_type(a)        eq_type_field(eqtb[a])
 #define equiv(a)          equiv_field(eqtb[a])
@@ -643,14 +643,14 @@ enum
 #define v_offset                      dimen_par(v_offset_code)
 #define emergency_stretch             dimen_par(emergency_stretch_code)
 /* sec 0256 */
-#define text(a)         hash[a].v.RH
-#define next(a)         hash[a].v.LH
+#define text(a)         hash[a].rh
+#define next(a)         hash[a].lh
 #define hash_is_full    (hash_used == hash_base)
 #define font_id_text(a) text(font_id_base + a)
 /* sec 0268 */
 #define save_type(a)      save_stack[a].hh.b0
 #define save_level(a)     save_stack[a].hh.b1
-#define save_index(a)     save_stack[a].hh.v.RH
+#define save_index(a)     save_stack[a].hh.rh
 #define restore_old_value 0
 #define restore_zero      1
 #define insert_token      2

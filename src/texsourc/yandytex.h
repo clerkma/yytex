@@ -21,6 +21,7 @@
 #define WORDS_BIGENDIAN 0
 
 //#pragma warning(disable:4032)
+#pragma warning(disable:4201)
 #pragma warning(disable:4996) //
 #pragma warning(disable:4701) //
 //#pragma warning(disable:4100)
@@ -59,7 +60,7 @@
 #include "hpdf.h"
 #include "hpdf_utils.h"
 
-typedef int         integer;
+typedef long long   integer;
 typedef double      glue_ratio;
 typedef boolean     bool;
 typedef double      real;
@@ -106,7 +107,7 @@ typedef enum
 #define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)
 #define a_close(f)	    check_fclose (f)
 
-#define MAXLINE 256 // for log_line buffer
+#define MAXLINE 256
 
 extern bool trace_flag;
 extern bool open_trace_flag;

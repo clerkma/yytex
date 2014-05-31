@@ -2078,8 +2078,8 @@ lab70:
       lig_stack = get_avail();
     else
     {
-      avail = mem[lig_stack].hh.v.RH;
-      mem[lig_stack].hh.v.RH = 0;
+      avail = mem[lig_stack].hh.rh;
+      mem[lig_stack].hh.rh = 0;
 #ifdef STAT
       incr(dyn_used);
 #endif /* STAT */
@@ -2186,8 +2186,8 @@ lab101:
       lig_stack = get_avail();
     else
     {
-      avail = mem[lig_stack].hh.v.RH;
-      mem[lig_stack].hh.v.RH = 0;
+      avail = mem[lig_stack].hh.rh;
+      mem[lig_stack].hh.rh = 0;
 #ifdef STAT
       incr(dyn_used);
 #endif /* STAT */

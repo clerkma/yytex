@@ -59,11 +59,11 @@
 */
 
 /*
-  meaning      structure                      @TeX                @draft          
+  meaning      structure                      TeX                 Y&Y TeX
                ----------------------------------------------------------------------
   integer      |            int            || 4: long           | 8: long long      |   min_quarterword 0
                ---------------------------------------------------------------------- max_quarterword FFFF
-  scaled       |            sc             || 4: long           | 8: long long      |   min_halfword    
+  scaled       |            sc             || 4: long           | 8: long long      |   min_halfword
                ----------------------------------------------------------------------
   glue_ratio   |            gr             || 4: float          | 8: double         |
                ----------------------------------------------------------------------
@@ -75,67 +75,36 @@
                ----------------------------------------------------------------------
 */
 
-typedef union
+typedef struct
 {
-  struct
-  {
 #ifdef WORDS_BIGENDIAN
-    halfword RH, LH;
-#else
-    halfword LH, RH;
-#endif
-  } v;
+  halfword rh;
 
-  struct
+  union
   {
-#ifdef WORDS_BIGENDIAN
-    halfword junk;
-    quarterword B0, B1;
-#else /* not WORDS_BIGENDIAN */
-  /* If 32-bit TeX/MF, have to have an extra two bytes of junk.
-     I would like to break this line, but I'm afraid that some
-     preprocessors don't properly handle backslash-newline in # commands.  */
-#if (defined (TeX) && !defined (SMALLTeX)) || !defined (TeX) && !defined (SMALLMF)
-    quarterword junkx, junky;
-#endif /* big TeX or big MF */
-    quarterword B1, B0;
-#endif /* not WORDS_BIGENDIAN */
-  } u;
+    halfword lh;
+
+    struct
+    {
+      quarterword b0, b1;
+    };
+  };
+#endif
 } two_halves;
-
-/* new in Y&Y TeX 1.3 1996/Jan/18 used for hash [...] if SHORTHASH defined */
-typedef struct {
-  struct
-  {
-#ifdef WORDS_BIGENDIAN
-    quarterword RH, LH;
-#else
-    quarterword LH, RH;
-#endif
-  } v;
-} htwo_halves;
 
 typedef struct
 {
-  struct
-  {
 #ifdef WORDS_BIGENDIAN
-    quarterword B0, B1, B2, B3;
+  quarterword b0, b1, b2, b3;
 #else
-    quarterword B3, B2, B1, B0;
+  quarterword b3, b2, b1, b0;
 #endif
-  } u;
 } four_quarters;
-
 
 typedef union
 {
-#ifdef TeX
   glue_ratio gr;
   two_halves hh;
-#else
-  two_halves hhfield;
-#endif
 #ifdef WORDS_BIGENDIAN
   integer cint;
   four_quarters qqqq;
@@ -157,35 +126,6 @@ typedef union
   } v;
 #endif /* not WORDS_BIGENDIAN */
 } memory_word;
-
-/* Attempt to reduce size of font_info array ... (and hence format files) */
-
-typedef struct
-{
-  struct
-  {
-#ifdef WORDS_BIGENDIAN
-    unsigned char B0, B1, B2, B3;
-#else
-    unsigned char B3, B2, B1, B0;
-#endif
-  } u;
-} ffour_quarters;
-
-#define fquarterword unsigned char
-
-typedef union
-{
-  integer cint;
-  ffour_quarters qqqq;
-} fmemoryword;
-
-/* To keep the original structure accesses working, we must go through
-   the extra names C forced us to introduce.  */
-#define b0 u.B0
-#define b1 u.B1
-#define b2 u.B2
-#define b3 u.B3
 
 #ifndef WORDS_BIGENDIAN
 #define cint u.CINT

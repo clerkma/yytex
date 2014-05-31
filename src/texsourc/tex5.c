@@ -313,7 +313,7 @@ void make_math_accent_(halfword q)
   integer a;
   quarterword c;
   internal_font_number f;
-  ffour_quarters i;
+  four_quarters i;
   scaled s;
   scaled h;
   scaled delta;
@@ -2080,7 +2080,7 @@ scaled make_op_(halfword q)
   scaled delta;
   halfword p, v, x, y, z;
   quarterword c;
-  ffour_quarters i;
+  four_quarters i;
   scaled shift_up, shift_down;
 
   if ((subtype(q) == normal) && (cur_style < text_style))

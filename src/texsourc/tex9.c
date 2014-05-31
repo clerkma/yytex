@@ -492,10 +492,10 @@ void debug_help (void)
   print_word(mem[n]); 
   break; 
       case 2 : 
-  print_int(mem[n].hh.v.LH); 
+  print_int(mem[n].hh.lh); 
   break; 
       case 3 : 
-  print_int(mem[n].hh.v.RH); 
+  print_int(mem[n].hh.rh); 
   break; 
       case 4 : 
   print_word(eqtb[n]); 

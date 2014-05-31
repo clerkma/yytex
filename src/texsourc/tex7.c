@@ -1290,7 +1290,7 @@ void make_accent (void)
   halfword p, q, r;
   internal_font_number f;
   scaled a, h, x, w, delta;
-  ffour_quarters i;
+  four_quarters i;
 
   scan_char_num();
   f = cur_font;

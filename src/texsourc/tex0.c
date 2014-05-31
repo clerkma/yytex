@@ -1455,13 +1455,13 @@ void print_word_(memory_word w)
   print_char(' ');
   print_scaled(round(65536L * w.gr));
   print_ln();
-  print_int(w.hh.v.LH);
+  print_int(w.hh.lh);
   print_char('=');
   print_int(w.hh.b0);
   print_char(':');
   print_int(w.hh.b1);
   print_char(';');
-  print_int(w.hh.v.RH);
+  print_int(w.hh.rh);
   print_char(' ');
   print_int(w.qqqq.b0); 
   print_char(':');
@@ -1472,7 +1472,7 @@ void print_word_(memory_word w)
   print_int(w.qqqq.b3);
 } 
 /* need this version only if SHORTFONTINFO defined */
-void zprintfword(fmemoryword w)
+void zprintfword(memory_word w)
 {
   print_int(w.cint);
   print_char(' ');
@@ -1480,13 +1480,13 @@ void zprintfword(fmemoryword w)
   print_char(' ');
   print_scaled(round(65536L * w.gr));
   print_ln();
-  print_int(w.hh.v.LH);
+  print_int(w.hh.lh);
   print_char('=');
   print_int(w.hh.b0);
   print_char(':');
   print_int(w .hh.b1);
   print_char(';');
-  print_int(w.hh.v.RH);
+  print_int(w.hh.rh);
   print_char(' ');
   print_int(w.qqqq.b0);
   print_char(':');
@@ -1721,7 +1721,7 @@ lab20:
     {
       q = p + node_size(p);
 
-      while ((mem[q].hh.v.RH == empty_flag))
+      while ((mem[q].hh.rh == empty_flag))
       {
         t = rlink(q);
 
@@ -2610,7 +2610,7 @@ void show_node_list_(integer p)
               str_pool[pool_ptr] = 46;
               incr(pool_ptr);
             }
-            show_node_list(mem[p + 5].hh.v.RH);
+            show_node_list(mem[p + 5].hh.rh);
             decr(pool_ptr);
           }
         }
@@ -2644,7 +2644,7 @@ void show_node_list_(integer p)
               str_pool[pool_ptr] = 46;
               incr(pool_ptr);
             }
-            show_node_list(mem[p + 4].hh.v.LH);
+            show_node_list(mem[p + 4].hh.lh);
             decr(pool_ptr);
           }
         }
@@ -2714,7 +2714,7 @@ void show_node_list_(integer p)
               str_pool[pool_ptr] = 46;
               incr(pool_ptr);
             }
-            show_node_list(mem[p + 1].hh.v.RH);
+            show_node_list(mem[p + 1].hh.rh);
             decr(pool_ptr);
           }
         }
@@ -2825,14 +2825,14 @@ void show_node_list_(integer p)
               str_pool[pool_ptr] = 46;
               incr(pool_ptr);
             }
-            show_node_list(mem[p + 1].hh.v.LH);
+            show_node_list(mem[p + 1].hh.lh);
             decr(pool_ptr);
           }
           {
             str_pool[pool_ptr]= 124;
             incr(pool_ptr);
           }
-          show_node_list(mem[p + 1].hh.v.RH);
+          show_node_list(mem[p + 1].hh.rh);
           decr(pool_ptr);
         }
         break;

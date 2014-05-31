@@ -327,8 +327,8 @@ halfword char_box_(internal_font_number, quarterword);
 #define char_box(f, c) char_box_((internal_font_number) (f), (quarterword) (c))
 void stack_into_box_(halfword, internal_font_number, quarterword);
 #define stack_into_box(b, f, c) stack_into_box_((halfword) (b), (internal_font_number) (f), (quarterword) (c))
-scaled height_plus_depth_(internal_font_number, fquarterword); 
-#define height_plus_depth(f, c) height_plus_depth_((internal_font_number) (f), (fquarterword) (c))
+scaled height_plus_depth_(internal_font_number, quarterword); 
+#define height_plus_depth(f, c) height_plus_depth_((internal_font_number) (f), (quarterword) (c))
 halfword var_delimiter_(halfword, small_number, scaled);
 #define var_delimiter(d, s, v) var_delimiter_((halfword) (d), (small_number) (s), (scaled) (v))
 halfword rebox_(halfword, scaled);
