@@ -1023,9 +1023,9 @@ memory_word *realloc_main (int losize, int hisize)
 int current_font_mem_size = 0;
 
 /* fmemoryword can be either halfword or memory_word */
-fmemoryword * realloc_font_info (int size)
+memory_word * realloc_font_info (int size)
 {
-  fmemoryword *newfontinfo = NULL;
+  memory_word *newfontinfo = NULL;
   int k, minsize;
   int newsize = 0;
   int n = 0;
@@ -1061,12 +1061,12 @@ fmemoryword * realloc_font_info (int size)
       newsize = font_mem_size; /* bump against limit */
 
 /*    important + 1 since fmemoryword font_info[font_mem_size + 1]  original */
-    n = (newsize + 1) * sizeof (fmemoryword);
+    n = (newsize + 1) * sizeof (memory_word);
 
     if (trace_flag)
       trace_memory("font_info", n);
 
-    newfontinfo = (fmemoryword *) REALLOC (font_info, n);
+    newfontinfo = (memory_word *) REALLOC (font_info, n);
 
     if (newfontinfo != NULL)
       break;   /* did we get it ? */
@@ -1091,7 +1091,7 @@ fmemoryword * realloc_font_info (int size)
     show_line(log_line, 0);
   }
 
-  update_statistics ((int) font_info, n, current_font_mem_size * sizeof(fmemoryword));
+  update_statistics ((int) font_info, n, current_font_mem_size * sizeof(memory_word));
   current_font_mem_size = newsize;
 
   if (trace_flag)
@@ -1639,7 +1639,7 @@ ASCII_code *realloc_buffer (int size)
     show_line(log_line, 0);
   }
 
-  if (current_buf_size == buf_size)  /* arbitrary limit */
+  if (current_buf_size == buf_size)
   {
 /*    memory_error ("buffer", buf_size); */
 /*    exit (1); */
@@ -1661,7 +1661,7 @@ ASCII_code *realloc_buffer (int size)
     if (newsize > buf_size)
       newsize = buf_size;
 
-    n = (newsize + 1) * sizeof(ASCII_code);  /* buffer[buf_size + 1] */
+    n = (newsize + 1) * sizeof(ASCII_code);
 
     if (trace_flag)
       trace_memory("buffer", n);
@@ -1674,7 +1674,7 @@ ASCII_code *realloc_buffer (int size)
     if (current_buf_size == 0)
       break;   /* initial allocation must work */
 
-    size = size / 2;          /* else can retry smaller */
+    size = size / 2;
   }
 
   if (newbuffer == NULL)
@@ -2506,8 +2506,8 @@ int analyze_flag (int c, char *optarg)
       interaction = error_stop_mode; /* tex mode */
       break;
     case 'K':
-      backwardflag = true; /* 94/Jun/15 */
-      knuthify();         /* revert to `standard' Knuth TeX */
+      backwardflag = true;
+      knuthify(); /* revert to `standard' Knuth TeX */
       break;
     case 'L':
       c_style_flag = true; /* C style error msg 94/Mar/21 */
@@ -3177,7 +3177,7 @@ int main_init (int ac, char **av)
   kpse_set_program_name(av[0], NULL);
   xputenv("engine", "yandytex");
 
-  if (sizeof(memory_word) != sizeof(integer) * 2)
+  if (sizeof(memory_word) != sizeof(halfword) * 2)
   {
     sprintf(log_line, "ERROR: Bad word size %d!\n", sizeof(memory_word));
     show_line(log_line, 1);
@@ -3361,7 +3361,7 @@ void print_cs_name (FILE *output, int h)
 
   memset(log_line, 0, sizeof(log_line));
 
-  textof = hash[h].v.RH;
+  textof = hash[h].rh;
 
   if (textof == 0)
     return;
@@ -3394,8 +3394,8 @@ int compare_cs (const void *cp1, const void *cp2)
 
   c1 = *(int *)cp1;
   c2 = *(int *)cp2;
-  textof1 = hash[c1].v.RH;
-  textof2 = hash[c2].v.RH;
+  textof1 = hash[c1].rh;
+  textof2 = hash[c2].rh;
   l1 = length(textof1); 
   l2 = length(textof2); 
   k1 = str_start[textof1]; 
@@ -3438,7 +3438,7 @@ void print_cs_names (FILE *output, int pass)
     if (pass == 1 && csused[h])
       continue;
 
-    if (hash[h].v.RH != 0)
+    if (hash[h].rh != 0)
     {
       if (pass == 0)
         csused[h] = 1;
@@ -3476,7 +3476,7 @@ void print_cs_names (FILE *output, int pass)
       if (pass == 1 && csused[h])
         continue;
 
-      if (hash[h].v.RH != 0)
+      if (hash[h].rh != 0)
         cnumtable[ccount++] = h;
     }
 

@@ -937,8 +937,8 @@ lab22:
               {
                 {
                   q = get_avail();
-                  mem[p].hh.v.RH = q;
-                  mem[q].hh.v.LH = mem[t].hh.v.LH;
+                  mem[p].hh.rh = q;
+                  mem[q].hh.lh = mem[t].hh.lh;
                   p = q;
                 }
 
@@ -1010,16 +1010,16 @@ lab30:
                     q = get_avail();
                   else
                   {
-                    avail = mem[q].hh.v.RH;
-                    mem[q].hh.v.RH = 0;
+                    avail = mem[q].hh.rh;
+                    mem[q].hh.rh = 0;
 #ifdef STAT
                     incr(dyn_used);
 #endif /* STAT */
                   }
                 }
 
-                mem[p].hh.v.RH = q;
-                mem[q].hh.v.LH = cur_tok;
+                mem[p].hh.rh = q;
+                mem[q].hh.lh = cur_tok;
                 p = q;
               }
 
@@ -1064,8 +1064,8 @@ lab31:
 
             {
               q = get_avail();
-              mem[p].hh.v.RH = q;
-              mem[q].hh.v.LH = cur_tok;
+              mem[p].hh.rh = q;
+              mem[q].hh.lh = cur_tok;
               p = q;
             }
           }
@@ -1096,8 +1096,8 @@ lab31:
 
           {
             q = get_avail();
-            mem[p].hh.v.RH = q;   /* p may be used without having ... */
-            mem[q].hh.v.LH = cur_tok;
+            mem[p].hh.rh = q;   /* p may be used without having ... */
+            mem[q].hh.lh = cur_tok;
             p = q;
           }
         }
@@ -1261,8 +1261,8 @@ void expand (void)
             if (cur_cs == 0)
             {
               q = get_avail();
-              mem[p].hh.v.RH = q;
-              mem[q].hh.v.LH = cur_tok;
+              mem[p].hh.rh = q;
+              mem[q].hh.lh = cur_tok;
               p = q;
             }
           }
@@ -1502,8 +1502,8 @@ bool scan_keyword_(char * s)
     {
       {
         q = get_avail();
-        mem[p].hh.v.RH = q;
-        mem[q].hh.v.LH = cur_tok;
+        mem[p].hh.rh = q;
+        mem[q].hh.lh = cur_tok;
         p = q;
       }
 
@@ -1698,7 +1698,7 @@ void find_font_dimen_(bool writing)
   if (cur_val == fmem_ptr)
   {
     print_err("Font ");
-/*    print_esc(hash[(hash_size + 524) + f].v.RH); */
+/*    print_esc(hash[(hash_size + 524) + f].rh); */
     print_esc(""); print(font_id_text(f));
     print_string(" has only ");
     print_int(font_params[f]);
@@ -1766,7 +1766,7 @@ void scan_something_internal_(small_number level, bool negative)
         }
 
         {
-          cur_val = eqtb[m].hh.v.RH;
+          cur_val = eqtb[m].hh.rh;
           cur_val_level = tok_val;
         }
       }
@@ -1798,14 +1798,14 @@ void scan_something_internal_(small_number level, bool negative)
 
     case assign_glue:
       {
-        cur_val = eqtb[m].hh.v.RH;
+        cur_val = eqtb[m].hh.rh;
         cur_val_level = glue_val;
       }
       break;
 
     case assign_mu_glue:
       {
-        cur_val = eqtb[m].hh.v.RH;
+        cur_val = eqtb[m].hh.rh;
         cur_val_level = mu_val;
       }
       break;

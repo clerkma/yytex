@@ -42,11 +42,10 @@
   #define max_quarterword 255
 #endif
 
-/* #define default_mem_top 262140L */ /* usual big TeX allocation 2 Meg bytes */
+#define default_mem_top 262140L  /* usual big TeX allocation 2 Meg bytes */
 /* #define default_mem_top 131070L */ /* usual big TeX allocation 1 Meg bytes */
-#define default_mem_top 65534L        /* usual small TeX allocation 0.5 Meg   */
+/* #define default_mem_top 65534L  */ /* usual small TeX allocation 0.5 Meg   */
 
-/* mem_bot smallest index in mem array dumped by iniTeX mem_top >= mem_min */
 #define mem_bot 0
 
 #ifdef ALLOCATEMAIN
@@ -56,21 +55,12 @@
   #define mem_top 262140L
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* mem_max == mem_top in iniTeX, otherwise mem_max >= mem_top */
-/* if ALLOCATEMAIN is true, then mem_max is a variable */
-/* otherwise it is a pre-processor defined constant */
 #ifdef ALLOCATEMAIN
   EXTERN integer mem_max;
 #else
-/* #define mem_max 262140L */
   #define mem_max mem_top
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* if ALLOCATEMAIN is true, then mem_min is a variable */
-/* otherwise it is a pre-processor defined constant */
-/* mem_min == mem_bot in iniTeX, otherwise mem_min <= mem_bot */
 #ifdef ALLOCATEMAIN
   EXTERN integer mem_min;
 #else
@@ -80,12 +70,13 @@
 #ifdef ALLOCATEBUFFER
   #define initial_buf_size   1000
   #define increment_buf_size 2000
-  #define buf_size           2000000L /* arbitrary limit <= max_halfword */
+  #define buf_size           2000000L
   EXTERN ASCII_code *        buffer;
 #else
   #define buf_size           20000
-  EXTERN ASCII_code          buffer[buf_size + 4]; /* padded out to ...  + 4 */
+  EXTERN ASCII_code          buffer[buf_size + 4];
 #endif
+
 EXTERN integer first; 
 EXTERN integer last; 
 EXTERN integer max_buf_stack; 
@@ -100,22 +91,18 @@ EXTERN integer max_buf_stack;
   #define max_in_open 15
 #endif
 
-/* maximum internal font number - cannot be greated than max_quarterword! */
 #ifdef INCREASEFONTS
   #define font_max 1023
 #else
   #define font_max 255
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/* free the limit on font memory ! */
 #ifdef ALLOCATEFONT
   #define font_mem_size (max_halfword / sizeof(memory_word) - 1)
 #else
   #define font_mem_size 100000L
 #endif
 
-/* below is new dynamic allocation - bkph 93/Nov/28 */
 #ifdef ALLOCATEFONT
   #define initial_font_mem_size   20000
   #define increment_font_mem_size 40000
@@ -138,7 +125,6 @@ EXTERN integer max_buf_stack;
   #define trie_size 30000
 #endif
 
-/* increase trie_op to accomadate more hyphenation patterns 96/OCt/12 */
 #ifdef INCREASETRIEOP
   #define trie_op_size      3001
   #define neg_trie_op_size -3001
@@ -151,7 +137,6 @@ EXTERN integer max_buf_stack;
   #define max_trie_op       500
 #endif
 
-/* dvi_buf_size must be multiple of 8 - half is written out at a time */
 #ifdef ALLOCATEDVIBUF
   #define default_dvi_buf_size 16384
   EXTERN int dvi_buf_size;
@@ -159,7 +144,6 @@ EXTERN integer max_buf_stack;
   #define dvi_buf_size 16384
 #endif
 
-/* size of hash table for control sequence name  < (mem_max - mem_min) / 10 */
 /* #define hash_size 9500  */
 /* #define hash_size 25000 */
 #define hash_size 32768
@@ -182,7 +166,7 @@ EXTERN integer max_buf_stack;
 /* min_halfword = 0 and double max_halfword ? */
 /* typedef unsigned long halfword; NO NO: since mem_min may be < 0 */
 /* sec 0113 */
-typedef integer halfword;
+typedef long halfword;
 typedef char two_choices;
 typedef char four_choices;
 /* sec 0113 */
@@ -492,30 +476,16 @@ EXTERN char * dvi_file_name;
 EXTERN char * pdf_file_name;
 EXTERN char * log_file_name;
 
-
-#ifdef SHORTFONTINFO
-#else
-  /* go back to original definition as TeX memory word */
-  #undef fmemoryword
-  #define fmemoryword memory_word
-  /* go back to original definition as four_quarters of a TeX word */
-  #undef ffour_quarters
-  #define ffour_quarters four_quarters
-  /* go back to original definition as quaterword */
-  #undef fquarterword
-  #define fquarterword quarterword
-#endif
-
 #ifdef ALLOCATEFONT
-  EXTERN fmemoryword * font_info;
+  EXTERN memory_word * font_info;
 #else
-  EXTERN fmemoryword font_info[font_mem_size + 1];
+  EXTERN memory_word font_info[font_mem_size + 1];
 #endif
 
 EXTERN font_index fmem_ptr;
 EXTERN internal_font_number font_ptr;
 EXTERN internal_font_number frozen_font_ptr;
-EXTERN ffour_quarters font_check[font_max + 1];
+EXTERN four_quarters font_check[font_max + 1];
 EXTERN scaled font_size[font_max + 1];
 EXTERN scaled font_dsize[font_max + 1];
 EXTERN font_index font_params[font_max + 1];
@@ -541,7 +511,7 @@ EXTERN integer lig_kern_base[font_max + 1];
 EXTERN integer kern_base[font_max + 1];
 EXTERN integer exten_base[font_max + 1];
 EXTERN integer param_base[font_max + 1];
-EXTERN ffour_quarters null_character;
+EXTERN four_quarters null_character;
 EXTERN integer total_pages;
 EXTERN scaled max_v;
 EXTERN scaled max_h;
@@ -582,7 +552,7 @@ EXTERN scaled cur_mu;
 EXTERN bool mlist_penalties;
 EXTERN internal_font_number cur_f;
 EXTERN int cur_c;
-EXTERN ffour_quarters cur_i;
+EXTERN four_quarters cur_i;
 EXTERN integer magic_offset;
 EXTERN halfword cur_align;
 EXTERN halfword cur_span;
@@ -772,8 +742,8 @@ EXTERN integer insert_penalties;
 EXTERN bool output_active;
 EXTERN internal_font_number main_f;
 
-EXTERN ffour_quarters main_i;
-EXTERN ffour_quarters main_j;
+EXTERN four_quarters main_i;
+EXTERN four_quarters main_j;
 
 EXTERN font_index main_k;
 EXTERN halfword main_p;
@@ -890,7 +860,7 @@ list_state_record * realloc_nest_stack (int);
 in_state_record * realloc_input_stack (int);
 halfword * realloc_param_stack (int);
 ASCII_code * realloc_buffer (int);
-fmemoryword * realloc_font_info (int);
+memory_word * realloc_font_info (int);
 
 int realloc_hyphen (int);
 int allocate_tries (int);

@@ -224,8 +224,8 @@ void initialize (void)
   adjust_tail = 0;
   last_badness = 0;
   pack_begin_line = 0;
-  empty_field.v.RH = 0;
-  empty_field.v.LH = 0;
+  empty_field.rh = 0;
+  empty_field.lh = 0;
   null_delimiter.b0 = 0;
   null_delimiter.b1 = 0;
   null_delimiter.b2 = 0;
@@ -1118,7 +1118,7 @@ void prefixed_command (void)
         }
 
         if (cur_cmd >= call)
-          incr(mem[cur_chr].hh.v.LH);
+          incr(mem[cur_chr].hh.lh);
 
         if ((a >= 4))
           geq_define(p, cur_cmd, cur_chr);
@@ -1276,7 +1276,7 @@ void prefixed_command (void)
                 eq_define(p, undefined_cs, 0);
             else
             {
-              incr(mem[q].hh.v.LH);
+              incr(mem[q].hh.lh);
 
               if ((a >= 4))
                 geq_define(p, call, q);
@@ -1595,40 +1595,6 @@ lab30:
     back_input();
     after_token = 0;
   }
-}
-
-void bad_formator_pool (char *name, char *defaultname, char *envvar)
-{
-  if (name == NULL)
-    name = defaultname;
-
-  sprintf(log_line, "(Perhaps %s is for an older version of TeX)\n", name);
-  show_line(log_line, 0);
-  name_of_file[name_length + 1] = '\0';
-  sprintf(log_line, "(Alternatively, %s may have been corrupted)\n", name_of_file + 1);
-  show_line(log_line, 0);
-  name_of_file[name_length + 1] = ' ';
-  sprintf(log_line, "(Perhaps your %s environment variable is not set correctly)\n", envvar);
-  show_line(log_line, 0);
-
-  {
-    char *s;
-
-    if ((s = grabenv(envvar)) != NULL)
-    {
-      sprintf(log_line, "(%s=%s)\n", envvar, s);
-      show_line(log_line, 0);
-    }
-    else
-    {
-      sprintf(log_line, "%s environment variable not set\n", envvar);
-      show_line(log_line, 0);
-    }
-  }
-
-#ifndef _WINDOWS
-  fflush(stdout);
-#endif
 }
 /* sec 1303 */
 bool load_fmt_file (void)
@@ -2285,9 +2251,6 @@ lab6666:;
   sprintf(log_line, "(Fatal format file error; I'm stymied)\n");
   show_line(log_line, 1);
 
-  if (!knuth_flag)
-    bad_formator_pool(format_file, "the format file", "TEXFORMATS");
-
   return false;
 }
 /* sec 1335 */
@@ -2342,7 +2305,7 @@ void final_cleanup (void)
     if_line = mem[cond_ptr + 1].cint;
     cur_if = mem[cond_ptr].hh.b1;
     temp_ptr = cond_ptr;
-    cond_ptr = mem[cond_ptr].hh.v.RH;
+    cond_ptr = mem[cond_ptr].hh.rh;
     free_node(temp_ptr, 2);
   }
 
@@ -2492,9 +2455,6 @@ int texbody (void)
     sprintf(log_line, "%s%s%ld\n", "Ouch---my internal constants have been clobbered!",
         "---case ", (long) bad);
     show_line(log_line, 1);
-
-    if (!knuth_flag)
-      bad_formator_pool(format_file, "the format file", "TEXFORMATS");
 
     goto lab9999;
   }
@@ -3715,7 +3675,7 @@ void store_fmt_file (void)
   while (p != 0)
   {
     decr(dyn_used);
-    p = mem[p].hh.v.RH;
+    p = mem[p].hh.rh;
   }
 
   dump_int(var_used);

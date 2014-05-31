@@ -814,7 +814,7 @@ small_number reconstitute_(small_number j, small_number n, halfword bchar, halfw
 {
   halfword p;
   halfword t;
-  ffour_quarters q;
+  four_quarters q;
   halfword cur_rh;
   halfword test_char;
   scaled w;
@@ -965,7 +965,7 @@ lab22:
                 {
                   if (ligature_present)
                   {
-                    p = new_ligature(hf, cur_l, mem[cur_q].hh.v.RH);
+                    p = new_ligature(hf, cur_l, mem[cur_q].hh.rh);
 
                     if (lft_hit)
                     {
@@ -977,7 +977,7 @@ lab22:
           incr(mem[p].hh.b1); 
           rt_hit = false; 
         } */              /* removed 99/Jan/6 */
-                    mem[cur_q].hh.v.RH = p;
+                    mem[cur_q].hh.rh = p;
                     t = p;
                     ligature_present = false;
                   }
@@ -994,14 +994,14 @@ lab22:
 
                   if (lig_stack != 0)        /* BUG FIX  */
                   {
-                    if (mem[lig_stack + 1].hh.v.RH != 0) /* l.17828 ? */
+                    if (mem[lig_stack + 1].hh.rh != 0) /* l.17828 ? */
                     {
-                      mem[t].hh.v.RH = mem[lig_stack + 1].hh.v.RH;
-                      t = mem[t].hh.v.RH;
+                      mem[t].hh.rh = mem[lig_stack + 1].hh.rh;
+                      t = mem[t].hh.rh;
                       incr(j);
                     }
                     p = lig_stack;
-                    lig_stack = mem[p].hh.v.RH;
+                    lig_stack = mem[p].hh.rh;
                     free_node(p, 2);
                     if (lig_stack == 0)  /* if lig_stack=null ? */
                     {
@@ -1293,7 +1293,7 @@ lab50:
             major_tail = r;
             r_count = 0;
 
-            while (mem[major_tail].hh.v.RH != 0)
+            while (mem[major_tail].hh.rh != 0)
             {
               major_tail = link(major_tail);
               incr(r_count);
@@ -1382,7 +1382,7 @@ lab50:
                 j = reconstitute(j, hn, bchar, non_char) + 1;
                 link(major_tail) = link(hold_head);
 
-                while (mem[major_tail].hh.v.RH != 0)
+                while (mem[major_tail].hh.rh != 0)
                 {
                   major_tail = link(major_tail);
                   incr(r_count);
