@@ -935,13 +935,7 @@ lab22:
             t = s;
             do
               {
-                {
-                  q = get_avail();
-                  mem[p].hh.rh = q;
-                  mem[q].hh.lh = mem[t].hh.lh;
-                  p = q;
-                }
-
+                store_new_token(info(t));
                 incr(m);
                 u = link(t);
                 v = s;
@@ -1002,27 +996,7 @@ lab30:
 
             while (true)
             {
-              {
-                {
-                  q = avail;
-
-                  if (q == 0)
-                    q = get_avail();
-                  else
-                  {
-                    avail = mem[q].hh.rh;
-                    mem[q].hh.rh = 0;
-#ifdef STAT
-                    incr(dyn_used);
-#endif /* STAT */
-                  }
-                }
-
-                mem[p].hh.rh = q;
-                mem[q].hh.lh = cur_tok;
-                p = q;
-              }
-
+              fast_store_new_token(cur_tok);
               get_token();
 
               if (cur_tok == par_token)
@@ -1061,13 +1035,7 @@ lab30:
             }
 lab31:
             rbraceptr = p;
-
-            {
-              q = get_avail();
-              mem[p].hh.rh = q;
-              mem[q].hh.lh = cur_tok;
-              p = q;
-            }
+            store_new_token(cur_tok);
           }
           else
           {
@@ -1094,12 +1062,7 @@ lab31:
               if (info(r) >= match_token)
                 goto lab22;
 
-          {
-            q = get_avail();
-            mem[p].hh.rh = q;   /* p may be used without having ... */
-            mem[q].hh.lh = cur_tok;
-            p = q;
-          }
+          store_new_token(cur_tok);
         }
 
         incr(m);          /* m may be used without having been ... */
@@ -1259,12 +1222,7 @@ void expand (void)
             get_x_token();
   
             if (cur_cs == 0)
-            {
-              q = get_avail();
-              mem[p].hh.rh = q;
-              mem[q].hh.lh = cur_tok;
-              p = q;
-            }
+              store_new_token(cur_tok);
           }
         while(!(cur_cs != 0));
 
@@ -1500,13 +1458,7 @@ bool scan_keyword_(char * s)
 
     if ((cur_cs == 0) && ((cur_chr == (*k)) || (cur_chr == (*k) - 'a' + 'A')))
     {
-      {
-        q = get_avail();
-        mem[p].hh.rh = q;
-        mem[q].hh.lh = cur_tok;
-        p = q;
-      }
-
+      store_new_token(cur_tok);
       incr(k);
     }
     else if ((cur_cmd != spacer) || (p != backup_head))

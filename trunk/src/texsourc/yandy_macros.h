@@ -68,6 +68,39 @@ enum
 /* sec 0118 */
 #define link(p) mem[(p)].hh.rh
 #define info(p) mem[(p)].hh.lh
+/* sec 0122 */
+#ifdef STAT
+#define fast_get_avail(a) \
+  do                      \
+    {                     \
+      a = avail;          \
+                          \
+      if (a == 0)         \
+        a = get_avail();  \
+      else                \
+      {                   \
+        avail = link(a);  \
+        link(a) = 0;      \
+        incr(dyn_used);   \
+      }                   \
+    }                     \
+  while (0)
+#else
+#define fast_get_avail(a) \
+  do                      \
+    {                     \
+      a = avail;          \
+                          \
+      if (a == 0)         \
+        a = get_avail();  \
+      else                \
+      {                   \
+        avail = link(a);  \
+        link(a) = 0;      \
+      }                   \
+    }                     \
+  while (0)
+#endif
 /* sec 0124 */
 #define empty_flag  max_halfword
 #define is_empty(a) (link(a) = empty_flag)
@@ -317,15 +350,15 @@ enum
 #define set_interaction   100
 #define max_command       100
 /* sec 0210 */
-#define undefined_cs    (max_command + 1)
-#define expand_after    (max_command + 2)
-#define no_expand       (max_command + 3)
-#define input           (max_command + 4)
-#define if_test         (max_command + 5)
-#define fi_or_else      (max_command + 6)
-#define cs_name         (max_command + 7)
-#define convert         (max_command + 8)
-#define the             (max_command + 9)
+#define undefined_cs    (max_command + 1 )
+#define expand_after    (max_command + 2 )
+#define no_expand       (max_command + 3 )
+#define input           (max_command + 4 )
+#define if_test         (max_command + 5 )
+#define fi_or_else      (max_command + 6 )
+#define cs_name         (max_command + 7 )
+#define convert         (max_command + 8 )
+#define the             (max_command + 9 )
 #define top_bot_mark    (max_command + 10)
 #define call            (max_command + 11)
 #define long_call       (max_command + 12)
@@ -734,6 +767,25 @@ enum
   case (a) + letter:     \
   case (a) + other_char
 /* sec 0358 */
+/* sec 0371 */
+#define store_new_token(a)  \
+  do                        \
+    {                       \
+      q = get_avail();      \
+      link(p) = q;          \
+      info(q) = a;          \
+      p = q;                \
+    }                       \
+  while (0)
+#define fast_store_new_token(a) \
+  do                            \
+    {                           \
+      fast_get_avail(q);        \
+      link(p) = q;              \
+      info(q) = a;              \
+      p = q;                    \
+    }                           \
+  while (0)
 #define no_expand_flag 257
 /* sec 0382 */
 #define top_mark_code         0
@@ -765,9 +817,16 @@ enum
 #define point_token             (other_token + '.' ) // 3118
 #define continental_point_token (other_token + ',' ) // 3116
 /* sec 0445 */
-#define zero_token    (other_token + '0')  // 3120
+#define zero_token    (other_token  + '0') // 3120
 #define A_token       (letter_token + 'A') // 2881
-#define other_A_token (other_token + 'A')  // 3137
+#define other_A_token (other_token  + 'A') // 3137
+/* sec 0458 */
+#define set_conversion(a, b)  \
+  do                          \
+  {                           \
+    num = a;                  \
+    denom = b;                \
+  } while (0)
 /* sec 0468 */
 #define number_code        0
 #define roman_numeral_code 1
