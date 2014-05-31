@@ -26,7 +26,7 @@
 #define PATH_SEP        '/'
 #define PATH_SEP_STRING "/"
 
-#define BUILDNAMEDIRECT /* avoid malloc for string concat */
+#define BUILDNAMEDIRECT
 
 extern int shorten_file_name;       /* in local.c bkph */
 

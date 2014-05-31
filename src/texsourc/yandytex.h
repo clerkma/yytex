@@ -22,8 +22,8 @@
 
 //#pragma warning(disable:4032)
 #pragma warning(disable:4201)
-#pragma warning(disable:4996) //
-#pragma warning(disable:4701) //
+#pragma warning(disable:4996)
+#pragma warning(disable:4701)
 //#pragma warning(disable:4100)
 //#pragma warning(disable:4244)
 #pragma warning(disable:4131) // old style declarator
@@ -65,9 +65,9 @@ typedef double      glue_ratio;
 typedef boolean     bool;
 typedef double      real;
 typedef FILE *      alpha_file;
-typedef unsigned char ASCII_code;
+typedef unsigned char  ASCII_code;
 typedef unsigned short KANJI_code;
-typedef unsigned char eight_bits;
+typedef unsigned char  eight_bits;
 typedef unsigned short sixteen_bits;
 typedef integer pool_pointer;
 typedef integer str_number;
@@ -82,12 +82,7 @@ typedef enum
   TEXFORMATPATH,
   TEXINPUTPATH,
   TFMFILEPATH,
-  LAST_PATH
 } path_constant_type;
-
-#define TEXFORMATPATHBIT (1 << TEXFORMATPATH)
-#define TEXINPUTPATHBIT  (1 << TEXINPUTPATH)
-#define TFMFILEPATHBIT   (1 << TFMFILEPATH)
 
 #ifdef link
   #undef link
@@ -97,7 +92,7 @@ typedef enum
 #define chr(x)   (x)
 #define ord(x)   (x)
 #define odd(x)   ((x) % 2)
-#define round(x) zround ((double) (x))
+#define round(x) zround((double) (x))
 #define decr(x)  --(x)
 #define incr(x)  ++(x)
 #define fabs(x)  ((x) >= 0.0 ? (x) : -(x))
@@ -109,8 +104,6 @@ typedef enum
 
 #define MAXLINE 256
 
-extern bool trace_flag;
-extern bool open_trace_flag;
 extern integer zround (double);
 extern bool eoln (FILE * file);
 extern bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode);

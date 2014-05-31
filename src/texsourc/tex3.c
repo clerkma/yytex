@@ -398,50 +398,23 @@ lab45:
     goto lab88;
 
   if (scan_keyword("in"))
-  {
-    num = 7227;
-    denom = 100;
-  }
+    set_conversion(7227, 100);
   else if (scan_keyword("pc"))
-  {
-    num = 12;
-    denom = 1;
-  }
+    set_conversion(12, 1);
   else if (scan_keyword("cm"))
-  {
-    num = 7227;
-    denom = 254;
-  }
+    set_conversion(7227, 254);
   else if (scan_keyword("mm"))
-  {
-    num = 7227;
-    denom = 2540;
-  }
+    set_conversion(7227, 2540);
   else if (scan_keyword("bp"))
-  {
-    num = 7227;
-    denom = 7200;
-  }
+    set_conversion(7227, 7200);
   else if (scan_keyword("dd"))
-  {
-    num = 1238;
-    denom = 1157;
-  }
+    set_conversion(1238, 1157);
   else if (scan_keyword("cc"))
-  {
-    num = 14856;
-    denom = 1157;
-  }
+    set_conversion(14856, 1157);
   else if (scan_keyword("Q"))
-  {
-    num = 7227;
-    denom = 10160;
-  }
+    set_conversion(7227, 10160);
   else if (scan_keyword("H"))
-  {
-    num = 7227;
-    denom = 10160;
-  }
+    set_conversion(7227, 10160);
   else if (scan_keyword("sp"))
     goto lab30;
   else
@@ -625,27 +598,11 @@ halfword str_toks_(pool_pointer b)
       t = space_token;
     else
       t = other_token + t;
-    {
-      {
-        q = avail;
 
-        if (q == 0)
-          q = get_avail();
-        else
-        {
-          avail = mem[q].hh.rh;
-          mem[q].hh.rh = 0;
-#ifdef STAT
-          incr(dyn_used); 
-#endif /* STAT */
-        }
-      } 
-      mem[p].hh.rh = q;
-      mem[q].hh.lh = t;
-      p = q;
-    }
+    fast_store_new_token(t);
     incr(k);
   }
+
   pool_ptr = b;
 
   return p;
@@ -667,38 +624,18 @@ halfword the_toks (void)
     link(p) = 0;
 
     if (cur_val_level == ident_val)
-    {
-      q = get_avail();
-      mem[p].hh.rh = q;
-      mem[q].hh.lh = cs_token_flag + cur_val;
-      p = q;
-    }
+      store_new_token(cs_token_flag + cur_val);
     else if (cur_val != 0)
     {
       r = link(cur_val);
 
-      while (r != 0) { /*   while r<>null do l.9178 */
-        {
-          {
-            q = avail;
-            if (q == 0)
-              q = get_avail();
-            else
-            {
-              avail = mem[q].hh.rh;
-              mem[q].hh.rh = 0;
-#ifdef STAT
-              incr(dyn_used);
-#endif /* STAT */
-            }
-          }
-          mem[p].hh.rh = q;
-          mem[q].hh.lh = mem[r].hh.lh;
-          p = q;
-        }
+      while (r != 0) /* while r<>null do l.9178 */
+      {
+        fast_store_new_token(info(r));
         r = link(r);
       }
     }
+
     Result = p;
   }
   else
@@ -863,18 +800,8 @@ halfword scan_toks_(bool macrodef, bool xpand)
         if (cur_cmd == left_brace)
         {
           hashbrace = cur_tok;
-          {
-            q = get_avail();
-            mem[p].hh.rh = q;
-            mem[q].hh.lh = cur_tok;
-            p = q;
-          }
-          {
-            q = get_avail();
-            mem[p].hh.rh = q;
-            mem[q].hh.lh = end_match_token;
-            p = q;
-          }
+          store_new_token(cur_tok);
+          store_new_token(end_match_token);
           goto lab30;
         }
 
@@ -898,20 +825,12 @@ halfword scan_toks_(bool macrodef, bool xpand)
           cur_tok = s;
         }
       }
-      {
-        q = get_avail();
-        mem[p].hh.rh = q;
-        mem[q].hh.lh = cur_tok;
-        p = q;
-      }
+
+      store_new_token(cur_tok);
     }
+
 lab31:
-    {
-      q = get_avail();
-      mem[p].hh.rh = q;
-      mem[q].hh.lh = end_match_token;
-      p = q;
-    }
+    store_new_token(end_match_token);
 
     if (cur_cmd == right_brace)
     {
@@ -997,23 +916,15 @@ lab32:
           else
             cur_tok = out_param_token - '0' + cur_chr;
       }
-    {
-      q = get_avail();
-      mem[p].hh.rh = q;
-      mem[q].hh.lh = cur_tok;
-      p = q;
-    }
+
+    store_new_token(cur_tok);
   }
 lab40:
   scanner_status = 0;
 
   if (hashbrace != 0)
-  {
-    q = get_avail();
-    mem[p].hh.rh = q;
-    mem[q].hh.lh = hashbrace;
-    p = q;
-  }
+    store_new_token(hashbrace);
+
   Result = p;
   return Result;
 }
@@ -1032,13 +943,7 @@ void read_toks_(integer n, halfword r)
   def_ref = get_avail();
   token_ref_count(def_ref) = 0;
   p = def_ref;
-
-  {
-    q = get_avail();
-    mem[p].hh.rh = q;
-    mem[q].hh.lh = end_match_token;
-    p = q;
-  }
+  store_new_token(end_match_token);
 
   if ((n < 0) || (n > 15))
     m = 16;
@@ -1132,12 +1037,7 @@ void read_toks_(integer n, halfword r)
           goto lab30;
         }
 
-        {
-          q = get_avail();
-          mem[p].hh.rh = q;
-          mem[q].hh.lh = cur_tok;
-          p = q;
-        }
+        store_new_token(cur_tok);
       }
 lab30:
       end_file_reading();
@@ -2397,10 +2297,8 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
 {
   font_index k;
   bool file_opened;
-/*  halfword lf, lh, bc, ec, nw, nh, nd, ni, nl, nk, ne, np;  */
   halfword lf, lh, nw, nh, nd, ni, nl, nk, ne, np;
-/*  halfword bc, ec; */
-  int bc, ec;             /* 95/Jan/7 */
+  int bc, ec;
   internal_font_number f;
   internal_font_number g;
   eight_bits a, b, c, d;
@@ -2432,7 +2330,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     tfm_temp = getc(tfm_file);
     read_sixteen(ec);
 
-    if ((bc > ec + 1)||(ec > 255))
+    if ((bc > ec + 1) || (ec > 255))
       goto lab11;
 
     if (bc > 255)
@@ -2482,7 +2380,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     if (trace_flag)
     {
       sprintf(log_line, "font_ptr %d font_max %d fmem_ptr %d lf %d font_mem_size %d\n",
-          font_ptr, font_max, fmem_ptr, lf, font_mem_size); /* debugging */
+          font_ptr, font_max, fmem_ptr, lf, font_mem_size);
       show_line(log_line, 0);
     }
 
@@ -2527,7 +2425,6 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     if (lh < 2)
       goto lab11;
     
-    /*  build the font checksum now */
     store_four_quarters(font_check[f]);
     tfm_temp = getc(tfm_file);
     read_sixteen(z);

@@ -3186,7 +3186,7 @@ int main_init (int ac, char **av)
   start_time = clock();
   main_time  = start_time;
 
-/*  reset all allocatable memory pointers to NULL - in case we drop out */
+/* reset all allocatable memory pointers to NULL - in case we drop out */
   main_memory = NULL;
   font_info   = NULL;
   str_pool    = NULL;

@@ -2071,21 +2071,8 @@ lab70:
   if (mode > 0)
     if (language != clang)
       fix_language();
-  {
-    lig_stack = avail;
 
-    if (lig_stack == 0)
-      lig_stack = get_avail();
-    else
-    {
-      avail = mem[lig_stack].hh.rh;
-      mem[lig_stack].hh.rh = 0;
-#ifdef STAT
-      incr(dyn_used);
-#endif /* STAT */
-    }
-  }
-
+  fast_get_avail(lig_stack);
   font(lig_stack) = main_f;
   cur_l = cur_chr;
   character(lig_stack) = cur_l;
@@ -2178,22 +2165,7 @@ lab100:
 
 lab101:
   adjust_space_factor();
-
-  {
-    lig_stack = avail;
-
-    if (lig_stack == 0)
-      lig_stack = get_avail();
-    else
-    {
-      avail = mem[lig_stack].hh.rh;
-      mem[lig_stack].hh.rh = 0;
-#ifdef STAT
-      incr(dyn_used);
-#endif /* STAT */
-    }
-  }
-
+  fast_get_avail(lig_stack);
   font(lig_stack) = main_f;
   cur_r = cur_chr;
   character(lig_stack) = cur_r;
