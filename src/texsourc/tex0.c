@@ -518,7 +518,7 @@ void print_size_ (integer s)
     print_esc("scriptscriptfont");
 } 
 /* sec 1355 */
-void print_write_whatsit_(str_number s, halfword p)
+void print_write_whatsit_(str_number s, pointer p)
 {
   print_esc("");
   print(s);

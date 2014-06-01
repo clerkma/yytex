@@ -406,7 +406,7 @@ lab30:
   }
 }
 /* sec 1368 */
-void special_out_(halfword p)
+void special_out_(pointer p)
 {
   char old_setting;
   pool_pointer k;
@@ -445,7 +445,7 @@ void special_out_(halfword p)
   pool_ptr = str_start[str_ptr];
 }
 /* sec 1370 */
-void write_out_(halfword p)
+void write_out_(pointer p)
 {
   char old_setting;
 /*  integer oldmode;  */
@@ -505,7 +505,7 @@ void write_out_(halfword p)
   selector = old_setting;
 }
 /* sec 1373 */
-void out_what_(halfword p)
+void out_what_(pointer p)
 {
 /*  small_number j;  */
   int j;            /* 1995/Jan/7 */

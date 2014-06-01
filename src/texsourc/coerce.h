@@ -43,8 +43,8 @@ void print_file_name_(integer, integer, integer);
 #define print_file_name(n, a, e) print_file_name_((integer) (n), (integer) (a), (integer) (e))
 void print_size_(integer);
 #define print_size(s) print_size_((integer) (s))
-void print_write_whatsit_(str_number, halfword);
-#define print_write_whatsit(s, p) print_write_whatsit_((str_number) (s), (halfword) (p))
+void print_write_whatsit_(str_number, pointer);
+#define print_write_whatsit(s, p) print_write_whatsit_((str_number) (s), (pointer) (p))
 void jump_out(void);
 void error(void);
 void fatal_error_(char *);
@@ -87,7 +87,7 @@ scaled xn_over_d_(scaled, integer, integer);
 halfword badness_(scaled, scaled);
 #define badness(t, s) badness_((scaled) (t), (scaled) (s))
 void print_word_(memory_word);
-#define print_word(w) print_word_((memory_word) (w))
+#define print_word(w) print_word_((w))
 void show_token_list_(integer, integer, integer);
 #define show_token_list(p, q, l) show_token_list_((integer) (p), (integer) (q), (integer) (l))
 void runaway(void);
@@ -183,7 +183,7 @@ void primitive_(str_number, quarterword, halfword);
 void new_save_level_(group_code);
 #define new_save_level(c) new_save_level_((group_code) (c))
 void eq_destroy_(memory_word);
-#define eq_destroy(w) eq_destroy_((memory_word) (w))
+#define eq_destroy(w) eq_destroy_((w))
 void eq_save_(halfword, quarterword);
 #define eq_save(p, l) eq_save_((halfword) (p), (quarterword) (l))
 void eq_define_(halfword, quarterword, halfword);
@@ -294,18 +294,18 @@ void dvi_font_def_(internal_font_number);
 #define dvi_font_def(f) dvi_font_def_((internal_font_number) (f))
 void zmovement(scaled, eight_bits);
 #define movement(w, o) zmovement((scaled) (w), (eight_bits) (o))
-void special_out_(halfword);
-#define special_out(p) special_out_((halfword) (p))
+void special_out_(pointer);
+#define special_out(p) special_out_((pointer) (p))
 void hlist_out(void);
 void vlist_out(void);
 void ship_out_(halfword);
 #define ship_out(p) ship_out_((halfword) (p))
 void prune_movements_(integer);
 #define prune_movements(l) prune_movements_((integer) (l))
-void write_out_(halfword);
-#define write_out(p) write_out_((halfword) (p))
-void out_what_(halfword);
-#define out_what(p) out_what_((halfword) (p))
+void write_out_(pointer);
+#define write_out(p) write_out_((pointer) (p))
+void out_what_(pointer);
+#define out_what(p) out_what_((pointer) (p))
 void scan_spec_(group_code, boolean);
 #define scan_spec(c, threecodes) scan_spec_((group_code) (c), (boolean) (threecodes))
 halfword hpack_(halfword, scaled, small_number);
@@ -461,13 +461,13 @@ void push_math_(group_code);
 #define push_math(c) push_math_((group_code) (c))
 void init_math(void);
 void start_eq_no(void);
-void scan_math_(halfword);
-#define scan_math(p) scan_math_((halfword) (p))
+void scan_math_(pointer);
+#define scan_math(p) scan_math_((pointer) (p))
 void set_math_char_(integer);
 #define set_math_char(c) set_math_char_((integer) (c))
 void math_limit_switch(void);
-void scan_delimiter_(halfword, boolean);
-#define scan_delimiter(p, r) scan_delimiter_((halfword) (p), (boolean) (r))
+void scan_delimiter_(pointer, boolean);
+#define scan_delimiter(p, r) scan_delimiter_((pointer) (p), (boolean) (r))
 void math_radical(void);
 void math_ac(void);
 void append_choices(void);
@@ -514,14 +514,3 @@ void final_cleanup(void);
 void init_prim(void);
 void debug_help(void);
 int texbody(void);
-
-/*
- * The C compiler ignores most unnecessary casts (i.e., casts of something
- * to its own type).  However, for structures, it doesn't.  Therefore,
- * we have to redefine these two macros so that they don't try to cast
- * the argument (a memory_word) as a memory_word.
- */
-#undef  eq_destroy
-#define eq_destroy(x)  eq_destroy_(x)
-#undef  print_word
-#define print_word(x)  print_word_(x)

@@ -17,47 +17,6 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-/* texmfmem.h: the memory_word type, which is too hard to translate
-   automatically from Pascal.  We have to make sure the byte-swapping
-   that the (un)dumping routines do suffices to put things in the right
-   place in memory.
-
-   A memory_word can be broken up into a `two_halves' or a
-   `four_quarters', and a `two_halves' can be further broken up.  Here is
-   a picture.  ..._M = most significant byte, ..._L = least significant
-   byte.
-   
-   If BigEndian:
-   two_halves.v:  RH_M  RH_L  LH_M  LH_L
-   two_halves.u:  JNK1  JNK2    B0    B1
-   four_quarters:   B0    B1    B2    B3
-   
-   If LittleEndian:
-   two_halves.v:  LH_L  LH_M  RH_L  RH_M
-   two_halves.u:    B1    B0  JNK1  JNK2
-   four_quarters:   B3    B2    B1    B0
-   
-   The halfword fields are four bytes if we are building a TeX or MF;
-   this leads to further complications:
-   
-   BigEndian:
-   two_halves.v:  RH_MM RH_ML RH_LM RH_LL LH_MM LH_ML LH_LM LH_LL
-   two_halves.u:  ---------JUNK----------  B0    B1
-   four_quarters:   B0    B1    B2    B3
-
-   LittleEndian:
-   two_halves.v:  LH_LL LH_LM LH_ML LH_MM RH_LL RH_LM RH_ML RH_MM
-   two_halves.u:  junkx junky  B1    B0
-   four_quarters: ---------JUNK----------  B3    B2    B1    B0
-
-   I guess TeX and Metafont never refer to the B1 and B0 in the
-   four_quarters structure as the B1 and B0 in the two_halves.u structure.
-   
-   This file can't be part of texmf.h, because texmf.h gets included by
-   {tex,mf}d.h before the `halfword' etc. types are defined.  So we
-   include it from the change file instead.
-*/
-
 /*
   meaning      structure                      TeX                 Y&Y TeX
                ----------------------------------------------------------------------

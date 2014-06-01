@@ -83,7 +83,7 @@ void math_fraction (void)
 void math_left_right (void)
 {
   small_number t;
-  halfword p;
+  pointer p;
 
   t = cur_chr;
 
@@ -131,9 +131,9 @@ void after_math (void)
   boolean l;
   boolean danger;
   integer m;
-  halfword p;
-  halfword a;
-  halfword b;
+  pointer p;
+  pointer a;
+  pointer b;
   scaled w;
   scaled z;
   scaled e;
@@ -141,8 +141,8 @@ void after_math (void)
   scaled d;
   scaled s;
   small_number g1, g2;
-  halfword r;
-  halfword t;
+  pointer r;
+  pointer t;
 
   danger = false;
   
@@ -461,7 +461,7 @@ void trap_zero_glue (void)
 /* sec 1236 */
 void do_register_command_ (small_number a)
 {
-  halfword l, q, r, s;
+  pointer l, q, r, s;
   char p;
 
   q = cur_cmd;
@@ -733,7 +733,7 @@ void alter_box_dimen (void)
 /* sec 1257 */
 void new_font_(small_number a)
 {
-  halfword u;
+  pointer u;
   scaled s;
   internal_font_number f;
   str_number t;
@@ -1034,8 +1034,8 @@ void issue_message (void)
 /* sec 1288 */
 void shift_case (void)
 {
-  halfword b;
-  halfword p;
+  pointer b;
+  pointer p;
   halfword t;
   eight_bits c;
 
@@ -1064,7 +1064,7 @@ void shift_case (void)
 /* sec 1293 */
 void show_whatever (void)
 {
-  halfword p;
+  pointer p;
 
   switch (cur_chr)
   {
@@ -1163,7 +1163,7 @@ lab50:
 /* sec 1349 */
 void new_whatsit_(small_number s, small_number w)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(w);
   type(p) = whatsit_node;
@@ -1196,7 +1196,7 @@ void new_write_whatsit_(small_number w)
 void do_extension (void)
 {
   integer k;
-  halfword p;
+  pointer p;
 
   switch(cur_chr)
   {
