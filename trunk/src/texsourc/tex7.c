@@ -465,7 +465,7 @@ void report_illegal_case (void)
   error();
 }
 /* sec 1051 */
-bool privileged (void)
+boolean privileged (void)
 {
   if (mode > 0)
     return true;
@@ -476,7 +476,7 @@ bool privileged (void)
   }
 }
 /* sec 1054 */
-bool its_all_over (void)
+boolean its_all_over (void)
 {
   if (privileged ())
   {
@@ -716,7 +716,7 @@ void box_end_(integer box_context)
         }
       while(!((cur_cmd != spacer) && (cur_cmd != relax)));
 
-      if (((cur_cmd == hskip) && (abs(mode)!= vmode)) || ((cur_cmd == vskip) && (abs(mode) == vmode)))
+      if (((cur_cmd == hskip) && (abs(mode) != vmode)) || ((cur_cmd == vskip) && (abs(mode) == vmode)))
       {
         append_glue();
         subtype(tail) = box_context - (leader_flag - a_leaders);
@@ -919,7 +919,7 @@ small_number norm_min_ (integer h)
     return h;
 }
 /* sec 1091 */
-void new_graf_(bool indented)
+void new_graf_(boolean indented)
 {
   prev_graf = 0;
 
@@ -1773,7 +1773,7 @@ void math_limit_switch (void)
   error();
 }
 /* sec 1160 */
-void scan_delimiter_(halfword p, bool r)
+void scan_delimiter_(halfword p, boolean r)
 {
    if (r)
    {

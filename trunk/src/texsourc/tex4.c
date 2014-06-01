@@ -584,7 +584,7 @@ void hlist_out (void)
   halfword leader_box;
   scaled leader_wd;
   scaled lx;
-  bool outer_doing_leaders;
+  boolean outer_doing_leaders;
   scaled edge;
   real glue_temp;
   real cur_glue;
@@ -891,7 +891,7 @@ void vlist_out (void)
   halfword leader_box;
   scaled leader_ht;
   scaled lx;
-  bool outer_doing_leaders;
+  boolean outer_doing_leaders;
   scaled edge;
   real glue_temp;
   real cur_glue;
@@ -1299,7 +1299,7 @@ void ship_out_(halfword p)
     dvi_ship_out_(p);
 }
 /* sec 0645 */
-void scan_spec_(group_code c, bool three_codes)
+void scan_spec_(group_code c, boolean three_codes)
 {
   integer s;
   char spec_code;
@@ -1424,7 +1424,7 @@ lab21:
             {
               link(adjust_tail) = adjust_ptr(p);
 
-              while (link(adjust_tail)!= 0)
+              while (link(adjust_tail) != 0)
                 adjust_tail = link(adjust_tail);
 
               p = link(p);
@@ -2036,7 +2036,7 @@ halfword var_delimiter_(halfword d, small_number s, scaled v)
   eight_bits hd;
 /*  small_number z;  */
   int z;                  /* 95/Jan/7 */
-/*  bool large_attempt;  */
+/*  boolean large_attempt;  */
   int large_attempt;           /* 95/Jan/7 */
 
   f = null_font;

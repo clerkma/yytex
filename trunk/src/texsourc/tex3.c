@@ -22,11 +22,11 @@
 /* sec 0440 */
 void scan_int (void)
 {
-  bool negative;
+  boolean negative;
   integer m;
   small_number d;
-  bool vacuous;
-  bool OKsofar;
+  boolean vacuous;
+  boolean OKsofar;
 
   radix = 0;
   OKsofar = true;
@@ -158,9 +158,9 @@ lab30:;
     cur_val = - (integer) cur_val;
 }
 /* sec 0448 */
-void scan_dimen_(bool mu, bool inf, bool shortcut)
+void scan_dimen_(boolean mu, boolean inf, boolean shortcut)
 {
-  bool negative;
+  boolean negative;
   integer f;
   integer num, denom;
   small_number k, kk;
@@ -465,9 +465,9 @@ lab89:
 /* sec 0461 */
 void scan_glue_(small_number level)
 {
-  bool negative;
+  boolean negative;
   halfword q;
-  bool mu;
+  boolean mu;
 
   mu = (level == mu_val);
   negative = false;
@@ -620,7 +620,7 @@ halfword the_toks (void)
 
   if (cur_val_level >= ident_val)
   {
-    p = temp_head; 
+    p = temp_head;
     link(p) = 0;
 
     if (cur_val_level == ident_val)
@@ -629,7 +629,7 @@ halfword the_toks (void)
     {
       r = link(cur_val);
 
-      while (r != 0) /* while r<>null do l.9178 */
+      while (r != 0)
       {
         fast_store_new_token(info(r));
         r = link(r);
@@ -761,7 +761,7 @@ void conv_toks (void)
   begin_token_list(link(temp_head), 4);
 }
 /* sec 0473 */
-halfword scan_toks_(bool macrodef, bool xpand)
+halfword scan_toks_(boolean macrodef, boolean xpand)
 {
   register halfword Result;
   halfword t;
@@ -1110,7 +1110,7 @@ void change_if_limit_(small_number l, halfword p)
 /* sec 0498 */
 void conditional (void)
 {
-  bool b;
+  boolean b;
   char r;
   integer m, n;
   halfword p, q;
@@ -1434,7 +1434,7 @@ void begin_name (void)
 /* We assume tilde has been converted to pseudo_tilde and space to pseudo_space */
 /* returns false if it is given a space character - end of file name */
 /* sec 0516 */
-bool more_name_(ASCII_code c)
+boolean more_name_(ASCII_code c)
 {
   if (quoted_file_name == 0 && c == ' ')
     return false;
@@ -2160,7 +2160,7 @@ void job_name_append (void)
 /* sec 0537 */
 void start_input(void)
 {
-  bool added_extension = false;
+  boolean added_extension = false;
 
   scan_file_name();
   pack_file_name(cur_name, cur_area, cur_ext); 
@@ -2296,7 +2296,7 @@ void show_tex_fonts (void)
 internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)
 {
   font_index k;
-  bool file_opened;
+  boolean file_opened;
   halfword lf, lh, nw, nh, nd, ni, nl, nk, ne, np;
   int bc, ec;
   internal_font_number f;
@@ -2478,7 +2478,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
       case list_tag:
         {
           {
-            if ((d < bc)||(d > ec))
+            if ((d < bc) || (d > ec))
               goto lab11;
           }
 

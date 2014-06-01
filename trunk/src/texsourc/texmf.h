@@ -37,7 +37,7 @@ typedef FILE * byte_file;
 typedef FILE * word_file;
 
 /* Read a line of input as quickly as possible.  */
-extern bool input_line (FILE *);
+extern boolean input_line (FILE *);
 #define input_ln(stream, flag) input_line(stream)
 
 /* `b_open_in' (and out) is used only for reading (and writing) .tfm
@@ -129,4 +129,4 @@ extern int do_undump (char *, int, int, FILE *);
 /* Declare routines in texmf.c.  */
 extern void get_date_and_time();
 extern void t_open_in();
-extern bool input_line();
+extern boolean input_line();

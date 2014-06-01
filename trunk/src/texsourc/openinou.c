@@ -172,9 +172,9 @@ void retwiddle (unsigned char *s)
 }
 
 /* in lib/openclose.c */
-bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
+boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 {
-  bool openable = false;
+  boolean openable = false;
   char * file_name = NULL;
 
 #if defined (FUNNY_CORE_DUMP) && !defined (BibTeX)
@@ -352,7 +352,7 @@ int check_fclose (FILE * f)
 }
 
 // open_output moved down here to avoid potential pragma problem
-bool open_output (FILE **f, char *fopen_mode)
+boolean open_output (FILE **f, char *fopen_mode)
 {
   unsigned temp_length;
 

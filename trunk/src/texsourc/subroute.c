@@ -63,7 +63,7 @@ integer zround (double r)
   return i;
 }
 // texk/web2c/lib/eofeoln.c
-bool eoln (FILE * file)
+boolean eoln (FILE * file)
 {
   register int c;
 

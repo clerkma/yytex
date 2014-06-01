@@ -128,8 +128,8 @@ void math_left_right (void)
 /* sec 1194 */
 void after_math (void)
 {
-  bool l;
-  bool danger;
+  boolean l;
+  boolean danger;
   integer m;
   halfword p;
   halfword a;

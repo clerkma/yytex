@@ -870,7 +870,7 @@ void begin_diagnostic (void)
   }
 }
 /* sec 0245 */
-void end_diagnostic_(bool blankline)
+void end_diagnostic_(boolean blankline)
 {
   print_nl("");
 

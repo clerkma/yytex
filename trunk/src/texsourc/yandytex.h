@@ -62,7 +62,6 @@
 
 typedef long long   integer;
 typedef double      glue_ratio;
-typedef boolean     bool;
 typedef double      real;
 typedef FILE *      alpha_file;
 typedef unsigned char  ASCII_code;
@@ -105,9 +104,9 @@ typedef enum
 #define MAXLINE 256
 
 extern integer zround (double);
-extern bool eoln (FILE * file);
-extern bool open_input (FILE **f, path_constant_type path_index, char *fopen_mode);
-extern bool open_output (FILE **f, char *fopen_mode);
+extern boolean eoln (FILE * file);
+extern boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode);
+extern boolean open_output (FILE **f, char *fopen_mode);
 extern int check_fclose (FILE * f);
 
 #define show_line(str,flag) fputs(str,stdout)

@@ -26,7 +26,7 @@ void give_err_help (void)
   token_show(err_help);
 }
 /* sec 0524 */
-bool open_fmt_file (void)
+boolean open_fmt_file (void)
 {
   integer j;
 

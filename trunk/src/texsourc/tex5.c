@@ -669,7 +669,7 @@ small_number make_left_right_(halfword q, small_number style, scaled max_d, scal
 void mlist_to_hlist (void)
 {
   halfword mlist;
-  bool penalties;
+  boolean penalties;
   small_number style;
   small_number save_style;
   halfword q;
@@ -1878,7 +1878,7 @@ void fin_align (void)
 /* Moved down here 96/Oct/12 in response to problem with texerror.tex */
 /* pragma optimize("a", off) not strong enough - this may slow things */
 /* sec 0791 */
-bool fin_col (void)
+boolean fin_col (void)
 {
   halfword p;
   halfword q, r;
