@@ -957,7 +957,7 @@ void open_or_close_in (void)
 
     if ((cur_ext != 335) && a_open_in(read_file[n], TEXINPUTPATH))
       read_open[n] = 1;
-    else if ((cur_ext != 785) && (name_length + 5 < PATHMAX))
+    else if ((cur_ext != 785) && (name_length + 5 < PATH_MAX))
     {
       strncpy((char *) name_of_file + name_length + 1, ".tex ", 5);
       name_length = name_length + 4;

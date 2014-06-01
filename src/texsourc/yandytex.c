@@ -31,8 +31,8 @@
 extern char * replacement[];
 
 /* The main program, etc.  */
+/* What we were invoked as and with. */
 
-/* What we were invoked as and with.  */
 static char *program_name = NULL;
 int    gargc;   /* number of args - set to zero after initialization */
 char **gargv;   /* char *gargv[] -- bkph ? */
@@ -44,7 +44,7 @@ int main_init(int, char **);     /* in local.c */
 
 int jump_used = 0;
 
-jmp_buf jumpbuffer;   // for non-local jumps
+jmp_buf jumpbuffer;
 
 int main (int ac, char *av[])
 {
@@ -244,8 +244,7 @@ void get_date_and_time (integer *sys_minutes,
   }
 }
 
-/* I/O for TeX and Metafont.  */ /* give file name ? */
-
+/* I/O for TeX and Metafont.  */
 void complain_line (FILE *output)
 {
   show_line("\n", 0);
@@ -562,9 +561,8 @@ boolean input_line (FILE *f)
   return input_line_finish();
 }
 
-
 /* This string specifies what the `e' option does in response to an
-   error message.  */ 
+   error message.  */
 
 static char *edit_value = "c:\\yandy\\WinEdt\\WinEdt.exe [Open('%s');SelLine(%d,7)]";
 
@@ -753,7 +751,6 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
   uexit(1);
 }
 
-
 /* Read and write format (for TeX) or base (for Metafont) files.  In
    tex.web, these files are architecture dependent; specifically,
    BigEndian and LittleEndian architectures produce different files.
@@ -888,7 +885,6 @@ int do_undump (char *p, int item_size, int nitems, FILE *in_file)
   return 0;
 }
 
-
 #ifdef FUNNY_CORE_DUMP
 /* This procedure is due to chris@mimsy.umd.edu.  It makes a core dump
    without any sort of error status (abort(2) does return an error status,

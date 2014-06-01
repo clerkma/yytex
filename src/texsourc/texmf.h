@@ -23,18 +23,16 @@
 
 #include "yandytex.h"
 
-#ifdef _MSC_VER
-  #define INLINE __inline
-#else
-  #define INLINE inline
-#endif
+enum {
+  out_dvi_flag = (1 << 0),
+  out_pdf_flag = (1 << 1),
+  out_xdv_flag = (1 << 2),
+};
+
+#define INLINE inline
 
 #define dump_file  fmt_file
 #define out_file   dvi_file
-
-/* File types. */
-typedef FILE * byte_file;
-typedef FILE * word_file;
 
 /* Read a line of input as quickly as possible.  */
 extern boolean input_line (FILE *);
@@ -127,6 +125,4 @@ extern int do_undump (char *, int, int, FILE *);
 /* these, of course are useless definitions since parameters not given */
 
 /* Declare routines in texmf.c.  */
-extern void get_date_and_time();
 extern void t_open_in();
-extern boolean input_line();

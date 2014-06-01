@@ -1664,7 +1664,7 @@ void pack_file_name_(str_number n, str_number a, str_number e)
     c = str_pool[j];
     incr(k);
 
-    if (k <= PATHMAX)
+    if (k <= PATH_MAX)
       name_of_file[k] = xchr[c];
   }
 
@@ -1673,7 +1673,7 @@ void pack_file_name_(str_number n, str_number a, str_number e)
     c = str_pool[j];
     incr(k);
 
-    if (k <= PATHMAX)
+    if (k <= PATH_MAX)
       name_of_file[k] = xchr[c];
   }
 
@@ -1682,20 +1682,20 @@ void pack_file_name_(str_number n, str_number a, str_number e)
     c = str_pool[j];
     incr(k);
 
-    if (k <= PATHMAX)
+    if (k <= PATH_MAX)
       name_of_file[k] = xchr[c];
   }
 
-  if (k < PATHMAX)
+  if (k < PATH_MAX)
     name_length = k;
   else
-    name_length = PATHMAX - 1;
+    name_length = PATH_MAX - 1;
 
 /*  pad it out with spaces ... what for ? in case we modify and forget  ? */
-  for (k = name_length + 1; k <= PATHMAX; k++)
+  for (k = name_length + 1; k <= PATH_MAX; k++)
     name_of_file[k] = ' ';
 
-  name_of_file[PATHMAX] = '\0';    /* paranoia 94/Mar/24 */
+  name_of_file[PATH_MAX] = '\0';    /* paranoia 94/Mar/24 */
 
   {
     name_of_file [name_length+1] = '\0';
@@ -1719,8 +1719,8 @@ void pack_buffered_name_(small_number n, integer a, integer b)
   ASCII_code c;
   integer j;
 
-  if (n + b - a + 5 > PATHMAX)
-    b = a + PATHMAX - n - 5;
+  if (n + b - a + 5 > PATH_MAX)
+    b = a + PATH_MAX - n - 5;
 
   k = 0;
 
@@ -1730,7 +1730,7 @@ void pack_buffered_name_(small_number n, integer a, integer b)
     c = xord[TEX_format_default[j]];
     incr(k);
 
-    if (k <= PATHMAX)
+    if (k <= PATH_MAX)
       name_of_file[k] = xchr[c];
   }
 /*  This loop kicks in when we want a specififed format name */
@@ -1739,7 +1739,7 @@ void pack_buffered_name_(small_number n, integer a, integer b)
     c = buffer[j];
     incr(k);
 
-    if (k <= PATHMAX)
+    if (k <= PATH_MAX)
       name_of_file[k] = xchr[c];
   }
 
@@ -1749,20 +1749,20 @@ void pack_buffered_name_(small_number n, integer a, integer b)
     c = xord[TEX_format_default[j]];
     incr(k);
 
-    if (k <= PATHMAX)
+    if (k <= PATH_MAX)
       name_of_file[k] = xchr[c];
   }
 
-  if (k < PATHMAX)
+  if (k < PATH_MAX)
     name_length = k;
   else
-    name_length = PATHMAX - 1;
+    name_length = PATH_MAX - 1;
 
  /*  pad it out with spaces ... what for ? */
-  for (k = name_length + 1; k <= PATHMAX; k++)
+  for (k = name_length + 1; k <= PATH_MAX; k++)
     name_of_file[k]= ' ';
 
-  name_of_file[PATHMAX] = '\0';    /* paranoia 94/Mar/24 */
+  name_of_file[PATH_MAX] = '\0';    /* paranoia 94/Mar/24 */
 }
 /* sec 0525 */
 str_number make_name_string (void)
@@ -2173,7 +2173,7 @@ void start_input(void)
     if ((cur_ext != 335) && a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
       goto lab30;
 
-    if ((cur_ext != 785) && (name_length + 5 < PATHMAX))
+    if ((cur_ext != 785) && (name_length + 5 < PATH_MAX))
     {
       name_of_file[name_length + 1] = '.';
       name_of_file[name_length + 2] = 't';

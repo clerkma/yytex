@@ -2440,7 +2440,7 @@ int texbody (void)
   if (cs_token_flag + undefined_control_sequence > max_halfword)
     bad = 21;
 
-  if (format_default_length > PATHMAX)
+  if (format_default_length > PATH_MAX)
     bad = 31;
 
   if (max_halfword < (mem_top - mem_min) / 2)
