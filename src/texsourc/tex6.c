@@ -81,7 +81,7 @@ void try_break_ (integer pi, small_number break_type)
   halfword r;
   halfword prev_r;
   halfword old_l;
-  bool no_break_yet;
+  boolean no_break_yet;
   halfword prev_prev_r;
   halfword s;
   halfword q;
@@ -89,12 +89,12 @@ void try_break_ (integer pi, small_number break_type)
   integer t;
   internal_font_number f;
   halfword l;
-  bool node_r_stays_active;
+  boolean node_r_stays_active;
   scaled line_width;
   char fit_class;
   halfword b;       /* current badness */
   integer d;
-  bool artificial_demerits;
+  boolean artificial_demerits;
   halfword save_link;
   scaled shortfall;
 
@@ -595,8 +595,8 @@ lab10:
 void post_line_break_(integer final_widow_penalty)
 {
   halfword q, r, s;
-  bool disc_break;
-  bool post_disc_break;
+  boolean disc_break;
+  boolean post_disc_break;
   scaled cur_width;
   scaled cur_indent;
   quarterword t;
@@ -1950,7 +1950,7 @@ void fire_up_(halfword c)
   halfword prev_p;
 /*  unsigned char n;  */
   unsigned int n;         /* 95/Jan/7 */
-  bool wait;
+  boolean wait;
   integer save_vbadness;
   scaled save_vfuzz;
   halfword save_split_top_skip;

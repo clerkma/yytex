@@ -105,26 +105,8 @@ typedef union
 {
   glue_ratio gr;
   two_halves hh;
-#ifdef WORDS_BIGENDIAN
   integer cint;
   four_quarters qqqq;
-#else /* not WORDS_BIGENDIAN */
-  struct
-  {
-#if defined (TeX) && !defined (SMALLTeX) || !defined (TeX) && !defined (SMALLMF)
-    halfword junk;
-#endif /* big TeX or big MF */
-    integer CINT;
-  } u;
-
-  struct
-  {
-#if defined (TeX) && !defined (SMALLTeX) || !defined (TeX) && !defined (SMALLMF)
-    halfword junk;
-#endif /* big TeX or big MF */
-    four_quarters QQQQ;
-  } v;
-#endif /* not WORDS_BIGENDIAN */
 } memory_word;
 
 #ifndef WORDS_BIGENDIAN

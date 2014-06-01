@@ -19,8 +19,8 @@
 
 #include "texd.h"
 
-bool pdf_doing_string;
-bool pdf_doing_text;
+boolean pdf_doing_string;
+boolean pdf_doing_text;
 static integer ten_pow[10] =
 {
   1,
@@ -249,7 +249,7 @@ scaled divide_scaled(scaled s, scaled m, integer dd)
 }
 scaled round_xn_over_d(scaled x, integer n, integer d)
 {
-  bool positive;
+  boolean positive;
   nonnegative_integer t, u, v;
 
   if (x >= 0)
@@ -554,7 +554,7 @@ void pdf_hlist_out (void)
   halfword leader_box;
   scaled leader_wd;
   scaled lx;
-  bool outer_doing_leaders;
+  boolean outer_doing_leaders;
   scaled edge;
   real glue_temp;
   real cur_glue;
@@ -819,7 +819,7 @@ void pdf_vlist_out (void)
   halfword leader_box;
   scaled leader_ht;
   scaled lx;
-  bool outer_doing_leaders;
+  boolean outer_doing_leaders;
   scaled edge;
   real glue_temp;
   real cur_glue;

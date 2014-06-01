@@ -53,13 +53,13 @@ void overflow_(char *, integer);
 #define overflow(s, n) overflow_((char *) (s), (integer) (n))
 void confusion_(char *);
 #define confusion(s) confusion_((char *) (s))
-bool init_terminal(void);
+boolean init_terminal(void);
 str_number make_string(void);
-bool str_eq_buf_(str_number, integer);
+boolean str_eq_buf_(str_number, integer);
 #define str_eq_buf(s, k) str_eq_buf_((str_number) (s), (integer) (k))
-bool str_eq_str_(str_number, str_number);
+boolean str_eq_str_(str_number, str_number);
 #define str_eq_str(s, t) str_eq_str_((str_number) (s), (str_number) (t))
-bool get_strings_started(void);
+boolean get_strings_started(void);
 void print_two_(integer);
 #define print_two(n) print_two_((integer) (n))
 void print_hex_(integer);
@@ -120,8 +120,8 @@ halfword new_kern_(scaled);
 #define new_kern(w) new_kern_((scaled) (w))
 halfword new_penalty_(integer);
 #define new_penalty(m) new_penalty_((integer) (m))
-void check_mem_(bool);
-#define check_mem(printlocs) check_mem_((bool) (printlocs))
+void check_mem_(boolean);
+#define check_mem(printlocs) check_mem_((boolean) (printlocs))
 void search_mem_(halfword);
 #define search_mem(p) search_mem_((halfword) (p))
 void short_display_(integer);
@@ -166,8 +166,8 @@ void show_activities(void);
 void print_param_(integer);
 #define print_param(n) print_param_((integer) (n))
 void begin_diagnostic(void);
-void end_diagnostic_(bool);
-#define end_diagnostic(blankline) end_diagnostic_((bool) (blankline))
+void end_diagnostic_(boolean);
+#define end_diagnostic(blankline) end_diagnostic_((boolean) (blankline))
 void print_length_param_(integer);
 #define print_length_param(n) print_length_param_((integer) (n))
 void print_cmd_chr_(quarterword, halfword);
@@ -225,8 +225,8 @@ void get_x_token(void);
 void x_token(void);
 void scan_left_brace(void);
 void scan_optional_equals(void);
-bool scan_keyword_(char *);
-#define scan_keyword(s) scan_keyword_((char *) (s))
+boolean scan_keyword_(const char *);
+#define scan_keyword(s) scan_keyword_((const char *) (s))
 void mu_error(void);
 void scan_eight_bit_int(void);
 void scan_char_num(void);
@@ -234,13 +234,13 @@ void scan_four_bit_int(void);
 void scan_fifteen_bit_int(void);
 void scan_twenty_seven_bit_int(void);
 void scan_font_ident(void);
-void find_font_dimen_(bool);
-#define find_font_dimen(writing) find_font_dimen_((bool) (writing))
-void scan_something_internal_(small_number, bool);
-#define scan_something_internal(level, negative) scan_something_internal_((small_number) (level), (bool) (negative))
+void find_font_dimen_(boolean);
+#define find_font_dimen(writing) find_font_dimen_((boolean) (writing))
+void scan_something_internal_(small_number, boolean);
+#define scan_something_internal(level, negative) scan_something_internal_((small_number) (level), (boolean) (negative))
 void scan_int(void);
 void scan_dimen_(bool, bool, bool);
-#define scan_dimen(mu, inf, shortcut) scan_dimen_((bool) (mu), (bool) (inf), (bool) (shortcut))
+#define scan_dimen(mu, inf, shortcut) scan_dimen_((boolean) (mu), (boolean) (inf), (boolean) (shortcut))
 void scan_glue_(small_number);
 #define scan_glue(level) scan_glue_((small_number) (level))
 halfword scan_rule_spec(void);
@@ -250,7 +250,7 @@ halfword the_toks(void);
 void ins_the_toks(void);
 void conv_toks(void);
 halfword scan_toks_(bool, bool);
-#define scan_toks(macrodef, xpand) scan_toks_((bool) (macrodef), (bool) (xpand))
+#define scan_toks(macrodef, xpand) scan_toks_((boolean) (macrodef), (boolean) (xpand))
 void read_toks_(integer, halfword);
 #define read_toks(n, r) read_toks_((integer) (n), (halfword) (r))
 void pass_text(void);
@@ -258,7 +258,7 @@ void change_if_limit_(small_number, halfword);
 #define change_if_limit(l, p) change_if_limit_((small_number) (l), (halfword) (p))
 void conditional(void);
 void begin_name(void);
-bool more_name_(ASCII_code);
+boolean more_name_(ASCII_code);
 #define more_name(c) more_name_((ASCII_code) (c))
 void end_name(void);
 void pack_file_name_(str_number, str_number, str_number);
@@ -276,7 +276,7 @@ void scan_file_name(void);
 void pack_job_name_(str_number);
 #define pack_job_name(s) pack_job_name_(make_string_pool((char*)s))
 void prompt_file_name_(char *, str_number);
-#define prompt_file_name(s, e) prompt_file_name_((char *) s, make_string_pool((char*)e))
+#define prompt_file_name(s, e) prompt_file_name_((char *) s, make_string_pool((char*) e))
 void open_log_file(void);
 void start_input(void);
 internal_font_number read_font_info_(halfword, str_number, str_number, scaled);
@@ -306,8 +306,8 @@ void write_out_(halfword);
 #define write_out(p) write_out_((halfword) (p))
 void out_what_(halfword);
 #define out_what(p) out_what_((halfword) (p))
-void scan_spec_(group_code, bool);
-#define scan_spec(c, threecodes) scan_spec_((group_code) (c), (bool) (threecodes))
+void scan_spec_(group_code, boolean);
+#define scan_spec(c, threecodes) scan_spec_((group_code) (c), (boolean) (threecodes))
 halfword hpack_(halfword, scaled, small_number);
 #define hpack(p, w, m) hpack_((halfword) (p), (scaled) (w), (small_number) (m))
 halfword vpackage_(halfword, scaled, small_number, scaled);
@@ -371,7 +371,7 @@ void init_span_(halfword);
 #define init_span(p) init_span_((halfword) (p))
 void init_row(void);
 void init_col(void);
-bool fin_col(void);
+boolean fin_col(void);
 void fin_row(void);
 void fin_align(void);
 void align_peek(void);
@@ -421,8 +421,8 @@ void app_space(void);
 void insert_dollar_sign(void);
 void you_cant(void);
 void report_illegal_case(void);
-bool privileged(void);
-bool its_all_over(void);
+boolean privileged(void);
+boolean its_all_over(void);
 void append_glue(void);
 void append_kern(void);
 void off_save(void);
@@ -438,8 +438,8 @@ void package_(small_number);
 #define package(c) package_((small_number) (c))
 small_number norm_min_(integer);
 #define norm_min(h) norm_min_((integer) (h))
-void new_graf_(bool);
-#define new_graf(indented) new_graf_((bool) (indented))
+void new_graf_(boolean);
+#define new_graf(indented) new_graf_((boolean) (indented))
 void indent_in_hmode(void);
 void head_for_vmode(void);
 void end_graf(void);
@@ -466,8 +466,8 @@ void scan_math_(halfword);
 void set_math_char_(integer);
 #define set_math_char(c) set_math_char_((integer) (c))
 void math_limit_switch(void);
-void scan_delimiter_(halfword, bool);
-#define scan_delimiter(p, r) scan_delimiter_((halfword) (p), (bool) (r))
+void scan_delimiter_(halfword, boolean);
+#define scan_delimiter(p, r) scan_delimiter_((halfword) (p), (boolean) (r))
 void math_radical(void);
 void math_ac(void);
 void append_choices(void);
@@ -507,8 +507,8 @@ void fix_language(void);
 void handle_right_brace(void);
 void main_control(void);
 void give_err_help(void);
-bool open_fmt_file(void);
-bool load_fmt_file(void);
+boolean open_fmt_file(void);
+boolean load_fmt_file(void);
 void close_files_and_terminate(void);
 void final_cleanup(void);
 void init_prim(void);

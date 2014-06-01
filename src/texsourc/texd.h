@@ -28,7 +28,6 @@
 #include "texmf.h"
 
 // #define max_halfword 65535L  /* for 32 bit memory word */
-// #define max_halfword 262143L /* for 36 bit memory word */
 #define min_halfword -2147483647L /* for 64 bit memory word (signed) */
 #define max_halfword  2147483647L /* for 64 bit memory word (signed) */
 
@@ -197,8 +196,7 @@ typedef integer dvi_index;
 /* sec 0920 */
 typedef integer trie_op_code;
 /* sec 0925 */
-typedef integer trie_pointer; 
-/* typedef short hyph_pointer; */
+typedef integer trie_pointer;
 typedef integer hyph_pointer;
 
 EXTERN integer bad;
@@ -238,16 +236,16 @@ EXTERN ASCII_code trick_buf[error_line + 1];
 EXTERN integer trick_count;
 EXTERN integer first_count;
 EXTERN int interaction;
-EXTERN bool deletions_allowed;
-EXTERN bool set_box_allowed;
+EXTERN boolean deletions_allowed;
+EXTERN boolean set_box_allowed;
 EXTERN int history;
 EXTERN int error_count;
 EXTERN char * help_line[6];
 EXTERN int help_ptr;
-EXTERN bool use_err_help;
-EXTERN volatile integer interrupt;  /* bkph - do avoid compiler optimization */
-EXTERN bool OK_to_interrupt;
-EXTERN bool arith_error;
+EXTERN boolean use_err_help;
+EXTERN volatile integer interrupt;
+EXTERN boolean OK_to_interrupt;
+EXTERN boolean arith_error;
 EXTERN scaled tex_remainder;
 EXTERN halfword temp_ptr;
 
@@ -286,7 +284,7 @@ EXTERN halfword rover;
 #ifdef ALLOCATEMAIN
   EXTERN char *zzzac;
 #else
-/* EXTERN bool */   /* save (4 - 1) * mem_max - mem_min */
+/* EXTERN boolean */   /* save (4 - 1) * mem_max - mem_min */
 EXTERN char
 /* #define wasfree (zzzac - (int)(mem_min)) */
 #define wasfree (zzzac - (int)(mem_bot))
@@ -295,7 +293,7 @@ EXTERN char
 #endif
 
 EXTERN halfword was_mem_end, was_lo_max, was_hi_min;
-EXTERN bool panicking;
+EXTERN boolean panicking;
 #endif /* DEBUG */
 
 EXTERN integer font_in_short_display;
@@ -359,7 +357,7 @@ EXTERN quarterword zzzad[844];
 #endif
 
 EXTERN halfword hash_used;
-EXTERN bool no_new_control_sequence;
+EXTERN boolean no_new_control_sequence;
 EXTERN integer cs_count;
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -441,7 +439,7 @@ EXTERN integer align_state;
 EXTERN integer base_ptr;
 EXTERN halfword par_loc;
 EXTERN halfword par_token;
-EXTERN bool force_eof;
+EXTERN boolean force_eof;
 EXTERN halfword cur_mark[6];
 EXTERN int long_state;
 EXTERN halfword pstack[10];
@@ -463,9 +461,9 @@ EXTERN pool_pointer area_delimiter;
 EXTERN pool_pointer ext_delimiter;
 EXTERN integer format_default_length;
 EXTERN char * TEX_format_default;
-EXTERN bool name_in_progress;
-EXTERN bool log_opened;
-EXTERN bool quoted_file_name;
+EXTERN boolean name_in_progress;
+EXTERN boolean log_opened;
+EXTERN boolean quoted_file_name;
 EXTERN str_number job_name;
 EXTERN str_number output_file_name;
 EXTERN str_number texmf_log_name;
@@ -494,7 +492,7 @@ EXTERN str_number font_area[font_max + 1];
 EXTERN eight_bits font_bc[font_max + 1];
 EXTERN eight_bits font_ec[font_max + 1];
 EXTERN halfword font_glue[font_max + 1];
-EXTERN bool font_used[font_max + 1];
+EXTERN boolean font_used[font_max + 1];
 EXTERN integer hyphen_char[font_max + 1];
 EXTERN integer skew_char[font_max + 1];
 EXTERN font_index bchar_label[font_max + 1];
@@ -518,7 +516,7 @@ EXTERN scaled max_h;
 EXTERN integer max_push;
 EXTERN integer last_bop;
 EXTERN integer dead_cycles;
-EXTERN bool doing_leaders;
+EXTERN boolean doing_leaders;
 EXTERN int c, f;
 EXTERN scaled rule_ht, rule_dp, rule_wd;
 EXTERN halfword g;
@@ -549,7 +547,7 @@ EXTERN halfword cur_mlist;
 EXTERN int cur_style;
 EXTERN int cur_size;
 EXTERN scaled cur_mu;
-EXTERN bool mlist_penalties;
+EXTERN boolean mlist_penalties;
 EXTERN internal_font_number cur_f;
 EXTERN int cur_c;
 EXTERN four_quarters cur_i;
@@ -567,10 +565,10 @@ EXTERN scaled active_width[8];
 EXTERN scaled cur_active_width[8];
 EXTERN scaled background[8];
 EXTERN scaled break_width[8];
-EXTERN bool no_shrink_error_yet;
+EXTERN boolean no_shrink_error_yet;
 EXTERN halfword cur_p;
-EXTERN bool second_pass;
-EXTERN bool final_pass;
+EXTERN boolean second_pass;
+EXTERN boolean final_pass;
 EXTERN integer threshold;
 EXTERN integer minimal_demerits[4];
 EXTERN integer minimum_demerits;
@@ -600,14 +598,14 @@ EXTERN integer init_l_hyf, init_r_hyf;
 EXTERN halfword hyfbchar;
 EXTERN char hyf[68];
 EXTERN halfword init_list;
-EXTERN bool init_lig;
-EXTERN bool init_lft;
+EXTERN boolean init_lig;
+EXTERN boolean init_lft;
 EXTERN int hyphen_passed;
 EXTERN int cur_l, cur_r;
 EXTERN halfword cur_q;
 EXTERN halfword lig_stack;
-EXTERN bool ligature_present;
-EXTERN bool lft_hit, rt_hit;
+EXTERN boolean ligature_present;
+EXTERN boolean lft_hit, rt_hit;
 
 #ifdef ALLOCATETRIES
   EXTERN halfword * trie_trl;
@@ -671,12 +669,12 @@ EXTERN trie_op_code max_op_used;
   #ifdef ALLOCATEINI
     EXTERN char *trie_taken;
   #else
-    EXTERN bool trie_taken[trie_size + 1];
+    EXTERN boolean trie_taken[trie_size + 1];
   #endif
 
   EXTERN trie_pointer trie_min[256];
   EXTERN trie_pointer trie_max;
-  EXTERN bool trie_not_ready;
+  EXTERN boolean trie_not_ready;
 #endif /* INITEX */
 
 EXTERN scaled best_height_plus_depth;
@@ -739,7 +737,7 @@ EXTERN halfword last_glue;
 EXTERN integer last_penalty;
 EXTERN scaled last_kern;
 EXTERN integer insert_penalties;
-EXTERN bool output_active;
+EXTERN boolean output_active;
 EXTERN internal_font_number main_f;
 
 EXTERN four_quarters main_i;
@@ -750,11 +748,11 @@ EXTERN halfword main_p;
 EXTERN integer main_s;
 EXTERN halfword bchar;
 EXTERN halfword false_bchar;
-EXTERN bool cancel_boundary;
-EXTERN bool ins_disc;
+EXTERN boolean cancel_boundary;
+EXTERN boolean ins_disc;
 EXTERN halfword cur_box;
 EXTERN halfword after_token;
-EXTERN bool long_help_seen;
+EXTERN boolean long_help_seen;
 EXTERN str_number format_ident;
 EXTERN word_file fmt_file;
 EXTERN gzFile gz_fmt_file;
@@ -762,7 +760,7 @@ EXTERN gzFile gz_fmt_file;
 EXTERN integer ready_already;
 /* sec 1342 */
 EXTERN alpha_file write_file[16];
-EXTERN bool write_open[18];
+EXTERN boolean write_open[18];
 /* sec 1345 */
 EXTERN halfword write_loc;
 EXTERN pool_pointer edit_name_start;
@@ -770,30 +768,30 @@ EXTERN integer edit_name_length, edit_line;
 EXTERN int tfm_temp;
 
 /* new stuff defined in local.c - bkph */
-EXTERN bool is_initex;
-EXTERN bool verbose_flag;
-EXTERN bool trace_flag;
-EXTERN bool debug_flag;
-EXTERN bool open_trace_flag;
-EXTERN bool knuth_flag;
-EXTERN bool no_interrupts;
-EXTERN bool c_style_flag;
-EXTERN bool non_ascii;
-EXTERN bool key_replace;
-EXTERN bool deslash;
-EXTERN bool trimeof;
-EXTERN bool allow_patterns;
-EXTERN bool show_fonts_used;
-EXTERN bool reset_exceptions;
-EXTERN bool show_current;
-EXTERN bool return_flag;
-EXTERN bool want_version;
-EXTERN bool civilize_flag;
-EXTERN bool show_numeric;
-EXTERN bool restrict_to_ascii;
-EXTERN bool show_missing;
-EXTERN bool full_file_name_flag;
-EXTERN bool save_strings_flag;
+EXTERN boolean is_initex;
+EXTERN boolean verbose_flag;
+EXTERN boolean trace_flag;
+EXTERN boolean debug_flag;
+EXTERN boolean open_trace_flag;
+EXTERN boolean knuth_flag;
+EXTERN boolean no_interrupts;
+EXTERN boolean c_style_flag;
+EXTERN boolean non_ascii;
+EXTERN boolean key_replace;
+EXTERN boolean deslash;
+EXTERN boolean trimeof;
+EXTERN boolean allow_patterns;
+EXTERN boolean show_fonts_used;
+EXTERN boolean reset_exceptions;
+EXTERN boolean show_current;
+EXTERN boolean return_flag;
+EXTERN boolean want_version;
+EXTERN boolean civilize_flag;
+EXTERN boolean show_numeric;
+EXTERN boolean restrict_to_ascii;
+EXTERN boolean show_missing;
+EXTERN boolean full_file_name_flag;
+EXTERN boolean save_strings_flag;
 EXTERN int mem_initex;
 EXTERN int mem_extra_high;
 EXTERN int mem_extra_low;
@@ -803,9 +801,9 @@ EXTERN int show_in_hex;
 EXTERN int show_in_dos;
 EXTERN int show_fmt_flag;
 EXTERN int show_tfm_flag;
-EXTERN bool show_texinput_flag;
-EXTERN bool truncate_long_lines;
-EXTERN bool show_cs_names;
+EXTERN boolean show_texinput_flag;
+EXTERN boolean truncate_long_lines;
+EXTERN boolean show_cs_names;
 EXTERN int tab_step;
 EXTERN int pseudo_tilde;
 EXTERN int pseudo_space;
@@ -815,9 +813,9 @@ EXTERN char * format_file;
 EXTERN char * source_direct;
 EXTERN char * format_name;
 EXTERN char * encoding_name;
-EXTERN bool format_specific;
-EXTERN bool encoding_specific;
-EXTERN bool show_line_break_stats;
+EXTERN boolean format_specific;
+EXTERN boolean encoding_specific;
+EXTERN boolean show_line_break_stats;
 EXTERN int first_pass_count;
 EXTERN int second_pass_count;
 EXTERN int final_pass_count;
@@ -830,7 +828,7 @@ EXTERN int single_line;
 EXTERN FILE * errout;
 EXTERN int font_dimen_zero;
 EXTERN int ignore_frozen;
-EXTERN bool suppress_f_ligs;
+EXTERN boolean suppress_f_ligs;
 EXTERN int abort_flag;
 EXTERN int err_level;
 EXTERN int jump_used;
@@ -871,7 +869,7 @@ void perrormod(char *);
 char *grabenv(char *);
 void stamp_it (char *);
 void stampcopy (char *);
-bool prime (int);
+boolean prime (int);
 int endit (int);
 
 void uexit (int unix_code);
@@ -926,10 +924,10 @@ typedef struct _mapping_entry mapping_entry;
 EXTERN HPDF_Doc  yandy_pdf;
 EXTERN HPDF_Page yandy_page;
 EXTERN HPDF_Font yandy_font[1024];
-EXTERN bool pdf_doing_string;
-EXTERN bool pdf_doing_text;
+EXTERN boolean pdf_doing_string;
+EXTERN boolean pdf_doing_text;
 EXTERN integer scaled_out;
-EXTERN bool pdf_output_flag;
+EXTERN boolean pdf_output_flag;
 EXTERN mapping_table * gentbl;
 EXTERN mapping_table * font_name_hash_init (void);
 EXTERN void font_name_hash_free (mapping_table * tbl);

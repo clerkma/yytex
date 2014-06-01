@@ -135,10 +135,8 @@ void initialize (void)
 
 #ifdef DEBUG
   was_mem_end = mem_min;
-/*  was_lo_max = mem_min; */
-  was_lo_max = mem_bot;
-/*  was_hi_min = mem_max; */
-  was_hi_min = mem_top;
+  was_lo_max = mem_bot; // mem_min
+  was_hi_min = mem_top; // mem_max
   panicking = false;
 #endif
 
@@ -237,7 +235,6 @@ void initialize (void)
   cur_head = 0;
   cur_tail = 0;
 
-
 /*  *not* OK with ALLOCATEHYPHEN, since may not be allocated yet */
 #ifndef ALLOCATEHYPHEN
   for (z = 0; z <= hyphen_prime; z++)
@@ -280,12 +277,11 @@ void initialize_aux (void)
 {
 #ifdef DEBUG
   was_mem_end = mem_min;
-/*  was_lo_max = mem_min; */
-  was_lo_max = mem_bot;
-/*  was_hi_min = mem_max; */
-  was_hi_min = mem_top;
+  was_lo_max = mem_bot; // mem_min
+  was_hi_min = mem_top; // mem_max
   panicking = false;
-#endif /* DEBUG */
+#endif
+
 /*  nest_ptr = 0; */
 /*  max_nest_stack = 0; */
   mode = 1;
@@ -303,7 +299,7 @@ void initialize_aux (void)
 /* sec 0815 */
 void line_break_ (integer final_widow_penalty)
 {
-  bool auto_breaking;
+  boolean auto_breaking;
   halfword prevp;
   halfword q, r, s, prevs;
   internal_font_number f;
@@ -1008,7 +1004,7 @@ void prefixed_command (void)
   font_index k;
   halfword p, q;
   integer n;
-  bool e;
+  boolean e;
 
   a = 0;
 
@@ -1597,7 +1593,7 @@ lab30:
   }
 }
 /* sec 1303 */
-bool load_fmt_file (void)
+boolean load_fmt_file (void)
 {
   integer j, k;
   halfword p, q;
@@ -2533,7 +2529,7 @@ lab1:
       scanner_status = 0;
       warning_index = 0;
       first = 1;
-      cur_input.state_field = 33;
+      cur_input.state_field = new_line;
       cur_input.start_field = 1;
       cur_input.index_field = 0;
       line = 0;
@@ -2601,7 +2597,7 @@ lab1:
     show_frozen();
 
   main_time = clock();
-  history = 0;
+  history = spotless;
 
   if (show_cs_names)
     print_cs_names(stdout, 0);
@@ -2612,7 +2608,6 @@ lab1:
     print_cs_names(stdout, 1);
 
   final_cleanup();
-
   close_files_and_terminate();
 
 lab9999:
@@ -2889,6 +2884,10 @@ void do_initex (void)
   font_glue[null_font]        = 0;
   font_params[null_font]      = 7;
   param_base[null_font]       = -1;
+
+  for (k = 0; k <= 6; k++)
+    font_info[k].cint = 0;
+
   reset_trie();
   text(frozen_protection) = 1184; /* "inaccessible" */
   format_ident = 1251;
@@ -2901,7 +2900,7 @@ void do_initex (void)
 
 #ifdef INITEX
 /* sec 0047 */
-bool get_strings_started (void)
+boolean get_strings_started (void)
 {
   integer k;
   str_number g;
@@ -3282,10 +3281,10 @@ void new_patterns (void)
 /*  was small_number k, l;  in 3.141 */
   char k, l;
 /* ******************************************************************* */
-  bool digitsensed;
+  boolean digitsensed;
   trie_op_code v;
   trie_pointer p, q;
-  bool firstchild;
+  boolean firstchild;
 /*  ASCII_code c;  */
   int c;                /* 95/Jan/7 */
 
@@ -3621,7 +3620,7 @@ void store_fmt_file (void)
   dump_int(mem_top);
   dump_int(eqtb_size);
   dump_int(hash_prime);
-  dump_int(hyphen_prime);   /* bkph */
+  dump_int(hyphen_prime);
   dump_int(pool_ptr);
   dump_int(str_ptr);
 

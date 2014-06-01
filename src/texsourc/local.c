@@ -60,7 +60,7 @@ char log_line[MAXLINE];  // used also in tex9.c
 int mem_spec_flag     = 0;    /* non-zero if `-m=...' was used */ 
 int format_spec       = 0;    /* non-zero if a format specified on command line */
 int closed_already    = 0;    /* make sure we don't try this more than once */
-bool reorder_arg_flag = true; /* put command line flags/arguments first */
+boolean reorder_arg_flag = true; /* put command line flags/arguments first */
 
 /* Mapping from Windows ANSI to DOS code page 850 96/Jan/20 */
 /* Used in tex0.c with wintodos[c-128]                      */
@@ -714,7 +714,7 @@ int allocate_tries (int trie_max)
 #endif
 
 #ifdef ALLOCATEHYPHEN
-bool prime (int); /* test function later in this file */
+boolean prime (int); /* test function later in this file */
 
 int current_prime = 0; /* remember in case reallocated later */
 
@@ -1265,7 +1265,7 @@ int allocate_ini (int size)
   nh = nr = nl = (size + 1) *  sizeof(trie_pointer);
   no = (size + 1) *  sizeof(trie_op_code);
   nc = (size + 1) *  sizeof(packed_ASCII_code);
-/*    nt = (size + 1) *  sizeof(bool); */
+/*    nt = (size + 1) *  sizeof(boolean); */
   nt = (size + 1) *  sizeof(char);
   n = nl + no + nc + nr + nh + nt;
 /*    n = (size + 1) * (sizeof(packed_ASCII_code) + sizeof(trie_op_code) +
@@ -1878,7 +1878,7 @@ int allocate_memory (void)
   {
     trie_l = trie_r = trie_o = trie_hash = NULL; /* (trie_size + 1) * integer */
     trie_c = NULL;       /* (trie_size + 1) * char */
-    trie_taken = NULL;     /* (trie_size + 1) * bool */
+    trie_taken = NULL;     /* (trie_size + 1) * boolean */
   }
 #endif
 #ifdef PREALLOCHOLE
@@ -2047,7 +2047,7 @@ int free_memory (void)
   return 0;
 }
 
-bool prime (int x)
+boolean prime (int x)
 {
   int k;
   int sum = 1;    /* 1 + 3 + 5 + k = (k + 1) * (k + 1) / 4 */
@@ -2070,8 +2070,8 @@ bool prime (int x)
 }
 
 int quitflag  = 0;
-bool show_use = false;
-bool floating = false;
+boolean show_use = false;
+boolean floating = false;
 
 void complainarg (int c, char *s)
 {
@@ -2350,9 +2350,9 @@ void check_alloc_align (int flag)
 #endif
 }
 
-bool backwardflag       = false;              /* don't cripple all advanced features */
-bool shorten_file_name  = false;              /* don't shorten file names to 8+3 for DOS */
-bool usesourcedirectory = true;               /* use source file directory as local when WorkingDirectory is set */             /* if working directory set in ini */
+boolean backwardflag       = false;              /* don't cripple all advanced features */
+boolean shorten_file_name  = false;              /* don't shorten file names to 8+3 for DOS */
+boolean usesourcedirectory = true;               /* use source file directory as local when WorkingDirectory is set */             /* if working directory set in ini */
 
 /* cache to prevent allocating twice in a row */
 

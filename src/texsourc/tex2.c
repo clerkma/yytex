@@ -186,7 +186,7 @@ void show_context (void)
 {
   char old_setting;
   integer nn;
-  bool bottomline;
+  boolean bottomline;
   integer i;
   integer j;
   integer l;
@@ -1442,11 +1442,11 @@ void scan_optional_equals (void)
     back_input();
 }
 /* sec 0407 */
-bool scan_keyword_(char * s)
+boolean scan_keyword_(const char * s)
 {
   halfword p;
   halfword q;
-  char * k;
+  const char * k;
 
   p = backup_head;
   link(p) = 0;
@@ -1586,7 +1586,7 @@ void scan_font_ident (void)
   cur_val = f;
 }
 /* sec 0578 */
-void find_font_dimen_(bool writing)
+void find_font_dimen_(boolean writing)
 {
   internal_font_number f;
   integer n;
@@ -1640,17 +1640,12 @@ void find_font_dimen_(bool writing)
       cur_val = fmem_ptr - 1;
     }
   else if (n > 0)
-    cur_val = n + param_base[f];    /* 98/Oct/5 */
-//  else
-//    cur_val = (&font_check[f] - &font_info[0]); /* 98/Oct/5 */
-/*  checksum =  (((font_check[f].b0) << 8 | font_check[f].b1) << 8 |
-        font_check[f].b2) << 8 | font_check[f].b3; */
+    cur_val = n + param_base[f];
   }
-/* compiler error: '-' : incompatible types - from 'union fmemoryword *' to 'struct fourunsignedchars *' */
+
   if (cur_val == fmem_ptr)
   {
     print_err("Font ");
-/*    print_esc(hash[(hash_size + 524) + f].rh); */
     print_esc(""); print(font_id_text(f));
     print_string(" has only ");
     print_int(font_params[f]);
@@ -1661,7 +1656,7 @@ void find_font_dimen_(bool writing)
   }
 }
 /* sec 0413 */
-void scan_something_internal_(small_number level, bool negative)
+void scan_something_internal_(small_number level, boolean negative)
 {
   halfword m;
   integer p;
@@ -1728,7 +1723,7 @@ void scan_something_internal_(small_number level, bool negative)
         scan_font_ident();
 
         {
-          cur_val = font_id_base + cur_val; /* 96/Jan/10 */
+          cur_val = font_id_base + cur_val;
           cur_val_level = ident_val;
         }
       }
@@ -1763,7 +1758,7 @@ void scan_something_internal_(small_number level, bool negative)
       break;
 
     case set_aux:
-      if (abs(mode)!= m)
+      if (abs(mode) != m)
       {
         print_err("Improper ");
         print_cmd_chr(set_aux, m);
@@ -1807,7 +1802,7 @@ void scan_something_internal_(small_number level, bool negative)
         nest[nest_ptr] = cur_list;
         p = nest_ptr;
 
-        while (abs(nest[p].mode_field)!= vmode)
+        while (abs(nest[p].mode_field) != vmode)
           decr(p);
 
         {

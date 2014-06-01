@@ -844,7 +844,7 @@ void confusion_(char * s)
   succumb();
 }
 /* sec 0037 */
-bool init_terminal (void)
+boolean init_terminal (void)
 {
   int flag;
 
@@ -918,11 +918,11 @@ str_number make_string (void)
   return (str_ptr - 1);
 }
 /* sec 0044 */
-bool str_eq_buf_ (str_number s, integer k)
+boolean str_eq_buf_ (str_number s, integer k)
 {
-  register bool Result;
+  register boolean Result;
   pool_pointer j;
-  bool result;
+  boolean result;
 
   j = str_start[s];
 
@@ -943,11 +943,11 @@ lab45:
   return Result;
 }
 /* sec 0045 */
-bool str_eq_str_ (str_number s, str_number t)
+boolean str_eq_str_ (str_number s, str_number t)
 {
-  register bool Result;
+  register boolean Result;
   pool_pointer j, k;
-  bool result;
+  boolean result;
 
   result = false;
 
@@ -1348,7 +1348,7 @@ scaled mult_and_add_(integer n, scaled x, scaled y, scaled maxanswer)
 scaled x_over_n_(scaled x, integer n)
 {
   register scaled Result;
-  bool negative;
+  boolean negative;
 
   negative = false;
 
@@ -1388,7 +1388,7 @@ scaled x_over_n_(scaled x, integer n)
 scaled xn_over_d_(scaled x, integer n, integer d)
 {
   register scaled Result;
-  bool positive;
+  boolean positive;
   nonnegative_integer t, u, v;
 
   if (x >= 0)
@@ -1821,7 +1821,7 @@ lab20:
     overflow("main memory size", mem_max + 1 - mem_min); /* darn: allocation failed ! */
     return 0;     // abort_flag set
   }
-/* avoid function call in following ? */
+
   add_variable_space (block_size); /* now to be found in itex.c */
   goto lab20;         /* go try get_node again */
 
@@ -2017,10 +2017,10 @@ halfword new_penalty_(integer m)
 
 #ifdef DEBUG
 /* sec 0167 */
-void check_mem_(bool printlocs)
+void check_mem_(boolean printlocs)
 {
   halfword p, q;
-  bool clobbered;
+  boolean clobbered;
 
   for (p = mem_min; p <= lo_mem_max; p++) freearr[p] = false;
   for (p = hi_mem_min; p <= mem_end; p++) freearr[p] = false;
@@ -2272,7 +2272,7 @@ void print_mark_ (integer p)
 { 
   print_char('{');
 
-  if ((p < hi_mem_min)||(p > mem_end))
+  if ((p < hi_mem_min) || (p > mem_end))
     print_esc("CLOBBERED.");
   else
     show_token_list(link(p), 0, max_print_line - 10);
@@ -2308,7 +2308,7 @@ void print_glue_(scaled d, integer order, char * s)
 /* sec 0178 */
 void print_spec_(integer p, char * s)
 {
-  if ((p < mem_min)||(p >= lo_mem_max)) 
+  if ((p < mem_min) || (p >= lo_mem_max)) 
     print_char('*');
   else
   {
@@ -3002,7 +3002,7 @@ void show_node_list_(integer p)
           }
 
           if ((small_fam(right_delimiter(p)) != 0) || (small_char(right_delimiter(p)) != 0) ||
-              (large_fam(right_delimiter(p)) != 0)||(large_char(right_delimiter(p)) != 0))
+              (large_fam(right_delimiter(p)) != 0) || (large_char(right_delimiter(p)) != 0))
           {
             print_string(", right-delimiter ");
             print_delimiter(right_delimiter(p));

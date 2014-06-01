@@ -332,7 +332,7 @@ void show_bad_line (FILE *output, int first, int last)
 }
 
 // split off for convenience and use in ConsoleInput
-bool input_line_finish (void)
+boolean input_line_finish (void)
 {
   int i = '\0';
   int ch, flag;
@@ -414,7 +414,7 @@ bool input_line_finish (void)
    length(line except trailing whitespace).  */
 /* texmfmp.c */
 
-bool input_line (FILE *f)
+boolean input_line (FILE *f)
 {
 //  int ch, flag;         /* for restrict_to_ascii case 94/Jan/21 */
   char *u;            /* 1994/July/3 for key_replace */
