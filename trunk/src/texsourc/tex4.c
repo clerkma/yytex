@@ -1293,10 +1293,16 @@ lab30:;
 }
 void ship_out_(halfword p)
 {
-  if (pdf_output_flag)
-    pdf_ship_out(p);
-  else
-    dvi_ship_out_(p);
+  switch (pdf_output_flag)
+  {
+    case out_pdf_flag:
+      pdf_ship_out(p);
+      break;
+    case out_dvi_flag:
+    case out_xdv_flag:
+      dvi_ship_out_(p);
+      break;
+  }
 }
 /* sec 0645 */
 void scan_spec_(group_code c, boolean three_codes)

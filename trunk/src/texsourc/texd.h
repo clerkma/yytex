@@ -17,10 +17,7 @@
 /* also: should split use of quarterword for (i) font from (ii) char */
 /* for example, xeq_level ? hyphenation trie_trc ? */
 #define INCREASEFONTS
-/* make font_info array fmemoryword == 32 bit instead of memory_word = 64 bit */
 #define SHORTFONTINFO
-/* make hash table htwo_halves == 32 bit instead of two_halves == 64 bit */
-/* increase trie_op_size from 751 to 3001 96/Oct/12 */
 #define INCREASETRIEOP
 #define COMPACTFORMAT
 
@@ -33,7 +30,6 @@
 
 #define block_size 1000 /* block_size for variable length node alloc */
 
-/* min_quarterword assumed 0 -- i.e. we use unsigned types for quarterword */
 #define min_quarterword 0
 #ifdef INCREASEFONTS
   #define max_quarterword 65535L
@@ -143,12 +139,8 @@ EXTERN integer max_buf_stack;
   #define dvi_buf_size 16384
 #endif
 
-/* #define hash_size 9500  */
-/* #define hash_size 25000 */
-#define hash_size 32768
-/* trick to try and get around eqtb_extra problem */
+#define hash_size 32768 // 9500 25000
 #define hash_extra (255 - font_max)
-/* hash prime about 85% of hash_size (+ hash_extra) */
 #define hash_prime 27197
 
 #if (hash_extra != 255 - font_max)
@@ -203,7 +195,7 @@ typedef integer hyph_pointer;
 EXTERN integer bad;
 EXTERN ASCII_code xord[256];
 EXTERN ASCII_code xchr[256];
-EXTERN unsigned char name_of_file[PATHMAX + 4];
+EXTERN unsigned char name_of_file[PATH_MAX + 4];
 EXTERN integer name_length;
 
 #ifdef ALLOCATESTRING

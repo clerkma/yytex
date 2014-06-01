@@ -2710,9 +2710,11 @@ int analyze_flag (int c, char *optarg)
           format_spec = xstrdup(optarg);
 
         if (!strcmp(format_spec, "pdf"))
-          pdf_output_flag = true;
+          pdf_output_flag = out_pdf_flag;
         else if (!strcmp(format_spec, "dvi"))
-          pdf_output_flag = false;
+          pdf_output_flag = out_dvi_flag;
+        else if (!strcmp(format_spec, "xdv"))
+          pdf_output_flag = out_xdv_flag;
         else
         {
           sprintf(log_line, "ERROR: Do not understand argument value `%s'\n", format_spec);
@@ -2828,7 +2830,7 @@ int read_command_line (int ac, char **av)
 
 int init_commands (int ac, char **av)
 {
-  pdf_output_flag   = false;
+  pdf_output_flag   = out_dvi_flag;
   is_initex         = false; 
   allow_patterns    = false;
   reset_exceptions  = false;

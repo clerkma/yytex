@@ -63,7 +63,9 @@
 typedef long long   integer;
 typedef double      glue_ratio;
 typedef double      real;
-typedef FILE *      alpha_file;
+typedef FILE * alpha_file;
+typedef FILE * byte_file;
+typedef FILE * word_file;
 typedef unsigned char  ASCII_code;
 typedef unsigned short KANJI_code;
 typedef unsigned char  eight_bits;
@@ -95,7 +97,6 @@ typedef enum
 #define decr(x)  --(x)
 #define incr(x)  ++(x)
 #define fabs(x)  ((x) >= 0.0 ? (x) : -(x))
-#define PATHMAX  PATH_MAX
 #define toint(x) ((integer) (x))
 #define a_open_in(f, p) open_input (&(f), p, FOPEN_R_MODE)
 #define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)

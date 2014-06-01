@@ -309,139 +309,140 @@ void close_files_and_terminate (void)
   } /* end of if (log_opened) */ 
 #endif /* STAT */
 
-  if (pdf_output_flag)
+  switch (pdf_output_flag)
   {
-    if (total_pages == 0)
-    {
-      print_nl("No pages of output.");
-    }
-    else
-    {
-      HPDF_SaveToFile(yandy_pdf, pdf_file_name);
+    case out_pdf_flag:
+      {
+        if (total_pages == 0)
+        {
+          print_nl("No pages of output.");
+        }
+        else
+        {
+          HPDF_SaveToFile(yandy_pdf, pdf_file_name);
       
-      print_nl("Output written on ");
+          print_nl("Output written on ");
 
-      if (full_file_name_flag && pdf_file_name != NULL)
-        print_char_string((unsigned char *) pdf_file_name);
-      else
-        slow_print(output_file_name);
+          if (full_file_name_flag && pdf_file_name != NULL)
+            print_char_string((unsigned char *) pdf_file_name);
+          else
+            slow_print(output_file_name);
 
-      print_string(" (");
-      print_int(total_pages);
-      print_string(" page");
+          print_string(" (");
+          print_int(total_pages);
+          print_string(" page");
 
-      if (total_pages != 1)
-        print_char('s');
+          if (total_pages != 1)
+            print_char('s');
+          
+          print_string(").");
+        }
 
-      //print_string(", ");
-      //print_int(dvi_offset + dvi_ptr);
-      //print_int(yandy_pdf->mmgr->mpool->used_size);
-      //print_string(" bytes).");
-      print_string(").");
-      b_close(dvi_file);
-    }
-
-    HPDF_Free(yandy_pdf);
-    font_name_hash_free(gentbl);
-  }
-  else
-  {
-    while (cur_s > -1)
-    {
-      if (cur_s > 0) 
-        dvi_out(142);
-      else
-      {
-        dvi_out(eop);
-        incr(total_pages);
+        HPDF_Free(yandy_pdf);
+        font_name_hash_free(gentbl);
       }
-
-      decr(cur_s);
-    }
-
-    if (total_pages == 0)
-      print_nl("No pages of output.");
-    else
-    {
-      dvi_out(post);
-      dvi_four(last_bop);
-      last_bop = dvi_offset + dvi_ptr - 5;
-      dvi_four(25400000L);
-      dvi_four(473628672L);
-      prepare_mag();
-      dvi_four(mag);
-      dvi_four(max_v);
-      dvi_four(max_h);
-      dvi_out(max_push / 256);
-      dvi_out(max_push % 256);
-
-      if (total_pages >= 65536)    // 99/Oct/10 dvi_t 16 bit problem
+      break;
+    case out_dvi_flag:
+    case out_xdv_flag:
       {
-        sprintf(log_line, "\nWARNING: page count (dvi_t) in DVI file will be %ld not %ld\n",
-          (total_pages % 65536), total_pages);
+        while (cur_s > -1)
+        {
+          if (cur_s > 0) 
+            dvi_out(142);
+          else
+          {
+            dvi_out(eop);
+            incr(total_pages);
+          }
 
-        if (log_opened)
-          (void) fputs (log_line, log_file);
+          decr(cur_s);
+        }
 
-        show_line(log_line, 1);
+        if (total_pages == 0)
+          print_nl("No pages of output.");
+        else
+        {
+          dvi_out(post);
+          dvi_four(last_bop);
+          last_bop = dvi_offset + dvi_ptr - 5;
+          dvi_four(25400000L);
+          dvi_four(473628672L);
+          prepare_mag();
+          dvi_four(mag);
+          dvi_four(max_v);
+          dvi_four(max_h);
+          dvi_out(max_push / 256);
+          dvi_out(max_push % 256);
+
+          if (total_pages >= 65536)    // 99/Oct/10 dvi_t 16 bit problem
+          {
+            sprintf(log_line, "\nWARNING: page count (dvi_t) in DVI file will be %ld not %ld\n",
+              (total_pages % 65536), total_pages);
+
+            if (log_opened)
+              (void) fputs (log_line, log_file);
+
+            show_line(log_line, 1);
+          }
+
+          dvi_out((total_pages / 256) % 256);
+          dvi_out(total_pages % 256);
+
+          if (show_fonts_used && log_opened)     /* 97/Dec/24 */
+            show_font_info();           // now in local.c
+
+          while (font_ptr > 0)
+          {
+            if (font_used[font_ptr])
+              dvi_font_def(font_ptr);
+
+            decr(font_ptr);
+          }
+
+          dvi_out(post_post);
+          dvi_four(last_bop);
+          dvi_out(id_byte);
+          k = 4 + ((dvi_buf_size - dvi_ptr) % 4);
+
+          while (k > 0)
+          {
+            dvi_out(223);
+            decr(k);
+          }
+
+          if (trace_flag) /* 93/Dec/28 - bkph */
+          {
+            sprintf(log_line, "\ndviwrite %d", dvi_gone);
+            show_line(log_line, 0);
+          }
+
+          if (dvi_limit == half_buf)
+            write_dvi(half_buf, dvi_buf_size - 1);
+
+          if (dvi_ptr > 0)
+            write_dvi(0, dvi_ptr - 1); 
+
+          print_nl("Output written on ");
+
+          if (full_file_name_flag && dvi_file_name != NULL)
+            print_char_string((unsigned char *) dvi_file_name);
+          else
+            slow_print(output_file_name);
+
+          print_string(" (");
+          print_int(total_pages);
+          print_string(" page");
+
+          if (total_pages != 1)
+            print_char('s');
+
+          print_string(", ");
+          print_int(dvi_offset + dvi_ptr);
+          print_string(" bytes).");
+          b_close(dvi_file);
+        }
       }
-
-      dvi_out((total_pages / 256) % 256);
-      dvi_out(total_pages % 256);
-
-      if (show_fonts_used && log_opened)     /* 97/Dec/24 */
-        show_font_info();           // now in local.c
-
-      while (font_ptr > 0)
-      {
-        if (font_used[font_ptr])
-          dvi_font_def(font_ptr);
-
-        decr(font_ptr);
-      }
-
-      dvi_out(post_post);
-      dvi_four(last_bop);
-      dvi_out(id_byte);
-      k = 4 + ((dvi_buf_size - dvi_ptr) % 4);
-
-      while (k > 0)
-      {
-        dvi_out(223);
-        decr(k);
-      }
-
-      if (trace_flag) /* 93/Dec/28 - bkph */
-      {
-        sprintf(log_line, "\ndviwrite %d", dvi_gone);
-        show_line(log_line, 0);
-      }
-
-      if (dvi_limit == half_buf)
-        write_dvi(half_buf, dvi_buf_size - 1);
-
-      if (dvi_ptr > 0)
-        write_dvi(0, dvi_ptr - 1); 
-
-      print_nl("Output written on ");
-
-      if (full_file_name_flag && dvi_file_name != NULL)
-        print_char_string((unsigned char *) dvi_file_name);
-      else
-        slow_print(output_file_name);
-
-      print_string(" (");
-      print_int(total_pages);
-      print_string(" page");
-
-      if (total_pages != 1)
-        print_char('s');
-
-      print_string(", ");
-      print_int(dvi_offset + dvi_ptr);
-      print_string(" bytes).");
-      b_close(dvi_file);
-    }
+      break;
   }
 
   if (log_opened)
