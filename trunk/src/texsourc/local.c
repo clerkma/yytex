@@ -2458,7 +2458,7 @@ static struct option long_options[] =
   {"main-memory",   1, 0, 'm'},
   {"hyph-size",     1, 0, 'e'},
   {"trie-size",     1, 0, 'h'},
-  {"output-format", 1, 0, '0'},
+  {"backend",       1, 0, '0'},
   {"tab-step",      1, 0, 'H'},
   {"percent-grow",  1, 0, 'g'},
   {"default-rule",  1, 0, 'P'},

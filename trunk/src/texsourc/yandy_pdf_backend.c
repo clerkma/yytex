@@ -369,6 +369,20 @@ void pdf_end_text()
 // draw a rule.
 void pdf_set_rule(scaled x, scaled y, scaled w, scaled h)
 {
+  if (h <= 65782)
+  {
+    HPDF_Page_SetLineWidth(yandy_page, h / 65535);
+    HPDF_Page_MoveTo (yandy_page, (x / 65535 + 72), (841.89 - y / 65535 - 72));
+    HPDF_Page_LineTo (yandy_page, (x / 65535 + 72 + w / 65535), (841.89 - y / 65535 - 72));
+    HPDF_Page_Stroke (yandy_page);
+  }
+  else if (w <= 65782)
+  {
+    HPDF_Page_SetLineWidth(yandy_page, w / 65535);
+    HPDF_Page_MoveTo (yandy_page, (x / 65535 + 72), (841.89 - y / 65535 - 72));
+    HPDF_Page_LineTo (yandy_page, (x / 65535 + 72), (841.89 - y / 65535 - 72 + h / 65535));
+    HPDF_Page_Stroke (yandy_page);
+  }
 }
 void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data)
 {
@@ -417,7 +431,7 @@ void pdf_font_def (internal_font_number f)
   free(fnt_buffer);
 }
 
-void pdf_ship_out(halfword p)
+void pdf_ship_out(pointer p)
 {
   char j, k;
 
@@ -787,10 +801,7 @@ lab14:
     if ((rule_ht > 0) && (rule_wd > 0))
     {
       cur_v = base_line + rule_dp;
-      HPDF_Page_SetLineWidth(yandy_page, rule_ht / 65535);
-      HPDF_Page_MoveTo (yandy_page, (cur_h / 65535 + 72), (841.89 - cur_v / 65535 - 72));
-      HPDF_Page_LineTo (yandy_page, (cur_h / 65535 + 72 + rule_wd / 65535), (841.89 - cur_v / 65535 - 72));
-      HPDF_Page_Stroke (yandy_page);
+      pdf_set_rule(cur_h, cur_v, rule_wd, rule_ht);
       cur_v = base_line;
       dvi_h = dvi_h + rule_wd;
     }
@@ -1018,10 +1029,7 @@ lab14:
 
       if ((rule_ht > 0) && (rule_wd > 0))
       {
-        HPDF_Page_SetLineWidth(yandy_page, rule_ht / 65535);
-        HPDF_Page_MoveTo(yandy_page, (cur_h / 65535 + 72), (841.89 - cur_v / 65535 - 72));
-        HPDF_Page_LineTo(yandy_page, (cur_h / 65535 + 72 + rule_wd / 65535), (841.89 - cur_v / 65535 - 72));
-        HPDF_Page_Stroke(yandy_page);
+        pdf_set_rule(cur_h, cur_v, rule_wd, rule_ht);
       }
 
       goto lab15;

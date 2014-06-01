@@ -1002,7 +1002,7 @@ void prefixed_command (void)
   internal_font_number f;
   halfword j;
   font_index k;
-  halfword p, q;
+  pointer p, q;
   integer n;
   boolean e;
 
@@ -1596,7 +1596,7 @@ lab30:
 boolean load_fmt_file (void)
 {
   integer j, k;
-  halfword p, q;
+  pointer p, q;
   integer x;
 
   undump_int(x);
@@ -3562,7 +3562,7 @@ void init_trie (void)
 void store_fmt_file (void)
 {
   integer j, k, l;
-  halfword p, q;
+  pointer p, q;
   integer x;
 
   if (!is_initex)

@@ -166,6 +166,7 @@ EXTERN integer max_buf_stack;
 /* typedef unsigned long halfword; NO NO: since mem_min may be < 0 */
 /* sec 0113 */
 typedef long halfword;
+typedef halfword pointer;
 typedef char two_choices;
 typedef char four_choices;
 /* sec 0113 */
@@ -762,7 +763,7 @@ EXTERN integer ready_already;
 EXTERN alpha_file write_file[16];
 EXTERN boolean write_open[18];
 /* sec 1345 */
-EXTERN halfword write_loc;
+EXTERN pointer write_loc;
 EXTERN pool_pointer edit_name_start;
 EXTERN integer edit_name_length, edit_line;
 EXTERN int tfm_temp;
@@ -886,10 +887,9 @@ void get_date_and_time (integer *minutes, integer *day,
 
 char *unixify (char *);
 
-/****************************************************************************/
-#include "coerce.h"
 #include "yandy_macros.h"
-/****************************************************************************/
+#include "coerce.h"
+
 /* sec 79 */
 extern void synch_h(void);
 extern void synch_v(void);

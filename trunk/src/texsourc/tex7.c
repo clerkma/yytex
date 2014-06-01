@@ -949,7 +949,7 @@ void new_graf_(boolean indented)
 /* sec 1093 */
 void indent_in_hmode (void)
 {
-  halfword p, q;
+  pointer p, q;
 
   if (cur_chr > 0)
   {
@@ -1040,7 +1040,7 @@ void begin_insert_or_adjust (void)
 /* sec 1101 */
 void make_mark (void)
 {
-  halfword p;
+  pointer p;
 
   p = scan_toks(false, true);
   p = get_node(small_node_size);
@@ -1062,7 +1062,7 @@ void append_penalty (void)
 /* sec 1105 */
 void delete_last (void)
 {
-  halfword p, q;
+  pointer p, q;
   quarterword m;
 
   if ((mode == vmode) && (tail == head))
@@ -1114,7 +1114,7 @@ void delete_last (void)
 /* sec 1110 */
 void unpackage (void)
 {
-  halfword p;
+  pointer p;
   char c;
 
   c = cur_chr;
@@ -1150,7 +1150,7 @@ void unpackage (void)
 /* sec 1113 */
 void append_italic_correction (void)
 {
-  halfword p;
+  pointer p;
   internal_font_number f;
 
   if (tail != head)
@@ -1196,7 +1196,7 @@ void append_discretionary (void)
 /* sec 1119 */
 void build_discretionary (void)
 {
-  halfword p, q;
+  pointer p, q;
   integer n;
 
   unsave();
@@ -1287,7 +1287,7 @@ lab30:
 void make_accent (void)
 {
   real s, t;
-  halfword p, q, r;
+  pointer p, q, r;
   internal_font_number f;
   scaled a, h, x, w, delta;
   four_quarters i;
@@ -1461,8 +1461,8 @@ void init_math (void)
   scaled w;
   scaled l;
   scaled s;
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
   internal_font_number f;
   integer n;
   scaled v;
@@ -1642,7 +1642,7 @@ void start_eq_no (void)
   }
 }
 /* sec 1151 */
-void scan_math_(halfword p)
+void scan_math_(pointer p)
 {
   integer c;
 
@@ -1727,7 +1727,7 @@ lab21:
 /* sec 1155 */
 void set_math_char_(integer c)
 {
-  halfword p;
+  pointer p;
 
   if (c >= 32768L)
   {
@@ -1773,7 +1773,7 @@ void math_limit_switch (void)
   error();
 }
 /* sec 1160 */
-void scan_delimiter_(halfword p, boolean r)
+void scan_delimiter_(pointer p, boolean r)
 {
    if (r)
    {
@@ -1876,7 +1876,7 @@ void append_choices (void)
 /* sec 1184 */
 halfword fin_mlist_(halfword p)
 {
-  halfword q;
+  pointer q;
 
   if (incompleat_noad != 0)
   {
@@ -1912,7 +1912,7 @@ halfword fin_mlist_(halfword p)
 /* sec 1174 */
 void build_choices (void)
 {
-  halfword p;
+  pointer p;
 
   unsave();
   p = fin_mlist(0);
@@ -1948,8 +1948,8 @@ void build_choices (void)
 void sub_sup (void)
 {
 /*  small_number t; */
-  int t;              /* 95/Jan/7 */
-  halfword p;
+  int t; /* 95/Jan/7 */
+  pointer p;
 
   t = 0;
   p = 0;
@@ -1987,7 +1987,7 @@ void sub_sup (void)
 void package_(small_number c)
 {
   scaled h;
-  halfword p;
+  pointer p;
   scaled d;
 
   d = box_max_depth;
