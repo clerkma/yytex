@@ -23,42 +23,9 @@
 *
 **********************************************************************/
 
-/* Revised 1999 June 13 to run in DLL form */
-
-#ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#include <windows.h>
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <malloc.h>
-#include <setjmp.h>
-
-#ifdef _WINDOWS
-// We must define MYLIBAPI as __declspec(dllexport) before including
-// dvipsone.h, then dvipsone.h will see that we have already
-// defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-#define MYLIBAPI __declspec(dllexport)
-// #include "dvipsone.h"
-#endif
-
 #include "dvipsone.h"
 
-#ifdef _WINDOWS
-#pragma warning(disable:4100) // unreferenced formal variable 
-#endif
-
-#pragma warning(disable:4996)
-#pragma warning(disable:4127) // conditional expression is constant
-
-#pragma hdrstop
-
-#include <io.h>         /* for _access */
+#include <io.h> /* for _access */
                 /* for _findfirst, _findnext, _findclose */
 
 /* #define DEBUGALIAS */
@@ -485,36 +452,6 @@ void logdo_put2(FILE *infile)
   logdo_putsub(ureadtwo(infile));
 }
 
-#ifdef IGNORED
-void logdo_put2(FILE *infile)
-{
-  unsigned int c;
-  c = ureadtwo(infile);
-  if (skipflag == 0) {
-/*    if (ff < 0) invalidset((int) c); */
-    if (ff == BLANKFONT) invalidset((int) c);
-    else if (c < 256) {
-/*      if (bRemapControl && c < MAXREMAP) c = remaptable[c]; */
-      if (bRemapControl || bRemapFont) {
-        if (c < MAXREMAP) c = remaptable[c];
-#if MAXREMAP < 128
-        else if (c == 32) c = 195;
-        else if (c == 127) c = 196;
-#endif
-      }
-      else if (bRemapSpace && c <= 32) {      /* 1995/Oct/17 */
-        if (c == 32) c = 195;   /* not 160 */
-        else if (c == 13) c = 176;  /* 1996/June/4 */
-        else if (c == 10) c = 173;  /* 1996/June/4 */
-        else if (c == 9) c = 170;   /* 1996/June/4 */
-        else if (c == 0) c = 161;
-      }
-      currentfont[c] = 1;
-    }
-  }
-}
-#endif
-
 void logdo_put3(FILE *infile)
 {
   logdo_putsub(ureadthree(infile));
@@ -546,7 +483,7 @@ int pagesequence;   /* count of ascending page sequence */
 
 /* returns zero if page is to be printed */ /* non-zero if to be skipped */
 
-int skipthispage(long pageno)
+int skip_this_page(long pageno)
 {
   int k;
 /*  int hitrange=0; */
@@ -607,7 +544,7 @@ void logdo_bop(FILE *infile) /* beginning of page */
 /*  skipflag = 0; */
   if (countzeroflag != 0) pageno = counter[0];
   else pageno = (long) pagenumber;
-  skipflag = skipthispage(pageno);  /* figure out if skipped */
+  skipflag = skip_this_page(pageno);  /* figure out if skipped */
 /*  if (beginpage != -LINFINITY && pageno < beginpage)  skipflag++;
   if (endpage != LINFINITY && pageno > endpage) skipflag++;  */
 /*  following is the logic for two-sided printing */
@@ -798,7 +735,7 @@ void logdo_z4(FILE *infile)
   (void) getc(infile); (void) getc(infile);
 }
 
-void logswitchfont(int fn, FILE *infile) /* switching to other font */
+void log_switch_font(int fn, FILE *infile) /* switching to other font */
 {
   int c;
   ff = fn;      /* set state */
@@ -835,7 +772,7 @@ void logdo_fnt1(FILE *infile) /* switch fonts */
 /*  fn = ureadone(infile); */
   fn = getc(infile);
 /*  if (skipflag == 0) */
-  logswitchfont(fn, infile);
+  log_switch_font(fn, infile);
 }
 
 void logdo_fnt2(FILE *infile) /* switch fonts */
@@ -844,14 +781,14 @@ void logdo_fnt2(FILE *infile) /* switch fonts */
   fn = ureadtwo(infile);
 /*  if (skipflag == 0) */
   if (fn >= MAXFONTNUMBERS) fn = MAXFONTNUMBERS-1;
-  logswitchfont((int) fn, infile);
+  log_switch_font((int) fn, infile);
 }
 
 void logdo_fntsub(unsigned long fn, FILE *infile) /* switch fonts */
 {
 /*  if (skipflag == 0) */
   if (fn >= MAXFONTNUMBERS) fn = MAXFONTNUMBERS-1;
-  logswitchfont((int) fn, infile);
+  log_switch_font((int) fn, infile);
 }
 
 void logdo_fnt3(FILE *infile) /* switch fonts */
@@ -872,13 +809,13 @@ void logdo_fnt4(FILE *infile) /* switch fonts */
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-void getheadername (FILE *infile) /* new version 95/Aug/30 */
+void get_header_name (FILE *infile) /* new version 95/Aug/30 */
 {
   char fname[FNAMELEN];     /* buffer to get token into */
   char *s;
 
-/*  if (gettoken(infile, headerfile, FNAMELEN) == 0) {*/
-  if (gettoken(infile, fname, sizeof(fname)) == 0) {  /* FNAMELEN */
+/*  if (get_token(infile, headerfile, FNAMELEN) == 0) {*/
+  if (get_token(infile, fname, sizeof(fname)) == 0) {  /* FNAMELEN */
     showline(" Can't find header\n", 1);
     errcount(0); 
     return;
@@ -931,7 +868,7 @@ void getheadername (FILE *infile) /* new version 95/Aug/30 */
 
 /* get name of file with DSC header comments */ /* only one allowed */
 
-void getcustomname (FILE *infile)
+void get_custom_name (FILE *infile)
 {
 /*  int n=0; */
 
@@ -940,8 +877,8 @@ void getcustomname (FILE *infile)
     errcount(0);
     return;
   }
-/*  if (gettoken(infile, line, MAXLINE) == 0) { */
-  if (gettoken(infile, line, sizeof(line)) == 0) { /* MAXLINE */
+/*  if (get_token(infile, line, MAXLINE) == 0) { */
+  if (get_token(infile, line, sizeof(line)) == 0) { /* MAXLINE */
     showline(" Can't find header\n", 1);
     errcount(0); 
   }
@@ -952,7 +889,7 @@ void getcustomname (FILE *infile)
 
 /* accumulate verbatim PS header text for prolog */
 
-void getheadertext (FILE *infile)   /* new 1993/Dec/29 */
+void get_header_text (FILE *infile)   /* new 1993/Dec/29 */
 {
   char *headernew;
   char *u;
@@ -965,7 +902,7 @@ void getheadertext (FILE *infile)   /* new 1993/Dec/29 */
   headernew = realloc (headertext, n);
   if (headernew == NULL) {
     showline(" Unable to allocate memory\n", 1);
-/*    flushspecial(infile); */
+/*    flush_special(infile); */
 /*    errcount(0); */
 /*    return; */
     checkexit(1);             /* 1995/July/15 */
@@ -980,7 +917,7 @@ void getheadertext (FILE *infile)   /* new 1993/Dec/29 */
 
 /* accumulate command line args for DVIPSONE - passed through DVI file */
 
-void getcommandspec (FILE *infile)    // 99/Sept/6
+void get_command_spec (FILE *infile)    // 99/Sept/6
 {
   char *commandnew;
   char *u;
@@ -1002,7 +939,7 @@ void getcommandspec (FILE *infile)    // 99/Sept/6
 
 /* accumulate verbatim PS header text for prolog */
 
-void getcustomtext (FILE *infile)     /* new 1995/July/15 */
+void get_custom_text (FILE *infile)     /* new 1995/July/15 */
 {
   int c, n, needpercent=0;
   char *customnew;
@@ -1018,7 +955,7 @@ void getcustomtext (FILE *infile)     /* new 1995/July/15 */
   customnew = realloc (dsccustom, n);
   if (customnew == NULL) {
     showline(" Unable to allocate memory\n", 1);
-/*    flushspecial(infile); */
+/*    flush_special(infile); */
 /*    errcount(0); */
 /*    return; */
     checkexit(1);             /* 1995/July/15 */
@@ -1035,26 +972,26 @@ void getcustomtext (FILE *infile)     /* new 1995/July/15 */
   *u++ = '\n'; *u++ = '\0';       /* terminating linefeed and \0 */
 }
 
-void getbbox (FILE *infile) /* Use for CropBox pdfmark not tested */
+void get_bbox (FILE *infile) /* Use for CropBox pdfmark not tested */
 {
 /*  Right now this is in PS coordinates, should be in TeX coordinates */
-  if (gettoken(infile, line, sizeof(line)) != 0) { /* MAXLINE */
+  if (get_token(infile, line, sizeof(line)) != 0) { /* MAXLINE */
     sscanf(line, "%d", &BBxll);
   }
-  if (gettoken(infile, line, sizeof(line)) != 0) { /* MAXLINE */
+  if (get_token(infile, line, sizeof(line)) != 0) { /* MAXLINE */
     sscanf(line, "%d", &BByll);
   }
-  if (gettoken(infile, line, sizeof(line)) != 0) { /* MAXLINE */
+  if (get_token(infile, line, sizeof(line)) != 0) { /* MAXLINE */
     sscanf(line, "%d", &BBxur);
   }
-  if (gettoken(infile, line, sizeof(line)) != 0) { /* MAXLINE */
+  if (get_token(infile, line, sizeof(line)) != 0) { /* MAXLINE */
     sscanf(line, "%d", &BByur);
   }
 } 
 
 /* accumulate Keywords for DOCINFO pdfmark */
 
-void getkeywords (FILE *infile)     /* 1996/May/10 */
+void get_keywords (FILE *infile)     /* 1996/May/10 */
 {
   char *keywordsnew;
   char *u;
@@ -1075,7 +1012,7 @@ void getkeywords (FILE *infile)     /* 1996/May/10 */
   keywordsnew = realloc (keywords, n);
   if (keywordsnew == NULL) {
     showline(" Unable to allocate memory\n", 1);
-/*    flushspecial(infile); */
+/*    flush_special(infile); */
 /*    errcount(0); */
 /*    return; */
     checkexit(1);             /* 1995/July/15 */
@@ -1092,11 +1029,11 @@ void getkeywords (FILE *infile)     /* 1996/May/10 */
   *u++ = '\0';        /* terminating \0 */
 }
 
-// void getcommonstring (FILE *infile, char *newstring) 
-char *getcommonstring (FILE *infile)
+// void get_common_string (FILE *infile, char *newstring) 
+char *get_common_string (FILE *infile)
 {
   char *u;
-  char *newstring = malloc ((size_t) (nspecial+1));
+  char *newstring = (char *)malloc ((size_t) (nspecial+1));
   if (newstring == NULL) {
     showline(" Unable to allocate memory\n", 1);
     checkexit(1);
@@ -1110,63 +1047,63 @@ char *getcommonstring (FILE *infile)
 
 // unadvertized ability to change Creator fieldin DocInfo
 
-void getcreator (FILE *infile)
+void get_creator (FILE *infile)
 {
   if (creatorstring != NULL) return;  /* ignore all but first */
 //  creatorstring = malloc ((size_t) (nspecial+1));
-//  getcommonstring(infile, creatorstring);
-  creatorstring = getcommonstring(infile);
+//  get_common_string(infile, creatorstring);
+  creatorstring = get_common_string(infile);
 }
 
-void gettitle (FILE *infile)
+void get_title (FILE *infile)
 {
   if (titlestring != NULL) return;  /* ignore all but first */
 //  titlestring = malloc ((size_t) (nspecial+1));
-//  getcommonstring(infile, titlestring);
-  titlestring = getcommonstring(infile);
+//  get_common_string(infile, titlestring);
+  titlestring = get_common_string(infile);
 }
 
-void getsubject (FILE *infile)
+void get_subject (FILE *infile)
 {
   if (subjectstring != NULL) return;  /* ignore all but first */
 //  subjectstring = malloc ((size_t) (nspecial+1));
-//  getcommonstring(infile, subjectstring);
-  subjectstring = getcommonstring(infile);
+//  get_common_string(infile, subjectstring);
+  subjectstring = get_common_string(infile);
 }
 
-void getauthor (FILE *infile)
+void get_author (FILE *infile)
 {
   if (authorstring != NULL) return; /* ignore all but first */
 //  authorstring = malloc ((size_t) (nspecial+1));
-//  getcommonstring(infile, authorstring);
-  authorstring = getcommonstring(infile);
+//  get_common_string(infile, authorstring);
+  authorstring = get_common_string(infile);
 }
 
 void getbase (FILE *infile)
 {
   if (basestring != NULL) return; /* ignore all but first */
 //  basestring = malloc ((size_t) (nspecial+1));
-//  getcommonstring(infile, basestring);
-  basestring = getcommonstring(infile);
+//  get_common_string(infile, basestring);
+  basestring = get_common_string(infile);
 }
 
-void getpagemode (FILE *infile)
+void get_page_mode (FILE *infile)
 {
   if (pagemode != NULL) return; /* ignore all but first */
 //  pagemode = malloc ((size_t) (nspecial+1));
-//  getcommonstring(infile, pagemode);
-  pagemode = getcommonstring(infile);
+//  get_common_string(infile, pagemode);
+  pagemode = get_common_string(infile);
 }
 
 /* example \special{papersize=5.04in,3.751in} */
 
-void getpapersize (FILE *infile)
+void get_paper_size (FILE *infile)
 {
 //  if (strcmp(papersize,"") != 0) return;  /* ignore all but first */
   if (papersize != NULL) return;
 //  papersize = malloc ((size_t) (nspecial+1));
-//  getcommonstring(infile, papersize);
-  papersize = getcommonstring(infile);
+//  get_common_string(infile, papersize);
+  papersize = get_common_string(infile);
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -1184,14 +1121,14 @@ void DoBackGround (FILE *infile, int c)
 
   if (bBackGroundFlag == 0)
   {
-    flushspecial(infile);
+    flush_special(infile);
     return;
   }
 
   s = line + strlen(line);
   if (c > 0) *s++ = (char) c;       /* stick in terminator */
   *s = '\0';                /* just in case */
-  (void) scanspecial(input, line, MAXLINE);
+  (void) scan_special(input, line, MAXLINE);
 
   if (traceflag)
   {
@@ -1323,7 +1260,7 @@ void logdo_com (FILE *infile)
 
   if (bIgnoreSpecials)
   {
-    flushspecial(infile);
+    flush_special(infile);
     return;
   }
   nspecialsav = nspecial;       /* 99/Feb/21 */
@@ -1331,19 +1268,19 @@ void logdo_com (FILE *infile)
   c = getc(infile);         /* peek ahead for ! */
   ungetc (c, infile);
   if (c == 0 && bFirstNull) {     /* is first byte null ? 96/Aug/29 */
-    flushspecial(infile);
+    flush_special(infile);
     return;
   }
   if (c == '!') {
 /*    if (verbatimflag != 0) { */   /* flushed 97/Mar/9 */
       c = getc(infile); nspecial--;
-      getheadertext(infile);
+      get_header_text(infile);
 /*    } */
-    flushspecial(infile);
+    flush_special(infile);
     return;
   }
-/*  c = getalphatoken(infile, line, MAXLINE); */
-  c = getalphatoken(infile, line, sizeof(line)); /* MAXLINE */
+/*  c = get_alpha_token(infile, line, MAXLINE); */
+  c = get_alpha_token(infile, line, sizeof(line)); /* MAXLINE */
 #ifdef TPIC
 /*  check whether maybe a TPIC \special */
   if (allowtpic != 0 && needtpic == 0 && (c == ' ' || c == 0)) {
@@ -1371,46 +1308,46 @@ void logdo_com (FILE *infile)
     }
   }
 /*  check whether a special calling for a header or prolog file */
-/*  if(c == '=' && strcmp(line, "header") == 0) getheadername(infile); */
+/*  if(c == '=' && strcmp(line, "header") == 0) get_header_name(infile); */
 /*  Separator is `=' */
   if(c == '=') {            /* extended 93/Dec/29 */
-/*    if (strcmp(line, "header") == 0) getheadername(infile); */
-    if (_strcmpi(line, "header") == 0) getheadername(infile);
-/*    else if (strcmp(line, "headertext") == 0) getheadertext(infile); */
-    else if (_strcmpi(line, "headertext") == 0) getheadertext(infile);
+/*    if (strcmp(line, "header") == 0) get_header_name(infile); */
+    if (_strcmpi(line, "header") == 0) get_header_name(infile);
+/*    else if (strcmp(line, "headertext") == 0) get_header_text(infile); */
+    else if (_strcmpi(line, "headertext") == 0) get_header_text(infile);
 /*    following added in 1995 July */
-    else if (strcmp(line, "DSCheader") == 0) getcustomname(infile);
-    else if (strcmp(line, "DSCtext") == 0) getcustomtext(infile);
-    else if (strcmp(line, "papersize") == 0) getpapersize(infile);
-    else if (strcmp(line, "DVIPSONE") == 0) getcommandspec(infile);
-    else if (strcmp(line, "DVIWindo") == 0) flushspecial(infile);
+    else if (strcmp(line, "DSCheader") == 0) get_custom_name(infile);
+    else if (strcmp(line, "DSCtext") == 0) get_custom_text(infile);
+    else if (strcmp(line, "papersize") == 0) get_paper_size(infile);
+    else if (strcmp(line, "DVIPSONE") == 0) get_command_spec(infile);
+    else if (strcmp(line, "DVIWindo") == 0) flush_special(infile);
 /*    else complain ??? */
   }
 /*  else if (c == ':' && strcmp(line, "dvitops") == 0) { */
 /*  Separator is `:' */
   else if (c == ':') {
     if (strcmp(line, "dvitops") == 0) {
-/*      (void) getalphatoken(infile, line, MAXLINE); */
-      (void) getalphatoken(infile, line, sizeof(line)); /* MAXLINE */
-      if (strcmp(line, "prolog") == 0) getheadername(infile);
+/*      (void) get_alpha_token(infile, line, MAXLINE); */
+      (void) get_alpha_token(infile, line, sizeof(line)); /* MAXLINE */
+      if (strcmp(line, "prolog") == 0) get_header_name(infile);
     }
     else if (strcmp(line, "PDF") == 0) {    /* 1996/July/4 */
-      c = getalphatoken(infile, line, sizeof(line));   /* MAXLINE */
+      c = get_alpha_token(infile, line, sizeof(line));   /* MAXLINE */
       if (c == ' ' || c == '=') {
-        if (_strcmpi(line, "Keywords") == 0) getkeywords(infile);
-        else if (strcmp(line, "BBox") == 0) getbbox(infile); 
-        else if (_strcmpi(line, "Creator") == 0) getcreator(infile);
-        else if (_strcmpi(line, "Title") == 0) gettitle(infile);
-        else if (_strcmpi(line, "Subject") == 0) getsubject(infile);
-        else if (_strcmpi(line, "Author") == 0) getauthor(infile);
+        if (_strcmpi(line, "Keywords") == 0) get_keywords(infile);
+        else if (strcmp(line, "BBox") == 0) get_bbox(infile); 
+        else if (_strcmpi(line, "Creator") == 0) get_creator(infile);
+        else if (_strcmpi(line, "Title") == 0) get_title(infile);
+        else if (_strcmpi(line, "Subject") == 0) get_subject(infile);
+        else if (_strcmpi(line, "Author") == 0) get_author(infile);
         else if (_strcmpi(line, "Base") == 0) getbase(infile);
-        else if (_strcmpi(line, "PageMode") == 0) getpagemode(infile);
+        else if (_strcmpi(line, "PageMode") == 0) get_page_mode(infile);
       }
     }
 /*    check whether TIFF image inserted re level2 features 96/Dec/20 */
     else if (strcmp(line, "insertimage") == 0)  bInsertImage++;
   }
-  flushspecial(infile);
+  flush_special(infile);
 }
 
 void logdo_xxxi(FILE *infile, unsigned int n)
@@ -1958,7 +1895,7 @@ int scanlogfileaux(FILE *fp_in)
     }
     else if (c >= 171 && c <= 234) { /* switch to font (c - 171) */
       fn = (c - 171);
-      logswitchfont(fn, fp_in);
+      log_switch_font(fn, fp_in);
     }
     else {
       switch(c) {

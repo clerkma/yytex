@@ -19,47 +19,9 @@
    02110-1301 USA.
 ****************************************************************************/
 
-/* Revised 1999 June 13 to run in DLL form */
-
-#ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#include <windows.h>
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <malloc.h>
-#include <setjmp.h>
-
-#ifdef _WINDOWS
-  #define MYLIBAPI __declspec(dllexport)
-#endif
-
 #include "dvipsone.h"
 
-#ifdef _WINDOWS
-#pragma warning(disable:4100) // unreferenced formal variable 
-#endif
-
-#pragma warning(disable:4996)
-#pragma warning(disable:4127) // conditional expression is constant
-
-#pragma hdrstop
-
-#include <time.h>     /* for struct tm etc. */
-#include <sys/types.h>
-#include <sys/stat.h>   /* for _stat etc. */
-#include <sys/utime.h>    /* for _utimbuf etc. */
-
 #define AllowCTM
-
-/* double convdeg (double angle) {  return (angle * 180 / 3.141592653); } */
-
-/* #define CONVDEG(x) (x * 180 / 3.141529865358) */
 
 #define PI (3.141592653)
 
@@ -69,9 +31,9 @@
 /* multiply all quantities in DVI file by this to get 10^{-7} meters */
 /* in TeX, this is normally set to 25400000/473628672 */ 
 
-int psfigstyle=0;   /* non-zero if new style DVI2PS special */
-int pstagstyle=0;   /* non-zero if new style DVIPS special */
-int pssvbstyle=0;   /* non-zero if new style DVIPS special */
+int psfigstyle = 0;   /* non-zero if new style DVI2PS special */
+int pstagstyle = 0;   /* non-zero if new style DVIPS special */
+int pssvbstyle = 0;   /* non-zero if new style DVIPS special */
 
 static char filename[FNAMELEN]; /* name of special file for error message */
 
@@ -104,7 +66,9 @@ double xll, yll, xur, yur;
 char *showbeginning (char *s, char *t, int n)
 {
   int k;
-  for (k=0; k < n; k++) *s++ = *t++;
+
+  for (k=0; k < n; k++)
+    *s++ = *t++;
 //  fputs("...\n", output);
   strcat(s, "..\n");
   s += strlen(s);
@@ -115,7 +79,7 @@ char *showbeginning (char *s, char *t, int n)
 /* returns 0 if no more tokens found - else returns terminator */
 /* what to do if error ? */
 
-int getalphatoken (FILE *input, char *token, int nmax)
+int get_alpha_token (FILE *input, char *token, int nmax)
 {
   int c, k = 0;
   char *s = token;
@@ -123,12 +87,12 @@ int getalphatoken (FILE *input, char *token, int nmax)
   *s = '\0';              /* in case we pop out 96/Aug/29 */
   if (nspecial <= 0) return 0;    /* nothing more in \special */
   if (nmax <= 0) {          /* 95/Aug/30 */
-    flushspecial(input);
+    flush_special(input);
     return 0;           /* error overflow */
   }
   c = getc(input); --nspecial;
   if (c == 0) {
-    flushspecial(input);
+    flush_special(input);
     return 0;           /* first byte is null 96/Aug/29 */
   }
   while (c <= ' ' && nspecial > 0) {  /* over initial white space */
@@ -148,7 +112,7 @@ int getalphatoken (FILE *input, char *token, int nmax)
       showline(logline, 1);
 //      if (logfileflag) showbeginning(logfile, token, nmax/2);
       errcount(0);    /* ??? */
-      flushspecial(input);          /* 95/Aug/30 */
+      flush_special(input);          /* 95/Aug/30 */
       c = 0;      /* so we return 0 */  /* 95/Aug/30 */
 /*      c = getc(input); --nspecial;
       while (((c >= 'a' && c <= 'z')  || (c >= 'A' && c <= 'Z')  ||
@@ -173,7 +137,7 @@ int getalphatoken (FILE *input, char *token, int nmax)
 
 /* flush rest of special to get back to rest of DVI code */
 
-void flushspecial(FILE *input)
+void flush_special (FILE *input)
 {
   int c;
   if (nspecial <= 0) return;
@@ -186,7 +150,7 @@ void flushspecial(FILE *input)
 /* - either up to white space - or - double quote delimited */
 /* returns 0 if no more tokens found - else returns terminator */
 
-int gettoken (FILE *input, char *buff, int nmax)
+int get_token (FILE *input, char *buff, int nmax)
 {
   int c, k=0, marker=' ';   // end of token marker
   char *s=buff;
@@ -194,7 +158,7 @@ int gettoken (FILE *input, char *buff, int nmax)
   *s = '\0';            // in case pop out right away
   if (nspecial <= 0) return 0;    /* nothing more in \special */
   if (nmax <= 0) {          /* 95/Aug/30 */
-    flushspecial(input);
+    flush_special(input);
     return 0;           /* error overflow */
   }
   c = getc(input);
@@ -224,7 +188,7 @@ int gettoken (FILE *input, char *buff, int nmax)
       showline(logline, 1);
 //      if (logfileflag) showbeginning(logfile, buff, nmax/2);
       errcount(0);    /* ??? */
-      flushspecial(input);          /* 95/Aug/30 */
+      flush_special(input);          /* 95/Aug/30 */
       c = 0;      /* so we return 0 */  /* 95/Aug/30 */
 /*      c = getc(input); --nspecial;
       while (c > ' ' && nspecial > 0) { 
@@ -253,7 +217,7 @@ int gettoken (FILE *input, char *buff, int nmax)
 /* copy special into line buffer for sscanf */
 /* - either double quote delimited - or - up to end of special */
 
-int scanspecial (FILE *input, char *buff, int nmax)
+int scan_special (FILE *input, char *buff, int nmax)
 {
   int c, k=0;
   char *s=buff;
@@ -278,7 +242,7 @@ int scanspecial (FILE *input, char *buff, int nmax)
       if (k >= nmax) {
 /*        showbeginning(errout, buff, nmax/2); */
 /*        errcount(0); */ /* ??? */
-        flushspecial(input);
+        flush_special(input);
         return nmax;
       }
       *s++ = (char) c;
@@ -293,7 +257,7 @@ int scanspecial (FILE *input, char *buff, int nmax)
       if (k >= nmax) {
 /*        showbeginning(errout, buff, nmax/2); */
 /*        errcount(0); */ /* ??? */
-        flushspecial(input);
+        flush_special(input);
         return nmax;
       }
       *s++ = (char) c;
@@ -306,7 +270,7 @@ int scanspecial (FILE *input, char *buff, int nmax)
 
 /* As above, but do not fiddle with "..." 97/Nov/11 needed for "mark" */
 
-int scanspecialraw (FILE *input, char *buff, int nmax)
+int scan_special_raw (FILE *input, char *buff, int nmax)
 {
   int c, k=0;
   char *s=buff;
@@ -330,7 +294,7 @@ int scanspecialraw (FILE *input, char *buff, int nmax)
     if (k >= nmax) {
 /*      showbeginning(errout, buff, nmax/2); */
 /*      errcount(0); */ /* ??? */
-      flushspecial(input);
+      flush_special(input);
       return nmax;
     }
     *s++ = (char) c;
@@ -342,10 +306,10 @@ int scanspecialraw (FILE *input, char *buff, int nmax)
 }
 
 /* read (short) double-quote-delimited string from special string */
-/* possibly just use scanspecial or gettoken instead ? */
+/* possibly just use scan_special or get_token instead ? */
 /* return value seems to be mostly ignored */
 
-int getstring (FILE *input, char *buff, int nmax)
+int get_string (FILE *input, char *buff, int nmax)
 {
   int c, k = 0;
   char *s=buff;
@@ -380,7 +344,7 @@ int getstring (FILE *input, char *buff, int nmax)
 }
 
 /* skip forward to comma in special string */
-void skiptocomma(FILE *input)
+void skip_to_comma(FILE *input)
 {
   int c;
   if (nspecial <= 0) return;
@@ -391,7 +355,7 @@ void skiptocomma(FILE *input)
 }
   
 /* skip over double-quote-delimited string in special string */
-void flushstring (FILE *input)
+void flush_string (FILE *input)
 {
   int c;
   if (nspecial <= 0) return;
@@ -411,10 +375,10 @@ void flushstring (FILE *input)
 /* - otherwise copy to end of special */
 
 /* This skips over leading white space */
-/* copystring starts by emitting '\n' */
-/* copystring ends by emitting '\n' when it is done */
+/* copy_string starts by emitting '\n' */
+/* copy_string ends by emitting '\n' when it is done */
 
-void copystring (FILE *output, FILE *input)
+void copy_string (FILE *output, FILE *input)
 {
   int c;
   int column=0;
@@ -505,7 +469,7 @@ void copystring (FILE *output, FILE *input)
 /* copy verbatim PostScript - but strip bracket enclosed crap first */
 /* global | local | inline | asis | begin | end <user PS> ??? */
  
-void stripbracket (FILE *output, FILE *input)
+void strip_bracket (FILE *output, FILE *input)
 {
   int c;
 
@@ -522,7 +486,7 @@ void stripbracket (FILE *output, FILE *input)
     nspecial++;
   }
 /*  putc('\n', output);  */ /* 94/Jun/25 */
-  copystring(output, input); 
+  copy_string(output, input); 
 /*  putc('\n', output);   */    /* 1993/June/3 */
 }
 
@@ -534,7 +498,7 @@ void stripbracket (FILE *output, FILE *input)
 /* try and find bbox at end of file */
 /* the following may inefficiently read stuff several times, but, so what */ 
 
-int findbboxatend (FILE *special, char *fname, long pslength)
+int find_bbox_at_end (FILE *special, char *fname, long pslength)
 {
   int k, foundit = 0;
 
@@ -574,7 +538,7 @@ int skiphpjunkathead (FILE *, int);
 
 /* extract bounding box from inserted eps file and offset */
 
-int readbbox (FILE *special, char *fname, long pslength)
+int read_bbox (FILE *special, char *fname, long pslength)
 {
   char *s;
   int c, k;
@@ -617,7 +581,7 @@ int readbbox (FILE *special, char *fname, long pslength)
 /*      if (strstr(line, "(at end)") != NULL) */ /* BoundingBox at end */
       if (strstr(line, "(atend)") != NULL ||
         strstr(line, "(at end)") != NULL)   /* 94/Aug/12 */
-        k = findbboxatend(special, fname, pslength);
+        k = find_bbox_at_end(special, fname, pslength);
       break;
     }
     if ((k = getline(special, line)) == 0) break;   /* EOF */
@@ -652,9 +616,9 @@ int readbbox (FILE *special, char *fname, long pslength)
 /* if needshift < 0 then (xll, yur) is at TeX's current point  */
 /* - last one only used by DVIALW ? */
 
-void dealwithbbox (FILE *output, FILE *special, char *fname, long pslength, int needshift)
+void deal_with_bbox (FILE *output, FILE *special, char *fname, long pslength, int needshift)
 {
-  if (readbbox(special, fname, pslength) > 0) {
+  if (read_bbox(special, fname, pslength) > 0) {
 /*    now perform shift - if asked for it */
     if (needshift > 0) {
 //      fprintf(output, "%lg %lg translate ", -xll, -yll); 
@@ -730,8 +694,7 @@ int FindFileName (char *fontname, char *filename) /* experiment 94/Aug/15 */
 
 /* Emits on stdout the font file name (minus trailing _) unless mmflag set */
 
-char *fopenfont_sub (FILE *atmfile, char *FontName, char *pfbname,
-           int atmflag, int mmflag)
+char *fopenfont_sub (FILE *atmfile, char *FontName, char *pfbname, int atmflag, int mmflag)
 {
 /*  FILE *atmfile; */
 /*  char atmini[FNAMELEN]; */
@@ -886,42 +849,51 @@ char *fopenfont_sub (FILE *atmfile, char *FontName, char *pfbname,
 /* maybe don't look along PSFONTS path if pfbname contains \ or / ? */
 /* changed to look in current directory first 98/Jul/20 */
 
-FILE *findpfbfile (char *pfbname, char *FileName) /* 1994/Aug/18 */
+FILE * find_pfb_file (char *pfbname, char *FileName)
 {
   FILE *pfbfile;
-  char filename[FNAMELEN];      /* used for PFB file name ? */
+  char filename[FNAMELEN]; /* used for PFB file name ? */
 
   strcpy(filename, pfbname);
   extension(filename, "pfb");
 
-  if ((pfbfile = fopen(filename, "rb")) != NULL) {
-    strcpy (FileName, filename);  /* 1994/Feb/10 */
-    return pfbfile;       /* we found it */
+  if ((pfbfile = fopen(filename, "rb")) != NULL)
+  {
+    strcpy (FileName, filename);
+    return pfbfile;
   }
-/*  not found as given */
-  if (fontpath == NULL) return NULL;
-  if (traceflag) showline(fontpath, 0); /* debugging only */
-/*  pfbfile = findandopen(filename, fontpath, NULL, "rb", 0); */
+
+  if (fontpath == NULL)
+    return NULL;
+
+  if (traceflag)
+    showline(fontpath, 0);
+
   pfbfile = findandopen(filename, fontpath, NULL, "rb", currentfirst);
-  if (pfbfile != NULL) {
+
+  if (pfbfile != NULL)
+  {
     strcpy(FileName, filename);
     return pfbfile;
   }
-/*  underscore(filename); */    /* OK, try now with underscores */
-  if (underscore(filename)) {   /* 95/May/28 */
-/*    pfbfile = findandopen(filename, fontpath, NULL, "rb", 0); */
+
+  if (underscore(filename))
+  {
     pfbfile = findandopen(filename, fontpath, NULL, "rb", currentfirst);
-    if (pfbfile != NULL) {
+
+    if (pfbfile != NULL)
+    {
       strcpy(FileName, filename);
       return pfbfile;
     }
   }
-  return NULL;        /* PFB not found in any of the directories */
+
+  return NULL;
 }
 
 #else
 
-FILE *findpfbfile (char *pfbname, char *FileName)
+FILE *find_pfb_file (char *pfbname, char *FileName)
 {
   FILE *pfbfile;
   char *searchpath;
@@ -966,7 +938,7 @@ FILE *findpfbfile (char *pfbname, char *FileName)
 
 /* find the atmfonts.map file and get its full path */
 
-int setupatmfontsmap (void)
+int setup_atm_fonts_map (void)
 {
   FILE *atmfile=NULL;
   char atmfilename[FNAMELEN];
@@ -1056,14 +1028,14 @@ FILE *fopenfont (char *FontName, char *FileName, int mmflag)
       strcpy(FileName, pfbfilename);
       return NULL;
     }     /* special case - font is resident ??? 98/Jan/9 */
-    pfbfile = findpfbfile(pfbfilename, FileName); /* look for PFB file */
+    pfbfile = find_pfb_file(pfbfilename, FileName); /* look for PFB file */
     return pfbfile;     /* NULL if not found */
   }
 
   if (traceflag) showline(" STAGE II", 1);  /* debugging 95/May/25 */
 /*  Stage II Stage II Stage II Stage II Stage II Stage II Stage II Stage II */
 /*  Try and use ATMFONTS.MAP */
-  if (useatmfontsmap) setupatmfontsmap();
+  if (useatmfontsmap) setup_atm_fonts_map();
 
   if ((atmfile = fopen(atmfontsmap, "r")) != NULL) {
 /*  try and find line `FontName=<pfb-file>' - PFB name return in pfbfilename */
@@ -1075,7 +1047,7 @@ FILE *fopenfont (char *FontName, char *FileName, int mmflag)
     if (s != NULL)  {         /* found in this file ? */
       if (strcmp(s, "nul") == 0)    /* special case 1994/Feb/17 */
         return NULL;        /* *resident* ??? */
-      pfbfile = findpfbfile(pfbfilename, FileName);
+      pfbfile = find_pfb_file(pfbfilename, FileName);
       return pfbfile;         /* NULL if not found */
     }     /* end of pfb file name found in ATMFONTS.MAP */
   }
@@ -1138,7 +1110,7 @@ FILE *fopenfont (char *FontName, char *FileName, int mmflag)
 /*  Works for CM, AMS, EM, extra LaTeX, MathTime */
 
   strcpy(pfbfilename, FontName);
-  pfbfile = findpfbfile(pfbfilename, FileName); /* look for PFB file */
+  pfbfile = find_pfb_file(pfbfilename, FileName); /* look for PFB file */
   if (pfbfile != NULL) return pfbfile;
 
   return NULL;          /* entry not found in ATM.INI either */
@@ -1406,7 +1378,7 @@ void copyepsfilesub (FILE *output, FILE *special, long pslength)
   int plainpsflag=0;
 
   if (! bPassEPSF) {        /* 1994/Mar/9 */
-    flushspecial(special);
+    flush_special(special);
     return;
   }
 
@@ -1783,7 +1755,7 @@ int copyepsfilesimple (FILE *output, FILE *special, long pslength)
   int c;
 
   if (! bPassEPSF) {        /* 1994/Mar/9 */
-    flushspecial(special);
+    flush_special(special);
     return 0;
   }
 
@@ -2066,7 +2038,7 @@ int setupbbox(char *epsfilename) {
 
   if((special = findepsfile(epsfilename, "eps", 0, 0)) == NULL) return 0;
   pslength = checkpcform(special, epsfilename);
-  readbbox(special, epsfilename, pslength);
+  read_bbox(special, epsfilename, pslength);
   fclose(special);
 } */
 
@@ -2092,7 +2064,7 @@ void copyepsfile (FILE *output, char *epsfilename, int inclflag, int needshift)
 /*    fprintf(output, "undscl ");  */ /* currentpoint translate ? */
     if (needshift) {
       pslength =  checkpcform(special, filename);   
-      dealwithbbox(output, special, filename, pslength, needshift);
+      deal_with_bbox(output, special, filename, pslength, needshift);
 /*      rewind(special);  */
     }
   }
@@ -2151,13 +2123,13 @@ void endspecial (FILE *output)
 
 #define MAXCOMPLAIN 127
 
-void complainspecial (FILE *input) /* list contents and do flushspecial */
+void complainspecial (FILE *input) /* list contents and do flush_special */
 {
   int c, k=0;
 /*  long specnow; */
 
   if (quietflag != 0) {     /* easy if output suppressed */
-    flushspecial(input); return;
+    flush_special(input); return;
   }
 /*  specnow = ftell(input); */      /* save current position */
 
@@ -2198,7 +2170,7 @@ void complainjflag (FILE *input)          /* 1993/Oct/17 */
 /*  if (complainedaboutj++ > 0) return; */
   if (complainedaboutj++ == 0) 
     showline(" WARNING: verbatim PS - use `j' flag?", 1);
-  if (nspecial > 0) flushspecial(input);      /* 1999/Mar/18 */
+  if (nspecial > 0) flush_special(input);      /* 1999/Mar/18 */
 }
 
 /* Textures style include eps file */ /* added "scaled <double>" ? */
@@ -2210,19 +2182,19 @@ void readtextures (FILE *output, FILE *input) /* Texture style special ? */
   double scale=1.0;
   char epsname[MAXLINE]="";
 
-/*  c = gettoken(input, line, MAXLINE); */
-  c = gettoken(input, line, sizeof(line));  /* MAXLINE */
+/*  c = get_token(input, line, MAXLINE); */
+  c = get_token(input, line, sizeof(line));  /* MAXLINE */
 
   colontoslash(epsname, line);  /* deal with Mac font names */
 
   startspecial(output); 
   if (c > 0 && nspecial > 0) { /* anything left in special ? */
 /*     read next token, see whether perhaps `scaled' or `clip' */
-/*    (void) gettoken(input, line, MAXLINE); */
-    (void) gettoken(input, line, sizeof(line)); /* MAXLINE */
+/*    (void) get_token(input, line, MAXLINE); */
+    (void) get_token(input, line, sizeof(line)); /* MAXLINE */
     if (strcmp(line, "scaled") == 0) {
-/*      (void) gettoken(input, line, MAXLINE); */
-      (void) gettoken(input, line, sizeof(line)); /* MAXLINE */
+/*      (void) get_token(input, line, MAXLINE); */
+      (void) get_token(input, line, sizeof(line)); /* MAXLINE */
       if(sscanf(line, "%lg", &scale) > 0) {
 /*        printf(" SCALE %lg ", scale); */
         if (scale > 33.333) scale = scale/1000.0;
@@ -2231,8 +2203,8 @@ void readtextures (FILE *output, FILE *input) /* Texture style special ? */
       }
 /*      else {  } */ /* error, can't read the scale */
 /*       read next token, see whether perhaps `clip' */
-/*      if (nspecial > 0) (void) gettoken(input, line, MAXLINE); */
-      if (nspecial > 0) (void) gettoken(input, line, sizeof(line));
+/*      if (nspecial > 0) (void) get_token(input, line, MAXLINE); */
+      if (nspecial > 0) (void) get_token(input, line, sizeof(line));
     }
     if (strcmp(line, "clip") == 0) clipflag = 1;  /* 1995/July/12 */
   }
@@ -2248,7 +2220,7 @@ void readtextures (FILE *output, FILE *input) /* Texture style special ? */
     if ((special = findepsfile(epsname, "eps", 1, 1)) != NULL) {
       xll = yll = xur = yur = 0.0;
       pslength = checkpcform(special, epsname);
-      if (readbbox(special, epsname, pslength) == 0) {
+      if (read_bbox(special, epsname, pslength) == 0) {
         sprintf(logline, "BoundingBox not found in %s ", epsname);
         showline(logline, 1);
       }
@@ -2272,7 +2244,7 @@ void readtextures (FILE *output, FILE *input) /* Texture style special ? */
   } /* end of clipflag code introduced 95/July/12 */
   copyepsfile(output, epsname, 1, 1);   /* include and shift */
   endspecial(output);
-  flushspecial(input);          /* flush whatever is left */
+  flush_special(input);          /* flush whatever is left */
 } 
 
 /* Textures style "postscript" - direct inclusion of PostScript code */
@@ -2292,8 +2264,8 @@ void copypostscript (FILE *output, FILE *input, int rawflag) /* 1994/July/4 */
 //    fputs("gsave undsclx ", output);
     PSputs("gsave undsclx ", output);
   }
-/*  copystring now inserts a `\n' here */   /* 1994/June/25 */
-  copystring(output, input);
+/*  copy_string now inserts a `\n' here */   /* 1994/June/25 */
+  copy_string(output, input);
 /*  putc('\n', output); */        /* 93/June/3 */
 /*  if (sebastianflag) putc('\n', output); else */
   if (rawflag == 0) {           /* 94/July/3 */
@@ -2315,12 +2287,12 @@ void readpostscript (FILE *output, FILE *input, int rawflag) /* 1994/July/5 */
   double scale=1.0;
   char epsname[FNAMELEN]="";
   
-/*  (void) gettoken(input, epsname, FNAMELEN); */
-  (void) gettoken(input, epsname, sizeof(epsname)); /* FNAMELEN */
-/*  if (gettoken(input, line, MAXLINE) != 0 && */
-  if (gettoken(input, line, sizeof(line)) != 0 &&
+/*  (void) get_token(input, epsname, FNAMELEN); */
+  (void) get_token(input, epsname, sizeof(epsname)); /* FNAMELEN */
+/*  if (get_token(input, line, MAXLINE) != 0 && */
+  if (get_token(input, line, sizeof(line)) != 0 &&
     strcmp(line, "scaled") == 0 &&
-      gettoken(input, line, sizeof(line)) != 0 &&
+      get_token(input, line, sizeof(line)) != 0 &&
         sscanf(line, "%lg", &scale) > 0) {
   }
 /*  fprintf(output, "\nsb "); */
@@ -2365,14 +2337,14 @@ int readandrew (FILE *output, FILE *input)
 
   fseek(input, specstart, SEEK_SET);  /* start over again */
   nspecial = nspecialsav;       /* restore length */
-/*  if (gettoken(input, epsfilename, FNAMELEN) == 0) { */
-  if (gettoken(input, epsfilename, sizeof(epsfilename)) == 0) { /* FNAMELEN */
-    flushspecial(input);
+/*  if (get_token(input, epsfilename, FNAMELEN) == 0) { */
+  if (get_token(input, epsfilename, sizeof(epsfilename)) == 0) { /* FNAMELEN */
+    flush_special(input);
     return 0;       /* fail, no token following */
   }
 /*  if ((special = findepsfile(epsfilename, 0, "eps")) == NULL) { */
   if ((special = findepsfile(epsfilename, "eps", 0, 0)) == NULL) {
-    flushspecial(input);
+    flush_special(input);
     if (traceflag) {      /* debug output 95/July/15 */
       sprintf(logline, " can't find %s, or unknown \\special ",
           epsfilename); /* 95/June/21 */
@@ -2384,10 +2356,10 @@ int readandrew (FILE *output, FILE *input)
   startspecial(output);
 /*  fprintf(output, "undscl "); */    /* currentpoint translate ? */
 /*  pslength = checkpcform(special, filename);     */
-/*  dealwithbbox(output, special, filename, pslength, 1); */ 
+/*  deal_with_bbox(output, special, filename, pslength, 1); */ 
 /* -1, 0, or +1 ? */
 /*  putc('\n', output); */      /* 1994/June/25 */
-  copystring(output, input);    /* copy rest of special */
+  copy_string(output, input);    /* copy rest of special */
 /*  putc('\n', output); */      /* 1993/June/3 */
 /*  copyepsfile(output, epsfilename, 1, 0);  */
 /*  copyepsfile(output, epsfilename, 0, 0);   */
@@ -2411,13 +2383,13 @@ int readdvialw (FILE *output, FILE *input)
 
   while (nspecial > 0) {    /* gather up information first */
 /*    if (firsttime != 0) firsttime = 0; 
-    else if (getalphatoken(input, line, MAXLINE) == 0) break; */
+    else if (get_alpha_token(input, line, MAXLINE) == 0) break; */
     if (firsttime == 0)
-/*      if (getalphatoken(input, line, MAXLINE) == 0) break;  */
-      if (getalphatoken(input, line, sizeof(line)) == 0) break; 
+/*      if (get_alpha_token(input, line, MAXLINE) == 0) break;  */
+      if (get_alpha_token(input, line, sizeof(line)) == 0) break; 
     if (strcmp(line, "language") == 0) { 
 /*      strcmp(line, "LANGUAGE") == 0) { */
-      (void) getstring(input, line, MAXLINE);
+      (void) get_string(input, line, MAXLINE);
       if (strcmp(line, "PS") == 0 ||
         strcmp(line, "PostScript") == 0) {
         /* we like PS, so no need to do anything ! */
@@ -2429,25 +2401,25 @@ int readdvialw (FILE *output, FILE *input)
     }
     else if (strcmp(line, "include") == 0) {
 /*           || strcmp(line, "INCLUDE") == 0) { */
-      (void) getstring(input, epsfilename, FNAMELEN);
+      (void) get_string(input, epsfilename, FNAMELEN);
       includeflag = 1; fileflag = 1;
     }
     else if (strcmp(line, "overlay") == 0) {
 /*        || strcmp(line, "OVERLAY") == 0 ) { */
-      (void) getstring(input, epsfilename, FNAMELEN);
+      (void) get_string(input, epsfilename, FNAMELEN);
       includeflag = 0;  fileflag = 1;
     }
     else if (strcmp(line, "literal") == 0) {
 /*        || strcmp(line, "LITERAL") == 0) { */
       flitpos = ftell(input);   /* remember where this was */
       nliteral = nspecial;
-/*      copystring(output, input); */
+/*      copy_string(output, input); */
     }
 /*    GRAPHICS and OPTIONS not yet defined - so flag as errors */   
     else if (strcmp(line, "boundingbox") == 0) {
 /*  actually, this may involve TeX dimensions, see decodeunits? */
 /*  - that seems truly bizarre, so ignore that possibility */
-      (void) getstring(input, line, MAXLINE);
+      (void) get_string(input, line, MAXLINE);
       if (sscanf(line, "%lg %lg %lg %lg", &xll, &yll, &xur, &yur) == 4)
 /*  this should override bounding box in eps file if given */
         bboxflag = 1;
@@ -2459,7 +2431,7 @@ int readdvialw (FILE *output, FILE *input)
       }
     }
     else if (strcmp(line, "message") == 0) {
-      (void) getstring(input, line, MAXLINE);
+      (void) get_string(input, line, MAXLINE);
 /*      printf("%s\n", line); */
 /*      putc(' ', stdout); */   /* 93/June/3 */
       showline(" ", 0);
@@ -2476,10 +2448,10 @@ int readdvialw (FILE *output, FILE *input)
           " Unrecognized \\special keyword: %s ", line);
         showline(logline, 1);
       }
-      flushstring(input); /*  errcount(0);  */
+      flush_string(input); /*  errcount(0);  */
     }
     if (nspecial == 0) break;
-    else skiptocomma(input);  /* look for next key value pair */
+    else skip_to_comma(input);  /* look for next key value pair */
     if (firsttime != 0) firsttime = 0; 
   }
   
@@ -2514,7 +2486,7 @@ int readdvialw (FILE *output, FILE *input)
     fseek(input, flitpos, SEEK_SET);  /* go back to where literal was */
     nspecial = nliteral;        /* reset nspecial */
 /*    putc('\n', output); */      /* 1994/June/25 */
-    copystring(output, input);
+    copy_string(output, input);
 /*    putc('\n', output); */        /* 1993/June/3 */
     fseek(input, fendspec, SEEK_SET); /* back to end of special */
     nspecial = 0;
@@ -2616,7 +2588,7 @@ void rescaletexfig (char *line)
 void cantfind (FILE *input, char *s, char *line) { /* complain about missing field */
   sprintf(logline, " Can't find `%s' (in `%s') ", s, line);
   showline(logline, 1);
-  flushspecial(input);
+  flush_special(input);
   errcount(0); 
 }
 
@@ -2686,17 +2658,17 @@ int readdvi2ps (FILE *output, FILE *input)
 
   while (nspecial > 0) {    /* gather up parameters */
     if (firsttime != 0) firsttime = 0;
-/*    else if (getalphatoken(input, line, MAXLINE) == 0) break; */
-    else if (getalphatoken(input, line, sizeof(line)) == 0) break;
+/*    else if (get_alpha_token(input, line, MAXLINE) == 0) break; */
+    else if (get_alpha_token(input, line, sizeof(line)) == 0) break;
 /*    deal with new PSFIG DVI2PS style useage */
     if (strcmp(line, "pstext") == 0) {
 /*      ||  strcmp(line, "PSTEXT") == 0) { */
-      if (scanspecial(input, line, MAXLINE) == MAXLINE) {
+      if (scan_special(input, line, MAXLINE) == MAXLINE) {
         if (verbatimflag) {       /* long pstext= verbatim */
           fseek(input, fliteral, SEEK_SET);
           nspecial = nliteral;
-/*          copystring now emits '\n' here */   /* 1994/June/25 */
-          copystring(output, input);  /* revscl - forscl PSTEXT */
+/*          copy_string now emits '\n' here */   /* 1994/June/25 */
+          copy_string(output, input);  /* revscl - forscl PSTEXT */
 /*          putc('\n', output); */    /* 1993/June/3 */
         }
         else complainspecial(input); /* TOO DAMN LONG ! */
@@ -2730,7 +2702,7 @@ int readdvi2ps (FILE *output, FILE *input)
       else if (verbatimflag) verbout(output, line); 
       else complainjflag(input);    /* 1993/Oct/17 */
 /*      else complainspecial(input); */
-      flushspecial(input);    /* ignore the rest */
+      flush_special(input);    /* ignore the rest */
     } /* end of PSTEXT= code */
 /*    kludge to allow insertion of header information - NO PROTECTION ! */
     else if (_strcmpi(line, "header") == 0 ||
@@ -2742,7 +2714,7 @@ int readdvi2ps (FILE *output, FILE *input)
          strcmp(line, "DVIWindo") == 0      /* 99/Sep/6 */
         ) {
 /*    ignore now, already taken care of in dvipslog ! */
-        flushspecial(input);  /* taken care of in dvipslog */
+        flush_special(input);  /* taken care of in dvipslog */
     }
 /*    kludge to change to PS default coordinates - NO PROTECTION ! */
     else if (strcmp(line, "verbatim") == 0 
@@ -2751,105 +2723,105 @@ int readdvi2ps (FILE *output, FILE *input)
       PSputc('\n', output);       // always on new line ?
       PSputs("revsclx ", output);
       if (preservefont) PSputs("currentfont ", output);
-      copystring(output, input);
+      copy_string(output, input);
       if (preservefont) PSputs("setfont ", output);
       PSputs("forsclx ", output);
     }
 /*    deal with old PSFIG DVI2PS style useage - case sensitive */
     else if (strcmp(line, "psfile") == 0) {
-/*      if (gettoken(input, epsfilename, MAXFILENAME) == 0) */
-      if (gettoken(input, epsfilename, sizeof(epsfilename)) == 0) /* FNAMELEN */
+/*      if (get_token(input, epsfilename, MAXFILENAME) == 0) */
+      if (get_token(input, epsfilename, sizeof(epsfilename)) == 0) /* FNAMELEN */
         cantfind(input, line, epsfilename);
       else psepsfstyle=0;
     }
     else if (strcmp(line, "hsize") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &hsize) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=0;
     }
     else if (strcmp(line, "vsize") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &vsize) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=0;
     }
     else if (strcmp(line, "hoffset") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &hoffset) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=0;
     }
     else if (strcmp(line, "voffset") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &voffset) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=0;
     }
     else if (strcmp(line, "hscale") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &hscale) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=0;
     }
     else if (strcmp(line, "vscale") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
           sscanf(line, "%lg", &vscale) == 0) 
         cantfind(input, line, moreline);
       else psepsfstyle=0;
     }
     else if (strcmp(line, "rotation") == 0
         || strcmp(line, "angle") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &rotation) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=0;
     }
 /* Now for Rokicki EPSF.TEX style --- case sensitive */
     else if (strcmp(line, "PSfile") == 0) { /* EPSF style - note uc/lc */
-/*      if (gettoken(input, epsfilename, MAXFILENAME) == 0)  */
-      if (gettoken(input, epsfilename, sizeof(epsfilename)) == 0) 
+/*      if (get_token(input, epsfilename, MAXFILENAME) == 0)  */
+      if (get_token(input, epsfilename, sizeof(epsfilename)) == 0) 
         cantfind(input, line, moreline);
       else psepsfstyle=1;
     }
     else if (strcmp(line, "llx") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &xll) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=1;
     }
     else if (strcmp(line, "lly") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &yll) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=1;
     }
     else if (strcmp(line, "urx") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &xur) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=1;
     }
     else if (strcmp(line, "ury") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &yur) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=1;
     }
     else if (strcmp(line, "rwi") == 0) {
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &rwi) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=1;
@@ -2857,8 +2829,8 @@ int readdvi2ps (FILE *output, FILE *input)
 /*    else if (strcmp(line, "rhe") == 0) { */   /* ??? */
     else if (strcmp(line, "rhe") == 0 ||
            strcmp(line, "rhi") == 0) {    /* 1994/Mar/1 */
-/*      if (gettoken(input, line, MAXLINE) == 0 || */
-      if (gettoken(input, moreline, sizeof(moreline)) == 0 ||
+/*      if (get_token(input, line, MAXLINE) == 0 || */
+      if (get_token(input, moreline, sizeof(moreline)) == 0 ||
         sscanf(line, "%lg", &rhe) == 0) 
           cantfind(input, line, moreline);
       else psepsfstyle=1;
@@ -2918,7 +2890,7 @@ int readdvi2ps (FILE *output, FILE *input)
     }
     copyepsfile(output, epsfilename, 0, 0);
     endspecial(output);
-    flushspecial(input);
+    flush_special(input);
   }
 /*  NOW old UNIX DVI2PS (psadobe) ? */
   else {
@@ -2957,7 +2929,7 @@ int readdvi2ps (FILE *output, FILE *input)
 /*    the above needs testing ? */
     endspecial(output);   
   }
-  flushspecial(input);    /* ignore the rest ? */
+  flush_special(input);    /* ignore the rest ? */
   if (abortflag) return -1;
   else return 0;
 }
@@ -3127,8 +3099,8 @@ void doColor (FILE *output, FILE *input, int c, int outflag)  /* 95/Mar/1 */
   s = line + strlen(line);
   *s++ = (char) c;            /* stick in terminator */
   *s = '\0';                /* just in case */
-/*  (void) scanspecial(input, s, MAXLINE); */     /* read rest of line ? */
-  (void) scanspecial(input, line, MAXLINE);   /* read rest of line */
+/*  (void) scan_special(input, s, MAXLINE); */     /* read rest of line ? */
+  (void) scan_special(input, line, MAXLINE);   /* read rest of line */
   if (traceflag) {
     sprintf(logline, "\n(index %d outflag %d) %s ", colorindex, outflag, line); /* debugging */
     showline(logline, 0);
@@ -3400,7 +3372,7 @@ void doCTM (FILE *output, FILE *input)  /* \special{CTM: } 96/Oct/10 */
   int n, flag;
   double dx, dy, sx, sy, theta, m11, m12, m21, m22, m31, m32;
 
-  (void) scanspecial(input, line, MAXLINE); /* read rest of line */
+  (void) scan_special(input, line, MAXLINE); /* read rest of line */
   s = line;
 //  putc('\n', output);           /* separate from previous */
   PSputc('\n', output);           /* separate from previous */
@@ -3492,7 +3464,7 @@ void doCTM (FILE *output, FILE *input)  /* \special{CTM: } 96/Oct/10 */
     s += n;               /* step over arguments */
   }
 /*  putc('\n', output); */          /* separate from following */
-  flushspecial(input);
+  flush_special(input);
 }
 #endif
 
@@ -3549,7 +3521,7 @@ void doClipBox (FILE *output, FILE *input, int c) /* 98/Sep/8 */
   int n, flag, subtract, stroke;
 
 /*  if (c == '*') subtract=1; */    /* subtract rather than intersect */
-  (void) scanspecial(input, line, MAXLINE);   /* read rest of line */
+  (void) scan_special(input, line, MAXLINE);   /* read rest of line */
   s = line;
 /*  printf("LINE: %s\n", line); */
 /*  while (*s != ' ' && *s != '\0') s++; */
@@ -3664,23 +3636,23 @@ int readdvitops (FILE *output, FILE *input, int pctexflag)
   FILE *special;
 
   if (pctexflag == 0) { /* if dvitops: check "import" next */
-/*    if (getalphatoken(input, line, MAXLINE) == 0) */
-    if (getalphatoken(input, line, sizeof(line)) == 0) {
+/*    if (get_alpha_token(input, line, MAXLINE) == 0) */
+    if (get_alpha_token(input, line, sizeof(line)) == 0) {
       complainspecial(input);
       return -1;
     }
   }
 /*  if (strcmp(line, "import") == 0) */
   if (pctexflag || strcmp(line, "import") == 0) {
-/*    if(gettoken(input, epsfilename, FNAMELEN) == 0) */
-    if(gettoken(input, epsfilename, sizeof(epsfilename)) == 0) {  /* FNAMELEN */
+/*    if(get_token(input, epsfilename, FNAMELEN) == 0) */
+    if(get_token(input, epsfilename, sizeof(epsfilename)) == 0) {  /* FNAMELEN */
       dvitopsmiss();
       errcount(0);
-      flushspecial(input);
+      flush_special(input);
       return -1;
     }
 /*    see if width and height specified in dvitops: import */
-    if (scanspecial(input, line, MAXLINE) == MAXLINE) {
+    if (scan_special(input, line, MAXLINE) == MAXLINE) {
       complainspecial(input); /* TOO DAMN LONG ! */
     }
 /*    scale specified width and height to PS points */
@@ -3713,7 +3685,7 @@ int readdvitops (FILE *output, FILE *input, int pctexflag)
         return -1;
       pslength = checkpcform(special, epsfilename);   /* ??? */
 /*      should failure to read BBox be considered OK here ? */
-      if (readbbox(special, epsfilename, pslength) == 0) {
+      if (read_bbox(special, epsfilename, pslength) == 0) {
 /*        may want to suppress error message ? */
 /*        fprintf(errout, "BBox not found in %s ", epsfilename); */
         sprintf(logline, "BoundingBox not found in %s ", epsfilename);
@@ -3786,7 +3758,7 @@ int readdvitops (FILE *output, FILE *input, int pctexflag)
         PSputs("currentfont ", output); 
       }
 /*      putc('\n', output); */      /* 1994/June/25 */
-      copystring(output, input);  /* just copy what follows ! */
+      copy_string(output, input);  /* just copy what follows ! */
 /*      putc('\n', output); */      /* 1993/June/3 */
 /*      if (preservefont) fprintf(output, "setfont "); */
       if (preservefont) {
@@ -3802,7 +3774,7 @@ int readdvitops (FILE *output, FILE *input, int pctexflag)
     texlandscape(output);         /* 1992/Nov/28 */
   }
   else complainspecial(input);
-  flushspecial(input);
+  flush_special(input);
   if (abortflag) return -1;
   else return 0;
 }
@@ -3828,8 +3800,8 @@ void reademtex (FILE *output, FILE *input)
   char units[3];
   int n;
 
-/*  if (getalphatoken(input, line, MAXLINE) == 0) { */
-  if (getalphatoken(input, line, sizeof(line)) == 0)
+/*  if (get_alpha_token(input, line, MAXLINE) == 0) { */
+  if (get_alpha_token(input, line, sizeof(line)) == 0)
   {
     complainspecial(input);
     return;
@@ -3838,13 +3810,13 @@ void reademtex (FILE *output, FILE *input)
   {
 //    putc(' ', stdout);  
     showline(" ", 0); 
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
 //    fputs(line, stdout);
 //    PSputs(line, stdout);
     showline(line, 0);
   }
   else if (strcmp(line, "linewidth") == 0) {
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     s = line;
     if (sscanf(s, "%lg%n", &linewidth, &n) == 0) {
       showline("linewidth not specified", 1); /* used default */
@@ -3898,40 +3870,40 @@ int readdvitps (FILE *output, FILE *input)
   FILE *special;
 /*  char *s=line; */
   
-/*  if (getalphatoken(input, line, MAXLINE) == 0) {*//* get DVITPS command */
-  if (getalphatoken(input, line, sizeof(line)) == 0) {  /* get DVITPS command */
+/*  if (get_alpha_token(input, line, MAXLINE) == 0) {*//* get DVITPS command */
+  if (get_alpha_token(input, line, sizeof(line)) == 0) {  /* get DVITPS command */
     complainspecial(input);
     return -1;
   }
   if (strcmp(line, "Include1") == 0) {      /* insert figure here */
-/*    if(gettoken(input, epsfilename, FNAMELEN) == 0) {   */
-    if(gettoken(input, epsfilename, sizeof(epsfilename)) == 0) {  
+/*    if(get_token(input, epsfilename, FNAMELEN) == 0) {   */
+    if(get_token(input, epsfilename, sizeof(epsfilename)) == 0) {  
 /*      fputs(" File name missing in DVITPS special ", errout); */
       dvitopsmiss();
       errcount(0);
-      flushspecial(input);
+      flush_special(input);
       return -1;
     }
 /*    see if width and height specified in dvitops: import */
-    if(scanspecial(input, line, MAXLINE) == MAXLINE) {
+    if(scan_special(input, line, MAXLINE) == MAXLINE) {
       complainspecial(input); /* TOO DAMN LONG ! */
     }
 /*    if ((special = findepsfile(epsfilename, 1, "eps")) == NULL) */
     if ((special = findepsfile(epsfilename, "eps", 1, 0)) == NULL)
       return -1;
     pslength = checkpcform(special, epsfilename);   /* ??? */
-/*    if (readbbox(special, epsfilename, pslength) == 0) {
+/*    if (read_bbox(special, epsfilename, pslength) == 0) {
       fprintf(errout, "BoundingBox not found in %s ", epsfilename);
     }  */
     copyepsfileaux(output, special, epsfilename);
     fclose(special);
   }
   else if (strcmp(line, "Include0") == 0) { /* read PS header or such */
-/*    if(gettoken(input, epsfilename, FNAMELEN) == 0) {   */
-    if(gettoken(input, epsfilename, sizeof(epsfilename)) == 0) {  
+/*    if(get_token(input, epsfilename, FNAMELEN) == 0) {   */
+    if(get_token(input, epsfilename, sizeof(epsfilename)) == 0) {  
       dvitopsmiss();
       errcount(0);
-      flushspecial(input);
+      flush_special(input);
       return -1;
     }
 /*    if ((special = findepsfile(epsfilename, 1, "eps")) == NULL) */
@@ -3942,11 +3914,11 @@ int readdvitps (FILE *output, FILE *input)
   }
   else if (strcmp(line, "Literal") == 0) {
 /*    putc('\n', output); */    /* 1994/June/25 */
-    copystring(output, input);  /* just copy what follows ! */
+    copy_string(output, input);  /* just copy what follows ! */
 /*    putc('\n', output); */    /* 1993/June/3 */
   }
   else complainspecial(input);
-  flushspecial(input);
+  flush_special(input);
   if (abortflag) return -1;
   else return 0;
 }
@@ -3966,15 +3938,15 @@ int readdvips (FILE *output, FILE *input)
 
   if (c == ':') {   /* a second colon --- deal with ps:: type command */
 /*  global | local | inline | asis | begin | end <user PS> ??? */
-/*    (void) gettoken(input, line, MAXLINE); */ 
-/*    if (verbatimflag) stripbracket(output, intput);  */
+/*    (void) get_token(input, line, MAXLINE); */ 
+/*    if (verbatimflag) strip_bracket(output, intput);  */
     fliteral = ftell(input);    /* remember where this was */
     nliteral = nspecial;      /* and how many bytes left */
-    if (scanspecial(input, line, MAXLINE) == MAXLINE) {
+    if (scan_special(input, line, MAXLINE) == MAXLINE) {
       if (verbatimflag) {     /* long ps:: type verbatim */
         fseek(input, fliteral, SEEK_SET);
         nspecial = nliteral;
-        stripbracket(output, input);   /* revscl - forscl ??? */
+        strip_bracket(output, input);   /* revscl - forscl ??? */
       }
 /*      complainspecial(input); */      /* TOO DAMN LONG ! */
 /*      else complainspecial(input); */   /* 1993/Jan/23 */
@@ -4016,36 +3988,36 @@ int readdvips (FILE *output, FILE *input)
     else verbout(output, line);   /* 98/Jun/5 */
 /*    verbatim PostScript --- 1993/Aug/15 */
 /*    else complainjflag(input); */ /* 98/Jun/5 */
-    flushspecial(input);  /* flush the rest if any */
+    flush_special(input);  /* flush the rest if any */
   } /* end of code for ps:: case */
   else {    /*  deal with ps: plotfile or ps: overlay etc */
     (void) ungetc(c, input); nspecial++;
     fliteral = ftell(input);    /* remember where this was */
     nliteral = nspecial;      /* 1992/Sep/25 */ 
-/*    if (getalphatoken(input, line, MAXLINE) == 0) { */
-/*    if (bSciWord) flag = gettoken(input, line, MAXLINE); */
-    if (bSciWord) flag = gettoken(input, line, sizeof(line));
-/*    else flag = getalphatoken(input, line, MAXLINE); */
-    else flag = getalphatoken(input, line, sizeof(line));
+/*    if (get_alpha_token(input, line, MAXLINE) == 0) { */
+/*    if (bSciWord) flag = get_token(input, line, MAXLINE); */
+    if (bSciWord) flag = get_token(input, line, sizeof(line));
+/*    else flag = get_alpha_token(input, line, MAXLINE); */
+    else flag = get_alpha_token(input, line, sizeof(line));
     if (flag == 0) {        /* 1994/Apr/22 */
       showline("Premature end of special\n", 1);
       return -1;
     }
     if (strcmp(line, "plotfile") == 0) { /* deal with plotfile */
-/*      while (getalphatoken(input, line, MAXLINE) > 0) { */
+/*      while (get_alpha_token(input, line, MAXLINE) > 0) { */
 /*  deal with filename | global | local | inline | asis ??? */
-/*      (void) gettoken(input, epsfilename, FNAMELEN); */ /* file name */
-      (void) gettoken(input, epsfilename, sizeof(epsfilename));  /* file name */
+/*      (void) get_token(input, epsfilename, FNAMELEN); */ /* file name */
+      (void) get_token(input, epsfilename, sizeof(epsfilename));  /* file name */
       if (pstagstyle != 0)  { /*  only if between [begin] & [end] */
 /*        actually, now do nothing except copy the file ! */
         copyepsfile(output, epsfilename, 1, 0); /* incl & no shift */
       }
     } /* end of "plotfile" case */
     else if (strcmp(line, "overlay") == 0) { /* deal with overlay */
-/*      while (getalphatoken(input, line, MAXLINE) > 0) { */
+/*      while (get_alpha_token(input, line, MAXLINE) > 0) { */
 /*  deal with filename | on | off ??? */
-/*      (void) gettoken(input, epsfilename, FNAMELEN); */  /* file name */ 
-      (void) gettoken(input, epsfilename, sizeof(epsfilename));   /* file name */
+/*      (void) get_token(input, epsfilename, FNAMELEN); */  /* file name */ 
+      (void) get_token(input, epsfilename, sizeof(epsfilename));   /* file name */
       if (pstagstyle != 0)  { /*  only if between [begin] & [end] */
 /*        actually, now do nothing except copy the file ! */
 /*        fprintf(output, "dviso "); ? */
@@ -4055,12 +4027,12 @@ int readdvips (FILE *output, FILE *input)
     }   /* end of "overlay" case */
     else if (strcmp(line, "epsfile") == 0) {     /* ArborText ? */
 /*         strcmp(line, "EPSFILE") == 0  */
-/*      if(gettoken(input, epsfilename, FNAMELEN) > 0) { */ /* file name */
-      if(gettoken(input, epsfilename, sizeof(epsfilename)) > 0) {  /* file name */
+/*      if(get_token(input, epsfilename, FNAMELEN) > 0) { */ /* file name */
+      if(get_token(input, epsfilename, sizeof(epsfilename)) > 0) {  /* file name */
         startspecial(output);
 /* ArborText scale may be per mille */
-/*        if(gettoken(input, line, MAXLINE) > 0) { */ /* scale ? */ 
-        if(gettoken(input, line, sizeof(line)) > 0) { /* scale ? */
+/*        if(get_token(input, line, MAXLINE) > 0) { */ /* scale ? */ 
+        if(get_token(input, line, sizeof(line)) > 0) { /* scale ? */
           if(sscanf(line, "%lg", &scale) > 0) {
             if (scale > 33.33) scale = scale/1000.0;
             sprintf(logline, "%lg dup scale \n", scale);
@@ -4074,8 +4046,8 @@ int readdvips (FILE *output, FILE *input)
       else complainspecial(input);
     }   /* end of "epsfile" case */
     else if (strcmp(line, "include") == 0) {    
-/*      if(gettoken(input, epsfilename, FNAMELEN) > 0) {   */
-      if(gettoken(input, epsfilename, sizeof(epsfilename)) > 0) {  
+/*      if(get_token(input, epsfilename, FNAMELEN) > 0) {   */
+      if(get_token(input, epsfilename, sizeof(epsfilename)) > 0) {  
         if (pssvbstyle != 0) /* only if after startTexFig */
           copyepsfile(output, epsfilename, 0, 0); 
           /* no inc & no shift */
@@ -4090,16 +4062,16 @@ int readdvips (FILE *output, FILE *input)
     else if (strcmp(line, "literal") == 0) { /* DVI2PS-SVB */
 /*      printf(" LITERAL: pssvbstyle %d", pssvbstyle); */
 /*      if (verbatimflag != 0) {
-        copystring(output, input);  
+        copy_string(output, input);  
       } */
-      if (scanspecial(input, line, MAXLINE) == MAXLINE) {
+      if (scan_special(input, line, MAXLINE) == MAXLINE) {
         if (verbatimflag != 0) { /* long ps: literal verbatim */
           fseek(input, fliteral, SEEK_SET);
           nspecial = nliteral;
           PSputc('\n', output);       // always on new line ?
           PSputs("revsclx ", output);
           if (preservefont) PSputs("currentfont ", output);
-          copystring(output, input);
+          copy_string(output, input);
           if (preservefont) PSputs("setfont ", output);
           PSputs("forsclx ", output); 
         }
@@ -4131,13 +4103,13 @@ int readdvips (FILE *output, FILE *input)
       else complainjflag(input);      /* 93/Oct/17 */
 /*      else complainspecial(input); */
 /*      if (pssvbstyle == 0) fprintf(output, "\nrevscl\n");  */
-/*      copystring(output, input);   */
+/*      copy_string(output, input);   */
 /*      if (pssvbstyle == 0) fprintf(output, "forscl\n");  */
     } /* end of "literal" case */
 /*    could check for presence of : or / here */
 /*    how does SciWord deal with scaling ? */
     else if (bSciWord != 0) { /* just has the EPS file name here */
-/*      if (gettoken(input, epsfilename, FNAMELEN) > 0) {   */
+/*      if (get_token(input, epsfilename, FNAMELEN) > 0) {   */
       if (strcmp(line, "") != 0 && strlen(line) < sizeof(epsfilename)) {
         strcpy(epsfilename, line);
         startspecial(output);
@@ -4169,10 +4141,10 @@ int readdvips (FILE *output, FILE *input)
       fseek(input, fliteral, SEEK_SET);
       nspecial = nliteral;
       if (bOldDVIPSFlag || bOldDVIPSFlip) { /* the old way */
-        copystring(output, input);  
+        copy_string(output, input);  
       }
       else {              /* new 96/Nov/11 */
-        if (scanspecial(input, line, MAXLINE) != MAXLINE) {
+        if (scan_special(input, line, MAXLINE) != MAXLINE) {
           t = s = line;
 /* precede each `rotate' by `neg' */
           while ((s = strstr(t, "rotate")) != NULL) {
@@ -4196,7 +4168,7 @@ int readdvips (FILE *output, FILE *input)
         else {    /* it was too long - so just copy the damn thing */
           fseek(input, fliteral, SEEK_SET);
           nspecial = nliteral;
-          copystring(output, input);
+          copy_string(output, input);
         }
       }
       if (bOldDVIPSFlag) {      /* 94/Oct/4 */
@@ -4218,7 +4190,7 @@ int readdvips (FILE *output, FILE *input)
     }
 /*    else complainspecial(input); */
   }
-  flushspecial(input);
+  flush_special(input);
   return 0;
 }
 
@@ -4229,7 +4201,7 @@ void DoScr (FILE *output, FILE *input)     /* 98/Nov/4 */
   int lineno=0;
   char srcfile[FILENAME_MAX]="";
 
-  (void) scanspecial(input, line, MAXLINE); /* read rest of line */
+  (void) scan_special(input, line, MAXLINE); /* read rest of line */
   if (sscanf(line, "%d%s", &lineno, srcfile) > 1) {
     if (stripcomment == 0) {
       PSputc('\n', output); // always on new line ?
@@ -4254,14 +4226,14 @@ int readdvilaserps (FILE *output, FILE *input)
 /*  Is it one of DVIWINDO's specials ? */ /* colon after `color' 95/June/21 */
   else if (strcmp(line, "color") == 0) doColor(output, input, ':', 1);
   else if (strcmp(line, "clip") == 0) doClipBox(output, input, ':');
-  else if (strcmp(line, "comment") == 0) flushspecial(input); /* 95/June/21*/
-  else if (strcmp(line, "PDF") == 0) flushspecial(input);   /* 95/July/4 */
+  else if (strcmp(line, "comment") == 0) flush_special(input); /* 95/June/21*/
+  else if (strcmp(line, "PDF") == 0) flush_special(input);   /* 95/July/4 */
 #ifdef AllowCTM
   else if (strcmp(line, "CTM") == 0) doCTM(output, input);  /* 95/Oct/10 */
 #endif
   else if (strcmp(line, "message") == 0) {  /* 1995/June/21 */
     showline(" ", 0);
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     showline(line, 0);
   }
 #ifdef TIFF
@@ -4274,19 +4246,19 @@ int readdvilaserps (FILE *output, FILE *input)
     strcmp(line, "button") == 0 ||
     strcmp(line, "mark") == 0 ||      
     strcmp(line, "insertimage") == 0) { 
-      flushspecial(input);
+      flush_special(input);
       if (quietflag == 0)
         showline(" Ignoring DVIWindo \\special", 1);
 /*    strcmp(line, "insertmf") == 0) {} */ /* error in DVIPSONE */
   }
 #endif
   else if (strcmp(line, "revset") == 0) { /* HP TAG revset: 4pt \special */
-    flushspecial(input);
+    flush_special(input);
     if (traceflag) showline(" Ignoring revset", 1);
   }
   else if (strcmp(line, "src") == 0) {  /* 98/Nov/4 */
     if (stripcomment == 0)  DoScr(output, input);
-    else flushspecial(input);
+    else flush_special(input);
   }
 /*  Try Andrew Treverrow file inclusion, but only if -j used */
   else if (verbatimflag && readandrew(output, input)) {  /*  try OzTeX ? go south ! */
@@ -4319,7 +4291,7 @@ long xold=0, yold=0;      /* last point placed in path */
 
 // Now adds a space at end in case raw PS follows from \special 2000/Feb/16
 // On entry contains TPIC command token in line
-// If it takes arguments, scanspecial is used to read in the rest
+// If it takes arguments, scan_special is used to read in the rest
 
 int readtpic (FILE *output, FILE *input)
 {
@@ -4344,7 +4316,7 @@ int readtpic (FILE *output, FILE *input)
   PSputc('\n', output);
 
   if (strcmp(line, "pn") == 0) {  /* pn n - set pen width */
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     if (sscanf (line, "%lg", &z) < 1) { /* complain if < 1 ? */
     }
 /*    pen width NORMALLY is in milli-inches */
@@ -4361,7 +4333,7 @@ int readtpic (FILE *output, FILE *input)
     PSputs(logline, output);
   }
   else if (strcmp(line, "pa") == 0) { /* pa x y - add point to path */
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     if (sscanf (line, "%ld %ld", &x, &y) < 2) { /* complain if < 2 ? */
     }
 #ifdef ALLOWSCALE
@@ -4382,7 +4354,7 @@ int readtpic (FILE *output, FILE *input)
   else if (strcmp(line, "da") == 0 ||
          strcmp(line, "dt") == 0) { /* da/dt l - stroke dashed/dotted */
     strcpy(temp, line);
-    (void) scanspecial(input, line, MAXLINE); /* complain if < 1 ? */
+    (void) scan_special(input, line, MAXLINE); /* complain if < 1 ? */
     if (sscanf (line, "%lg", &z) < 1) {
     }
 /*    dash/dot interval NORMALLY is in inches */
@@ -4403,7 +4375,7 @@ int readtpic (FILE *output, FILE *input)
     xold = 0; yold = 0;       /* reset path */
   }
   else if (strcmp(line, "sp") == 0) { /* sp [l] - stroke quadratic spline */
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     if (sscanf (line, "%lg", &z) > 0) {   // has an argument ?
 /*      dash/dot interval NORMALLY is in inches */
       if (z > -MINMILLI && z < MINMILLI)  z = z * 1000.0; /* inches */
@@ -4430,7 +4402,7 @@ int readtpic (FILE *output, FILE *input)
   else if (strcmp(line, "ar") == 0 ||
          strcmp(line, "ia") == 0) { /* ar/ia x y xr yr sa ea */
     strcpy(temp, line);       // either "ar" or "ia"
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     sa = 0.0; ea = 2.0 * PI;      /* in case angles omitted */
     if (sscanf(line, "%ld %ld %ld %ld %lg %lg",
       &x, &y, &xr, &yr, &sa, &ea) < 6) {
@@ -4461,7 +4433,7 @@ int readtpic (FILE *output, FILE *input)
   }
   else if (strcmp(line, "sh") == 0 ||
     strcmp(line, "cl") == 0) { /* sh [s] */
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
 /*    deal with color specification using three values ? */
 /*    grey = 0.5; */
     if (sscanf(line, "%lg %lg %lg", &r, &g, &b) < 3) {
@@ -4498,7 +4470,7 @@ int readtpic (FILE *output, FILE *input)
     PSputs(line, output);
   }
   else if (strcmp(line, "tx") == 0) { /* tx */
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
 /* need to count bits in hexadecimal mask pattern here */
     bitsone=0; bitstot=0;
     s = line;
@@ -4520,7 +4492,7 @@ int readtpic (FILE *output, FILE *input)
   }
   if (needtpic == 0) 
     showline(" ERROR: TPIC failure\n", 1); /* debugging */
-  flushspecial(input);  /* clean out the rest */
+  flush_special(input);  /* clean out the rest */
   return -1;
 }
 
@@ -4533,7 +4505,7 @@ int readspecial (FILE *output, FILE *input, unsigned long ns)
   int c;
 
   if (bIgnoreSpecials != 0) { /* ignore \specials ? */
-    flushspecial(input);
+    flush_special(input);
     return 0;
   }
 
@@ -4549,7 +4521,7 @@ int readspecial (FILE *output, FILE *input, unsigned long ns)
   c = getc(input);
   --nspecial;
   if (c == 0 && bFirstNull) {   /* flush if first byte is null 96/Aug/29 */
-    flushspecial(input);
+    flush_special(input);
     return 0;
   }
 
@@ -4562,7 +4534,7 @@ int readspecial (FILE *output, FILE *input, unsigned long ns)
       PSputs("/showpage{}def ", output);  /* 97/Mar/9 */
     if (bProtectStack) PSputs("[ ", output);      /* 97/Nov/24 */
     if (bStoppedContext) PSputs("{ ", output);    /* 97/Nov/24 */
-    copystring(output, input);
+    copy_string(output, input);
     if (bStoppedContext) PSputs(" } stopped", output);  /* 97/Nov/24 */
     if (bProtectStack) PSputs(" cleartomark", output);  /* 97/Nov/24 */
     PSputs(" restore", output);       /* 93/Oct/17 */
@@ -4574,13 +4546,13 @@ int readspecial (FILE *output, FILE *input, unsigned long ns)
 /*  support for `literal macros' kludge in dvips - start with ! */
   if (c == '!') {               /* 94/Jan/28 */
 /*    ignore now, already taken care of in dvipslog ! as headertext=... */
-    flushspecial(input);
+    flush_special(input);
     return 0;
   }         
 
   (void) ungetc(c, input);      /* put back the first byte */
   nspecial++;
-  if ((c = getalphatoken(input, line, sizeof(line))) == 0)
+  if ((c = get_alpha_token(input, line, sizeof(line))) == 0)
   {
     if (quietflag == 0) showline(" Blank special", 1);
     return 0;         /* found nothing ! */
@@ -4589,10 +4561,10 @@ int readspecial (FILE *output, FILE *input, unsigned long ns)
 
   if (strncmp(line, "if", 2) == 0) {  /* new conditional option 99/July/2 */
     if (strcmp(line+2, "print") != 0) { /* ignore all but ifprint */
-      flushspecial(input);  /* not for DVIPSONE */
+      flush_special(input);  /* not for DVIPSONE */
       return 0;
     }
-    else if ((c = getalphatoken(input, line, sizeof(line))) == 0) { /* recurse */
+    else if ((c = get_alpha_token(input, line, sizeof(line))) == 0) { /* recurse */
       if (quietflag == 0) showline(" Blank special", 1);
       return 0;         /* found nothing ! */
     }
@@ -4619,10 +4591,10 @@ int readspecial (FILE *output, FILE *input, unsigned long ns)
   else if (strcmp(line, "color") == 0) doColor(output, input, c, 1); 
   else if (strcmp(line, "clip") == 0) doClipBox(output, input, c); /* 98/Sep/12 */
   else if (strcmp(line, "background") == 0) /* used only during prescan ? */
-    flushspecial(input);    /* 98/Jun/30 */
+    flush_special(input);    /* 98/Jun/30 */
   else if (strcmp(line, "landscape") == 0)
 /*    texlandscape(output); */  /* no, used only in prescan foils.cls */
-    flushspecial(input);    /* 99/Apr/5 */
+    flush_special(input);    /* 99/Apr/5 */
 /*  have to do DVIPS / Texture style FIRST, or they get caught by following: */
   else if (c == ' ' && nspecial > 0) {
     if (allowtpic == 0 || readtpic(output, input) == 0) {
@@ -4652,7 +4624,7 @@ void prereadspecial (FILE *input, unsigned long ns)
   int c;
 
   if (bIgnoreSpecials != 0) { /* ignore \specials ? */
-    flushspecial(input);
+    flush_special(input);
     return;
   }
 
@@ -4670,21 +4642,21 @@ void prereadspecial (FILE *input, unsigned long ns)
   }
 
   if (c == 0 && bFirstNull) {   /* flush if first byte is null 96/Aug/29 */
-    flushspecial(input);
+    flush_special(input);
     return;
   }
 /*  support for `literal graphics' kludge in dvips - start with " */
   if (c == '\"') {  
-    flushspecial(input);
+    flush_special(input);
     return;
   }
 /*  support for `literal macros' kludge in dvips - start with ! */
   if (c == '!') { 
-    flushspecial(input);  /* taken care of in dvipslog */
+    flush_special(input);  /* taken care of in dvipslog */
     return;
   }         
   (void) ungetc(c, input); nspecial++;  /* put it back */
-  if ((c = getalphatoken(input, line, sizeof(line))) == 0) {
+  if ((c = get_alpha_token(input, line, sizeof(line))) == 0) {
     return;         /* found nothing ! */
   }
   if (c == ' ' || c == ':') {
@@ -4692,7 +4664,7 @@ void prereadspecial (FILE *input, unsigned long ns)
       doColor(NULL, input, c, 0);   /* no PS output */
     }
   }
-  else flushspecial(input);
+  else flush_special(input);
   return;
 }
 
@@ -4715,18 +4687,18 @@ void reademtex (FILE *output, FILE *input)
   char units[3];
   int n;
 
-/*  if (getalphatoken(input, line, MAXLINE) == 0) { */
-  if (getalphatoken(input, line, sizeof(line)) == 0) {
+/*  if (get_alpha_token(input, line, MAXLINE) == 0) { */
+  if (get_alpha_token(input, line, sizeof(line)) == 0) {
     complainspecial(input);
     return;
   }
   if (strcmp(line, "message") == 0) {
     showline(" ", 0);
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     showline(line, 0);
   }
   else if (strcmp(line, "linewidth") == 0) {
-    (void) scanspecial(input, line, MAXLINE);
+    (void) scan_special(input, line, MAXLINE);
     s = line;
     if (sscanf(s, "%lg%n", &linewidth, &n) == 0) {
       showline("linewidth not specified", 0); /* used default */

@@ -21,6 +21,27 @@
 
 /////////////////////////////////////////////////////////
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <malloc.h>
+#include <setjmp.h>
+#include <time.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <sys/stat.h>   /* for _stat etc. */
+#include <sys/utime.h>  /* for _utimbuf etc. */
+#include <direct.h>     /* for _getcwd(); */
+#include <conio.h>
+
+
+#ifdef _WINDOWS
+  #pragma warning(disable:4100) // unreferenced formal variable
+#endif
+
+#pragma warning(disable:4996)
+#pragma warning(disable:4127) // conditional expression is constant
+
 #ifdef _WINDOWS
 
 // MYLIBAPI is defined as __declspec(dllexport) in the
@@ -341,8 +362,8 @@ extern long gotopost(FILE *);     /* in dvianal.c */
 /* extern FILE *findepsfile(char *, int); */  /* in dvispeci.c */
 /* extern FILE *findepsfile(char *, int, char *); *//* in dvispeci.c */
 extern FILE *findepsfile(char *, char *, int, int); /* in dvispeci.c */
-extern int scanspecial(FILE *, char *, int);  /* in dvispeci.c */
-extern int scanspecialraw(FILE *, char *, int); /* in dvispeci.c */
+extern int scan_special(FILE *, char *, int);  /* in dvispeci.c */
+extern int scan_special_raw(FILE *, char *, int); /* in dvispeci.c */
 extern FILE *fopenfont (char *, char *, int); /* in dvispeci.c */
 extern int FindMMBaseFile (int k);        /* in dvispeci.c */
 extern int checkCTM(FILE *);          /* in dvispeci.c */
@@ -362,10 +383,10 @@ extern void giveup(int);
 extern void tellwhere(FILE *, int);
 extern void ShowLine(char *, int);      /* new in dvipsone.c */
 
-extern int getalphatoken(FILE *, char *, int);
-extern int gettoken(FILE *, char *, int);
-extern void flushspecial(FILE *);
-extern int skipthispage(long);
+extern int get_alpha_token(FILE *, char *, int);
+extern int get_token(FILE *, char *, int);
+extern void flush_special(FILE *);
+extern int skip_this_page(long);
 extern int readspecial(FILE *, FILE *, unsigned long);
 extern void prereadspecial(FILE *, unsigned long);
 extern void lowercase(char *, char *);
