@@ -920,7 +920,6 @@ str_number make_string (void)
 /* sec 0044 */
 boolean str_eq_buf_ (str_number s, integer k)
 {
-  register boolean Result;
   pool_pointer j;
   boolean result;
 
@@ -937,15 +936,14 @@ boolean str_eq_buf_ (str_number s, integer k)
     incr(j);
     incr(k);
   }
+
   result = true;
 lab45:
-  Result = result;
-  return Result;
+  return result;
 }
 /* sec 0045 */
 boolean str_eq_str_ (str_number s, str_number t)
 {
-  register boolean Result;
   pool_pointer j, k;
   boolean result;
 
@@ -965,10 +963,10 @@ boolean str_eq_str_ (str_number s, str_number t)
     incr(j);
     incr(k);
   }
+
   result = true;
 lab45:
-  Result = result;
-  return Result;
+  return result;
 }
 /* sec 0066 */
 void print_two_(integer n)
@@ -1638,7 +1636,7 @@ void runaway (void)
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 halfword get_avail (void)
 {
-  halfword p;
+  pointer p;
 
   p = avail;
 
@@ -1683,9 +1681,9 @@ halfword get_avail (void)
   return p; 
 } 
 /* sec 0123 */
-void flush_list_(halfword p)          /* paragraph 123 */
+void flush_list_(pointer p)
 { 
-  halfword q, r;
+  pointer q, r;
 
   if (p != 0)              /* null !!! */
   {
@@ -1706,11 +1704,10 @@ void flush_list_(halfword p)          /* paragraph 123 */
   }
 }
 /* sec 0125 */
-halfword get_node_(integer s)
+pointer get_node_(integer s)
 {
-  register halfword Result;
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
   integer r;
   integer t;
 lab20:
@@ -1759,12 +1756,10 @@ lab20:
 
   if (s == 1073741824L)    /* 2^30 - special case - merge adjacent */
   {
-    Result = max_halfword;
-
     if (trace_flag)
       show_line("Merged adjacent multi-word nodes\n", 0);
 
-    return Result;
+    return max_halfword;
   }
 
 /*  maybe try downward epxansion first instead ? */
@@ -1832,13 +1827,12 @@ lab40:
   var_used = var_used + s; 
 #endif /* STAT */
 
-  Result = r; 
-  return Result; 
+  return r; 
 } 
 /* sec 0130 */
 void free_node_(halfword p, halfword s)
 { 
-  halfword q;
+  pointer q;
 
   node_size(p) = s;
   link(p) = empty_flag;
@@ -1847,14 +1841,15 @@ void free_node_(halfword p, halfword s)
   rlink(p) = rover;
   llink(rover) = p;
   rlink(q) = p;
+
 #ifdef STAT
   var_used = var_used - s; 
 #endif /* STAT */
 }
 /* sec 0136 */
-halfword new_null_box (void) 
+pointer new_null_box (void) 
 {
-  halfword p;
+  pointer p;
 
   p = get_node(box_node_size);
   type(p) = hlist_node;
@@ -1871,9 +1866,9 @@ halfword new_null_box (void)
   return p;
 }
 /* sec 0139 */
-halfword new_rule (void) 
+pointer new_rule (void) 
 {
-  halfword p;
+  pointer p;
 
   p = get_node(rule_node_size);
   type(p) = rule_node;
@@ -1885,9 +1880,9 @@ halfword new_rule (void)
   return p;
 }
 /* sec 0144 */
-halfword new_ligature_(quarterword f, quarterword c, halfword q)
+pointer new_ligature_(quarterword f, quarterword c, pointer q)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(small_node_size);
   type(p) = ligature_node;
@@ -1899,9 +1894,9 @@ halfword new_ligature_(quarterword f, quarterword c, halfword q)
   return p;
 }
 /* sec 0144 */
-halfword new_lig_item_(quarterword c)
+pointer new_lig_item_(quarterword c)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(small_node_size);
   character(p) = c;
@@ -1910,9 +1905,9 @@ halfword new_lig_item_(quarterword c)
   return p;
 }
 /* sec 0145 */
-halfword new_disc (void) 
+pointer new_disc (void) 
 {
-  halfword p;
+  pointer p;
 
   p = get_node(small_node_size);
   type(p) = disc_node;
@@ -1923,9 +1918,9 @@ halfword new_disc (void)
   return p;
 }
 /* sec 0147 */
-halfword new_math_(scaled w, small_number s)
+pointer new_math_(scaled w, small_number s)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(small_node_size);
   type(p) = math_node;
@@ -1935,9 +1930,9 @@ halfword new_math_(scaled w, small_number s)
   return p;
 }
 /* sec 0151 */
-halfword new_spec_(halfword p)
+pointer new_spec_(pointer p)
 {
-  halfword q;
+  pointer q;
 
   q = get_node(glue_spec_size);
   mem[q] = mem[p];
@@ -1949,10 +1944,10 @@ halfword new_spec_(halfword p)
   return q;
 }
 /* se 0152 */
-halfword new_param_glue_(small_number n)
+pointer new_param_glue_(small_number n)
 {
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
 
   p = get_node(small_node_size);
   type(p) = glue_node;
@@ -1965,9 +1960,9 @@ halfword new_param_glue_(small_number n)
   return p;
 }
 /* sec 0153 */
-halfword new_glue_(halfword q)
+pointer new_glue_(pointer q)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(small_node_size);
   type(p) = glue_node;
@@ -1979,9 +1974,9 @@ halfword new_glue_(halfword q)
   return p;
 }
 /* sec 0154 */
-halfword new_skip_param_(small_number n)
+pointer new_skip_param_(small_number n)
 {
-  halfword p;
+  pointer p;
 
   temp_ptr = new_spec(glue_par(n));
   p = new_glue(temp_ptr); 
@@ -1991,9 +1986,9 @@ halfword new_skip_param_(small_number n)
   return p;
 }
 /* sec 0155 */
-halfword new_kern_(scaled w)
+pointer new_kern_(scaled w)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(small_node_size);
   type(p) = kern_node;
@@ -2003,9 +1998,9 @@ halfword new_kern_(scaled w)
   return p;
 }
 /* sec 0158 */
-halfword new_penalty_(integer m)
+pointer new_penalty_(integer m)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(small_node_size);
   type(p) = penalty_node;
@@ -2019,7 +2014,7 @@ halfword new_penalty_(integer m)
 /* sec 0167 */
 void check_mem_(boolean printlocs)
 {
-  halfword p, q;
+  pointer p, q;
   boolean clobbered;
 
   for (p = mem_min; p <= lo_mem_max; p++) freearr[p] = false;

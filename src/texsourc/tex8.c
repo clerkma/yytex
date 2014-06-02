@@ -1311,7 +1311,7 @@ void fix_language (void)
 /* sec 1068 */
 void handle_right_brace (void)
 {
-  halfword p, q;
+  pointer p, q;
   scaled d;
   integer f;
 

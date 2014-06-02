@@ -242,6 +242,7 @@ EXTERN boolean arith_error;
 EXTERN scaled tex_remainder;
 EXTERN halfword temp_ptr;
 
+/* sec 0116 */
 #ifdef ALLOCATEMAIN
   EXTERN memory_word * main_memory;   /* remembered so can be free() later */
   EXTERN memory_word * mem;
@@ -253,14 +254,16 @@ EXTERN halfword temp_ptr;
   zzzaa[mem_max - mem_bot + 1];
 #endif
 
-EXTERN halfword lo_mem_max;
-EXTERN halfword hi_mem_min;
+EXTERN pointer lo_mem_max;
+EXTERN pointer hi_mem_min;
 EXTERN integer var_used, dyn_used;
-EXTERN halfword avail;
-EXTERN halfword mem_end;
-EXTERN halfword mem_start;
+/* sec 0118 */
+EXTERN pointer avail;
+EXTERN pointer mem_end;
+EXTERN halfword mem_start; // for yandytex
+/* sec 0124 */
 EXTERN halfword rover;
-
+/* sec 0165 */
 /* NOTE: the following really also need to be dynamically allocated */
 #ifdef DEBUG
   #ifdef ALLOCATEMAIN
@@ -660,7 +663,7 @@ EXTERN trie_op_code max_op_used;
 
 #ifdef INITEX
   #ifdef ALLOCATEINI
-    EXTERN char *trie_taken;
+    EXTERN char * trie_taken;
   #else
     EXTERN boolean trie_taken[trie_size + 1];
   #endif
@@ -731,19 +734,19 @@ EXTERN integer last_penalty;
 EXTERN scaled last_kern;
 EXTERN integer insert_penalties;
 EXTERN boolean output_active;
+/* sec 1032 */
 EXTERN internal_font_number main_f;
-
 EXTERN four_quarters main_i;
 EXTERN four_quarters main_j;
-
 EXTERN font_index main_k;
-EXTERN halfword main_p;
+EXTERN pointer main_p;
 EXTERN integer main_s;
 EXTERN halfword bchar;
 EXTERN halfword false_bchar;
 EXTERN boolean cancel_boundary;
 EXTERN boolean ins_disc;
-EXTERN halfword cur_box;
+/* sec 1074 */
+EXTERN pointer cur_box;
 EXTERN halfword after_token;
 EXTERN boolean long_help_seen;
 EXTERN str_number format_ident;
@@ -806,8 +809,6 @@ EXTERN char * format_file;
 EXTERN char * source_direct;
 EXTERN char * format_name;
 EXTERN char * encoding_name;
-EXTERN boolean format_specific;
-EXTERN boolean encoding_specific;
 EXTERN boolean show_line_break_stats;
 EXTERN int first_pass_count;
 EXTERN int second_pass_count;
@@ -919,7 +920,7 @@ EXTERN HPDF_Font yandy_font[1024];
 EXTERN boolean pdf_doing_string;
 EXTERN boolean pdf_doing_text;
 EXTERN integer scaled_out;
-EXTERN boolean pdf_output_flag;
+EXTERN boolean shipout_flag;
 EXTERN mapping_table * gentbl;
 EXTERN mapping_table * font_name_hash_init (void);
 EXTERN void font_name_hash_free (mapping_table * tbl);

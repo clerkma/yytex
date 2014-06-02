@@ -1861,48 +1861,6 @@ void pack_job_name_(str_number s)
 }
 
 /**********************************************************************/
-/* show TEXINPUTS=... or format specific  */
-/* only show this if name was not fully qualified ? */
-void show_tex_inputs (void)
-{
-  char *s, *t, *v;
-
-  s = "TEXINPUTS";        /* default */
-
-  if (format_specific)
-  {
-    s = format_name;                /* try specific */
-
-    if (grabenv(s) == NULL)
-      s = "TEXINPUTS";  /* no format specific */
-  }
-
-  if (grabenv(s) == NULL)
-    s = "TEXINPUT";     /* 94/May/19 */
-
-  print_nl("  ");
-  print_char(' ');
-  print_char('(');
-  t = s;
-
-  while (*t > '\0')
-    print_char(*t++);
-
-  print_char('=');
-  v = grabenv(s);
-
-  if (v != NULL)
-  {
-    t = v;
-
-    while (*t > '\0')
-      print_char(*t++);
-  }
-
-  print_char(')');
-}
-
-/**********************************************************************/
 /* sec 0530 */
 /* s - what can't be found, e - default */
 void prompt_file_name_(char * s, str_number e) 
@@ -1918,15 +1876,6 @@ void prompt_file_name_(char * s, str_number e)
 
   print_file_name(cur_name, cur_area, cur_ext);
   print_string("'.");
-
-  if (!strcmp("input file name", s))
-  {
-    if (cur_area == 335) /* "" only if path not specified */
-    {
-      if (show_texinput_flag)
-        show_tex_inputs();
-    }
-  }
 
   if (e == 785)    /* .tex */
     show_context();
@@ -2246,51 +2195,6 @@ lab30:
     first = cur_input.limit_field + 1;
     cur_input.loc_field = cur_input.start_field;
   }
-}
-
-/**********************************************************************/
-/* show TEXFONTS=... or format specific  */
-/* only show this if name was not fully qualified ? */
-void show_tex_fonts (void)
-{
-  char *s, *t, *v, *u;
-  int n;
-
-  s = "TEXFONTS";
-
-  if (encoding_specific)
-  {
-    u = encoding_name;                /* try specific */
-
-    if ((t = grabenv(u)) != NULL)
-    {
-      if (strchr(t, ':') != NULL && sscanf(t, "%d", &n) == 0)
-      {
-        s = u;        /* look here instead of TEXFONTS=... */
-      }
-    }
-  }
-
-  print_nl("  ");
-  print_char(' ');
-  print_char('(');
-  t = s;
-
-  while (*t > '\0')
-    print_char(*t++);
-
-  print_char('=');
-  v = grabenv(s);
-
-  if (v != NULL)
-  {
-    t = v;
-
-    while (*t > '\0')
-      print_char(*t++);
-  }
-
-  print_char(')');
 }
 /* sec 0560 */
 internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)
@@ -2790,12 +2694,6 @@ lab11:
     print_string(" not loadable: Bad metric (TFM) file");
   else
     print_string(" not loadable: Metric (TFM) file not found");
-
-  if (aire == 335)
-  {
-    if (show_texinput_flag)
-      show_tex_fonts();
-  }
 
   help5("I wasn't able to read the size data for this font,",
       "so I will ignore the font specification.",

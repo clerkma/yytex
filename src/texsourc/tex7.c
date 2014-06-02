@@ -399,7 +399,7 @@ lab30:;
 /* sec 1043 */
 void app_space (void)
 {
-  halfword q;
+  pointer q;
 
   if ((space_factor >= 2000) && (xspace_skip != zero_glue))
     q = new_param_glue(xspace_skip_code);
@@ -553,7 +553,7 @@ void append_kern (void)
 /* sec 1064 */
 void off_save (void)
 {
-  halfword p;
+  pointer p;
 
   if (cur_group == bottom_level)
   {
@@ -659,7 +659,7 @@ void normal_paragraph (void)
 /* sec 1075 */
 void box_end_(integer box_context)
 {
-  halfword p;
+  pointer p;
 
   if (box_context < box_flag)
   {
@@ -738,7 +738,7 @@ void box_end_(integer box_context)
 /* sec 1079 */
 void begin_box_(integer box_context)
 {
-  halfword p, q;
+  pointer p, q;
   quarterword m;
   halfword k;
   eight_bits n;

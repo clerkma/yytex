@@ -1,4 +1,4 @@
-/* Copyright 2014 Clerk Ma & Jie Su.
+/* Copyright 2014 Clerk Ma.
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -33,7 +33,7 @@ VS_VERSION_INFO VERSIONINFO
       VALUE "LegalCopyright",     "(C) 2014 Clerk Ma.\0"
       VALUE "OriginalFilename",   "yandytex.exe\0"
       VALUE "ProductName",        "Y&Y TeX\0"
-      VALUE "ProductVersion",     "2.2.3.0\0"
+      VALUE "ProductVersion",     "2.3.0.0\0"
     }
   }
   BLOCK "VarFileInfo"

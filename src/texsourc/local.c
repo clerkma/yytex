@@ -131,9 +131,6 @@ void show_usage (void)
 
 /* -z    do not discard control-Z at end of input file (treat as character)\n\ */
 
-/* -c    prepend current directory (.) to TFM directory list\n\ */
-/* -b    check that files with read access are not actually directories\n\ */
-
 /* \t-d\tallow DOS style file names - i.e. convert \\ to / \n\ */
 /* \t\t(applies to file name and format file name, if present)\n\ */
 /* \t-r\tallow Mac style line termination - i.e. convert \\r to \\n \n\ */
@@ -159,8 +156,6 @@ void scivilize (char * date)
 
   if (date[9] == ' ')
     date[9] = '0'; /* replace space by '0' */
-
-  return;
 }
 
 // Thu Sep 27 06:26:35 1990 => 1990 Sep 27 06:26:35
@@ -180,8 +175,6 @@ void lcivilize (char * date)
     date[k] = pyear[k];
 
   date[4] = ' ';
-
-  return;
 }
 
 // now writes result into given buffer
@@ -529,16 +522,10 @@ int ini_max_address = 0;  /* maximum address when starting */
 int max_address     = 0;  /* maximum address seen in allocated memory */
 
 
-void show_maximums (FILE *output)
+void show_maximums (FILE * output)
 {
   sprintf(log_line, "Max allocated %d --- max address %d\n", total_allocated, max_address);
-
-  if (output == stderr)
-    show_line(log_line, 1);
-  else if (output == stdout)
-    show_line(log_line, 0);
-  else
-    fputs(log_line, output);
+  fputs(log_line, output);
 }
 
 /* our own version of realloc --- avoid supposed MicroSoft version bug */
@@ -628,19 +615,19 @@ void trace_memory (char *s, int n)
   show_line(log_line, 0);
 }
 
-void update_statistics (int address, int size, int oldsize)
+void update_statistics (int address, int size, int old_size)
 {
   if (address + size > max_address)
     max_address = address + size;
 
-  total_allocated =  total_allocated + size - oldsize;
+  total_allocated =  total_allocated + size - old_size;
 }
 
 void probe_memory (void)
 {
   char *s;
 
-  s = (char *) malloc (4); /* get current top address */
+  s = (char *) malloc(4); /* get current top address */
   free(s);
   update_statistics ((int) s, 0, 0); /* show where we are */
 }
@@ -684,9 +671,9 @@ int allocate_tries (int trie_max)
   if (trace_flag)
     trace_memory("hyphen trie", n);
 
-  trie_trl = (halfword *) malloc (roundup(nl));
-  trie_tro = (halfword *) malloc (roundup(no));
-  trie_trc = (quarterword *) malloc (roundup(nc));
+  trie_trl = (halfword *) malloc(roundup(nl));
+  trie_tro = (halfword *) malloc(roundup(no));
+  trie_trc = (quarterword *) malloc(roundup(nc));
 
   if (trie_trl == NULL || trie_tro == NULL || trie_trc == NULL)
   {
@@ -714,7 +701,7 @@ int allocate_tries (int trie_max)
 #endif
 
 #ifdef ALLOCATEHYPHEN
-boolean prime (int); /* test function later in this file */
+boolean prime(int); /* test function later in this file */
 
 int current_prime = 0; /* remember in case reallocated later */
 
@@ -817,7 +804,6 @@ memory_word *allocate_main_memory (int size)
   mem_top = mem_bot + size;
   mem_max = mem_top;
   mem_start = 0;     /* bottom of memory allocated by system */
-/*  mem_min = mem_start; */ /* bottom of area made available to TeX */
   mem_min = 0;       /* bottom of area made available to TeX */
   n = (mem_max - mem_start + 1) * sizeof (memory_word); /* 256k * 8 = 2000 k */
 
@@ -829,7 +815,7 @@ memory_word *allocate_main_memory (int size)
   if (main_memory == NULL)
   {
     memory_error("initial main memory", n);
-//    exit (1);             /* serious error */
+//    exit (1);
     return NULL;
   }
 
@@ -850,12 +836,12 @@ memory_word *allocate_main_memory (int size)
     show_line(log_line, 0);
   }
 
-  update_statistics ((int) main_memory, n, (current_mem_size + 1) * sizeof (memory_word));
+  update_statistics((int) main_memory, n, (current_mem_size + 1) * sizeof (memory_word));
 /*  current_mem_size = (mem_max - mem_start + 1); */
   current_mem_size = mem_max - mem_start;   /* total number of words - 1 */
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
   return mem;
 }
@@ -865,19 +851,19 @@ memory_word *allocate_main_memory (int size)
 /* int firstallocation = 1; */
 
 /* increase main memory allocation at low end and high end */
-/* called only from tex0.c *//* called with one of losize or hisize == 0 */
+/* called only from tex0.c *//* called with one of lo_size or hi_size == 0 */
 /* returns NULL if it fails */
 
-memory_word *realloc_main (int losize, int hisize)
+memory_word * realloc_main (int lo_size, int hi_size)
 {  
-  int k, minsize;
-  int newsize = 0;
+  int k, min_size;
+  int new_size = 0;
   int n = 0;
-  memory_word * newmemory = NULL;
+  memory_word * new_memory = NULL;
 
   if (trace_flag)
   {
-    sprintf(log_line, "WARNING: Entering realloc_main lo %d hi %d\n", losize, hisize);
+    sprintf(log_line, "WARNING: Entering realloc_main lo %d hi %d\n", lo_size, hi_size);
     show_line(log_line, 0);
   }
 
@@ -887,7 +873,7 @@ memory_word *realloc_main (int losize, int hisize)
 
     if (! knuth_flag)
       show_line("Please use `-m=...' on command line\n", 0);
-//    abort_flag++;  // ???
+
     return NULL;
   }
 
@@ -901,69 +887,69 @@ memory_word *realloc_main (int losize, int hisize)
   if (current_mem_size + 1 == max_mem_size)
   {
     memory_error("main memory", (max_mem_size + 1) * sizeof(memory_word));
-//    abort_flag++;  // ???
+
     return NULL;
   }
 
 /*  first allocation should expand *both* lo and hi */
-  if (hisize == 0 && mem_end == mem_max)
-    hisize = losize;
+  if (hi_size == 0 && mem_end == mem_max)
+    hi_size = lo_size;
 
-  if (losize == 0 && mem_start == mem_min)
-    losize = hisize;
+  if (lo_size == 0 && mem_start == mem_min)
+    lo_size = hi_size;
 
 /*  try and prevent excessive frequent reallocations */
 /*  while avoiding over allocation by too much */
-  minsize = current_mem_size / 100 * percent_grow;
+  min_size = current_mem_size / 100 * percent_grow;
 
-  if (losize + hisize < minsize)
+  if (lo_size + hi_size < min_size)
   {
-    if (losize > 0 && hisize > 0)
+    if (lo_size > 0 && hi_size > 0)
     {
-      losize = minsize / 2;
-      hisize = minsize / 2;
+      lo_size = min_size / 2;
+      hi_size = min_size / 2;
     }
-    else if (losize > 0)
-      losize = minsize;
-    else if (hisize > 0)
-      hisize = minsize;
+    else if (lo_size > 0)
+      lo_size = min_size;
+    else if (hi_size > 0)
+      hi_size = min_size;
   }
 
-  if (losize > 0 && losize < mem_top / 2)
-    losize = mem_top / 2;
+  if (lo_size > 0 && lo_size < mem_top / 2)
+    lo_size = mem_top / 2;
 
-  if (hisize > 0 && hisize < mem_top / 2)
-    hisize = mem_top / 2;
+  if (hi_size > 0 && hi_size < mem_top / 2)
+    hi_size = mem_top / 2;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_mem_size + losize + hisize;
+    new_size = current_mem_size + lo_size + hi_size;
 
-    if (newsize >= max_mem_size) /* bump against limit - ha ha ha */
+    if (new_size >= max_mem_size) /* bump against limit - ha ha ha */
     {
-      while (newsize >= max_mem_size) {
-        losize = losize / 2; hisize = hisize / 2;
-        newsize = current_mem_size + losize + hisize;
+      while (new_size >= max_mem_size) {
+        lo_size = lo_size / 2; hi_size = hi_size / 2;
+        new_size = current_mem_size + lo_size + hi_size;
       }
     }
 
-    n = (newsize + 1) * sizeof (memory_word);
+    n = (new_size + 1) * sizeof (memory_word);
 
     if (trace_flag)
       trace_memory("main memory", n);
 
-    newmemory = (memory_word *) REALLOC (main_memory, n);
+    new_memory = (memory_word *) REALLOC (main_memory, n);
 
-    if (newmemory != NULL)
+    if (new_memory != NULL)
       break; /* did we get it ? */
 
     if (current_mem_size == 0)
       break; /* in case we ever use for initial */
 
-    losize = losize / 2; hisize = hisize / 2;
+    lo_size = lo_size / 2; hi_size = hi_size / 2;
   }
 
-  if (newmemory == NULL)
+  if (new_memory == NULL)
   {
     memory_error("main memory", n);
     return mem;
@@ -971,34 +957,34 @@ memory_word *realloc_main (int losize, int hisize)
 
   if (trace_flag)
   {
-    sprintf(log_line, "New Address %s == %d\n", "main memory", newmemory);
+    sprintf(log_line, "New Address %s == %d\n", "main memory", new_memory);
     show_line(log_line, 0);
   }
 
-  if (losize > 0)
+  if (lo_size > 0)
   {
 /*  shift everything upward to make space for new low area */
     if (trace_flag)
     {
-      sprintf(log_line, "memmove %d %d %d \n", newmemory + losize,
-          newmemory, (current_mem_size + 1) * sizeof(memory_word));
+      sprintf(log_line, "memmove %d %d %d \n", new_memory + lo_size,
+          new_memory, (current_mem_size + 1) * sizeof(memory_word));
       show_line(log_line, 0);
     }
-    memmove (newmemory + losize, newmemory,
+    memmove (new_memory + lo_size, new_memory,
       (current_mem_size + 1) * sizeof(memory_word));
 /*  could reduce words moved by (mem_max - mem_end) */
   }
-  main_memory = newmemory;       /* remember for free later */
+  main_memory = new_memory;       /* remember for free later */
 
-  if (losize > 0)
-    mem_start = mem_start - losize; /* update lower limit */
+  if (lo_size > 0)
+    mem_start = mem_start - lo_size; /* update lower limit */
 
-  if (hisize > 0)
-    mem_max = mem_max + hisize;   /* update upper limit */
+  if (hi_size > 0)
+    mem_max = mem_max + hi_size;   /* update upper limit */
 
   update_statistics ((int) main_memory, n,
     (current_mem_size + 1) * sizeof (memory_word));
-  current_mem_size = newsize;
+  current_mem_size = new_size;
 
   if (current_mem_size != mem_max - mem_start)
   {
@@ -1025,9 +1011,9 @@ int current_font_mem_size = 0;
 /* fmemoryword can be either halfword or memory_word */
 memory_word * realloc_font_info (int size)
 {
-  memory_word *newfontinfo = NULL;
-  int k, minsize;
-  int newsize = 0;
+  memory_word * new_font_info = NULL;
+  int k, min_size;
+  int new_size = 0;
   int n = 0;
 
   if (trace_flag)
@@ -1044,31 +1030,31 @@ memory_word * realloc_font_info (int size)
   }
 /*  try and prevent excessive frequent reallocations */
 /*  while avoiding over allocation by too much */
-/*  minsize = current_font_mem_size / 2; */
-  minsize = current_font_mem_size / 100 * percent_grow;
+/*  min_size = current_font_mem_size / 2; */
+  min_size = current_font_mem_size / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_font_mem_size)
     size = initial_font_mem_size;
 
   for (k=0; k < MAXSPLITS; k++)
   {
-    newsize = current_font_mem_size + size;
+    new_size = current_font_mem_size + size;
 
-    if (newsize > font_mem_size)
-      newsize = font_mem_size; /* bump against limit */
+    if (new_size > font_mem_size)
+      new_size = font_mem_size; /* bump against limit */
 
 /*    important + 1 since fmemoryword font_info[font_mem_size + 1]  original */
-    n = (newsize + 1) * sizeof (memory_word);
+    n = (new_size + 1) * sizeof (memory_word);
 
     if (trace_flag)
       trace_memory("font_info", n);
 
-    newfontinfo = (memory_word *) REALLOC (font_info, n);
+    new_font_info = (memory_word *) REALLOC (font_info, n);
 
-    if (newfontinfo != NULL)
+    if (new_font_info != NULL)
       break;   /* did we get it ? */
 
     if (current_font_mem_size == 0)
@@ -1077,13 +1063,13 @@ memory_word * realloc_font_info (int size)
     size = size / 2;
   }
 
-  if (newfontinfo == NULL)
+  if (new_font_info == NULL)
   {
     memory_error("font", n);
     return font_info;        /* try and continue !!! */
   }
 
-  font_info = newfontinfo;
+  font_info = new_font_info;
 
   if (trace_flag)
   {
@@ -1092,7 +1078,7 @@ memory_word * realloc_font_info (int size)
   }
 
   update_statistics ((int) font_info, n, current_font_mem_size * sizeof(memory_word));
-  current_font_mem_size = newsize;
+  current_font_mem_size = new_size;
 
   if (trace_flag)
     probe_show();
@@ -1106,8 +1092,8 @@ int current_pool_size = 0;
 
 packed_ASCII_code * realloc_str_pool (int size)
 {
-  int k, minsize;
-  int newsize = 0;
+  int k, min_size;
+  int new_size = 0;
   int n = 0;
   packed_ASCII_code *newstrpool = NULL;
 
@@ -1124,22 +1110,22 @@ packed_ASCII_code * realloc_str_pool (int size)
     return str_pool;   /* pass it back to TeX 99/Fabe/4 */
   }
 
-  minsize =  current_pool_size / 100 * percent_grow;
+  min_size =  current_pool_size / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_pool_size)
     size = initial_pool_size;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_pool_size + size;
+    new_size = current_pool_size + size;
 
-    if (newsize > pool_size)
-      newsize = pool_size;
+    if (new_size > pool_size)
+      new_size = pool_size;
 /* important + 1 since  packed_ASCII_code str_pool[pool_size + 1]; in original */
-    n = (newsize + 1) * sizeof (packed_ASCII_code);
+    n = (new_size + 1) * sizeof (packed_ASCII_code);
 
     if (trace_flag)
       trace_memory("str_pool", n);
@@ -1163,7 +1149,7 @@ packed_ASCII_code * realloc_str_pool (int size)
 
   str_pool = newstrpool;
   update_statistics ((int) str_pool, n, current_pool_size);
-  current_pool_size = newsize;
+  current_pool_size = new_size;
 
   if (trace_flag)
   {
@@ -1183,10 +1169,10 @@ int current_max_strings = 0;
 
 pool_pointer *realloc_str_start (int size)
 {
-  int k, minsize;
+  int k, min_size;
   int n = 0;
-  int newsize = 0;
-  pool_pointer *newstrstart=NULL;
+  int new_size = 0;
+  pool_pointer * new_str_start = NULL;
 
   if (trace_flag)
   {
@@ -1201,29 +1187,29 @@ pool_pointer *realloc_str_start (int size)
     return str_start;    /* pass it back to TeX 99/Fabe/4 */
   }
 
-  minsize = current_max_strings / 100 * percent_grow;
+  min_size = current_max_strings / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_max_strings)
     size = initial_max_strings;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_max_strings + size;
+    new_size = current_max_strings + size;
 
-    if (newsize > max_strings)
-      newsize = max_strings;
+    if (new_size > max_strings)
+      new_size = max_strings;
 /*    important + 1 since str_start[maxstring + 1] originally */
-    n = (newsize + 1) * sizeof (pool_pointer);
+    n = (new_size + 1) * sizeof (pool_pointer);
 
     if (trace_flag)
       trace_memory("str_start", n);
 
-    newstrstart = (pool_pointer *) REALLOC (str_start, n);
+    new_str_start = (pool_pointer *) REALLOC (str_start, n);
 
-    if (newstrstart != NULL)
+    if (new_str_start != NULL)
       break;   /* did we get it ? */
 
     if (current_max_strings == 0)
@@ -1232,15 +1218,15 @@ pool_pointer *realloc_str_start (int size)
     size = size / 2;          /* otherwise can try smaller */
   }
 
-  if (newstrstart == NULL)
+  if (new_str_start == NULL)
   {
     memory_error("string pointer", n);
     return str_start;          /* try and continue */
   }
 
-  str_start = newstrstart;
+  str_start = new_str_start;
   update_statistics((int) str_start, n, current_max_strings * sizeof (pool_pointer));
-  current_max_strings = newsize;
+  current_max_strings = new_size;
 
   if (trace_flag)
   {
@@ -1290,8 +1276,7 @@ int allocate_ini (int size)
   
   if (trace_flag)
   {
-    sprintf(log_line, "Addresses trie_l %d trie_o %d trie_c %d\n",
-      trie_l, trie_o, trie_c);
+    sprintf(log_line, "Addresses trie_l %d trie_o %d trie_c %d\n", trie_l, trie_o, trie_c);
     show_line(log_line, 0);
     sprintf(log_line, "Addresses trie_r %d trie_hash %d trie_taken %d\n",
       trie_r, trie_hash, trie_taken);
@@ -1317,9 +1302,9 @@ int current_save_size = 0;
 
 memory_word *realloc_save_stack (int size)
 {
-  int k, minsize;
-  int n = 0, newsize = 0;
-  memory_word *newsave_stack = NULL;
+  int k, min_size;
+  int n = 0, new_size = 0;
+  memory_word * new_save_stack = NULL;
 
   if (trace_flag)
   {
@@ -1334,29 +1319,29 @@ memory_word *realloc_save_stack (int size)
     return save_stack;       /* let TeX handle the error */
   }
 
-  minsize =  current_save_size / 100 * percent_grow;
+  min_size =  current_save_size / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_save_size)
     size = initial_save_size;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_save_size + size;
+    new_size = current_save_size + size;
 
-    if (newsize > save_size)
-      newsize = save_size;
+    if (new_size > save_size)
+      new_size = save_size;
 
-    n = (newsize + 1) * sizeof (memory_word); /* save_stack[save_size + 1] */
+    n = (new_size + 1) * sizeof (memory_word); /* save_stack[save_size + 1] */
 
     if (trace_flag)
       trace_memory("save_stack", n);
 
-    newsave_stack = (memory_word *) REALLOC (save_stack, n);
+    new_save_stack = (memory_word *) REALLOC (save_stack, n);
 
-    if (newsave_stack != NULL)
+    if (new_save_stack != NULL)
       break;    /* did we get it ? */
 
     if (current_save_size == 0)
@@ -1365,15 +1350,15 @@ memory_word *realloc_save_stack (int size)
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newsave_stack == NULL)
+  if (new_save_stack == NULL)
   {
     memory_error("save stack", n);
     return save_stack;           /* try and continue !!! */
   }
 
-  save_stack = newsave_stack;
+  save_stack = new_save_stack;
   update_statistics ((int) save_stack, n, current_save_size);
-  current_save_size = newsize;
+  current_save_size = new_size;
 
   if (trace_flag)
   {
@@ -1395,9 +1380,9 @@ int current_stack_size = 0;       /* input stack size */
 
 in_state_record *realloc_input_stack (int size)
 {
-  int k, minsize;
-  int n = 0, newsize = 0;
-  in_state_record *newinputstack = NULL;
+  int k, min_size;
+  int n = 0, new_size = 0;
+  in_state_record * new_input_stack = NULL;
 
   if (trace_flag)
   {
@@ -1412,29 +1397,29 @@ in_state_record *realloc_input_stack (int size)
     return input_stack;
   }
 
-  minsize =  current_stack_size / 100 * percent_grow;
+  min_size =  current_stack_size / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_stack_size)
     size = initial_stack_size;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_stack_size + size;
+    new_size = current_stack_size + size;
 
-    if (newsize > stack_size)
-      newsize = stack_size;
+    if (new_size > stack_size)
+      new_size = stack_size;
 
-    n = (newsize + 1) * sizeof (in_state_record); /* input_stack[stack_size + 1] */
+    n = (new_size + 1) * sizeof (in_state_record); /* input_stack[stack_size + 1] */
 
     if (trace_flag)
       trace_memory("input_stack", n);
 
-    newinputstack = (in_state_record *) REALLOC (input_stack, n);
+    new_input_stack = (in_state_record *) REALLOC (input_stack, n);
 
-    if (newinputstack != NULL)
+    if (new_input_stack != NULL)
       break;   /* did we get it ? */
 
     if (current_stack_size == 0)
@@ -1443,15 +1428,15 @@ in_state_record *realloc_input_stack (int size)
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newinputstack == NULL)
+  if (new_input_stack == NULL)
   {
     memory_error("input stack", n);
     return input_stack;            /* try and continue !!! */
   }
 
-  input_stack = newinputstack;
+  input_stack = new_input_stack;
   update_statistics ((int) input_stack, n, current_stack_size);
-  current_stack_size = newsize;
+  current_stack_size = new_size;
 
   if (trace_flag)
   {
@@ -1473,9 +1458,9 @@ int current_nest_size = 0;        /* current nest size */
 
 list_state_record *realloc_nest_stack (int size)
 {
-  int k, minsize;
-  int n = 0, newsize = 0;
-  list_state_record *newnest = NULL;
+  int k, min_size;
+  int n = 0, new_size = 0;
+  list_state_record * new_nest = NULL;
 
   if (trace_flag)
   {
@@ -1490,29 +1475,29 @@ list_state_record *realloc_nest_stack (int size)
     return nest;        /* let TeX handle the error */
   }
 
-  minsize =  current_nest_size / 100 * percent_grow;
+  min_size =  current_nest_size / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_nest_size)
     size = initial_nest_size;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_nest_size + size;
+    new_size = current_nest_size + size;
 
-    if (newsize > nest_size)
-      newsize = nest_size;
+    if (new_size > nest_size)
+      new_size = nest_size;
 
-    n = (newsize + 1) * sizeof (list_state_record); /* nest[nest_size + 1] */
+    n = (new_size + 1) * sizeof (list_state_record); /* nest[nest_size + 1] */
 
     if (trace_flag)
       trace_memory("nest stack", n);
 
-    newnest = (list_state_record *) REALLOC (nest, n);
+    new_nest = (list_state_record *) REALLOC (nest, n);
 
-    if (newnest != NULL)
+    if (new_nest != NULL)
       break;   /* did we get it ? */
 
     if (current_nest_size == 0)
@@ -1521,15 +1506,15 @@ list_state_record *realloc_nest_stack (int size)
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newnest == NULL)
+  if (new_nest == NULL)
   {
     memory_error("nest stack", n);
     return nest;            /* try and continue !!! */
   }
 
-  nest = newnest;
+  nest = new_nest;
   update_statistics ((int) nest, n, current_nest_size);
-  current_nest_size = newsize;
+  current_nest_size = new_size;
 
   if (trace_flag)
   {
@@ -1551,9 +1536,9 @@ int current_param_size = 0;
 
 halfword *realloc_param_stack (int size)
 {
-  int k, minsize;
-  int n = 0, newsize = 0;
-  halfword *newparam = NULL;
+  int k, min_size;
+  int n = 0, new_size = 0;
+  halfword * new_param = NULL;
 
   if (trace_flag)
   {
@@ -1568,29 +1553,29 @@ halfword *realloc_param_stack (int size)
     return param_stack;        /* let TeX handle the error */
   }
 
-  minsize =  current_param_size / 100 * percent_grow;
+  min_size =  current_param_size / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_param_size)
     size = initial_param_size;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_param_size + size;
+    new_size = current_param_size + size;
 
-    if (newsize > param_size)
-      newsize = param_size;
+    if (new_size > param_size)
+      new_size = param_size;
 
-    n = (newsize + 1) * sizeof (halfword); /* param_stack[param_size + 1] */
+    n = (new_size + 1) * sizeof (halfword); /* param_stack[param_size + 1] */
 
     if (trace_flag)
       trace_memory("param stack", n);
 
-    newparam = (halfword *) REALLOC (param_stack, n); 
+    new_param = (halfword *) REALLOC (param_stack, n); 
 
-    if (newparam != NULL)
+    if (new_param != NULL)
       break;    /* did we get it ? */
 
     if (current_param_size == 0)
@@ -1599,15 +1584,15 @@ halfword *realloc_param_stack (int size)
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newparam == NULL)
+  if (new_param == NULL)
   {
     memory_error("param stack", n);
     return param_stack;            /* try and continue !!! */
   }
 
-  param_stack = newparam;
+  param_stack = new_param;
   update_statistics ((int) param_stack, n, current_param_size);
-  current_param_size = newsize;
+  current_param_size = new_size;
 
   if (trace_flag)
   {
@@ -1627,11 +1612,11 @@ halfword *realloc_param_stack (int size)
 #ifdef ALLOCATEBUFFER
 int current_buf_size = 0;
 
-ASCII_code *realloc_buffer (int size)
+ASCII_code * realloc_buffer (int size)
 {
-  int k, minsize;
-  int n = 0, newsize = 0;
-  ASCII_code *newbuffer = NULL;
+  int k, min_size;
+  int n = 0, new_size = 0;
+  ASCII_code * new_buffer = NULL;
 
   if (trace_flag)
   {
@@ -1646,29 +1631,29 @@ ASCII_code *realloc_buffer (int size)
     return buffer;    /* pass it back to TeX 99/Fabe/4 */
   }
 
-  minsize =  current_buf_size / 100 * percent_grow;
+  min_size =  current_buf_size / 100 * percent_grow;
 
-  if (size < minsize)
-    size = minsize;
+  if (size < min_size)
+    size = min_size;
 
   if (size < initial_buf_size)
     size = initial_buf_size;
 
   for (k = 0; k < MAXSPLITS; k++)
   {
-    newsize = current_buf_size + size;
+    new_size = current_buf_size + size;
 
-    if (newsize > buf_size)
-      newsize = buf_size;
+    if (new_size > buf_size)
+      new_size = buf_size;
 
-    n = (newsize + 1) * sizeof(ASCII_code);
+    n = (new_size + 1) * sizeof(ASCII_code);
 
     if (trace_flag)
       trace_memory("buffer", n);
 
-    newbuffer = (ASCII_code *) REALLOC (buffer, n);
+    new_buffer = (ASCII_code *) REALLOC (buffer, n);
 
-    if (newbuffer != NULL)
+    if (new_buffer != NULL)
       break;   /* did we get it ? */
 
     if (current_buf_size == 0)
@@ -1677,22 +1662,22 @@ ASCII_code *realloc_buffer (int size)
     size = size / 2;
   }
 
-  if (newbuffer == NULL)
+  if (new_buffer == NULL)
   {
     memory_error("buffer", n);
     return buffer;            /* try and continue !!! */
   }
 
-  buffer = newbuffer;
+  buffer = new_buffer;
   update_statistics ((int) buffer, n, current_buf_size);
 
 #ifdef USEMEMSET
-  memset(buffer + current_buf_size, 0, newsize - current_buf_size);
+  memset(buffer + current_buf_size, 0, new_size - current_buf_size);
 #else
-  for (k = current_buf_size; k < newsize; k++) buffer[k]= 0;
+  for (k = current_buf_size; k < new_size; k++) buffer[k]= 0;
 #endif
 
-  current_buf_size = newsize;
+  current_buf_size = new_size;
 
   if (trace_flag)
   {
@@ -1714,54 +1699,6 @@ ASCII_code *realloc_buffer (int size)
 /* allocate rather than static 93/Nov/26 */
 int allocate_memory (void)
 {
-/*  int n;  */
-#ifdef PREALLOCHOLE
-  char *holeadr = malloc (300000);  /* testing - preallocate 95/Jan/20 */
-#endif
-
-#ifdef ALLOCATEHASH
-  #error ERROR: Not ready for ALLOCATEHASH...
-#endif
-
-/* probably not worth while/not a good idea allocating following */
-/* they are all rather small, and typically don't need expansion */
-/* WE ASSUME THIS DOESN'T HAPPEN, SO WON'T BOTHER WITH UPDATESTATISTICS */
-#ifdef ALLOCATEHASH
-/*  n = 9767 * sizeof (two_halves);  *//* 60 kilo bytes */   
-/*  n = (hash_size + 267) * sizeof (two_halves); */  /* 60 kilo bytes */
-/*  n = (9767 + eqtb_extra) * sizeof (two_halves); */
-#ifdef SHORTHASH
-  n = (hash_size + 267 + eqtb_extra) * sizeof (htwo_halves);   /* 95/Feb/19 */
-  zzzae = (htwo_halves *) malloc (roundup(n));
-#else
-  n = (hash_size + 267 + eqtb_extra) * sizeof (two_halves);  /* 95/Feb/19 */
-  zzzae = (two_halves *) malloc (roundup(n));
-#endif
-  if (trace_flag)  trace_memory("hash table", n);
-/*  zzzae = (two_halves *) malloc ((hash_size + 267) * sizeof (two_halves)); */
-  if (zzzae == NULL)
-  {
-    memory_error("hash table", n);
-//    exit (1);           /* serious error */
-    return -1;            /* serious error */
-  }
-
-  n = (inputsize + 1) * sizeof(memory_word);
-
-  if (trace_flag)
-    trace_memory("input_stack", n);
-
-/*  input_stack = (memory_word *) malloc ((inputsize + 1) * sizeof (memory_word)); */
-  input_stack = (memory_word *) malloc (roundup(n));
-
-  if (input_stack == NULL)
-  {
-    memory_error("input_stack", n);
-//    exit (1);           /* serious error */
-    return -1;            /* serious error */
-  }
-#endif
-
 #ifdef ALLOCATEINPUTSTACK
   input_stack = NULL;
   current_stack_size = 0;
@@ -1881,14 +1818,11 @@ int allocate_memory (void)
     trie_taken = NULL;     /* (trie_size + 1) * boolean */
   }
 #endif
-#ifdef PREALLOCHOLE
-  free(holeadr);          /* create the hole */
-#endif
-  return 0;           // success
+
+  return 0; // success
 }
 
 /* returns non-zero if error - done to test integrity of stack mostly */
-/* free in reverse order 93/Nov/26 */
 int free_memory (void)
 {
   unsigned int heap_total = 0;
@@ -1913,7 +1847,6 @@ int free_memory (void)
     show_line(log_line, 0);
   }
 
-  /*  following only needed to check consistency of heap ... useful debugging */
   if (trace_flag)
     show_line("Freeing memory again\n", 0);
 
@@ -1972,7 +1905,6 @@ int free_memory (void)
 #endif
 
 #ifdef ALLOCATEMAIN
-/*  if (zzzaa != NULL) free(zzzaa); */  /* NO: zzzaa may be offset ! */
   if (main_memory != NULL)
     free(main_memory);
 
@@ -2024,7 +1956,7 @@ int free_memory (void)
 
   save_stack = NULL;
 #endif
-/*  if (buffercopy != NULL) free (buffercopy); */ /* 94/Jun/27 */
+
   if (format_file != NULL)
     free(format_file);
 
@@ -2098,9 +2030,9 @@ void reorderargs (int ac, char **av)
   s = allowedargs;
   t = takeargs;   /* list of those that take args */
 
-  while (*s != '\0' && *(s+1) != '\0')
+  while (*s != '\0' && *(s + 1) != '\0')
   {
-    if (*(s+1) == '=')
+    if (*(s + 1) == '=')
       *t++ = *s++;   /* copy over --- without the = */
 
     s++;
@@ -2122,7 +2054,7 @@ void reorderargs (int ac, char **av)
       break;
 
     if (n + 1 < ac && *(av[n] + 2) == '\0' &&
-      strchr(takeargs, *(av[n]+1)) != NULL)
+      strchr(takeargs, *(av[n] + 1)) != NULL)
       n += 2; /* step over it */
     else
       n++;
@@ -2146,8 +2078,8 @@ void reorderargs (int ac, char **av)
 /* does it take an argument ? and is this argument next ? */
 /* check first whether the `-x' is isolated, or arg follows directly */
 /* then check whether this is one of those that takes an argument */
-    if (m+1 < ac && *(av[m]+2) == '\0' &&
-      strchr(takeargs, *(av[m]+1)) != NULL)
+    if (m+1 < ac && *(av[m] + 2) == '\0' &&
+      strchr(takeargs, *(av[m] + 1)) != NULL)
     {
       s = av[m];      /*  move command down before non-command */
       t = av[m + 1];
@@ -2360,7 +2292,7 @@ char *lastname = NULL, *lastvalue = NULL;
 
 /* returns allocated string -- these strings are not freed again */
 /* is it safe to do that now ? 98/Jan/31 */
-char *grabenv (char *varname)
+char * grabenv (char * varname)
 {
   char *s;
 
@@ -2388,7 +2320,7 @@ char *grabenv (char *varname)
     if (lastname != NULL)
       free(lastname);
 
-    lastname = xstrdup (varname);
+    lastname = xstrdup(varname);
 
     if (lastvalue != NULL)
       free(lastvalue);
@@ -2416,40 +2348,38 @@ void flush_trailing_slash (char *directory)
 
 void knuthify (void)
 {
-  restrict_to_ascii = false; /* don't complain non ASCII */
-  allow_patterns    = false; /* don't allow pattern redefinition */
-  show_in_hex       = true;  /* show character code in hex */
-  show_in_dos       = false; /* redundant with previous */
-  show_numeric      = false; /* don't show character code decimal */
-  show_missing      = false; /* don't show missing characters */
-  civilize_flag     = false; /* don't reorder date fields */
-  c_style_flag      = false; /* don't add file name to error msg */
-  show_fmt_flag     = false; /* don't show format file in log */
-  show_tfm_flag     = false; /* don't show metric file in log */
-  tab_step          = 0;
-  show_line_break_stats = false;   /* do not show line break stats */
-  show_fonts_used = false;
-  default_rule = 26214;      /* revert to default rule thickness */
-  pseudo_tilde = false;
-  pseudo_space = false;
-  show_texinput_flag = false;
-  truncate_long_lines = false;
-  allow_quoted_names = false;
-  show_cs_names = false;
-  font_dimen_zero = false;
-  ignore_frozen = false;
-  suppress_f_ligs = false;
-  full_file_name_flag = false;
-  save_strings_flag = false;
-  knuth_flag = true;       /* so other code can know about this */
+  restrict_to_ascii     = false; /* don't complain non ASCII */
+  allow_patterns        = false; /* don't allow pattern redefinition */
+  show_in_hex           = true;  /* show character code in hex */
+  show_in_dos           = false; /* redundant with previous */
+  show_numeric          = false; /* don't show character code decimal */
+  show_missing          = false; /* don't show missing characters */
+  civilize_flag         = false; /* don't reorder date fields */
+  c_style_flag          = false; /* don't add file name to error msg */
+  show_fmt_flag         = false; /* don't show format file in log */
+  show_tfm_flag         = false; /* don't show metric file in log */
+  tab_step              = 0;
+  show_line_break_stats = false; /* do not show line break stats */
+  show_fonts_used       = false;
+  default_rule          = 26214; /* revert to default rule thickness */
+  pseudo_tilde          = false;
+  pseudo_space          = false;
+  show_texinput_flag    = false;
+  truncate_long_lines   = false;
+  allow_quoted_names    = false;
+  show_cs_names         = false;
+  font_dimen_zero       = false;
+  ignore_frozen         = false;
+  suppress_f_ligs       = false;
+  full_file_name_flag   = false;
+  save_strings_flag     = false;
+  knuth_flag            = true;  /* so other code can know about this */
 }
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 /* following made global so analyze_flag can be made separate procedure */
 
-char * xchrfile = NULL;
-char * replfile = NULL;
+char * xchr_file = NULL;
+char * repl_file = NULL;
 
 char * short_options = "m:e:h:0:H:g:P:o:l:a:wvpiKLZMdp2t?u";
 
@@ -2565,12 +2495,6 @@ int analyze_flag (int c, char *optarg)
     case 'O':
       show_fmt_flag = false; /* 94/Jun/21 */
       break;
-    case 'I':
-      format_specific = false; /* 95/Jan/7 */
-      break;
-    case '3':
-      encoding_specific = false; /* 98/Oct/5 */
-      break;
     case '2':
       suppress_f_ligs = true; /* 99/Jan/5 f-lig */
       break;
@@ -2608,73 +2532,86 @@ int analyze_flag (int c, char *optarg)
       if (optarg == 0)
         mem_initex = mem_top;
       else
-        mem_initex = atoi(optarg) * 1024; /* 93 Dec/1 */
+        mem_initex = atoi(optarg) * 1024;
+
       if (mem_initex == 0)
         complainarg(c, optarg);
+
       mem_spec_flag = 1;
       break;
+
 #ifdef VARIABLETRIESIZE
     case 'h':
       if (optarg == 0)
         trie_size = default_trie_size;
       else
-        trie_size = atoi(optarg); /* 93 Dec/1 */
+        trie_size = atoi(optarg);
+
       if (trie_size == 0)
         complainarg(c, optarg);
       break;
 #endif
+
 #ifdef ALLOCATEHYPHEN
     case 'e':
       if (optarg == 0)
         new_hyphen_prime = hyphen_prime * 2;
       else
-        new_hyphen_prime = atoi(optarg); /* 93/Nov/26 */
+        new_hyphen_prime = atoi(optarg);
+
       if (new_hyphen_prime == 0)
         complainarg(c, optarg);
+
       break;
 #endif
     case 'g':
       if (optarg == 0)
         percent_grow = 62;
       else
-        percent_grow = atoi(optarg); /* 93/Dec/11 */
+        percent_grow = atoi(optarg);
+
       if (percent_grow == 0)
         complainarg(c, optarg);
+
       break;
+
     case 'U':
       if (optarg == 0)
         pseudo_tilde = 0;
       else
-        pseudo_tilde = atoi(optarg); /* 95/Sep/26 */
+        pseudo_tilde = atoi(optarg);
+
       if (pseudo_tilde > 255)
         pseudo_tilde = 255;
       else if (pseudo_tilde < 128)
         pseudo_tilde = 128;
+
       break;
+
     case 'H':
       if (optarg == 0)
         tab_step = 8;
       else
-        tab_step = atoi(optarg); /* 94/July/3 */
+        tab_step = atoi(optarg);
       if (tab_step == 0)
         complainarg(c, optarg);
       break;
     case 'x':
       if (optarg == 0)
-        xchrfile = xstrdup("xchr.map");
+        xchr_file = xstrdup("xchr.map");
       else
-        xchrfile = xstrdup(optarg);
+        xchr_file = xstrdup(optarg);
 
-      if (xchrfile == NULL || *xchrfile == '\0')
+      if (xchr_file == NULL || *xchr_file == '\0')
         complainarg(c, optarg);
       break;
     case 'k':
       if (optarg == 0)
-        replfile = xstrdup("repl.key");
+        repl_file = xstrdup("repl.key");
       else
-        replfile = xstrdup(optarg);
+        repl_file = xstrdup(optarg);
 
-      if (replfile == NULL || *replfile == '\0')
+      if (repl_file == NULL || *repl_file == '\0')
         complainarg(c, optarg);
       break;
     case 'P':
@@ -2710,14 +2647,14 @@ int analyze_flag (int c, char *optarg)
           format_spec = xstrdup(optarg);
 
         if (!strcmp(format_spec, "pdf"))
-          pdf_output_flag = out_pdf_flag;
+          shipout_flag = out_pdf_flag;
         else if (!strcmp(format_spec, "dvi"))
-          pdf_output_flag = out_dvi_flag;
+          shipout_flag = out_dvi_flag;
         else if (!strcmp(format_spec, "xdv"))
-          pdf_output_flag = out_xdv_flag;
+          shipout_flag = out_xdv_flag;
         else
         {
-          sprintf(log_line, "ERROR: Do not understand argument value `%s'\n", format_spec);
+          sprintf(log_line, "ERROR: Do not understand shipout flag `%s'\n", format_spec);
           show_line(log_line, 1);
         }
       }
@@ -2730,21 +2667,27 @@ int analyze_flag (int c, char *optarg)
 
       if (strcmp(log_directory, "") == 0)
         complainarg(c, optarg);
+
       break;
+
     case 'a':
       if (optarg == 0)
         aux_directory = "";
       else
         aux_directory = xstrdup(optarg);
+
       if (strcmp(aux_directory, "") == 0)
         complainarg(c, optarg);
+
       break;
+
     case '?':
     default:
       show_use = true;
-      return -1; // failed to recognize
+      return -1;
       break;
   }
+
   return 0;
 }
 
@@ -2803,9 +2746,9 @@ int read_command_line (int ac, char **av)
     return -1; // failure
   } 
 
-  if (replfile != NULL && *replfile != '\0')
+  if (repl_file != NULL && *repl_file != '\0')
   {
-    if (read_xchr_file(replfile, 1, av))
+    if (read_xchr_file(repl_file, 1, av))
     {
       if (trace_flag)
         show_line("KEY REPLACE ON\n", 0);
@@ -2814,9 +2757,9 @@ int read_command_line (int ac, char **av)
     }
   } 
 
-  if (xchrfile != NULL && *xchrfile != '\0')
+  if (xchr_file != NULL && *xchr_file != '\0')
   {
-    if (read_xchr_file(xchrfile, 0, av))
+    if (read_xchr_file(xchr_file, 0, av))
     {
       if (trace_flag)
         show_line("NON ASCII ON\n", 0);
@@ -2830,38 +2773,36 @@ int read_command_line (int ac, char **av)
 
 int init_commands (int ac, char **av)
 {
-  pdf_output_flag   = out_dvi_flag;
-  is_initex         = false; 
-  allow_patterns    = false;
-  reset_exceptions  = false;
-  non_ascii         = false;
-  key_replace       = false;
-  want_version      = false;
-  open_trace_flag   = false;
-  trace_flag        = false;
-  verbose_flag      = false;
-  restrict_to_ascii = false;
-  show_in_hex       = false; /* default is not to show as hex code ^^ 00/Jun/18 */
-  show_in_dos       = false; /* default is not to translate to DOS 850 */ 
-  return_flag       = true;  // hard wired now
-  trimeof           = true;  // hard wired now
-  deslash           = true;
-  pseudo_tilde      = 254;   /* default '~' replace 95/Sep/26 filledbox DOS 850 */
-  pseudo_space      = 255;   /* default ' ' replace 97/June/5 nbspace DOS 850 */
-  default_rule      = 26214; /* default rule variable 95/Oct/9 */
-  show_current      = true;
-  civilize_flag     = true;
-  show_numeric      = true;
-  show_missing      = true;
-  c_style_flag      = false; /* use c-style error output */
-  show_fmt_flag     = true;  /* show format file in log */
-  show_tfm_flag     = false; /* don't show metric file in log */
+  shipout_flag          = out_dvi_flag;
+  is_initex             = false; 
+  allow_patterns        = false;
+  reset_exceptions      = false;
+  non_ascii             = false;
+  key_replace           = false;
+  want_version          = false;
+  open_trace_flag       = false;
+  trace_flag            = false;
+  verbose_flag          = false;
+  restrict_to_ascii     = false;
+  show_in_hex           = false; /* default is not to show as hex code ^^ 00/Jun/18 */
+  show_in_dos           = false; /* default is not to translate to DOS 850 */ 
+  return_flag           = true;  // hard wired now
+  trimeof               = true;  // hard wired now
+  deslash               = true;
+  pseudo_tilde          = 254;   /* default '~' replace 95/Sep/26 filledbox DOS 850 */
+  pseudo_space          = 255;   /* default ' ' replace 97/June/5 nbspace DOS 850 */
+  default_rule          = 26214; /* default rule variable 95/Oct/9 */
+  show_current          = true;
+  civilize_flag         = true;
+  show_numeric          = true;
+  show_missing          = true;
+  c_style_flag          = false; /* use c-style error output */
+  show_fmt_flag         = true;  /* show format file in log */
+  show_tfm_flag         = false; /* don't show metric file in log */
   shorten_file_name     = false; /* don't shorten file names to 8+3 */
   show_texinput_flag    = true;  /* show TEXINPUTS and TEXFONTS */
   truncate_long_lines   = true;  /* truncate long lines */
   tab_step              = 0;     /* do not replace tabs with spaces */
-  format_specific       = true;  /* do format specific TEXINPUTS 95/Jan/7 */
-  encoding_specific     = true;  /* do encoding specific TEXFONTS 98/Jan/31 */
   show_line_break_stats = true;  /* show line break statistics 96/Feb/8 */
   show_fonts_used       = true;  /* show fonts used in LOG file 97/Dec/24 */
   allow_quoted_names    = true;  /* allow quoted names with spaces 98/Mar/15 */
@@ -2883,7 +2824,6 @@ int init_commands (int ac, char **av)
   mem_extra_low  = 0;
   mem_initex     = 0;
 
-  //format_name = xstrdup(av[0]);
   format_name = "plain";
 
   encoding_name = "";
@@ -2893,6 +2833,7 @@ int init_commands (int ac, char **av)
 
   if (optind == 0)
     optind = ac;
+
 /*
   if (want_version)
   {
@@ -3025,7 +2966,7 @@ void hidetwiddle (char *name)
     show_line(log_line, 0);
   }
 #endif
-/*  while (*s != '\0' && *s != ' ') { */
+
   while (*s != '\0')
   {
     if (*s == '~' && pseudo_tilde != 0)
@@ -3034,6 +2975,7 @@ void hidetwiddle (char *name)
       *s = (char) pseudo_space;  /* typically 255 */
     s++;
   }
+
 #ifdef DEBUGTWIDDLE
   if (trace_flag)
   {
@@ -3063,11 +3005,14 @@ void deslash_all (int ac, char **av)
   if ((s = grabenv("TEXPDF")) != NULL)
     pdf_directory = s;
 
-  strcpy(buffer, av[0]); /* get path to executable */
+  strcpy(buffer, av[0]);
 
-  if ((s = strrchr(buffer, '\\')) != NULL) *(s+1) = '\0';
-  else if ((s = strrchr(buffer, '/')) != NULL) *(s+1) = '\0';
-  else if ((s = strrchr(buffer, ':')) != NULL) *(s+1) = '\0';
+  if ((s = strrchr(buffer, '\\')) != NULL)
+    *(s + 1) = '\0';
+  else if ((s = strrchr(buffer, '/')) != NULL)
+    *(s + 1) = '\0';
+  else if ((s = strrchr(buffer, ':')) != NULL)
+    *(s + 1) = '\0';
 
   s = buffer + strlen(buffer) - 1;
 
@@ -3094,26 +3039,24 @@ void deslash_all (int ac, char **av)
 
   if (deslash)
   {
-      unixify (texpath);
+    unixify (texpath);
+    
+    if (strcmp(dvi_directory, "") != 0)
+      unixify(dvi_directory);
+    
+    if (strcmp(log_directory, "") != 0)
+      unixify(log_directory);
 
-      if (strcmp(dvi_directory, "") != 0)
-        unixify(dvi_directory);
+    if (strcmp(aux_directory, "") != 0)
+      unixify(aux_directory);
 
-      if (strcmp(log_directory, "") != 0)
-        unixify(log_directory);
+    if (strcmp(fmt_directory, "") != 0)
+      unixify(fmt_directory);
 
-      if (strcmp(aux_directory, "") != 0)
-        unixify(aux_directory);
-
-      if (strcmp(fmt_directory, "") != 0)
-        unixify(fmt_directory);
-
-      if (strcmp(pdf_directory, "") != 0)
-        unixify(pdf_directory);
+    if (strcmp(pdf_directory, "") != 0)
+      unixify(pdf_directory);
   }
 
-/*  deslash TeX source file (and format, if format specified) */
-/*  and check args to see whether format was specified */
   format_spec = 0;
 /*  NOTE: assuming that command line arguments are in writable memory ! */
 /*  if (trace_flag || debug_flag)
@@ -3163,12 +3106,7 @@ void deslash_all (int ac, char **av)
   }
 }
 
-/* The above seems to assume that arguments that don't start with '-' */
-/* are file names or format names - what if type in control sequences? */
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /* main entry point follows */
-/* this gets called pretty much right away in `main' in texmf.c */
 /* note: those optarg == 0 test don't really work ... */
 /* note: optarg starts at = in case of x=... */
 
@@ -3216,12 +3154,12 @@ int main_init (int ac, char **av)
   trie_tro   = NULL;
   trie_trl   = NULL;
 
-  log_opened = false;       /* so can tell whether opened */
-  interaction = -1;         /* default state => 3 */
-  missing_characters = 0;   /* none yet! */
-  font_dimen_zero = true;   /* \fontdimen0 for checksum 98/Oct/5 */
-  ignore_frozen = false;    /* default is not to ignore 98/Oct/5 */
-  suppress_f_ligs = false;  /* default is not to ignore f-ligs */
+  log_opened          = false;  /* so can tell whether opened */
+  interaction         = -1;     /* default state => 3 */
+  missing_characters  = 0;      /* none yet! */
+  font_dimen_zero     = true;   /* \fontdimen0 for checksum 98/Oct/5 */
+  ignore_frozen       = false;  /* default is not to ignore 98/Oct/5 */
+  suppress_f_ligs     = false;  /* default is not to ignore f-ligs */
 
   if (ac > 1 && !strncmp(av[1], "-Y", 2))
     reorder_arg_flag = false;
@@ -3269,7 +3207,7 @@ int main_init (int ac, char **av)
     show_line("WARNING: Cannot change initial main memory size when format specified", 1);
   }
 
-  if (allocate_memory() != 0)   /* NOW, try and ALLOCATE MEMORY if needed */
+  if (allocate_memory() != 0)
     return -1;         // if failed to allocate
 
   /* following is more or less useless since most all things not yet alloc */
@@ -3283,31 +3221,31 @@ int main_init (int ac, char **av)
 
 #define CLK_TCK  CLOCKS_PER_SEC
 
-void show_inter_val (clock_t interval)
+void show_inter_val (clock_t inter_val)
 {
   int seconds, tenths, hundredth, thousands;
 
-  if (interval >= CLK_TCK * 10)
+  if (inter_val >= CLK_TCK * 10)
   {
-    tenths = (interval * 10 + CLK_TCK / 2) / CLK_TCK; 
+    tenths = (inter_val * 10 + CLK_TCK / 2) / CLK_TCK; 
     seconds = tenths / 10; 
     tenths = tenths % 10;
     sprintf(log_line, "%d.%d", seconds, tenths);
     show_line(log_line, 0);
   }
   else
-    if (interval >= CLK_TCK)     /* 94/Feb/25 */
+    if (inter_val >= CLK_TCK)     /* 94/Feb/25 */
     {
-      hundredth = (interval * 100 + CLK_TCK / 2) / CLK_TCK;
+      hundredth = (inter_val * 100 + CLK_TCK / 2) / CLK_TCK;
       seconds = hundredth / 100;
       hundredth = hundredth % 100;
       sprintf(log_line, "%d.%02d", seconds, hundredth);
       show_line(log_line, 0);
     }
     else
-      if (interval > 0)         /* 94/Oct/4 */
+      if (inter_val > 0)         /* 94/Oct/4 */
       {
-        thousands = (interval * 1000 + CLK_TCK / 2) / CLK_TCK;
+        thousands = (inter_val * 1000 + CLK_TCK / 2) / CLK_TCK;
         seconds = thousands / 1000;
         thousands = thousands % 1000;
         sprintf(log_line, "%d.%03d", seconds, thousands);
@@ -3398,12 +3336,12 @@ int compare_cs (const void *cp1, const void *cp2)
   c2 = *(int *)cp2;
   textof1 = hash[c1].rh;
   textof2 = hash[c2].rh;
-  l1 = length(textof1); 
-  l2 = length(textof2); 
-  k1 = str_start[textof1]; 
-  k2 = str_start[textof2]; 
+  l1 = length(textof1);
+  l2 = length(textof2);
+  k1 = str_start[textof1];
+  k2 = str_start[textof2];
 
-  return compare_strn (k1, l1, k2, l2);
+  return compare_strn(k1, l1, k2, l2);
 }
 
 char * csused = NULL;
