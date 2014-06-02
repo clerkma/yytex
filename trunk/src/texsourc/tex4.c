@@ -1293,7 +1293,7 @@ lab30:;
 }
 void ship_out_(halfword p)
 {
-  switch (pdf_output_flag)
+  switch (shipout_flag)
   {
     case out_pdf_flag:
       pdf_ship_out(p);

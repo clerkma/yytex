@@ -2949,8 +2949,8 @@ boolean get_strings_started (void)
 /* sec 0131 */
 void sort_avail (void)
 {
-  halfword p, q, r;
-  halfword old_rover;
+  pointer p, q, r;
+  pointer old_rover;
 
   p = get_node(1073741824L); /* 2^30 merge adjacent free nodes */
   p = rlink(rover);
@@ -2991,7 +2991,7 @@ void sort_avail (void)
   rlink(p) = rover;
   llink(rover) = p;
 }
-#endif /* INITEX */
+#endif
 
 #ifdef INITEX
 str_number make_string_pool (char *s)

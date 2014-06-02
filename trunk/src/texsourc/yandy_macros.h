@@ -62,7 +62,7 @@ enum
 #define tex_float(a)           (a)
 #define unfloat(a)             (a)
 #define float_constant(a)      (float) (a)
-/* sec 0115*/
+/* sec 0115 */
 //#define pointer halfword
 #define null    min_halfword
 /* sec 0118 */

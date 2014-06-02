@@ -1946,14 +1946,14 @@ void ensure_vbox_(eight_bits n)
 /* sec 1012 */
 void fire_up_(halfword c)
 {
-  halfword p, q, r, s;
-  halfword prev_p;
+  pointer p, q, r, s;
+  pointer prev_p;
 /*  unsigned char n;  */
   unsigned int n;         /* 95/Jan/7 */
   boolean wait;
   integer save_vbadness;
   scaled save_vfuzz;
-  halfword save_split_top_skip;
+  pointer save_split_top_skip;
 
   if (type(best_page_break) == penalty_node)
   {

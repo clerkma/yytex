@@ -92,33 +92,33 @@ void show_token_list_(integer, integer, integer);
 #define show_token_list(p, q, l) show_token_list_((integer) (p), (integer) (q), (integer) (l))
 void runaway(void);
 halfword get_avail(void);
-void flush_list_(halfword);
-#define flush_list(p) flush_list_((halfword) (p))
-halfword get_node_(integer);
+void flush_list_(pointer);
+#define flush_list(p) flush_list_((pointer) (p))
+pointer get_node_(integer);
 #define get_node(s) get_node_((integer) (s))
 void free_node_(halfword, halfword);
 #define free_node(p, s) free_node_((halfword) (p), (halfword) (s))
 void sort_avail(void);
-halfword new_null_box(void);
-halfword new_rule(void);
-halfword new_ligature_(quarterword, quarterword, halfword);
-#define new_ligature(f, c, q) new_ligature_((quarterword) (f), (quarterword) (c), (halfword) (q))
-halfword new_lig_item_(quarterword);
+pointer new_null_box(void);
+pointer new_rule(void);
+pointer new_ligature_(quarterword, quarterword, pointer);
+#define new_ligature(f, c, q) new_ligature_((quarterword) (f), (quarterword) (c), (pointer) (q))
+pointer new_lig_item_(quarterword);
 #define new_lig_item(c) new_lig_item_((quarterword) (c))
-halfword new_disc(void);
-halfword new_math_(scaled, small_number);
+pointer new_disc(void);
+pointer new_math_(scaled, small_number);
 #define new_math(w, s) new_math_((scaled) (w), (small_number) (s))
-halfword new_spec_(halfword);
-#define new_spec(p) new_spec_((halfword) (p))
-halfword new_param_glue_(small_number);
+pointer new_spec_(pointer);
+#define new_spec(p) new_spec_((pointer) (p))
+pointer new_param_glue_(small_number);
 #define new_param_glue(n) new_param_glue_((small_number) (n))
-halfword new_glue_(halfword);
-#define new_glue(q) new_glue_((halfword) (q))
-halfword new_skip_param_(small_number);
+pointer new_glue_(pointer);
+#define new_glue(q) new_glue_((pointer) (q))
+pointer new_skip_param_(small_number);
 #define new_skip_param(n) new_skip_param_((small_number) (n))
-halfword new_kern_(scaled);
+pointer new_kern_(scaled);
 #define new_kern(w) new_kern_((scaled) (w))
-halfword new_penalty_(integer);
+pointer new_penalty_(integer);
 #define new_penalty(m) new_penalty_((integer) (m))
 void check_mem_(boolean);
 #define check_mem(printlocs) check_mem_((boolean) (printlocs))
@@ -148,8 +148,8 @@ void print_skip_param_(integer);
 #define print_skip_param(n) print_skip_param_((integer) (n))
 void show_node_list_(integer);
 #define show_node_list(p) show_node_list_((integer) (p))
-void show_box_(halfword);
-#define show_box(p) show_box_((halfword) (p))
+void show_box_(pointer);
+#define show_box(p) show_box_((pointer) (p))
 void delete_token_ref_(halfword);
 #define delete_token_ref(p) delete_token_ref_((halfword) (p))
 void delete_glue_ref_(halfword);

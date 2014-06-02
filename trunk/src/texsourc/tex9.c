@@ -309,7 +309,7 @@ void close_files_and_terminate (void)
   } /* end of if (log_opened) */ 
 #endif /* STAT */
 
-  switch (pdf_output_flag)
+  switch (shipout_flag)
   {
     case out_pdf_flag:
       {
