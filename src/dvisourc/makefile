@@ -28,7 +28,7 @@ LINK = link
 # -Zd line number information for debugging ?
 # -Zi generate debugging information 98/March/5
 # Release version
-CFLAGS=/c /Ox /GF /Gy /W4
+CFLAGS=/nologo /c /Ox /GF /Gy /W4
 # Debugging version
 # CFLAGS=/c /YX /Ge /Gy /Gf /W4 /Od /Zi
 
@@ -36,7 +36,7 @@ CFLAGS=/c /Ox /GF /Gy /W4
 
 # /MAP create map file
 # Release version
-LFLAGS=/MAP /RELEASE
+LFLAGS=/nologo /MAP /RELEASE
 # Debugging version
 # LFLAGS=/MAP /DEBUG /PDB:dvipsone.pdb
 
@@ -49,7 +49,7 @@ objs = dvipsone.obj  dviextra.obj \
 # dvipsone.exe: $(objs) lib/libdos.lib
 dvipsone.exe: $(objs) 
 #   	$(LINK) $(LFLAGS) dvipsone dvipslog dviextra dvianal dvispeci dvitiff
-	$(LINK) $(LFLAGS) $(objs) setargv.obj
+	$(LINK) $(LFLAGS) $(objs)
 	copy dvipsone.exe ..\yandy\bin\dvipsone.exe
 
 
@@ -74,7 +74,7 @@ dvitiff.obj: dvitiff.c dvipsone.h
 	$(CC) $(CFLAGS) dvitiff.c
 
 dvipsone.res: dvipsone.rc
-	rc dvipsone.rc
+	rc /nologo dvipsone.rc
 
 .SUFFIXES:
 .SUFFIXES: .obj .c

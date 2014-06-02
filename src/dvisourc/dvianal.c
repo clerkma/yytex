@@ -25,34 +25,7 @@
 *
 **********************************************************************/
 
-/* Revised 1999 June 13 to run in DLL form */
-
-#ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#include <windows.h>
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <malloc.h>
-#include <setjmp.h>
-
-#ifdef _WINDOWS
-  #define MYLIBAPI __declspec(dllexport)
-#endif
-
 #include "dvipsone.h"
-
-#ifdef _WINDOWS
-  #pragma warning(disable:4100) // unreferenced formal variable
-#endif
-
-#pragma warning(disable:4996)
-#pragma warning(disable:4127) // conditional expression is constant
 
 /* NOTE: S = s w, T = s x, W = w<n>, X = x<n>, Y = y<n>, Z = z<n> */
 /* bp = bop, ep = eop, pr = put_rule, sr = set_rule */
@@ -836,7 +809,7 @@ void do_bop(FILE *output, FILE *input)
 /*  else pageno = (long) pagenumber; */
   else pageno = (long) page;        /* 1993/Aug/28 */
 
-  skipflag = skipthispage(pageno);
+  skipflag = skip_this_page(pageno);
 /*  following is the logic for two-sided printing */
 /*  if (skipflag != 0) evenlast = 1; oddlast = 1; */
   if (skipflag != 0) firstpage = -1;    /* reset for next group */

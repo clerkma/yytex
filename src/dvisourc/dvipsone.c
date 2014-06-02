@@ -27,61 +27,7 @@
 *
 **********************************************************************/
 
-/* Revised 1999 June 13 to run in DLL form */
-
-#ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#include <windows.h>
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <malloc.h>
-#include <setjmp.h>
-
-#ifdef _WINDOWS
-  // We must define MYLIBAPI as __declspec(dllexport) before including
-  // dvipsone.h, then dvipsone.h will see that we have already
-  // defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-  #define MYLIBAPI __declspec(dllexport)
-  // #include "dvipsone.h"
-#endif
-
 #include "dvipsone.h"
-
-#ifdef _WINDOWS
-  #pragma warning(disable:4100) // unreferenced formal variable 
-#endif
-
-#pragma warning(disable:4996)
-#pragma warning(disable:4127) // conditional expression is constant
-
-#pragma hdrstop
-
-#include <time.h>
-#include <signal.h>
-#include <direct.h>     /* for _getcwd(); */
-
-#ifndef _WINDOWS
-  #pragma warning(disable:4032) // different type when promoted
-  #include <conio.h>
-  #pragma warning(default:4032) // different type when promoted
-#endif
-
-#ifdef _WINDOWS
-  #pragma message("DLL Version")
-#else
-  #pragma message("EXE Version")
-#endif
-
-#ifdef _WINDOWS
-// int (* PScallback) (const char *) = NULL;    // callback for PS strings
-  int (* PScallback) (const char *, int) = NULL;    // callback for PS strings
-#endif
 
 #define NEEDATMINI
 
@@ -94,10 +40,6 @@
 /* In the new way, DVISETUP modifies the EXE file directly */
 /* newmagic is the old hexmagic string with 8 preliminary bytes added */
 /* four are the author signature, four are the serial number * REEXEC */
-
-long serialnumber=0;
-
-#define hexmagic (newmagic+8) /* start of encrypted owner etc */
 
 /* now required by packdatetime for PDFmark 95/Feb/25 */
 
@@ -192,18 +134,6 @@ int bInsertImage=0;     /* if \special{insertimage: ... } seen dvipslog */
 long postposition;      /* position of post op in DVI */
 int badpathwarn=0;      /* warned yet about bad path in search ? */
 
-#ifdef _WINDOWS
-int usecallbackflag=0;    // nonzero -> use callback rather than file output
-#endif
-
-#ifdef ALLOWDEMO
-int bDemoFlag = 0;          /* non-zero => DEMO version */
-                  /* as determined by user string DEMO */
-time_t dtime=0;           /* seconds since customized, now global */
-#define oneday (86400)        /* one day in seconds */
-#define onemonth (86400 * 31)   /* one month in seconds */
-#endif
-
 int textures=0;       /* non-zero => textures style DVI file */
 /* int flipflag=0; */   /* non-zero => flip horizontally */
 int makeepsf=0;       /* non-zero => output intended as EPS file */
@@ -262,20 +192,27 @@ int remaptable[MAXREMAP];         /* 1994/June/20 */
 
 /* added A2 and B3 1994/Dec/10 */
 
-char *papertypes[] = {
-"letter", "note", "legal", "folio", "ledger", "tabloid", "executive", 
-"a2", "a3", "a4", "a5",
-"b3", "b4", "b5", "quarto", ""};
+char *papertypes[] = 
+{
+  "letter", "note", "legal", "folio", "ledger", "tabloid", "executive",
+  "a2", "a3", "a4", "a5", "b3", "b4", "b5", "quarto", ""
+};
 
-double pagewidths[] = { /* in inches */
- 8.5, 8.5, 8.5, 8.5, 11, 11, 7.25, 
-420/25.4, 297/25.4, 210/25.4, 148/25.4,
-354/25.4, 250/25.4, 176/25.4, 215/25.4, 1};
+/* in inches */
+double pagewidths[] = 
+{
+  8.5, 8.5, 8.5, 8.5, 11, 11, 7.25,
+  420/25.4, 297/25.4, 210/25.4, 148/25.4,
+  354/25.4, 250/25.4, 176/25.4, 215/25.4, 1
+};
 
-double pageheights[] = { /* in inches */
- 11,  11,  14,  13,  17, 17, 10.5,
-594/25.4, 420/25.4, 297/25.4, 210/25.4,
-500/25.4, 354/25.4, 250/25.4, 275/25.4, 1};
+/* in inches */
+double pageheights[] =
+{
+  11, 11, 14, 13, 17, 17, 10.5,
+  594/25.4, 420/25.4, 297/25.4, 210/25.4,
+  500/25.4, 354/25.4, 250/25.4, 275/25.4, 1
+};
 
 /* `statement' 5 1/2 x 8 1/2 */
 
@@ -475,19 +412,13 @@ char *copyright = "\nCopyright (C) 1990--2000, Y&Y, Inc.\n"
                   //"it under the terms of the GNU General Public License as published by\n"
                   //"the Free Software Foundation; either version 2 of the License, or\n"
                   //"(at your option) any later version.\n\n";
-/* #define COPYHASH 8075316 */
-/* #define COPYHASH 12093609 */
-/* #define COPYHASH 12526110 */
-/* #define COPYHASH 12958611 */
-/* #define COPYHASH 8401139 */
-#define COPYHASH 7034257
+
 
 /* char *company="Y&&Y, Inc. USA"; */ /* double percent for Acrobat Info */
 
 /* char *company="Y&Y, Inc. USA"; */  /* 97/Jan/30 */
 
 char *company = "Y&Y, Inc.";  /* 97/Apr/29 */
-char *phone   = "(978) 371-3286"; /* for Acrobat Info */
 char *URL     = ""; /* string in binary ... */
 
 char *filenamex=NULL;     /* remember full file name here */
@@ -726,17 +657,6 @@ FILE *output  = NULL;  /* used by `interrupt handler' */
 
 char fn_in[FNAMELEN], fn_out[FNAMELEN];   /* 1994/Mar/1 */
 
-/****************************************************************************/
-
-#ifdef _WINDOWS
-// int ShowLine(char *, int);
-void ShowLine(char *, int);
-#endif
-
-/* Output to screen -  stdout or errout - and optionally logfile 99/Apr/23 */
-
-/************************************************************************/
-
 void perrormod (char *s)
 {
   sprintf(logline, "`%s': %s\n", s, strerror(errno));
@@ -958,18 +878,13 @@ int setupdviwindo (void)
 
 int useatmini = 1;       /* use [Setup] section in `atm.ini' */
                          /* reset if setup of atm.ini file fails */
-// char *atmini = "";    /* full file name for atm.ini, with path */
 char *atmini=NULL;       /* full file name for atm.ini, with path */
 int useatmreg=1;         /* use ATMREG.ATM for %%IncludeFont */
                          /* reset if setup of ATMREG.ATM file fails */
 int usepsfontname=1;     /* allow use of PS FontName in DVI TFM */
-// char *szATMRegAtm=""; /* full file name for ATMREG.ATM, with path */
 char *szATMRegAtm=NULL;  /* full file name for ATMREG.ATM, with path */
 int useatmfontsmap=1;    /* zero if tried and failed to find atmfonts.map */
-// char *atmfontsmap=""; /* file name and path to ATMFONTS.MAP */
- char *atmfontsmap=NULL; /* file name and path to ATMFONTS.MAP */
-
-// char *atmininame = "atm.ini";  /* name of ini file we are looking for */
+char *atmfontsmap=NULL; /* file name and path to ATMFONTS.MAP */
 
 char *atmsection="[Setup]";   /* ATM.INI section */
 
@@ -1212,8 +1127,8 @@ int getrealline (FILE *input, char *buff)
 void extension (char *fname, char *ext)
 {
   char *s, *t;
-  if ((s = strrchr(fname, '.')) == NULL ||
-      ((t = strrchr(fname, '\\')) != NULL && s < t))
+
+  if ((s = strrchr(fname, '.')) == NULL || ((t = strrchr(fname, '\\')) != NULL && s < t))
   {
     strcat(fname, ".");
     strcat(fname, ext);
@@ -1224,14 +1139,14 @@ void extension (char *fname, char *ext)
 void forceexten (char *fname, char *ext)
 {
   char *s, *t;
-  if ((s = strrchr(fname, '.')) == NULL ||
-      ((t = strrchr(fname, '\\')) != NULL && s < t))
+
+  if ((s = strrchr(fname, '.')) == NULL || ((t = strrchr(fname, '\\')) != NULL && s < t))
   {
     strcat(fname, ".");
     strcat(fname, ext);
   }
   else
-    strcpy(s+1, ext);    /* give it default extension */
+    strcpy(s + 1, ext);    /* give it default extension */
 }
 
 /* remove extension if present */
@@ -1271,9 +1186,8 @@ char *extractfilename (char *pathname)
 void showusage (char *program)
 {
   int k;
-  char *s=logline;
+  char *s = logline;
 
-//  abortflag++;
   sprintf(s, "%s [-{vrgh}] [-b=<begin>] [-e=<end>]\n"
       "[-m=<mag>] [-o=<orient>] [-x=<xoff>] [-y=<yoff>] [-c=<num>]\n"
       "[-f=<fontpath>] [-i=<epspath>] [-s=<sub>] [-l=<paper>]\n"
@@ -1283,7 +1197,7 @@ void showusage (char *program)
 
   if (! detailflag)
   {
-    return;     // 2000 June 18
+    return;
   }
 //  s += strlen(s);
   sprintf(s, ""
@@ -1406,19 +1320,12 @@ int decodeflag (int c, int toggle)
   switch(c) {
     case '?': detailflag = 1; return 0;
     case 'q': quietflag++; return 0;
-/*    case 'v': verboseflag = (1 - verboseflag); return 0; */
     case 'v': changeflag(&verboseflag, toggle, 0); return 0; 
-/*    case 'V': showflag = (1 - showflag); return 0;    */
     case 'V': changeflag(&showfontflag, toggle, 0); return 0;
-/*    case 'r': reverseflag = (1 - reverseflag); return 0;*/
     case 'r': changeflag(&reverseflag, toggle, 0); return 0;
-/*    case 'g': oddpageflag = (1 - oddpageflag); return 0;*/
     case 'g': changeflag(&oddpageflag, toggle, 0); return 0;
-/*    case 'h': evenpageflag = (1 - evenpageflag); */
-/*          reverseflag = (1 - reverseflag); return 0; */
     case 'h': changeflag(&evenpageflag, toggle, 0); 
           changeflag(&reverseflag, toggle, 0);  return 0;
-/*    case 'z': makeepsf = (1 - makeepsf); return 0;*/
     case 'z': changeflag(&makeepsf, toggle, 0); return 0;
 /*    case 'k': forcereside = (1 - forcereside); return 0;*/
     case 'k': changeflag(&forcereside, toggle, 0); return 0;
@@ -1815,9 +1722,6 @@ void cleanup (void)
 
 void abortjob (void)
 {
-#ifdef _WINDOWS
-  showline("ABORTJOB", 1);  // debugging only - can't happen
-#endif
   cleanup();
   checkexit(3);
 //  return -1;
@@ -2101,7 +2005,6 @@ int decodepapersize (char *papersize, double *pagewidth, double *pageheight)
 /* PS letter, note, legal, ledger ? */
 /* use table for neatness */
 
-/* void analpapertype(char *papertype) { */ /* 94/May/6 */
 int analpapertype (char *papertype, double *pagewidth, double *pageheight)
 {
   int k;
@@ -2245,7 +2148,7 @@ char *stampit (char *line, int dateflag)
 //  Have to make copy of comma separated headerfile list 
 //  because strtok messes it up, and the list is needed again later
 
-void prologcomments (char *headerfile, FILE *outfile) /* 1993/Nov/15 */
+void prolog_comments (char *headerfile, FILE *outfile) /* 1993/Nov/15 */
 {
   char *s;
   char filename[MAXLINE];     /* need to work on copy since modify */
@@ -2448,12 +2351,12 @@ void writestruct (FILE *outfile)
 
   for (k = 0; k < prologfileindex; k++)  /* 1993/Dec/21 */
   {
-    prologcomments (prologfile[k], outfile);
+    prolog_comments (prologfile[k], outfile);
   }
 
 /*  should have version and revision? */
   if (headerfile != NULL)
-    prologcomments(headerfile, outfile);  /* 1993/Nov/15 */
+    prolog_comments(headerfile, outfile);  /* 1993/Nov/15 */
 
   if (missing != 0) /* not reliable - may be non-zero yet nothing? */
   {
@@ -3872,9 +3775,6 @@ void uppercase (char *t, char *s)
   *t = '\0';
 }
 
-/*  problem:        wants void (__cdecl *)(int); */
-/*  gets #define SIG_IGN (void (__cdecl *)(int))1 */
-
 #undef SIG_IGN
 #define SIG_IGN (void (__cdecl *)(int))1L
 
@@ -4338,24 +4238,10 @@ void writesetup (FILE *output, char *filename)
 
   if (makeepsf == 0)
   {
-/*    replaceletter(fn_in, '\\', '/'); */ /*  backslash to slash ? */
-/*    must avoid backslash in string ... */ /* fn_in */
-/*    Note: fn_in may still contain a colon! */ 
-/*    which is not good when jobname is sent back over link */
-/*    since assumed syntax of such messages if key: value; */
-/*    fprintf(output, "statusdict /jobname\n(%s SN %ld %s ", 
-      programversion, serialnumber/REEXEC, filename); */
-//    fputs("statusdict /jobname\n(DVIPSONE ", output);
     PSputs("statusdict /jobname\n(DVIPSONE ", output);
-/*    fprintf(output, "0.%d.%d SN %ld ", */
     sprintf(logline, "%d.%d.%d ", version, revision, subrevision);
     PSputs(logline, output);
-//    if (subrevision != 0) fprintf(output, ".%d", subrevision);
-//    sprintf(logline, " SN %ld ", serialnumber/REEXEC);
-//    PSputs(logline, output);
-//    fputs(filename, output);
     PSputs(filename, output);
-//    putc(' ', output);
     PSputc(' ', output);
 /*    not clear need to really avoid jobname setting in EPS mode... */
 
@@ -4531,7 +4417,7 @@ void writesetup (FILE *output, char *filename)
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-void setupremap (void)
+void setup_remap (void)
 {
   int k;
 #if MAXREMAP > 32
@@ -4587,7 +4473,7 @@ int dodefaults (void)     /* moved out 1994/May/23 */
   int flag=1;
 
 
-  setupremap ();        /* may as well always do this 95/Oct/15 */
+  setup_remap ();        /* may as well always do this 95/Oct/15 */
 
   if (xmagnification == 0.0)
     xmagnification = 1.0;
@@ -4953,12 +4839,6 @@ int dvibody (int argc, char *argv[])
   if (expandpageranges() < 0)
     return -1;
 
-//  for (k = 0; k < maxranges; k++) { /* install defaults */
-//    beginpages[k] = -LINFINITY;
-//    endpages[k] = LINFINITY;
-//    pagerangeseq[k] = -1;     /* 94/March/15 */
-//  }
-
   prologfileindex = 0;        /* 1993/Dec/21 */
   
   readcommands(dvipsonecmd);      /* dvipsone.cmd file *first* if any */
@@ -5058,40 +4938,6 @@ int dvibody (int argc, char *argv[])
     if (*s == '\"')
       *s = '\0';
   }
-
-// debugging checks -- no longer significant
-#ifdef IGNORED
-#ifdef _WINDOWS
-  if (outputfile != NULL && strcmp(outputfile, "PASSBACK") != 0)
-  {
-    if (usecallbackflag)
-    {
-      sprintf(logline, "INCONSISTENT: -d=%s passback=%d\n", outputfile, usecallbackflag);
-      showline(logline, 0);
-    }
-  }
-  else
-  {
-    if (usecallbackflag == 0)
-    {
-      sprintf(logline, "INCONSISTENT: -d=%s passback=%d\n",
-          (outputfile == NULL) ? "<absent>" : outputfile, usecallbackflag);
-      showline(logline, 0);
-    }
-  }
-#endif
-#endif
-
-#ifdef _WINDOWS
-//  May need to do something if -d=PASSBACK specified from  DVIWindo ???
-  if (outputfile != NULL && strcmp(outputfile, "PASSBACK") == 0)
-  {
-    if (usecallbackflag == 0)
-    {
-      outputfile = NULL;    // 2000/Feb/14 ???
-    }
-  }
-#endif
 
 /*  if output file specified, open only ONCE (for all input files) */
 /*  also, don't force extension if an extension was specified */
@@ -5781,352 +5627,6 @@ int main (int argc, char *argv[]) /* main program entry point */
   else exit (flag);
 #endif
 }
-
-////////////////////////////////////////////////////////////////////////////
-
-#ifdef _WINDOWS
-
-// stuff to buffer up PS code to avoid calling too often
-// assumes null terminated strings 
-// may want to use both for EXE and DLL version ...
-
-unsigned int psbufpos=0;      // index to next available in psbuffer
-
-char psbuffer[PSBUFLEN]="";     // for buffering up PS output
-
-// Modified to pass actual length (rather than null terminate) 2000/Feb/14
-
-void sendpsbuffer (FILE *output)
-{
-  unsigned int k;
-
-//  if (psbufpos == 0) return;
-//  if (output == NULL) return;
-  psbuffer[psbufpos] = '\0';  // terminate - just in case
-
-  if (usecallbackflag)
-  {
-    if (PScallback(psbuffer, psbufpos) != 0)
-    {
-      sprintf(logline, "PScallback failed %s %d", psbuffer, psbufpos);
-      showline(logline, 1); // debugging only
-      uexit(1);
-    }
-  }
-  else if (output != NULL)  // printing to FILE from DLL
-  {
-    if (strlen(psbuffer) == psbufpos)
-      fputs(psbuffer, output);  // no embedded nulls
-    else
-    {
-      for (k = 0; k < psbufpos; k++)
-        putc(psbuffer[k], output);
-    }
-  }
-  psbufpos = 0;         // reset buffer
-//  *psbuffer = '\0';
-}
-
-void psputs (char *str, FILE *output)
-{
-  int nlen =  strlen(str);
-
-//  if (PScallback == NULL) return;     // sanity check
-  if (*str == '\0')  // special case clean out buffer
-  {
-    sendpsbuffer(output);
-    return;
-  }
-
-//  if new stuff won't fit in buffer, clear the buffer first
-  if (psbufpos+nlen+2 >= PSBUFLEN)
-    sendpsbuffer(output);
-
-//  if new stuff won't fit in buffer, send it directly
-  if (nlen+2 >= PSBUFLEN)
-  {
-    if (usecallbackflag)
-    {
-      if (PScallback(str, nlen) != 0)
-      {
-        sprintf(logline, "PScallback failed %s %d", str, nlen);
-        showline(logline, 1); // debugging only
-        uexit(1);
-      }
-    }
-    else if (output != NULL)    // sanity check
-      fputs(str, output);
-  }
-  else
-  {
-//  else append it to the buffer --- and send if it ends in newline
-    strcpy(psbuffer+psbufpos, str);
-    psbufpos += nlen;
-    if (psbuffer[psbufpos-1] == '\n')
-      sendpsbuffer(output);
-  }
-}
-
-// psputc done as macro in order to gain some speed
-
-// void psputc (int c) {
-// do{psbuffer[psbufpos++] = (char) chr; \
-//    if ((psbufpos+2 >= PSBUFLEN) || (chr == '\n')) sendpsbuffer(output);}while(0)
-// }
-
-#endif
-
-// Here follows the new stuff for the DLL version
-
-#ifdef _WINDOWS
-    
-#define WHITESPACE " \t\n\r"
-
-HINSTANCE hInstanceDLL=NULL;    /* remember for this DLL */
-
-/* This is the callback function for the EDITTEXT Control in CONSOLETEXT */
-
-#define GET_WM_COMMAND_CMD(wParam, lParam)  (HIWORD(wParam))
-#define GET_WM_COMMAND_ID(wParam, lParam) (LOWORD(wParam))
-#define GET_WM_COMMAND_HWND(wParam, lParam) ((HWND)lParam)
-
-HWND hConsoleWnd=NULL;    /* Console Text Window Handle passed from DVIWindo */
-
-// In DLL version, this is what "showline" (lc) calls ...
-
-// int ShowLine (char *line, int errflag)       /* 99/June/11 */
-void ShowLine (char *line, int errflag) {     /* 99/June/11 */
-  int ret;
-
-  if (IsWindow(hConsoleWnd) == 0) {   // in case the other end died
-    sprintf(line, "NO CONSOLE WINDOW? %08X %s", hConsoleWnd, line);
-    ret = MessageBox(NULL, line, "DVIPSONE",
-             MB_ICONSTOP | MB_OKCANCEL | MB_TASKMODAL);
-    hConsoleWnd = NULL;
-//    abortflag++;            // kill job in this case ???
-    return;
-  }
-
-//  if (showlineinx > 0) ClearShowBuffer();
-
-  if (hConsoleWnd != NULL)
-    SendMessage(hConsoleWnd, ICN_ADDTEXT, (WPARAM) line, 0L);
-
-  if (errflag) {
-    errlevel++;
-    ret =  MessageBox(NULL, line, "DVIPSONE",
-              MB_ICONSTOP | MB_OKCANCEL | MB_TASKMODAL);
-    if (ret == IDCANCEL && jumpused == 0) {
-//      abortflag++;
-      uexit(1);   // dangerous reentry possibility ?
-    }
-  }
-}
-
-void winshow (char *line)
-{
-  (void) MessageBox(NULL, line, "DVIPSONE",
-      MB_ICONINFORMATION | MB_OK | MB_TASKMODAL);
-}
-
-void winerror (char *line)
-{
-  int ret;
-  ret = MessageBox(NULL, line, "DVIPSONE",
-      MB_ICONSTOP | MB_OKCANCEL | MB_TASKMODAL);
-  if (ret == IDCANCEL && jumpused == 0) {
-//    abortflag++;
-    uexit(1);
-  }
-}
-
-// argument info constructed from command line
-
-int argc;
-
-char **argv=NULL;
-
-// Need to be careful here because of quoted args with spaces in them
-// e.g. -d="G:\Program Files\Adobe\Acrobat\*.pdf"
-// needs to be counted as one argument only,
-// and needs to have " stripped out
-
-// int makecommandargs (char *line) 
-int makecommandargs (unsigned char *line)
-{
-  int argc=0;
-//  char *s, *t;
-  unsigned char *s, *t;       // fixed 2000 June 18
-  
-  if (line == NULL) return -1;    /* sanity check */
-
-//  first figure out how many arguments are on command line
-  s = line;
-  while (*s != '\0') {
-    while (*s <= 32 && *s > 0) s++;     // step over white space
-    if (*s == '\0') break;          // hit the end
-    t = s;
-    while (*t > 32 && *t != '\"') t++;    // step over argument
-    if (*t == '\"') {           // if "... delimited
-      t++;
-      while (*t > 0 && *t != '\"') t++; // search for ..."
-      if (*t == '\0') break;        // hit the end
-      t++;
-    }
-//    argv[argc] = s;
-    argc++;
-    if (*t == '\0') break;
-//    *t = '\0';
-    s = t+1;              // look for next argument
-  }
-
-  if (argc == 0) return -1;     /* nothing to do */
-
-  argv = (char **) malloc(argc * sizeof(char *));
-  if (argv == NULL) {
-    sprintf(logline, "ERROR: Unable to allocate memory for %s\n", "arguments");
-    winerror(logline);
-    return -1;
-  }
-
-//  Now extract argc arguments and put in argv array
-  argc = 0;
-  s = line;
-  while (*s != '\0') {
-    while (*s <= ' ' && *s > '\0') s++;   // step over white space
-    if (*s == '\0') break;          // hit the end
-    t = s;
-    while (*t > ' ' && *t != '\"') t++;   // step over argument
-    if (*t == '\"') {           // if "... delimited
-      t++;
-//      strcpy(t, t+1);           // flush "... 2000 May 27
-      while (*t > 0 && *t != '\"') t++; // search for ..."
-      if (*t == '\0') break;        // hit the end
-      t++;
-//      strcpy(t, t+1);           // flush ..." 2000 May 27
-    }
-    argv[argc] = s;             // next argument
-    argc++;
-    if (*t == '\0') break;
-    *t = '\0';
-    s = t+1;                // look for next argument
-  }
-
-#ifdef DEBUGGING
-  s = logline;
-  *s = '\0';
-  for (k = 0; k < argc; k++) {
-    sprintf(s, "%d\t%s\n", k, argv[k]);
-    s += strlen(s);
-  }
-  winshow(logline);
-#endif
-  return argc;
-}
-
-//  This is the new entry point of DLL called from DVIWindo 
-//  ARGS: console window to send messages to, command line, callback fun
-//  no console window output if hConsole is NULL
-//  callback function is NULL if DVIPSONE prints direct to port or file
-//  returns -1 if it fails --- returns 0 if it succeeds
-
-// int dvipsone (HWND hConsole, char *line, int (* PScall) (const char *))
-int dvipsone (HWND hConsole, char *line, int (* PScall) (const char *, int))
-{
-  int firstarg=0;
-  int flag;
-
-  abortflag = 0;            // redundant
-  hConsoleWnd = NULL;         // redundant
-
-  usecallbackflag = (PScall != NULL);
-
-  hConsoleWnd = hConsole;       // remember console window handle
-  PScallback = PScall;        // remember callback function
-  psbufpos = 0;           // reset buffer
-
-//  sprintf(logline, "DVIPSONE %s callbackflag: %d\n", line, usecallbackflag);
-//  sprintf(logline, "%s\n", line);
-//  showline(logline, 0);         // debugging only
-
-  argc = makecommandargs(line);     // sets up global *argv[]
-
-  if (argc < 0) return -1;        // sanity check
-
-  firstarg = commandline(argc, argv, firstarg); // analyze args
-
-  if (firstarg >= argc) {
-    sprintf(logline, "ERROR: Too few arguments in %s\n", line);
-    winerror(logline);
-    return -1;
-  }
-  
-  if (hConsoleWnd != NULL) 
-    SendMessage(hConsoleWnd, ICN_SETTITLE, (WPARAM) "DVIPSONE", 0L);
-//  SendMessage(hConsoleWnd, ICN_RESET, 0, 0L); // if want to clear window
-
-  if (usecallbackflag) {
-    showline("Passing PS back to Windows from DVIPSONE.DLL\n", 0);
-  }
-  else {
-    showline("Printing directly from DVIPSONE.DLL\n", 0);
-  }
-
-  (void) main(argc, argv);      // now run DVIPSONE proper 
-
-  if (errlevel > 0 || abortflag > 0)
-  {
-    sprintf(logline, "ERRORS in Processing (err %d abort %d)\n",
-        errlevel, abortflag);
-    winerror(logline);        // debugging output ?
-  }
-
-//  if (psbufpos > 0) sendpsbuffer(output);   // empty out PS buffer
-//  if (psbufpos > 0) PSputs("", output);   // output already closed
-  
-  if (hConsoleWnd != NULL)
-  {
-    if (errlevel > 0 || abortflag > 0) flag = 1;
-    else flag = 0;              // pass along error indication
-    SendMessage(hConsoleWnd, ICN_DONE, flag, 0);  // flush out console buffer
-  }
-  PScallback = NULL;
-  hConsoleWnd = NULL;
-
-  if (argv != NULL) free(argv);
-  if (abortflag) return -1;
-  else return 0;
-}
-
-BOOL WINAPI DllMain (HINSTANCE hInstDll, DWORD fdwReason, LPVOID fImpLoad)
-{
-  switch (fdwReason)
-  {
-    case DLL_PROCESS_ATTACH:
-      // The DLL is being mapped into the process's address space
-      // place to allocate memory ???
-      // return FALSE if this fails
-      hInstanceDLL = hInstDll;    /* remember it */
-      break;
-
-    case DLL_THREAD_ATTACH:
-      // A thread is being created
-      break;
-
-    case DLL_THREAD_DETACH:
-      // A thread is exiting cleanly
-      break;
-
-    case DLL_PROCESS_DETACH:
-      // The DLL is being unmapped from the process's address space
-      // place to free any memory allocated
-      // but make sure it in fact *was* allocated
-      hInstanceDLL = NULL;    /* forget it */
-      break;
-  }
-  return(TRUE); // used only for DLL_PROCESS_ATTACH
-}
-#endif  // end of new stuff for DLL version
 
 //////////////////////////////////////////////////////////////////////////////
 

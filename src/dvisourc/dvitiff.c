@@ -30,43 +30,7 @@
 
 /* Also, code for some other DVIWindo \specials */
 
-/* Revised 1999 June 13 to run in DLL form */
-
-#ifdef _WINDOWS
-  #define NOCOMM
-  #define NOSOUND
-  #define NODRIVERS
-  #define STRICT
-  #include <windows.h>
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <malloc.h>
-#include <setjmp.h>
-
-#ifdef _WINDOWS
-  // We must define MYLIBAPI as __declspec(dllexport) before including
-  // dvipsone.h, then dvipsone.h will see that we have already
-  // defined MYLIBAPI and will not (re)define it as __declspec(dllimport)
-  #define MYLIBAPI __declspec(dllexport)
-  // #include "dvipsone.h"
-#endif
-
 #include "dvipsone.h"
-
-#ifdef _WINDOWS
-  #pragma warning(disable:4100) // unreferenced formal variable 
-#endif
-
-#pragma warning(disable:4996)
-#pragma warning(disable:4127) // conditional expression is constant
-
-#pragma hdrstop
-
-#include <time.h>
-
 #include "dvispeci.h"
 
 #define DEBUGTIFF         /* to get in extra tracing code */
@@ -5380,7 +5344,7 @@ int oldcolor (FILE *output, FILE  *input)
   int n;
 /*  old text color support */
   if (strcmp(line, "textcolor") == 0) {
-    (void) scanspecial (input, line, MAXLINE);
+    (void) scan_special (input, line, MAXLINE);
     if (traceflag) {
       sprintf(logline, " %s ", line);
       showline(logline, 0);
@@ -5422,7 +5386,7 @@ int oldcolor (FILE *output, FILE  *input)
   }
   /*  old rule color support */
   else if (strcmp(line, "rulecolor") == 0) {
-    (void) scanspecial (input, line, MAXLINE);
+    (void) scan_special (input, line, MAXLINE);
 #ifdef DEBUGTIFF
     if (traceflag) {
       sprintf(logline, " %s ", line);
@@ -5454,7 +5418,7 @@ int oldcolor (FILE *output, FILE  *input)
   }
 /*  old figurecolor support */
   else if (strcmp(line, "figurecolor") == 0) {
-    (void) scanspecial (input, line, MAXLINE);
+    (void) scan_special (input, line, MAXLINE);
 #ifdef DEBUGTIFF
     if (traceflag) {
       sprintf(logline, " %s ", line);
@@ -5500,7 +5464,7 @@ int oldcolor (FILE *output, FILE  *input)
   }
 /*  old reverse video support */
   else if (strcmp(line, "reversevideo") == 0) {
-    (void) scanspecial (input, line, MAXLINE);
+    (void) scan_special (input, line, MAXLINE);
 #ifdef DEBUGTIFF
     if (traceflag) {
       sprintf(logline, " %s ", line);
@@ -5590,8 +5554,8 @@ int newspecials (FILE *output, FILE *input)
 /*  insert TIFF or BMP image */
   if (strcmp(line, "insertimage") == 0)
   {
-/*    (void) scanspecial (input, line, MAXLINE); */
-    (void) scanspecialraw (input, line, MAXLINE);
+/*    (void) scan_special (input, line, MAXLINE); */
+    (void) scan_special_raw (input, line, MAXLINE);
 #ifdef DEBUGTIFF
     if (traceflag)
     {
@@ -5637,11 +5601,11 @@ int newspecials (FILE *output, FILE *input)
 /*  mark: name --- mark: "<File Open>" */ /* turn into named destination */
   else if (strcmp(line, "mark") == 0) {
     if (bPDFmarks == 0) {
-      flushspecial(input);
+      flush_special(input);
       return 1;   /* we recognize it, but ignore it */
     }
-/*    (void) scanspecial (input, line, MAXLINE);  */
-    (void) scanspecialraw (input, line, MAXLINE); /* fix 97/Nov/11 */
+/*    (void) scan_special (input, line, MAXLINE);  */
+    (void) scan_special_raw (input, line, MAXLINE); /* fix 97/Nov/11 */
     if (traceflag) {
       sprintf(logline, " %s ", line);
       showline(logline, 0);
@@ -5676,11 +5640,11 @@ int newspecials (FILE *output, FILE *input)
 /*  we are ignoring for the moment file: ... and launch: ... */
   else if (strcmp(line, "button") == 0) {
     if (bPDFmarks == 0) {
-      flushspecial(input);
+      flush_special(input);
       return 1;   /* we recognize it, but ignore it */
     }
-/*    (void) scanspecial (input, line, MAXLINE); */
-    (void) scanspecialraw (input, line, MAXLINE); 
+/*    (void) scan_special (input, line, MAXLINE); */
+    (void) scan_special_raw (input, line, MAXLINE); 
     if (traceflag) {
       sprintf(logline, " %s ", line);
       showline(logline, 0);
@@ -5688,11 +5652,11 @@ int newspecials (FILE *output, FILE *input)
     if (sscanf(line, "%ld %ld%n", &dwidth, &dheight, &n) < 2) {
       showline(" ERROR: button ", 1); /* error output */
       showline(line, 1);
-      flushspecial(input);
+      flush_special(input);
       return 1;   /* it does not have required width and height ! */
     }
 /*    if (strstr(line, "launch:") != NULL) {
-      flushspecial(input);
+      flush_special(input);
       return 1;
     } */
     sname = line + n;         /* now after width and height */
@@ -5888,7 +5852,7 @@ int newspecials (FILE *output, FILE *input)
   }
   else if (strcmp(line, "viewrule") == 0 || /* 95/Mar/27 */
        strcmp(line, "viewtext") == 0) { /* 95/Mar/27 */
-     flushspecial(input);
+     flush_special(input);
      return 1;    /* we recognize it, but ignore it */
   }
 #ifdef DEBUGTIFF
@@ -5915,7 +5879,7 @@ int dohptag (FILE *output, FILE *input)
   char *s, *t;
   char filename[FILENAME_MAX];
 
-  (void) scanspecial (input, line, MAXLINE);
+  (void) scan_special (input, line, MAXLINE);
   if ((s = strchr(line, ' ')) != NULL) *s = '\0';
   if ((t = strrchr(line, '/')) != NULL) strcpy(filename, t+1);
   else if (strlen(line) < sizeof(filename)) strcpy(filename, line);

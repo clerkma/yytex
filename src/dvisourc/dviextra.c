@@ -23,38 +23,7 @@
 *
 **********************************************************************/
 
-/* Revised 1999 June 13 to run in DLL form */
-
-#ifdef _WINDOWS
-#define NOCOMM
-#define NOSOUND
-#define NODRIVERS
-#define STRICT
-#include <windows.h>
-#endif
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <malloc.h>
-#include <setjmp.h>
-
-#ifdef _WINDOWS
-  #define MYLIBAPI __declspec(dllexport)
-#endif
-
 #include "dvipsone.h"
-
-#ifdef _WINDOWS
-#pragma warning(disable:4100) // unreferenced formal variable 
-#endif
-
-#pragma warning(disable:4996)
-#pragma warning(disable:4127) // conditional expression is constant
-
-#pragma hdrstop
-
-/* malloc.h not really needed */
 
 #define ZEROS 512     /* 512 zeros required at end of eexec section */
 #define ZEROSPERLINE 64   /* 64 zeros per line for safety */
@@ -127,18 +96,6 @@ char *syntheticfonts[] =
 /* char *basecharacters="aceinousyzACEINOUSYZdlrtDLRT";*/ /* ISO Latin 1 + 2 */
 
 /* char *notbasecharacters="bfmpqvxBFMPQVX"; */ /* ??? */
-
-/* aceinousyz 10 for standard 58 ISO Latin 1 */
-/* acdeilnorustyz 14 also includes ISO Latin 2 */
-/* acdeghijklnorstuwyz 19 full set */ /* omit bfmpqvx 7 cheaper to compute */
-
-/* #define NUMACCENTS 14 */ /* use them straight out of standardencoding */
-
-/* accents are at 193 to 207 */
-/* static char *standardaccents[] =
-{ "grave", "acute", "circumflex", "tilde", "macron", "breve", "dotaccent",
- "dieresis", "ring", "cedilla", "hungarumlaut", "ogonek", "caron",
- "dotlessi"}; */ /* well, this one is actually a base character */
 
 /* font substitution table - obtained from file */
 /* fontsubprop small enough to keep in near space - rest banished to far */
