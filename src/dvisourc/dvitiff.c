@@ -1340,15 +1340,6 @@ int readBMPPalette (FILE *input, long ColorMapPtr, int BitsPerSample)
   }
   
 /*  fseek (input, present, SEEK_SET); */
-#ifdef IGNORED
-  if (traceflag) {    /* show palette */
-    for (k = 0; k < n; k++) {
-      sprintf(logline, "INX %d\tR %u\tG %u\tB %u\n",
-        k, PaletteRed[k], PaletteGreen[k], PaletteBlue[k]);
-      showline(logline, 1);
-    }
-  }
-#endif
   return 0; 
 }
 
@@ -2526,41 +2517,6 @@ int SetupNodes (FILE *output)
   return 0;
 }
 
-#ifdef IGNORED
-// We are at node n and adding a new branch for byte chr -- NOT USED
-void AddaNode (FILE *output, int n, int chr, int previous)
-{
-  int k, klast;
-//  if (nextnode < 0 || nextnode >= MAXCODES) showline("TABLE OVERFLOW", 1);
-//  Is there already a node at the next level ?
-  k = node[n].nextlevel;
-  if (k < 0) {    // no, start next level list
-    node[n].nextlevel = nextnode; // link to new node
-  }
-  else {                // yes, link to end of that list
-//    k = node[n].nextlevel;
-//    find end of linked list
-    while (k >= 0) {
-      klast = k;
-      k = node[klast].nextinlist;
-    }
-    node[klast].nextinlist = nextnode;  // link new node to end of list
-  }
-//  set up new node being added
-//  node[nextnode].code = nextnode;
-  node[nextnode].chr = chr;
-  node[nextnode].nextinlist = -1;
-  node[nextnode].nextlevel = -1;
-  nextnode++;
-  if (nextnode == 512 || nextnode == 1024 || nextnode == 2048) {
-//    sprintf(logline, "CODELENGTH %d ", codelength);
-//    showline(logline, 0);
-    codelength++;
-  }
-  else if (nextnode == 4096) CleanOut(output, chr);
-}
-#endif
-
 // We are adding a new node for byte chr
 
 void NewNode (FILE *output, int chr, int previous) {
@@ -2624,18 +2580,6 @@ void DoNextByte (FILE *output, int chr) { // called from  writearowLZW
 //  if (k < 0 || k >= MAXCODES) showline("ERROR ", 0);  // debugging only
   currentnode = k;  // it IS in table, no output
 }
-
-#ifdef IGNORED
-void DoCleanup (FILE *output)  // not used - see LZWflushfilter
-{
-  if (currentnode >= 0) LZWput(currentnode, output);
-//  LZWput(CLEAR, output);
-//  nextnode = FIRSTCODE;
-//  currentnode = -1;
-//  codelength = 9;
-  CleanOut(output, -1);
-}
-#endif
 
 /***************************************************************************/
 
@@ -4988,15 +4932,7 @@ int DecodeLZW (FILE *output, FILE *input, unsigned char *lpBuffer)
   long nlen;
 
   nlen = (long) BufferLength * RowsPerStrip;
-#ifdef IGNORED
-/*  is this 65535U limit still valid in NT ? malloc limitation ? */
-  if (nlen > 65535U) {
-    sprintf(logline, " Cannot handle Strip Buffer of %lu bytes\n", nlen);
-    showline(logline, 1);
-/*    nlen = 30000U;  */        /* TESTING HACK! */
-    checkexit(1); 
-  }
-#endif
+
   StripDataLen = (unsigned int) nlen;
 #ifdef DEBUGTIFF
   if (traceflag) {            /* debugging */

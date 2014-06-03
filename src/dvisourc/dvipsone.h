@@ -19,8 +19,6 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-/////////////////////////////////////////////////////////
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -35,52 +33,8 @@
 #include <conio.h>
 
 
-#ifdef _WINDOWS
-  #pragma warning(disable:4100) // unreferenced formal variable
-#endif
-
 #pragma warning(disable:4996)
 #pragma warning(disable:4127) // conditional expression is constant
-
-#ifdef _WINDOWS
-
-// MYLIBAPI is defined as __declspec(dllexport) in the
-// implementation file (dvipsone.c).  Thus when this
-// header file is included by dvipsone.c, functions will
-// be exported instead of imported.
-
-#ifndef MYLIBAPI
-#define MYLIBAPI __declspec(dllimport)
-#endif
-
-//////////////////////////////////////////////////////////
-
-// MYLIBAPI int dvipsone(HWND, char *);
-
-// MYLIBAPI int dvipsone(HWND, char *, int (*) (const char *));
-MYLIBAPI int dvipsone(HWND, char *, int (*) (const char *, int));
-
-// last argument is a call-backup that can send PS strings back
-
-#define ICN_LISTBOX  525
-#define ICN_COPY     526
-#define ICN_RESET    527
-#define ICN_ADDTEXT  528
-#define ICN_SETTITLE 529
-#define ICN_DONE     530
-#define ICN_CLEAR    531
-
-// MYLIBAPI int reencodeflag;
-
-#endif
-
-#ifdef _WINDOWS
-#define PSBUFLEN 256
-extern unsigned int psbufpos;
-extern char psbuffer[PSBUFLEN];
-extern void sendpsbuffer(FILE *);
-extern void psputs(char *, FILE *);
-#endif
 
 #ifdef _WINDOWS
 #define PSputs(str,output) psputs(str,output)
@@ -89,7 +43,6 @@ extern void psputs(char *, FILE *);
 #endif
 
 // PSputc done as macro for speed
-
 #ifdef _WINDOWS
 // #define PSputc(chr,output) psputc(str, output);
 #define PSputc(chr,output)              \
@@ -114,36 +67,20 @@ extern void psputs(char *, FILE *);
   } while(0)
 #endif
 
-#ifdef _WINDOWS
-// extern int (* PScallback) (const char *);  // callback for PS strings
-extern int (* PScallback) (const char *, int);  // callback for PS strings
-#endif
-
 //////////////////////////////////////////////////////////
 
 #define ID_BYTE 2     /* for version of DVI files that we understand */
 
 /* Introduce new convenient structure for color info 98/Jul/18 */
 
-typedef struct tagCOLORSPEC {
+typedef struct
+{
   float A;
   float B;
   float C;
   float D;
 }
 COLORSPEC;
-
-/* the following kills __far */
-#define __far
-/*  and redefine far malloc, far realloc and far free in Win 32 */
-#define _ffree free
-#define _fmalloc malloc
-#define _frealloc realloc
-/* following are not standard C anyway */
-/* #define _strdup strdup */
-/* #define _searchenv searchenv */
-/* #define _access access */
-/* #define _alloca alloca */
 
 /* #define FILENAME_MAX 128 */ /* 16 bit compiler stdio.h */
 /* #define FILENAME_MAX 260 */ /* 32 bit compiler stdio.h */
@@ -273,24 +210,24 @@ COLORSPEC;
 
 /* DVI one byte commands: */
 
-enum dvicom {
-/* set_char_0 = 0, set_char_1, set_char_2, */
-set1 = 128, set2, set3, set4,
-set_rule = 132, 
-put1 = 133, put2, put3, put4,
-put_rule = 137,
-nop = 138, bop, eop, push, pop,
-right1 = 143, right2, right3, right4,
-w0 = 147, w1, w2, w3, w4,
-x0 = 152, x1, x2, x3, x4,
-down1 = 157, down2, down3, down4,
-y0 = 161, y1, y2, y3, y4,
-z0 = 166, z1, z2, z3, z4,
-/* fnt_num_0 = 171, font_num_1, font_num_2, font_num_3, */
-fnt1 = 235, fnt2, fnt3, fnt4,
-xxx1 = 239, xxx2, xxx3, xxx4,
-fnt_def1 = 243, fnt_def2, fnt_def3, fnt_def4,
-pre = 247, post, post_post
+enum dvicom 
+{
+  set1 = 128, set2, set3, set4,
+  set_rule = 132, 
+  put1 = 133, put2, put3, put4,
+  put_rule = 137,
+  nop = 138, bop, eop, push, pop,
+  right1 = 143, right2, right3, right4,
+  w0 = 147, w1, w2, w3, w4,
+  x0 = 152, x1, x2, x3, x4,
+  down1 = 157, down2, down3, down4,
+  y0 = 161, y1, y2, y3, y4,
+  z0 = 166, z1, z2, z3, z4,
+  /* fnt_num_0 = 171, font_num_1, font_num_2, font_num_3, */
+  fnt1 = 235, fnt2, fnt3, fnt4,
+  xxx1 = 239, xxx2, xxx3, xxx4,
+  fnt_def1 = 243, fnt_def2, fnt_def3, fnt_def4,
+  pre = 247, post, post_post
 };
 
 /* srefl = 250, erefl = 251 used for `right-to-left' languages in TeX-XeT */
@@ -512,7 +449,7 @@ extern long pageno;     /* for convenience in error messages dvipslog.c */
 extern long pagenumber;   /* count of pages actually seen */
 extern long numpages;   /* number of pages actually processed */
 extern long dvistart;   /* where DVI part of Textures file starts */
-extern long nMinRule;   /* min rule thickness (Acrobat fix) 95/Oct/10 */
+extern long nMinRule;   /* min rule thickness (Adobe Reader fix) 95/Oct/10 */
 extern long previous;   /* pointer to previous bop in this file */
 extern int finish;      /* when seen last eop */
 
@@ -743,7 +680,7 @@ extern long specstart;    /* saved start of \special for error message */
 
 extern char *comment;     /* pointer to place for TeX comment */
 
-extern char *papersize;     /* Custom paper size specified via special */
+extern char *paper_size;     /* Custom paper size specified via special */
 
 extern int nheaderlength;   // 99/July/14
 extern char *headerfile;    /* name of user supplied header file(s) */
@@ -762,12 +699,12 @@ extern char *keywords;      /* accumulated keywords from keywords= */
 
 extern char *dscfile;     /* name of (single) DSC header file */
 
-extern char *creatorstring;   /* creator for DocInfo in Acrobat */
-extern char *titlestring;   /* title for DocInfo in Acrobat */
-extern char *subjectstring;   /* Subject for DocInfo in Acrobat */
-extern char *authorstring;    /* Author for DocInfo in Acrobat */
-extern char *basestring;    /* Base for DocView in Acrobat */
-extern char *pagemode;      /* Base for DocView in Acrobat */
+extern char *creatorstring;   /* creator for DocInfo in Adobe Reader */
+extern char *titlestring;   /* title for DocInfo in Adobe Reader */
+extern char *subjectstring;   /* Subject for DocInfo in Adobe Reader */
+extern char *authorstring;    /* Author for DocInfo in Adobe Reader */
+extern char *basestring;    /* Base for DocView in Adobe Reader */
+extern char *pagemode;      /* Base for DocView in Adobe Reader */
 
 extern int stinx;       /* stack index */ /* just for verification */
 extern int maxstinx;      /* max stack index seen */

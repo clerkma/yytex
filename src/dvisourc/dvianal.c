@@ -51,10 +51,6 @@ char *escapecode = "btnvfr";  /* special codes for 8, 9, 10, 12, and 13 */
 
 /* we don't have to worry about sign extension here - no need for short int */
 
-/* static unsigned int ureadone (FILE *input) {
-  return getc(input);
-} */
-
 static unsigned int ureadtwo (FILE *input)
 {
   return (getc(input) << 8) | getc(input);
@@ -91,17 +87,6 @@ static int sreadone (FILE *input)
   else
     return c;
 }
-
-#ifdef IGNORED
-static int sreadtwo (FILE *input)
-{
-  short int result;
-/*  return (getc(input) << 8) | getc(input); */ /* 1995/Nov/15 */
-/*  result = (getc(input) << 8) | getc(input); */
-  result = ((short int) getc(input) << 8) | (short int) getc(input);
-  return result;
-}
-#endif
 
 /* possible compiler optimization bug worked around 98/Feb/8 */
 
@@ -210,9 +195,7 @@ void do_pop(FILE *output, FILE *input)
   }
 }
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-void complaincharcode(unsigned long c)    /* 1993/Dec/11 */
+void complaincharcode(unsigned long c)
 {
   sprintf(logline, " Character code %lu > 255\n", c);
   showline(logline, 1);
@@ -221,7 +204,7 @@ void complaincharcode(unsigned long c)    /* 1993/Dec/11 */
 /* come here either with character code 0 - 127 --- or from set1 */
 /* in the case of set1 we need to read the next byte, which likely is > 127 */
 
-void normalchar (FILE *output, FILE *input, int c)
+void normal_char (FILE *output, FILE *input, int c)
 {
   int d;
 
@@ -262,25 +245,29 @@ void normalchar (FILE *output, FILE *input, int c)
         else if (c == 9) c = 170;   /* 1996/June/4 */
         else if (c == 0) c = 161;
       }
-/*      if (c < 32 || c >= 127) { */    /* control characters */
-/* added test for percent 1992/Dec/21 to avoid % in string ... */
-      if (c < 32 || c >= 127 || c == 37)  { /* control chars and % */
-/*        if (bForwardFlag != 0 && c <= 13 && c >= 8 && c != 11)  */
-        if (c <= 13 && c >= 8 && c != 11 && bForwardFlag != 0) {
+
+      if (c < 32 || c >= 127 || c == 37)
+      {
+        if (c <= 13 && c >= 8 && c != 11 && bForwardFlag != 0)
+        {
 /* use special escape \b \t \n ... \f \r for 8 ... 13 1993/Sep/29 */
           PSputc('\\', output);
-          PSputc(escapecode[c-8], output);
+          PSputc(escapecode[c - 8], output);
         }
-/*        if (backwardflag == 1)  */ /* backward compatible with old ALW */
-        else if (bBackWardFlag == 1) { /* compatibility with old ALW */
+        else if (bBackWardFlag == 1) /* compatibility with old ALW */
+        {
           d = getc(input); (void) ungetc(d, input); /* peek  */
-          if ((d >= 32 && d <= 127) || d == (int) set1) {
+
+          if ((d >= 32 && d <= 127) || d == (int) set1)
+          {
 //            fprintf(output, "\\%03o", c);  /* just to be safe */
             sprintf(logline, "\\%03o", c);  /* just to be safe */
           }
-          else {
+          else
+          {
             sprintf(logline, "\\%o", c);
           }
+          
           PSputs(logline, output);
         }
         else {    /* following not always safe for old ALW ... */
@@ -295,38 +282,42 @@ void normalchar (FILE *output, FILE *input, int c)
           PSputs(logline, output);
         }
       }
-      else {              /* not control characters */
+      else /* not control characters */
+      {
         if (c == '\\' || c == '(' || c == ')')
         {
-//          putc('\\', output);
           PSputc('\\', output);
         }
-/*        if (c == '%') fprintf(output, "\045"); */
-/*        else putc(c, output); */
-//        putc(c, output);
+
         PSputc(c, output);
       }
     }
+
     c = getc(input);    /* get the next byte in DVI file */
-    if (c < 0) break;   /* trap EOF - avoid loop */
+
+    if (c < 0)
+      break;   /* trap EOF - avoid loop */
   } /* end of while (c < 128 ... ) loop */
 
 /* analyze next DVI command to see whether can combine with above */
-  if (skipflag != 0) (void) ungetc(c, input);
-  else {
-    if (c == (int) w0) {
-//      fputs(")S", output);
+  if (skipflag != 0)
+    (void) ungetc(c, input);
+  else
+  {
+    if (c == (int) w0)
+    {
       PSputs(")S", output);
     }
-    else if (c == (int) x0) {
-//      fputs(")T", output);
+    else if (c == (int) x0)
+    {
       PSputs(")T", output);
     }
-    else {
-//      fputs(")s", output);
+    else
+    {
       PSputs(")s", output);
       (void) ungetc(c, input);  /* can't use it, put it back */
     }
+
     showcount++;
   }
 /*  also need to increase h by total width */
@@ -338,7 +329,7 @@ void normalchar (FILE *output, FILE *input, int c)
 /* Following need *not* be efficient since it is rarely used */
 /* Put single character - called by put1/put2/put3/put4 */
 /* Set single character - also called by set2/set3/set4 */
-/* duplicates a lot of code form normalchar() above */
+/* duplicates a lot of code form normal_char() above */
 
 /* separated out 1995/June/30 */  /* third arg is `s' or `p' */
 
@@ -346,16 +337,18 @@ void do_charsub (FILE *output, unsigned long c, char code)
 {
   if (skipflag == 0)
   {
-/*    if (bRemapControl && c < MAXREMAP) c = remaptable[c]; */
     if (bRemapControl || bRemapFont)
     {
-      if (c < MAXREMAP) c = remaptable[c];
+      if (c < MAXREMAP)
+        c = remaptable[c];
+
 #if MAXREMAP < 128
       else if (c == 32) c = 195;
       else if (c == 127) c = 196;
 #endif
     }
-    else if (bRemapSpace && c <= 32) {        /* 1995/Oct/17 */
+    else if (bRemapSpace && c <= 32)
+    {
       if (c == 32) c = 195;   /* not 160 */
       else if (c == 13) c = 176;  /* 1996/June/4 */
       else if (c == 10) c = 173;  /* 1996/June/4 */
@@ -366,16 +359,9 @@ void do_charsub (FILE *output, unsigned long c, char code)
       complaincharcode(c);
       return;       /* ignore it - should never happen */
     }
-/*    if (f < 0) {
-      showline("Setting char %d without font", c);
-      tellwhere(1);   errcount(0);
-    } */
-//    putc('(', output); 
+
     PSputc('(', output); 
-/*    the following code copied from normachar() --- 1995/June/30 */
-/*    if (bRemapControl && c < MAXREMAP)
-      c = remaptable[c];  */        /* 1994/Jun/20 */
-/*    if (c < 32 || c >= 127) */
+
     if (c < 32 || c >= 127 || c == 37) {  /* 1995/June/30 fix */
 /*      fprintf(output, "(\\%o)p", c); */   /* put1 */
       if (c <= 13 && c >= 8 && c != 11 && bForwardFlag != 0) {
@@ -396,8 +382,8 @@ void do_charsub (FILE *output, unsigned long c, char code)
     }
 /*    else fprintf(output, "(%c)p", c); */  /* 1995/June/30 fixed */
     else {
-        if (c == '\\' || c == '(' || c == ')') {
-//          putc('\\', output);
+        if (c == '\\' || c == '(' || c == ')')
+        {
           PSputc('\\', output);
         }
 /*        if (c == '%') fprintf(output, "\045"); */
@@ -405,9 +391,8 @@ void do_charsub (FILE *output, unsigned long c, char code)
 //        putc((unsigned int) c, output);
         PSputc((unsigned int) c, output);
     }
-//    putc(')', output); 
+
     PSputc(')', output); 
-//    putc(code, output);     /* 'p' or 's' */
     PSputc(code, output);     /* 'p' or 's' */
     showcount++;
   }
@@ -416,13 +401,13 @@ void do_charsub (FILE *output, unsigned long c, char code)
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 /* could be more efficient here if we ever see several in a row OK */
-/* model on "normalchar" if needed OK */
+/* model on "normal_char" if needed OK */
     
 void do_set1(FILE *output, FILE *input)
 {
   if (skipflag == 0)
   {
-    normalchar(output, input, (int) set1);
+    normal_char(output, input, (int) set1);
   }
   else
     (void) getc(input);
@@ -2035,7 +2020,7 @@ int scandvifile (FILE *output, FILE *input, int lastflag)
 
     if (c < 128)
     {
-      normalchar(output, input, c);
+      normal_char(output, input, c);
     }
     else if (c >= 171 && c <= 234)
     {
@@ -2385,7 +2370,7 @@ int scandvifile (FILE *output, FILE *input, int lastflag)
 
 /* access w, x, y, z off stack (i.e. keep in stack not register) ? */
 
-/* consider sequences of set1 commands - treat like normalchar ? */
+/* consider sequences of set1 commands - treat like normal_char ? */
 
 /* check on fonthit even when font switch on page that is not printed ? */
 
