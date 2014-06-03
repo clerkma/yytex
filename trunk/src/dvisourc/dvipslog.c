@@ -108,18 +108,6 @@ static unsigned long ureadfour (FILE *infile)
   else return c;
 } */
 
-#ifdef IGNORED
-/* static short int sreadtwo (FILE *infile) { */  /* ??? */
-static int sreadtwo (FILE *infile)
-{
-  short int result;
-/*  return (getc(infile) << 8) | getc(infile); */ /* 1995/Nov/15 */
-/*  result = (getc(infile) << 8) | getc(infile); */
-  result = ((short int) getc(infile) << 8) | (short int) getc(infile);
-  return result;
-} /* needed now for code imported from dviextra.c readtfm etc */
-#endif
-
 /* avoid possible compiler optimization error */
 
 static int sreadtwo (FILE *input)    /* experiment 98/Feb/7 */
@@ -342,36 +330,6 @@ void logdo_set2(FILE *infile)
 {
   logdo_setsub(ureadtwo(infile));
 }
-
-#ifdef IGNORED
-void logdo_set2(FILE *infile)
-{
-  unsigned int c;
-  c = ureadtwo(infile);
-  if (skipflag == 0) {
-/*    if (ff < 0) invalidset((int) c); */
-    if (ff == BLANKFONT) invalidset((int) c);
-    else if (c < 256) {
-/*      if (bRemapControl && c < MAXREMAP) c = remaptable[c]; */
-      if (bRemapControl || bRemapFont) {
-        if (c < MAXREMAP) c = remaptable[c];
-#if MAXREMAP < 128
-        else if (c == 32) c = 195;
-        else if (c == 127) c = 196;
-#endif
-      }
-      else if (bRemapSpace && c <= 32) {      /* 1995/Oct/17 */
-        if (c == 32) c = 195;   /* not 160 */
-        else if (c == 13) c = 176;  /* 1996/June/4 */
-        else if (c == 10) c = 173;  /* 1996/June/4 */
-        else if (c == 9) c = 170;   /* 1996/June/4 */
-        else if (c == 0) c = 161;
-      }
-      currentfont[c] = 1;
-    }
-  }
-}
-#endif
 
 void logdo_set3(FILE *infile)
 {
@@ -1095,15 +1053,15 @@ void get_page_mode (FILE *infile)
   pagemode = get_common_string(infile);
 }
 
-/* example \special{papersize=5.04in,3.751in} */
+/* example \special{paper_size=5.04in,3.751in} */
 
 void get_paper_size (FILE *infile)
 {
-//  if (strcmp(papersize,"") != 0) return;  /* ignore all but first */
-  if (papersize != NULL) return;
-//  papersize = malloc ((size_t) (nspecial+1));
-//  get_common_string(infile, papersize);
-  papersize = get_common_string(infile);
+//  if (strcmp(paper_size,"") != 0) return;  /* ignore all but first */
+  if (paper_size != NULL) return;
+//  paper_size = malloc ((size_t) (nspecial+1));
+//  get_common_string(infile, paper_size);
+  paper_size = get_common_string(infile);
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -1318,7 +1276,7 @@ void logdo_com (FILE *infile)
 /*    following added in 1995 July */
     else if (strcmp(line, "DSCheader") == 0) get_custom_name(infile);
     else if (strcmp(line, "DSCtext") == 0) get_custom_text(infile);
-    else if (strcmp(line, "papersize") == 0) get_paper_size(infile);
+    else if (strcmp(line, "paper_size") == 0) get_paper_size(infile);
     else if (strcmp(line, "DVIPSONE") == 0) get_command_spec(infile);
     else if (strcmp(line, "DVIWindo") == 0) flush_special(infile);
 /*    else complain ??? */
@@ -3464,135 +3422,6 @@ int SetupDirs (FILE *input, unsigned long startdirlist, unsigned long enddirlist
   return 0;
 }
 
-/* Look for given PS FontName in atmreg.atm and return file name of PFB */
-/* returns 0 if found, -1 if not found */
-
-#ifdef IGNORED
-int SearchATMReg (FILE *input, unsigned long endfontlist,
-          char *szPSFontName, char *szPFBFileName)
-{
-  int c, k;
-  unsigned int stroffset, nlen;
-  unsigned long next;
-  int boldflag, italicflag;   /* style bits */
-  int ttfflag;
-/*  following just used for statistics - could remove to save time */
-  int psflag, mmmflag, mmiflag, genflag;    /* font type bits */
-  int nMMM, nPFB, nPFM;       /* index into dir path table */
-  unsigned int flag[16];        /* 16 bytes of flags */
-  char FaceName[LF_FACENAME+1];   /* Windows Face Name - not used */
-  char StyleName[LF_FACENAME+1];    /* Style Name for TT font - not used */
-  char FullName[LF_FULLFACENAME+1]; /* Full Name - not used */
-  char FontName[LF_FULLFACENAME+1]; /* Font Name - used in comparison (T1 only) */
-  char MMMName[LF_FACENAME+1];    /* PFM file or TTF file or MMM file */
-  char PFBName[LF_FACENAME+1];    /* PFB file or PSS file - not used */
-  char PFMName[LF_FACENAME+1];    /* PFM file of MMM font - not used */
-//  char *s;
-
-  *szPFBFileName = '\0';
-  
-  fseek(input, startfontlist, SEEK_SET);
-
-/*   positioned at start of font list at this point */
-
-  for (;;) {
-    c = getc(input);        /* check for end of file 99/Mar/1 */
-    if (c == EOF) {
-      break;
-    }
-    ungetc(c, input);
-    stroffset = xreadtwo(input);  /* offset to first string == 44 */
-    nlen = xreadtwo(input);     /* length of this record in bytes */
-    next = xreadfour(input);    /* pointer to next record */
-    for (k = 0; k < (28 - 8); k++) (void) getc(input);
-    for (k = 0; k < 16; k++) flag[k] = getc(input);
-    boldflag = flag[1];
-    if (boldflag == 0 || boldflag > 2) {
-      if (boldflag > 2) boldflag = 1; /* pretend it is OK */
-/*      break; */  /* impossible */ /* `fixed' 97/Sep/14 */
-    }
-    else boldflag = boldflag - 1;
-    italicflag = flag[2];
-    if (italicflag > 1) {
-/*      break; */ /* impossible */  /* `fixed' 97/Sep/14 */
-    }
-    ttfflag = psflag = mmmflag = mmiflag = genflag = 0;
-/*    ttfflag = flag[5]; */
-    if (flag[4] == 0) ttfflag = 1;
-    else if (flag[4] == 1) psflag = 1;
-    else if (flag[4] == 2) mmmflag = 1;
-    else if (flag[4] == 4) mmiflag = 1;
-    if (flag[6] == 10) {
-      genflag = 1;
-      mmmflag = 0;
-    }
-    nMMM = flag[8] | (flag[9] << 8);  /* index into path name table */
-    nPFB = flag[10] | (flag[11] << 8);  /* index into path name table */
-    nPFM = flag[12] | (flag[13] << 8);  /* index into path name table */
-/*    mmflag = flag[12]; */
-
-//    if (ttfflag) ttfcount++;
-//    else if (genflag) gencount++;
-//    else if (mmiflag) mmicount++;
-//    else if (mmmflag) mmmcount++;
-//    else pscount++;
-
-/*    These used to all continue when they hit trouble */
-/*    Windows Face Name */
-      if (ReadString(input, FaceName, sizeof(FaceName)) < 0) goto donext;
-/*    Style Name (will be empty string for PS SM or MM font) */
-      if (ReadString(input, StyleName, sizeof(StyleName)) < 0) goto donext;
-/*    Full Name  (will be empty string for PS SM or MM font) */
-      if (ReadString(input, FullName, sizeof(FullName)) < 0) goto donext;
-/*    Font Name  (may be empty if font file not yet read by ATM) */
-      if (ReadString(input, FontName, sizeof(FontName)) < 0) goto donext;
-/*    Name of MMM file or PFM file or TTF file */ 
-      if (ReadString(input, MMMName, sizeof(MMMName)) < 0) goto donext;
-/*    Name of PFB file or PSS file */ 
-      if (ReadString(input, PFBName, sizeof(PFBName)) < 0) goto donext;
-/*    Name of PFM file in case of MMM font */ 
-      if (ReadString(input, PFMName, sizeof(PFMName)) < 0) goto donext;
-/*    Flush extension from file name --- MMMName is file name */
-//    if ((s = strchr(MMMName, '.')) != NULL) *s = '\0';
-/*    Remove underscores from file name */
-/*    removeunderscores(MMMName); */
-/*    if (testflag == 0) removeunderscores (MMMName); */  /* ??? */
-/*    Make all uppercase ? It's a file name so its safe at least */
-/*    makeuppercase (MMMName); */ /* ??? */
-#ifdef DEBUGATM
-    if (traceflag) {
-//      sprintf(logline, "%s %s %s%s %s (%d)\n", MMMName, FaceName,
-//          boldflag ? "BOLD" : "",
-//          italicflag ? "ITALIC" : "",
-//          ttfflag ? "(TT)" : "", pscount);
-//      showline(logline, 0);
-      sprintf(logline, "Face: `%s' Style: `%s' Full: `%s' Font: `%s' MMM: `%s' PFB: `%s' PFM: `%s'",
-          FaceName, StyleName, FullName, FontName, MMMName, PFBName, PFMName);
-      showline(logline, 0);
-    }
-#endif
-/*    if (strcmp(FontName, szPSFontName) == 0) */ /* ignore TrueType fonts */
-    if (ttfflag == 0 && strcmp(FontName, szPSFontName) == 0 &&
-        *PFBName != '\0') { // 2000 July 3
-      if (DirPaths[nPFB] != NULL) strcpy(szPFBFileName, DirPaths[nPFB]);
-      else *szPFBFileName = '\0';     // should not happen
-      strcat(szPFBFileName, PFBName);
-      if (traceflag) {
-        sprintf(logline, " FOUND: %s for %s\n", szPFBFileName, szPSFontName);
-        showline(logline, 0);
-      }
-      return 0;         /* success */
-    }
-donext:     /* 1999/Mar/1 */
-/*    if (findfontstart(input) < 0) break; */
-    if (next >= endfontlist) break;
-    if (fseek(input, next, SEEK_SET) < 0) break;
-  }
-  *szPFBFileName = '\0';    /* wipe clean again */
-  return -1;          /* failed to find */
-}
-#endif
-
 /* New version uses ATMFonts structure */ /* First argument is PS FontName */
 /* WRITES BACK INTO SECOND ARGUMENT */
 /* returns 0 if found, -1 if not found */
@@ -3827,41 +3656,6 @@ int LoadATMREG (void)
   if (traceflag) ShowATMREG();    // debugging output
   return count;
 }
-
-
-/*  Look up specific font in ATMREG.ATM */
-/*  scan atmreg.atm in the windows directory for font info */
-/*  called with a single specific PS FontName */
-/*  returns -1 if it fails for one reason or another */
-/*  WRITES BACK INTO SECOND ARGUMENT */
-
-#ifdef IGNORED
-int LookupATMReg (char *szPSFontName, char *szPSFileName)
-{
-  FILE *input;
-  int n=0;
-
-  if (! useatmreg) return -1;     // tried before and failed
-  if (szATMRegAtm == NULL) {
-    if (SetupATMReg()) return -1; // failed to setup now
-  }
-  input = fopen(szATMRegAtm, "rb"); // open in binary mode for reading 
-  if (input == NULL) return -1;   // probably because not found
-  if (traceflag) {
-    sprintf(logline, "Scanning %s ", szATMRegAtm);
-    showline(logline, 0);
-  }
-  (void) ReadPointers(input);
-  if (AllocDirs(nDirs)) return -1;
-  SetupDirs(input, startdirlist, enddirlist);
-  (void) fseek (input, startfontlist, SEEK_SET);
-  n = SearchATMReg(input, endfontlist, szPSFontName, szPSFileName);
-//  showline(" LookupATMReg ATTEMPT TO FREE DIRPATHS\n", 0);  // debugging only
-//  FreeDirs();
-  fclose(input);
-  return n;
-}
-#endif
 
 /* First arg is PS FontName */ /* WRITES BACK INTO SECOND ARG */
 

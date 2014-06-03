@@ -192,37 +192,38 @@ int remaptable[MAXREMAP];         /* 1994/June/20 */
 
 /* added A2 and B3 1994/Dec/10 */
 
-char *papertypes[] = 
-{
-  "letter", "note", "legal", "folio", "ledger", "tabloid", "executive",
-  "a2", "a3", "a4", "a5", "b3", "b4", "b5", "quarto", ""
-};
+typedef struct {
+  char * type;
+  double width;
+  double height;
+} paper_size_t;
 
-/* in inches */
-double pagewidths[] = 
+static paper_size_t paper_struct [] =
 {
-  8.5, 8.5, 8.5, 8.5, 11, 11, 7.25,
-  420/25.4, 297/25.4, 210/25.4, 148/25.4,
-  354/25.4, 250/25.4, 176/25.4, 215/25.4, 1
-};
-
-/* in inches */
-double pageheights[] =
-{
-  11, 11, 14, 13, 17, 17, 10.5,
-  594/25.4, 420/25.4, 297/25.4, 210/25.4,
-  500/25.4, 354/25.4, 250/25.4, 275/25.4, 1
+  {"letter",    8.5,      11},
+  {"note",      8.5,      11},
+  {"legal",     8.5,      14},
+  {"folio",     8.5,      13},
+  {"ledger",    11,       17},
+  {"tabloid",   11,       17},
+  {"executive", 7.25,     10.5},
+  {"a2",        420/25.4, 594/25.4},
+  {"a3",        297/25.4, 420/25.4},
+  {"a4",        210/25.4, 297/25.4},
+  {"a5",        148/25.4, 210/25.4},
+  {"b3",        354/25.4, 500/25.4},
+  {"b4",        250/25.4, 354/25.4},
+  {"b5",        176/25.4, 250/25.4},
+  {"quarto",    215/25.4, 275/25.4},
+  {"",          1,        1}
 };
 
 /* `statement' 5 1/2 x 8 1/2 */
 
-char *papertype=NULL;   /* "letter" or "" ? from command line */
-
-char *boundingtype=NULL;  /* "letter" or "" ? 94/May/6 */
-
-char *papersize=NULL;   /* Custom paper size specified via special */
-
-char *dscextra=NULL;    /* extra DSC comment to add in 94/May/6 */
+char *paper_type    = NULL; /* "letter" or "" ? from command line */
+char *bounding_type = NULL; /* "letter" or "" ? 94/May/6 */
+char *paper_size    = NULL; /* Custom paper size specified via special */
+char *dsc_extra     = NULL; /* extra DSC comment to add in 94/May/6 */
 
 /* compute later using command line page size argument */
 
@@ -231,7 +232,7 @@ double pagewidth;     /* page width in bp */
 
 int currentdirect=1;  /* non-zero => place output current directory */
 
-int magniflag=0;    /* next arg => user specified magnification */
+int magniflag =0;    /* next arg => user specified magnification */
 int rotateflag=0;   /* next arg => user specified rotation */
 int xoffsetflag=0;    /* next arg => user specified xoffset */
 int yoffsetflag=0;    /* next arg => user specified yoffset */
@@ -262,13 +263,6 @@ int halftoneflag = 0; /* next arg => halftone screen info */
 
 int wantcontrold=0;   /* non-zero => want control D added at end */
 int tryunderscore=1;  /* non-zero => try underscore form of font file name */
-
-/* int showlogflag=0; */  /* non-zero => show log of fonts and characters */
-/* int wantpreamble=1;  *//* non-zero => want preamble */
-/* int wanthistogram=0; */  /* non-zero => make histogram of commands */
-/* int deepstack=0; */    /* non-zero => want deeper stack */
-/* int wantpacking=1; */  /* try and pack PS code */
-/* int wantcpyrght=1; */  /* want copyright message in output file */
 
 int bAllowStandard=1; /* allow use of StandardEncoding - if it works */
 int bAllowTexText=1;  /* allow use of TeXtext encoding - if it works */
@@ -330,7 +324,7 @@ int pagetpic=0;     /* non-zero if TPIC special used on this page */
 
 char *fontprefix=NULL;  /* prefix to use on FontName */
 
-char szRandomPrefix[8]="ABCDEF+";  /* Random prefix for Acrobat */
+char szRandomPrefix[8]="ABCDEF+";  /* Random prefix for Adobe Reader */
             /* avoid partial font subfont cache problem */
             /* 6 characters followed by + and terminating null */
 
@@ -350,10 +344,8 @@ int beginorend=0;     /* +1 => last was begin -1 => last was end */
 
 int rangeindex=0;     /* index into following table */
 
-// long beginpages[MAXRANGES];  /* table of pagebegins - 48 bytes*/
-long *beginpages=NULL;    /* table of pagebegins */
-// long endpages[MAXRANGES];  /* table of pagebegins - 48 bytes*/
-long *endpages=NULL;    /* table of pageends - */
+long *beginpages = NULL;    /* table of pagebegins */
+long *endpages   = NULL;    /* table of pageends - */
 
 // int pagerangeseq[MAXRANGES];   /* which instance of page range desired ? */
 int *pagerangeseq=NULL;   /* which instance of page range desired ? */
@@ -378,24 +370,23 @@ double yoffset=0.0;     /* y offset read off command line */
 
 #define UNKNOWNOFFSET -32767.0
 
-double xoffsete=UNKNOWNOFFSET;      /* x offset even pages */
-double yoffsete=UNKNOWNOFFSET;      /* y offset even pages*/
-
-double xoffseto=UNKNOWNOFFSET;      /* x offset odd pages */
-double yoffseto=UNKNOWNOFFSET;      /* y offset odd pages */
+double xoffsete = UNKNOWNOFFSET; /* x offset even pages */
+double yoffsete = UNKNOWNOFFSET; /* y offset even pages*/
+double xoffseto = UNKNOWNOFFSET; /* x offset odd pages */
+double yoffseto = UNKNOWNOFFSET; /* y offset odd pages */
 
 int evenoddoff = 0;     /* non-zero if offset differs even/odd pages */
 
 int nRepeatIndex=0;
 int nRepeatCount=1;     /* new way to make multiple copies 95/Aug/27 */
 
-long nMinRule=0;      /* min rule thickness (Acrobat fix) 95/Oct/10 */
+long nMinRule=0;      /* min rule thickness (Adobe Reader fix) 95/Oct/10 */
 
 int version=2;
 int revision=2;       /* now obtained from progversion string */
 int subrevision=4;
 
-char *progversion="2.2.4";      /* 2000/May/24 */
+char *progversion = "2.2.4";      /* 2000/May/24 */
 
 /* WARNING: remember to *also* change version number in DVIPREAM.PS !!! */
 /* look for line: /checkversion{1 2 3 hashversion 4 1 roll hashversion ne */
@@ -413,10 +404,6 @@ char *copyright = "\nCopyright (C) 1990--2000, Y&Y, Inc.\n"
                   //"the Free Software Foundation; either version 2 of the License, or\n"
                   //"(at your option) any later version.\n\n";
 
-
-/* char *company="Y&&Y, Inc. USA"; */ /* double percent for Acrobat Info */
-
-/* char *company="Y&Y, Inc. USA"; */  /* 97/Jan/30 */
 
 char *company = "Y&Y, Inc.";  /* 97/Apr/29 */
 char *URL     = ""; /* string in binary ... */
@@ -496,26 +483,14 @@ int commandspeclen=0;   /* how much has been accumulated in the following */
 char *commandspec=NULL;   /* command line stuff from DVI file */
 
 int keywordslen=0;      /* how much has been accumulated in following */
-char *keywords=NULL;    /* accumulated keywords from PDF: Keywords ... */
-              /* need to free at end of file */
+char *keywords      = NULL; /* accumulated keywords from PDF: Keywords ... */
+char *creatorstring = NULL; /* Creator for DocInfo in Adobe Reader */
+char *titlestring   = NULL; /* Title for DocInfo in Adobe Reader */
+char *subjectstring = NULL; /* Subject for DocInfo in Adobe Reader */
+char *authorstring  = NULL; /* Author for DocInfo in Adobe Reader */
+char *basestring    = NULL; /* Base for DocView in Adobe Reader */
+char *pagemode      = NULL; /* Base for DocView in Adobe Reader */
 
-char *creatorstring=NULL; /* Creator for DocInfo in Acrobat */
-              /* need to free at end of file */
-
-char *titlestring=NULL;   /* Title for DocInfo in Acrobat */
-              /* need to free at end of file */
-
-char *subjectstring=NULL; /* Subject for DocInfo in Acrobat */
-              /* need to free at end of file */
-
-char *authorstring=NULL;  /* Author for DocInfo in Acrobat */
-                /* need to free at end of file */
-
-char *basestring=NULL;  /* Base for DocView in Acrobat */
-                /* need to free at end of file */
-
-char *pagemode=NULL;    /* Base for DocView in Acrobat */
-                /* need to free at end of file */
 
 char line[MAXLINE];       /* general purpose input `buffer' 512 bytes */
 
@@ -531,25 +506,6 @@ char *comment=NULL;     /* space for comment - 1995/July/15 - 256 => 27 */
 /* while upper case letters are combinations of sorts */
 
 /* Code to show VM usage and page rendering time: */ /* flushed 1996/May/6 */
-
-#ifdef IGNORED
-static char showpagecode[] = "\
-dvidict begin\n\
-/showpageinfo{save % ctm setmatrix\n\
-/Helvetica findfont 10 scalefont setfont\n\
-72 PageHeight 36 sub moveto\n\
-(Total VM in use:  ) show exch =string cvs show ( bytes) show\n\
-currentpoint exch pop PageWidth 3 div 36 add exch moveto\n\
-(Page VM usage:  ) show exch =string cvs show ( bytes) show\n\
-currentpoint exch pop PageWidth 3 div 2 mul exch moveto\n\
-(Rendering time:  ) show exch 10 div cvi 100 div =string cvs show\n\
-( seconds) show restore}bd\n\
-/bphook{vmstatus pop exch pop usertime}bd\n\
-/ephook{usertime exch sub exch dup vmstatus pop exch pop exch sub exch\n\
-showpageinfo}bd\n\
-end\n\
-";
-#endif
 
 /* % add processing to beginning and end of page:\n\ */
 
@@ -585,30 +541,13 @@ int fnext=0;      /* next slot to use normal fonts */
 
 // int finx[MAXFONTNUMBERS];    /* index into next now default */
 short finx[MAXFONTNUMBERS];     /* index into next */
-
-/* char fontname[MAXFONTS][MAXTEXNAME]; */    /* names of fonts called for */
-// char *fontname;          /* 1994/Feb/2 */
 char *fontname[MAXFONTS];     /* 1999/Nov.6 */
-
-/* char subfontname[MAXFONTS][MAXFONTNAME]; */  /* substituted font name */
-// char *subfontname;       /* 1994/Feb/2 */
 char *subfontname[MAXFONTS];    /* 1999/Nov/6 */
-
-// char fontvector[MAXFONTS][MAXVECNAME]; /* font remapping vector if any */
-// char *fontvector;        /* font remapping vector if any */
 char *fontvector[MAXFONTS];     /* font remapping vector if any */
-
-// char *fontchar;          /* which characters seen */
 char *fontchar[MAXFONTS];     /* which characters seen */
-
 int fontsubflag[MAXFONTS];  /* non-negative if substitute font to be used */
-              /* number indicates base font - 256 bytes */
-
 int fontproper[MAXFONTS]; /* code if font is resident/forced/remapped */
-
 unsigned long fc[MAXFONTS]; /* checksum of TFM file (use for encoding info) */
-              /* reenabled 95/Jan/10 - 512 bytes */
-
 unsigned long fs[MAXFONTS];   /* at size - 512 bytes */ 
 
 /* unsigned long fd[MAXFONTS]; */ /* design size */ /* NOT ACCESSED ? */
@@ -651,9 +590,9 @@ char *dviwindo = NULL;    /* full file name for dviwindo.ini, with path */
 char *logfilename = "dvipsone.log";
 #endif
 
-FILE *logfile = NULL;  /* 1999/Apr/20 */
-FILE *input   = NULL;  /* used by following */
-FILE *output  = NULL;  /* used by `interrupt handler' */
+FILE * logfile = NULL;  /* 1999/Apr/20 */
+FILE * input   = NULL;  /* used by following */
+FILE * output  = NULL;  /* used by `interrupt handler' */
 
 char fn_in[FNAMELEN], fn_out[FNAMELEN];   /* 1994/Mar/1 */
 
@@ -723,6 +662,7 @@ void checkenter (int argc, char *argv[]) /* 95/Oct/28 */
 void checkexit (int n) /* 95/Oct/28 */
 {
   checkpause(1);
+
 #ifdef USELOGFILE
   if (logfile != NULL)
   {
@@ -730,13 +670,7 @@ void checkexit (int n) /* 95/Oct/28 */
     logfile = NULL;
   }
 #endif
-#ifdef _WINDOWS
-//  sprintf(logline, "CHECKEXIT %d\n", n);
-//  showline(logline, 1);   // debugging only
-//  abortflag++;
-#else
-//  exit(n);
-#endif
+
   uexit(n);
 }
 
@@ -753,10 +687,7 @@ char *zstrdup (char *s)    /* new central location 1996/Aug/28 */
 
   sprintf(logline, " ERROR: Unable to allocate memory for %s\n", s);
   showline(logline, 1);
-#ifdef _WINDOWS
-//  abortflag++;
-//  return NULL;
-#endif
+
 #ifndef _WINDOWS
   showline("Press any key to continue . . .\n", 0);
   pause();
@@ -924,23 +855,6 @@ int setupatmini (void)
 
 /* WARNING: this will return NULL if not found anywhere - just like getenv */
 
-#ifdef _WINDOWS
-char *grabenvvar (char *varname, char *inifile, char *section, int useini)
-{
-  (void) GetPrivateProfileString(section, varname, "", line, sizeof(line), inifile);
-
-  if (traceflag)
-  {
-    sprintf(logline, "%s=%s\n", varname, line);
-    showline(logline, 0);
-  }
-
-  if (*line != '\0')
-    return zstrdup(line);
-  else
-    return getenv(varname);
-}
-#else
 char *grabenvvar (char *varname, char *inifile, char *section, int useini)
 {
   FILE *input;
@@ -1010,29 +924,9 @@ char *grabenvvar (char *varname, char *inifile, char *section, int useini)
   return getenv(varname); /* failed, so try and get from environment */
               /* no tusing strdup when non-NULL ? */
 }             /* this will return NULL if not found anywhere */
-#endif
+
 
 /* WARNING: this will return NULL if not found anywhere - just like getenv */
-
-#ifdef _WINDOWS
-/* get from [Environment] in dviwindo.ini */
-char *grabenv (char *varname)
-{
-  (void) GetPrivateProfileString("Environment", varname, "", line, sizeof(line), "dviwindo.ini");
-
-  if (traceflag)
-  {
-    sprintf(logline, "%s=%s\n", varname, line);
-    showline(logline, 0);
-  }
-
-  if (*line != '\0')
-    return zstrdup(line);
-  else
-    return getenv(varname);
-}
-#else
-/* get from [Environment] in dviwindo.ini */
 char *grabenv (char *varname)
 {
   if (usedviwindo && ! dviwindoinisetup)
@@ -1040,7 +934,6 @@ char *grabenv (char *varname)
 
   return grabenvvar (varname, dviwindo, "[Environment]", usedviwindo);
 }
-#endif
 
 /***************************************************************************/
 
@@ -1263,7 +1156,7 @@ void showusage (char *program)
   s += strlen(s);
   showline(s, 0);
   sprintf(s, "    l:    paper size type (default `%s')\n",
-      (papertype != NULL) ? papertype : "");
+      (paper_type != NULL) ? paper_type : "");
   s += strlen(s);
   sprintf(s, "    d:    destination ");
   s += strlen(s);
@@ -1682,7 +1575,6 @@ void waitasec (int delay)
 
 void cleanup (void)
 {
-/*  nothing much to do unless output file open */
   if (output != NULL)
   {
     if (directprint)
@@ -1691,40 +1583,32 @@ void cleanup (void)
       fflush(stdout);           /* ??? 98/Jun/30 */
 #endif
 
-/*      if (wantcontrold != 0) { */ /* changed 1993/Mar/5 */
       if (wantcontrold != 0 || stripcomment != 0)
       {
-/*        putc(3, output);    */  /* send control-C */
-//        putc(4, output);      /* send control-D */
         PSputc(4, output);      /* send control-D */
       }
-#ifdef _WINDOWS
-      PSputs("", output);     // flush PS buffer in DLL version
-#else
-      fflush(output);           /* ??? 98/Jun/30 */
-#endif
-      fclose(output);       /* close output */
-      waitasec(1000);       /* give it time to clear out ? */
+
+      fflush(output); /* ??? 98/Jun/30 */
+      fclose(output); /* close output */
+      waitasec(1000); /* give it time to clear out ? */
     }
     else
     {
-      if (wantcontrold) {   /* added 1993/Mar/5 */
-/*        putc(3, output);    */  /* send control-C */
-//        putc(4, output);      /* send control-D */
+      if (wantcontrold)
+      {
         PSputc(4, output);      /* send control-D */
       }
+
       fclose(output);       /* close output */
       (void) remove(fn_out);    /* and remove bad file */
     }
   }
-/*  fcloseall();  */
 }
 
 void abortjob (void)
 {
   cleanup();
   checkexit(3);
-//  return -1;
 }
 
 /* called each time `survivable' error encountered */
@@ -1744,7 +1628,6 @@ void errcount (int flag)
 }
 
 /***********************************************************************/
-
 /* flag = 0 => DocumentFonts */ /* => no longer used */
 /* flag = 1 => DocumentSuppliedFonts */  /* => DocumentSuppliedResources */
 /* this should also write out fonts that have not been found when flag = 0 */
@@ -1755,7 +1638,7 @@ void errcount (int flag)
 int writefontlist (FILE *outfile, int flag, int column)
 {
   int k, want;
-  int wanted=0, missing=0, resident=0, dependent=0, unused=0, instance=0;
+  int wanted = 0, missing = 0, resident = 0, dependent = 0, unused = 0, instance = 0;
 
 //  char ftemp[MAXTEXNAME];
   char ftemp[FNAMELEN];
@@ -1938,17 +1821,17 @@ void writemissing (FILE *outfile, int column)
 
 /* a4tray, b5tray, legaltray, lettertray  - or setpageparams ? */
 
-/* \special{papersize=5.04in,3.75in} */
+/* \special{paper_size=5.04in,3.75in} */
 
-int decodepapersize (char *papersize, double *pagewidth, double *pageheight)
+int decode_paper_size (char *paper_size, double *pagewidth, double *pageheight)
 {
   double multiple;
   double width, height;
   char units[3];
-  char *s=papersize;
+  char *s=paper_size;
   int n;
 
-  if (papersize == NULL || *papersize == '\0')
+  if (paper_size == NULL || *paper_size == '\0')
     return -1;
 
   if(sscanf(s, "%lg%n", &width, &n) > 0)
@@ -1962,7 +1845,7 @@ int decodepapersize (char *papersize, double *pagewidth, double *pageheight)
   }
   else
   {
-    sprintf(logline, "Don't understand papersize %s\n", papersize);
+    sprintf(logline, "Don't understand paper_size %s\n", paper_size);
     showline(logline, 1);
     return -1;
   }
@@ -1984,7 +1867,7 @@ int decodepapersize (char *papersize, double *pagewidth, double *pageheight)
   }
   else
   {
-    sprintf(logline, "Don't understand papersize %s\n", papersize);
+    sprintf(logline, "Don't understand paper_size %s\n", paper_size);
     showline(logline, 1);
     return -1;
   }
@@ -2005,53 +1888,50 @@ int decodepapersize (char *papersize, double *pagewidth, double *pageheight)
 /* PS letter, note, legal, ledger ? */
 /* use table for neatness */
 
-int analpapertype (char *papertype, double *pagewidth, double *pageheight)
+int analpapertype (char *paper_type, double *pagewidth, double *pageheight)
 {
   int k;
 
-  if (papertype == NULL)
+  if (paper_type == NULL)
     return 0;
 
-  for (k= 0; k < 32; k++)        /* 94/May/6 */
+  for (k= 0; k < 32; k++)
   {
-    if (strcmp(papertypes[k], "") == 0)
+    if (strcmp(paper_struct[k].type, "") == 0)
       break;
 
-    if (strcmp(papertypes[k], papertype) == 0)
+    if (strcmp(paper_struct[k].type, paper_type) == 0)
     {
-      *pagewidth = pagewidths[k] * 72;
-      *pageheight = pageheights[k] * 72;
+      *pagewidth = paper_struct[k].width * 72;
+      *pageheight = paper_struct[k].height * 72;
       return 0;
     }
   }
-/*  stupid compiler doesn't like it if we do following in same loop! */
-/* dvipsone.c(1132) : warning C4713: analpapertype: INTERNAL COMPILER ERROR; restarting
-    (compiler file '@(#)reg86.c:1.26', line 3667)
-    Contact Microsoft Product Support Services */
-  for (k= 0; k < 32; k++) /* 94/May/6 */
+
+  for (k= 0; k < 32; k++)
   {
-    if (strcmp(papertypes[k], "") == 0)
+    if (strcmp(paper_struct[k].type, "") == 0)
       break;
 /*  Try landscape versions ... (In which first letter upper case) 94/July/1 */
-    if (_strcmpi(papertypes[k], papertype) == 0)
+    if (_strcmpi(paper_struct[k].type, paper_type) == 0)
     {
-      *pageheight = pagewidths[k] * 72;
-      *pagewidth = pageheights[k] * 72;
+      *pageheight = paper_struct[k].width * 72;
+      *pagewidth = paper_struct[k].height * 72;
       return 0;
     }
   }
 /*  new option to deal with large and peculiar sizes 1994/Dec/16 */
 /*  -l=<width>*<height> where width and height are in PostScript points */
-/*  if (sscanf(papertype, "%lg*%lg", &pagewidth, &pageheight) == 2) { *//*NO*/
-  if (sscanf(papertype, "%lg*%lg", pagewidth, pageheight) == 2)
+/*  if (sscanf(paper_type, "%lg*%lg", &pagewidth, &pageheight) == 2) { *//*NO*/
+  if (sscanf(paper_type, "%lg*%lg", pagewidth, pageheight) == 2)
   {
     return 0;
   }
 
 //  insert code to interpret 4in*5in e.g. ???
-  if (decodepapersize(papertype, pagewidth, pageheight) == 0)
+  if (decode_paper_size(paper_type, pagewidth, pageheight) == 0)
     return 0;
-  sprintf(logline, "Don't understand papertype: %s\n", papertype);
+  sprintf(logline, "Don't understand paper_type: %s\n", paper_type);
   showline(logline, 1);
   errcount(0);
 
@@ -2083,7 +1963,6 @@ void scivilize (char *date)
 }
 
 /* Thu Sep 27 06:26:35 1990 => 1990 Sep 27 06:26:35 */
-
 void lcivilize (char *date)
 {
   int k;
@@ -2119,12 +1998,8 @@ char *stampit (char *line, int dateflag)
   strcpy(date, compiledate);
   scivilize(date);
 
-//  following revised for Acrobat 4.0 so Creator shows URL
-#ifdef _WINDOWS
+//  following revised for Adobe Reader 4.0 so Creator shows URL
   strcpy(s, "DVIPSONE ");
-#else
-  strcpy(s, "DVIPSONE ");
-#endif
 
   s += strlen(s);
 
@@ -2197,8 +2072,6 @@ void copyDSCfile (FILE *output, char *name)
   fclose(input);
 }
 
-void showowner(char *, char *, int);
-
 void showownerout(char *);
 
 void addescapes (char *sline, char *filename, int nlen) // puts result in line
@@ -2220,7 +2093,6 @@ void addescapes (char *sline, char *filename, int nlen) // puts result in line
 }
 
 /* Write DSC header */
-
 void writestruct (FILE *outfile)
 {
   time_t ltime; /* for time and date */
@@ -2232,23 +2104,24 @@ void writestruct (FILE *outfile)
   int xll, yll, xur, yur;         /* 1995/Sep/16 */
   char *u;              /* 1995/July/15 */
 
-  PSputs("%!PS-Adobe-3.0\n", outfile);    /* 1992/July/18 */
+  PSputs("%!PS-Adobe-3.0\n", outfile);
 
   if (stripcomment != 0)
-    return;      /* 1993/March/5 */
+    return;
 
-/*  get current date and time */
-  (void) time(&ltime);      /* get seconds since 1970 */
-  if (ltime < 0) /* "impossible" error */
+  (void) time(&ltime);
+
+  if (ltime < 0)
   {
     sprintf(logline, "ERROR: Time not available (%0ld)!\n", ltime);
     showline(logline, 1);
   }
 
   s = ctime(&ltime);
-  if (s == NULL) /* "impossible" error */
+
+  if (s == NULL)
   {
-    sprintf(logline, "ERROR: Cannot convert time (%0ld)!\n", ltime);  /* 96/Jan/4 */
+    sprintf(logline, "ERROR: Cannot convert time (%0ld)!\n", ltime);
     showline(logline, 1);
     s = "Thu Jan 18 22:14:00 2038";
   }
@@ -2259,18 +2132,19 @@ void writestruct (FILE *outfile)
 
   if (filenamex != NULL)
   {
-    addescapes(line, filenamex, sizeof(line));  /* MAXLINE */
+    addescapes(line, filenamex, sizeof(line));
     PSputs(line, outfile);
   }
+
   PSputc('\n', outfile);
 
-  PSputs("%%Creator: ", outfile);       /* 1992/July/18 */
+  PSputs("%%Creator: ", outfile);
   stampit(line, 0);
   PSputs(line, outfile);
   PSputc('\n', outfile);
 
   PSputs("%%For: ", outfile);
-  showownerout(line);    /* MAXLINE */
+  showownerout(line);
   strcat(line, "\n");
   PSputs(line, output);
 
@@ -2282,7 +2156,8 @@ void writestruct (FILE *outfile)
   }
 
   PSputs("%%BoundingBox: ", outfile);
-  if (BBxll != 0 || BByll != 0 || BBxur != 0 || BByur != 0) /* 96/May/4 */
+
+  if (BBxll != 0 || BByll != 0 || BBxur != 0 || BByur != 0)
   {
     /* should really convert from TeX coordinates to PS coordinates */
     xll = BBxll; yll = BByll;
@@ -2290,7 +2165,7 @@ void writestruct (FILE *outfile)
   }
   else
   {
-    if (boundingtype == NULL)      /* 94/May/6 */
+    if (bounding_type == NULL)
     {
       xll = 72;
       yll = (int) ((double) pageheight - 72 - (unsigned long) (dvi_l / 65781));
@@ -2299,10 +2174,10 @@ void writestruct (FILE *outfile)
     }
     else
     {
-      boundheight = 11*72;  boundwidth = 8.5*72;    /* default */
+      boundheight = 11 * 72;  boundwidth = 8.5 * 72;    /* default */
 
-      if (boundingtype != NULL)
-        analpapertype(boundingtype, &boundwidth, &boundheight);
+      if (bounding_type != NULL)
+        analpapertype(bounding_type, &boundwidth, &boundheight);
 
       xll = 0;
       yll = 0;
@@ -2310,26 +2185,27 @@ void writestruct (FILE *outfile)
       yur = (int) boundheight;
     }
   }
-  sprintf(logline, "%d %d %d %d\n", xll, yll, xur, yur);  /* 95/Sep/16 */
+
+  sprintf(logline, "%d %d %d %d\n", xll, yll, xur, yur);
   PSputs(logline, output);
 
   pages = numpages;
+
   if (collated)
-    pages = pages * copies;       /* 94/Oct/12 */
+    pages = pages * copies;
 
   if (nRepeatCount > 1)
-    pages = pages * nRepeatCount; /* 95/Aug/27 */
+    pages = pages * nRepeatCount;
 
   PSputs("%%Pages: ", outfile);
   sprintf(logline, "%ld\n", pages); 
   PSputs(logline, output);
 
-/*  %%PageOrder is highly optional ... */
+  /*  %%PageOrder is highly optional ... */
   if (bOptionalDSC)
   {
     PSputs("%%PageOrder: ", outfile);
-    sprintf(logline, "%s\n",
-        reverseflag ? "Descend" : "Ascend");
+    sprintf(logline, "%s\n", reverseflag ? "Descend" : "Ascend");
     PSputs(logline, output);
   }
 
@@ -2337,15 +2213,13 @@ void writestruct (FILE *outfile)
   missing = writefontlist(outfile, 1, 29);
 
   PSputs("%%+ procset ", outfile);
-  sprintf(logline, "%s %d %d\n", 
-    procsetrest, version, revision);  /* no subrevision number */
+  sprintf(logline, "%s %d %d\n", procsetrest, version, revision);
   PSputs(logline, output);
 
   if (needtpic != 0)
   {
     PSputs("%%+ procset ", outfile);
-    sprintf(logline, "%s %d %d\n", 
-        tpicrest, version, revision); /* no subrevision number */
+    sprintf(logline, "%s %d %d\n", tpicrest, version, revision);
     PSputs(logline, output);
   }
 
@@ -2354,7 +2228,7 @@ void writestruct (FILE *outfile)
     prolog_comments (prologfile[k], outfile);
   }
 
-/*  should have version and revision? */
+  /*  should have version and revision? */
   if (headerfile != NULL)
     prolog_comments(headerfile, outfile);  /* 1993/Nov/15 */
 
@@ -2363,41 +2237,42 @@ void writestruct (FILE *outfile)
     PSputs("%%DocumentNeededResources: ", outfile);
     writemissing(outfile, 27);
   }
-/*  Extra DSC code supplied on command line using -*D=... */
-/*  If first character is not %, then convert all matching chars to space */
-/*  If --- after that --- first char is not %, insert %% before it */
-//  if (strcmp(dscextra, "") != 0) {    /* 1994/May/6 */
-  if (dscextra != NULL)
+
+  /*  Extra DSC code supplied on command line using -*D=... */
+  /*  If first character is not %, then convert all matching chars to space */
+  /*  If --- after that --- first char is not %, insert %% before it */
+  if (dsc_extra != NULL)
   {
-    c = *dscextra; /* look at first character */
+    c = *dsc_extra; /* look at first character */
 
     if (c != '%')
     {
-      s = dscextra;
+      s = dsc_extra;
 
       while (*(s+1) != '\0') {
         if (*(s+1) == c)
           *s = ' ';  /* replace magic with space */
         else
-          *s = *(s+1);     /* shift left one character */
+          *s = *(s+1); /* shift left one character */
 
         s++;
       }
 
       *s = '\0';            /* terminate */
-      c = *dscextra;
+      c = *dsc_extra;
     }
 
     if (c != '%')
     {
       PSputs("%%", output);
     }
-    PSputs(dscextra, output);
+
+    PSputs(dsc_extra, output);
     PSputc('\n', output);
   }
 
-/*  Extra DSC code supplied in \special{DSCtext=...} */
-/*  We are not checking whether lines start with %% and so on */
+  /*  Extra DSC code supplied in \special{DSCtext=...} */
+  /*  We are not checking whether lines start with %% and so on */
   if (dsccustom != NULL) /* 1995/July/15 */
   {
     u = dsccustom;
@@ -2417,22 +2292,18 @@ void writestruct (FILE *outfile)
 
   PSputs("%%Copyright: (C) 1990--2000, Y&Y, Inc.\n", output);
   PSputs("%%Copyright: (C) 2007, TeX Users Group.\n", output);
-  PSputs("%%Copyright: (C) 2014, Clerk Ma.", output);
-  PSputc('\n', output);
-
-
+  PSputs("%%Copyright: (C) 2014, Clerk Ma.\n", output);
   PSputs("%%EndComments", outfile);    /* may omit if next line ... */
   PSputc('\n', outfile);
 }
 
 /* Made common routines to save strig space */
-
-void dvidictbegin(FILE *outfile)   /* 1993/Dec/29 */
+void dvidictbegin(FILE *outfile)
 {
   PSputs("dvidict begin\n", outfile);
 }
 
-void dvidictend(FILE *outfile)    /* 1993/Dec/29 */
+void dvidictend(FILE *outfile)
 {
   PSputs("end", outfile);
 
@@ -2467,6 +2338,7 @@ void writeparams(FILE *outfile)
   {
     sprintf(logline, "/den %lu def ", den);
   }
+
   PSputs(logline, output);
 #else
   {
@@ -2484,18 +2356,18 @@ void writeparams(FILE *outfile)
       showline(logline, 0);
     }
   }
+
   sprintf(logline, "/mag %lu def\n", mag); /* TeX magnification * 1000 */
   PSputs(logline, output);
 
-/*  now for user specified transformations: */
+  /*  now for user specified transformations: */
   if (evenoddoff == 0)  /* only if the same on even and odd pages */
     sprintf(logline, "/xoffset %lg def /yoffset %lg def\n", xoffset, yoffset);
-  PSputs(logline, output);
 
+  PSputs(logline, output);
   sprintf(logline, "/xmagnif %lg def /ymagnif %lg def /rotation %lg def\n",
     xmagnification, ymagnification, rotation);
   PSputs(logline, output);
-
   sprintf(logline, "/PageHeight %lg def /PageWidth %lg def\n",
     pageheight, pagewidth);
   PSputs(logline, output);
@@ -2532,7 +2404,7 @@ void writeparams(FILE *outfile)
     PSputs(logline, output);
   }
 
-/*  Does user want to explicitly set screen frequency ? 94/March/18 */
+  /*  Does user want to explicitly set screen frequency ? 94/March/18 */
   if (frequency >= 0)
   {
     if (frequency > 0)  /* did user specified frequency & angle ? */
@@ -2555,6 +2427,7 @@ void writeparams(FILE *outfile)
     }
     PSputs(" dviscreen\n", output);
   }
+
   dvidictend (outfile);
 }
 
@@ -2562,7 +2435,7 @@ void writeparams(FILE *outfile)
 
 // returns -1 if it fails
 
-int copypreamble (FILE *output, FILE *input, char *procsetfile, int checkflag)
+int copy_preamble (FILE *output, FILE *input, char *procsetfile, int checkflag)
 {
   int c, d, column;
   int goodflag = 0;         /* 93/Mar/31 */
@@ -2724,10 +2597,12 @@ int copypreamble (FILE *output, FILE *input, char *procsetfile, int checkflag)
   return -1;
 }
 
-void expand_separators (char *line) // for filename in PS string
+void expand_separators (char *line)
 {
-  char *s=line;
-  while ((s = strchr(s, '\\')) != NULL) {
+  char *s = line;
+
+  while ((s = strchr(s, '\\')) != NULL)
+  {
     memmove(s+1, s, strlen(s)+1); // "\" => "\\"
     s += 2;
   }
@@ -2750,14 +2625,13 @@ int writepreamble (FILE *outfile, char *procsetfile, char *procsetrest, int chec
 
   if (stripcomment == 0)
   {
-    sprintf(logline, "procset %s %d %d\n", procsetrest, version, revision);  /* no subrevision number */
+    sprintf(logline, "procset %s %d %d\n", procsetrest, version, revision);
     PSputs(logline, output);
   }
 
-/*  if ((infile = fopen(procsetfile, "r")) == NULL) { */
   infile = fopen(procsetfile, "rb");
 
-  if (input == NULL)  /* 93/Oct/3 */
+  if (input == NULL)
   {
     sprintf(logline, "ERROR: Can't find preamble file `%s'\n", procsetfile);
     showline(logline, 1);
@@ -2775,20 +2649,20 @@ int writepreamble (FILE *outfile, char *procsetfile, char *procsetrest, int chec
       strcat(logline, " ]%%) = flush % for Distiller log\n");
       PSputs(logline, outfile);
     }
-    ret = copypreamble(outfile, infile, procsetfile, checkflag);
+    ret = copy_preamble(outfile, infile, procsetfile, checkflag);
     fclose(infile);
     if (abortflag) ret = -1;
   }
+
   if (stripcomment == 0)
     PSputs("%%EndResource\n", outfile);
 
   return ret;
 }
 
-/* void copyprologfile(char *filename, FILE *outfile) { */
 void copyprologfilesub (char *filename, FILE *outfile)
 {
-  FILE *infile;
+  FILE * infile;
 
   if (verboseflag)
   {
@@ -2806,6 +2680,7 @@ void copyprologfilesub (char *filename, FILE *outfile)
       sprintf(logline, "procset %s\n", filename);   /* should have version and revision? */
       PSputs(logline, output);
     }
+
     dvidictbegin(outfile);
     copyepssimple(outfile, infile);       /* 1993/Jan/24 */
     fclose(infile);
@@ -2873,6 +2748,7 @@ int tryencandps(char *restofname)
     fclose(infile);
     return 0;
   }
+
   return -1;      // failed
 }
 
@@ -2891,7 +2767,7 @@ int setupprocset (char *procsetrest)
   FILE *infile;
   char *s;
 
-//  if explicit path given use that
+  //  if explicit path given use that
   if (strpbrk(procsetrest, "\\/:") != NULL)
   {
     strcpy(procsetfile, procsetrest);
@@ -2938,11 +2814,6 @@ int setupprocset (char *procsetrest)
   return -1;  // failed
 }
 
-#ifdef _WINDOWS
-char *achDiag   = "Diagnostics";      /* Profile file section name */
-char *achFile = "dviwindo.ini";
-#endif
-
 /* the following needs more work ... structuring conventions and such */
 /* also no coalesced mostly into on preamble => make file ? */
 
@@ -2963,10 +2834,6 @@ int writeheader (FILE *outfile)
     showline(logline, 1);
     return -1;
   }
-
-#ifdef _WINDOWS
-  (void) WritePrivateProfileString(achDiag, "ProcSetFile", procsetfile, achFile);
-#endif
 
   if (writepreamble(outfile, procsetfile, procsetrest, 1) != 0)
   {
@@ -3572,17 +3439,17 @@ int decodearg (char *command, char *next, int firstarg)
       }
       else if (paperflag != 0)
       {
-        papertype = s;
+        paper_type = s;
         paperflag = 0;
       }
       else if (boundingflag != 0)
       {
-        boundingtype = s;
+        bounding_type = s;
         boundingflag = 0;
       }
       else if (dscextraflag != 0)
       {
-        dscextra = s;
+        dsc_extra = s;
         dscextraflag = 0;
       }
       else if (afmflag != 0)
@@ -4044,7 +3911,7 @@ void packdatetime (char *date)  /* rewrite date and time in PDF format */
   strcpy(date + 6, date  + 7);
 }
 
-void writedocinfo (FILE *output)    /* write DOCINFO & PAGES pdfmarks */
+void writedocinfo (FILE *output)
 {
   time_t ltime;   /* for time and date */
   char *s = "";
@@ -4071,12 +3938,12 @@ void writedocinfo (FILE *output)    /* write DOCINFO & PAGES pdfmarks */
   }
   sprintf(logline, "[ /Title (%s)\n", line);      /* optional */
   PSputs(logline, output);
-/*  for PDFmark need date/time format (D:YYYYMMDDHHmmSS) */
-  (void) time(&ltime);      /* get seconds since 1970 */
-/*  added some sanity checks 98/July/29 */
+  (void) time(&ltime);
+
   if (ltime > 0)
   {
     s = ctime(&ltime);
+
     if (s != NULL)
     {
       lcivilize(s);
@@ -4096,18 +3963,7 @@ void writedocinfo (FILE *output)    /* write DOCINFO & PAGES pdfmarks */
     free(creatorstring);
     creatorstring = NULL;
   }
-//  fputs("  /Creator (", output);      /* optional */
-//  PSputs("  /Creator (", output);     /* optional */
-/*  stampit(output, 1, 0); */
-//  stampit(output, 0, 0);          /* 98/Apr/20 */
-//  stampit(line, 0, 0);          /* 98/Apr/20 */
-//  PSputs(line, output);
-/*  putc(' ', output); */
-/*  fputs(company, output); */
-/*  putc(' ', output); */
-/*  fputs(URL, output); */
-//  fputs(")\n", output);
-//  PSputs(")\n", output);
+
   if (*line != '\0')
   {
     sprintf(logline, "  /Creator (%s)\n", line);
@@ -4132,7 +3988,7 @@ void writedocinfo (FILE *output)    /* write DOCINFO & PAGES pdfmarks */
     PSputs(logline, output);
   }
 
-/*  Allow insertion of keywords using \special{keywords=...} 96/May/10 */
+  /*  Allow insertion of keywords using \special{keywords=...} 96/May/10 */
   if (keywords != NULL)
   {
     *line = '\0';
@@ -4195,6 +4051,7 @@ void writedocview (FILE *output)    /* write DOCVIEW pdfmark */
 
   /* only if PageMode or Base URL specified */
   PSputs("[", output);
+
   if (pagemode != NULL)
   {
     strcpy(line, pagemode);
@@ -4212,6 +4069,7 @@ void writedocview (FILE *output)    /* write DOCVIEW pdfmark */
     sprintf(logline, " /URI << /Base (%s) >>\n", line);
     PSputs(logline, output);
   }
+
   PSputs("/DOCVIEW pdfmark\n", output);
 /*  Could also have PageMode (UseNone, UseOutlines, UseThumbs, FullScreen) */
 /*  (Default is UseNone) --- see Table 10 in TN 5150 */
@@ -4223,7 +4081,7 @@ void writedocview (FILE *output)    /* write DOCVIEW pdfmark */
 void writesetup (FILE *output, char *filename)
 {
   time_t ltime;   /* for time and date */
-  int c;        /* for first letter of papertype */
+  int c;        /* for first letter of paper_type */
   char *s;
 
 /*  Don't bother with following if writing direct to printer ? */
@@ -4268,7 +4126,7 @@ void writesetup (FILE *output, char *filename)
     PSputs(s, output);
     PSputs(")\nput\n", output);
 
-    if (papertype != NULL || papersize != NULL)
+    if (paper_type != NULL || paper_size != NULL)
     {
       PSputs("[{\n", output);
       if (stripcomment == 0)
@@ -4276,25 +4134,25 @@ void writesetup (FILE *output, char *filename)
         PSputs("%%BeginFeature: ", output);
         PSputs("*PageSize", output);
 
-        if (papertype != NULL && strchr(papertype, '*') == NULL)
+        if (paper_type != NULL && strchr(paper_type, '*') == NULL)
         {
           PSputc(' ', output);
-          c = *papertype;
+          c = *paper_type;
 
           if (c >= 'a' && c <= 'z')
             c = c + 'A' - 'a';
           PSputc(c, output);
-          PSputs(papertype + 1, output);
+          PSputs(paper_type + 1, output);
         }
         PSputc('\n', output);
       }
 
 /*  don't output page command if `custom size' -l=<width>*<height> 94/Dec/16 */
-/*      if (strcmp(papertype, "custom") != 0) */
+/*      if (strcmp(paper_type, "custom") != 0) */
 /*      statusdict /lettertray get exec ??? */
-      if (papertype != NULL && strchr(papertype, '*') == NULL)
+      if (paper_type != NULL && strchr(paper_type, '*') == NULL)
       {
-        PSputs(papertype, output);  /* since already stopped context */
+        PSputs(paper_type, output);  /* since already stopped context */
       }
       else
       {
@@ -4600,15 +4458,10 @@ void initialtables (void)
     fontname[k] = subfontname[k] = fontvector[k] = fontchar[k] = NULL;
 }
 
-/* exehdr says: DVIPSONE.EXE needs 190k to load */
-/* In DOS: */
-/* Above says allocated 78848, 22454 avail, 22434 memmax, 2628 stack avail */
-/* In Epsilon 7.0 process buffer in Windows NT: */
-/* Above says allocated 39434, 21910 avail, 21890 memmax, 2628 stack avail */
-
 void freememory (void)  /*   check that heap was not corrupted */
 {
   int k;
+
   for (k = 0; k < MAXSUBSTITUTE; k++)
   {
     if (fontsubfrom[k] != NULL)
@@ -4675,7 +4528,7 @@ int dvibody (int argc, char *argv[])
   char *s, *t, *filename;
   clock_t sclock, lclock, fclock, eclock;
   char *mode;
-  unsigned long starttime;  /* seconds since 1970 Jan 1 */
+  unsigned long starttime;
   int count = 0;
 
 #ifdef USELOGFILE
@@ -4714,26 +4567,9 @@ int dvibody (int argc, char *argv[])
   
 //  following assumes dvipsone and dviwindo are subdirectories of same thing
 
-#ifdef _WINDOWS
-  if ((s = grabenv("YANDYPATH")) != NULL)
-  {
-    strcpy(line, s);
-    strcat(line, "\\dvipsone");
-    programpath = zstrdup(s);
-  }
-  else
-  {
-    programpath = zstrdup(GetCommandLine());  // 99/Jun/25
-    stripname(programpath);       // flush executable name
-
-//    this gets the path to DVIWindo ... not to DVIPSONE, so:
-    if ((s = strstr(programpath, "dviwindo")) != NULL) 
-      strcpy(s, "dvipsone");  // replace "dviwindo\\dviwindo.exe" with "dvipsone"
-  }
-#else
   programpath = zstrdup(argv[0]);
   stripname(programpath);   // flush executable name
-#endif
+
   strcpy(programpath, getenv("DVIPSONE")); // CM 20140401
 
 /*  if programpath doesn't exist - try and guess - not really likely ! */
@@ -4873,7 +4709,7 @@ int dvibody (int argc, char *argv[])
   if (verboseflag)
     showline("\n", 0);
 
-/*  Code to make up random prefix to avoid Acrobat partial font problem */
+/*  Code to make up random prefix to avoid Adobe Reader partial font problem */
   if (bRandomPrefix)
   {
     starttime = (unsigned long) time(NULL);
@@ -4900,9 +4736,6 @@ int dvibody (int argc, char *argv[])
     evenpageflag = 0; oddpageflag = 0;
   }
 
-#ifdef _WINDOWS
-  showcommand(NULL, argc, argv, 0);   /* show command line */
-#else
   if (showcommandflag)
   {
     showcommand(stdout, argc, argv, 0); /* show command line 94/Mar/8 */
@@ -4910,13 +4743,9 @@ int dvibody (int argc, char *argv[])
     if (logfileflag != 0)
       showcommand(logfile, argc, argv, 0); /* show command line 94/Mar/8 */
   }
-#endif
 
-//  doallocation();
   initialtables();
-
   initializeencoding(bANSITeX); /* textext and ansi encoding from SE */
-                                /* now used only in 16 bit version */
 
   if (traceflag)
   {
@@ -4943,11 +4772,7 @@ int dvibody (int argc, char *argv[])
 /*  also, don't force extension if an extension was specified */
 /*  also, try and figure out if going direct to a printer */
 
-#ifdef _WINDOWS
-  if (outputfile != NULL && usecallbackflag == 0)
-#else
   if (outputfile != NULL)
-#endif
   {
     strcpy(fn_out, outputfile);
 
@@ -5024,15 +4849,6 @@ int dvibody (int argc, char *argv[])
     }
   }
 
-#ifdef _WINDOWS
-  if (usecallbackflag)      // if we are going to use callback function
-  {
-    directprint = 0;
-    stripcomment = 0;
-    output = NULL;
-  }
-#endif
-
   if (bAbort)
     abortjob();
 
@@ -5074,11 +4890,7 @@ int dvibody (int argc, char *argv[])
     filename = removepath(fn_in);   /* strip off path of file */
 //    if (strcmp(outputfile, "") == 0)  /* output file specified ? */
 
-#ifdef _WINDOWS
-    if (outputfile == NULL && usecallbackflag == 0)
-#else
     if (outputfile == NULL)
-#endif
     {
       if (currentdirect != 0)     /* write in current directory ? */
         strcpy(fn_out, filename);
@@ -5157,13 +4969,8 @@ int dvibody (int argc, char *argv[])
 //    directprint = 1;    // debugging only
 //    stripcomment = 1;   // debugging only
 
-#ifdef _WINDOWS
-    sprintf(logline, "(%sto %s)\n", directprint ? "direct " : "",
-        usecallbackflag ? "DVIWindo" : fn_out);
-#else
     sprintf(logline, "(%sto %s)\n", directprint ? "direct " : "",
         fn_out);
-#endif
     showline(logline, 0);
     
 /*    input = fp_in;          */
@@ -5189,17 +4996,6 @@ int dvibody (int argc, char *argv[])
 
     rewind(input);          /* get set for next pass */
 
-/*    printf("NUMPAGES %ld\n", numpages); */  /* debugging 94/Oct/13 */
-
-    if (useatmreg)
-    {
-      if (LoadATMREG() < 0) // try and get info from ATMREG.ATM
-      {
-        if (verboseflag) showline("Warning: no ATMREG.ATM ", 0);
-//        return -1;
-      }
-    }
-
     task = "checking for duplicate & substitutions";
 
     if (substituteflag)       // this is done once per file now
@@ -5208,15 +5004,15 @@ int dvibody (int argc, char *argv[])
     preextract();
 
 /*    do the following only once ? not needed for every file ? */ 
-/*    analpapertype(papertype); */  
+/*    analpapertype(paper_type); */  
 /*    get PageHeight and PageWidth */   /* 94/May/6 */
     pageheight = 11*72; pagewidth = 8.5*72;   /* default */
 
-    if (papersize != NULL)
-      decodepapersize(papersize, &pagewidth, &pageheight);
+    if (paper_size != NULL)
+      decode_paper_size(paper_size, &pagewidth, &pageheight);
 
-    if (papertype != NULL)
-      analpapertype(papertype, &pagewidth, &pageheight);
+    if (paper_type != NULL)
+      analpapertype(paper_type, &pagewidth, &pageheight);
 
     lclock = clock();       /* end of prescan - start of fonts */
 
@@ -5462,17 +5258,14 @@ int dvibody (int argc, char *argv[])
     if (bCarryColor && bColorUsed)
       freecolorsave(); // 2000 May 27
 
-    if (papersize != NULL)
+    if (paper_size != NULL)
     {
-      free(papersize);
-      papersize = NULL;
+      free(paper_size);
+      paper_size = NULL;
     }
+
     count++;        /* 99/Mar/17 */
-#ifdef _WINDOWS
-    PSputs("", output);     // flush PS buffer in DLL version
-#else
     fflush(stdout);       /* ??? 98/Jun/30 */
-#endif
 
     freememory();       // moved here to happen every file
 
@@ -5620,12 +5413,8 @@ int main (int argc, char *argv[]) /* main program entry point */
 
   if (flag == 0)
     return 0;
-
-#ifdef _WINDOWS
-  return flag;
-#else
-  else exit (flag);
-#endif
+  else
+    exit (flag);
 }
 
 //////////////////////////////////////////////////////////////////////////////

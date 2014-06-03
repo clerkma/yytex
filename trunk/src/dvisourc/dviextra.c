@@ -3314,12 +3314,7 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 //    fputs(line, output);    /* 1992/Aug/22 */
     PSputs(line, output);     /* 1992/Aug/22 */
   }
-#ifdef IGNORED
-  else if ((property & C_MULTIPLE) != 0) {  /* don't mess with MM base */
-//    fputs(line, output);    /* 1997/June/1 */
-    PSputs(line, output);     /* 1997/June/1 */
-  }
-#endif    /* test 97/Nov/30 */
+
 /*  else if (bMMNewFlag == 0 && mmflag != 0) fputs(line, output); */
   else if ((property & C_REMAPIT) == 0) {   /* if font is not remapped */
     if (strstr(line, "StandardEncoding") != NULL) { /* easy case! */
@@ -3720,19 +3715,12 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
     putenline(output, line);
     n = getenline(input, line);
   }
+
   putenline(output, line);
   flushencrypt(output);           // ???
 
 /*  A problem here if the font has junk at the end of binary section ... */
 /*  Will this `fix' screw up treatment of Mac fonts ? */
-
-#ifdef IGNORED
-  if (stripbadend) {
-    c = getc(input);        /* eat spurious zeros if needed */
-    while (c == 0) c = getc(input); /* 95/Mar/1 */
-    (void) ungetc(c, input);    /* turn these into ASCII zeros ? */
-  }
-#endif
 
 /*  96/Feb/22 deal with junk at end of encrypted section */
 /*  Looking for M-@C-A (ASCII section heading) for PFB */
@@ -5176,19 +5164,6 @@ int AddMMBase (int m)
 /* Do we get into any problems because of not checking for substitution ? */
 /* Not used anymore ? */
 
-#ifdef IGNORED
-void AddInBaseFonts(void)
-{
-  int k;
-/*  for (k = 0; k < mmbase; k++) { */
-  for (k = 0; k < fnext; k++)
-  {
-/*    if (fontproper[k] & C_MULTIPLE) continue; */
-    if (fontproper[k] & C_INSTANCE) AddMMBase(k);
-  }
-}
-#endif
-
 /* Old style PSS stubs look like this: */
 
 /* 128, 1, x, x, x, x (length)
@@ -6063,10 +6038,7 @@ void dofont (FILE *fp_out, int f, int fn)
       if (property & C_INSTANCE) {
 /*        strcpy(fname, subfontname + f * MAXFONTNAME); */
         *fname = '\0';
-#ifdef IGNORED
-        if ((property & C_REMAPIT) || bWindowsFlag) /* 97/June/1 */
-          strcpy(fname, COORDINATE);  /* make up `coordinated' name */
-#endif      /* test 97/Nov/30 */
+
 //        strcat(fname, subfontname + f * MAXFONTNAME);
         if (subfontname[f] != NULL) strcat(fname, subfontname[f]);
 #ifdef DEBUG
@@ -6763,10 +6735,7 @@ void fontsetup (FILE *fp_out)
 /*        strcpy(fname, fontname + k * MAXTEXNAME); */  /* 1994/Feb/2 */
         if (property & C_MULTIPLE) {      /* 97/June/1 */
           *fname = '\0';
-#ifdef IGNORED
-          if ((property & C_REMAPIT) || bWindowsFlag) /* 97/June/1 */
-            strcpy(fname, COORDINATE);  /* coordinated name */
-#endif    /* test 97/Nov/30 */
+
 //          strcat(fname, subfontname + k * MAXFONTNAME);
           if (subfontname[k] != NULL) strcat(fname, subfontname[k]);
         }
