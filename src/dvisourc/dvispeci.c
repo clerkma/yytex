@@ -914,7 +914,7 @@ FILE *find_pfb_file (char *pfbname, char *FileName)
     for(;;) {
       if ((searchpath =
         nextpathname(filename, searchpath)) == NULL) break;
-      makefilename(filename, pfbfilename);
+      make_file_name(filename, pfbfilename);
 /*      extension(filename, "pfb"); */
 /*      printf("Trying %s\n", filename); */ /* debugging */
       if ((pfbfile = fopen(filename, "rb")) != NULL) {
@@ -929,7 +929,7 @@ FILE *find_pfb_file (char *pfbname, char *FileName)
           return pfbfile;       /* we found it */
         }
       }
-/*      removeunder(filename); */
+/*      remove_under(filename); */
       } /* end of loop for PFB file through directory PSFONTS */
   }
   return NULL;        /* PFB not found in any of the directories */
@@ -958,7 +958,7 @@ int setup_atm_fonts_map (void)
   atmfile = NULL;       /* 1994/Aug/18 */
   for (;;) {
     if ((searchpath = nextpathname(atmfilename, searchpath)) == NULL) break;
-    makefilename(atmfilename, "atmfonts.map");      /* 1993/Dec/24 */
+    make_file_name(atmfilename, "atmfonts.map");      /* 1993/Dec/24 */
 /*  try and open ATMFONTS.MAP file */
     if ((atmfile = fopen(atmfilename, "r")) != NULL) break;
   } /* end of loop for ATMFONTS.MAP through directory path in PSFONTS */

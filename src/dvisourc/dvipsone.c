@@ -82,7 +82,7 @@ int retplusnew=0;     /* non-zero => use `return' + `newline' output */
 /* int usetexbounds=1; */ /* use TeX DVI file specified page bounds */ 
 int allowtpic=1;      /* non-zero => allow TPIC \specials */
 int needtpic=0;       /* non-zero => include TPIC header file */
-int textextwritten=0;   /* non-zero => textext encoding already written */
+int textextwritten=0;   /* non-zero => tex_text encoding already written */
 int ansiwritten=0;      /* non-zero => ansi encoding already written */
 int bShortFont=1;     /* non-zero => use shorter font numbers for /f..*/
 int bUseInternal=1;     /* non-zero => use internal number for /fn... */
@@ -282,14 +282,14 @@ int stripchecking=1;    /* strip garbage from nasty old Adobe fonts */
 int showcommandflag=0;    /* show command line (for debugging/DVIWindo) */
 
 int columns=78;     /* 128 maximum length of output line in hex */
-            /* used in outencrypt  dviextra.c */
+            /* used in out_encrypt  dviextra.c */
 int bBackWardFlag=1;  /* force long form of octal escape in strings */
             /* required for old Apple Laser Writer */
 int bForwardFlag=1;   /* use \b, \t, \n, ... \f, \r in strings 93/Sep/29 */
 int bWindowsFlag=0;   /* reencode StandardEncoding to Windows ANSI */
             /* *or* by specified textencoding - ENCODING env var */
 int bCheckEncoding = 1; /* check match in checksum specified encoding vector */
-int bANSITeX=1;     /* splice in bottom of textext in ansi vector */
+int bANSITeX=1;     /* splice in bottom of tex_text in ansi vector */
 int bAllowColor = 0;  /* allow use of colorimage operator for TIFF */
 /* int bKeepBlack = 1; */ /* suppress textcolor, rulecolor, figurecolor */
 int bKeepBlack = 0;   /* suppress textcolor, rulecolor, figurecolor 95/Mar/1 */
@@ -1498,7 +1498,7 @@ int decodeflag (int c, int toggle)
 /* \ta: AFM metric file path  (default `%s')\n\ */
 /* \tp: PFM metric file path  (default `%s')\n\ */
 
-/* \tn: make output `ATM safe' - don't used dviencode or textext \n\ */
+/* \tn: make output `ATM safe' - don't used dviencode or tex_text \n\ */
 /* \tn: do not use numeric reencoding of fonts\n\ */
 /* \tq: quietly ignore unrecognized \special's\n\ */
 /* \tz: output is meant to be EPS file\n\ */
@@ -2947,7 +2947,7 @@ int writeheader (FILE *outfile)
 
 /* should following be somewhat conditional on bAllowShortEncode ? */
 /* after all, the vectors are not referred to if bAllowShortEncode == 0 */
-/* except possibly textext is needed for something or other */
+/* except possibly tex_text is needed for something or other */
 
 void writeencodingvecs (FILE *outfile)  /* separated from above 94/Mar/3 */
 {
@@ -2955,7 +2955,7 @@ void writeencodingvecs (FILE *outfile)  /* separated from above 94/Mar/3 */
 /*  NOTE: following wrapped in begin/end on `dvidict' */
 /*  dvidictbegin(outfile); */
   if (busedviencode != 0)
-    writedviencode(outfile);  /*  NOT in dvipream */
+    write_dvi_encode(outfile);  /*  NOT in dvipream */
   else
   {
     if (bAllowTexText != 0)
@@ -2966,14 +2966,14 @@ void writeencodingvecs (FILE *outfile)  /* separated from above 94/Mar/3 */
   {
     if (strcmp(textencoding, "ansinew") != 0)
     {
-      readtextencode(textencoding); /* user selected ENCODING 94/Dec/17*/
+      read_text_encode(textencoding); /* user selected ENCODING 94/Dec/17*/
     }
 
     textenconame = removepath(textencoding);        /* 95/Feb/3 */
     nCheckSum = codefourty(textenconame);         /* 95/Feb/3 */
 
     if (bAllowANSI)
-      writeansicode(outfile, textenconame); /* 95/Feb/3 */
+      write_ansi_code(outfile, textenconame); /* 95/Feb/3 */
   }
 /*  maybe make conditional on bAllowANSI ? */
 /*  dvidictend(outfile); */
@@ -4745,7 +4745,7 @@ int dvibody (int argc, char *argv[])
   }
 
   initialtables();
-  initializeencoding(bANSITeX); /* textext and ansi encoding from SE */
+  init_enc(bANSITeX); /* tex_text and ansi encoding from SE */
 
   if (traceflag)
   {
@@ -5148,7 +5148,7 @@ int dvibody (int argc, char *argv[])
     {
       for (k = 1; k < copies; k++)
       {
-        scandvifile(output, input, 0);
+        scan_dvi_file(output, input, 0);
         rewind(input);
 
         if (abortflag)
@@ -5162,7 +5162,7 @@ int dvibody (int argc, char *argv[])
       break;
     }
 
-    scandvifile(output, input, 1);
+    scan_dvi_file(output, input, 1);
 
     if (abortflag)
     {
