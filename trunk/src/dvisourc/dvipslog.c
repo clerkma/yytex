@@ -1777,7 +1777,7 @@ int scanlogfileaux(FILE *fp_in)
 
   if (bCarryColor || bBackGroundFlag)
   {
-    postposition = gotopost(input); /* in dvianal.c */
+    postposition = goto_post(input); /* in dvianal.c */
     (void) getc(input);       /* absorb the post byte */
     logdo_post(input);
     rewind(input);

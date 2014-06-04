@@ -254,21 +254,21 @@ enum dvicom
 
 /* AND: O => oo, U => u u, M => o u */
 
-extern unsigned char decryptbyte(unsigned char, unsigned short *);
+extern unsigned char decrypt_byte(unsigned char, unsigned short *);
 extern void preextract(void);            /* in dviextra.c */
 extern void writetextext(FILE *);        /* in dviextra.c */
-/* extern void writeansicode(FILE *); */      /* in dviextra.c */
-extern void writeansicode(FILE *, char *);      /* in dviextra.c */
+/* extern void write_ansi_code(FILE *); */      /* in dviextra.c */
+extern void write_ansi_code(FILE *, char *);      /* in dviextra.c */
 /* extern void writetextencode(FILE *, char *); */  /* in dviextra.c */
-extern int readtextencode(char *);        /* in dviextra.c */
-extern void writedviencode(FILE *);       /* in dviextra.c */
+extern int read_text_encode(char *);        /* in dviextra.c */
+extern void write_dvi_encode(FILE *);       /* in dviextra.c */
 /*extern void extract(FILE *);  */        /* in dviextra.c */
 extern int extractfonts(FILE *);        /* in dviextra.c */
 extern void fontsetup(FILE *);          /* in dviextra.c */
 extern unsigned long readlength(FILE*);     /* in dviextra.c */
-extern void makefilename(char *, char *);   /* in dviextra.c */
+extern void make_file_name(char *, char *);   /* in dviextra.c */
 extern int underscore(char *);          /* in dviextra.c */
-extern int removeunder(char *);       /* in dviextra.c */
+extern int remove_under(char *);       /* in dviextra.c */
 extern int ResidentFont(char *);        /* in dviextra.c */
 extern int FindFileName (char *, char *);   /* in dviextra.c */
 extern int MarkUnusedFonts(void);       /* in dviextra.c */
@@ -292,8 +292,8 @@ extern int readpfm(char *, FILE *, long widths[]);
 /* extern int NamesFromPFM (FILE *, char *, int, char *, int); */
 extern int NamesFromPFM (FILE *, char *, int, char *, int, char *);
 
-extern int scandvifile(FILE *, FILE *, int);  /* in dvianal.c */
-extern long gotopost(FILE *);     /* in dvianal.c */
+extern int scan_dvi_file(FILE *, FILE *, int);  /* in dvianal.c */
+extern long goto_post(FILE *);     /* in dvianal.c */
 
 
 /* extern FILE *findepsfile(char *, int); */  /* in dvispeci.c */
@@ -352,8 +352,8 @@ extern void setupfontchar(int);     /* set up wantchrs for one font */
 extern void map850topdf(char *, int); /* in dvispeci.c */
 extern void complainspecial(FILE *); 
 
-/* extern void initializeencoding(void); */ /* dviextra.c */
-extern void initializeencoding(int);    /* dviextra.c */
+/* extern void init_enc(void); */ /* dviextra.c */
+extern void init_enc(int);    /* dviextra.c */
 extern int decompressfont(FILE *, FILE *, char *); /* dviextra.c */
 
 extern int newspecials(FILE *, FILE *);   /* dvitiff.c */
@@ -516,13 +516,13 @@ extern double outscale;
 // dvitiff.c
 
 extern int bTextColor;
-extern double textred;
-extern double textgreen;
-extern double textblue; 
+extern double text_red;
+extern double text_green;
+extern double text_blue; 
 extern int bRuleColor;
-extern double rulered;
-extern double rulegreen;
-extern double ruleblue; 
+extern double rule_red;
+extern double rule_green;
+extern double rule_blue; 
 extern int bFigureColor;
 extern double figurered;
 extern double figuregreen;
@@ -632,7 +632,7 @@ extern int bForceFullArr;   /* force full 256 element Encoding array */
 extern int keepgap;       /* keep space bytes before ND 93/Aug/5*/
 extern int showfontflag;    /* non-zero => show font tables */
 extern int stripchecking;   /* strip garbage from nasty old Adobe fonts */
-extern int textextwritten;    /* non-zero textext encoding already written */
+extern int textextwritten;    /* non-zero tex_text encoding already written */
 extern int ansiwritten;     /* non-zero ansi encoding already written */
 extern int bTexFontsMap;    /* non-zero => allowed to use `texfonts.map'*/
 extern int bForceFontsMap;    /* non-zero => replace aliases `texfonts.map'*/

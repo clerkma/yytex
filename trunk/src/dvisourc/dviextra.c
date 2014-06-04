@@ -25,12 +25,10 @@
 
 #include "dvipsone.h"
 
-#define ZEROS 512     /* 512 zeros required at end of eexec section */
-#define ZEROSPERLINE 64   /* 64 zeros per line for safety */
-#define NOTDEF 256      /* special code for .notdef = MAXCHRS */
-
-#define COORDINATE "+"    /* prefix for reencoded font 97/June/1 */
-              /* this has apparently not been finsihed */
+#define ZEROS        512 /* 512 zeros required at end of eexec section */
+#define ZEROSPERLINE 64  /* 64 zeros per line for safety */
+#define NOTDEF       256 /* special code for .notdef = MAXCHRS */
+#define COORDINATE   "+" /* prefix for reencoded font 97/June/1 */
 
 unsigned short int cryptin;   /* current seed for input decryption */
 unsigned short int cryptout;  /* current seed for output encryption */
@@ -40,9 +38,7 @@ char charseen[MAXCHRS + 1]; /* new - which CharStrings unpacked + NOTDEF */
 int clm;          /* current output column */
 
 int binaryin = 0;     /* non-zero => input binary, not hex */
-
 int wantcreation=1;     /* copy creation date through to output */
-
 int aliasesexist=0;     /* if *alias* found in font substitution file */
 int syntheticsexist=0;    /* if *synthetic* in font substitution file */
               /* normally not set to avoid need to check table */
@@ -110,7 +106,7 @@ int fontsubprop[MAXSUBSTITUTE];  /* resident/forced/remapped/alias */
 
 #define STRINGSPACE (MAXCHRS * MAXCHARNAME / 2)
 
-/* The above comes to 4096 bytes - textext = 650, SE = 945, ANSI = 1528 */
+/* The above comes to 4096 bytes - tex_text = 650, SE = 945, ANSI = 1528 */
 
 char *charnames[MAXCHRS];       /* encoding vector 1993/Nov/15 */
 
@@ -122,39 +118,40 @@ int stringindex;            /* index into above space */
 
 /* is the following really needed ? YES, if font file Encoding is standard */
 
-static char *standardencoding[] = {
- "", "", "", "", "", "", "", "",
- "", "", "", "", "", "", "", "",
- "", "", "", "", "", "", "", "",
- "", "", "", "", "", "", "", "",
- "space", "exclam", "quotedbl", "numbersign", "dollar", "percent", "ampersand", "quoteright",
- "parenleft", "parenright", "asterisk", "plus", "comma", "hyphen", "period", "slash",
- "zero", "one", "two", "three", "four", "five", "six", "seven",
- "eight", "nine", "colon", "semicolon", "less", "equal", "greater", "question",
- "at", "A", "B", "C", "D", "E", "F", "G",
- "H", "I", "J", "K", "L", "M", "N", "O",
- "P", "Q", "R", "S", "T", "U", "V", "W",
- "X", "Y", "Z", "bracketleft", "backslash", "bracketright", "asciicircum", "underscore",
- "quoteleft", "a", "b", "c", "d", "e", "f", "g",
- "h", "i", "j", "k", "l", "m", "n", "o",
- "p", "q", "r", "s", "t", "u", "v", "w",
- "x", "y", "z", "braceleft", "bar", "braceright", "asciitilde", "",
- "", "", "", "", "", "", "", "",
- "", "", "", "", "", "", "", "",
- "", "", "", "", "", "", "", "",
- "", "", "", "", "", "", "", "",
- "nbspace", "exclamdown", "cent", "sterling", "fraction", "yen", "florin", "section",
- "currency", "quotesingle", "quotedblleft", "guillemotleft", "guilsinglleft", "guilsinglright", "fi", "fl",
- "", "endash", "dagger", "daggerdbl", "periodcentered", "", "paragraph", "bullet",
- "quotesinglbase", "quotedblbase", "quotedblright", "guillemotright", "ellipsis", "perthousand", "", "questiondown",
- "", "grave", "acute", "circumflex", "tilde", "macron", "breve", "dotaccent",
- "dieresis", "", "ring", "cedilla", "", "hungarumlaut", "ogonek", "caron",
- "emdash", "", "", "", "", "", "", "",
- "", "", "", "", "", "", "", "",
- "", "AE", "", "ordfeminine", "", "", "", "",
- "Lslash", "Oslash", "OE", "ordmasculine", "", "", "", "",
- "", "ae", "", "", "", "dotlessi", "", "",
- "lslash", "oslash", "oe", "germandbls", "", "", "", "",
+static char *std_enc[] =
+{
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "space", "exclam", "quotedbl", "numbersign", "dollar", "percent", "ampersand", "quoteright",
+  "parenleft", "parenright", "asterisk", "plus", "comma", "hyphen", "period", "slash",
+  "zero", "one", "two", "three", "four", "five", "six", "seven",
+  "eight", "nine", "colon", "semicolon", "less", "equal", "greater", "question",
+  "at", "A", "B", "C", "D", "E", "F", "G",
+  "H", "I", "J", "K", "L", "M", "N", "O",
+  "P", "Q", "R", "S", "T", "U", "V", "W",
+  "X", "Y", "Z", "bracketleft", "backslash", "bracketright", "asciicircum", "underscore",
+  "quoteleft", "a", "b", "c", "d", "e", "f", "g",
+  "h", "i", "j", "k", "l", "m", "n", "o",
+  "p", "q", "r", "s", "t", "u", "v", "w",
+  "x", "y", "z", "braceleft", "bar", "braceright", "asciitilde", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "nbspace", "exclamdown", "cent", "sterling", "fraction", "yen", "florin", "section",
+  "currency", "quotesingle", "quotedblleft", "guillemotleft", "guilsinglleft", "guilsinglright", "fi", "fl",
+  "", "endash", "dagger", "daggerdbl", "periodcentered", "", "paragraph", "bullet",
+  "quotesinglbase", "quotedblbase", "quotedblright", "guillemotright", "ellipsis", "perthousand", "", "questiondown",
+  "", "grave", "acute", "circumflex", "tilde", "macron", "breve", "dotaccent",
+  "dieresis", "", "ring", "cedilla", "", "hungarumlaut", "ogonek", "caron",
+  "emdash", "", "", "", "", "", "", "",
+  "", "", "", "", "", "", "", "",
+  "", "AE", "", "ordfeminine", "", "", "", "",
+  "Lslash", "Oslash", "OE", "ordmasculine", "", "", "", "",
+  "", "ae", "", "", "", "dotlessi", "", "",
+  "lslash", "oslash", "oe", "germandbls", "", "", "", "",
 };
 
 /*  TeX text encoding vector - is this needed ? Yes, if can't find file */
@@ -162,7 +159,7 @@ static char *standardencoding[] = {
 /* If sharing character names, copy upper part from StandardEncoding */
 
 #ifdef SHAREENCODING
-static char *textext[TEXCHRS] =
+static char *tex_text[TEXCHRS] =
 {
   "Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi", "Sigma", "Upsilon",
   "Phi", "Psi", "Omega", "ff", "fi", "fl", "ffi", "ffl",
@@ -171,7 +168,7 @@ static char *textext[TEXCHRS] =
   "suppress"
 };
 #else
-static char *textext[TEXCHRS] =
+static char *tex_text[TEXCHRS] =
 {
   "Gamma", "Delta", "Theta", "Lambda", "Xi", "Pi", "Sigma", "Upsilon",
   "Phi", "Psi", "Omega", "ff", "fi", "fl", "ffi", "ffl",
@@ -209,7 +206,7 @@ static char *textext[TEXCHRS] =
 /* Now that we may not be using it if ENCODING env var is set */
 
 #ifdef SHAREENCODING
-static char *ansiencoding[256] =
+static char *ansi_enc[256] =
 {
   "", "", "", "", "", "", "", "",
   "", "", "", "", "", "", "", "",
@@ -245,7 +242,7 @@ static char *ansiencoding[256] =
   "oslash", "ugrave", "uacute", "ucircumflex", "udieresis", "yacute", "thorn", "ydieresis"
 };
 #else
-static char *ansiencoding[] =
+static char *ansi_enc[] =
 {
   "", "", "", "", "", "", "", "",
   "", "", "", "", "", "", "", "",
@@ -290,57 +287,68 @@ int mmcount;                /* how many MM base fonts added */
 
 /* Stuff for initializing resident encoding vectors - to save memory */
 
-void initializeencoding(int ansitexflag)
+void init_enc(int ansitexflag)
 {
   int k;
+
 #ifdef SHAREENCODING
   for (k = 33; k < 123; k++)
-    textext[k] = standardencoding[k];
+    tex_text[k] = std_enc[k];
 /*  now for the fixups */
-/*  textext[32] = "suppress"; */
-  textext[34] = standardencoding[186];  /* "quotedblright" */
-  textext[60] = standardencoding[161];  /* "exclamdown" */
-  textext[62] = standardencoding[191];  /* "questiondown" */
-  textext[92] = standardencoding[170];  /* "quotedblleft" */
-  textext[94] = standardencoding[195];  /* "circumflex" */
-  textext[95] = standardencoding[199];  /* "dotaccent" */
-  textext[123] = standardencoding[177]; /* "endash" */
-  textext[124] = standardencoding[208]; /* "emdash" */
-  textext[125] = standardencoding[205]; /* "hungarumlaut" */
-  textext[126] = standardencoding[196]; /* "tilde" */
-  textext[127] = standardencoding[200]; /* "dieresis" */
-  for (k = 32; k < 128; k++) ansiencoding[k] = standardencoding[k];
-  ansiencoding[39] = standardencoding[169]; /* "quotesingle" */
-  ansiencoding[96] = standardencoding[193]; /* "grave" */
+/*  tex_text[32] = "suppress"; */
+  tex_text[34] = std_enc[186];  /* "quotedblright" */
+  tex_text[60] = std_enc[161];  /* "exclamdown" */
+  tex_text[62] = std_enc[191];  /* "questiondown" */
+  tex_text[92] = std_enc[170];  /* "quotedblleft" */
+  tex_text[94] = std_enc[195];  /* "circumflex" */
+  tex_text[95] = std_enc[199];  /* "dotaccent" */
+  tex_text[123] = std_enc[177]; /* "endash" */
+  tex_text[124] = std_enc[208]; /* "emdash" */
+  tex_text[125] = std_enc[205]; /* "hungarumlaut" */
+  tex_text[126] = std_enc[196]; /* "tilde" */
+  tex_text[127] = std_enc[200]; /* "dieresis" */
+
+  for (k = 32; k < 128; k++)
+    ansi_enc[k] = std_enc[k];
+
+  ansi_enc[39] = std_enc[169]; /* "quotesingle" */
+  ansi_enc[96] = std_enc[193]; /* "grave" */
 /*  copy over accents for Adobe Level 1 PS interpreter bug as in PSCRIPT */
-/*  for (k = 0; k < 15; k++) ansiencoding[k] = standardencoding[k+193]; */
-/*  ansiencoding[15] = standardencoding[245]; *//* dotlessi*/
+/*  for (k = 0; k < 15; k++) ansi_enc[k] = std_enc[k+193]; */
+/*  ansi_enc[15] = std_enc[245]; *//* dotlessi*/
 #endif
 /*  copy over accents for Adobe Level 1 PS interpreter bug as in PSCRIPT */
 /*  actually, mostly we just need `caron', `dotlessi' and maybe `ring' ... */
   if (!ansitexflag)
   {
-    for (k = 0; k < 15; k++) ansiencoding[k] = standardencoding[k+193];
-    ansiencoding[15] = standardencoding[245]; /* dotlessi*/
+    for (k = 0; k < 15; k++)
+      ansi_enc[k] = std_enc[k+193];
+
+    ansi_enc[15] = std_enc[245]; /* dotlessi*/
   }
-  if (ansitexflag) {  /* or do this in PostScript later ??? 93/Dec/18 */
-            /* this had a bug that was fixed 93/Dec/28 */
-/*    strcpy(ansiencoding[0], ""); */   /* avoid grave repeat */
-/*    strcpy(ansiencoding[1], ""); */   /* avoid acute repeat */
-/*    strcpy(ansiencoding[4], ""); */   /* avoid macron repeat */
-/*    strcpy(ansiencoding[5], ""); */   /* avoid breve repeat */
-/*    strcpy(ansiencoding[9], ""); */   /* avoid ring repeat */
-/*    strcpy(ansiencoding[10], ""); */  /* avoid cedilla repeat */
-/*    strcpy(ansiencoding[14], ""); */  /* avoid caron repeat */
+
+  if (ansitexflag)
+  {
+    /* or do this in PostScript later ??? 93/Dec/18 */
+    /* this had a bug that was fixed 93/Dec/28 */
+/*    strcpy(ansi_enc[0], ""); */   /* avoid grave repeat */
+/*    strcpy(ansi_enc[1], ""); */   /* avoid acute repeat */
+/*    strcpy(ansi_enc[4], ""); */   /* avoid macron repeat */
+/*    strcpy(ansi_enc[5], ""); */   /* avoid breve repeat */
+/*    strcpy(ansi_enc[9], ""); */   /* avoid ring repeat */
+/*    strcpy(ansi_enc[10], ""); */  /* avoid cedilla repeat */
+/*    strcpy(ansi_enc[14], ""); */  /* avoid caron repeat */
     /* 0  - 10 Greek - not in ANSI */
     /* 11 - 15 f ligatures - not in ANSI */
     /* 16 - 17 dotlessi dotlessj - not ANSI */
 /* 16 - 24 dotlessi, dotlessj, grave, acute, caron, breve, macron, ring, cedilla */
 /* 25 - 31 germandbls, ae, oe, oslash, AE, OE, Oslash */
 /* actually: dotlessj, caron, breve, - and ring - missing in ANSI */ 
-    for (k = 16; k < 32; k++) ansiencoding[k] = textext[k];
-    ansiencoding[17] = "";        /* flush `dotlessj' */
-    ansiencoding[21] = "";        /* flush `breve' */
+    for (k = 16; k < 32; k++)
+      ansi_enc[k] = tex_text[k];
+
+    ansi_enc[17] = "";        /* flush `dotlessj' */
+    ansi_enc[21] = "";        /* flush `breve' */
 /* but keep `caron' and `ring' for PS interpreter bug fix (not in ANSI) */
 /* potential problem with some characters now being repeated higher up ? */
   }
@@ -356,7 +364,7 @@ void initializeencoding(int ansitexflag)
 /* graceful exit with meaningful error message */
 void extgiveup(int code)
 {
-  char *s=logline;
+  char *s = logline;
 
   if (*task != '\0')
   {
@@ -394,6 +402,7 @@ unsigned long readlength(FILE* input)
     c = getc(input);
     n = n >> 8; n = n | ((unsigned long) c << 24);
   }
+
   return n;
 }
 /* read four byte length code */
@@ -430,75 +439,113 @@ int extgetline(FILE *input, char *buff)
   int c, k=0;
 
   c = getnextnon(input);
-/*  if (flushcr != 0) while (c == '\r') c = getc(input); */
-  while (c != '\n') {
-    if (c == EOF) return EOF;
-    if (c == 128) { /* flush over ASCII section headers */
+
+  while (c != '\n')
+  {
+    if (c == EOF)
+      return EOF;
+
+    if (c == 128) /* flush over ASCII section headers */
+    {
       binaryin = 1;
       c = getc(input);
-      if (c == 3) return EOF;
-      if (c != 1) {
+
+      if (c == 3)
+        return EOF;
+
+      if (c != 1)
+      {
         sprintf(logline,
           " Expecting %s, not %d", "ASCII section code", c);
         showline(logline, 1);
         extgiveup(5);
         return EOF;
       }
+
       len = readlength(input);  /* read and ignore ! */
       c = getnextnon(input);
-      if (c == EOF) return EOF; /* never */
-      if (c == '\n') break;
+
+      if (c == EOF)
+        return EOF; /* never */
+
+      if (c == '\n')
+        break;
     }
-    else if (c == 0) { /* Presumably Mac Style ASCII section code */
+    else if (c == 0) /* Presumably Mac Style ASCII section code */
+    {
       sprintf(logline, " AT BYTE %ld ", ftell(input));  /* debugging */
       showline(logline, 0);
       binaryin = 1;
       (void) ungetc(c, input);
       len = maclength(input);
       c = getc(input);
-      if (c == 5) return EOF;
-      if (c != 1) {
+
+      if (c == 5)
+        return EOF;
+
+      if (c != 1)
+      {
         sprintf(logline, " Expecting %s, not %d",
             "Mac ASCII section code", c);
         showline(logline, 1);
         extgiveup(5);
         return EOF;
       }
+
       c = getc(input);
-      if (c != 0) {
+
+      if (c != 0)
+      {
         sprintf(logline, " Invalid Mac ASCII section code %d", c);
         showline(logline, 1);
         extgiveup(5);
         return EOF;
       }
+
       len = len -2;
       c = getnextnon(input);
-      if (c == EOF) return EOF; /* never */
-/*      if (c == '\r') c = '\n'; */
-      if (c == '\n') break;
+
+      if (c == EOF)
+        return EOF; /* never */
+
+      if (c == '\n')
+        break;
     }
-    *s++ = (char) c; k++;
-    if (k >= MAXLINE) {
+
+    *s++ = (char) c;
+    k++;
+
+    if (k >= MAXLINE)
+    {
       showline(" Line too long in dviextra getline", 1);
-/*      extgiveup(6); */      /* flushed */
       *(s-1) = '\0';        /* terminate the junk at least */
-      if (verboseflag) {    /* 93/Aug/13 */
+
+      if (verboseflag)
+      {
         showline("\n", 0);
         showline(buff, 1);
         showline("\n", 0);
       }
-/*      read to end of line (or EOF) before going on ? */
-      while ((c = getnextnon(input)) != '\n') {
-        if (c == EOF) return EOF;
+      
+      /* read to end of line (or EOF) before going on ? */
+      while ((c = getnextnon(input)) != '\n')
+      {
+        if (c == EOF)
+          return EOF;
       }
+
       errcount(0);        /* 93/Aug/13 */
       *buff = '\0';       /* flush this crap ! */
+
       return 0;
     }
+
     c = getnextnon(input);  /* flush any returns */
   }
+
   *s++ = (char) c; k++; /* terminating '\n' */
   *s++ = '\0';
+
   return k;
 }
 
@@ -507,9 +554,12 @@ int extgetline(FILE *input, char *buff)
 int extgetrealline(FILE *input, char *buff)
 {
   int k;
+
   k = extgetline(input, buff);
+
   while ((*buff == '%' || *buff == '\n') && k >= 0)
     k = extgetline(input, buff);
+
   return k;
 }
 
@@ -520,76 +570,103 @@ int ksubst=0;         // number of entries in substitution table
 char *makespace (char *s, int ndes, int nact)
 {
   int k;
-//  char *s=logline;
-//  for (k = nact; k < ndes; k++) putc(' ', output);
-  for (k = nact; k < ndes; k++) *s++ = ' ';
+
+  for (k = nact; k < ndes; k++)
+    *s++ = ' ';
+
   *s = '\0';
+
   return s;
 }
 
 char *showproper (char *s, int proper)
 {
-  if (proper == 0) return s;
-  if ((proper & C_RESIDENT) != 0) sprintf(s, "%s ", RESIDENT);
-  if ((proper & C_FORCESUB) != 0) sprintf(s, "%s ", FORCESUB);
-/*  if ((proper & C_REMAPIT) != 0) sprintf(s, "%s ", REMAPIT); */
-  if ((proper & C_ALIASED) != 0) sprintf(s, "%s ", ALIASED);
-  if ((proper & C_MISSING) != 0) sprintf(s, "*missing* ");
-  if ((proper & C_UNUSED) != 0) sprintf(s, "*unused* ");
-/*  if ((proper & C_DEPENDENT) != 0) sprintf(s, "*new-size* "); */
-/*  if ((proper & C_COMPOUND) != 0) sprintf(s, "%s ", COMPOUND); */
-  if ((proper & C_SYNTHETIC) != 0) sprintf(s, "%s ", SYNTHETIC);
-  if ((proper & C_MTMI) != 0) sprintf(s, "%s ", MTMI);
-  if ((proper & C_EPSF) != 0) sprintf(s, "%s ", EPSF); /* 94/Aug/15 */
-  if ((proper & C_DEPENDENT) != 0) sprintf(s, "*new-size* ");
-  if ((proper & C_REMAPIT) != 0) sprintf(s, "%s ", REMAPIT);
-/*  if ((proper & C_CONTROL) != 0) sprintf(s, "%s ", CONTROL); */
-  if ((proper & C_NOTBASE) != 0) sprintf(s, "*not-base* ");
+  if (proper == 0)
+    return s;
+
+  if ((proper & C_RESIDENT) != 0)
+    sprintf(s, "%s ", RESIDENT);
+
+  if ((proper & C_FORCESUB) != 0)
+    sprintf(s, "%s ", FORCESUB);
+
+  if ((proper & C_ALIASED) != 0)
+    sprintf(s, "%s ", ALIASED);
+
+  if ((proper & C_MISSING) != 0)
+    sprintf(s, "*missing* ");
+
+  if ((proper & C_UNUSED) != 0)
+    sprintf(s, "*unused* ");
+
+  if ((proper & C_SYNTHETIC) != 0)
+    sprintf(s, "%s ", SYNTHETIC);
+
+  if ((proper & C_MTMI) != 0)
+    sprintf(s, "%s ", MTMI);
+
+  if ((proper & C_EPSF) != 0)
+    sprintf(s, "%s ", EPSF);
+
+  if ((proper & C_DEPENDENT) != 0)
+    sprintf(s, "*new-size* ");
+
+  if ((proper & C_REMAPIT) != 0)
+    sprintf(s, "%s ", REMAPIT);
+
+  if ((proper & C_NOTBASE) != 0)
+    sprintf(s, "*not-base* ");
+ 
   return s + strlen(s);
 }
 
 /* an experiment */
-void showsubtable(void)
+void show_sub_table(void)
 {
   int k;
   char *s;
-//  char oldname[MAXTEXNAME];
   char oldname[FNAMELEN];
-//  char newname[MAXFONTNAME];
   char newname[FNAMELEN];
-//  char vecname[MAXVECNAME];     /* 1994/Feb/4 */
   char vecname[FNAMELEN];
 
   showline("Font Substitution Table:\n", 0);
-  for (k = 0; k < ksubst; k++) {
-//    strcpy(oldname, fontsubfrom + k * MAXTEXNAME);
-    if (fontsubfrom[k] != NULL) strcpy(oldname, fontsubfrom[k]);
-    else *oldname = '\0';
-//    strcpy(newname, fontsubto + k * MAXFONTNAME);
-    if (fontsubto[k] != NULL) strcpy(newname, fontsubto[k]);
-    else *newname = '\0';
-//    strcpy(vecname, fontsubvec + k * MAXVECNAME);
-    if (fontsubvec[k] != NULL) strcpy(vecname, fontsubvec[k]);
-    else *vecname = '\0';
+
+  for (k = 0; k < ksubst; k++)
+  {
+    if (fontsubfrom[k] != NULL)
+      strcpy(oldname, fontsubfrom[k]);
+    else
+      *oldname = '\0';
+
+    if (fontsubto[k] != NULL)
+      strcpy(newname, fontsubto[k]);
+    else
+      *newname = '\0';
+
+    if (fontsubvec[k] != NULL)
+      strcpy(vecname, fontsubvec[k]);
+    else
+      *vecname = '\0';
+
     s = logline;
     sprintf(s, "%3d %s ", k, oldname);
     s += strlen(s);
-    s = makespace(s, 10, strlen(oldname));  /* MAXTEXNAME ? */
+    s = makespace(s, 10, strlen(oldname));
     sprintf(s, "=> %s ", newname);
     s += strlen(s);
-    s = makespace(s, 16, strlen(newname));  /* MAXFONTNAME ? */
+    s = makespace(s, 16, strlen(newname));
     s = showproper(s, fontsubprop[k]);
-/*    if (strcmp(fontsubvec[k], "") != 0)
-      fprintf(output, "vec: %s", fontsubvec[k]); */
-    if (strcmp(vecname, "") != 0) {
+
+    if (strcmp(vecname, "") != 0)
+    {
       sprintf(s, "vec: %s", vecname);
       s += strlen(s);
     }
-//    putc('\n', output);
+
     strcat(s, "\n");
     showline(logline, 0);
   }
-//  putc('\n', output);
+
   showline("\n", 0);
 }
 
@@ -597,131 +674,130 @@ void showsubtable(void)
 int original (int k)
 {
   int m;
+
   for (m = 0; m < MAXFONTNUMBERS; m++)
   {
-    if (finx[m] == (short) k) return m;
-//    if (finx[m] == k) return m;
+    if (finx[m] == (short) k)
+      return m;
   }
+
   return -1;
 }
 
 /* an experiment */
-void showfonttable (void)
+void show_font_table (void)
 {
   int k, flag, originalfont;
   double atsize;
   int proper;
-//  char oldname[MAXTEXNAME];
   char oldname[FNAMELEN];
-//  char newname[MAXFONTNAME];
   char newname[FNAMELEN];
-  char *s=logline;
+  char *s = logline;
 
-//  fprintf(output, "Font Table:");
   strcpy(s, "Font Table:");
   s += strlen(s);
+
   if (mag != 1000)
     sprintf(s, " (Magnification %lg)", (double) mag / 1000);
+
   strcat(s, "\n");
   showline(logline, 0);
   
-/*  if (traceflag) printf("mmbase %d fnext %d\n", mmbase, fnext); */
   for (k = 0; k < fnext; k++)
   {
     s = logline;
     proper = fontproper[k];
-/*    do only if fontsubflag >= 0 ? */
-/*    do only if (proper & C_DEPENDENT) != 0 ? */
-/*    don't bother to list if unused */
-/*    if (proper & C_UNUSED) != 0) continue; *//* remove 94/Oct/6 */
     sprintf(s, "%3d ", k);
     s += strlen(s);
     originalfont = original(k);   /* original TeX font number */
-    if (originalfont >= 0) sprintf(s, "(%3d) ", originalfont);
-    else s = makespace(s, 6, 0);
-//    strcpy(oldname, fontname + k * MAXTEXNAME);
-    if (fontname[k] != NULL) strcpy(oldname, fontname[k]);
-    else *oldname = '\0';
-    if (subfontname[k] != NULL) strcpy(newname, subfontname[k]);
-    else *newname = '\0';
-//    strcpy(newname, subfontname + k * MAXFONTNAME);
+
+    if (originalfont >= 0)
+      sprintf(s, "(%3d) ", originalfont);
+    else
+      s = makespace(s, 6, 0);
+
+    if (fontname[k] != NULL)
+      strcpy(oldname, fontname[k]);
+    else
+      *oldname = '\0';
+
+    if (subfontname[k] != NULL)
+      strcpy(newname, subfontname[k]);
+    else
+      *newname = '\0';
+
     sprintf(s, "%s ", oldname);
     s += strlen(s);
     s = makespace(s, 10, strlen(oldname));
-    if (strcmp(newname, "") != 0 && strcmp(oldname, newname) != 0) {
+
+    if (strcmp(newname, "") != 0 && strcmp(oldname, newname) != 0)
+    {
       sprintf(s, "=> %s ", newname);
       s += strlen(s);
       s = makespace(s, 16, strlen(newname));
     }
+
     atsize = (double) fs[k] * num / den * 72.27 / 254000;
-/*    possibly also * mag / 1000 ? NO */
-/*    if (atsize != 0.0) fprintf(output, "at:%6.6lg pt ", atsize); */
-    if (atsize != 0.0) sprintf(s, "at:%6.5lg pt ", atsize);
-/*    else if (originalfont < 0) fprintf(output, "base for remapped font "); */
-/*    else if (k >= mmbase) fprintf(output, "MM base font ");  */
-    else if (proper & C_MULTIPLE) sprintf(s, "MM base font ");
-    else if (proper & C_INSTANCE) sprintf(s, "MM instance ");
-    else if (originalfont < 0) sprintf(s, "base for substitution ");
-/*    or Multiple Master base font 94/Dec/6 */
-    else s = makespace(s, 13, 0);
+
+    if (atsize != 0.0)
+      sprintf(s, "at:%6.5lg pt ", atsize);
+    else if (proper & C_MULTIPLE)
+      sprintf(s, "MM base font ");
+    else if (proper & C_INSTANCE)
+      sprintf(s, "MM instance ");
+    else if (originalfont < 0)
+      sprintf(s, "base for substitution ");
+    else
+      s = makespace(s, 13, 0);
+
     s +=strlen(s);
     flag = fontsubflag[k];
-    if (flag >= 0) {  /* follow substitution pointer */
+
+    if (flag >= 0) /* follow substitution pointer */
+    {
       sprintf(s, "base: %2d ", flag);
       s +=strlen(s);
       originalfont = original(flag);
-      if (originalfont >= 0) sprintf(s, "(%3d) ", originalfont);
-      else s = makespace(s, 6, 0);
+
+      if (originalfont >= 0)
+        sprintf(s, "(%3d) ", originalfont);
+      else
+        s = makespace(s, 6, 0);
+
       s +=strlen(s);
     }
-    s = showproper(s, proper);    /* show properties */
 
-/*    printf("|"); */
-//    if (strcmp(fontvector[k], "") != 0)
-//    if (*(fontvector + k * MAXVECNAME) != '\0') {
+    s = showproper(s, proper);
+
     if (fontvector[k] != NULL)
     {
-/*      fprintf(output, "vec: %s", fontvector[k]); */
-/*      fprintf(output, "%s", fontvector[k]); */
-//      fputs(fontvector[k], output);   /* 1992/July/18 */
       strcat(s, fontvector[k]);
       s +=strlen(s);
     }
-//    putc('\n', output);
+
     strcat(s, "\n");
     showline(logline, 0);
   }
+
   showline("\n", 0);
 }
-
-/* void showencoding (FILE *output) {
-  int i;
-  for (i = 0; i < fontchrs; i++) 
-    fprintf(output, "%d: %s\n", i, charnames[i]);
-} */ /* debugging only */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-/* moved to dvipslog.c to avoid compiler bug ! 1995/May/25 */
-
-/* int readtfm(char *, FILE *, long widths[]); */
-/* int readafm(char *, FILE *, long widths[]); */
-/* int readpfm(char *, FILE *, long widths[]); */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 /* New common routine 1992/Nov/28 */
 /* does not use backslash if beginning is blank or already ends on : \ or / */
 
-void makefilename (char filepath[], char *fontname)
+void make_file_name (char filepath[], char *fontname)
 {
   char *s;
-  if (strcmp(filepath, "") != 0) {  /* 1992/Oct/30 */
+
+  if (strcmp(filepath, "") != 0)
+  {
     s = filepath + strlen(filepath) - 1;
-    if (*s != ':' && *s != '\\' && *s != '/') strcat(filepath, "\\");
+
+    if (*s != ':' && *s != '\\' && *s != '/')
+      strcat(filepath, "\\");
   }
+
   strcat(filepath, fontname);
-/*  extension(filepath, ext); */
 }
 
 /* returns -1 if name was changed - returns 0 if name was not changed */
@@ -734,15 +810,22 @@ int underscore (char *filename)
 
   s = removepath(filename);
   n = (int) strlen(s);
-  if ((t = strchr(s, '.')) == NULL) t = s + strlen(s);
+
+  if ((t = strchr(s, '.')) == NULL)
+    t = s + strlen(s);
+
   m = t - s;
+
   if (m == 8)
   {
-/*    printf("NO CHANGE IN %s\n", filename); */ /* debugging */
-    return 0;     /* no change 95/May/28 */
+    return 0;
   }
+
   memmove(s + 8, t, (unsigned int) (n - m + 1));
-  for (k = m; k < 8; k++) s[k] = '_';
+
+  for (k = m; k < 8; k++)
+    s[k] = '_';
+
   return -1;
 }
 
@@ -750,19 +833,26 @@ int underscore (char *filename)
 /* returns 0 if there were no underscores to remove - returns -1 otherwise */
 
 /* remove Adobe style underscores */
-int removeunder (char *filename)
+int remove_under (char *filename)
 {
   char *s;
+
   s = filename + strlen(filename) - 1;
-  if (*s != '_') return 0;    /* 95/May/28 */
-  while (*s == '_') s--;
+
+  if (*s != '_')
+    return 0;
+
+  while (*s == '_')
+    s--;
+
   *(s + 1) = '\0';        /* overwrite first underscore in seq */
+
   return -1;
 }
 
 /* Consolidated code for TFM, AFM, and PFM in one place 95/Mar/31 */
 
-FILE *lookformetrics (char *font, char *extension, char *path)
+FILE *look_for_metrics (char *font, char *extension, char *path)
 {
   char fn_met[FNAMELEN];
   FILE *fp_met=NULL;
@@ -780,40 +870,52 @@ FILE *lookformetrics (char *font, char *extension, char *path)
   strcpy(fn_met, font);
   forceexten(fn_met, extension);
   fp_met = findandopen(fn_met, path, NULL, "rb", currentfirst);
+
   if (fp_met == NULL && tryunderscore != 0)
   {
-/*    underscore (fn_met); */
-/*    fp_met = findandopen(fn_met, path,  NULL, "rb", currentfirst); */
-    if (underscore(fn_met))         /* 95/May/28 */
+    if (underscore(fn_met))
       fp_met = findandopen(fn_met, path,  NULL, "rb", currentfirst);
   }
 #else
   searchpath = path;
-  for (;;) {
-    if ((searchpath=nextpathname(fn_met, searchpath)) == NULL) break;
-    makefilename(fn_met, font);     /* 1992/Nov/28 */
+
+  for ( ; ; )
+  {
+    if ((searchpath=nextpathname(fn_met, searchpath)) == NULL)
+      break;
+
+    make_file_name(fn_met, font);     /* 1992/Nov/28 */
     forceexten(fn_met, extension);
-    if ((fp_met = fopen(fn_met, "rb")) == NULL) {
-      if (tryunderscore == 0) continue;
-      else {
-/*        underscore(fn_met);
-        if ((fp_met = fopen(fn_met, "rb")) == NULL) continue; 
-        else break; */              /* 1994/Aug/18 */
-        if (underscore(fn_met)) {       /* 1995/May/28 */
-          if ((fp_met = fopen(fn_met, "rb")) != NULL) break;
+
+    if ((fp_met = fopen(fn_met, "rb")) == NULL)
+    {
+      if (tryunderscore == 0)
+        continue;
+      else
+      {
+        if (underscore(fn_met))
+        {
+          if ((fp_met = fopen(fn_met, "rb")) != NULL)
+            break;
         }
+
         continue;
       }
     }
-    else break;             /* 1994/Aug/18 */
+    else
+      break;             /* 1994/Aug/18 */
   }
 #endif
-  if (traceflag) {            /* 1995/Mar/31 */
-    if(fp_met != NULL) {
+
+  if (traceflag)
+  {
+    if(fp_met != NULL)
+    {
       sprintf(logline, " Using %s", fn_met);
       showline(logline, 0);
     }
   }
+
   return fp_met;
 }
 
@@ -822,57 +924,61 @@ FILE *lookformetrics (char *font, char *extension, char *path)
 /* pfm is searched last because widths are restricted to being integers */
 /* returns max numeric code of character in metric info */
 
-int readwidths (char *font, long widths[])
+int read_widths (char *font, long widths[])
 {
-  FILE *fp_met=NULL;
-/*  char fn_met[FNAMELEN]; */
+  FILE *fp_met = NULL;
   int k;
-#ifndef SUBDIRSEARCH
-/*  char *searchpath; */
-#endif
 
   task = "looking for font metrics";
 
   if (tfmpath != NULL)
   {
-    fp_met = lookformetrics(font, "tfm", tfmpath);
+    fp_met = look_for_metrics(font, "tfm", tfmpath);
+
     if (fp_met != NULL)
     {
       k = readtfm(font, fp_met, widths);
-      fclose(fp_met); 
+      fclose(fp_met);
+
       return k;
     }
   }
 
   if (texfonts != NULL)
   {
-    fp_met = lookformetrics(font, "tfm", texfonts);
+    fp_met = look_for_metrics(font, "tfm", texfonts);
+
     if (fp_met != NULL)
     {
       k = readtfm(font, fp_met, widths);
       fclose(fp_met); 
+
       return k;
     }
   }
 
   if (afmpath != NULL)
   {
-    fp_met = lookformetrics(font, "afm", afmpath);
+    fp_met = look_for_metrics(font, "afm", afmpath);
+
     if (fp_met != NULL)
     {
       k = readafm(font, fp_met, widths);
       fclose(fp_met);
+
       return k;
     }
   }
 
   if (pfmpath != NULL)
   {
-    fp_met = lookformetrics(font, "pfm", pfmpath);
+    fp_met = look_for_metrics(font, "pfm", pfmpath);
+
     if (fp_met != NULL)
     {
       k = readpfm(font, fp_met, widths);
       fclose(fp_met);
+
       return k;
     }
   }
@@ -880,16 +986,15 @@ int readwidths (char *font, long widths[])
   sprintf(logline, " WARNING: metrics not found for %s", font);
   showline(logline, 1);
   errcount(0);
+
   return 0;
 }
 
 /* for remapping and substituting font names */
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
 /* stuff for dealing with font file itself */
 /* get next byte from input */
-int nextbytein(FILE *input)
+int next_byte_in (FILE *input)
 {
   int c, d;
 
@@ -898,6 +1003,7 @@ int nextbytein(FILE *input)
     if (len == 0)
     {
       c = getc(input);
+
       if (c != 0 && c != 128)
       {
         sprintf(logline, " Expecting %s, not %d", "binary length code", c);
@@ -905,100 +1011,146 @@ int nextbytein(FILE *input)
         extgiveup(3);
         return -1;
       }
-      if (c == 128) {   /* PC .pfb file   */
+
+      if (c == 128) /* PC .pfb file   */
+      {
         c = getc(input);
-        if (c == 1) {  /* somewhat unexpected, but... */
+
+        if (c == 1)
+        {
           len = readlength(input);
           binaryin = 0;
-          return nextbytein(input); /* try reading in ASCII */
+
+          return next_byte_in(input); /* try reading in ASCII */
         }
-        else if (c != 2) {
+        else if (c != 2)
+        {
           sprintf(logline, " Expecting %s, not %d", "binary section code", c);
           showline(logline, 1);
           extgiveup(5);
+
           return -1;
         }
+
         len = readlength(input);
-/*        if (traceflag) printf("Binary Section %lu\n", len);  */
       }
-      else {        /* Mac style binary file   c == 0 */
+      else /* Mac style binary file   c == 0 */
+      {
         (void) ungetc(c, input);
         len = maclength(input);
         c = getc(input);
-        if (c == 1) { /* somewhat unexpected, but... */
+
+        if (c == 1) /* somewhat unexpected, but... */
+        {
           binaryin = 0;
-          return nextbytein(input); /* try reading in ASCII */
+
+          return next_byte_in(input); /* try reading in ASCII */
         }
-        else if (c != 2) {
+        else if (c != 2)
+        {
           sprintf(logline, 
             " Expecting %s, not %d", "Mac binary section code", c);
           showline(logline, 1);
           extgiveup(5);
+
           return -1;
         }
+
         c = getc(input);
-        if (c != 0) {
+
+        if (c != 0)
+        {
           sprintf(logline, " Invalid Mac style binary record %d", c);
           showline(logline, 1);
           extgiveup(15);
+
           return -1;
         }
+
         len = len - 2;
       }
     }
-/*    c = getc(input); */
+
     if ((c = getc(input)) == EOF)
     {
-      sprintf(logline, " Unexpected EOF (%s)\n", "nextbytein");
+      sprintf(logline, " Unexpected EOF (%s)\n", "next_byte_in");
       showline(logline, 1);
       extgiveup(7);
+
       return -1;
     }
+
     len--;
+
     return c;
   }
-  else {            /* ASCII input */
+  else /* ASCII input */
+  {
     c = getc(input);
-    while (c <= ' ' && c != EOF) c = getc(input);
-    if (c == EOF) {
-      sprintf(logline, " Unexpected EOF (%s)\n", "nextbytein");
+
+    while (c <= ' ' && c != EOF)
+      c = getc(input);
+
+    if (c == EOF)
+    {
+      sprintf(logline, " Unexpected EOF (%s)\n", "next_byte_in");
       showline(logline, 1);
       extgiveup(7);
+
       return -1;
     }
-    if (c >= '0' && c <= '9') c = c - '0';    /* use table ? */
-    else if (c >= 'A' && c <= 'F') c = c - 'A' + 10;
-    else if (c >= 'a' && c <= 'f') c = c - 'a' + 10;
-    else {
+
+    if (c >= '0' && c <= '9')
+      c = c - '0';
+    else if (c >= 'A' && c <= 'F')
+      c = c - 'A' + 10;
+    else if (c >= 'a' && c <= 'f')
+      c = c - 'a' + 10;
+    else
+    {
       sprintf(logline, " Invalid hex character: %d", c);
       showline(logline, 1);
       extgiveup(7);
+
       return -1;
     }
+
     d = getc(input);
-    while (d <= ' ' && d != EOF) d = getc(input);
-    if (d == EOF) {
-      sprintf(logline, " Unexpected EOF (%s)\n", "nextbytein");
+
+    while (d <= ' ' && d != EOF)
+      d = getc(input);
+
+    if (d == EOF)
+    {
+      sprintf(logline, " Unexpected EOF (%s)\n", "next_byte_in");
       showline(logline, 1);
       extgiveup(7);
+
       return -1;
     }
-    if (d >= '0' && d <= '9') d = d - '0';    /* use table ? */
-    else if (d >= 'A' && d <= 'F') d = d - 'A' + 10;
-    else if (d >= 'a' && d <= 'f') d = d - 'a' + 10;
-    else {
+
+    if (d >= '0' && d <= '9')
+      d = d - '0';
+    else if (d >= 'A' && d <= 'F')
+      d = d - 'A' + 10;
+    else if (d >= 'a' && d <= 'f')
+      d = d - 'a' + 10;
+    else
+    {
       sprintf(logline, " Invalid hex character: %d", d);
       showline(logline, 1);
       extgiveup(7);
+
       return -1;
     }
+
     return (c << 4) | d;
   }
 }
 
 /* stuff for encrypting and decrypting */
 
-unsigned char decryptbyte (unsigned char cipher, unsigned short *crypter)
+unsigned char decrypt_byte (unsigned char cipher, unsigned short *crypter)
 {
   unsigned char plain;
 
@@ -1009,12 +1161,12 @@ unsigned char decryptbyte (unsigned char cipher, unsigned short *crypter)
 }
 
 /* read byte and decrypt */
-unsigned char indecrypt(FILE *input)
+unsigned char in_decrypt(FILE *input)
 {
   unsigned char cipher;
   unsigned char plain;
 
-  cipher = (unsigned char) nextbytein(input);
+  cipher = (unsigned char) next_byte_in(input);
   plain = (unsigned char) ((cipher ^ (unsigned char) (cryptin >> 8)));
   cryptin = (unsigned short) ((cipher + cryptin) * CRYPT_MUL + CRYPT_ADD);
 
@@ -1028,55 +1180,41 @@ unsigned char indecrypt(FILE *input)
 /* stuff for encrypted input and output */
 
 /* encrypt and write */
-void outencrypt(unsigned char plain, FILE *output)
+void out_encrypt(unsigned char plain, FILE *output)
 {
   int c, d;
   unsigned char cipher;
-  char *s=logline+clm;
+  char *s = logline + clm;
 
-/*  cipher = (plain ^ (unsigned char) (cryptout >> 8)); */
   cipher = (unsigned char) ((plain ^ (unsigned char) (cryptout >> 8)));
-/*  cryptout = (cipher + cryptout) * CRYPT_MUL + CRYPT_ADD; */
   cryptout = (unsigned short) ((cipher + cryptout) * CRYPT_MUL + CRYPT_ADD);
 
   d = cipher & 15;
   c = (cipher >> 4) & 15;
-  if (c < 10) {
-//    putc(c + '0', output);
-//    PSputc((char) (c+'0'), output);
-    *s++ = (char) (c+'0');
+  if (c < 10)
+  {
+    *s++ = (char) (c + '0');
   }
-  else {
-//    putc(c + 'A' - 10, output);
-//    PSputc((char) (c+'A'-10), output);
-    *s++ = (char) (c+'A'-10);
+  else
+  {
+    *s++ = (char) (c + 'A' - 10);
   }
-  clm++;
-  if (d < 10) {
-//    putc(d + '0', output);
-//    PSputc((char) (d+'0'), output);
-    *s++ = (char) (d+'0');
-  }
-  else {
-//    putc(d+ 'A' - 10, output);
-//    PSputc((char) (d+'A'-10), output);
-    *s++ = (char) (d+'A'-10);
-  }
-  clm++;
-  if (clm >= columns) {
-//    putc('\n', output);
-//    PSputc('\n', output);
-    *s++ = '\n';
-    *s++ = '\0';
-    PSputs(logline, output);
-    clm = 0;
-  }
-} 
 
-void flushencrypt (FILE *output)
-{
-  char *s=logline+clm;
-  if (clm > 0) {
+  clm++;
+
+  if (d < 10)
+  {
+    *s++ = (char) (d + '0');
+  }
+  else
+  {
+    *s++ = (char) (d + 'A' - 10);
+  }
+
+  clm++;
+
+  if (clm >= columns)
+  {
     *s++ = '\n';
     *s++ = '\0';
     PSputs(logline, output);
@@ -1084,14 +1222,31 @@ void flushencrypt (FILE *output)
   }
 }
 
-/* 93/Sep/14 --- avoid using getenline for this in case ^M or ^J */
-/* get the magic encrypt start bytes */
-int getmagic(FILE *input, char *buff)
+void flush_encrypt (FILE *output)
 {
-  char *s=buff;
-  int k=0;
-  for (k = 0; k < 4; k++) *s++ = (char) indecrypt(input);
+  char *s = logline + clm;
+
+  if (clm > 0)
+  {
+    *s++ = '\n';
+    *s++ = '\0';
+    PSputs(logline, output);
+    clm = 0;
+  }
+}
+
+/* 93/Sep/14 --- avoid using get_en_line for this in case ^M or ^J */
+/* get the magic encrypt start bytes */
+int get_magic(FILE *input, char *buff)
+{
+  char *s = buff;
+  int k = 0;
+
+  for (k = 0; k < 4; k++)
+    *s++ = (char) in_decrypt(input);
+
   *s++ = '\0';
+
   return 4;
 }
 
@@ -1102,19 +1257,24 @@ int getmagic(FILE *input, char *buff)
 /* so be prepared to see an isolated return or newline at start of line */
 
 /* read encrypted line */
-int getenline(FILE *input, char *buff)
+int get_en_line(FILE *input, char *buff)
 {
-  char *s=buff;
-/*  int c; */
-  int d, k=0;
+  char *s = buff;
+  int d, k = 0;
 
-  d = indecrypt(input);
-/*  if (d == '\r')  d = indecrypt(input); */  /* bkph - 91/10/1 */
+  d = in_decrypt(input);
+/*  if (d == '\r')  d = in_decrypt(input); */  /* bkph - 91/10/1 */
 /*  step over initial return/newline - remanants or blank lines */
-  while (d == '\n' || d == '\r') d = indecrypt(input);
-  while (d != '\n') {
-    *s++ = (char) d; k++;
-    if (k >= MAXLINE) {
+  while (d == '\n' || d == '\r')
+    d = in_decrypt(input);
+
+  while (d != '\n')
+  {
+    *s++ = (char) d;
+    k++;
+
+    if (k >= MAXLINE)
+    {
       *s = '\0';
       showline(" Line: ", 1);
       showline(buff, 1);
@@ -1122,20 +1282,21 @@ int getenline(FILE *input, char *buff)
       sprintf(logline, " too long in encrypted getline (> %d)", MAXLINE);
       showline(logline, 0);
       extgiveup(6);
+
       return -1;
     }
-    d = indecrypt(input);
+
+    d = in_decrypt(input);
+
     if (d == '\r')
     {
-/*      *s = '\0';
-      printf("RETURN AFTER: %s\n", buff); */
-/*      d = indecrypt(input); */ /* bkph 91/10/1 */
       d = '\n';
     }
   }
+
   *s++ = (char) d; k++;
   *s++ = '\0';
-/*  if (traceflag) printf("IN:  %s", buff); */
+
   return k;
 }
 
@@ -1143,24 +1304,25 @@ int getenline(FILE *input, char *buff)
 
 /* This version assumes string is null terminated */
 /* write encrypted line */
-void putenline(FILE *output, char *buff)
+void put_en_line(FILE *output, char *buff)
 {
   int d; 
 
   while ((d = *buff++) != '\0') {
-    outencrypt((unsigned char) d, output);
+    out_encrypt((unsigned char) d, output);
   }
 }
 
 /* This version specifies length rather than null terminated */
 /* write encrypted line */
-void putenlinen(FILE *output, char *buff, int n)
+void put_en_linen(FILE *output, char *buff, int n)
 {
   int d, k; 
   
-  for (k = 0; k < n; k++) {
+  for (k = 0; k < n; k++)
+  {
     d = *buff++;
-    outencrypt((unsigned char) d, output);
+    out_encrypt((unsigned char) d, output);
   }
 }
 
@@ -1178,85 +1340,98 @@ void putenlinen(FILE *output, char *buff, int n)
 /* reads until it hits RD, -|, end, ND, |-, noaccess def, readonly def */
 /* which may mean it reads past end of line ... */
 
-int getcharline(char *buff, FILE *input, int subrflag)
+int get_char_line(char *buff, FILE *input, int subrflag)
 {
   int d;
   char *t = buff, *s = buff;
 
-  d = indecrypt(input);     /* skip over initial white space */
-/*  while (d == '\n' || d == '\r' || d == ' ')   */
-  while (d == '\n' || d == '\r' || d == ' ' || d == '\0') /* 98/Apr/20 */
-    d = indecrypt(input); 
-  for(;;) {
-/*    d = indecrypt(input);  */
-/*    if (d == '\n') {
-      if (verboseflag) printf("Unexpected end of line\n");
-      continue;
-    } */
+  d = in_decrypt(input);
+
+  while (d == '\n' || d == '\r' || d == ' ' || d == '\0')
+    d = in_decrypt(input);
+
+  for(;;)
+  {
     *s++ = (char) d;
-    if (d <= ' ') {
-      if(strncmp(t, "RD", 2) == 0 ||
-         strncmp(t, "-|", 2) == 0) { /* ready for binary bytes */
+
+    if (d <= ' ')
+    {
+      if(strncmp(t, "RD", 2) == 0 || strncmp(t, "-|", 2) == 0) /* ready for binary bytes */
+      {
         *s = '\0';
+
         return 0;   /* start of binary section */
       }
       else if ((strncmp(t, "end", 3) == 0) ||  /* end of CharStrings */
            (strncmp(buff, "ND", 2) == 0) ||   /* or end of Subrs */
-           (strncmp(buff, "|-", 2) == 0)) { /* or end of Subrs */
+           (strncmp(buff, "|-", 2) == 0)) /* or end of Subrs */
+      {
         *s = '\0';
+
         return -1;      /* end of Subrs or CharStrings */
       }
-/* 93 Aug  5 */ /* for Subrs only */  
       else if (subrflag != 0 &&
         (strncmp(buff, "noaccess def", 12) == 0 ||
- /* 93 Aug 13 */ /* for Subrs only */ 
-          strncmp(buff, "readonly def", 12) == 0)) {
+        strncmp(buff, "readonly def", 12) == 0))
+      {
         *s = '\0';
+
         return -1;      /* end of Subrs or CharStrings */
       }
-      else t = s;   /* remember start of next token */
+      else
+        t = s;   /* remember start of next token */
+
     }
-/*    else if (d == '\n') {
-      if (verboseflag) printf("Unexpected end of line: %s\n", t);
-      *s = '\0';
-      return 1;
-    } */
-    d = indecrypt(input);
+
+    d = in_decrypt(input);
   }
 }
 
 /* flush rest of CharString */
-void flushcharstring(FILE *input, int n)
+void flush_char_string(FILE *input, int n)
 {
   int k, d;
   
-  for (k = 0; k < n; k++) (void) indecrypt(input); /* flush binary part */
-  d = indecrypt(input);
-  while (d != '\n') {
-    d = indecrypt(input);   /* flush ND or |- up to nl (or rt)*/
-    if (d == '\r') d = '\n';  /* bkph 91/10/1 */
+  for (k = 0; k < n; k++)
+    (void) in_decrypt(input); /* flush binary part */
+
+  d = in_decrypt(input);
+
+  while (d != '\n')
+  {
+    d = in_decrypt(input);   /* flush ND or |- up to nl (or rt)*/
+
+    if (d == '\r')
+      d = '\n';  /* bkph 91/10/1 */
   }
 }
 
 /* copy CharString or Subr string */
 /* the fix may be slightly dicey since it may generate blank line at */
 
-void copycharstring(FILE *output, FILE *input, int n)
+void copy_char_string(FILE *output, FILE *input, int n)
 {
   int d, k; /* c, e */
-  for (k = 0; k < n; k++) {     /* copy binary CharString itself */
-    d = indecrypt(input);
-    outencrypt((unsigned char) d, output);
+
+  for (k = 0; k < n; k++) /* copy binary CharString itself */
+  {
+    d = in_decrypt(input);
+    out_encrypt((unsigned char) d, output);
   }
-  d = indecrypt(input);   /* default is to drop space before ND */
-/*  if (d != ' ') */
+
+  d = in_decrypt(input);   /* default is to drop space before ND */
+
   if (d != ' ' || keepgap != 0) /* 1993 August 5 */
-    outencrypt((unsigned char) d, output); 
+    out_encrypt((unsigned char) d, output); 
     
-  while (d != '\n') {         /* copy ND or | - up to nl (or rt)*/
-    d = indecrypt(input);
-    if (d == '\r') d = '\n';    /* bkph 91/10/1 */
-    outencrypt((unsigned char) d, output);    
+  while (d != '\n') /* copy ND or | - up to nl (or rt)*/
+  {
+    d = in_decrypt(input);
+
+    if (d == '\r')
+      d = '\n';    /* bkph 91/10/1 */
+
+    out_encrypt((unsigned char) d, output);    
   }
 }
 
@@ -1267,27 +1442,31 @@ void copycharstring(FILE *output, FILE *input, int n)
 /* this will slow things down a bit, but be a lot safer ! */
 /* make sure charnames[] is cleaned out before encoding is read from font */
 
-/* int wantthisname(char *charname, int k, char wantchrs[]) {  */
-int wantthisname (char *charname, int k, char *wantchrs)
+int want_this_name (char *charname, int k, char *wantchrs)
 {
   int i;
-/*  best guess first for speed: */
-/*  if (strcmp(charnames[k], charname) == 0) { */ /* 95/Oct/28 */
-  if (k >= 0 && k < MAXCHRS && strcmp(charnames[k], charname) == 0) {
-    if (wantchrs[k] != 0) return k; /* nice and easy ! */
-/*    else return -1; */        /* no, may occur again ... */
-  }   /* was return wantchrs[k]; */
-  for (i = 0; i < fontchrs; i++) {
-    if (strcmp(charnames[i], charname) == 0) {
-      if (wantchrs[i] != 0) return i; 
-/*      else return -1; */      /* no, may occur again ... */
-    } /* was return wantchrs[i]; */
+
+  /*  best guess first for speed: */
+  if (k >= 0 && k < MAXCHRS && strcmp(charnames[k], charname) == 0)
+  {
+    if (wantchrs[k] != 0)
+      return k; /* nice and easy ! */
   }
-  if (wantnotdef != 0 && strcmp(".notdef", charname) == 0) {
+
+  for (i = 0; i < fontchrs; i++)
+  {
+    if (strcmp(charnames[i], charname) == 0)
+    {
+      if (wantchrs[i] != 0)
+        return i;
+    }
+  }
+
+  if (wantnotdef != 0 && strcmp(".notdef", charname) == 0)
+  {
     return NOTDEF; 
   }
-/*  if (traceflag)
-    printf("Character not in encoding: %s (%d)\n", charname, k); */
+
   return -1;
 }
 
@@ -1296,133 +1475,176 @@ int wantthisname (char *charname, int k, char *wantchrs)
 /* May need to add more characters to basecharacterlist */
 /* use `N' command line argument to deactivate this bug work around */
 
-int copysubrs(FILE *output, FILE *input)
+int copy_subrs(FILE *output, FILE *input)
 {
   int subrnum, nbin;
 /*  char buffer[FNAMELEN]; */ /* compromise only for hires Subrs line */
   char *s;
 
-/*  First check whether there are no Subrs ! */
-  if (strstr(line, "ND") != NULL) return 0;
-  if (strstr(line, "|-") != NULL) return 0;
-  if (strstr(line, "noaccess def") != NULL) return 0;
-  if (strstr(line, "readonly def") != NULL) return 0;
-  while (getcharline(line, input, 1) == 0) {
-    if (sscanf(line, "dup %d %d RD", &subrnum, &nbin) < 2) {
-/*      if (strstr(line, "hires") == NULL) { */
-      if (hybridflag == 0) {    /* the old result follows ... */
+  /*  First check whether there are no Subrs ! */
+  if (strstr(line, "ND") != NULL)
+    return 0;
+
+  if (strstr(line, "|-") != NULL)
+    return 0;
+
+  if (strstr(line, "noaccess def") != NULL)
+    return 0;
+
+  if (strstr(line, "readonly def") != NULL)
+    return 0;
+
+  while (get_char_line(line, input, 1) == 0)
+  {
+    if (sscanf(line, "dup %d %d RD", &subrnum, &nbin) < 2)
+    {
+      if (hybridflag == 0)
+      {
         sprintf(logline, " Not a Subrs line: %s", line);
         showline(logline, 1);
         extgiveup(9);
         return -1;
       }
-      else {      /* new 1994/July/15 for hybrid font */
-/* Note: this `line' (getcharline) contains multiple lines up to dup ... RD */
-        if ((s = strstr(line, "dup ")) != NULL) {
-          if (sscanf(s, "dup %d %d RD", &subrnum, &nbin) == 2) {
-/*            strncpy(buffer, s, FNAMELEN); *//* save dup ... RD */
+      else
+      {
+/* Note: this `line' (get_char_line) contains multiple lines up to dup ... RD */
+        if ((s = strstr(line, "dup ")) != NULL)
+        {
+          if (sscanf(s, "dup %d %d RD", &subrnum, &nbin) == 2)
+          {
             *s = '\0';
-            putenline(output, line);
-/*            strcpy(line, buffer); */
+            put_en_line(output, line);
             *s = 'd';
             strcpy(line, s);
           }
         }
       }
     }
-    putenline(output, line);    /* beginning of subr */
-    copycharstring(output, input, nbin);
+
+    put_en_line(output, line);    /* beginning of subr */
+    copy_char_string(output, input, nbin);
   }
+
   s = line + strlen(line) -1; /* to solve problem with \r\n */
-  if (*s == '\r') *s = '\n';  /* extra blank line maybe */
-  putenline(output, line);  /* hit the end */
-//  flushencrypt(output);   /* flush out last bit */
+  if (*s == '\r')
+    *s = '\n';  /* extra blank line maybe */
+
+  put_en_line(output, line);  /* hit the end */
+
   return 0;
 }
 
 /* Tries to find encoding vector first in dvi file directory */
 /* - then tries default encoding vector directory */
 
-FILE *openvector(char *vector)
+FILE * open_vector(char *vector)
 {
   FILE *fp_vec;
   char fn_vec[FNAMELEN];
   char *s, *t;
   
 /*  if vector contains a path, use it directly - no other trials */
-  if (strpbrk(vector, "\\:/") != NULL) {
+  if (strpbrk(vector, "\\:/") != NULL)
+  {
     strncpy(fn_vec, vector, FNAMELEN);
     extension(fn_vec, "vec"); 
-/*    return fopen(fn_vec, "r"); */
     fp_vec = fopen(fn_vec, "r");
-    if (fp_vec != NULL) {
-      if (traceflag) {
+
+    if (fp_vec != NULL)
+    {
+      if (traceflag)
+      {
         sprintf(logline, "Using encoding vector %s\n", fn_vec);
         showline(logline, 0);
       }
+
       return fp_vec;
     }
+
     return NULL;
   }
 
-/*  try first in dvi file directory */
-  if (dvipath != NULL) strcpy(fn_vec, dvipath);
-  else strcpy(fn_vec, "");
-  makefilename(fn_vec, vector);
+  /*  try first in dvi file directory */
+  if (dvipath != NULL)
+    strcpy(fn_vec, dvipath);
+  else
+    strcpy(fn_vec, "");
+
+  make_file_name(fn_vec, vector);
   extension(fn_vec, "vec");
-  if ((fp_vec = fopen(fn_vec, "r")) != NULL) {
-    if (traceflag) {
+
+  if ((fp_vec = fopen(fn_vec, "r")) != NULL)
+  {
+    if (traceflag)
+    {
       sprintf(logline, "Using encoding vector %s\n", fn_vec);
       showline(logline, 0);
     }
+
     return fp_vec;
   }
 
-/*  try VECPATH directories */  /* modified for multiple directories 97/Aug/10 */
   s = vecpath;
-  for(;;) {
-    if (*s == '\0') break;        /* safety valve */
-/*    strcpy(fn_vec, vecpath); */
+
+  for( ; ; )
+  {
+    if (*s == '\0')
+      break;        /* safety valve */
+
     strcpy(fn_vec, s);
     t = strchr(fn_vec, ';');
-    if (t != NULL) *t = '\0';     /* isolate one directory path */
-    makefilename(fn_vec, vector);
+
+    if (t != NULL)
+      *t = '\0';     /* isolate one directory path */
+
+    make_file_name(fn_vec, vector);
     extension(fn_vec, "vec");
-    if ((fp_vec = fopen(fn_vec, "r")) != NULL) {
-      if (traceflag) {
+
+    if ((fp_vec = fopen(fn_vec, "r")) != NULL)
+    {
+      if (traceflag)
+      {
         sprintf(logline, "Using encoding vector %s\n", fn_vec);
         showline(logline, 0);
       }
+
       return fp_vec;
     }
-    if (t != NULL) s +=(t-fn_vec) + 1;  /* step over dir and ; */
-    else break;
+
+    if (t != NULL)
+      s += (t - fn_vec) + 1;  /* step over dir and ; */
+    else
+      break;
   }
 
-/*  then try in SUBDIRECTORY of default directory */ /* 1992/Nov/28 */
   strcpy(fn_vec, vecpath);
-/*  strcat(fn_vec, "\\");
-  strcat(fn_vec, "vec\\"); */
-  makefilename(fn_vec, "vec\\");  /* subdirectory "vec" */
-  strcat(fn_vec, vector); 
+  make_file_name(fn_vec, "vec\\");  /* subdirectory "vec" */
+  strcat(fn_vec, vector);
   extension(fn_vec, "vec");
-  if ((fp_vec = fopen(fn_vec, "r")) != NULL) {
-    if (traceflag) {
+
+  if ((fp_vec = fopen(fn_vec, "r")) != NULL)
+  {
+    if (traceflag)
+    {
       sprintf(logline, "Using encoding vector %s\n", fn_vec);
       showline(logline, 0);
     }
+
     return fp_vec;
   }
 
-/*  try in current directory */       /* 1992/Dec/8 */
-  *fn_vec = '\0';           /* strcpy(fn_vec, ""); */
-  makefilename(fn_vec, vector);   /*  */
-  extension(fn_vec, "vec");   
-  if ((fp_vec = fopen(fn_vec, "r")) != NULL) {
-    if (traceflag) {
+  *fn_vec = '\0';
+  make_file_name(fn_vec, vector);
+  extension(fn_vec, "vec");
+
+  if ((fp_vec = fopen(fn_vec, "r")) != NULL)
+  {
+    if (traceflag)
+    {
       sprintf(logline, "Using encoding vector %s\n", fn_vec);
       showline(logline, 0);
     }
+
     return fp_vec;
   }
 
@@ -1430,38 +1652,45 @@ FILE *openvector(char *vector)
 }
 
 /*  Clear out charnames */
-void cleanencoding (int start, int end)
+void clean_enc (int start, int end)
 {
   int k;
-/*  strcpy(namestring, ""); */
+
   namestring[0] = '\0';         /* empty string */
   stringindex = 1;            /* reset index to next space */
-  for (k = start; k < end; k++) charnames[k] = namestring;  /* "" */
+
+  for (k = start; k < end; k++)
+    charnames[k] = namestring;
 }
 
-void copyencoding(char *charnames[], char *encoding[], int n)
+void copy_enc(char *charnames[], char *encoding[], int n)
 {
   int k;
+
   if (n < 0 || n > 256)
   {
-    sprintf(logline, " ERROR in copyencoding %d\n", n);
+    sprintf(logline, " ERROR in copy_enc %d\n", n);
     showline(logline, 1);
+
     return;
   }
-  for (k = 0; k < n; k++) charnames[k] = encoding[k]; 
-/*  if (n < MAXCHRS)
-    for (k = n; k < MAXCHRS; k++) charnames[k] = "";  */
+
+  for (k = 0; k < n; k++)
+    charnames[k] = encoding[k];
 }
 
 /* we have duplication here if repeated encoding in vector */
 
-void addencoding (int k, char *charname)      /* 93/Nov/15 */
+void add_enc (int k, char *charname)      /* 93/Nov/15 */
 {
-  int n = strlen(charname) + 1;         /* space needed */
-  if (stringindex + n >= STRINGSPACE) {
+  int n = strlen(charname) + 1; /* space needed */
+
+  if (stringindex + n >= STRINGSPACE)
+  {
     showline(" ERROR: encoding vector too long\n", 1);
   }
-  else {
+  else
+  {
     charnames[k] = namestring + stringindex;    /* ptr */
     strcpy (namestring + stringindex, charname);  /* copy */
     stringindex += n;               /* step over */
@@ -1470,7 +1699,7 @@ void addencoding (int k, char *charname)      /* 93/Nov/15 */
 
 /* now return 0 if successful, non-zero if failed */
 
-int readencoding (char *vector)
+int read_enc (char *vector)
 {
   char charname[FNAMELEN];    /* just to be safe */
 
@@ -1478,152 +1707,176 @@ int readencoding (char *vector)
   int n;              /* not accessed */
   int k;
 
-/*  for (k = 0; k < MAXCHRS; k++) strcpy(charnames[k], ""); */
-  cleanencoding(0, MAXCHRS);        /* 93/Nov/15 */
+  clean_enc(0, MAXCHRS);        /* 93/Nov/15 */
   
-//  if (strcmp(vector, "") == 0)        /* rewritten 93/May/19 */
-  if (vector == NULL) {
-//    showline(" ", 0);
+  if (vector == NULL)
+  {
     showline(" WARNING: No encoding vector specified\n", 1);
-/*    Use `textext' as default if no encoding vector specified */
+
     vector = "textext";
-/*    for (k = 0; k < TEXCHRS; k++) strcpy(charnames[k], textext[k]); */
-    copyencoding(charnames, textext, TEXCHRS);    /* 93/Nov/15 */
-    errcount(0);  
-    return -1;          /* failed */
+    copy_enc(charnames, tex_text, TEXCHRS);
+    errcount(0);
+
+    return -1;
   }
 
-  if ((fp_vec = openvector(vector)) != NULL) {
-    n = 0;  /* count encoding lines ? */
-    while (getrealline(fp_vec, line) > 0) { 
-      if (*line == '%' || *line == ';') continue;
-/*      if (sscanf(line, "%d %s", &k, &charname) < 2) {  */
-      if (sscanf(line, "%d %s", &k, charname) < 2) { 
+  if ((fp_vec = open_vector(vector)) != NULL)
+  {
+    n = 0;
+
+    while (getrealline(fp_vec, line) > 0)
+    {
+      if (*line == '%' || *line == ';')
+        continue;
+
+      if (sscanf(line, "%d %s", &k, charname) < 2)
+      {
         showline(" Don't understand encoding line: ", 1);
         showline(logline, 1);
         showline(line, 1);
       } 
-      else if (k >= 0 && k < MAXCHRS) {
-/*        assert(strlen(charname) < MAXCHARNAME); */
-/*        if (strlen(charname) >= MAXCHARNAME)
-          fprintf(errout, " char name %s too long", charname); */
-        addencoding(k, charname);
-/*        strcpy(charnames[k], charname); */
-/*        strncpy(charnames[k], charname, MAXCHARNAME); */
+      else if (k >= 0 && k < MAXCHRS)
+      {
+        add_enc(k, charname);
       }
+
       n++;
     }
+
     fclose(fp_vec);
   }
-  else {    /* use `textext' as default if encoding vector not found */
-/*    for (k = 0; k < TEXCHRS; k++) strcpy(charnames[k], textext[k]); */
-    copyencoding(charnames, textext, TEXCHRS);    /* 93/Nov/15 */
-//    showline(" ", 0);   // ???
+  else
+  {
+    copy_enc(charnames, tex_text, TEXCHRS);
     sprintf(logline, " WARNING: can't find encoding vector %s ", vector);
     showline(logline, 1);
-/*    perrormod(fn_vec);  */
     perrormod(vector);
-    errcount(0);  
+    errcount(0);
+
     return -1;        /* failed */
   }
+
   return 0;         /* succeeded */
 }
 
-void writevector (FILE *fp_out, char *vector, int n)
+void write_vector (FILE *fp_out, char *vector, int n)
 {
   int k, knext=0;   /* n is MAXCHRS */
   int kn;
 /*  char *s, *svector; */
 
-  if (vector == NULL) {
-    sprintf(logline, " ERROR in writevector %d\n", n);
+  if (vector == NULL)
+  {
+    sprintf(logline, " ERROR in write_vector %d\n", n);
     showline(logline, 1);
-    return;
-  }
-  if (n < 0 || n > 256) {
-    sprintf(logline, " ERROR in writevector %d\n", n);
-    showline(logline, 1);
+
     return;
   }
 
-  if (strcmp(vector, "textext") == 0) {   /* 1992/Nov/19 */
-    if (textextwritten++ > 0) return;
-  }
-/*  if (strcmp(vector, "ansinew") == 0) {
-    if (ansiwritten++ > 0) return;
-  } */                    /* 1993/Sep/30 */
-  if (strcmp(vector, textencoding) == 0) {  /* 1994/Dec/17 */
-    if (ansiwritten++ > 0) return;
+  if (n < 0 || n > 256)
+  {
+    sprintf(logline, " ERROR in write_vector %d\n", n);
+    showline(logline, 1);
+
+    return;
   }
 
-  knext = 256;                    /* 93/Feb/15 */
-  if (bSuppressPartial == 0 && bForceFullArr == 0) {  /* 93/Feb/15 */
-    for (k = n-1; k >= 0; k--) {    /* find last character code used */
-      if(strcmp(charnames[k], "") != 0) {
-        knext = k+1; break; 
+  if (strcmp(vector, "textext") == 0)
+  {
+    if (textextwritten++ > 0)
+      return;
+  }
+
+  if (strcmp(vector, textencoding) == 0)
+  {
+    if (ansiwritten++ > 0)
+      return;
+  }
+
+  knext = 256;
+
+  if (bSuppressPartial == 0 && bForceFullArr == 0)
+  {
+    for (k = n-1; k >= 0; k--)
+    {
+      if(strcmp(charnames[k], "") != 0)
+      {
+        knext = k + 1;
+        break;
       }
     }
   }
-  if (knext == 0) return;       /* all empty, nothing to do */
 
-  if (stripcomment == 0) {
-    sprintf(logline, "%% %s encoding\n", vector); /* 1992/Nov/17 */
+  if (knext == 0)
+    return;
+
+  if (stripcomment == 0)
+  {
+    sprintf(logline, "%% %s encoding\n", vector);
     PSputs(logline, fp_out);
   }
-/*  fprintf(fp_out, "/%s[", vector); */       /* 95/Feb/3 */
-  sprintf(logline, "/%s[", removepath(vector));   /* strip path */
+
+  sprintf(logline, "/%s[", removepath(vector));
   PSputs(logline, fp_out);
-  for (k = 0; k < knext; k++) {
-    if (k != 0 && k % 8 == 0) {
-//      putc('\n', fp_out);
+
+  for (k = 0; k < knext; k++)
+  {
+    if (k != 0 && k % 8 == 0)
+    {
       PSputc('\n', fp_out);
     }
-    if (strcmp(charnames[k], "") != 0) {
+
+    if (strcmp(charnames[k], "") != 0)
+    {
       sprintf(logline, "/%s", charnames[k]);
       PSputs(logline, fp_out);
     }
-/*    else fprintf(fp_out, "/.notdef"); */
-/*    else fprintf(fp_out, " n");  */ /* 1993/Sep/31 */
-    else {                  /* 1993/Oct/5 */
-      kn = k+1;
-      while (kn < knext && strcmp(charnames[kn], "") == 0) kn++;
-/*      if (kn < k + 4) { */
-      if (kn < k + 5) {   /* only more efficient if more than 4 */
-        for (k=k; k < kn; k++) {
+    else
+    {
+      kn = k + 1;
+
+      while (kn < knext && strcmp(charnames[kn], "") == 0)
+        kn++;
+
+      if (kn < k + 5)
+      {
+        for (k=k; k < kn; k++)
+        {
           PSputs(" n", fp_out);
         }
       }
-      else {
+      else
+      {
         sprintf(logline, " %d notdef", kn-k);
         PSputs(logline, fp_out);
       }
-/*      if (((kn-1 >> 3) != (k >> 3)) && kn % 8 != 0) */
-      if ((((kn-1) >> 3) != (k >> 3)) && (kn % 8) != 0) {
-//        putc('\n', fp_out);
+
+      if ((((kn-1) >> 3) != (k >> 3)) && (kn % 8) != 0)
+      {
         PSputc('\n', fp_out);
       }
-      k = kn-1;
+
+      k = kn - 1;
     }
   }
-//  fprintf(fp_out, "]def\n");
+
   PSputs("]def\n", fp_out);
 }
 
-void writedvistart (FILE *fp_out)
+void write_dvi_start(FILE *fp_out)
 {
-//  fputs("dvidict begin\n", fp_out);
   PSputs("dvidict begin\n", fp_out);
 }
 
-void writedviend(FILE *fp_out) /* 1992/Nov/17 */
+void write_dvi_end(FILE *fp_out)
 {
-//  fputs("end", fp_out);
   PSputs("end", fp_out);
-  if (stripcomment == 0) {
-//    fputs(" % dvidict", fp_out);
+
+  if (stripcomment == 0)
+  {
     PSputs(" % dvidict", fp_out);
   }
-//  putc('\n', fp_out);
+
   PSputc('\n', fp_out);
 }
 
@@ -1635,88 +1888,72 @@ void writedviend(FILE *fp_out) /* 1992/Nov/17 */
 /* 10 1 99{dup 100 add 3 dvicodemake} for */
 /* 100 1 255{dup 1000 add 4 dvicodemake} for */
 
-void writedviencode(FILE *fp_out)   /* 1993/Sep/30 */
+void write_dvi_encode(FILE *fp_out)
 {
   int k;
   char charname[5];   /* space for a255 + zero */
 
-  writedvistart(fp_out);
-  cleanencoding(0, MAXCHRS);        /* reset string table */
-  for (k = 0; k < MAXCHRS; k++) {       /* fixed 1994/Feb/3 */
+  write_dvi_start(fp_out);
+  clean_enc(0, MAXCHRS);        /* reset string table */
+
+  for (k = 0; k < MAXCHRS; k++) /* fixed 1994/Feb/3 */
+  {
     sprintf(charname, "a%d", k);
-    addencoding (k, charname);
-/*    charnames[k] = namestring + stringindex; */
-/*    stringindex = stringindex + strlen (namestring + stringindex) + 1; */
+    add_enc (k, charname);
   }
-  writevector(fp_out, "dviencode", MAXCHRS); 
-  writedviend(fp_out);        /* 1993/Sep/30 */
+
+  write_vector(fp_out, "dviencode", MAXCHRS); 
+  write_dvi_end(fp_out);        /* 1993/Sep/30 */
 }
 
 void writetextext(FILE *fp_out)
 {
-/*  int k; */
+  write_dvi_start(fp_out);
+  copy_enc(charnames, tex_text, TEXCHRS);
 
-/*  not allowed to use `TeX text' encoding if forcing full 256 vector */
-/*  (no longer a problem, since we extend TeX text vector if needed */
-/*  if (bForceFullArr == 0) { */        /* 93/Feb/15 */
-  writedvistart(fp_out);
-
-/*  for (k = 0; k < TEXCHRS; k++) strcpy(charnames[k], textext[k]); */
-  copyencoding(charnames, textext, TEXCHRS);    /* 93/Nov/15 */
-
-  if (bForceFullArr == 0) writevector(fp_out, "textext", TEXCHRS);
-  else {                  /* 1993/Sep/30 */
-/*    for (k = TEXCHRS; k < MAXCHRS; k++) strcpy(charnames[k], ""); */
-    cleanencoding(TEXCHRS, MAXCHRS);  /* redundant ? */
-    writevector(fp_out, "textext", MAXCHRS);
+  if (bForceFullArr == 0)
+    write_vector(fp_out, "textext", TEXCHRS);
+  else
+  {
+    clean_enc(TEXCHRS, MAXCHRS);  /* redundant ? */
+    write_vector(fp_out, "textext", MAXCHRS);
   }
-  writedviend(fp_out);        /* 1992/Nov/17 */
-/*  } */
+
+  write_dvi_end(fp_out);
 }
 
 /* Write Windows ANSI encoding or what user defined in ENCODING env var */
 
-/* void writeansicode(FILE *fp_out) { */      /* 1993/Sep/30 */
-/* void writeansicode(FILE *fp_out, char *textencoding) { */  /* 1994/Dec/17 */
-void writeansicode(FILE *fp_out, char *textenconame)  /* 1995/Feb/3 */
+void write_ansi_code(FILE *fp_out, char *textenconame)  /* 1995/Feb/3 */
 {
-/*  int k; */
-
-/*  if (ansiwritten > 0) return; */ /* already exists 1992/Nov/19 */
-
-  writedvistart(fp_out);
-/*  for (k = 0; k < MAXCHRS; k++) strcpy(charnames[k], ansiencoding[k]); */
-  copyencoding(charnames, ansiencoding, MAXCHRS); /* 93/Nov/15 */
-/*  writevector(fp_out, "ansinew", MAXCHRS);  */
-/*  writevector(fp_out, textencoding, MAXCHRS); */  /* 94/Dec/17 */
-  writevector(fp_out, textenconame, MAXCHRS);   /* 95/Feb/3 fix 96/May/28 */
-  writedviend(fp_out);        /* 1993/Sep/30 */
+  write_dvi_start(fp_out);
+  copy_enc(charnames, ansi_enc, MAXCHRS);
+  write_vector(fp_out, textenconame, MAXCHRS);
+  write_dvi_end(fp_out);
 }
 
 /*  overwrite Windows ANSI encoding hard-wired in here */
 
-/* void writetextencode(FILE *fp_out, char *textencoding) {*//* 94/Dec/17 */
-int readtextencode(char *textencoding)  /* 94/Dec/17 */
+int read_text_encode(char *textencoding)
 {
   int k;
-/*  char *dupcharname; */
 
-  if (readencoding(textencoding) == 0) {
-    for (k = 0; k < MAXCHRS; k++) {
-/*      dupcharname = _strdup(charnames[k]);
-      if (dupcharname == NULL) {
-        fputs("Unable to allocate memory\n", errout);
-        checkexit(1);
-      } */
-      ansiencoding[k] = zstrdup(charnames[k]);
-      if (ansiencoding[k] == NULL) {
+  if (read_enc(textencoding) == 0)
+  {
+    for (k = 0; k < MAXCHRS; k++)
+    {
+      ansi_enc[k] = zstrdup(charnames[k]);
+
+      if (ansi_enc[k] == NULL)
+      {
         showline("Unable to allocate memory\n", 1);
         checkexit(1);
+
         return -1;
       }
     }
   }
-/*  writeansicode(fp_out); */
+
   return 0;
 }
 
@@ -1736,7 +1973,7 @@ int readtextencode(char *textencoding)  /* 94/Dec/17 */
 
 /* returns non-zero if any accented character were found */
 
-int expandaccents (char *wantchrs)
+int expand_accents (char *wantchrs)
 {
   char *testname;
   char basename[9];     /* dotlessi is max length */
@@ -1744,138 +1981,160 @@ int expandaccents (char *wantchrs)
   int compflag, foundflag;
   int composedflag=0;     /* any composites ? */
   char *standname;      /* 93/Sep/16 */
-
-/*  int accentcomplain[ACCENTCHRS]; */    /* for accents from 193 to 207 */
   int accenthit[ACCENTCHRS];        /* for accents from 193 to 207 */
-/*  int basehit[sizeof(basecharacters)]; */  /* for 28 base characters */
   int basehit[BASECHRS];        /* for 26 + 26 base characters */
 
-/*  for (k = 0; k < ACCENTCHRS; k++) accentcomplain[k] = 0; */  /* 93/Sep/16 */
-  for (k = 0; k < ACCENTCHRS; k++) accenthit[k] = 0;    /* 94/Feb/17 */
-/*  for (k = 0; k < sizeof(basecharacters); k++) basehit[k] = 0; */
-  for (k = 0; k < BASECHRS; k++) basehit[k] = 0;      /* 94/Feb/17 */
+  for (k = 0; k < ACCENTCHRS; k++)
+    accenthit[k] = 0;    /* 94/Feb/17 */
 
-/*  composedflag = 0; */
-  for (k = 0; k < MAXCHRS; k++) {
-    if (wantchrs[k] == 0) continue;   /* ignore unwanted characters */
+  for (k = 0; k < BASECHRS; k++)
+    basehit[k] = 0;      /* 94/Feb/17 */
+
+  for (k = 0; k < MAXCHRS; k++)
+  {
+    if (wantchrs[k] == 0)
+      continue;   /* ignore unwanted characters */
+
     testname = charnames[k];      /* potential composite char */
     n = strlen(testname);
-/*    This eliminates the bulk of charnames, since they are one char long */
-/*    if (n < 5 || n > 11) continue; */   /* aring --- acircumflex */
-    if (n < 4 || n > 14 || n == 13) continue; /* ldot --- uhungarumlaut */
-    c = testname[0];          /* potential base character */
-/*    see if in filter list --- is it worth limiting base chars ? */
-/*    if (strchr(basecharacters, c) == NULL) continue; */ /* must be base */
-/*    if ((s = strchr(basecharacters, c)) == NULL) continue; */
-/*    n = s - basecharacters; */  /* compute offset in array 1994/Feb/17 */
-/*    if (strchr(notbasecharacters, c) != NULL) continue; */ /* NO */
-/*    if (c < 'A' || c > 'z' || (c < 'a' && c > 'Z') continue; */ /* NOP ? */
-    if (c < 'A') continue;
-    else if (c <= 'Z') n = c - 'A';
-    else if (c < 'a') continue;
-    else if (c <= 'z') n = c - 'a' + 26;
-    else continue;
-/*    have eliminated names that are too long or too short - or bad start */
-/*    if (traceflag) printf("Testing %s ", testname); */
-    compflag = 0;           /* reset composite char flag */
-/*    NOTE: we only need to worry about accents in StandardEncoding ! */
-    for (i = 193; i <= 207; i++) {    /* check through accents */
-/*      note that two of the `accent' positions are actually "" */
-/*      charname = standardencoding[i]; */
-/*      if (strcmp(testname + 1, charname) == 0) { */
-      if (strcmp(testname + 1, standardencoding[i]) == 0) {
-        compflag = 1; break;    /* found accent in table */
+
+    if (n < 4 || n > 14 || n == 13)
+      continue; /* ldot --- uhungarumlaut */
+
+    c = testname[0];
+
+    if (c < 'A')
+      continue;
+    else if (c <= 'Z')
+      n = c - 'A';
+    else if (c < 'a')
+      continue;
+    else if (c <= 'z')
+      n = c - 'a' + 26;
+    else
+      continue;
+
+    compflag = 0;
+    
+    /* NOTE: we only need to worry about accents in StandardEncoding ! */
+    for (i = 193; i <= 207; i++) /* check through accents */
+    {
+      if (strcmp(testname + 1, std_enc[i]) == 0)
+      {
+        compflag = 1;
+        break;    /* found accent in table */
       }
     }
-/*    What about hungarumlaut => hungar and dotaccent => dot */
-    if (compflag == 0) {  
-      if (strcmp(testname + 1, "dot") == 0) { /* 93/Sep/16 */
+    
+    /* What about hungarumlaut => hungar and dotaccent => dot */
+    if (compflag == 0)
+    {
+      if (strcmp(testname + 1, "dot") == 0)
+      {
         i = 199;    /* dotaccent */
         compflag = 1;
       }
-      else if (strcmp(testname + 1, "hungar") == 0) { /* 93/Sep/16 */
+      else if (strcmp(testname + 1, "hungar") == 0)
+      {
         i = 205;    /* hungarumlaut */
         compflag = 1;
       }
-      else if (strcmp(testname + 1, "dblacute") == 0) {/* 94/May/25 */
+      else if (strcmp(testname + 1, "dblacute") == 0)
+      {
         i = 205;    /* hungarumlaut */
         compflag = 1;
       }
-      else if (strcmp(testname + 1, "hacek") == 0) {/* 94/May/25 */
+      else if (strcmp(testname + 1, "hacek") == 0)
+      {
         i = 207;    /* caron */
         compflag = 1;
       }
     }
-    if (compflag != 0) {    /* So, *is* it a composite character ? */
-/*      composedflag = 0; */    /* was a bug ! */
-      composedflag = 1;     /* fix 1994/Feb/17 */
 
-/*  speed up: 94/Feb/17 keep track of which already inserted - in basehit */
-      if (basehit[n] == 0) {    /* see whether already dealt with */
+    if (compflag != 0) /* So, *is* it a composite character ? */
+    {
+      composedflag = 1;
+      
+      /*  speed up: 94/Feb/17 keep track of which already inserted - in basehit */
+      if (basehit[n] == 0)  /* see whether already dealt with */
+      {
         basehit[n]++;     /* note that we have been here */
-/*        request base character first */
-/*        basename[0] = (char) c; */
-/*        basename[1] = '\0'; */
-        if (c == 'i') {
+
+        if (c == 'i')
+        {
           strcpy(basename, "dotlessi");
           c = 245;  /* standard encoding position for dotlessi */
         }
-        else {
+        else
+        {
           basename[0] = (char) c;
           basename[1] = '\0';
         }
-        if (strcmp(charnames[c], basename) == 0) {  /* fast case */
+
+        if (strcmp(charnames[c], basename) == 0) /* fast case */
+        {
           wantchrs[c] = 1;
         }
-        else {          /* otherwise have to search for it */
+        else  /* otherwise have to search for it */
+        {
           foundflag = 0;
-          for (j = 0; j < MAXCHRS; j++) {
-            if (strcmp(charnames[j], basename) == 0) {
+
+          for (j = 0; j < MAXCHRS; j++)
+          {
+            if (strcmp(charnames[j], basename) == 0)
+            {
               wantchrs[j] = 1;
               foundflag = 1;
               break;
             }
           }
-          if (foundflag == 0) {
+
+          if (foundflag == 0)
+          {
             sprintf(logline, " `%s' not in encoding", basename);
             showline(logline, 1);
             errcount(0);
           }
         }
-      } /* end of if basehit[n] == 0 */
-
-/* then request accent character */
-/* speed up: 94/Feb/17 keep track of which already inserted - in accenthit */
-      if (accenthit[i - 193] == 0) {  /* check if already dealt with */
+      }
+      
+      /* then request accent character */
+      /* speed up: 94/Feb/17 keep track of which already inserted - in accenthit */
+      if (accenthit[i - 193] == 0) /* check if already dealt with */
+      {
         accenthit[i - 193]++;   /* mark that we dealt with this */
-        standname = standardencoding[i];      /* 93/Sep/13 */
-/*        if (strcmp(charnames[i], testname+1) == 0) */  /* fast case */
-        if (strcmp(charnames[i], standname) == 0) {  /* fast case */
+        standname = std_enc[i];      /* 93/Sep/13 */
+
+        if (strcmp(charnames[i], standname) == 0)
+        {
           wantchrs[i] = 1;
         }
-        else {          /* otherwise have to search for it */
+        else
+        {
           foundflag = 0;
-          for (j = 0; j < MAXCHRS; j++) {
-/*            if (strcmp(charnames[j], testname+1) == 0) { */
-            if (strcmp(charnames[j], standname) == 0) {
+
+          for (j = 0; j < MAXCHRS; j++)
+          {
+            if (strcmp(charnames[j], standname) == 0)
+            {
               wantchrs[j] = 1;
               foundflag = 1;
+
               break;
             }
           }
-          if (foundflag == 0) {
-/* we don't need this anymore, since we come in here only once accenthit */
-/*            if (accentcomplain[i - 193] == 0) {*/ /* 93/Sep/16 */
-              sprintf(logline, " `%s' not in encoding", standname);
-              showline(logline, 1);
-/*              accentcomplain[i- 193]++; */
-              errcount(0);
-/*            } */
+
+          if (foundflag == 0)
+          {
+            sprintf(logline, " `%s' not in encoding", standname);
+            showline(logline, 1);
+            errcount(0);
           }
         }
       }
     }
   }
+
   return composedflag;
 }
 
@@ -1884,30 +2143,34 @@ int expandaccents (char *wantchrs)
 /* Check whether font calls for characters *not* found in encoding! */
 /* 1995/July/15 */
 
-int missingchars (char *wantchrs, char *encoding)
+int missing_chars (char *wantchrs, char *encoding)
 {
   int k, unknowns = 0;
 
-  for (k = 0; k < fontchrs; k++) {
-/*    if (wantchrs[k] != 0 && strcmp(charnames[k], "") == 0) unknowns++;*/
-    if (wantchrs[k] != 0 && charnames[k][0] == '\0') unknowns++;
-/*    if (wantchrs[k] != 0) printf("%d\t%s\n", k, charnames[k]); */
+  for (k = 0; k < fontchrs; k++)
+  {
+    if (wantchrs[k] != 0 && charnames[k][0] == '\0')
+      unknowns++;
   }
-/*  Encoding passed in may be just "" if read from PFA file 96/May/26 */
-  if (unknowns > 0) {
-/*    fprintf(errout, " ERROR: %d character%s used not in `%s'",
-      unknowns, (unknowns == 1) ? "" : "s", encoding); */
+
+  /*  Encoding passed in may be just "" if read from PFA file 96/May/26 */
+  if (unknowns > 0)
+  {
     sprintf(logline, " ERROR: %d character%s used not in ",
       unknowns, (unknowns == 1) ? "" : "s");
     showline(logline, 1);
-//    if (*encoding != '\0') 
-    if (encoding != NULL) {
+
+    if (encoding != NULL)
+    {
       sprintf(logline, "`%s'", encoding);
       showline(logline, 0);
     }
-    else showline("encoding", 0);
+    else
+      showline("encoding", 0);
+
     errcount(0);
   }
+
   return unknowns;
 }
 
@@ -1925,52 +2188,42 @@ int missingchars (char *wantchrs, char *encoding)
 
 /* Maybe simplify this if StandardEncoding and no remapping ??? */
 
-/* void writeencoding(FILE *output, char wantchrs[], int syntheticflag) { */
+/* void write_enc(FILE *output, char wantchrs[], int syntheticflag) { */
 
 /* This also adjusts wantchrs to reflect base and accent characters */
 
 /* why aren't we just doing a return instead of setting `done' */
 
-/* void writeencoding(FILE *output, char *wantchrs, int syntheticflag) {*/
-void writeencoding(FILE *output, char *wantchrs, int syntheticflag, char *encoding)
+void write_enc(FILE *output, char *wantchrs, int syntheticflag, char *encoding)
 {
   int k, standardok=0, textextok=0, ansiok=0, nullchar=0;
-/*  int done=0; */
-/*  int i; */
-/*  char *charname;  */
   int composedflag=0;     /* if composite characters used */
-
-/*  syntheticflag = fontproper[i] & C_SYNTHETIC; */
-/*  for (k = fontchrs-1; k >= 0; k--) if (wantchrs[k] != 0) break; */
-/*  fprintf(output, "/Encoding %d array\n", k+1); */
-/*  fprintf(output, "0 1 %d {1 index exch /.notdef put} for\n", k); */
-/*      if (wantchrs[chr] != 0) fprintf(output, "%s", line); */
-/*      fprintf(output, "%s", line); */
 
 /*  unless 'N' flag used, force in base and accent characters */
 
-  if (accentedflag != 0) composedflag = expandaccents(wantchrs);
-  else composedflag = 0;
+  if (accentedflag != 0)
+    composedflag = expand_accents(wantchrs);
+  else
+    composedflag = 0;
 
-  if (strcmp(encoding, "standard") == 0) {
-/*    encoding = "StandardEncoding"; */   /* 94/Oct/25 */
-/*    fprintf(output, "/Encoding StandardEncoding def\n");  */
-//    fputs("/Encoding StandardEncoding def\n", output); 
+  if (strcmp(encoding, "standard") == 0)
+  {
     PSputs("/Encoding StandardEncoding def\n", output); 
     return;           /* 94/Oct/25 */
   }
 
-/*  Just refer to encoding by name if permitted to do so */
+  /*  Just refer to encoding by name if permitted to do so */
   if (strcmp(encoding, "") != 0)
   {
-    if (bAllowShortEncode) {  /* 94/Oct/25 */
-/*      fprintf(output, "/Encoding %s def\n", encoding); */
-/*      get rid of path name when referring to encoding 95/Feb/3 */
+    if (bAllowShortEncode)
+    {
       sprintf(logline, "/Encoding %s def\n", removepath(encoding));
       PSputs(logline, output);
+
       return;   /*  done = 1; */
     }
-    else goto writefull; /* need to write out encoding in full!  */
+    else
+      goto writefull; /* need to write out encoding in full!  */
   }
 
 /*  do not allow use of dviencoding if accented characters seen */
@@ -1981,85 +2234,93 @@ void writeencoding(FILE *output, char *wantchrs, int syntheticflag, char *encodi
 /*  if (done == 0 && composedflag == 0 &&  */
   if (composedflag == 0 && 
       syntheticflag == 0 &&   /* do we need to worry about this ? */
-        busedviencode != 0) { /*  && accentedflag == 0 */
-/*    fprintf(output, "/Encoding dviencoding def\n"); */
-//    fputs("/Encoding dviencoding def\n", output);
+        busedviencode != 0)
+  {
     PSputs("/Encoding dviencoding def\n", output);
     return;   /*    done = 1; */
-  }     /* end of dviencoding test */
+  }
 
 /*  added bSuppressPartial == 0 reference 1992/Sep/12 */
 /*  added bForceFullArr == 0 reference 1993/Feb/13 */
-/*  took out bForceFullArr == 0 reference 1993/Sep/30 by extending textext */ 
+/*  took out bForceFullArr == 0 reference 1993/Sep/30 by extending tex_text */ 
 
-/*  check whether textext will do */
+/*  check whether tex_text will do */
 /*  if (done == 0 && composedflag == 0 && bAllowTexText != 0 && */
   if (composedflag == 0 && bAllowTexText != 0 &&
 /*      bSuppressPartial == 0 && bForceFullArr == 0) { */
-      bSuppressPartial == 0) {
+      bSuppressPartial == 0)
+  {
     textextok = 1;
-/*    for (k = 0; k < fontchrs; k++) { */
-    for (k = fontchrs-1; k >= 0; k--) {   /* 93/Oct/2 */
-      if (wantchrs[k] != 0) {
+
+    for (k = fontchrs-1; k >= 0; k--)
+    {
+      if (wantchrs[k] != 0)
+      {
         if (k >= TEXCHRS ||       /* 93/Oct/2 */
           charnames[k][0] == '\0' ||  /* 95/July/15 */
-          strcmp(charnames[k], textext[k]) != 0) {
+          strcmp(charnames[k], tex_text[k]) != 0)
+        {
           textextok = 0; break;
         }
       }
-    }   
-    if (textextok != 0) {   /* fairly easy */
-/*      fprintf(output, "/Encoding textext def\n"); */
-//      fputs("/Encoding textext def\n", output);
+    }
+
+    if (textextok != 0)
+    {
       PSputs("/Encoding textext def\n", output);
       return;   /*  done = 1; */
     }
-  }     /* end of textext trial */
+  }
 
 /*  check whether Windows ANSI will do 1993/Sep/30 */
 
-/*  if (done == 0 && bWindowsFlag != 0) { */
-/*  if (bWindowsFlag != 0) { */
   if (bWindowsFlag != 0 && bAllowANSI != 0 &&   /* 94/Oct/25 */
-      bSuppressPartial == 0) {        /* 95/May/23 */
+      bSuppressPartial == 0)
+  {
     ansiok = 1;
 
-/*    for (k = 0; k < fontchrs; k++) { */
-    for (k = fontchrs-1; k >= 0; k--) {     /* 93/Oct/2 */
-      if (wantchrs[k] != 0) {
+    for (k = fontchrs-1; k >= 0; k--)
+    {
+      if (wantchrs[k] != 0)
+      {
         if (charnames[k][0] == '\0' ||  /* 95/July/15 */
-          strcmp(charnames[k], ansiencoding[k]) != 0) {
+          strcmp(charnames[k], ansi_enc[k]) != 0)
+        {
           ansiok = 0; break;
         }
       }
-    }   
-    if (ansiok != 0) {    /* fairly easy */
-/*      fprintf(output, "/Encoding ansinew def\n"); */
+    }
+
+    if (ansiok != 0)
+    {
       sprintf(logline, "/Encoding %s def\n",
-/*        textencoding); */         /* 94/Dec/17*/
-        textenconame);            /* 94/Dec/17*/
+        textenconame);
       PSputs(logline, output);
-      return;   /*    done = 1; */
+      return;   /* done = 1; */
     }
   }
 
 /*  check whether StandardEncoding will do */
 /*  if (done == 0 && bAllowStandard != 0) { */
   if (bAllowStandard != 0 &&
-      bSuppressPartial == 0) {      /* 95/May/23 ??? */
+      bSuppressPartial == 0)
+  {
     standardok = 1;
-/*    for (k = 0; k < fontchrs; k++) { */
-    for (k = fontchrs-1; k >= 0; k--) {   /* 93/Oct/2 */
-      if (wantchrs[k] != 0) {
+
+    for (k = fontchrs-1; k >= 0; k--)
+    {
+      if (wantchrs[k] != 0)
+      {
         if (charnames[k][0] == '\0' ||  /* 95/July/15 */
-          strcmp(charnames[k], standardencoding[k]) != 0) {
+          strcmp(charnames[k], std_enc[k]) != 0)
+        {
           standardok = 0; break;
         }
       }
     }
-    if (standardok != 0) {        /* nice and easy ! */
-/*      fprintf(output, "/Encoding StandardEncoding def\n"); */
-//      fputs("/Encoding StandardEncoding def\n", output);
+
+    if (standardok != 0)
+    {
       PSputs("/Encoding StandardEncoding def\n", output);
       return;   /*    done = 1; */
     }
@@ -2067,48 +2328,51 @@ void writeencoding(FILE *output, char *wantchrs, int syntheticflag, char *encodi
 
 writefull:
 
-/*  Couldn't use standard, textext, or Windows ANSI for some reason */
-/*  if (done == 0) { */
-    k = fontchrs-1;         /* use full if partial suppress */
-/*    if (bSuppressPartial == 0 || bForceFullArr != 0) { */
-    if (bSuppressPartial == 0 && bForceFullArr == 0) { /* 1993/Feb/15 */
-      for (k = fontchrs-1; k >= 0; k--) if (wantchrs[k] != 0) break;
-    }
-/*    printf(" suppress %d force %d k+1 %d\n",
-      bSuppressPartial, bForceFullArr, k+1); */ /* debugging */
-    sprintf(logline, "/Encoding %d array", k+1);
-    PSputs(logline, output);
-//    putc('\n', output);
-    PSputc('\n', output);
-    sprintf(logline, "0 1 %d {1 index exch /.notdef put} for\n", k);
-    PSputs(logline, output);
+/*  Couldn't use standard, tex_text, or Windows ANSI for some reason */
+
+  k = fontchrs-1;         /* use full if partial suppress */
+
+  if (bSuppressPartial == 0 && bForceFullArr == 0)
+  {
+    for (k = fontchrs-1; k >= 0; k--)
+      if (wantchrs[k] != 0)
+        break;
+  }
+
+  sprintf(logline, "/Encoding %d array", k+1);
+  PSputs(logline, output);
+  PSputc('\n', output);
+  sprintf(logline, "0 1 %d {1 index exch /.notdef put} for\n", k);
+  PSputs(logline, output);
     
-/*    nullchar=0; */
-    for (k = 0; k < fontchrs; k++) {
-      if (wantchrs[k] != 0 ||       /* addition 1992/Sep/12 */
-/*        (bSuppressPartial != 0 && strcmp(charnames[k], "") != 0)) { */
-        (bSuppressPartial != 0 && charnames[k][0] != 0)) {
-/*        if (strcmp(charnames[k], "") != 0) */
-        if (charnames[k][0] != '\0') {  /* 95/July/15 */
-          sprintf(logline, "dup %d /%s put\n", k, charnames[k]);
-          PSputs(logline, output);
-        }
-        else {
-          nullchar++;
-/*          fprintf(errout, " Null char name %d", k); */
-        }
+  for (k = 0; k < fontchrs; k++)
+  {
+    if (wantchrs[k] != 0 || (bSuppressPartial != 0 && charnames[k][0] != 0))
+    {
+      if (charnames[k][0] != '\0')
+      {
+        sprintf(logline, "dup %d /%s put\n", k, charnames[k]);
+        PSputs(logline, output);
+      }
+      else
+      {
+        nullchar++;
       }
     }
-//    fprintf(output, "readonly def\n");
-    PSputs("readonly def\n", output);
-    if (nullchar > 0) {         /* somewhat redundant ... */
-      if (traceflag) { 
-        sprintf(logline, " %d null char names", nullchar);
-        showline(logline, 1);
-      }
+  }
+
+  PSputs("readonly def\n", output);
+
+  if (nullchar > 0)
+  {
+    if (traceflag)
+    {
+      sprintf(logline, " %d null char names", nullchar);
+      showline(logline, 1);
     }
-    return; 
-/*  } */
+  }
+
+  return;
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -2119,36 +2383,34 @@ writefull:
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-void beginresource (FILE *output, char *filefontname)
+void begin_resource (FILE *output, char *filefontname)
 {
-  if (stripcomment == 0) {          /* 1994/Feb/3 */
-//    fputs("%%BeginResource: ", output);
+  if (stripcomment == 0)
+  {
     PSputs("%%BeginResource: ", output);
-//    fputs("font ", output);
     PSputs("font ", output);
-//    fputs(filefontname, output);
     PSputs(filefontname, output);
-//    putc('\n', output);
     PSputc('\n', output);
   }
 }
 
-int endresource (FILE *output)
+int end_resource (FILE *output)
 {
-  if (stripcomment == 0) {
-//    fputs("%%EndResource\n", output);
+  if (stripcomment == 0)
+  {
     PSputs("%%EndResource\n", output);
   }
-/*  good place to check for output error also ... */
-//  if (ferror(output) != 0)
-  if (output != NULL && ferror(output)) {
+
+  if (output != NULL && ferror(output))
+  {
     showline("\n", 0);
-//    sprintf(logline, " ERROR in output file %s\n", outputfile);
     showline("ERROR in output file", 1);
     perrormod((outputfile != NULL) ? outputfile : "");
     extgiveup(7);
+
     return -1;
   }
+
   return 0;
 }
 
@@ -2156,204 +2418,277 @@ int endresource (FILE *output)
 /* --- pretty desperate move ! */ /* don't try to be efficient */
 /* int i is font number in case needed for error message */
 
-void copyunknown (FILE *output, FILE *input, int i, char *fontnamek)
+void copy_unknown (FILE *output, FILE *input, int i, char *fontnamek)
 {
   int c;
-  if (verboseflag) {
-    showline(fontnamek, 0);   /* 1995/Mar/1 */
+
+  if (verboseflag)
+  {
+    showline(fontnamek, 0);
   }
-  else {
+  else
+  {
     showline("*", 0);
   }
+
   showline(" WARNING: Font type not recognized!\n", 1);
-  while ((c = getc(input)) != EOF) {
-//    putc(c, output);
+
+  while ((c = getc(input)) != EOF)
+  {
     PSputc(c, output);
   }
-/*  return 1; */      /* just copied the damn thing ! */
 }
 
 /* copy ascii section of a compressed file - old version */
 /* returns EOF if EOF hit */
 
-int copyascii (FILE *output, FILE *input, long n, int firstline)
+int copy_ascii (FILE *output, FILE *input, long n, int firstline)
 {
   int c;
 
-  c = getc(input); n--;
-  if (c == '\r' && flushcr != 0) {
-    c = getc(input); n--;
-    if (c != '\n') {
+  c = getc(input);
+  n--;
+
+  if (c == '\r' && flushcr != 0)
+  {
+    c = getc(input);
+    n--;
+
+    if (c != '\n')
+    {
       (void) ungetc(c, input); n++;
       c = '\n';
     }
   }
-  else if (firstline == 0) {
-//    putc('\n', output);
+  else if (firstline == 0)
+  {
     PSputc('\n', output);
   }
 
-  while (c != EOF) {
-    if (c == 128 || c == 0) {     /* hit start of next section */
+  while (c != EOF)
+  {
+    if (c == 128 || c == 0)
+    {
       (void) ungetc(c, input);  n++;
       break;
     }
-    if (c == '\n') clm = 0;
-//    putc(c, output);
+
+    if (c == '\n')
+      clm = 0;
+
     PSputc(c, output);
-    c = getc(input); n--;
-    if (c == '\r' && flushcr != 0) {
-      c = getc(input); n--;
-      if (c != '\n') {
+    c = getc(input);
+    n--;
+
+    if (c == '\r' && flushcr != 0)
+    {
+      c = getc(input);
+      n--;
+
+      if (c != '\n')
+      {
         (void) ungetc(c, input); n++;
         c = '\n';
       }
     }
   }
-  if (c == EOF) {
+
+  if (c == EOF)
+  {
     sprintf(logline, " Unexpected EOF (%s)\n", "copyascii");
     showline(logline, 1);
+
     return EOF;
   }
-  if (n != 0) {
+
+  if (n != 0)
+  {
     sprintf(logline, " Length discrepancy %ld", n);
     showline(logline, 1);
   }
+
   return 0;
 }  
 
 /* copy ascii section of a compressed file - strip {restore}if */
 /* returns EOF if EOF hit */ /* special kludge for wrapped synthetic fonts */
 
-int copystrip (FILE *output, FILE *input, long n, int firstline)
+int copy_strip (FILE *output, FILE *input, long n, int firstline)
 {
   int c;
   char *s, *t;
 
-  c = getc(input); n--;
-  if (c == '\r' && flushcr != 0) {
-    c = getc(input); n--;
-    if (c != '\n') {
+  c = getc(input);
+  n--;
+
+  if (c == '\r' && flushcr != 0)
+  {
+    c = getc(input);
+    n--;
+
+    if (c != '\n')
+    {
       (void) ungetc(c, input); n++;
       c = '\n';
     }
   }
-  else if (firstline == 0) {
-//    putc('\n', output);
+  else if (firstline == 0)
+  {
     PSputc('\n', output);
   }
 
-  s = line;               /* use line as buffer */
-  while (c != EOF) {
-    if (c == 128 || c == 0) {     /* hit start of next section */
-      (void) ungetc(c, input);  n++;
+  s = line;
+
+  while (c != EOF)
+  {
+    if (c == 128 || c == 0)
+    {
+      (void) ungetc(c, input);
+      n++;
       break;
     }
-    if (c == '\n' || c == '\r') {
+
+    if (c == '\n' || c == '\r')
+    {
       *s++ = (char) c;
       *s = '\0';        /* terminate line */
-      if ((s = strstr(line, "{restore}")) != NULL) {
-        if ((t = strstr(line, "cleartomark")) != NULL) {
+
+      if ((s = strstr(line, "{restore}")) != NULL)
+      {
+        if ((t = strstr(line, "cleartomark")) != NULL)
+        {
           *s++ = (char) c;
           *s++ = '\0';      /* cut off after cleartomark */
-//          fputs(line, output);  /* 1992/Aug/20 */
           PSputs(line, output); /* 1992/Aug/20 */
         }
-        if (stripcomment == 0) {    /* 1995/May/14 */
-//          fputs("% font wrapper removed\n", output);
+
+        if (stripcomment == 0)
+        {
           PSputs("% font wrapper removed\n", output);
         }
       }
-      else {
-//        fputs(line, output);  /* finally output it */
+      else
+      {
         PSputs(line, output); /* finally output it */
       }
+
       s = line;       /* reset line buffer */
       clm = 0;
     }
-/*    putc(c, output); */
-    else *s++ = (char) c;   /* check for line length exceeded ? */
+    else
+      *s++ = (char) c;   /* check for line length exceeded ? */
+
     c = getc(input); n--;   /* get next character */
-    if (c == '\r' && flushcr != 0) {
-      c = getc(input); n--;
-      if (c != '\n') {
-        (void) ungetc(c, input); n++;
+
+    if (c == '\r' && flushcr != 0)
+    {
+      c = getc(input);
+      n--;
+
+      if (c != '\n')
+      {
+        (void) ungetc(c, input);
+        n++;
+
         c = '\n';
       }
     }
   }
-  if (c == EOF) {
+
+  if (c == EOF)
+  {
     sprintf(logline, " Unexpected EOF (%s)\n", "copystrip");
     showline(logline, 1);
+
     return EOF;
   }
-  if (n != 0) {
+
+  if (n != 0)
+  {
     sprintf(logline, " Length discrepancy %ld", n);
     showline(logline, 1);
   }
+
   return 0;
 }  
 
 /* copy binary section of a compressed file */
 
-int copybinary (FILE *output, FILE *input, long n)
+int copy_binary (FILE *output, FILE *input, long n)
 {
   int c, d;
   long k;
   
-  for (k = 0; k < n; k++) {
-    c = getc(input); 
-    if (c == EOF) {
+  for (k = 0; k < n; k++)
+  {
+    c = getc(input);
+
+    if (c == EOF)
+    {
       sprintf(logline, " Unexpected EOF (%s)\n", "copybinary");
       showline(logline, 1);
+
       return -1;
     }
+
     d = c & 15; c = (c >> 4) & 15;
+
     if (c > 9) c = c + 'A' - 10; else c = c + '0';
+
     if (d > 9) d = d + 'A' - 10; else d = d + '0';
-//    putc(c, output);
+
     PSputc(c, output);
-//    putc(d, output);
     PSputc(d, output);
-    if ((clm += 2) >= columns) {
-//      putc('\n', output);
+
+    if ((clm += 2) >= columns)
+    {
       PSputc('\n', output);
       clm = 0;
     }
   }
+
   return 0;
 } 
 
-void copypfa (FILE *output, FILE *input, int stripflag)
+void copy_pfa (FILE *output, FILE *input, int stripflag)
 {
   int c;
   char *s, *t;
   
-  if (stripflag == 0) {         /* normal easy case */
-    while ((c = getc(input)) != EOF) {
-      if (c == '\r' && flushcr != 0) {
+  if (stripflag == 0)
+  {
+    while ((c = getc(input)) != EOF)
+    {
+      if (c == '\r' && flushcr != 0)
+      {
         c = getc(input);
-        if (c != '\n') {
+
+        if (c != '\n')
+        {
           (void) ungetc(c, input);
           c = '\n';
         }
       }
-//      putc(c, output);
+
       PSputc(c, output);
     }
   }
-  else {        /* need to watch for closing wrapper */
-    while (extgetline (input, line) != EOF) {
-      if ((s = strstr(line, "{restore}")) != NULL) {
-        if ((t = strstr(line, "cleartomark")) != NULL) {
+  else   /* need to watch for closing wrapper */
+  {
+    while (extgetline (input, line) != EOF)
+    {
+      if ((s = strstr(line, "{restore}")) != NULL)
+      {
+        if ((t = strstr(line, "cleartomark")) != NULL)
+        {
           *s++ = '\n';
           *s++ = '\0';      /* cut off after cleartomark */
-//          fputs(line, output);  /* 1992/Aug/20 */
-          PSputs(line, output); /* 1992/Aug/20 */
+          PSputs(line, output);
         }
+
         continue;         /* just flush it */
       }
-//      fputs(line, output);
+
       PSputs(line, output);
     }
   }
@@ -2362,25 +2697,27 @@ void copypfa (FILE *output, FILE *input, int stripflag)
 /* special purpose hack for fonts in PFA format that suck rocks */
 /* flush this eventually ... */
 
-void copymtmi (FILE *output, FILE *input, int stripflag)
+void copy_mtmi (FILE *output, FILE *input, int stripflag)
 {
-/*  int c; */
   char *s, *t;
-/*  char buffer[MAXCHRS]; */
 
-  if (stripflag == 0) showline(" no wrapper ", 1);    /* debugging */
+  if (stripflag == 0)
+    showline(" no wrapper ", 1);
 
-  while (extgetline (input, line) != EOF) {
-    if ((s = strstr(line, "{restore}")) != NULL) {
-      if ((t = strstr(line, "cleartomark")) != NULL) {
+  while (extgetline (input, line) != EOF)
+  {
+    if ((s = strstr(line, "{restore}")) != NULL)
+    {
+      if ((t = strstr(line, "cleartomark")) != NULL)
+      {
         *s++ = '\n';
-        *s++ = '\0';      /* cut off after cleartomark */
-//        fputs(line, output);  /* 1992/Aug/20 */
-        PSputs(line, output); /* 1992/Aug/20 */
+        *s++ = '\0';
+        PSputs(line, output);
       }
+
       continue; 
     }
-//    fputs(line, output);
+
     PSputs(line, output);
   }
 }
@@ -2389,7 +2726,7 @@ void copymtmi (FILE *output, FILE *input, int stripflag)
 /* but only if syntheticflag or mtmiflag non-zero */
 /* int i is font number in case needed for error message */
 
-void copyfont (FILE *output, FILE *input, int i, int mtmiflag, int stripflag)
+void copy_font (FILE *output, FILE *input, int i, int mtmiflag, int stripflag)
 {
   int c, d, firstline = 1;
   int ascii=1, binary=0;    /* section counts */ /* presently not used */
@@ -2397,85 +2734,129 @@ void copyfont (FILE *output, FILE *input, int i, int mtmiflag, int stripflag)
 
   firstline = 0;        /* since we already past start of file ! */
   c = getc(input);      /* skip over initial white space */
-  while (c == '\n' || c == '\r' || c == ' ') c = getc(input); 
+
+  while (c == '\n' || c == '\r' || c == ' ')
+    c = getc(input); 
+
   (void) ungetc(c, input);
-/*  putc('\n', output); */  /* ??? */
   clm = 0;
-  if (c == 0) {     /* assume MacIntosh format */
-/*    showline(" MAC ", 0); */  /* debugging */
+
+  if (c == 0)    /* assume MacIntosh format */
+  {
     n = maclength(input);
-    c = getc(input); d = getc(input);   /* d should be zero */
-    while (c != 5) {
-      if (c == 1) {
+
+    c = getc(input);
+    d = getc(input);   /* d should be zero */
+
+    while (c != 5)
+    {
+      if (c == 1)
+      {
         ascii++;
-        if (copyascii(output, input, n - 2, firstline) != 0) break;
+
+        if (copy_ascii(output, input, n - 2, firstline) != 0)
+          break;
+
         firstline = 0;
       }
-      else if (c == 2) {
+      else if (c == 2)
+      {
         binary++;
-        if (copybinary(output, input, n - 2) != 0) break;
+
+        if (copy_binary(output, input, n - 2) != 0)
+          break;
       }
-      else {
+      else
+      {
         sprintf(logline, " Unrecognized section code %d", c);
         showline(logline, 1);
+
         break;
       }
+
       n = maclength(input);
-      c = getc(input); d = getc(input);
-      if (c == EOF) {
-        sprintf(logline, " Unexpected EOF (%s)\n", "copyfont");
+      c = getc(input);
+      d = getc(input);
+
+      if (c == EOF)
+      {
+        sprintf(logline, " Unexpected EOF (%s)\n", "copy_font");
         showline(logline, 1);
+
         break;
       }
     }
   }
-  else if (c == 128) {  /* assume PFB format */
-/*    showline(" PFB ", 0); */    /* debugging */
-    c = getc(input); d = getc(input);
-    while (d != 3) {
+  else if (c == 128) /* assume PFB format */
+  {
+    c = getc(input);
+    d = getc(input);
+
+    while (d != 3)
+    {
       n = readlength(input);
-      if (d == 1) {     /* ASCII section code */
+
+      if (d == 1)    /* ASCII section code */
+      {
         ascii++;
-/*        printf(" strip %d ascii %d ", stripflag, ascii); *//* debug */
-        if (stripflag != 0 && ascii > 1) {
-          if (copystrip(output, input, n, firstline) != 0) break;
+
+        if (stripflag != 0 && ascii > 1)
+        {
+          if (copy_strip(output, input, n, firstline) != 0)
+            break;
         }
-        else {
-          if (copyascii(output, input, n, firstline) != 0) break; 
+        else
+        {
+          if (copy_ascii(output, input, n, firstline) != 0)
+            break;
         }
+
         firstline = 0;
       }
-      else if (d == 2) {    /* binary section code */
+      else if (d == 2) /* binary section code */
+      {
         binary++;
-        if (copybinary(output, input, n) != 0) break;
+
+        if (copy_binary(output, input, n) != 0)
+          break;
       }
-      else {
+      else
+      {
         sprintf(logline, " Unrecognized section code %d", d);
         showline(logline, 1);
+
         break;
       }
-      c = getc(input); d = getc(input);
-      if (c == EOF) {
-        sprintf(logline, " Unexpected EOF (%s)\n", "copyfont");
+
+      c = getc(input);
+      d = getc(input);
+
+      if (c == EOF)
+      {
+        sprintf(logline, " Unexpected EOF (%s)\n", "copy_font");
         showline(logline, 1);
+
         break;
       }
     }
   }
   else if ((c >= '0' && c <= '9') || 
     (c >= 'A' && c <= 'F') ||
-      (c >= 'a' && c <= 'f')) { /* assume PFA format */
-/*    showline(" PFA ", 0); */        /* debugging */
-    if (mtmiflag == 0) copypfa (output, input, stripflag); /* normal PFA */
-    else copymtmi (output, input, stripflag);   /* MTMI */
+    (c >= 'a' && c <= 'f')) /* assume PFA format */
+  {
+    if (mtmiflag == 0)
+      copy_pfa (output, input, stripflag); /* normal PFA */
+    else
+      copy_mtmi (output, input, stripflag);   /* MTMI */
   }
-  else {
+  else
+  {
     sprintf(logline, " Don't understand font file format %d", c);
     showline(logline, 1);
     errcount(0);
   }
-/*  following duplicates code at end of extracttype1 */
-  endresource(output);            /* share code */
+
+  end_resource(output);            /* share code */
 }
 
 /* Use the following more in future to avoid dependency on line breaks ? */
@@ -2515,7 +2896,7 @@ int gobbleencoding (FILE *input)
   int base=10;
   char *s, *t;
 
-/*  cleanencoding(0, MAXCHRS);  */
+/*  clean_enc(0, MAXCHRS);  */
 
 /*  may want to remove some debugging error message output later ... */
   s = strtok(line, " \t\n\r");  /* start the pipeline */
@@ -2562,7 +2943,7 @@ int gobbleencoding (FILE *input)
 /*      printf("%d: %s ", chr, s); */ /* debugging */
 /*      strcpy(charnames[chr], s); */
       if (strcmp(s, ".notdef") != 0)    /* ignore .notdef 97/Jan/7 */
-        addencoding(chr, s);      /* 93/Nov/15 */
+        add_enc(chr, s);      /* 93/Nov/15 */
     }
     else {
       sprintf(logline, "Invalid char number %d ", chr);
@@ -3162,8 +3543,8 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
   }
 
   if (stripcomment == 0) {
-    if (mmflag) beginresource(output, subfontnamek);  /* 97/June/1 */
-    else beginresource(output, filefontname);   /* share code */
+    if (mmflag) begin_resource(output, subfontnamek);  /* 97/June/1 */
+    else begin_resource(output, filefontname);   /* share code */
 /*    fprintf(output, "%s", line); */ /* copy %! heading line  ??? */
 //    fputs(line, output);
     PSputs(line, output);
@@ -3326,24 +3707,24 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
           showline("~", 0);
         }
 /*        for (k = 0; k < fontchrs; k++)
-          strcpy(charnames[k], ansiencoding[k]); */
+          strcpy(charnames[k], ansi_enc[k]); */
 /* ansi encoding may have been changed if env var ENCODING is set ??? */
-        copyencoding(charnames, ansiencoding, fontchrs); /* 93/Nov/15*/
-/*        writeencoding(output, wantchrs, syntheticflag, "ansinew"); */
-/*        writeencoding(output, wantchrs, syntheticflag, textencoding); */
-        missingchars(wantchrs, textenconame); /* TEST 95/July/15 */
-        writeencoding(output, wantchrs, syntheticflag, textenconame);
+        copy_enc(charnames, ansi_enc, fontchrs); /* 93/Nov/15*/
+/*        write_enc(output, wantchrs, syntheticflag, "ansinew"); */
+/*        write_enc(output, wantchrs, syntheticflag, textencoding); */
+        missing_chars(wantchrs, textenconame); /* TEST 95/July/15 */
+        write_enc(output, wantchrs, syntheticflag, textenconame);
         if (bCheckEncoding) (void) checkencoding(fn); /* 95/Jan/10 */
         nansified++;    /* count how many we did this way */
       } /* if (bWindowsFlag != 0) */
       else {
 /*        for (k = 0; k < fontchrs; k++)
-          strcpy(charnames[k], standardencoding[k]); */
-        copyencoding(charnames, standardencoding, fontchrs); /* 93/Nov/15*/
-        missingchars(wantchrs, "standard");   /* TEST 95/July/15 */
-        writeencoding(output, wantchrs, syntheticflag, "standard");
+          strcpy(charnames[k], std_enc[k]); */
+        copy_enc(charnames, std_enc, fontchrs); /* 93/Nov/15*/
+        missing_chars(wantchrs, "standard");   /* TEST 95/July/15 */
+        write_enc(output, wantchrs, syntheticflag, "standard");
       }
-/*      writeencoding(output, wantchrs, syntheticflag); */  /* ??? */
+/*      write_enc(output, wantchrs, syntheticflag); */  /* ??? */
     }   /* end of StandardEncoding case (unremapped) */
     else {    /* font was not using StandardEncoding (unremapped) */
       standard = 0;
@@ -3368,7 +3749,7 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 /*      clear out charnames - background of blanks */
 /*      for (k = 0; k < MAXCHRS; k++) strcpy(charnames[k], ""); */
 /*      for (k = 0; k < MAXCHRS; k++) *charnames[k] = '\0';*//* 92/02/04 */
-      cleanencoding(0, MAXCHRS);          /* 93/Nov/15 */
+      clean_enc(0, MAXCHRS);          /* 93/Nov/15 */
 
       task = "reading Encoding"; 
 /*      k = extgetrealline(input, line); */ /* 92/02/04 now done above */
@@ -3376,9 +3757,9 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 /*      scan encoding - ends on "readonly def" usually */
 /*      new tokenized version follows */
       gobbleencoding(input);
-/*      writeencoding(output, wantchrs, syntheticflag); */  /* ??? */
-      missingchars(wantchrs, "");     /* NEW TEST 95/July/15 */
-      writeencoding(output, wantchrs, syntheticflag, "");
+/*      write_enc(output, wantchrs, syntheticflag); */  /* ??? */
+      missing_chars(wantchrs, "");     /* NEW TEST 95/July/15 */
+      write_enc(output, wantchrs, syntheticflag, "");
     } /* Finished with NOT StandardEncoding case */
   } /* finish with non-remapped font case */ 
 
@@ -3400,10 +3781,10 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
         k = extgetrealline(input,line);
       }
     }
-    readencoding(vector); /* read desired encoding */
-/*    writeencoding(output, wantchrs, syntheticflag); */
-    missingchars(wantchrs, vector);     /* NEW TEST 95/July/15 */
-    writeencoding(output, wantchrs, syntheticflag, "");
+    read_enc(vector); /* read desired encoding */
+/*    write_enc(output, wantchrs, syntheticflag); */
+    missing_chars(wantchrs, vector);     /* NEW TEST 95/July/15 */
+    write_enc(output, wantchrs, syntheticflag, "");
   } /* end of dealing with encoding vector */
 
 /*  if (traceflag) showencoding(stdout);  */
@@ -3435,14 +3816,14 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 /*  Problem: what if syntheticflag set, but stripflag also set !!! */
   if (syntheticflag != 0 ||
        mtmiflag != 0) { /* pretty much just expand PFB to PFA */
-/*    copyfont(output, input, i, mtmiflag, stripflag); */
-    copyfont(output, input, fn, mtmiflag, stripflag);
+/*    copy_font(output, input, i, mtmiflag, stripflag); */
+    copy_font(output, input, fn, mtmiflag, stripflag);
     return 1;
   }
 
   cryptin = REEXEC;
   cryptout = REEXEC;
-  clm = 0;        // important for outencrypt
+  clm = 0;        // important for out_encrypt
 
   task = "entering encrypted section";
 
@@ -3490,30 +3871,30 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 
 /* copying across the four random encoding bytes at start also */
 
-  n = getmagic(input, line);        /* 1993/Sep/14 */
-  putenlinen(output, line, n);      /* 1993/Sep/14 */
+  n = get_magic(input, line);        /* 1993/Sep/14 */
+  put_en_linen(output, line, n);      /* 1993/Sep/14 */
   
   task = "looking for CharString dict";
-  n = getenline(input, line);
+  n = get_en_line(input, line);
   while ((s = strstr(line, "/CharStrings")) == NULL) {
 /*  Omit UniqueID if font remapped AND dviencoding in use  */
     if ((property & C_REMAPIT) != 0) {
       if (busedviencode != 0 && strstr(line, "/UniqueID") != NULL) {
 /*        if (verboseflag) printf(" Stripping UniqueID"); */
-        n = getenline(input, line); continue; 
+        n = get_en_line(input, line); continue; 
       }
     }
-    putenlinen(output, line, n);
+    put_en_linen(output, line, n);
     if (strstr(line, "/Subrs") != NULL) {
-      copysubrs(output, input);
+      copy_subrs(output, input);
 /* may want to inject a spurious newline here ... */
 /*      printf("Old line %s", line); */ /* |- */
-/*      n = getenline(input, line); */
+/*      n = get_en_line(input, line); */
 /*      printf("New line %s", line); */ /* end noaccess put */
       if (abortflag) return -1;
     }
 /*    else  */
-    n = getenline(input, line);
+    n = get_en_line(input, line);
 /* check on possibility of Synthetic Font */
 /* possibly suppress discarding of unwanted characters ? */
 /* Synthetic fonts won't work when remapped ? */
@@ -3539,8 +3920,8 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
   else if (strncmp(line, "dup", 3) == 0) fontform = 1;  /* old form */
   else fontform=0;                  /* not recognized */
   if (sscanf(s, "/CharStrings %d%n", &nchrs, &n) < 1) {
-    putenline(output, line);    /* 1993 Aug 5 - allow line split */
-    n = getenline(input, line);
+    put_en_line(output, line);    /* 1993 Aug 5 - allow line split */
+    n = get_en_line(input, line);
     s = line;
     if (strstr(line, "dict dup") == NULL ||
       sscanf(s, "%d%n", &nchrs, &n) < 1) {
@@ -3552,10 +3933,10 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
   }
   else {        /* normal case: /CharString <n> dict dup on line */
     *(s+13) = '\0';       /* terminate after `/CharStrings' */
-    putenline(output, line);  /* start of modified /CharString line */
+    put_en_line(output, line);  /* start of modified /CharString line */
   }
 /*  *s = '\0';        */  /* terminate before /CharStrings */
-/*  putenline(output, line); */ /* start of modified /CharString line */
+/*  put_en_line(output, line); */ /* start of modified /CharString line */
 
 charagain:              /* 1993 Aug 5 - hybrid font loop */
 
@@ -3572,16 +3953,16 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
 /*  if (wantnotdef != 0) nchrs++; */
 /*  sprintf(line, "/CharStrings %d", nchrs); */
   sprintf(line, "%d", nchrs);   /* 1993 Aug 5 */
-  putenline(output, line);  /* middle of modified /CharString line */
+  put_en_line(output, line);  /* middle of modified /CharString line */
   *(s+n) = ' ';       /* fix up, in case it became `\0' */
-  putenline(output, s + n); /* end of modified /CharString line */
+  put_en_line(output, s + n); /* end of modified /CharString line */
 
   task = "scanning CharStrings";
   chrs = 0;         /* not used ? 95/Oct/28 */
 /*  for (k = 0; k < MAXCHRS; k++); charseen[k] = 0; *//* do earlier ??? */
   for (k = 0; k < MAXCHRS+1; k++) charseen[k] = 0; /* fix 1992/Aug/21 */
   for(;;) {
-    if (getcharline(line, input, 0) != 0) break;
+    if (get_char_line(line, input, 0) != 0) break;
 /* the token "end" indicates the end of the CharString section */
     if (sscanf(line, "/%s %d %n", charname, &nbin, &n) < 2) { 
       sprintf(logline, " Not a CharString line: %s", line);
@@ -3591,7 +3972,7 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
       n = sscanf(line, "/%s %d %n", &charname, &nbin, &n);
       fprintf(errout, " found only %d items in %d chars, first %d ! ", 
         n, strlen(line), (int) *line); */
-      if (getcharline(line, input, 0) != 0) break;
+      if (get_char_line(line, input, 0) != 0) break;
       errcount(0);      /* a little risky going on here ? */
 /*      extgiveup(9); */  /* or, just flush THIS file ? */
     }
@@ -3602,11 +3983,11 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
 /*  possibly check here whether syntheticflag is set ??? */
 /*  in that case just transfer all characters */ /* 1992/Aug/22 */
 /*  shouldn't this depend on whether we used StandardEncoding ? */
-/*    k = wantthisname(charname, chrs, wantchrs); */
+/*    k = want_this_name(charname, chrs, wantchrs); */
     guess = -1;
 /*    single character charnames equal their char code 95/Oct/28 */
     if (*(charname+1) == '\0') guess = *charname;
-    k = wantthisname(charname, guess, wantchrs);
+    k = want_this_name(charname, guess, wantchrs);
     if (k >= 0 || syntheticflag != 0) {         /* 1992/Aug/22 */
 /*      if (k < 0 || k >= MAXCHRS) 
         fprintf(errout, "Way out of range k %d ", k);   else  */
@@ -3621,15 +4002,15 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
         else sprintf(line, "/a%d %d -| ", k, nbin);
       }
 /* above assumes using either RD or -| ??? */
-      putenline(output, line);    /* beginning of character */
-      copycharstring(output, input, nbin);
+      put_en_line(output, line);    /* beginning of character */
+      copy_char_string(output, input, nbin);
 /*      printf("%d ", k); */    /* debugging */
 /* this may not be accurate if repeated encoding and both char codes used .. */
       count--;        /* how many we extracted so far */
 /*      debugging only */
 /*      if (count == 0 && breakearly != 0 && fontform != 0) break; */
     }
-    else flushcharstring(input, nbin);
+    else flush_char_string(input, nbin);
     chrs++;         /* not used ? 95/Oct/28 */
     if (bAbort) abortjob();       /* 1992/Nov/24 */
     if (abortflag) return -1;
@@ -3682,14 +4063,14 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
 
   chrs = -1;
   task = "copying end of CharString dict def";
-  putenline(output, line);      /* copy beginning of end line */
-  n = getenline(input, line);     /* copy rest of line */
-  putenline(output, line);
+  put_en_line(output, line);      /* copy beginning of end line */
+  n = get_en_line(input, line);     /* copy rest of line */
+  put_en_line(output, line);
 
 /*  1993 August 5 - deal with `hybrid' font - second set of CharStrings */
 /*  if (strncmp(line, "hires", 5) == 0) { */
   if (strstr(line, "hires") != NULL) {    /* 1994/July/15 */
-    n = getenline(input, line);   /* get potential <n> dict dup line */
+    n = get_en_line(input, line);   /* get potential <n> dict dup line */
     s = line;
     if (strstr(line, "dict dup") != NULL &&
       sscanf(s, "%d%n", &nchrs, &n) == 1) goto charagain;
@@ -3699,25 +4080,25 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
       if (sscanf(s, "%d%n", &nchrs, &n) == 1) {
 /*        printf("CHARSTRING: %s", s); */ /* debugging */
         *s = '\0';        /* terminate after `/CharStrings' */
-        putenline(output, line); /* start modified /CharString line */
+        put_en_line(output, line); /* start modified /CharString line */
         goto charagain;
       }
     }
   }
-  else n = getenline(input, line);      /* copy /FontName line */
+  else n = get_en_line(input, line);      /* copy /FontName line */
   
 /* if by mistake we wade into second /CharStrings of hybrid font, following */
 /* goes wrong because it copies binary stuff and treats 0 char as end string */
 
   task = "copying end of font dict def";
-/*  n = getenline(input, line); */      /* copy /FontName line */
+/*  n = get_en_line(input, line); */      /* copy /FontName line */
   while (strstr(line, "closefile") == NULL) {
-    putenline(output, line);
-    n = getenline(input, line);
+    put_en_line(output, line);
+    n = get_en_line(input, line);
   }
 
-  putenline(output, line);
-  flushencrypt(output);           // ???
+  put_en_line(output, line);
+  flush_encrypt(output);           // ???
 
 /*  A problem here if the font has junk at the end of binary section ... */
 /*  Will this `fix' screw up treatment of Mac fonts ? */
@@ -3773,7 +4154,7 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
     PSputs(line, output);
   }
 
-  endresource(output);      /* share some code */
+  end_resource(output);      /* share some code */
   if (stripflag != 0) 
     showline(" WARNING: broken wrapper ", 1); /* 1992/Oct/7 */
   return 1;             /* indicate success */
@@ -3823,7 +4204,7 @@ int extracttype3 (FILE *output, FILE *input, int i, char *fontnamek)
   }
   if (verboseflag) showline(" BITMAP", 0); 
   if (stripcomment == 0) {
-    beginresource(output, filefontname);    /* share code */
+    begin_resource(output, filefontname);    /* share code */
 //    fputs(line, output);
     PSputs(line, output);
     if (wantcreation != 0) {
@@ -3937,7 +4318,7 @@ int extracttype3 (FILE *output, FILE *input, int i, char *fontnamek)
     if (bAbort) abortjob();   /* 1992/Nov/24 */
   }
 
-  endresource(output);
+  end_resource(output);
   return 1;               /* indicate success */
 }
   
@@ -4022,7 +4403,7 @@ int decompressfont (FILE *output, FILE *input, char *FontName)
 /*  size_t n; */
   long len;
 
-  beginresource(output, FontName);
+  begin_resource(output, FontName);
   c = getc(input);
   ungetc(c, input);
   if (c != 128) {         /* we have to assume it is PFA format */
@@ -4057,7 +4438,7 @@ int decompressfont (FILE *output, FILE *input, char *FontName)
       if (eof) break;
     }
   }
-  endresource(output);
+  end_resource(output);
   return 0;
 }
 
@@ -4233,7 +4614,7 @@ int readsubstitutes (FILE *input)
 /*      else if (strcmp(sd, CONTROL) == 0) property |= C_CONTROL; */ /* 95/Oct/15 */
       else if (strcmp(sd, REMAPIT) == 0) {
         property |= C_REMAPIT;      /* remap */
-        strcpy(vector, "textext");    /* default */
+        strcpy(vector, "tex_text");    /* default */
         sd = strtok(NULL, " \t\n\r"); /* try and find vector */
         if (sd != NULL) {
 /*        if no encoding vector given, then use default and go on */
@@ -4324,7 +4705,7 @@ int readsubstitutes (FILE *input)
   }
   ksubst = k;   /* remember number of entries in substitution table */
 /*  fclose(input); */               /* 1994/Feb/4 */
-/*  if (traceflag) showsubtable(stdout); */ /* an experiment */ 
+/*  if (traceflag) show_sub_table(stdout); */ /* an experiment */ 
   return ksubst;
 }
 
@@ -4376,7 +4757,7 @@ FILE *OpenFont_Sub (char *font)
 
 /*  Now deal with ATM 4.0 way of doing multiple masters 97/June/1 */
   removeexten(fn_in);         /* remove extension again */
-  removeunder(fn_in);         /* remove underscores again */
+  remove_under(fn_in);         /* remove underscores again */
   forceexten(fn_in, "pfm");     /* MM PFM file 97/June/1 */
 /*  check in listed directories *and* PFM subdirectories */
   if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", -1)) != NULL) {
@@ -4404,7 +4785,7 @@ FILE *OpenFont_Sub (char *font)
 
 /*  Now deal with older way of doing multiple master fonts */
   removeexten(fn_in);         /* remove extension again */
-  removeunder(fn_in);         /* remove underscores again */
+  remove_under(fn_in);         /* remove underscores again */
   forceexten(fn_in, "pss");     /* MM PSS stub file 94/Dec/6 */
   if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL) {
     pssflag = 1;          /* make a note */
@@ -4437,7 +4818,7 @@ FILE *OpenFont_Sub (char *font)
     if ((searchpath=nextpathname(fn_in, searchpath)) == NULL) break;
     s = fn_in + strlen(fn_in) - 1;
     if (*s != ':' && *s != '\\' && *s != '/') strcat(fn_in, "\\");
-    strcat(fn_in, font);        /* use makefilename ??? */
+    strcat(fn_in, font);        /* use make_file_name ??? */
     forceexten(fn_in, "pfb");     /* try .pfb first */
     if ((fp_in = fopen(fn_in, "rb")) != NULL) return fp_in;
     forceexten(fn_in, "pfa");     /* try .pfa next */
@@ -4454,7 +4835,7 @@ FILE *OpenFont_Sub (char *font)
       }
     }
     removeexten(fn_in);         /* remove extension again */
-    removeunder(fn_in);         /* remove underscores again */
+    remove_under(fn_in);         /* remove underscores again */
     forceexten(fn_in, "ps");      /* try PKTOPS output format */
     if ((fp_in = fopen(fn_in, "rb")) != NULL) { /* "r" ? */
       type3flag = 1;  return fp_in;   /* not reliable - test later */
@@ -4620,7 +5001,7 @@ FILE *openpfm (char *font)
     s = fn_pfm + strlen(fn_pfm) - 1;
     if (*s != ':' && *s != '\\' && *s != '/') strcat(fn_pfm, "\\"); 
     t = s + strlen(s);
-    strcat(fn_pfm, font);       /* use makefilename ??? */
+    strcat(fn_pfm, font);       /* use make_file_name ??? */
     forceexten(fn_pfm, "pfm");      /* force .pfm */
     if ((fp_in = fopen(fn_pfm, "rb")) != NULL) return fp_in;
     if (tryunderscore != 0) {     /* try underscore form ? */
@@ -4631,7 +5012,7 @@ FILE *openpfm (char *font)
       }
     }
     strcpy(t, "pfm\\");         /* try in subdirectory */
-    strcat(fn_pfm, font);       /* use makefilename ??? */
+    strcat(fn_pfm, font);       /* use make_file_name ??? */
     forceexten(fn_pfm, "pfm");      /* force .pfm */
     if ((fp_in = fopen(fn_pfm, "rb")) != NULL) return fp_in;
     if (tryunderscore != 0) {     /* try underscore form ? */
@@ -5559,7 +5940,7 @@ FILE *OpenFontsub (char *subfile)
 /*  if (strcmp(fontsubfile, "") != 0)
     strcat(fontsubfile, "\\");
   strcat(fontsubfile, subfile); */
-  makefilename(fontsubfile, subfile);   /* 1992/Nov/28 */
+  make_file_name(fontsubfile, subfile);   /* 1992/Nov/28 */
   extension(fontsubfile, "sub");
 /*  printf("FONTSUBFILE %s\n", fontsubfile);   */
   if ((input = fopen(fontsubfile, "r")) != NULL) return input;
@@ -5568,7 +5949,7 @@ FILE *OpenFontsub (char *subfile)
   strcpy(fontsubfile, fontsubpath);
 /*  strcat(fontsubfile, "\\");
   strcat(fontsubfile, subfile); */
-  makefilename(fontsubfile, subfile);   /* 1992/Nov/28 */
+  make_file_name(fontsubfile, subfile);   /* 1992/Nov/28 */
   extension(fontsubfile, "sub");  
 /*  printf("FONTSUBFILE %s\n", fontsubfile);  */
   if ((input = fopen(fontsubfile, "r")) != NULL) return input;
@@ -5577,7 +5958,7 @@ FILE *OpenFontsub (char *subfile)
   strcpy(fontsubfile, fontsubpath);
 /*  strcat(fontsubfile, "\\");
   strcat(fontsubfile, "sub\\"); */
-  makefilename(fontsubfile, "sub\\");   /* "sub" sundirectory */
+  make_file_name(fontsubfile, "sub\\");   /* "sub" sundirectory */
   strcat(fontsubfile, subfile);
   extension(fontsubfile, "sub");    
 /*  printf("FONTSUBFILE %s\n", fontsubfile);  */
@@ -5585,7 +5966,7 @@ FILE *OpenFontsub (char *subfile)
 
 /*  try in current directory */       /* 1992/Dec/8 */
   *fontsubfile = '\0';          /* strcpy(fontsubfile, ""); */
-  makefilename(fontsubfile, subfile);   /*  */
+  make_file_name(fontsubfile, subfile);   /*  */
   extension(fontsubfile, "sub");    
 /*  printf("FONTSUBFILE %s\n", fontsubfile);  */
   if ((input = fopen(fontsubfile, "r")) != NULL) return input;
@@ -5642,7 +6023,7 @@ int GetSubstitutes (void)
         readsubstitutes(input);   /* read font substitution file */
         fclose(input);                /* 1994/Feb/4 */
         flag++;
-/*        if (traceflag) showsubtable(stdout); */ /* an experiment */ 
+/*        if (traceflag) show_sub_table(stdout); */ /* an experiment */ 
 /*        return -1; */         /* OK, specified file worked */
       }
       else
@@ -5677,7 +6058,7 @@ int GetSubstitutes (void)
       {
         readsubstitutes(input);
         fclose(input);                /* 1994/Feb/4 */
-/*        if (traceflag) showsubtable(stdout); */ /* an experiment */ 
+/*        if (traceflag) show_sub_table(stdout); */ /* an experiment */ 
 /*        return -1; */         /* OK, standard file worked */
         flag++;
       }
@@ -5695,11 +6076,11 @@ int GetSubstitutes (void)
 /*    }  */ /* if strcmp fontsubrest standard removed 1994/Feb/10 */
 /*    return 0;  */ /* No success ! */
   }
-/*  if (traceflag) showsubtable(stdout); */ /* an experiment */ 
+/*  if (traceflag) show_sub_table(stdout); */ /* an experiment */ 
   if (showsubflag)
   {
-    showsubtable(); /* an experiment */
-//    if (logfileflag) showsubtable(logfile);
+    show_sub_table(); /* an experiment */
+//    if (logfileflag) show_sub_table(logfile);
   }
 
   return flag;  /* non zero if some substitution table has been read */
@@ -5834,7 +6215,7 @@ void constructvectors(FILE *fp_out)
 /*  maybe nothing to do here if just need ansinew due to `-X' flag */
 /*  we should already have the ansinew vector dumped out */
 
-  writedvistart(fp_out);        /* 93/Sep/30 */
+  write_dvi_start(fp_out);        /* 93/Sep/30 */
   for (k=0; k < fnext; k++)
   {
     if ((fontproper[k] & C_REMAPIT) != 0 &&
@@ -5854,18 +6235,18 @@ void constructvectors(FILE *fp_out)
             }
       }
       if (flag == 0) {
-//        readencoding(fontvector + k * MAXVECNAME);
-        readencoding(fontvector[k]);
-//        writevector(fp_out, fontvector[k], MAXCHRS);
-//        writevector(fp_out, fontvector + k * MAXVECNAME, MAXCHRS);
-        writevector(fp_out, fontvector[k], MAXCHRS);
+//        read_enc(fontvector + k * MAXVECNAME);
+        read_enc(fontvector[k]);
+//        write_vector(fp_out, fontvector[k], MAXCHRS);
+//        write_vector(fp_out, fontvector + k * MAXVECNAME, MAXCHRS);
+        write_vector(fp_out, fontvector[k], MAXCHRS);
       }
     }
   }
-/*  fprintf(fp_out, "%s\n", textext); */  /* for text fonts */
+/*  fprintf(fp_out, "%s\n", tex_text); */  /* for text fonts */
 /*  fprintf(fp_out, "%s\n", textype); */  /* for typewriter fonts */
 
-  writedviend(fp_out);        /* 1992/Nov/17 */
+  write_dvi_end(fp_out);        /* 1992/Nov/17 */
 }
 
 /* Check whether font itself, or its base font are resident */
@@ -6253,7 +6634,7 @@ int copyPSS(FILE *fp_out, FILE *fp_in, int k)
     }
   }
 
-  beginresource(fp_out, filefontname); /* %%BeginResource: font zjrg_001 */
+  begin_resource(fp_out, filefontname); /* %%BeginResource: font zjrg_001 */
 /*  flag = copyPSS_sub(fp_out, fp_in, filefontname, vecname); */
   flag = copyPSS_sub(fp_out, fp_in, filefontname, basename, vecname, proper);
   if (flag != 0) {
@@ -6261,7 +6642,7 @@ int copyPSS(FILE *fp_out, FILE *fp_in, int k)
     sprintf(logline, "`%s' ", filefontname);
     showline(logline, 0);
   }
-  endresource(fp_out);         /* %%EndResource */
+  end_resource(fp_out);         /* %%EndResource */
   return flag;
 }
 
@@ -6406,13 +6787,13 @@ int extractafont (FILE *fp_out, int k)
 /* How would type3flag ever get set here ? - By font open mechanism */
       if (extracttype3(fp_out, fp_in, k, fontnamek) == 0) {
         if (extracttype1(fp_out, fp_in, k, fontnamek) == 0)
-          copyunknown(fp_out, fp_in, k, fontnamek);
+          copy_unknown(fp_out, fp_in, k, fontnamek);
       }
     }
     else {
       if (extracttype1(fp_out, fp_in, k, fontnamek) == 0) {
         if(extracttype3(fp_out, fp_in, k, fontnamek) == 0)
-          copyunknown(fp_out, fp_in, k, fontnamek); 
+          copy_unknown(fp_out, fp_in, k, fontnamek); 
       }
     }
     if (abortflag) return -1;
@@ -6435,17 +6816,17 @@ int extractfonts (FILE *fp_out) /* was called by main */
   int proper;         /* 1992/Aug/23 */
 /*  int oldsuppress; */
 
-/*  initializeencoding(); */  /* should be done earlier dvipsone.c */
+/*  init_enc(); */  /* should be done earlier dvipsone.c */
 
   nfonts=0; nsubstitute=0; nremapped=0; nansified=0;
   if (fnext == 0) return 0;     /* nothing to do ??? */
 
 /*  fprintf(fp_out, "dvidict begin\n"); */
-  writedvistart(fp_out);        /* 93/Sep/30 */
+  write_dvi_start(fp_out);        /* 93/Sep/30 */
 /*  if (bMarkUnused) MarkUnusedFonts(); */    /* 95/March/5 */
   if (showfontflag) {
-    showfonttable();  /* an experiment */
-//    if (logfileflag) showfonttable(logfile);
+    show_font_table();  /* an experiment */
+//    if (logfileflag) show_font_table(logfile);
   }
 
   task = "decompressing font files";
@@ -6492,7 +6873,7 @@ int extractfonts (FILE *fp_out) /* was called by main */
   }     /* for (k=0; k < fnext; k++) */
   if (verboseflag) showline("\n", 0);
 
-  writedviend(fp_out);        /* 1992/Nov/17 */
+  write_dvi_end(fp_out);        /* 1992/Nov/17 */
 
   if (verboseflag) {        /* rewrote 1993/Feb/6 */
     if (nfonts > 0) 
@@ -6539,7 +6920,7 @@ void fontsetup (FILE *fp_out)
     }
 /*    fprintf(fp_out, "%s", "dvidict begin\n"); */    /* new */
 /*    fputs("dvidict begin\n", fp_out); */  /* 1992/July/18 */
-    writedvistart(fp_out);        /* 93/Sep/30 */
+    write_dvi_start(fp_out);        /* 93/Sep/30 */
     for (k = 0; k < fnext; k++) {
       property = fontproper[k];
 //      strcpy (fontnamek, fontname + k * MAXTEXNAME);  /* 1994/Feb/2 */
@@ -6604,8 +6985,8 @@ void fontsetup (FILE *fp_out)
         PSputs(" fs ", fp_out);
 /*  insert new font metrics - (and possibly new uniqueID ?) */
         if (insertmetrics != 0 && (property & C_MTMI) == 0) {
-/*          if ((ne = readwidths(fontname[k], widths)) != 0) { */
-          if ((ne = readwidths(fontnamek, widths)) != 0) {
+/*          if ((ne = read_widths(fontname[k], widths)) != 0) { */
+          if ((ne = read_widths(fontnamek, widths)) != 0) {
 /*            fontptr = fontchar[k]; */
 /*            following moved up above to avoid zero count fonts */
 //            fontptr = fontchar + MAXCHRS * k;
@@ -6661,7 +7042,7 @@ void fontsetup (FILE *fp_out)
       }
     }
 
-    writedviend(fp_out);        /* 1992/Nov/17 */
+    write_dvi_end(fp_out);        /* 1992/Nov/17 */
 
     if (verboseflag && nsubstitute != 0) {
 /*      printf("Substituted for %d fonts\n", nsubstitute); */
@@ -6684,7 +7065,7 @@ void fontsetup (FILE *fp_out)
     }
 /*    fprintf(fp_out, "%s", "dvidict begin\n"); */    /* new */
 /*    fputs("dvidict begin\n", fp_out); */  /* 1992/July/18 */
-    writedvistart(fp_out);          /* 93/Sep/30 */
+    write_dvi_start(fp_out);          /* 93/Sep/30 */
 //    fputs("fstart\n", fp_out);
     PSputs("fstart\n", fp_out);
     for (k = 0; k < fnext; k++) {
@@ -6778,7 +7159,7 @@ void fontsetup (FILE *fp_out)
 
 //    fputs("fend\n", fp_out);
     PSputs("fend\n", fp_out);
-    writedviend(fp_out);        /* 1992/Nov/17 */
+    write_dvi_end(fp_out);        /* 1992/Nov/17 */
   } /* end of need remapped */
 
 /*  NOTE: this only counts the resident fonts that get remapped ? */
@@ -6813,7 +7194,7 @@ void fontsetup (FILE *fp_out)
   }
   
 /*  fprintf(fp_out, "dvidict begin\n"); */
-  writedvistart(fp_out);        /* 93/Sep/30 */
+  write_dvi_start(fp_out);        /* 93/Sep/30 */
 //  fprintf(fp_out, "fstart\n");    /* 93/Nov/2 */
   PSputs("fstart\n", fp_out);
 /*  if (bShortFont != 0) { */
@@ -6831,7 +7212,7 @@ void fontsetup (FILE *fp_out)
 //  fprintf(fp_out, "fend\n");      /* 93/Nov/2 */
   PSputs("fend\n", fp_out);
 
-  writedviend(fp_out);        /* 1992/Nov/17 */
+  write_dvi_end(fp_out);        /* 1992/Nov/17 */
 
 /*  fputs("%%EndSetup\n", fp_out); */ /* ??? */
 }
@@ -6991,7 +7372,7 @@ int ResidentFont (char *FileName)       /* 1994/Feb/10 */
 
 /* simplify all that hair for making up encoding vectors ... */
 
-/* don't use textext vec if output is to be previewed ? use flag to control */
+/* don't use tex_text vec if output is to be previewed ? use flag to control */
 
 /* assuming it is either RD or -| and ND or |- */
 
@@ -7012,7 +7393,7 @@ int ResidentFont (char *FileName)       /* 1994/Feb/10 */
 /* 3. There may be a problem if font is remapped ? */
 /*    but only if the base font is picked up by some other font ... */
 
-/* Some interpreters fail on textext encoding, cause its not 256 element */
+/* Some interpreters fail on tex_text encoding, cause its not 256 element */
 /* Some interpreters fail on shortened encoding, cause its not 256 element */
 /* examples: ALW II NTJ */
 

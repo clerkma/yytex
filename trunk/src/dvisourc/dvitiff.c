@@ -124,15 +124,15 @@ mul add 2 div} bind setscreen % Copyright (C) Y&Y 1989\n\
 
 int bTextColor=0;
 
-double textred=0.0;     /* color of text */
-double textgreen=0.0;
-double textblue=0.0;
+double text_red=0.0;     /* color of text */
+double text_green=0.0;
+double text_blue=0.0;
 
 int bRuleColor=0;
 
-double rulered=0.0;     /* color of rules */
-double rulegreen=0.0;
-double ruleblue=0.0;
+double rule_red=0.0;     /* color of rules */
+double rule_green=0.0;
+double rule_blue=0.0;
 
 int bFigureColor=0;     /* figure color has been specified */
 
@@ -5287,27 +5287,27 @@ int oldcolor (FILE *output, FILE  *input)
     }
     if (!bKeepBlack) {
       if (strstr(line, "revert") != NULL) {
-        textred = 0.0; textgreen = 0.0; textblue = 0.0;
+        text_red = 0.0; text_green = 0.0; text_blue = 0.0;
 //        fputs("\nblack\n", output);
         PSputs("\nblack\n", output);
         bTextColor = 0;
       }
       else if (sscanf(line, "%lg %lg %lg",
-            &textred, &textgreen, &textblue) == 3) {
+            &text_red, &text_green, &text_blue) == 3) {
 /*        see whether floating point or not */
         if ((s = strchr(line, '.')) == NULL || *(s+1) < '0') {
-          textred = textred / 255.0;
-          textgreen = textgreen / 255.0;
-          textblue = textblue / 255.0;
+          text_red = text_red / 255.0;
+          text_green = text_green / 255.0;
+          text_blue = text_blue / 255.0;
         }
-        if (textred == 0.0 && textgreen == 0.0 && textblue == 0.0) {
+        if (text_red == 0.0 && text_green == 0.0 && text_blue == 0.0) {
 //          fputs("\nblack\n", output);
           PSputs("\nblack\n", output);
           bTextColor = 0;
         }   /* treat 0 0 0 same as revert ? */
         else {
           sprintf(logline, "\n%lg %lg %lg rgb\n",
-              textred, textgreen, textblue);
+              text_red, text_green, text_blue);
           PSputs(logline, output);
           bTextColor = 1;
         }
@@ -5331,17 +5331,17 @@ int oldcolor (FILE *output, FILE  *input)
 #endif
     if (!bKeepBlack) {
       if (strstr(line, "revert") != NULL) {
-        rulered = 0.0; rulegreen = 0.0; ruleblue = 0.0;
+        rule_red = 0.0; rule_green = 0.0; rule_blue = 0.0;
         bRuleColor = 0;
       }
-      else if (sscanf(line, "%lg %lg %lg", &rulered, &rulegreen, &ruleblue) == 3) {
+      else if (sscanf(line, "%lg %lg %lg", &rule_red, &rule_green, &rule_blue) == 3) {
 /* see whether floating point or not */
         if ((s = strchr(line, '.')) == NULL || *(s+1) < '0') {
-          rulered = rulered / 255.0;
-          rulegreen = rulegreen / 255.0;
-          ruleblue = ruleblue / 255.0;
+          rule_red = rule_red / 255.0;
+          rule_green = rule_green / 255.0;
+          rule_blue = rule_blue / 255.0;
         }
-        if (rulered == 0.0 && rulegreen == 0.0 && ruleblue == 0.0)
+        if (rule_red == 0.0 && rule_green == 0.0 && rule_blue == 0.0)
           bRuleColor = 0;
         else bRuleColor = 1; 
       }
