@@ -1512,7 +1512,7 @@ void copyepsfilesub (FILE *output, FILE *special, long pslength)
             lowercase(FileName, FileName);  /* 97/June/5 */
 /* then decompress from PFA to PFB format */ /* unless it is resident */
             if (! ResidentFont(FileName)) { /* 1994/Feb/10 */
-              decompressfont(output, fontfile, FontName);
+              decompress_font(output, fontfile, FontName);
             }
             else {            /* 1994/Feb/10 */
 /*      insert the %%Include comment again if unable to service ??? */

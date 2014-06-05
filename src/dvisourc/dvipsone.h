@@ -354,7 +354,7 @@ extern void complainspecial(FILE *);
 
 /* extern void init_enc(void); */ /* dviextra.c */
 extern void init_enc(int);    /* dviextra.c */
-extern int decompressfont(FILE *, FILE *, char *); /* dviextra.c */
+extern int decompress_font(FILE *, FILE *, char *); /* dviextra.c */
 
 extern int newspecials(FILE *, FILE *);   /* dvitiff.c */
 extern int dohptag(FILE *, FILE *);     /* dvitiff.c */
@@ -385,9 +385,9 @@ void lcivilize (char *);
 
 void perrormod (char *);
 
-FILE *OpenFont(char *font, int flag);
+FILE *open_font(char *font, int flag);
 
-FILE *openpfm (char *font);
+FILE *open_pfm (char *font);
 
 int LoadATMREG (void);
 
