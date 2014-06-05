@@ -2864,33 +2864,49 @@ void copy_font (FILE *output, FILE *input, int i, int mtmiflag, int stripflag)
 /* grab next white space delimited token in line */ /* read line if needed */
 /* assumes pump has been primed, i.e. line read and strtok called once */
 
-char *grabnexttoken(FILE *input, char *line)
+char *grab_next_token(FILE *input, char *line)
 {
-  char *str=NULL, *s;
+  char *str = NULL, *s;
 
-  for (;;) {
-    while ((s = strtok(str, " \t\n\r")) == NULL) {
-      for(;;) {         /* need to grab a new line then */
-        if (extgetrealline(input, line) < 0) return NULL; /* EOF */
-/*        ignore comments and blank lines - continue round the loop */
-        if (*line != '%' && *line != '\n' && *line != '\r') break;
+  for ( ; ; )
+  {
+    while ((s = strtok(str, " \t\n\r")) == NULL)
+    {
+      for ( ; ; )   /* need to grab a new line then */
+      {
+        if (extgetrealline(input, line) < 0)
+          return NULL; /* EOF */
+        
+        /* ignore comments and blank lines - continue round the loop */
+        if (*line != '%' && *line != '\n' && *line != '\r')
+          break;
       }
+
       str = line;
     }
-    if (*s != '%') break;   /* escape if not comment */
-/*    following added to strip comments off ends of lines 1992/Sep/17 */
-    for(;;) {         /* need to grab a new line then */
-      if (extgetrealline(input, line) < 0) return NULL; /* EOF */
-/*      ignore comments and blank lines - continue round the loop */
-      if (*line != '%' && *line != '\n' && *line != '\r') break;
+
+    if (*s != '%')
+      break;   /* escape if not comment */
+
+    /* following added to strip comments off ends of lines 1992/Sep/17 */
+    for ( ; ; ) /* need to grab a new line then */
+    {
+      if (extgetrealline(input, line) < 0)
+        return NULL; /* EOF */
+
+      /* ignore comments and blank lines - continue round the loop */
+      if (*line != '%' && *line != '\n' && *line != '\r')
+        break;
     }
+
     str = line;
   }
+
   return s;
 }
 
 /* new tokenized version follows */
-int gobbleencoding (FILE *input)
+int gobble_enc (FILE *input)
 {
   int chr, c, n;
   int base=10;
@@ -2900,78 +2916,110 @@ int gobbleencoding (FILE *input)
 
 /*  may want to remove some debugging error message output later ... */
   s = strtok(line, " \t\n\r");  /* start the pipeline */
-  for (;;) {          /*  exit if hit `readonly' or `def' ??? */
-    if (strcmp(s, "dup") != 0) {
-      if (strcmp(s, "readonly") == 0 ||
-        strcmp(s, "def") == 0) break; /* normal exit */
+
+  for ( ; ; ) /*  exit if hit `readonly' or `def' ??? */
+  {
+    if (strcmp(s, "dup") != 0)
+    {
+      if (strcmp(s, "readonly") == 0 || strcmp(s, "def") == 0)
+        break; /* normal exit */
+
       sprintf(logline, " Expecting %s, not: `%s' ", "`dup'", s);
       showline(logline, 1);
+
       break;
     }
-    if ((s = grabnexttoken(input, line)) == NULL) break;
-/*    Cater to stupid Adobe Universal Greek font format */ /* 92/Sep/17 */
-    if (strchr(s, '#') != NULL) { /* stupid encoding vector format */
+
+    if ((s = grab_next_token(input, line)) == NULL)
+      break;
+
+    /* Cater to stupid Adobe Universal Greek font format */ /* 92/Sep/17 */
+    if (strchr(s, '#') != NULL) /* stupid encoding vector format */
+    {
       (void) sscanf(s, "%d#%n", &base, &n); /* try and get base */
-      s +=n; chr=0;
-      for (;;) {      /* more general version 92/Sep/27 */
+      s += n; chr = 0;
+
+      for (;;)
+      {
         c = *s++;
-        if (c >= '0' && c <= '9') c = c - '0';
-        else if (c >= 'A' && c <= 'Z') c = c - 'A' + 10;
-        else if (c >= 'a' && c <= 'z') c = c - 'a' + 10;
-        else {
+        if (c >= '0' && c <= '9')
+          c = c - '0';
+        else if (c >= 'A' && c <= 'Z')
+          c = c - 'A' + 10;
+        else if (c >= 'a' && c <= 'z')
+          c = c - 'a' + 10;
+        else
+        {
           s--; break;
         }
+
         chr = chr * base + c;
       }
-    }           /* end of radixed number case */
-    else if (sscanf(s, "%d", &chr) < 1) {
+    }
+    else if (sscanf(s, "%d", &chr) < 1)
+    {
       sprintf(logline, " Expecting %s, not: `%s' ", "number", s);
       showline(logline, 1);
+
       break;
     }
-/*    deal with idiotic Fontographer format - no space before /charname */
-    if ((t = strchr(s, '/')) != NULL) s = t;  /* 1992/Aug/21 */
-    else if ((s = grabnexttoken(input, line)) == NULL) break;
-    if (*s != '/')  {
+    
+    /* deal with idiotic Fontographer format - no space before /charname */
+    if ((t = strchr(s, '/')) != NULL)
+      s = t;  /* 1992/Aug/21 */
+    else if ((s = grab_next_token(input, line)) == NULL)
+      break;
+
+    if (*s != '/') 
+    {
       sprintf(logline, "Bad char code `%s' ", s);
       showline(logline, 1);
+
       break;      // ???
     }
-    else s++;
-/*    if (chr >= 0 && chr < fontchrs && strlen(s) < MAXCHARNAME) { */
-    if (chr >= 0 && chr < fontchrs) {       /* 93/Nov/15 */
-/*      printf("%d: %s ", chr, s); */ /* debugging */
-/*      strcpy(charnames[chr], s); */
+    else
+      s++;
+
+    if (chr >= 0 && chr < fontchrs)
+    {
       if (strcmp(s, ".notdef") != 0)    /* ignore .notdef 97/Jan/7 */
         add_enc(chr, s);      /* 93/Nov/15 */
     }
-    else {
+    else
+    {
       sprintf(logline, "Invalid char number %d ", chr);
       showline(logline, 1);
       break;      // ???
     }
-    if ((s = grabnexttoken(input, line)) == NULL) break;
-    if (strcmp(s, "put") != 0) {
+
+    if ((s = grab_next_token(input, line)) == NULL)
+      break;
+
+    if (strcmp(s, "put") != 0)
+    {
       sprintf(logline, " Expecting %s not: `%s' ", "`put'", s);
       showline(logline, 1);
-/*      break; */ /* ??? */
     }
-    if ((s = grabnexttoken(input, line)) == NULL) break;
+
+    if ((s = grab_next_token(input, line)) == NULL)
+      break;
   }
 /*  normally come here because line does not contain `dup'  */
 /*  but does contain `readonly' or `def' */
 /*  attempt to deal with Fontographer 4.0.4 misfeature 94/Nov/9 */
 /*  if `readonly' appears on one line and `def' appears on the next */
-  if (strcmp(s, "readonly") == 0) { 
-    if ((s = grabnexttoken(input, line)) != NULL) {
-      if (strcmp(s, "def") != 0) {
+  if (strcmp(s, "readonly") == 0)
+  {
+    if ((s = grab_next_token(input, line)) != NULL)
+    {
+      if (strcmp(s, "def") != 0)
+      {
         sprintf(logline, " Expecting %s, not: `%s' ", "`def'", s);
         showline(logline, 1);
-//        return -1;    // ???
       }
     }
   }
-/*  need to clean out current line at all ? */
+
   return 0;
 }
 
@@ -2980,7 +3028,7 @@ int gobbleencoding (FILE *input)
 /* (so maybe the `lowercase' is not needed ?) */ /* or use _strnicmp(...) */
 /* May be useful when PostScript FontName same as filename, but uppercase */
 
-int istexfont (char *fname)
+int is_tex_font (char *fname)
 {
   if (_strnicmp (fname, "cm", 2) == 0 ||  /* Computer Modern (visible) */
     _strnicmp (fname, "lcm", 3) == 0 || /* SliTeX (visible) */
@@ -3002,37 +3050,45 @@ int istexfont (char *fname)
     _strnicmp (fname, "mtgu", 4) == 0 ||  /* MTGU, MTMGUB */
     _strnicmp (fname, "rmtm", 4) == 0   /* RMTMI, RMTMIB, RMTMIH */
                         /*      , RMTMUB, RMTMUH */
-/*    _strnicmp (fname, "lm", 2) == 0 || */ /* LucidaMath */
-/*    _strnicmp (fname, "lbm", 3) == 0 || */  /* LucidaNewMath */
-    ) return 1;
-  else return 0;
+    )
+    return 1;
+  else
+    return 0;
 }
 
 /* separated out 97/Feb/6 */ /* returns 0 if failed */
 /* this should also check for /BaseFontName and suppress replacement ? */
 /* WARNING: this writes back into second argument ! */
 
-int FindFontPFBaux (FILE *input, char *FontName, int nlen)
+int find_font_PFB_aux (FILE *input, char *FontName, int nlen)
 {
   char token[] = "/FontName ";
   int c, k=0;
   char *s=FontName;
 
-  while ((c = getc(input)) != EOF) {
+  while ((c = getc(input)) != EOF)
+  {
     if (c == '%')       /* Try and avoid comment lines ... */
       while (c >= ' ') c = getc(input); /* Skip to end of line */
-    if (c != token[k]) {
+
+    if (c != token[k])
+    {
       k = 0;          /* no match, reset ... */
       continue;
     }
+
     k++;
-    if (k >= 10) {        /* completed the match ? */
-      while ((c = getc(input)) != '/' && c != EOF) { /* up to slash */
+
+    if (k >= 10)
+    {
+      while ((c = getc(input)) != '/' && c != EOF)
+      {
         if (c > ' ') {  /* only white space allowed here 97/June/1 */
           k = 0;
           continue; /* ignore /FontName *not* followed by /xxxxx */
         }
       }
+
       k = 0; 
       s = FontName;
 /*      while ((c = getc(input)) > ' ' && k < MAXFONTNAME) */
@@ -3059,18 +3115,19 @@ int FindFontPFBaux (FILE *input, char *FontName, int nlen)
   return 0;     /* failed - EOF read the whole file */
 }
 
-// FILE *OpenFont(char *font, int flag);
+// FILE *open_font(char *font, int flag);
 
 /* Attempt to find FontName from PFB file when forcereside != 0 */
 /* An experiment 1993/Sep/30 */
 /* WARNING: this writes back into second argument ! */
 
-int FindFontPFB (char *FileName, char *FontName, int nlen) /* 1993/Sep/30 */
+int find_font_PFB (char *FileName, char *FontName, int nlen) /* 1993/Sep/30 */
 {
   int flag;
   FILE *input;
 
-  if ((input = OpenFont(FileName, 0)) == NULL) {
+  if ((input = open_font(FileName, 0)) == NULL)
+  {
 #ifdef DEBUG
     if (traceflag) {
       sprintf(logline, "Unable to find font file for %s\n", FileName);  /* debug ? */
@@ -3080,43 +3137,47 @@ int FindFontPFB (char *FileName, char *FontName, int nlen) /* 1993/Sep/30 */
     return 0;
   }
 
-  flag = FindFontPFBaux(input, FontName, nlen);
-
+  flag = find_font_PFB_aux(input, FontName, nlen);
   fclose (input);
-  if (flag == 0) {
+
+  if (flag == 0)
+  {
     sprintf(logline, "Unable to find FontName in %s\n", FileName);
     showline(logline, 1);
   }
+
   return flag;
 }
 
 /* finding PS FontName from PFM file */
-
-// FILE *openpfm (char *font);
-
 /* WARNING: this writes back into second argument ! */
 
-int FindFontPFM (char *FileName, char *FontName, int nlen) /* 1997/June/1 */
+int find_font_PFM (char *FileName, char *FontName, int nlen) /* 1997/June/1 */
 {
   FILE *input;
   int flag;
 
-  if (traceflag) {
-    sprintf(logline, "FindFontPFM nlen %d\n", nlen);
+  if (traceflag)
+  {
+    sprintf(logline, "find_font_PFM nlen %d\n", nlen);
     showline(logline, 0);
   }
-  if ((input = openpfm(FileName)) == NULL) {
+
+  if ((input = open_pfm(FileName)) == NULL)
+  {
 #ifdef DEBUG
-    if (traceflag) {
+    if (traceflag)
+    {
       sprintf(logline, "Unable to find font file for %s\n", FileName);  /* debug ? */
       showline(logline, 0);
     }
 #endif
     return 0;
   }
+
   flag = NamesFromPFM(input, NULL, 0, FontName, nlen, FileName);
   fclose (input);
-/*  printf("FontName %s for FileName %s\n", FontName, FileName); */
+
   return flag;
 }
 
@@ -3125,13 +3186,18 @@ int FindFontPFM (char *FileName, char *FontName, int nlen) /* 1997/June/1 */
 
 int FindFontName (char *FileName, char *FontName, int nlen) /* 1993/Sep/30 */
 {
-  if (traceflag) {
+  if (traceflag)
+  {
     sprintf(logline, " FindFontName `%s' %d\n", FileName, nlen);
     showline(logline, 0); // debugging only
   }
-  if (FindFontPFB (FileName, FontName, nlen) == 0) {
-    if (FindFontPFM(FileName, FontName, nlen) == 0) return 0;
+
+  if (find_font_PFB (FileName, FontName, nlen) == 0)
+  {
+    if (find_font_PFM(FileName, FontName, nlen) == 0)
+      return 0;
   }
+
   return 1;
 }
 
@@ -3141,158 +3207,172 @@ int FindFontName (char *FileName, char *FontName, int nlen) /* 1993/Sep/30 */
 
 /*  drops real PostScript FontName in realfontname if found */
 
-int parseline(char *line, FILE *output, int syntheticflag, int mtmiflag)
+int parse_line(char *line, FILE *output, int syntheticflag, int mtmiflag)
 {
   double m11, m12, m21, m22, m31, m32;
   int ftp, k, n;
   char *s;
 
-/*  Try and pick out FontType */ 
-  if ((s = strstr(line, "/FontType")) != NULL) {
-    if(sscanf(s, "/FontType %d", &ftp) == 1) {
-      if (ftp != 1) {
+  /*  Try and pick out FontType */
+  if ((s = strstr(line, "/FontType")) != NULL)
+  {
+    if(sscanf(s, "/FontType %d", &ftp) == 1)
+    {
+      if (ftp != 1)
+      {
         sprintf(logline, " Not a Type 1 font: %s", line);
         showline(logline, 1);
         errcount(0);  
       }
     }
-//    fputs(line, output);
     PSputs(line, output);
   }
-/*  Try and pick out FontName */
-  else if ((s = strstr(line, "/FontName")) != NULL) {
-/*    if (sscanf(s, "/FontName /%s", realfontname) > 0) { */
-    s += 9;           /* step over `/FontName' */
-    while (*s != '/' && *s != '\0') s++;  /* 1993/Aug/15 */
-/*    Verify that the FontName we got from %! line is correct 97/Jan/30 */
-    if (bAddBaseName && *realfontname != '\0') {
-      if (*s == '/') {  /* fix 1997/June/1 */
+  else if ((s = strstr(line, "/FontName")) != NULL) /*  Try and pick out FontName */
+  {
+    s += 9; /* step over `/FontName' */
+
+    while (*s != '/' && *s != '\0')
+      s++;
+    
+    /* Verify that the FontName we got from %! line is correct 97/Jan/30 */
+    if (bAddBaseName && *realfontname != '\0')
+    {
+      if (*s == '/')
+      {
         n = strlen(realfontname);
-        if (strncmp(s+1, realfontname, n) != 0) {
+
+        if (strncmp(s+1, realfontname, n) != 0)
+        {
           sprintf(logline, " ERROR: %s != ", realfontname);
           showline(logline, 1);
-          if (sscanf(s, "/%s", realfontname) > 0) {
+
+          if (sscanf(s, "/%s", realfontname) > 0)
+          {
             sprintf(logline, "%s ", realfontname);
           }
-          else {
+          else
+          {
             sprintf(logline, "%s ", s);
           }
+
           showline(logline, 0);
         }
       }
     }
-    if (sscanf(s, "/%s", realfontname) > 0) {
-/*      if (verboseflag) fputs(realfontname, stdout); */
+
+    if (sscanf(s, "/%s", realfontname) > 0)
+    {
 /* Don't trust `Oblique' (and `Narrow') fonts */ 
 /* Helvetica and Courier may be the only common cases of such fonts ??? */
 /* Helvetica, Helvetica-Light, Helvetica-Black, Helvetica-Narrow */
 /* Maybe also `Slanted' and  `Narrow' and `Condensed' and `Expanded' ??? */
 /* Inverted order of tests for efficiency -- 1993/Nov/4 */
-      if (syntheticsafe != 0) {
+      if (syntheticsafe != 0)
+      {
         if (strstr(s, "Oblique") != NULL ||
-          strstr(s, "BoldObl") != NULL || /* 1994/Feb/3 */
-          strstr(s, "Narrow") != NULL) {  /* 1993/June/14 */
-          for (k = 0; k < 16; k++) {
-            if (strcmp("", syntheticfonts[k]) == 0) break;
-            if (strstr(s, syntheticfonts[k]) != NULL) {
+          strstr(s, "BoldObl") != NULL ||
+          strstr(s, "Narrow") != NULL)
+        {
+          for (k = 0; k < 16; k++)
+          {
+            if (strcmp("", syntheticfonts[k]) == 0)
+              break;
+
+            if (strstr(s, syntheticfonts[k]) != NULL)
+            {
               syntheticflag = 1;
-              if (verboseflag) {
-                showline(" assumed synthetic", 0); /* debugging */ 
+
+              if (verboseflag)
+              {
+                showline(" assumed synthetic", 0);
               }
+
               break;
             }
           }
         } 
       }
-/*      lowercase(realfontname, realfontname); */ /* removed 95/Aug/22 */
-    } 
-/* check whether TeX font */ /* result not used much ... */
-    texfont = 0;              /* 1992/Dec/22 */
-    if (istexfont(realfontname) != 0) {
-/* also check if actually one of 75 TeX fonts (what about LATEX, SliTeX) ? */
-      texfont = 1; standard = 0; 
+    }
+
+    texfont = 0;
+
+    if (is_tex_font(realfontname) != 0)
+    {
+      /* also check if actually one of 75 TeX fonts (what about LATEX, SliTeX) ? */
+      texfont = 1;
+      standard = 0;
     }
 /* Should we replace /FontName or not ? *//* Presently hard wired to do this */
 /* May need to be more careful here - assuming one line */
 /*    if (bSubRealName == 0) { */     /* 1995/Aug/22 */
-    if (bSubRealName == 0 || mmflag != 0) { /* 1997/June/1 */
-/*      we don't normally come here these days ... */
-/*      copy realfontname to subfontname[k] ?  */
-/*      strcpy(subfontname + k * MAXFONTNAME, realfontname); */
-//      if (strcmp(fontprefix, "") == 0) {
-      if (fontprefix != NULL) {
+    if (bSubRealName == 0 || mmflag != 0)
+    {
+      if (fontprefix != NULL)
+      {
         *s = '\0';          /* s points at /<fname> */
-//        fputs(line, output);
         PSputs(line, output);
         *s = '/';
-//        putc('/', output);
         PSputc('/', output);
-/*  possibly modify if bRandomPrefix is set ??? */
-//        fputs(fontprefix, output);
         PSputs(fontprefix, output);
-//        fputs(s+1, output);
         PSputs(s+1, output);
       }
-      else {
-//        fputs(line, output);  /* no prefix, just copy over */
+      else
+      {
         PSputs(line, output); /* no prefix, just copy over */
       }
     }
 /* Don't mess with FontName of old MTMI */
-    else if (mtmiflag != 0) {
-//      fputs(line, output);  /* 1992/Aug/22 */
-      PSputs(line, output); /* 1992/Aug/22 */
-    }
-/* Don't mess with FontName of MM base font ? old method */ /* 1994/Dec/6 */
-/*    else if (bMMNewFlag == 0 && mmflag != 0) fputs(line, output); */
-/* Don't touch: 2 copy exch /FontName exch put */   /* 95/May/14 */
-    else if (strstr(line, "/FontName exch") != NULL) {
-//      fputs(line, output);
+    else if (mtmiflag != 0)
+    {
       PSputs(line, output);
     }
-    else {                      /* 1992/Oct/31 */
-//      fputs("/FontName /", output);
+/* Don't mess with FontName of MM base font ? old method */ /* 1994/Dec/6 */
+/* Don't touch: 2 copy exch /FontName exch put */   /* 95/May/14 */
+    else if (strstr(line, "/FontName exch") != NULL)
+    {
+      PSputs(line, output);
+    }
+    else
+    {
       PSputs("/FontName /", output);
 /* don't need to check here whether its resident or not ! */
-//      if (strcmp(fontprefix, "") != 0) 
-      if (fontprefix != NULL) {
-/*        possibly modify if bRandomPrefix is set ??? */
-//        fputs(fontprefix, output);
+      if (fontprefix != NULL)
+      {
         PSputs(fontprefix, output);
       }
 /* following inserted 1992/Dec/22 - for new `U' flag */
-/*      if (uppercaseflag != 0 && istexfont(filefontname) != 0) */
       if (uppercaseflag != 0 && texfont != 0)
         uppercase(filefontname, filefontname);
-/*      if(_stricmp(filefontname, realfontname) == 0)
-        strcpy(filefontname, realfontname); */ /* ??? */
-//      fputs(filefontname, output);
+
       PSputs(filefontname, output);
-//      fputs(" def\n", output);
       PSputs(" def\n", output);
     }
   }
 /*  Try and pick out FontMatrix */
 /*  Following usually doesn't get triggered because FontName seen first */
 /*  Can't be more selective here, since don't know FontName ... */
-  else if ((s = strstr(line, "/FontMatrix")) != NULL) {
+  else if ((s = strstr(line, "/FontMatrix")) != NULL)
+  {
     if (sscanf(s, "/FontMatrix[%lg %lg %lg %lg %lg %lg]",
-      &m11, &m12, &m21, &m22, &m31, &m32) == 6) {
-      if (syntheticsafe != 0 && syntheticflag == 0) {
-        if (m11 != m22 || m21 != 0.0 || m12 != 0.0) {
+      &m11, &m12, &m21, &m22, &m31, &m32) == 6)
+    {
+      if (syntheticsafe != 0 && syntheticflag == 0)
+      {
+        if (m11 != m22 || m21 != 0.0 || m12 != 0.0)
+        {
           showline(" WARNING: use *synthetic* in sub file", 1);
-/*          errcount(0);          */  /* 1994/Jan/7 */
           syntheticflag = 1;
         }
       }
     }
-//    fputs(line, output);
+
     PSputs(line, output);
   }
-  else {
-//    fputs(line, output);
+  else
+  {
     PSputs(line, output);
   }
+
   return syntheticflag;
 }
 
@@ -3311,26 +3391,39 @@ unsigned long codefourty(char *codingvector)
   int c, k;
   char *s=codingvector;
 
-  if (strcmp(codingvector, "") == 0) {
+  if (strcmp(codingvector, "") == 0)
+  {
     codingvector = "native";    /* if not specified ... */
     return checkdefault;      /* use default signature */
   }
-  for (k = 0; k < 6; k++) {
-    for (;;) {
+
+  for (k = 0; k < 6; k++)
+  {
+    for ( ; ; )
+    {
       c = *s++;
-      if (c >= 'A' && c <= 'Z') c = c - 'A';
-      else if (c >= 'a' && c <= 'z') c = c - 'a';
-      else if (c >= '0' && c <= '9') c = (c - '0') + ('Z' - 'A') + 1;
-      else if (c == '-') c = 36;
-      else if (c == '&') c = 37;
-      else if (c == '_') c = 38;
-      else c = 39;          /* none of the above */
-/*      else continue; */       /* not alphanumeric character */
-/*      result = result * 36 + c; */
+
+      if (c >= 'A' && c <= 'Z')
+        c = c - 'A';
+      else if (c >= 'a' && c <= 'z')
+        c = c - 'a';
+      else if (c >= '0' && c <= '9')
+        c = (c - '0') + ('Z' - 'A') + 1;
+      else if (c == '-')
+        c = 36;
+      else if (c == '&')
+        c = 37;
+      else if (c == '_')
+        c = 38;
+      else
+        c = 39;          /* none of the above */
+
       result = result * 40 + c;
+
       break;
     }
   }
+
   return result;
 }
 
@@ -3338,74 +3431,91 @@ int decodefourty(unsigned long checksum, char *codingvector)
 {
   int c;
   int k;
-/*  char codingvector[6+1]; */
 
-/*  if (checksum == checkdefault) { */
-  if (checksum == 0) {
+  if (checksum == 0)
+  {
     strcpy(codingvector, "unknown");
     return 1;
   }
-  else if ((checksum >> 8) == (checkdefault >> 8)) {  /* last byte random */
+  else if ((checksum >> 8) == (checkdefault >> 8))
+  {
     strcpy (codingvector,  "native");   /* if not specified ... */
     return 1;               /* no info available */
   }
-  else {
-    for (k = 0; k < 6; k++) {
-/*      c = (int) (checksum % 36); */
+  else
+  {
+    for (k = 0; k < 6; k++)
+    {
       c = (int) (checksum % 40);
-/*      checksum = checksum / 36; */
       checksum = checksum / 40;
-      if (c <= 'z' - 'a' ) c = c + 'a';
-      else if (c < 36) c = (c + '0') - ('z' - 'a') - 1;
-      else if (c == 36) c = '-';
-      else if (c == 37) c = '&';
-      else if (c == 38) c = '_';
-      else c = '.';       /* unknown */
-      codingvector[5-k] = (char) c;
+
+      if (c <= 'z' - 'a' )
+        c = c + 'a';
+      else if (c < 36)
+        c = (c + '0') - ('z' - 'a') - 1;
+      else if (c == 36)
+        c = '-';
+      else if (c == 37)
+        c = '&';
+      else if (c == 38)
+        c = '_';
+      else
+        c = '.';       /* unknown */
+
+      codingvector[5 - k] = (char) c;
     }
+
     codingvector[6] = '\0';
   }
+
   return 0;               /* encoding info returned */
 }
 
-int checkencoding(int k)
+int check_enc(int k)
 {
-  char checksumvector[8];         /* 6 chars + null */
-  if (fc[k] == nCheckSum) return 0;         /* correct encoding */
-  if (decodefourty(fc[k], checksumvector) != 0) return 0;
-/*  if (_strnicmp(checksumvector, textencoding, 6) != 0) */ /* 95/Feb/3 */
-  if (_strnicmp(checksumvector, textenconame, 6) == 0) return 0;
-//  showline(" ", 0);
+  char checksumvector[8];
+
+  if (fc[k] == nCheckSum)
+    return 0;
+
+  if (decodefourty(fc[k], checksumvector) != 0)
+    return 0;
+
+  if (_strnicmp(checksumvector, textenconame, 6) == 0)
+    return 0;
+
   showline(" WARNING: encoding mismatch ", 1);
   sprintf(logline,  "TFM: `%s..' versus PFB: `%s'", 
-/*    checksumvector, textencoding); */
-    checksumvector, textenconame);          /* 95/Feb/3 */
+    checksumvector, textenconame);
   showline(logline, 1);
-  return 1;                     /* failed */
+
+  return 1;
 }
 
-int checkremapencode(int k, char *fontnamek)    /* 1995/July/15 */
+int check_remap_enc(int k, char *fontnamek)
 {
-  char checksumvector[8];             /* 6 chars + null */
+  char checksumvector[8];
 
-  if (decodefourty(fc[k], checksumvector) != 0) return 0;
-//  if (_strnicmp(checksumvector, fontvector + k * MAXVECNAME, 6) == 0)
+  if (decodefourty(fc[k], checksumvector) != 0)
+    return 0;
+
   if (fontvector[k] != NULL &&
       _strnicmp(checksumvector, fontvector[k], 6) == 0) 
-    return 0; 
+    return 0;
+
   showline(" WARNING: encoding mismatch ", 1);
-  sprintf(logline, " in %s ", fontnamek);     /* 95/July/30 */
+  sprintf(logline, " in %s ", fontnamek);
   showline(logline, 1);
   sprintf(logline,  "TFM: `%s..' versus vector: `%s'\n", 
       checksumvector, fontvector[k] != NULL ? fontvector[k] : "");
-//      checksumvector, fontvector + k * MAXVECNAME);
   showline(logline, 1);
+
   return 1;
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-/* share some code between extracttype1 and extracttype3 ??? */
+/* share some code between extract_type1 and extract_type3 ??? */
 /* e.g. for BeginResource and EndResource ? OK, that has been done */
 /* actually, appears to be some divergence now ... */
 
@@ -3413,85 +3523,84 @@ int checkremapencode(int k, char *fontnamek)    /* 1995/July/15 */
 
 /* decompress a Type 1 font file and send it to specified output */
 
-/* int extracttype1(FILE *output, FILE *input, int i) { */
-/* int extracttype1(FILE *output, FILE *input, int fn) { */
-int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
+int extract_type1 (FILE *output, FILE *input, int fn, char *fontnamek)
 {
   int nvec, ns, ne, c, d, k, nbin, n, nchrs, flag;
-/*  int chr, nfdict; */
   int count, property, syntheticflag, mtmiflag;
-/*  int hybridflag; */    /* 1993/Aug/5 */ /* made global 1994/July/15 */
-/*  int ftp; */
-  int stripflag=0;
-/*  int oldcount; */
-/*  int m; */   /* debug only */
+  int stripflag = 0;
   int l;      /* 1994/Jan/30 for `unseen' repeat appearance */
   int guess;    /* 1995/Oct/25 */
   char *s, *t, *vector;
   char charname[FNAMELEN];      /* just to be safe */
-//  char subfontnamek[MAXFONTNAME];
   char subfontnamek[FNAMELEN];
   char *wantchrs;
 
   hybridflag=0;
   binaryin = 0;
-/*  macstyle = 0; */
-//  wantchrs = fontchar + MAXCHRS * fn;
-  wantchrs = fontchar[fn]; 
-  if (wantchrs == NULL) showline(" BAD wantchrs", 1);
-  property = fontproper[fn];
-//  vector = fontvector + fn * MAXVECNAME;
-  vector = fontvector[fn];
+  wantchrs = fontchar[fn];
 
+  if (wantchrs == NULL)
+    showline(" BAD wantchrs", 1);
+
+  property = fontproper[fn];
+  vector = fontvector[fn];
   syntheticflag = (property & C_SYNTHETIC);
   mtmiflag = (property & C_MTMI);
-  mmflag = (property & C_MULTIPLE);           /* 95/May/13 */
-//  strcpy(subfontnamek, subfontname + fn * MAXFONTNAME); /* 97/June/1 */
-  if (subfontname[fn] != NULL) strcpy(subfontnamek, subfontname[fn]);
-  else *subfontnamek = '\0';
+  mmflag = (property & C_MULTIPLE);
 
-  if (bSuppressPartial != 0) syntheticflag = 1;   /* 1992/Sep/12 */
+  if (subfontname[fn] != NULL)
+    strcpy(subfontnamek, subfontname[fn]);
+  else
+    *subfontnamek = '\0';
 
-/*  if (syntheticflag != 0) printf(" synthetic font"); */   /* debugging */
-  if (mtmiflag != 0) showline(" NOT Type 1", 1);
+  if (bSuppressPartial != 0)
+    syntheticflag = 1;
+
+  if (mtmiflag != 0)
+    showline(" NOT Type 1", 1);
 
   count = 0;        /* preliminary - may update later with accents */
-  for (k = 0; k < MAXCHRS; k++) if (wantchrs[k] != 0) count++;
-/*  printf("%d used in ", count, fontnamek); */ /* debug 95/Mar/31 */
-/*  if (bMMNewFlag == 0 && mmflag != 0) count = MAXCHRS;*//* 94/Dec/6 */
-  if (count == 0) {
-/*    strcpy(charname, fontname + fn * MAXTEXNAME); */
-/*    fprintf(errout, " No characters used in font %s (%d)",
-      charname, fn);  */ /* 1995/Jan/5 */
-    if (traceflag) showline(" No characters used in font", 1);
-/*    else if (verboseflag) putc('*', stdout); */   /* 1995/Feb/1 */
-    fontproper[fn] |= C_UNUSED;     /* 1995/Feb/1 */
-/*    strcpy(charname, fontname + fn * MAXTEXNAME);  */
-/*    printf("Font %s (%d) marked C_UNUSED\n", charname, fn); */
+
+  for (k = 0; k < MAXCHRS; k++)
+    if (wantchrs[k] != 0)
+      count++;
+
+  if (count == 0)
+  {
+    if (traceflag)
+      showline(" No characters used in font", 1);
+
+    fontproper[fn] |= C_UNUSED;
+
     return -1;    /* shouldn't ever happen ? unless page sub range ... */
   }
-  else if (verboseflag) {
+  else if (verboseflag)
+  {
     showline(fontnamek, 0);
   }
-  else {
+  else
+  {
     showline("*", 0);
   }
 
-/*  if (syntheticflag != 0) count = MAXCHRS; */ /* 1992/Aug/22 */
-  
-/*  Now actually start looking at the file! */
 
-  if (bAddBaseName) {     /* try and get /FontName 97/Feb/6 */
+  /*  Now actually start looking at the file! */
+  if (bAddBaseName)  /* try and get /FontName 97/Feb/6 */
+  {
     bBaseNameDone = 1;
     *realfontname = '\0';
-    if (FindFontPFBaux (input, realfontname, sizeof(realfontname))) /* FNAMELEN */
+
+    if (find_font_PFB_aux (input, realfontname, sizeof(realfontname)))
       bBaseNameDone = 0;  /* found it, so use it */
+
     rewind(input);
   }
 
   c = getc(input);
   (void) ungetc(c, input);
-  if (c == 0) {       /* check if this is a Mac style font file */
+
+  if (c == 0)  /* check if this is a Mac style font file */
+  {
 /*    macstyle = 1; */ /* try and position at start of ASCII length field */
 /*    need to figure out where we are in Mac file */
 /*    could be (a) at start of MacBinary header */
@@ -3499,31 +3608,51 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 /*         (c) at start of actual resource (256 byter after that) */
     binaryin = 1;
     (void) getc(input);         /* first byte (0) again */
-    if ((c = getc(input)) != 0) {   /* start of MacBinary ? */
-      for (k = 2; k < 384; k++) (void) getc(input); /* yes */
-      c = getc(input); (void) ungetc(c, input);
-      if (c != 0) {         /* try and verify format */
+
+    if ((c = getc(input)) != 0) /* start of MacBinary ? */
+    {
+      for (k = 2; k < 384; k++) (void)
+        getc(input); /* yes */
+
+      c = getc(input);
+      (void) ungetc(c, input);
+
+      if (c != 0)    /* try and verify format */
+      {
         showline(" ERROR: Not a valid PC (or Mac) style font file ", 1);
         errcount(0);
+
         return 0;   /* errcount ? */
       }
     }
-    else {    /* now try and check whether at start of resource fork, */
-          /* which starts with (0, 0, 1, 0) = 256 length */
-      c = getc(input);  d = getc(input);
-      if (c == 1 && d == 0) {
-/*        then skip over resource fork section */
-        for (k = 4; k < 256; k++) (void) getc(input);
-        c = getc(input); (void) ungetc(c, input);
-        if (c != 0) {         /* try and verify format */
+    else
+    {
+      /* now try and check whether at start of resource fork, */    
+      /* which starts with (0, 0, 1, 0) = 256 length */
+      c = getc(input);
+      d = getc(input);
+
+      if (c == 1 && d == 0)
+      {
+        for (k = 4; k < 256; k++)
+          (void) getc(input);
+
+        c = getc(input);
+        (void) ungetc(c, input);
+
+        if (c != 0) /* try and verify format */
+        {
           showline(" ERROR: Not a valid PC (or Mac) style font file ",1 );
           errcount(0);
+
           return 0;   /* errcount ? */
         }
       }
-      else { /* try and imagine we are right there actually */
-/*        rewind(input); */ /* back to start of length code */
-        (void) getc(input); (void) getc(input);  /* skip length */
+      else
+      {
+        /* try and imagine we are right there actually */
+        (void) getc(input);
+        (void) getc(input);  /* skip length */
       }       
     }
   } /* end of first byte is zero in file case */
@@ -3531,102 +3660,116 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
   chrs = -1;
   task = "copying heading line";
   k = extgetline(input, line);    /* get first line of font */
-  if (*line != '%' || *(line + 1) != '!') {
+
+  if (*line != '%' || *(line + 1) != '!')
+  {
     showline(" Nonstandard font file start: ", 1);
     showline(line, 1);
     errcount(0);
   }
-  if (strstr(line, "Type3") != NULL || strstr(line, "Font-3") != NULL) {
+
+  if (strstr(line, "Type3") != NULL || strstr(line, "Font-3") != NULL)
+  {
     type3flag = 1;    /* well, maybe lets try Type 3 then ! */
     rewind(input);
+
     return 0;     /* indicate lack of success ! */
   }
 
-  if (stripcomment == 0) {
-    if (mmflag) begin_resource(output, subfontnamek);  /* 97/June/1 */
-    else begin_resource(output, filefontname);   /* share code */
-/*    fprintf(output, "%s", line); */ /* copy %! heading line  ??? */
-//    fputs(line, output);
+  if (stripcomment == 0)
+  {
+    if (mmflag)
+      begin_resource(output, subfontnamek);
+    else
+      begin_resource(output, filefontname);
+
     PSputs(line, output);
-    if (wantcreation != 0) {
+
+    if (wantcreation != 0)
+    {
       k = extgetline(input, line);  /* check second line of font */
-/*      if (*line != '%' || strncmp(line, "%%CreationDate", 14) == 0) */
-      if (strncmp(line, "%%CreationDate", 14) == 0) /* 1995/April/12 */
-/*        fprintf(output, "%s", line); */
-//        fputs(line, output);
+
+      if (strncmp(line, "%%CreationDate", 14) == 0)
         PSputs(line, output);
-/*  this line gets output below anyway, unless its a comment */
     }
   }
   
   task = "looking for FontInfo";
 
-/*  strcpy(realfontname, ""); */  /* 95/Aug/22 */ /* removed 97/Jan/30 */
-
-  while (strstr(line, "/FontInfo") == NULL && k >= 0) { 
+  while (strstr(line, "/FontInfo") == NULL && k >= 0)
+  {
 /*  Try and strip out that `font wrapper' stuff checking for existing font ! */
 /*  ===> NOTE: this is in outer level <=== */
 /*  Used in Courier, Helvetica for example */
 /*  Also junk in Fontographer style fonts - up to three lines long */
-/*    if (stripchecking != 0 && syntheticflag == 0) { */
-    if (stripchecking != 0) { 
-      if (strstr(line, "FontDirectory") != NULL) {
+    if (stripchecking != 0)
+    {
+      if (strstr(line, "FontDirectory") != NULL)
+      {
         stripflag++;
         k = extgetline(input, line);
-        if (strstr(line, "/FontType") != NULL) {
+
+        if (strstr(line, "/FontType") != NULL)
+        {
           k = extgetline(input, line);
         }
-        if (strstr(line, "{save true}") != NULL) { /* 1992/Aug/21 */
+
+        if (strstr(line, "{save true}") != NULL)
+        {
           k = extgetline(input, line);
         }
-/* search up to line containing `{false}ifelse' ? */
-/* search up to `<x> dict begin' ? */
-        while (strstr(line, "dict") == NULL) {    /* 1992/Oct/22 */
+
+        while (strstr(line, "dict") == NULL)
+        {
           k = extgetline(input, line); 
-          if (k == EOF) break;
+
+          if (k == EOF)
+            break;
         }
-        if (stripcomment == 0) {
-//          fputs("% font wrapper removed\n", output);
+
+        if (stripcomment == 0)
+        {
           PSputs("% font wrapper removed\n", output);
         }
-/*        putc('\n', output); */    /* at least leave some space */
-      } /* end of strstr(line, "FontDirectory") != NULL */
-    } /* end of stripchecking != 0 */
-
-/*  ignore comment lines OTHER than copyright or trademark line */
-    if (*line == '%') {
+      }
+    }
+    
+    /*  ignore comment lines OTHER than copyright or trademark line */
+    if (*line == '%')
+    {
       if (strstr(line, "opyright") != NULL ||
         strstr(line, "rademark") != NULL ||
         strstr(line, "(c)") != NULL)
-//        fputs(line, output);
         PSputs(line, output);
     }
-/*  Ignore blank lines */
-    else if (*line != '\n') {
-/*      fputs(line, output); */   /* 1992/July/18 */ /* 95/April/12 */
-/*  Check for FontName even this early - added 95/April/12 */
-      syntheticflag = parseline(line, output, syntheticflag, mtmiflag);
-/*  parseline outputs the line itself (or modified version) */
+    else if (*line != '\n')
+    {
+      syntheticflag = parse_line(line, output, syntheticflag, mtmiflag);
     }
+
     k = extgetline(input, line);
-/*    getrealline(input, line); */
   }
 
-/*  Should now have /FontInfo line */ /* increase dictionary allocation */
-  if (bAddBaseName && !bBaseNameDone) {
+  if (bAddBaseName && !bBaseNameDone)
+  {
     flag = 0;
-    if ((s = strstr(line, "/FontInfo")) != NULL) {
+
+    if ((s = strstr(line, "/FontInfo")) != NULL)
+    {
       s +=10;
-      if (sscanf(s, "%d%n dict", &k, &n) == 1) {
+
+      if (sscanf(s, "%d%n dict", &k, &n) == 1)
+      {
         char buffer[FNAMELEN];  /* long enough ? */
         strcpy(buffer, s+n);
         sprintf(s, "%d", k+1);
         strcat(s, buffer);
-/*        printf(line); */    /* debugging */
         flag++;
       }
     }
-    if (flag == 0) {
+
+    if (flag == 0)
+    {
       showline(" ERROR: unable to extend FontInfo dictionary\n", 1);
       bBaseNameDone++;
     }
@@ -3639,185 +3782,185 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 /*  This has a somewhat flakey termination test ... */
 /*  usually the end is `end readonly def' */
     
-  while (strstr(line, "end ") == NULL && k >= 0) { 
-    if (stripinfo == 0 || busedviencode == 0) {
-//      fputs(line, output);
+  while (strstr(line, "end ") == NULL && k >= 0)
+  {
+    if (stripinfo == 0 || busedviencode == 0)
+    {
       PSputs(line, output);
     }
-    else if ((s = strstr(line, "/Notice")) != NULL) {
+    else if ((s = strstr(line, "/Notice")) != NULL)
+    {
       sprintf(logline, "%% %s", s); /* s+1 ? */
       PSputs(logline, output);
     }
-/*    Try and put it after the /FullName in /FontInfo dictionary ? */
-    if (strstr(line, "/BaseFontName ") != NULL) bBaseNameDone++;
-/*    In this case however the FontInfo dict is now one entry too large */
-/*    if (strstr(line, "/FullName") != NULL) {
-      if (bAddBaseName && !bBaseNameDone) {
-        fprintf(output, "/BaseFontName (%s) def\n", realfontname);
-        bBaseNameDone++;
-      }
-    } */
+
+    if (strstr(line, "/BaseFontName ") != NULL)
+      bBaseNameDone++;
+
     k = extgetrealline(input, line);
   }
-/*  If haven't placed BaseFontName yet, do it here */ /* 97/Jan/30 */
-  if (bAddBaseName && !bBaseNameDone) {
+
+  /*  If haven't placed BaseFontName yet, do it here */ /* 97/Jan/30 */
+  if (bAddBaseName && !bBaseNameDone)
+  {
     sprintf(logline, "/BaseFontName (%s) def\n", realfontname);
     PSputs(logline, output);
     bBaseNameDone++;
   } 
 
-  if (stripinfo == 0 || busedviencode == 0) { /* terminating line FontInfo */
-//    fputs(line, output);
+  if (stripinfo == 0 || busedviencode == 0)
+  {
     PSputs(line, output);
   }
 
-/*  does this assume FontName comes before Encoding ? YES, ugh */
   task = "looking for Encoding & FontName";
-  k = extgetrealline(input, line);        /* look for encoding */
-  while (strstr(line, "/Encoding") == NULL && k >= 0) {
-    syntheticflag = parseline(line, output, syntheticflag, mtmiflag);
+  k = extgetrealline(input, line);
+
+  while (strstr(line, "/Encoding") == NULL && k >= 0)
+  {
+    syntheticflag = parse_line(line, output, syntheticflag, mtmiflag);
     k = extgetrealline(input, line);
   }
-
-/*  special case hack when "def" is on line *after* StandardEncoding 98/Oct/8 */
-  if (strstr(line, "StandardEncoding") != NULL) { 
-    if (strstr(line, "def") == NULL) {
+  
+  /*  special case hack when "def" is on line *after* StandardEncoding 98/Oct/8 */
+  if (strstr(line, "StandardEncoding") != NULL)
+  {
+    if (strstr(line, "def") == NULL)
+    {
       s = line + strlen(line);
-      *(s-1) = ' ';     /* turn line termination into space */
+      *(s - 1) = ' ';     /* turn line termination into space */
       k = extgetrealline(input, s);
-/*      printf("LINE: %s", line); */
     }
   }
 
-/* Now we have hit the encoding vector --- /Encoding in line */
-  
-  if (mtmiflag != 0) {  /* don't mess with vector if font sucks rocks */
-//    fputs(line, output);    /* 1992/Aug/22 */
-    PSputs(line, output);     /* 1992/Aug/22 */
+  if (mtmiflag != 0)
+  {
+    PSputs(line, output);
   }
+  else if ((property & C_REMAPIT) == 0)
+  {
+    if (strstr(line, "StandardEncoding") != NULL)
+    {
+      standard = 1;
+      texfont = 0;
+      fontchrs = MAXCHRS;
 
-/*  else if (bMMNewFlag == 0 && mmflag != 0) fputs(line, output); */
-  else if ((property & C_REMAPIT) == 0) {   /* if font is not remapped */
-    if (strstr(line, "StandardEncoding") != NULL) { /* easy case! */
-      standard = 1; texfont = 0; fontchrs = MAXCHRS;
-      if (bWindowsFlag != 0) {
-        if (verboseflag) {
-//          putc('~', stdout);  
-//          if (logfileflag) putc('~', logfile);
+      if (bWindowsFlag != 0)
+      {
+        if (verboseflag)
+        {
           showline("~", 0);
         }
-/*        for (k = 0; k < fontchrs; k++)
-          strcpy(charnames[k], ansi_enc[k]); */
-/* ansi encoding may have been changed if env var ENCODING is set ??? */
-        copy_enc(charnames, ansi_enc, fontchrs); /* 93/Nov/15*/
-/*        write_enc(output, wantchrs, syntheticflag, "ansinew"); */
-/*        write_enc(output, wantchrs, syntheticflag, textencoding); */
-        missing_chars(wantchrs, textenconame); /* TEST 95/July/15 */
+
+        copy_enc(charnames, ansi_enc, fontchrs);
+        missing_chars(wantchrs, textenconame);
         write_enc(output, wantchrs, syntheticflag, textenconame);
-        if (bCheckEncoding) (void) checkencoding(fn); /* 95/Jan/10 */
-        nansified++;    /* count how many we did this way */
-      } /* if (bWindowsFlag != 0) */
-      else {
-/*        for (k = 0; k < fontchrs; k++)
-          strcpy(charnames[k], std_enc[k]); */
-        copy_enc(charnames, std_enc, fontchrs); /* 93/Nov/15*/
-        missing_chars(wantchrs, "standard");   /* TEST 95/July/15 */
+
+        if (bCheckEncoding)
+          (void) check_enc(fn);
+
+        nansified++;
+      }
+      else
+      {
+        copy_enc(charnames, std_enc, fontchrs);
+        missing_chars(wantchrs, "standard");
         write_enc(output, wantchrs, syntheticflag, "standard");
       }
-/*      write_enc(output, wantchrs, syntheticflag); */  /* ??? */
-    }   /* end of StandardEncoding case (unremapped) */
-    else {    /* font was not using StandardEncoding (unremapped) */
+    }
+    else
+    {
       standard = 0;
-      if(sscanf(line, "/Encoding %d array", &nvec) < 1) {
+
+      if(sscanf(line, "/Encoding %d array", &nvec) < 1)
+      {
         sprintf(logline, " Don't understand encoding vector: %s", 
           line);
         showline(logline, 1);
         extgiveup(9);
+
         return -1;
       }
-/*      fontchrs = nvec; */     /* can we trust this ? NO better not */
 
-/*      task = "reading Encoding";  */
       k = extgetrealline(input, line);
 /*      have to ignore "0 1 255 {1 index exch /.notdef put} for" line */
-      if (sscanf(line, "%d 1 %d {", &ns, &ne) < 2) {
-/*        maybe no need to complain ? */
+      if (sscanf(line, "%d 1 %d {", &ns, &ne) < 2)
+      {
         showline(" No /.notdef line", 1); 
       }
-      else k = extgetrealline(input, line); /* 92/02/04 */
+      else
+        k = extgetrealline(input, line);
+
 /*      grabbed next line (or hung onto this, if NOT  /.notdef line) */
 /*      clear out charnames - background of blanks */
-/*      for (k = 0; k < MAXCHRS; k++) strcpy(charnames[k], ""); */
-/*      for (k = 0; k < MAXCHRS; k++) *charnames[k] = '\0';*//* 92/02/04 */
-      clean_enc(0, MAXCHRS);          /* 93/Nov/15 */
+      clean_enc(0, MAXCHRS);
 
       task = "reading Encoding"; 
-/*      k = extgetrealline(input, line); */ /* 92/02/04 now done above */
-/*      while (strstr(line, " def") == NULL)  */
-/*      scan encoding - ends on "readonly def" usually */
-/*      new tokenized version follows */
-      gobbleencoding(input);
-/*      write_enc(output, wantchrs, syntheticflag); */  /* ??? */
-      missing_chars(wantchrs, "");     /* NEW TEST 95/July/15 */
+      gobble_enc(input);
+      missing_chars(wantchrs, "");
       write_enc(output, wantchrs, syntheticflag, "");
-    } /* Finished with NOT StandardEncoding case */
-  } /* finish with non-remapped font case */ 
-
-  else {  /* now for what to do if non-resident font remapped C_REMAPIT */
-    if (verboseflag) {
-//      putc('^', stdout);  
-//      if (logfileflag) putc('^', logfile);
+    }
+  }
+  else
+  {
+    /* now for what to do if non-resident font remapped C_REMAPIT */
+    if (verboseflag)
+    {
       showline("^", 0);
     }
-/*    first flush old encoding vector */
-    if (strstr(line, "StandardEncoding") == NULL)  {
+
+    /*    first flush old encoding vector */
+    if (strstr(line, "StandardEncoding") == NULL)
+    {
 /*    scan encoding - ends on "readonly def" usually */
 /*    has to ignore "0 1 255 {1 index exch /.notdef put} for" line */
 /*    skip over encoding in font - ignore it totally */
 /*    Encoding ends with token `def' or `readonly' */ 
 /*    and token `def' and `readonly should not occur in Encoding */
       while ((strstr(line, "def") == NULL ||
-        strstr(line, "put") != NULL) && k >= 0) { /* NEW 1991/11/23 */
+        strstr(line, "put") != NULL) && k >= 0)
+      {
         k = extgetrealline(input,line);
       }
     }
-    read_enc(vector); /* read desired encoding */
-/*    write_enc(output, wantchrs, syntheticflag); */
-    missing_chars(wantchrs, vector);     /* NEW TEST 95/July/15 */
-    write_enc(output, wantchrs, syntheticflag, "");
-  } /* end of dealing with encoding vector */
 
-/*  if (traceflag) showencoding(stdout);  */
+    read_enc(vector);
+    missing_chars(wantchrs, vector);
+    write_enc(output, wantchrs, syntheticflag, "");
+  }
 
   task = "copying font dict up to eexec";
   k = extgetrealline(input, line);
-  while (strstr(line, "eexec") == NULL && k >= 0) { /* copy up to eexec */
-    syntheticflag = parseline(line, output, syntheticflag, mtmiflag);
+
+  while (strstr(line, "eexec") == NULL && k >= 0)
+  {
+    syntheticflag = parse_line(line, output, syntheticflag, mtmiflag);
     k = extgetrealline(input, line);
   }
-//  fputs(line, output);    /* 1992/July/18 */
-  PSputs(line, output);   /* 1992/July/18 */
 
-  if (bSubRealName == 0) {        /* 95/Aug/22 */
-/*    we don't normally come here these days ... */
-//    strcpy(subfontname + fn * MAXFONTNAME, realfontname);
-    if (subfontname[fn] != NULL) free(subfontname[fn]);
+  PSputs(line, output);
+
+  if (bSubRealName == 0)
+  {
+    if (subfontname[fn] != NULL)
+      free(subfontname[fn]);
+
     subfontname[fn] = zstrdup(realfontname);
-/*    if we are going to use the PS FontName here we'll need it later */
   }
 
-  if (k == EOF) {     /* NEW */
+  if (k == EOF)
+  {
     showline(" Premature EOF", 1);
     showline(" in font file", 1);
     errcount(0);
+
     return -1;    /* NEW --- shouldn't happen ! */
   }
 
-/*  Problem: what if syntheticflag set, but stripflag also set !!! */
-  if (syntheticflag != 0 ||
-       mtmiflag != 0) { /* pretty much just expand PFB to PFA */
-/*    copy_font(output, input, i, mtmiflag, stripflag); */
+  if (syntheticflag != 0 || mtmiflag != 0)
+  {
     copy_font(output, input, fn, mtmiflag, stripflag);
+
     return 1;
   }
 
@@ -3828,72 +3971,94 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
   task = "entering encrypted section";
 
   c = getc(input);
-  while (c <= ' ' && c > 0) c = getc(input);  /* skip over white space */
-  if (c == 128) {     /* see whether .pfb input format */
+
+  while (c <= ' ' && c > 0)
+    c = getc(input);  /* skip over white space */
+
+  if (c == 128) /* see whether .pfb input format */
+  {
     binaryin = 1;
     c = getc(input);
-    if (c != 2) {
+
+    if (c != 2)
+    {
       sprintf(logline, 
         " Expecting %s, not %d", "binary section code", c);
       showline(logline, 1);
       extgiveup(5);
+
       return -1;
     }
+
     len = readlength(input);
   }
-  else if (c == 0) {      /* see whether Mac binary input format */
+  else if (c == 0) /* see whether Mac binary input format */
+  {
     binaryin = 1;
     (void) ungetc(c, input);
     len = maclength(input);
     c = getc(input);
-    if (c != 2) {
+
+    if (c != 2)
+    {
       sprintf(logline, " Expecting %s, not %d", "Mac binary section code", c);
       showline(logline, 1);
-/*      shownext(input); */
       extgiveup(5);
       return -1;
     }
+
     c = getc(input);
-    if (c != 0) {
+
+    if (c != 0)
+    {
       sprintf(logline, " Invalid Mac Binary section code %d", c);
       showline(logline, 1);
       extgiveup(5);
+
       return -1;
     }
+
     len = len -2;
   }
-  else if (c > 128) {   /* see whether raw binary - totally flakey ! */
+  else if (c > 128) /* see whether raw binary - totally flakey ! */
+  {
     binaryin = 1;
     len = (1U << 31); /* conversion to unsigned long ... */
     (void) ungetc(c, input);
   }
-  else (void) ungetc(c, input);
+  else
+    (void) ungetc(c, input);
 
 /* copying across the four random encoding bytes at start also */
 
-  n = get_magic(input, line);        /* 1993/Sep/14 */
-  put_en_linen(output, line, n);      /* 1993/Sep/14 */
+  n = get_magic(input, line);
+  put_en_linen(output, line, n);
   
   task = "looking for CharString dict";
   n = get_en_line(input, line);
-  while ((s = strstr(line, "/CharStrings")) == NULL) {
-/*  Omit UniqueID if font remapped AND dviencoding in use  */
-    if ((property & C_REMAPIT) != 0) {
-      if (busedviencode != 0 && strstr(line, "/UniqueID") != NULL) {
-/*        if (verboseflag) printf(" Stripping UniqueID"); */
-        n = get_en_line(input, line); continue; 
+
+  while ((s = strstr(line, "/CharStrings")) == NULL)
+  {
+    /*  Omit UniqueID if font remapped AND dviencoding in use  */
+    if ((property & C_REMAPIT) != 0)
+    {
+      if (busedviencode != 0 && strstr(line, "/UniqueID") != NULL)
+      {
+        n = get_en_line(input, line);
+        continue; 
       }
     }
+
     put_en_linen(output, line, n);
-    if (strstr(line, "/Subrs") != NULL) {
+
+    if (strstr(line, "/Subrs") != NULL)
+    {
       copy_subrs(output, input);
-/* may want to inject a spurious newline here ... */
-/*      printf("Old line %s", line); */ /* |- */
-/*      n = get_en_line(input, line); */
-/*      printf("New line %s", line); */ /* end noaccess put */
-      if (abortflag) return -1;
+
+      if (abortflag)
+        return -1;
     }
-/*    else  */
+
     n = get_en_line(input, line);
 /* check on possibility of Synthetic Font */
 /* possibly suppress discarding of unwanted characters ? */
@@ -3901,163 +4066,194 @@ int extracttype1 (FILE *output, FILE *input, int fn, char *fontnamek)
 /* ===> NOTE: this is in encrypted level <=== */
 /* possibly have to deal differently with the ending ? */
 /* need to transfer the rest of the font just as is because of byte count */
-    if (strstr(line, "FontDirectory") != NULL) { /* 1992/Aug/24 */
+    if (strstr(line, "FontDirectory") != NULL)
+    {
 /* don't complain if already noted that it was synthetic ... */
-      if (syntheticsafe != 0 && syntheticflag == 0) {
+      if (syntheticsafe != 0 && syntheticflag == 0)
+      {
         showline(" ERROR: use *synthetic* in sub file", 1);
         errcount(0);
         syntheticflag = -1;   /* is it safe to do this now ? */
       }
-/*      else if (verboseflag) printf(" synthetic"); */
     }
-    if (strstr(line, "hires") != NULL) {     /* 1993/Jan/17 */
-      if (hybridflag == 0) showline(" hybrid", 0);  /* first time */
+
+    if (strstr(line, "hires") != NULL)
+    {
+      if (hybridflag == 0)
+        showline(" hybrid", 0);  /* first time */
+
       hybridflag++;
     }
-/*    if (traceflag) printf("LINE: %s", line); */
   }
-  if (strncmp(line, "2 index", 7) == 0)  fontform = 2;  /* new form */
-  else if (strncmp(line, "dup", 3) == 0) fontform = 1;  /* old form */
-  else fontform=0;                  /* not recognized */
-  if (sscanf(s, "/CharStrings %d%n", &nchrs, &n) < 1) {
-    put_en_line(output, line);    /* 1993 Aug 5 - allow line split */
+
+  if (strncmp(line, "2 index", 7) == 0)
+    fontform = 2;
+  else if (strncmp(line, "dup", 3) == 0)
+    fontform = 1;
+  else
+    fontform = 0;
+
+  if (sscanf(s, "/CharStrings %d%n", &nchrs, &n) < 1)
+  {
+    put_en_line(output, line);
     n = get_en_line(input, line);
     s = line;
+
     if (strstr(line, "dict dup") == NULL ||
-      sscanf(s, "%d%n", &nchrs, &n) < 1) {
+      sscanf(s, "%d%n", &nchrs, &n) < 1)
+    {
       sprintf(logline, " Don't understand CharStrings line: %s", line);
       showline(logline, 1);
       extgiveup(2);
+
       return -1;
     }
   }
-  else {        /* normal case: /CharString <n> dict dup on line */
-    *(s+13) = '\0';       /* terminate after `/CharStrings' */
+  else  /* normal case: /CharString <n> dict dup on line */
+  {
+    *(s + 13) = '\0';       /* terminate after `/CharStrings' */
     put_en_line(output, line);  /* start of modified /CharString line */
   }
-/*  *s = '\0';        */  /* terminate before /CharStrings */
-/*  put_en_line(output, line); */ /* start of modified /CharString line */
 
-charagain:              /* 1993 Aug 5 - hybrid font loop */
+charagain:
 
-  if (accentedflag != 0) {    /* need to redo the count */
-    count = 0;          /* if accented characters allowed */
-    for (k = 0; k < MAXCHRS; k++) if (wantchrs[k] != 0) count++;  
+  if (accentedflag != 0)
+  {
+    count = 0;
+
+    for (k = 0; k < MAXCHRS; k++)
+      if (wantchrs[k] != 0)
+        count++;
   }
-  if (wantnotdef != 0) count++;
-/*  if (count > MAXCHRS) count = MAXCHRS; */  /* notdef ??? */
-  if (syntheticflag != 0) count = nchrs;  /* 1992/Aug/22 */
-  nchrs = count;        /* count of desired characters */
-/*  nchrs=0; */
-/*  for (k=0; k < fontchrs; k++) if (wantchrs[k] != 0) nchrs++; */
-/*  if (wantnotdef != 0) nchrs++; */
-/*  sprintf(line, "/CharStrings %d", nchrs); */
-  sprintf(line, "%d", nchrs);   /* 1993 Aug 5 */
+
+  if (wantnotdef != 0)
+    count++;
+
+  if (syntheticflag != 0)
+    count = nchrs;
+
+  nchrs = count;
+
+  sprintf(line, "%d", nchrs);
   put_en_line(output, line);  /* middle of modified /CharString line */
-  *(s+n) = ' ';       /* fix up, in case it became `\0' */
+  *(s + n) = ' ';       /* fix up, in case it became `\0' */
   put_en_line(output, s + n); /* end of modified /CharString line */
 
   task = "scanning CharStrings";
-  chrs = 0;         /* not used ? 95/Oct/28 */
-/*  for (k = 0; k < MAXCHRS; k++); charseen[k] = 0; *//* do earlier ??? */
-  for (k = 0; k < MAXCHRS+1; k++) charseen[k] = 0; /* fix 1992/Aug/21 */
-  for(;;) {
-    if (get_char_line(line, input, 0) != 0) break;
-/* the token "end" indicates the end of the CharString section */
-    if (sscanf(line, "/%s %d %n", charname, &nbin, &n) < 2) { 
+  chrs = 0;
+
+  for (k = 0; k < MAXCHRS + 1; k++)
+    charseen[k] = 0;
+
+  for ( ; ; )
+  {
+    if (get_char_line(line, input, 0) != 0)
+      break;
+
+    /* the token "end" indicates the end of the CharString section */
+    if (sscanf(line, "/%s %d %n", charname, &nbin, &n) < 2)
+    {
       sprintf(logline, " Not a CharString line: %s", line);
       showline(logline, 1);
-/*      fprintf(errout, " charname %s, nbin %d, n %d", 
-        charname, nbin, n);
-      n = sscanf(line, "/%s %d %n", &charname, &nbin, &n);
-      fprintf(errout, " found only %d items in %d chars, first %d ! ", 
-        n, strlen(line), (int) *line); */
-      if (get_char_line(line, input, 0) != 0) break;
-      errcount(0);      /* a little risky going on here ? */
-/*      extgiveup(9); */  /* or, just flush THIS file ? */
+
+      if (get_char_line(line, input, 0) != 0)
+        break;
+
+      errcount(0);
     }
-/*    assert(strlen(charname) < MAXCHARNAME); */
-/*    if (strlen(charname) >= MAXCHARNAME)
-      fprintf(errout, " char name %s too long", charname); */
-/*  flushed 93/Nov/15 */
-/*  possibly check here whether syntheticflag is set ??? */
-/*  in that case just transfer all characters */ /* 1992/Aug/22 */
-/*  shouldn't this depend on whether we used StandardEncoding ? */
-/*    k = want_this_name(charname, chrs, wantchrs); */
+
     guess = -1;
-/*    single character charnames equal their char code 95/Oct/28 */
-    if (*(charname+1) == '\0') guess = *charname;
+
+    /*    single character charnames equal their char code 95/Oct/28 */
+    if (*(charname + 1) == '\0')
+      guess = *charname;
+
     k = want_this_name(charname, guess, wantchrs);
-    if (k >= 0 || syntheticflag != 0) {         /* 1992/Aug/22 */
-/*      if (k < 0 || k >= MAXCHRS) 
-        fprintf(errout, "Way out of range k %d ", k);   else  */
-/*      charseen[k] = 1; */   /* new - so can tell which missing */
-      if (syntheticflag != 0) k = NOTDEF;   /* prevent error */
-      else charseen[k]++;   /* new - so can tell which missing */
-/*      debugging only */
-/*  for dviencoding, change name to numeric code, unless its .notdef */
-      if (busedviencode != 0 && k != NOTDEF) { /* change charname */
-        if (strstr(line + n, "RD") != NULL) /* overwrite */
+
+    if (k >= 0 || syntheticflag != 0)
+    {
+      if (syntheticflag != 0)
+        k = NOTDEF;
+      else
+        charseen[k]++;
+
+      /*  for dviencoding, change name to numeric code, unless its .notdef */
+      if (busedviencode != 0 && k != NOTDEF) /* change charname */
+      {
+        if (strstr(line + n, "RD") != NULL)
           sprintf(line, "/a%d %d RD ", k, nbin);
-        else sprintf(line, "/a%d %d -| ", k, nbin);
+        else
+          sprintf(line, "/a%d %d -| ", k, nbin);
       }
-/* above assumes using either RD or -| ??? */
-      put_en_line(output, line);    /* beginning of character */
+
+      put_en_line(output, line);
       copy_char_string(output, input, nbin);
-/*      printf("%d ", k); */    /* debugging */
-/* this may not be accurate if repeated encoding and both char codes used .. */
-      count--;        /* how many we extracted so far */
-/*      debugging only */
-/*      if (count == 0 && breakearly != 0 && fontform != 0) break; */
+      /* this may not be accurate if repeated encoding and both char codes used .. */
+      count--;
     }
-    else flush_char_string(input, nbin);
-    chrs++;         /* not used ? 95/Oct/28 */
-    if (bAbort) abortjob();       /* 1992/Nov/24 */
-    if (abortflag) return -1;
+    else
+      flush_char_string(input, nbin);
+
+    chrs++;
+
+    if (bAbort)
+      abortjob();
+
+    if (abortflag)
+      return -1;
   }
   
 /*  believe that count should be zero here ! */
-  if (count > 0) {              /* 1994/Jan/30 */
+  if (count > 0)
+  {
 /*  first check whether `missing' characters appear twice in encoding */    
 /*  this is important now that we use TEXANSI and extend encoding at bottom */
 /*  can only be equal to character lower in code, so don't start at zero */
-    for (k = 1; k < MAXCHRS; k++) {   /* check the suspects */
-      if ((wantchrs[k] != 0) && (charseen[k] == 0)) {
+    for (k = 1; k < MAXCHRS; k++) /* check the suspects */
+    {
+      if ((wantchrs[k] != 0) && (charseen[k] == 0))
+      {
 /*  don't play with characters that have no names ! 96/May/26 */
-        if (strcmp(charnames[k], "") == 0) continue;
-        for (l = 0; l < k; l++) { /* does it appear earlier */
-/*  don't play with characters that have no names ! 96/May/26 */
-          if (strcmp(charnames[l], "") == 0) continue;
-          if (strcmp(charnames[k], charnames[l]) == 0) {
+        if (strcmp(charnames[k], "") == 0)
+          continue;
+
+        for (l = 0; l < k; l++)
+        {
+          if (strcmp(charnames[l], "") == 0)
+            continue;
+
+          if (strcmp(charnames[k], charnames[l]) == 0)
+          {
             charseen[k]++;
             count--;
+
             break;
           }
         }
       }
     }
   }
-  if (count > 0) {
-/*    fprintf(errout, " %d characters (out of %d) not found: ", 
-      count, nchrs); */
+
+  if (count > 0)
+  {
     sprintf(logline, " %d character%s (out of %d) not found: ", 
       count, (count == 1) ? "" : "s", nchrs);
     showline(logline, 1);
-/*    fprintf(errout, "fontchrs: %d ", fontchrs); */
-    for (k = 0; k < MAXCHRS; k++) {   /* list the bad ones */
-      if ((wantchrs[k] != 0) && (charseen[k] == 0)) {
+
+    for (k = 0; k < MAXCHRS; k++)
+    {
+      if ((wantchrs[k] != 0) && (charseen[k] == 0))
+      {
 /*  characters may have no names if not in encoding 96/May/26 */
-/*        fprintf(errout, " %s (%d)", charnames[k], k);  */
         if (strcmp(charnames[k], "") != 0)
           sprintf(logline, " %s (%d)", charnames[k], k); 
-        else sprintf(logline, " (%d)", k);  /* 96/May/26 ? */
+        else
+          sprintf(logline, " (%d)", k);
+
         showline(logline, 1);
       }
-/*      debugging only */
-/*      if ((wantchrs[k] != 0) && (charseen[k] != 0)) {
-        fprintf(errout, " %s [%d]", charnames[k], k);
-      } */
     }
+
     errcount(0); /* ??? */
   }
 
@@ -4068,31 +4264,42 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
   put_en_line(output, line);
 
 /*  1993 August 5 - deal with `hybrid' font - second set of CharStrings */
-/*  if (strncmp(line, "hires", 5) == 0) { */
-  if (strstr(line, "hires") != NULL) {    /* 1994/July/15 */
+  if (strstr(line, "hires") != NULL)
+  {
     n = get_en_line(input, line);   /* get potential <n> dict dup line */
     s = line;
+
     if (strstr(line, "dict dup") != NULL &&
-      sscanf(s, "%d%n", &nchrs, &n) == 1) goto charagain;
-    if ((s = strstr(line, "dict dup")) != NULL) { /* 1994/July/15 */
-      while (s > line && *(s-1) == ' ') s--;
-      while (s > line && *(s-1) > ' ') s--; /* Try and step back */
-      if (sscanf(s, "%d%n", &nchrs, &n) == 1) {
-/*        printf("CHARSTRING: %s", s); */ /* debugging */
+      sscanf(s, "%d%n", &nchrs, &n) == 1)
+      goto charagain;
+
+    if ((s = strstr(line, "dict dup")) != NULL)
+    {
+      while (s > line && *(s-1) == ' ')
+        s--;
+
+      while (s > line && *(s-1) > ' ')
+        s--; /* Try and step back */
+
+      if (sscanf(s, "%d%n", &nchrs, &n) == 1)
+      {
         *s = '\0';        /* terminate after `/CharStrings' */
         put_en_line(output, line); /* start modified /CharString line */
+
         goto charagain;
       }
     }
   }
-  else n = get_en_line(input, line);      /* copy /FontName line */
+  else
+    n = get_en_line(input, line);      /* copy /FontName line */
   
 /* if by mistake we wade into second /CharStrings of hybrid font, following */
 /* goes wrong because it copies binary stuff and treats 0 char as end string */
 
   task = "copying end of font dict def";
-/*  n = get_en_line(input, line); */      /* copy /FontName line */
-  while (strstr(line, "closefile") == NULL) {
+
+  while (strstr(line, "closefile") == NULL)
+  {
     put_en_line(output, line);
     n = get_en_line(input, line);
   }
@@ -4107,56 +4314,67 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
 /*  Looking for M-@C-A (ASCII section heading) for PFB */
 /*  Looking for EOL for PFA */
 /*  Looking for C-@C-B for Mac */
-  if (bStripBadEnd) {
+  if (bStripBadEnd)
+  {
     long current = ftell(input);
     c = getc(input);
-    while (c != 128 && c != '0' && c != 0 && c >= ' ') {
+
+    while (c != 128 && c != '0' && c != 0 && c >= ' ')
+    {
       sprintf(logline, " JUNK %d (%c) at byte %ld", c, c, current);
       showline(logline, 1);
       current = ftell(input);
       c = getc(input);
     }
-/*    putc(c, output); */ /* ??? */
+
     ungetc(c, input); /* ??? */
   }
 
-/*  task = "adding zeros & cleartomark"; */
   task = "copying ASCII section at end";
+  c = getc(input);
 
-/*  putzeros(output, nestedflag); */      /* add zeros at end */
-  c = getc(input); 
-  if (c != '\n') (void) ungetc(c, input);   /* ??? */
-//  putc('\n', output);             /* for PFB not for PFA ? */
+  if (c != '\n')
+    (void) ungetc(c, input);
+
   PSputc('\n', output);             /* for PFB not for PFA ? */
-  while (extgetline(input, line) != EOF) {  /* new way to finish off */
+
+  while (extgetline(input, line) != EOF)
+  {
+/* new way to finish off */
 /*    fputs(line, output);  */
 /*    Try and strip out that old Adobe crap checking for existing font ! */
 /*    Also junk in Fontographer style fonts */  /* 1992/Aug/21 */
 /*    Used in Courier, Helvetica for example */
-/*    if (stripchecking != 0 && syntheticflag == 0) {  */
-    if (stripchecking != 0) {
-      if ((s = strstr(line, "{restore}")) != NULL) {
+    if (stripchecking != 0)
+    {
+      if ((s = strstr(line, "{restore}")) != NULL)
+      {
         stripflag--;
-        if ((t = strstr(line, "cleartomark")) != NULL) {
+
+        if ((t = strstr(line, "cleartomark")) != NULL)
+        {
           *s++ = '\n';
           *s++ = '\0';      /* cut off after cleartomark */
-//          fputs(line, output);  /* 1992/Aug/20 */
-          PSputs(line, output); /* 1992/Aug/20 */
+          PSputs(line, output);
         }
-        if (stripcomment == 0) {    /* 1995/May/14 */
-//          fputs("% font wrapper removed\n", output);
+
+        if (stripcomment == 0)
+        {
           PSputs("% font wrapper removed\n", output);
         }
+
         continue; 
       }
     }
-//    fputs(line, output);
+
     PSputs(line, output);
   }
 
   end_resource(output);      /* share some code */
+
   if (stripflag != 0) 
-    showline(" WARNING: broken wrapper ", 1); /* 1992/Oct/7 */
+    showline(" WARNING: broken wrapper ", 1);
+
   return 1;             /* indicate success */
 }
   
@@ -4169,195 +4387,240 @@ charagain:              /* 1993 Aug 5 - hybrid font loop */
 
 /* returns 0 if failed right away */
 
-/* int extracttype3(FILE *output, FILE *input, int i) { */
-int extracttype3 (FILE *output, FILE *input, int i, char *fontnamek)
+int extract_type3 (FILE *output, FILE *input, int i, char *fontnamek)
 {
   int nchar, copyflag, endflag, count;
   char *s;
   char *wantchrs;
 
-  if (verboseflag) {
-/*    printf("%s", fontnamek); */   /* 1995/Mar/1 */
+  if (verboseflag)
+  {
     showline(fontnamek, 0);
   }
-  else {
-/*    putc('*', stdout); */     /* 1995/Mar/1 */
+  else
+  {
     showline("*", 0);
   }
 
-//  wantchrs = fontchar + MAXCHRS * i;
-  wantchrs = fontchar[i]; 
-  if (wantchrs == NULL) showline(" BAD wantchrs", 1);
-/*  property = fontproper[i]; */
-/*  vector = fontvector[i]; */
+  wantchrs = fontchar[i];
+
+  if (wantchrs == NULL)
+    showline(" BAD wantchrs", 1);
   
   (void) getline(input, line);
-  if (*line != '%' || *(line + 1) != '!') {
+
+  if (*line != '%' || *(line + 1) != '!')
+  {
     showline(" Nonstandard font file start: ", 1);
     showline(line, 1);
     errcount(0);
   }
-  if (strstr(line, "Type1") != NULL || strstr(line, "Font-1") != NULL) {
+
+  if (strstr(line, "Type1") != NULL || strstr(line, "Font-1") != NULL)
+  {
     type3flag = 0;    /* well, maybe let try Type 1 then ! */
     rewind(input);
+
     return 0;     /* indicate lack of success */
   }
-  if (verboseflag) showline(" BITMAP", 0); 
-  if (stripcomment == 0) {
-    begin_resource(output, filefontname);    /* share code */
-//    fputs(line, output);
+
+  if (verboseflag)
+    showline(" BITMAP", 0); 
+
+  if (stripcomment == 0)
+  {
+    begin_resource(output, filefontname);
     PSputs(line, output);
-    if (wantcreation != 0) {
+
+    if (wantcreation != 0)
+    {
       (void) getline(input, line);
+
       if (*line != '%' || strncmp(line, "%%CreationDate", 14) == 0)
-//        fputs(line, output);
         PSputs(line, output);
     }
   }
-/*  fprintf(output, "%s", line); */
 
   count = 0;    /* number of lines starting with "}def" seen so far */
-  for(;;) {
-    if (getrealline(input, line) == 0) {
-      sprintf(logline, " Unexpected EOF (%s)\n", "extracttype3");
+
+  for ( ; ; )
+  {
+    if (getrealline(input, line) == 0)
+    {
+      sprintf(logline, " Unexpected EOF (%s)\n", "extract_type3");
       showline(logline, 1);
-      errcount(0);  
+      errcount(0);
+
       break;      /* was: return -1;  */
     }
-    if (strstr(line, "serverdict") == NULL) { /* omit serverdict line ! */
-//      fputs(line, output);
+
+    if (strstr(line, "serverdict") == NULL) /* omit serverdict line ! */
+    {
       PSputs(line, output);
     }
-    if (strstr(line, "cleartomark") != NULL) break; /* end preamble ? */
-    if (strncmp(line, "}def", 4) == 0) {      /* end preamble ? */
-      if (count++ >= 1) break;
+
+    if (strstr(line, "cleartomark") != NULL)
+      break; /* end preamble ? */
+
+    if (strncmp(line, "}def", 4) == 0)
+    {
+      if (count++ >= 1)
+        break;
     }
   }
 
 /*  now copy across character bitmaps */
-  for (;;) {        
+  for ( ; ; )
+  {
     endflag = 0;      /* set when `definefont' seen ... */
-    for (;;) {
-      if (getrealline(input, line) == 0) { /* EOF */
-        endflag = 1; break; 
+
+    for ( ; ; )
+    {
+      if (getrealline(input, line) == 0) /* EOF */
+      {
+        endflag = 1;
+        break;
       }
-      if (*line == '/') {     /* replace fontname ??? */
-        if ((s = strstr(line, "/FontName")) != NULL) {
-/*          if (sscanf(s, "/FontName /%s", realfontname) > 0)  */
+
+      if (*line == '/')
+      {
+        if ((s = strstr(line, "/FontName")) != NULL)
+        {
           s += 9;           /* step over `/FontName' */
-          while (*s != '/' && *s != '\0') s++;  /* 1993/Aug/15 */
-          if (sscanf(s, "/%s", realfontname) > 0) {
+
+          while (*s != '/' && *s != '\0') s++;
+
+          if (sscanf(s, "/%s", realfontname) > 0)
+          {
             lowercase(realfontname, realfontname);  /* why ? */
           }
-/* check whether TeX font */ /* code inserted 1996/May/20 */
-          texfont = 0;              /* 1992/Dec/22 */
-          if (istexfont(realfontname) != 0) {
+          
+          /* check whether TeX font */
+          texfont = 0;
+
+          if (is_tex_font(realfontname) != 0)
+          {
 /* also check if actually one of 75 TeX fonts (what about LATEX, SliTeX) ? */
-            texfont = 1; standard = 0; 
+            texfont = 1;
+            standard = 0;
           }
-          if (bSubRealName != 0) {
-/*            we normally do this these days ... */
-/*  replaced following single line by code for prefix 96/May/20 ... */
-/*            sprintf(line, "/FontName /%s def\n", filefontname); */
+
+          if (bSubRealName != 0)
+          {
             strcpy(line, "/FontName /");
-/*  look at fontprefix here also */
-//            if (strcmp(fontprefix, "") != 0)
+
             if (fontprefix != NULL)
               strcat(line, fontprefix);
+
             if (uppercaseflag != 0 && texfont != 0)
               uppercase(filefontname, filefontname);
-/*            if(_stricmp(filefontname, realfontname) == 0)
-              strcpy(filefontname, realfontname); */ /* ??? */
+
             strcat(line, filefontname);
             strcat(line, " def\n");     /* down to here */
           }
         }
-        else break;
+        else
+          break;
       }
-/*      else break; */
 
-//      fputs(line, output);
       PSputs(line, output);
-      if (strstr(line, "definefont") != NULL) { /* end of font */
-        endflag = 1; break; 
+
+      if (strstr(line, "definefont") != NULL)
+      {
+        endflag = 1;
+        break;
       }
     }
 
-    if (endflag != 0) {
-/*      printf(" found definefont"); */  /* debugging */
+    if (endflag != 0)
+    {
       break;
     }
-
-/*    presently assuming simple numeric code - no encoding vector */
+    
+    /* presently assuming simple numeric code - no encoding vector */
     if (sscanf(line, "/a%d ", &nchar) == 1)
     {
       copyflag = wantchrs[nchar]; 
-/*      printf(" (%d %d)", nchar, copyflag); */ /* debugging */
-      if (copyflag != 0) {
-//          fputs(line, output);
-          PSputs(line, output);
-    }
-/*      else putc('@', stdout); */        /* debugging */
-      for (;;) {
-        if (getrealline(input, line) == 0) {
-          sprintf(logline, " Unexpected EOF (%s)\n", "extracttype3");
+
+      if (copyflag != 0)
+      {
+        PSputs(line, output);
+      }
+
+      for ( ; ; )
+      {
+        if (getrealline(input, line) == 0)
+        {
+          sprintf(logline, " Unexpected EOF (%s)\n", "extract_type3");
           showline(logline, 1);
+
           break;      /* was:   return -1; */
         }
-        if (copyflag != 0) {
-//          fputs(line, output);
+
+        if (copyflag != 0)
+        {
           PSputs(line, output);
         }
-        if (*line == '>') break;    /* end of this CharDef */
+
+        if (*line == '>')
+          break;    /* end of this CharDef */
       }
     }
-    else {
-//      fputs(line, output);
+    else
+    {
       PSputs(line, output);
     }
-    if (bAbort) abortjob();   /* 1992/Nov/24 */
+
+    if (bAbort)
+      abortjob();
   }
 
   end_resource(output);
+
   return 1;               /* indicate success */
 }
   
-void complainbadfont (int flag) {
+void complain_bad_font (int flag)
+{
   sprintf(logline, " Bad Font File %d", flag);
   showline(logline, 1);
   errcount(0);
-  checkexit(1);       /* this is pretty serious ! */
+  checkexit(1);
 }
 
-void newcopyascii (FILE *output, FILE *input, unsigned long len)
+void new_copy_ascii (FILE *output, FILE *input, unsigned long len)
 {
   size_t n, m;  
-//  unsigned int k;
-//  unsigned char buffer[MAXLINE];
   char buffer[MAXLINE+1];
   char *s;
 
-//  m = sizeof(buffer);
-  m = sizeof(buffer-1);   // leave space for null
-  if (len < m) m = (size_t) len;
-  while ((n = fread(buffer, 1, m, input)) != 0) {
-//    for (k = 0; k < n; k++) if (buffer[k] == '\r') buffer[k] = '\n';
+  m = sizeof(buffer - 1) / sizeof(buffer[0]);   // leave space for null
+
+  if (len < m)
+    m = (size_t) len;
+
+  while ((n = fread(buffer, 1, m, input)) != 0)
+  {
     s = buffer;
-//    replace return with newlinw:
-    while ((s = strchr(s, '\r')) != NULL) *s='\n';
-//    fwrite(buffer, 1, n, output);
+
+    while ((s = strchr(s, '\r')) != NULL)
+      *s = '\n';
+
     buffer[n] = '\0';     // terminate for PSputs
     PSputs(buffer, output);   // 99/Aug/13
     len -= n;
-    if (len <= 0) break;
-    if (len < m) m = (size_t) len;    // last bit
-/*    printf(" len %lu n %u m %u", len, n, m); */
+
+    if (len <= 0)
+      break;
+
+    if (len < m)
+      m = (size_t) len;    // last bit
   }
 }
 
 #define COLUMNS 78
 
-void newcopybinary (FILE *output, FILE *input, unsigned long len)
+void new_copy_binary (FILE *output, FILE *input, unsigned long len)
 {
   size_t n, m;
   unsigned char inbuffer[COLUMNS / 2];
@@ -4366,29 +4629,44 @@ void newcopybinary (FILE *output, FILE *input, unsigned long len)
   unsigned int k;
 
   m = sizeof(inbuffer);
-  if (len < m) m = (size_t) len;
-  while ((n = fread(inbuffer, 1, m, input)) != 0) {
+
+  if (len < m)
+    m = (size_t) len;
+
+  while ((n = fread(inbuffer, 1, m, input)) != 0)
+  {
     kk = 0;
-    for (k = 0; k < n; k++) {
+
+    for (k = 0; k < n; k++)
+    {
       c = inbuffer[k];
       d = c & 15;
       c = c >> 4;
-      if (c > 9) c = c + 'A' - 10;
-      else c = c + '0';
-      if (d > 9) d = d + 'A' - 10;
-      else d = d + '0';
+
+      if (c > 9)
+        c = c + 'A' - 10;
+      else
+        c = c + '0';
+
+      if (d > 9)
+        d = d + 'A' - 10;
+      else
+        d = d + '0';
+
       outbuffer[kk++] = (char) c;
       outbuffer[kk++] = (char) d;
     }
-//    fwrite(outbuffer, 2, n, output);
+
     outbuffer[kk++] = '\n';
     outbuffer[kk++] = '\0';     // terminate for PSPuts
-    PSputs(outbuffer, output);    // 99/Aug/13
-//    putc('\n', output);
-//    PSputc('\n', output);
+    PSputs(outbuffer, output);
     len -= n;
-    if (len <= 0) break;
-    if (len < m) m = (size_t) len;  // last bit
+
+    if (len <= 0)
+      break;
+
+    if (len < m)
+      m = (size_t) len;
   }
 }
 
@@ -4396,55 +4674,67 @@ void newcopybinary (FILE *output, FILE *input, unsigned long len)
 /* Do the dumbest possible thing - treat only plain PFA & PFB formats */
 /* called from dvispeci.c */
 
-int decompressfont (FILE *output, FILE *input, char *FontName)
+int decompress_font (FILE *output, FILE *input, char *FontName)
 {
   int c, d;
   int eof = 0;
-/*  size_t n; */
   long len;
 
   begin_resource(output, FontName);
   c = getc(input);
   ungetc(c, input);
-  if (c != 128) {         /* we have to assume it is PFA format */
-    newcopyascii(output, input, 0xFFFFFFFF);
+
+  if (c != 128) /* we have to assume it is PFA format */
+  {
+    new_copy_ascii(output, input, 0xFFFFFFFF);
   }
-  else {
-    for(;;) {
-      c = getc(input); d = getc(input);
-      if (c != 128) {
-        complainbadfont(c);
+  else
+  {
+    for ( ; ; )
+    {
+      c = getc(input);
+      d = getc(input);
+
+      if (c != 128)
+      {
+        complain_bad_font(c);
         return -1;
       }
-      switch(d) {
-        case 1:         /* ASCII */
+
+      switch (d)
+      {
+        case 1: /* ASCII */
           len = readlength(input);
-/*          printf(" ASCII %lu", len); */
-          newcopyascii(output, input, len);
+          new_copy_ascii(output, input, len);
           break;
-        case 2:         /* Binary */
+
+        case 2: /* Binary */
           len = readlength(input);
-/*          printf(" BINARY %lu", len); */
-          newcopybinary(output, input, len);
+          new_copy_binary(output, input, len);
           break;
-        case 3:         /* EOF */
+
+        case 3: /* EOF */
           eof = 1;
-/*          printf(" EOF"); */
           break;
+
         default:
-          complainbadfont(d);
+          complain_bad_font(d);
           return -1;
       }
-      if (eof) break;
+
+      if (eof)
+        break;
     }
   }
+
   end_resource(output);
+
   return 0;
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* check whether we need any font substitution */
-int needsubstitute(void)
+int need_substitute (void)
 {
   int k, proper;
 
@@ -4453,21 +4743,26 @@ int needsubstitute(void)
     if (fontsubflag[k] >= 0)
     {
       proper = fontproper[k];
-      if ((proper & C_RESIDENT) != 0) continue;
-      if ((proper & C_REMAPIT) != 0) continue;
-      if ((proper & C_DEPENDENT) != 0) continue;    /* NEW */
-/*      if ((proper & C_UNUSED) != 0) continue; */    /* ??? */
-/*      if (strcmp(fontname[k], subfontname[k]) == 0) continue; */ /* ? */
-/* font k occurs at other size already if fontname[k] == subfontname[k] */
-/*      if ((proper & C_ALIASED) != 0) continue;  */
+
+      if ((proper & C_RESIDENT) != 0)
+        continue;
+
+      if ((proper & C_REMAPIT) != 0)
+        continue;
+
+      if ((proper & C_DEPENDENT) != 0)
+        continue;
+
       return -1;
     }
   }
+
   return 0;
 }
 
 /* check to see if some resident fonts are remapped */
-int needremap(void)
+/* only if remapped font is also printer resident */
+int need_remap(void)
 {
   int k;
   int winflag = 0;
@@ -4476,236 +4771,262 @@ int needremap(void)
 /*  return positive if bWindowsFlag != 0 and some residents 93/Oct/4 */
 /*  returns negative if at least one font needs some other remapping */
 
-  for (k=0; k < fnext; k++) {
+  for (k=0; k < fnext; k++)
+  {
     proper = fontproper[k];
-/*    if ((fontproper[k] & C_REMAPIT) != 0 &&
-      (fontproper[k] & C_RESIDENT) != 0) */
-    if ((proper& C_RESIDENT) != 0) {    /* 93/Oct/4 */
-      if ((proper & C_REMAPIT) != 0) return -1;
-/*      if (*textencoding != 0) winflag++;  else */ /* 94/Dec/17 */
-      if (bWindowsFlag != 0) winflag++;     /* was just this */
-/* special case sy = Symbol and zd = ZapfDingbats ? */  /* 94/Feb/3 */
-/*      if (bWindowsFlag != 0) {
-        strcpy(font, fontname + k * MAXTEXNAME);
-        if (strcmp(font, "sy") != 0 &&
-          strcmp(font, "zd") != 0)
-            winflag++;
-      } */            /* resident and not sy or zd */
+
+    if ((proper& C_RESIDENT) != 0)
+    {
+      if ((proper & C_REMAPIT) != 0)
+        return -1;
+
+      if (bWindowsFlag != 0)
+        winflag++;
     }
   }
-/*  return 0; */
+
   return winflag;
-}     /* only if remapped font is also printer resident */
+}
 
 /* returns total number of substitutes so far */
-
 /* read font substitution */
-int readsubstitutes (FILE *input)
+int read_substitutes (FILE *input)
 {
   char oldname[FNAMELEN], newname[FNAMELEN], vector[FNAMELEN];
   int n, nlen, nnames, property;
-/*  int k=0; */
-  int k=ksubst;                 /* 1994/Feb/4 */
-  int count=ksubst;
+  int k = ksubst;
+  int count = ksubst;
   char *s, *u, *sd;
 
-  if (traceflag) {
-    sprintf(logline, "Reading `%s'\n", fontsubfile); /* debugging */
+  if (traceflag)
+  {
+    sprintf(logline, "Reading `%s'\n", fontsubfile);
     showline(logline, 0);
   }
-  while (getrealline(input, line) != 0) {
-    if (*line == '%' || *line == ';') continue; /* 92/Oct/30 */
-    property = 0;       /* reset resident/forced/remap flag */
 
-/*    nnames = sscanf(line, "%s %s%n", oldname, newname, &n); */
-    s = line;                 /* 1993/Nov/6 */
-    while (*s == ' ' || *s == '\t') s++;    /* ignore white space */
+  while (getrealline(input, line) != 0)
+  {
+    if (*line == '%' || *line == ';')
+      continue;
+
+    property = 0;       /* reset resident/forced/remap flag */
+    s = line;
+
+    while (*s == ' ' || *s == '\t')
+      s++;
+
     nnames = sscanf(s, "%s %s%n", oldname, newname, &n);
-    if (avoidreside != 0 && nnames == 2) {    /* 1993/July/15 */
-/*      not sure this is safe?  what if using this for alias ? */
+
+    if (avoidreside != 0 && nnames == 2)
+    {
       strcpy(newname, oldname); /* replace PS FontName ??? */
     }
-    if (nnames == 1) { 
-/*      just one name given */
-      if (complainflag) { /* eventually flush this error message ? */
+
+    if (nnames == 1)
+    {
+      /* just one name given */
+      if (complainflag) /* eventually flush this error message ? */
+      {
         sprintf(logline, "No substitute specified: %s", line);
         showline(logline, 1);
       }
-      strcpy(newname, "");  /* ??? */
-/*      strcpy(newname, oldname); */      /* ??? */
-/*      property |= (C_FORCESUB | C_RESIDENT); */
-      property |= C_FORCESUB;         /* 1993/May/19 */
+
+      strcpy(newname, "");
+      property |= C_FORCESUB;
     }
-    else if (strcmp(newname, oldname) == 0) {
-/*      `old' name same as `new' name */
-      if (complainflag) { /* eventually flush this error message ? */
+    else if (strcmp(newname, oldname) == 0)
+    {
+      /* `old' name same as `new' name */
+      if (complainflag) /* eventually flush this error message ? */
+      {
         sprintf(logline, "Substitute same as original: %s", line);
         showline(logline, 1);
       }
-/*      property |= (C_FORCESUB | C_RESIDENT); */
-      property |= C_FORCESUB;         /* 1993/May/19 */
+
+      property |= C_FORCESUB;
     }
-    if (strchr(newname, '*') != NULL) {
-/*      only one name given */
-      if (complainflag) { /* eventually flush this error message ? */
+
+    if (strchr(newname, '*') != NULL)
+    {
+      /* only one name given */
+      if (complainflag) /* eventually flush this error message ? */
+      {
         sprintf(logline, "No substitute specified: %s", line);
         showline(logline, 1);
       }
-      strcpy(newname, oldname);   /* ??? */
+
+      strcpy(newname, oldname);
       n = (int) strlen(oldname);    /* step only over first name */
-/*      property |= (C_FORCESUB | C_RESIDENT); */
-      property |=C_FORCESUB;          /* 1993/MAY/19 */
-/*      errcount(0);  */ /* continue; */
+      property |=C_FORCESUB;
     }
-//    if ((nlen = strlen(oldname)) >= MAXTEXNAME) 
-    if ((nlen = strlen(oldname)) > sizeof(oldname)-1) { /* FNAMELEN */
+
+    if ((nlen = strlen(oldname)) > sizeof(oldname)-1)
+    {
       sprintf(logline, " Font name too long: %s (%d > %d)",
           oldname, nlen, sizeof(oldname)-1);
       showline(logline, 1);
-//      *(oldname + MAXTEXNAME - 1) = '\0';
-      *(oldname + sizeof(oldname)-1) = '\0';
-/*      errcount(0); */   /* 1995/July/27 */
+      *(oldname + sizeof(oldname) - 1) = '\0';
       continue;
     }
-//    if ((nlen = strlen(newname)) >= MAXFONTNAME) {
-    if ((nlen = strlen(newname)) > sizeof(newname)-1) { /* FNAMELEN */
+
+    if ((nlen = strlen(newname)) > sizeof(newname)-1)
+    {
       sprintf(logline, " Font name too long: %s (%d > %d)",
           newname, nlen, sizeof(newname)-1);
       showline(logline, 1);
-//      *(newname + MAXFONTNAME - 1) = '\0';
-      *(newname + sizeof(newname)-1) = '\0';
-/*      errcount(0); */   /* 1995/July/27 */
+      *(newname + sizeof(newname) - 1) = '\0';
       continue;
     }
 
 /* try and analyze flags of form  *xyz*  on substitution line */
 
-/*    s = line + n; */
-    s +=n;              /* 1993/Nov/6 */
-    if (*s <= ' ') *s++='\0';     /* isolate start of line */
-    strcpy(vector, "");
+    s += n;
 
+    if (*s <= ' ')
+      *s++ = '\0';     /* isolate start of line */
+
+    strcpy(vector, "");
     sd = strtok(s, " \t\n\r");      /* get next token */
-    while (sd != NULL) {
-      if (*sd == '%') break;      /* 1992/Aug/24 */
-      if (*sd == ';') break;      /* 1995/Mar/5 */
-      if (strchr(sd, '*') == NULL) {
+
+    while (sd != NULL)
+    {
+      if (*sd == '%')
+        break;
+
+      if (*sd == ';')
+        break;
+
+      if (strchr(sd, '*') == NULL)
+      {
         sprintf(logline, 
           "Do not recognize `%s' in font substitution for: %s\n", 
             sd, line);
         showline(logline, 1);
         errcount(0);
       }
-      else if (strcmp(sd, RESIDENT) == 0) property |= C_RESIDENT;
-      else if (strcmp(sd, FORCESUB) == 0) property |= C_FORCESUB;
-      else if (strcmp(sd, ALIASED) == 0)  {
+      else if (strcmp(sd, RESIDENT) == 0)
+        property |= C_RESIDENT;
+      else if (strcmp(sd, FORCESUB) == 0)
+        property |= C_FORCESUB;
+      else if (strcmp(sd, ALIASED) == 0)
+      {
         property |= C_ALIASED;
         aliasesexist++;
       }
-/* COMPOUND & HYBRID just for backward compatability ... */
       else if (strcmp(sd, SYNTHETIC) == 0 ||
             strcmp(sd, COMPOUND) == 0 ||
-              strcmp(sd, HYBRID) == 0) { 
+              strcmp(sd, HYBRID) == 0)
+      {
         property |= C_SYNTHETIC;
         syntheticsexist++;
       }
-      else if (strcmp(sd, MTMI) == 0) property |= C_MTMI;
-      else if (strcmp(sd, EPSF) == 0) property |= C_EPSF;  /* 94/Aug/15 */
-/*      else if (strcmp(sd, CONTROL) == 0) property |= C_CONTROL; */ /* 95/Oct/15 */
-      else if (strcmp(sd, REMAPIT) == 0) {
+      else if (strcmp(sd, MTMI) == 0)
+        property |= C_MTMI;
+      else if (strcmp(sd, EPSF) == 0)
+        property |= C_EPSF;
+      else if (strcmp(sd, REMAPIT) == 0)
+      {
         property |= C_REMAPIT;      /* remap */
         strcpy(vector, "tex_text");    /* default */
         sd = strtok(NULL, " \t\n\r"); /* try and find vector */
-        if (sd != NULL) {
-/*        if no encoding vector given, then use default and go on */
-          if (strchr(sd, '*') != NULL) continue;
-          strncpy(vector, sd, 12+1);  /* file-name + extension */
-/* strip off extension, if any - assumes it is "vec" ... */
-          if ((u = strchr(vector, '.')) != NULL) *u = '\0';
-/* limit to eight characters - otherwise not file name */
-          if (strlen(vector) > 8) vector[8] = '\0';
-/*          if (verboseflag) printf("vector is %s\n", vector); */
+
+        if (sd != NULL)
+        {
+          /* if no encoding vector given, then use default and go on */
+          if (strchr(sd, '*') != NULL)
+            continue;
+
+          strncpy(vector, sd, 12 + 1);  /* file-name + extension */
+
+          /* strip off extension, if any - assumes it is "vec" ... */
+          if ((u = strchr(vector, '.')) != NULL)
+            *u = '\0';
+
+          /* limit to eight characters - otherwise not file name */
+          if (strlen(vector) > 8)
+            vector[8] = '\0';
         }
       }
-      else if (strncmp(sd, "*user-", 6) == 0) {
-/*      Paul Anagnostopolous memorial hack to allow user-defined markers */
+      else if (strncmp(sd, "*user-", 6) == 0)
+      {
+        /* Paul Anagnostopolous memorial hack to allow user-defined markers */
       }
-      else {
-        sprintf(logline, 
-        "Do not recognize `%s' in font substitution for: %s\n", 
+      else
+      {
+        sprintf(logline,
+          "Do not recognize `%s' in font substitution for: %s\n", 
           sd, line);
         showline(logline, 1);
         errcount(0);  
       }
+
       sd = strtok(NULL, " \t\n\r"); /* advance to next token */
     }
 
 /*  avoid problem when only one font name, or first name equals second name */
-    if ((property & C_SYNTHETIC) != 0) {
-      property &= ~C_FORCESUB;    /* 1993/Nov/7 */
+    if ((property & C_SYNTHETIC) != 0)
+    {
+      property &= ~C_FORCESUB;
     }
 
-    if (forcereside != 0) {
-      property |= C_RESIDENT;   /* 1992/July/5 */
-      property |= C_FORCESUB;   /* 1992/July/5 */
+    if (forcereside != 0)
+    {
+      property |= C_RESIDENT;
+      property |= C_FORCESUB;
     }
 
-    if (avoidreside != 0) {
-      property &= ~C_RESIDENT;  /* 1993/March/26 */
-/*  not sure the following makes sense     1993/July/15 */
-/*      property &= ~C_FORCESUB;  */ /* 1993/March/26 */
+    if (avoidreside != 0)
+    {
+      property &= ~C_RESIDENT;
     }
 
 /* above checks that all items where recognized ??? */
 
-/*    *(oldname + MAXTEXNAME - 1) = '\0'; */ /* redundant ? */
-/*    strncpy(fontsubfrom[k], oldname, MAXTEXNAME); */
-/*    *(newname + MAXTEXNAME - 1) = '\0'; */ /* redundant ? */
-/*    strncpy(fontsubto[k], newname, MAXFONTNAME); */
-/*    strncpy(fontsubvec[k], vector, MAXVECNAME); */
-//    oldname[MAXTEXNAME-1]='\0';     /* prevent disaster */
-    *(oldname + sizeof(oldname)-1) = '\0';  /* prevent disaster */
-//    newname[MAXFONTNAME-1]='\0';    /* prevent disaster */
-    *(newname + sizeof(newname)-1) = '\0';  /* prevent disaster */
-//    vector[MAXVECNAME-1]='\0';      /* prevent disaster */
-    *(vector + sizeof(vector)-1) = '\0';  /* prevent disaster */
-//    strcpy(fontsubfrom + k * MAXTEXNAME, oldname);
-    if (fontsubfrom[k] != NULL) free(fontsubfrom[k]);
+    *(oldname + sizeof(oldname) - 1) = '\0';  /* prevent disaster */
+    *(newname + sizeof(newname) - 1) = '\0';  /* prevent disaster */
+    *(vector + sizeof(vector) - 1) = '\0';  /* prevent disaster */
+
+    if (fontsubfrom[k] != NULL)
+      free(fontsubfrom[k]);
+
     fontsubfrom[k] = zstrdup(oldname);
-//    strcpy(fontsubto + k * MAXFONTNAME, newname);
-    if (fontsubto[k] != NULL) free(fontsubto[k]);
+
+    if (fontsubto[k] != NULL)
+      free(fontsubto[k]);
+
     fontsubto[k] = zstrdup(newname);
-//    strcpy(fontsubvec + k * MAXVECNAME, vector);  /* 1994/Feb/2 */
-    if (fontsubvec[k] != NULL) free(fontsubvec[k]);
+
+    if (fontsubvec[k] != NULL)
+      free(fontsubvec[k]);
+
     fontsubvec[k] = zstrdup(vector);
     fontsubprop[k] = property;
-/*    printf("FROM %s TO %s VECTOR %s ", oldname, newname, vector);
-    printf("PROPERTY %d\n", property); */
 
 /*    if we are being forced to download & no other flags on, ignore */
 /*    if (avoidreside != 0 && (property & ~C_FORCESUB) == 0) */
 /*    if no substitution & at most *force* on, then ignore it */
     if (strcmp(newname, oldname) == 0 && (property & ~C_FORCESUB) == 0)
-      continue; /* 1993/July/16 */
+      continue;
 
     k++;
-    count++;    /* 1995/July/30 */
-    if (k >= maxsubstitute-1) {
-/*      fprintf(errout, " Too many font subs (> %d)", maxsubstitute);*/
-/*      errcount(0); */
+    count++;
+
+    if (k >= maxsubstitute - 1)
+    {
       k--;
     } 
-  }   
+  } 
 
-  if (count >= maxsubstitute-1) { /* moved here 95/July/30 - avoid repeat */
+  if (count >= maxsubstitute-1)
+  {
     sprintf(logline, " WARNING: Too many font subs (%d > %d)\n",
         count, maxsubstitute);
     showline(logline, 1);
     errcount(0);
   }
+
   ksubst = k;   /* remember number of entries in substitution table */
-/*  fclose(input); */               /* 1994/Feb/4 */
-/*  if (traceflag) show_sub_table(stdout); */ /* an experiment */ 
+ 
   return ksubst;
 }
 
@@ -4721,37 +5042,52 @@ int readsubstitutes (FILE *input)
 #ifdef SUBDIRSEARCH
 
 /* try and open a font */
-FILE *OpenFont_Sub (char *font)
+FILE *open_font_sub (char *font)
 {
-  FILE *fp_in=NULL;
+  FILE *fp_in = NULL;
   static char fn_in[FNAMELEN];          /* preserve ? why ? */
 
   task = "trying to open font file";
-  if (font == NULL) return NULL;
+
+  if (font == NULL)
+    return NULL;
+
   type3flag = 0;        /* start by assuming Type 1 font */
   pssflag = 0;        /* start by assuming not PSS stub */
   instanceflag = 0;     /* start by assuming not MM instance via PFM */
 
-  if (fontpath == NULL) return NULL;
+  if (fontpath == NULL)
+    return NULL;
+
   strcpy(fn_in, font);
   forceexten(fn_in, "pfb"); /* Try PFB form */
+
   if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
     return fp_in;
+
   forceexten(fn_in, "pfa"); /* Try PFA form */
+
   if((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
     return fp_in;
+
   removeexten(fn_in);     /* Try Mac form */
+
   if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
     return fp_in;
-  if (tryunderscore != 0) { /* try with underscores */
-/*    underscore(fn_in); */
-    if (underscore(fn_in)) {
-    forceexten(fn_in, "pfb"); /* Try PFB form */
-    if((fp_in = findandopen(fn_in, fontpath,  NULL, "rb", currentfirst)) != NULL)
-       return fp_in;
-    forceexten(fn_in, "pfa"); /* Try PFA form */
-    if((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
-       return fp_in;
+
+  if (tryunderscore != 0)
+  {
+    if (underscore(fn_in))
+    {
+      forceexten(fn_in, "pfb"); /* Try PFB form */
+
+      if((fp_in = findandopen(fn_in, fontpath,  NULL, "rb", currentfirst)) != NULL)
+        return fp_in;
+
+      forceexten(fn_in, "pfa"); /* Try PFA form */
+
+      if((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
+        return fp_in;
     }
   }
 
@@ -4760,24 +5096,35 @@ FILE *OpenFont_Sub (char *font)
   remove_under(fn_in);         /* remove underscores again */
   forceexten(fn_in, "pfm");     /* MM PFM file 97/June/1 */
 /*  check in listed directories *and* PFM subdirectories */
-  if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", -1)) != NULL) {
-/*    check whether ordinary PFM or MM instance PFM file */
-    if (traceflag) {
+  if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", -1)) != NULL)
+  {
+    /* check whether ordinary PFM or MM instance PFM file */
+    if (traceflag)
+    {
       sprintf(logline, "Found %s\n", fn_in);  /* debugging */
       showline(logline, 0);
     }
+
     instanceflag = 1;
+
     return fp_in;
   }
-  if (tryunderscore != 0) { /* try with underscores */
-    if (underscore(fn_in)) {
-      if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL) {
-/*        check whether ordinary PFM or MM instance PFM file */
-        if (traceflag) {
+
+  if (tryunderscore != 0)
+  {
+    if (underscore(fn_in))
+    {
+      if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
+      {
+        /* check whether ordinary PFM or MM instance PFM file */
+        if (traceflag)
+        {
           sprintf(logline, "Found %s\n", fn_in);  /* debugging */
           showline(logline, 0);
         }
+
         instanceflag = 1;
+
         return fp_in;
       }
     }
@@ -4787,23 +5134,29 @@ FILE *OpenFont_Sub (char *font)
   removeexten(fn_in);         /* remove extension again */
   remove_under(fn_in);         /* remove underscores again */
   forceexten(fn_in, "pss");     /* MM PSS stub file 94/Dec/6 */
-  if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL) {
+
+  if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
+  {
     pssflag = 1;          /* make a note */
     return fp_in;
   }
 
 /*  Now deal with old Type 3 PK font files made by PKTOPS */
   forceexten(fn_in, "ps");      /* try PKTOPS output format */
-  if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL) {
+
+  if ((fp_in = findandopen(fn_in, fontpath, NULL, "rb", currentfirst)) != NULL)
+  {
     type3flag = 1;          /* not reliable - test later */
+
     return fp_in;
   }
+
   return NULL;              /* all variations failed ! */
 }
 
 #else
 /* try and open a font */
-FILE *OpenFont_Sub (char *font)
+FILE *open_font_sub (char *font)
 {
   FILE *fp_in;
   char *searchpath, *s;
@@ -4846,7 +5199,8 @@ FILE *OpenFont_Sub (char *font)
 
 #endif
 
-typedef struct ATMRegRec {
+typedef struct ATMRegRec
+{
   unsigned char nMMM;   // directory path index for MMMName
   unsigned char nPFB;   // directory path index for PFBName
   unsigned char nPFM;   // directory path index for PFMName
@@ -4861,7 +5215,7 @@ extern struct ATMRegRec *ATMFonts;
 
 // New 2000 July 6
 
-FILE *OpenFont_Reg (char *font)
+FILE *open_font_reg (char *font)
 {
   static char fn_in[FNAMELEN];          /* preserve ? why ? */
   char *s;
@@ -4869,53 +5223,75 @@ FILE *OpenFont_Reg (char *font)
   FILE *input;
 
   task = "trying to open font file";
-  if (font == NULL) return NULL;
+
+  if (font == NULL)
+    return NULL;
+
   type3flag = 0;        /*  Type 1 font */
   pssflag = 0;
   instanceflag= 0;
 
-  if (useatmreg == 0) return NULL;
-//  First look for match between DVI TFM and PFB file name
-  for (k = 0; k < ATMfontindex; k++) {
+  if (useatmreg == 0)
+    return NULL;
+
+  //  First look for match between DVI TFM and PFB file name
+  for (k = 0; k < ATMfontindex; k++)
+  {
     strcpy(fn_in, ATMFonts[k].PFBName);
-    if ((s = strrchr(fn_in, '.')) != NULL) *s = '\0';
-    if (_strcmpi(font, fn_in) == 0) {
-      if (ATMFonts[k].MMMflag & 4) instanceflag = 1;
-      if (! instanceflag) {
+
+    if ((s = strrchr(fn_in, '.')) != NULL)
+      *s = '\0';
+
+    if (_strcmpi(font, fn_in) == 0)
+    {
+      if (ATMFonts[k].MMMflag & 4)
+        instanceflag = 1;
+
+      if (! instanceflag)
+      {
         strcpy(fn_in, DirPaths[ATMFonts[k].nPFB]);
         strcat(fn_in, ATMFonts[k].PFBName);   // PFB file name
       }
-      else {
+      else
+      {
         strcpy(fn_in, DirPaths[ATMFonts[k].nMMM]);
         strcat(fn_in, ATMFonts[k].MMMName);   // PFM file name
       }
+
       input = fopen(fn_in, "rb");
-//      sprintf(logline, " font %s match %d %s => %s (%X)\n",
-//          font, k, ATMFonts[k].PFBName, fn_in,input);
-//      showline(logline, 0);   // debugging only
+
       return input;
     }
   }
-  if (! usepsfontname) return NULL;
-//  Then allow for (exact) match between DVI TFM and PS FontName 
-  for (k = 0; k < ATMfontindex; k++) {
-    if (strcmp(font, ATMFonts[k].FontName) == 0) {
-      if (ATMFonts[k].MMMflag & 4) instanceflag = 1;
-      if (! instanceflag) {
+
+  if (! usepsfontname)
+    return NULL;
+
+  //  Then allow for (exact) match between DVI TFM and PS FontName 
+  for (k = 0; k < ATMfontindex; k++)
+  {
+    if (strcmp(font, ATMFonts[k].FontName) == 0)
+    {
+      if (ATMFonts[k].MMMflag & 4)
+        instanceflag = 1;
+
+      if (! instanceflag)
+      {
         strcpy(fn_in, DirPaths[ATMFonts[k].nPFB]);
         strcat(fn_in, ATMFonts[k].PFBName);   // PFB file name
       }
-      else {
+      else
+      {
         strcpy(fn_in, DirPaths[ATMFonts[k].nMMM]);
         strcat(fn_in, ATMFonts[k].MMMName);   // PFM file name
       }
+
       input = fopen(fn_in, "rb");
-//      sprintf(logline, " font %s match %d %s => %s (%X)\n",
-//          font, k, ATMFonts[k].FontName, fn_in, input);
-//      showline(logline, 0);   // debugging only
+
       return input;
     }
   }
+
   return NULL;
 }
 
@@ -4925,101 +5301,152 @@ FILE *OpenFont_Reg (char *font)
 /*  On screen output, replaced PS FontName etc uses the name in the DVI file */
 
 /* try and open a font */
-FILE *OpenFont (char *font, int aliasflag)
+FILE *open_font (char *font, int aliasflag)
 {
   FILE *input=NULL;
   char *aliasname;
 
-  if (font == NULL) return NULL;    /* sanity check */
-/*  first try name as given */
-  if (useatmreg) input = OpenFont_Reg(font);
-  if (input != NULL) return input;
-  input = OpenFont_Sub(font);
-  if (input != NULL) return input;
-/*  if (aliasflag && bTexFontsMap) { */   /* allowed to use texfonts.map? */
+  if (font == NULL)
+    return NULL;    /* sanity check */
+
+  if (useatmreg)
+    input = open_font_reg(font);
+
+  if (input != NULL)
+    return input;
+
+  input = open_font_sub(font);
+
+  if (input != NULL)
+    return input;
+
 /*  time for aliases? allowed to use texfonts.map? or have we already used? */
-  if (aliasflag && bTexFontsMap && ! bForceFontsMap) {
+  if (aliasflag && bTexFontsMap && ! bForceFontsMap)
+  {
     aliasname = alias(font);      /* in dvipslog.c */
-    if (aliasname != NULL) {
-      if (traceflag) {
+
+    if (aliasname != NULL)
+    {
+      if (traceflag)
+      {
         sprintf(logline, " font %s alias %s\n", font, aliasname);
         showline(logline, 0);
       }
-      if (useatmreg) input = OpenFont_Reg(font);
-      if (input != NULL) return input;
-      input = OpenFont_Sub(aliasname);  /* with some luck we find it */
-      if (input != NULL) return input;
+
+      if (useatmreg)
+        input = open_font_reg(font);
+
+      if (input != NULL)
+        return input;
+
+      input = open_font_sub(aliasname);  /* with some luck we find it */
+
+      if (input != NULL)
+        return input;
     }
   }
+
   return input;
 }
 
 char fn_pfm[FNAMELEN];      /* preserve ? why ? */
 
 /* try and open a PFM file */
-FILE *openpfm (char *font)
+FILE *open_pfm (char *font)
 {
   FILE *fp_in=NULL;
-/*  static char fn_in[FNAMELEN]; */     /* preserve ? why ? */
+
 #ifndef SUBDIRSEARCH
   char *s, *t;
   char *searchpath;
 #endif
   
-  if (fontpath == NULL) return NULL;
+  if (fontpath == NULL)
+    return NULL;
 
 #ifdef SUBDIRSEARCH
   strcpy(fn_pfm, font);
   forceexten(fn_pfm, "pfm");      /* force .pfm */
   fp_in = findandopen(fn_pfm, fontpath, NULL, "rb", currentfirst);
-  if (fp_in != NULL) return fp_in;
+
+  if (fp_in != NULL)
+    return fp_in;
+
   if (tryunderscore)
   {
-/*    underscore (fn_pfm); */
-    if (underscore (fn_pfm)) {  /* 95/May/28 */
+    if (underscore (fn_pfm))
+    {
       fp_in = findandopen(fn_pfm, fontpath, NULL, "rb", currentfirst);
-      if (fp_in != NULL) return fp_in;
+
+      if (fp_in != NULL)
+        return fp_in;
     }
   }
+
   strcpy(fn_pfm, "pfm\\");
   strcat(fn_pfm, font);
   forceexten(fn_pfm, "pfm");      /* force .pfm */
   fp_in = findandopen(fn_pfm, fontpath, NULL, "rb", currentfirst);
-  if (fp_in != NULL) return fp_in;
+
+  if (fp_in != NULL)
+    return fp_in;
+
   if (tryunderscore)
   {
-/*    underscore (fn_pfm); */
-    if (underscore (fn_pfm)) {  /* 95/May/28 */
+    if (underscore (fn_pfm))
+    {
       fp_in = findandopen(fn_pfm, fontpath, NULL, "rb", currentfirst);
-      if (fp_in != NULL) return fp_in;
+
+      if (fp_in != NULL)
+        return fp_in;
     }
   }
 #else
   searchpath = fontpath;
-  for(;;) {
-    if ((searchpath=nextpathname(fn_pfm, searchpath)) == NULL) break;
+
+  for ( ; ; )
+  {
+    if ((searchpath=nextpathname(fn_pfm, searchpath)) == NULL)
+      break;
+
     s = fn_pfm + strlen(fn_pfm) - 1;
-    if (*s != ':' && *s != '\\' && *s != '/') strcat(fn_pfm, "\\"); 
+
+    if (*s != ':' && *s != '\\' && *s != '/')
+      strcat(fn_pfm, "\\");
+
     t = s + strlen(s);
     strcat(fn_pfm, font);       /* use make_file_name ??? */
     forceexten(fn_pfm, "pfm");      /* force .pfm */
-    if ((fp_in = fopen(fn_pfm, "rb")) != NULL) return fp_in;
-    if (tryunderscore != 0) {     /* try underscore form ? */
-/*      underscore(fn_pfm); */
-      if (underscore(fn_pfm)) {   /* 95/May/28 */
-        forceexten(fn_pfm, "pfm");  
-        if ((fp_in = fopen(fn_pfm, "rb")) != NULL) return fp_in;
+
+    if ((fp_in = fopen(fn_pfm, "rb")) != NULL)
+      return fp_in;
+
+    if (tryunderscore != 0)
+    {
+      if (underscore(fn_pfm))
+      {
+        forceexten(fn_pfm, "pfm");
+
+        if ((fp_in = fopen(fn_pfm, "rb")) != NULL)
+          return fp_in;
       }
     }
+
     strcpy(t, "pfm\\");         /* try in subdirectory */
     strcat(fn_pfm, font);       /* use make_file_name ??? */
     forceexten(fn_pfm, "pfm");      /* force .pfm */
-    if ((fp_in = fopen(fn_pfm, "rb")) != NULL) return fp_in;
-    if (tryunderscore != 0) {     /* try underscore form ? */
-/*      underscore(fn_pfm); */
-      if (underscore(fn_pfm)) {   /* 95/May/28 */
-        forceexten(fn_pfm, "pfm");  
-        if ((fp_in = fopen(fn_pfm, "rb")) != NULL) return fp_in;
+
+    if ((fp_in = fopen(fn_pfm, "rb")) != NULL)
+      return fp_in;
+
+    if (tryunderscore != 0)
+    {
+      if (underscore(fn_pfm))
+      {
+        forceexten(fn_pfm, "pfm");
+
+        if ((fp_in = fopen(fn_pfm, "rb")) != NULL)
+          return fp_in;
       }
     }
   }
@@ -5029,52 +5456,56 @@ FILE *openpfm (char *font)
     sprintf(logline, "Failed to open %s\n", fn_pfm);    /* debugging only */
     showline(logline, 0);
   }
+
   return NULL;            /* all variations failed ! */
 }
 
 /* first look for same font different sizes */
-void flagduplicates (void)
+void flag_duplicates (void)
 {
   int k, i, j;
   char *fromfont;
   char *tofont;
 
-  for (k = 0; k < fnext; k++) { /* look for duplicate names first ! */
-    if (fontsubflag[k] >= 0) continue;  /* ? */ /* mapped already */
-    for (i = k + 1; i < fnext; i++) {
-//      if (strcmp(fontname[k], fontname[i]) == 0) 
+  for (k = 0; k < fnext; k++)
+  {
+    if (fontsubflag[k] >= 0)
+      continue;
+
+    for (i = k + 1; i < fnext; i++)
+    {
       if (fontname[k] != NULL && fontname[i] != NULL &&
-          strcmp(fontname[k], fontname[i]) == 0) { 
-//      if (strcmp(fontname + k * MAXTEXNAME,
-//              fontname + i * MAXTEXNAME) == 0) 
-/*        strcpy(subfontname[i], fontname[k]); */  /* ??? test ??? */
-//        strcpy(subfontname + i * MAXFONTNAME,
-//            fontname + k * MAXTEXNAME);       
-        if (subfontname[i] != NULL) free(subfontname[i]);
+          strcmp(fontname[k], fontname[i]) == 0)
+      {     
+        if (subfontname[i] != NULL)
+          free(subfontname[i]);
+
         subfontname[i] = zstrdup(fontname[k]);
-        fontproper[i] |= C_DEPENDENT; /* NEW */
-/*        if (fontproper[k] & C_RESIDENT)
-          fontproper |= C_RESIDENT; */  /* 95/July/5 ??? */
+        fontproper[i] |= C_DEPENDENT;
+
 /* flag it as dependent - that is, another size of the same thing */
 /* following USED to be the way to test: */
 /* font k occurs at other size already if fontname[k] == subfontname[k] */
-/*        strcpy(subfontname[i], subfontname[k]); */ /* ??? test ??? */
-/*        fontproper[i] = fontproper[k];  */   /* ??? test ??? */
+
         fontsubflag[i] = k;     /* point to substitute */
         fromfont = fontchar[i];  
-//        fromfont = fontchar + MAXCHRS * i;
         tofont = fontchar[k]; 
-//        tofont = fontchar + MAXCHRS * k;
-        if (fromfont == NULL) {
+
+        if (fromfont == NULL)
+        {
           sprintf(logline, " BAD fromfont %d ", i);
           showline(logline, 1);
         }
-        if (tofont == NULL) {
+
+        if (tofont == NULL)
+        {
           sprintf(logline, " BAD tofont %d ", k);
           showline(logline, 1);
         }
+
         for (j = 0; j < MAXCHRS; j++)
-          if (fromfont[j] != 0) tofont[j] = 1;  /* combine req */
+          if (fromfont[j] != 0)
+            tofont[j] = 1;  /* combine req */
       }
     }
   }
@@ -5082,20 +5513,20 @@ void flagduplicates (void)
 
 /* look up in substitution table what this font maps to */
 
-/* int fontremapsub (char *font) {  */  /* expects lower case fontname  */
-/* expects lower case fontname  */
-int fontremapsub (char *font)
+int font_remap_sub (char *font)
 {
   int k;
 
-  if (font == NULL) return -1;
-  for (k = 0; k < ksubst; k++) {
-/*    if (strcmp(font, fontsubfrom[k]) == 0)  */
-//    if (strcmp(font, fontsubfrom + k * MAXTEXNAME) == 0) 
+  if (font == NULL)
+    return -1;
+
+  for (k = 0; k < ksubst; k++)
+  {
     if (fontsubfrom[k] != NULL &&
         strcmp(font, fontsubfrom[k]) == 0) 
       return k;
   }
+
   return -1;        /* didn't find a substitute */
 }
 
@@ -5103,31 +5534,27 @@ int fontremapsub (char *font)
 /* NOT ANYMORE IT DOESN'T - now caller needs to pick up fontsubto[k] */
 
 /* expects lower case fontname  */
-int fontremap (char *font)
+int font_remap (char *font)
 {
   int k;
-//  char oldname[MAXFONTNAME];
   char oldname[FNAMELEN];
-//  char newname[MAXFONTNAME];
   char newname[FNAMELEN];
 
-  if (font == NULL) return -1;
-  if ((k = fontremapsub(font)) >= 0)
+  if (font == NULL)
+    return -1;
+  if ((k = font_remap_sub(font)) >= 0)
   {
-//    strcpy(newname, fontsubto + k * MAXFONTNAME);
     strcpy(newname, fontsubto[k]);
+
     if (verboseflag && quietflag == 0 &&
-/*      ((fontsubprop[k] & C_REMAPIT) == 0))  */ /* ??? */
-      ((fontsubprop[k] & C_RESIDENT) == 0)) {
-/*      fprintf(stdout, "Substituting %s for %s\n", fontsubto[k], font);*/
+      ((fontsubprop[k] & C_RESIDENT) == 0))
+    {
       strcpy(oldname, font);
       sprintf(logline, "Substituting %s for %s\n", newname, oldname);
       showline(logline, 1);
     }
-/*    strcpy(font, fontsubto[k]); */    /* write back into argument */
-/*    strcpy(font, fontsubto + k * MAXFONTNAME); */ /* back into argument */
-//    strcpy(font, newname);            /* NO! */
   }
+
   return k;   /* pointer to substitute */
 }
 
@@ -5137,81 +5564,79 @@ int fontremap (char *font)
 
 /*  see whether this font is being forced to be substituted */
 /* expects lower case fontname  */
-int forcedsubstitute (char *font)
+int forced_substitute (char *font)
 {
   int k;
 
-  if (font == NULL) return -1;
+  if (font == NULL)
+    return -1;
+
   for (k = 0; k < ksubst; k++)
   {
     if ((fontsubprop[k] & C_FORCESUB) != 0 && 
-/*    if (((fontsubprop[k] & C_FORCESUB) != 0 || */ /* NO */
-/*      (fontsubprop[k] & C_RESIDENT) != 0) &&  *//* 1992/July/4 */
-/*      strcmp(font, fontsubfrom[k]) == 0) { */
-//      strcmp(font, fontsubfrom + k * MAXTEXNAME) == 0) {
         fontsubfrom[k] != NULL &&
-        strcmp(font, fontsubfrom[k]) == 0) {
-/*      if (verboseflag && quietflag == 0)
-        fprintf(stdout, "Forcing substitute %s for %s\n",
-          fontsubto[k], font) */
-/*      strcpy(font, fontsubto[k]); */  /* later */
+        strcmp(font, fontsubfrom[k]) == 0)
+    {
       return k;   /* pointer to substitute */
     }
   }
+
   return -1;        /* didn't find a forcing substitution */
 } 
 
 /*  is this font synthetic based on substitution table -- 1993/Nov/6 */
 /* expects lower case fontname  */
-int checksynthetic (char *font)
+int check_synthetic (char *font)
 {
   int k;
 
-  if (font == NULL) return -1;
-  for (k = 0; k < ksubst; k++) {
+  if (font == NULL)
+    return -1;
+
+  for (k = 0; k < ksubst; k++)
+  {
     if ((fontsubprop[k] & C_SYNTHETIC) != 0 && 
-//      strcmp(font, fontsubfrom + k * MAXTEXNAME) == 0) {
         fontsubfrom[k] != NULL &&
-        strcmp(font, fontsubfrom[k]) == 0) {
+        strcmp(font, fontsubfrom[k]) == 0)
+    {
       return k;   /* pointer to synthetic */
     }
   }
+
   return -1;
 } 
 
 /*  see whether font name is being aliased based on font substitution table */
 /* replace aliases with real names */
-void replacealias (void)
+void replace_alias (void)
 {
   int k, n;
-/*  need to have these `near' for verboseflag output ... */
-//  char newname[MAXFONTNAME];
   char newname[FNAMELEN];
-//  char oldname[MAXFONTNAME];
   char oldname[FNAMELEN];
   
   task = "looking for aliases";
 
-  for (k = 0; k < fnext; k++) {
-//    strcpy(oldname, fontname + k * MAXTEXNAME);
-    if (fontname[k] != NULL) strcpy(oldname, fontname[k]);
+  for (k = 0; k < fnext; k++)
+  {
+    if (fontname[k] != NULL)
+      strcpy(oldname, fontname[k]);
+
     *oldname = '\0';
-/*    if ((n = fontremapsub(fontname[k])) >= 0 && */
-/*    n is index into font substitution table --- or -1 if not found */
-    if ((n = fontremapsub(oldname)) >= 0 &&
-      (fontsubprop[n] & C_ALIASED) != 0) {
-//      strcpy(newname, fontsubto + n * MAXFONTNAME);
+
+    if ((n = font_remap_sub(oldname)) >= 0 &&
+      (fontsubprop[n] & C_ALIASED) != 0)
+    {
       strcpy(newname, fontsubto[n]);
-      if (verboseflag && quietflag == 0) {
-/*        strcpy(oldname, fontname + k * MAXTEXNAME); */
-/*        printf("Using %s for %s\n", fontsubto[n], fontname[k]);  */
+
+      if (verboseflag && quietflag == 0)
+      {
         sprintf(logline, "Using %s for %s\n", newname, oldname);  
         showline(logline, 0);
       }
-/*      strcpy(fontname[k], fontsubto[n]); */   /* copy real name */
-//      strcpy(fontname + k * MAXTEXNAME, newname); /* copy real name */
-/*        fontsubto + n * MAXFONTNAME); */  /* copy real name */
-      if (fontname[k] != NULL) free(fontname[k]);
+
+      if (fontname[k] != NULL)
+        free(fontname[k]);
+
       fontname[k] = zstrdup(newname);
     }
   }
@@ -5219,40 +5644,36 @@ void replacealias (void)
 
 /*  see whether font name is being aliased based on texfonts.map 95/Dec/29 */
 /* replace aliases with real names */
-void replacetexfontsmap (void)
+void replace_tex_fonts_map (void)
 {
   int k;
-/*  int n; */
   char *s;
-//  char newname[MAXFONTNAME];
   char newname[FNAMELEN];
-//  char oldname[MAXFONTNAME];
   char oldname[FNAMELEN];
   
   task = "looking for aliases";
 
-  for (k = 0; k < fnext; k++) {
-//    strcpy(oldname, fontname + k * MAXTEXNAME);
-    if (fontname[k] != NULL) strcpy(oldname, fontname[k]);
-    else *oldname = '\0';
-/*    if ((n = fontremapsub(fontname[k])) >= 0 && */
-/*    if ((n = fontremapsub(oldname)) >= 0 && 
-      (fontsubprop[n] & C_ALIASED) != 0) */
-    if ((s = alias(oldname)) != NULL) {
-/*      strcpy(newname, fontsubto + n * MAXFONTNAME); */
+  for (k = 0; k < fnext; k++)
+  {
+    if (fontname[k] != NULL)
+      strcpy(oldname, fontname[k]);
+    else
+      *oldname = '\0';
+
+    if ((s = alias(oldname)) != NULL)
+    {
       strcpy(newname, s);
-      if (verboseflag && quietflag == 0) {
-/*        strcpy(oldname, fontname + k * MAXTEXNAME); */
-/*        printf("Using %s for %s\n", fontsubto[n], fontname[k]);  */
+
+      if (verboseflag && quietflag == 0)
+      {
         sprintf(logline, "Using %s for %s\n", newname, oldname);  
         showline(logline, 0);
       }
-/*      strcpy(fontname[k], fontsubto[n]); */   /* copy real name */
-//      strcpy(fontname + k * MAXTEXNAME, newname);  /* copy real name */
-/*        fontsubto + n * MAXFONTNAME); */  /* copy real name */
-      if (fontname[k] != NULL) free(fontname[k]);
-      fontname[k] = zstrdup(newname);  /* copy real name */
 
+      if (fontname[k] != NULL)
+        free(fontname[k]);
+
+      fontname[k] = zstrdup(newname);  /* copy real name */
     }
   }
 }
@@ -5261,26 +5682,38 @@ void replacetexfontsmap (void)
 
 /* returns 0 normally, -1 on EOF, +1 if start of new section (128) */
 
-int readaline (char *line, FILE *input)
+int read_a_line (char *line, FILE *input)
 {
   int c;
-  char *s=line;
+  char *s = line;
 
   *line = '\0';
-  c = getc(input); ungetc(c, input);
-  if (c == EOF) return -1;    /* is first character  -1 ? */
-  if (c == 128) return +1;    /* is first character 128 ? */
-  while ((c = getc(input)) != EOF && c != '\r' && c != '\n') *s++ = (char) c;
-  if (c == '\r') {
+  c = getc(input);
+  ungetc(c, input);
+
+  if (c == EOF)
+    return -1;    /* is first character  -1 ? */
+
+  if (c == 128)
+    return +1;    /* is first character 128 ? */
+
+  while ((c = getc(input)) != EOF && c != '\r' && c != '\n')
+    *s++ = (char) c;
+
+  if (c == '\r')
+  {
     c = getc(input);
-    if (c != '\n') {
+
+    if (c != '\n')
+    {
       ungetc(c, input);
       c = '\n';
     }
   }
+
   *s++ = (char) c;
   *s = '\0';
-/*  printf("%s", line); */ /* DEBUGGING */
+
   return 0;
 }
 
@@ -5295,36 +5728,44 @@ int readaline (char *line, FILE *input)
 
 int FindMMBaseFile (int k)
 {
-/*  char FontName[MAXTEXNAME]; */   /* 95/May/25 */
-//  char FontName[MAXFONTNAME];   /* 95/July/27 */
   char FontName[FNAMELEN];    /* 99/Nov/6 */
   char pfbname[FNAMELEN];     /* 95/May/25 */
-  FILE *mmfile=NULL;
+  FILE *mmfile = NULL;
   char *s, *sl, *pe;
   int c;
 
   *pfbname = '\0';
-  if (bMMShortCut != 0) {
-/*    strcpy (pfbname, fontname + k * MAXTEXNAME); */
+
+  if (bMMShortCut != 0)
+  {
     return 0;         /* just use first 5 chars + "___" ??? */
   }
-//  strcpy (FontName, subfontname + k * MAXFONTNAME); 
-  if (subfontname[k] != NULL) strcpy(FontName, subfontname[k]);
-  else *FontName = '\0';
+
+  if (subfontname[k] != NULL)
+    strcpy(FontName, subfontname[k]);
+  else
+    *FontName = '\0';
+
 #ifdef DEBUG
-  if (traceflag) {
+  if (traceflag)
+  {
     sprintf(logline, "Trying to find MM base font PS name for %s\n", FontName);
     showline(logline, 0);
   }
 #endif
-/*  strcpy (pfbname, fontname + k * MAXTEXNAME); */ /* first guess */
-  if ((s = strchr(FontName, '_')) != NULL && s > FontName) {  /* 97/June/1 */
-    if (traceflag) {
+
+  if ((s = strchr(FontName, '_')) != NULL && s > FontName)
+  {
+    if (traceflag)
+    {
       sprintf(logline, "Stripping Instance Name %s ", FontName);
       showline(logline, 0);
     }
+
     *s = '\0';
-    if (traceflag) {
+
+    if (traceflag)
+    {
       sprintf(logline, "=> %s\n", FontName);
       showline(logline, 0);
     }
@@ -5332,64 +5773,86 @@ int FindMMBaseFile (int k)
 //  PFB file name written back into second argument
   mmfile = fopenfont(FontName, pfbname, 1); // in dvispeci.c
 
-  if (mmfile != NULL) {
-    if (traceflag) {
+  if (mmfile != NULL)
+  {
+    if (traceflag)
+    {
       sprintf(logline, "FILE %s ", pfbname);  /* 95/May/27 */
       showline(logline, 0);
     }
+
     sl = removepath(pfbname);       /* remove file path */
+
     if ((pe = strchr(sl, '.')) == NULL)
       pe = sl + strlen(sl);       /* ignore extension */
+
     pe--;
-    while (*pe == '_') pe--;        /* step back over _ */
+
+    while (*pe == '_')
+      pe--;        /* step back over _ */
+
     pe++;
     c = *pe;
     *pe = '\0';               /* temporarily terminate */
-    if (traceflag) {
+
+    if (traceflag)
+    {
       sprintf(logline, "=> %s\n", sl);  /* 95/May/27 */
       showline(logline, 0);
     }
-//    if (strlen(sl) < MAXTEXNAME)      /* 1995/July/27 */
-    if (strlen(sl) < FNAMELEN) {
-//      strcpy (fontname + k * MAXTEXNAME, sl);
-      if (fontname[k] != NULL) free(fontname[k]);
+
+    if (strlen(sl) < FNAMELEN)
+    {
+      if (fontname[k] != NULL)
+        free(fontname[k]);
+
       fontname[k] = zstrdup(sl);
     }
-    else {
+    else
+    {
       sprintf(logline, "Name too long: %s\n", sl);
       showline(logline, 1);
     }
-    if (pe != NULL) *pe = (char) c;     /* restore what was there */
-/*    if (bMMShortCut) return 0; */       /* already done */
-/*    strcpy (fontname + k * MAXTEXNAME, FileName); */
-    fclose(mmfile);       /* ?? */
-/*    printf("FOUND %s ", FileName); */     /* debugging */
+
+    if (pe != NULL)
+      *pe = (char) c;     /* restore what was there */
+
+    fclose(mmfile);
+
     return 0;         /* OK */
   }
-  else {
-/*    fprintf(errout, " ERROR: MM base `%s' not found\n", FontName);  */
-    if (traceflag) {
+  else
+  {
+    if (traceflag)
+    {
       sprintf(logline, " WARNING: MM base `%s' not found ", FontName);
       showline(logline, 1);
     }
-/*    errcount(0); */       /* 95/May/28 */
+
 /*    just a WARNING: since it drops back to extending with "___" */
 /*    assumed to be of form kprg_xyz --- should we check for _ ??? */
-/*    if (strchr(pfbname, '_') != NULL) { */
-//    strcpy (pfbname, fontname + k * MAXTEXNAME); /* 97/June/1 */
-    if (fontname[k] != NULL) strcpy (pfbname, fontname[k]); /* 97/June/1 */
-    else *pfbname = '\0';
-    if (*(pfbname+4) == '_') {             /* 97/June/1 */
+
+    if (fontname[k] != NULL)
+      strcpy (pfbname, fontname[k]);
+    else
+      *pfbname = '\0';
+
+    if (*(pfbname+4) == '_')
+    {
       strcpy (pfbname + 5, "___");  /* last three characters */
-      if (traceflag) {
+
+      if (traceflag)
+      {
         sprintf(logline, "using %s ", pfbname);
         showline(logline, 1);
       }
-/*      test for existence first ? */
-//      strcpy (fontname + k * MAXTEXNAME, pfbname);
-      if (fontname[k] != NULL) free(fontname[k]);
+
+      if (fontname[k] != NULL)
+        free(fontname[k]);
+
       fontname[k] = zstrdup(pfbname);
     }
+
     return -1;            /* NOT ok */
   }
 }
@@ -5408,67 +5871,70 @@ int AddMMBase (int m)
   int k, i;
   char *basewantchrs; /* wanted chars array of MM base font */
   char *instwantchrs; /* wanted chars array of MM instance */
-/*  char basefontname[MAXTEXNAME]; */       /* 95/May/25 */
-/*  char basefilename[MAXFONTNAME]; */      /* 95/May/25 */
-//  char psfontname[MAXFONTNAME];       /* 97/June/1 */
   char psfontname[FNAMELEN];
-//  char psbasename[MAXFONTNAME];       /* 97/June/1 */
   char psbasename[FNAMELEN];
   char *s;
 
-//  strcpy(psfontname, subfontname + m * MAXFONTNAME);
-  if (subfontname[m] != NULL) strcpy(psfontname, subfontname[m]);
-  else *psfontname = '\0';
-/*  Truncate MM instance PS FontName if that is what we have 97/June/1 */
+  if (subfontname[m] != NULL)
+    strcpy(psfontname, subfontname[m]);
+  else
+    *psfontname = '\0';
+
+  /*  Truncate MM instance PS FontName if that is what we have 97/June/1 */
   if ((s = strchr(psfontname, '_')) != NULL && s > psfontname)
   {
     *s = '\0';
   }
-/*  if (bMMShortCut == 0) { 
-    strcpy (stubfilename, fontname + m * MAXTEXNAME);
-    (void) FindMMBaseFile (stubfilename, basefilename);
-    strcpy (subfontname + m * MAXFONTNAME, basefilename);
-  } */  /* new 95/May/25 ? */
-//  instwantchrs = fontchar + MAXCHRS * m;
+
   instwantchrs = fontchar[m];
-  if (fontchar[m] == NULL) showline(" BAD instwantchrs", 1);
-/*  printf("Adding MM base for font %d\n", m); *//* debugging 95/May/25 */
+
+  if (fontchar[m] == NULL)
+    showline(" BAD instwantchrs", 1);
+
 /*  check whether we have already added this MM base font */
-/*  for (k = mmbase; k < fnext; k++)  */      /* no longer separate */
-  for (k = 0; k < fnext; k++) {         /* 95/May/14 */
-    if ((fontproper[k] & C_MULTIPLE) == 0) continue;
-//    strcpy(psbasename, subfontname + k * MAXFONTNAME);
-    if (subfontname[k] != NULL) strcpy(psbasename, subfontname[k]);
-    else *psbasename = '\0';
+
+  for (k = 0; k < fnext; k++)
+  {
+    if ((fontproper[k] & C_MULTIPLE) == 0)
+      continue;
+
+    if (subfontname[k] != NULL)
+      strcpy(psbasename, subfontname[k]);
+    else
+      *psbasename = '\0';
 /*  old way check whether matches on first five characters of font file name */
 #ifdef DEBUG
-    if (traceflag) {
+    if (traceflag)
+    {
       sprintf(logline, "COMPARE %s and %s\n", psbasename, psfontname);
       showline(logline, 0);
     }
 #endif
-    if (bMMShortCut) {      /* assume base name ends in "___" */
-//      if (strncmp(fontname + k * MAXTEXNAME, 
-//            fontname + m * MAXTEXNAME, 5) != 0) continue; 
+    if (bMMShortCut)
+    {
       if (fontname[k] != NULL && fontname[m] != NULL &&
-          strncmp(fontname[k], fontname[m], 5) != 0) continue; 
+          strncmp(fontname[k], fontname[m], 5) != 0)
+          continue;
     }
-/*    else new way check whether matches PS FontName in PSS stub */
-/*    else if (strcmp(subfontname + k * MAXFONTNAME, */
-    else if (strcmp(psbasename, psfontname) != 0) continue;
-/*             subfontname + m * MAXFONTNAME) != 0) continue; */
-/*    get here if we found a match */
+    else if (strcmp(psbasename, psfontname) != 0)
+      continue;
+
 #ifdef DEBUG
-    if (traceflag) {
+    if (traceflag)
+    {
       sprintf(logline, "Already installed MM base font %s %d\n", psbasename, k);
       showline(logline, 0);
     }
 #endif
-    if (fontchar[k] == NULL) setupfontchar(k);
-//    basewantchrs = fontchar + MAXCHRS * k;  /* 95/May/12 */
-    basewantchrs = fontchar[k]; /* 95/May/12 */
-    for (i = 0; i < MAXCHRS; i++)     /* or in the bits */
-      if (instwantchrs[i] != 0) basewantchrs[i] = 1;
+    if (fontchar[k] == NULL)
+      setupfontchar(k);
+
+    basewantchrs = fontchar[k];
+
+    for (i = 0; i < MAXCHRS; i++)
+      if (instwantchrs[i] != 0)
+        basewantchrs[i] = 1;
+
     return k;
   }   
 
@@ -5485,16 +5951,19 @@ int AddMMBase (int m)
 /*  Typically MM base font has same name, but ends in ___ ??? */
 //  strcpy(fontname + fnext * MAXTEXNAME, fontname + m * MAXTEXNAME);
 //  strcpy(fontname + fnext * MAXTEXNAME + 5, "___");
-  if (fontname[fnext] != NULL) free(fontname[fnext]);
-  if (fontname[m] != NULL) {
+  if (fontname[fnext] != NULL)
+    free(fontname[fnext]);
+
+  if (fontname[m] != NULL)
+  {
     char buffer[FNAMELEN];
     strcpy(buffer, fontname[m]);
     strcpy(buffer+5, "___");    /* MM Master ends in ___ */
     fontname[fnext] = zstrdup(buffer);
   }
-  else fontname[fnext] = NULL;
-/*  if (bMMShortCut == 0) { */ /* copy PS FileName from instance, exists yet ??? */
-/*  strcpy(subfontname + fnext * MAXFONTNAME, subfontname + m * MAXFONTNAME); */
+  else
+    fontname[fnext] = NULL;
+
 #ifdef DEBUG
   if (traceflag)
   {
@@ -5502,41 +5971,44 @@ int AddMMBase (int m)
     showline(logline, 0);
   }
 #endif
-//  strcpy(subfontname + fnext * MAXFONTNAME, psfontname);
-  if (subfontname[fnext] != NULL) free(subfontname[fnext]);
+
+  if (subfontname[fnext] != NULL)
+    free(subfontname[fnext]);
+
   subfontname[fnext] = zstrdup(psfontname);
 /*  hope this does not create problems with tests on subfontname ... */
 /*  should we call FindMMBaseFile here to fill in fontname[fnext] ? */
 /*  or do this later when inserting base font ? */
-/*    (void) FindMMBaseFile(fnext); */
-/*  } */
 
-/*  if (traceflag) {
-    strcpy(line, subfontname + fnext * MAXFONTNAME);
-    printf("Claims FontName is %s\n", line); 
-  } *//* debugging 95/May/25 */
   fontproper[fnext] = C_MULTIPLE;
   fontsubflag[fnext] = -1;
-  if (fontchar[fnext] == NULL) setupfontchar(fnext);
-//  basewantchrs = fontchar + MAXCHRS * fnext;  /* 95/May/12 */
-  basewantchrs = fontchar[fnext]; /* 95/May/12 */
-  for (i = 0; i < MAXCHRS; i++)       /* just copy, first instance */
+  if (fontchar[fnext] == NULL)
+    setupfontchar(fnext);
+
+  basewantchrs = fontchar[fnext];
+
+  for (i = 0; i < MAXCHRS; i++) /* just copy, first instance */
     basewantchrs[i] = instwantchrs[i];
-  if (bMMShortCut == 0) {
-    if (FindMMBaseFile(fnext) != 0) { /* or do later ? */
-/*      fprintf(errout, " WARNING: MM base `%s' not found\n", FontName); */
+
+  if (bMMShortCut == 0)
+  {
+    if (FindMMBaseFile(fnext) != 0)
+    {
+      /* fprintf(errout, " WARNING: MM base `%s' not found\n", FontName); */
     }
   }
+
   fnext++;
   mmcount++;                  /* how many MM base fonts */
+
   if (fnext >= maxfonts - 1)
   {
-/*    fprintf(errout, "Too many MM base fonts (%d)\n", fnext - mmbase); */
     sprintf(logline, " ERROR: Too many MM base fonts (%d)\n", mmcount);
     showline(logline, 1);
     errcount(0);
     fnext--;
   }
+
   return fnext;
 }
 
@@ -5574,71 +6046,92 @@ int AddMMFontName (FILE *input, int k, int pssflag, char *FileName, int nlen)
   int c, m, flag;
   char *s;
 
-//  *(subfontname + k * MAXFONTNAME) = '\0';
-  if (subfontname[k] != NULL) { /* reset in case not found */
+  if (subfontname[k] != NULL) /* reset in case not found */
+  {
     free(subfontname[k]);
     subfontname[k] = NULL;
   }
-/*  PSS file case first --- now outdated since ATM NT no longer */
-  if (pssflag) {    /* read PSS file to extract MM base FontName */
-    if ((c = getc(input)) != 128) return -1;  /* sanity test */
-    if ((c = getc(input)) != 1) return -1;    /* sanity test */
-    for (m = 0; m < 4; m++) (void) getc(input); /* skip over length */
-    while (readaline(line, input) == 0) {
-/*      printf("LINE: %s", line); */  /* debugging 95/May/25 */
-      if (*line == '%') continue;       /* ignore comments */
+
+  /*  PSS file case first --- now outdated since ATM NT no longer */
+  if (pssflag)    /* read PSS file to extract MM base FontName */
+  {
+    if ((c = getc(input)) != 128)
+      return -1;  /* sanity test */
+
+    if ((c = getc(input)) != 1)
+      return -1;    /* sanity test */
+
+    for (m = 0; m < 4; m++)
+      (void) getc(input); /* skip over length */
+
+    while (read_a_line(line, input) == 0)
+    {
+      if (*line == '%')
+        continue;       /* ignore comments */
+
       if ((s = strstr(line, "findfont")) != NULL)
       {
         s--;
-        while (*s <= ' ' && s >= line) *s-- = '\0';
-        if ((s = strrchr(line, '/')) == NULL) return -1;
+
+        while (*s <= ' ' && s >= line)
+          *s-- = '\0';
+
+        if ((s = strrchr(line, '/')) == NULL)
+          return -1;
+
         s++;
-//        strcpy(subfontname + k * MAXFONTNAME, s);
-        if (subfontname[k] != NULL) free(subfontname[k]);
+
+        if (subfontname[k] != NULL)
+          free(subfontname[k]);
+
         subfontname[k] = zstrdup(s);
-                /* MM base PS FontName *//* if using PSS */
-/*        printf("FontName from PSS stub is %s\n", s); */
-/*        debugging 95/May/25 */
+
         return 0;
       }
     }
+
     return -1;
   }
-/*  PFM file case next - now standard since ATM NT no longer PSS */
-  else {  /* instanceflag != 0 presumably *//* Read PFM for PS FontName */
-//    printf("HEY! sizeof(FileName) = %d!\n", sizeof(FileName));  // 4 why ???
-/*    read PFM file to get instance PS FontName */
-//    flag = NamesFromPFM(input, NULL, 0, line, MAXFONTNAME, FileName);
-//    flag = NamesFromPFM(input, NULL, 0, line, sizeof(FileName), FileName);
+  else
+  {
     flag = NamesFromPFM(input, NULL, 0, line, nlen, FileName);
-/*    do we really want to test for that underscore ??? */
-    if (flag != 0 && strchr(line, '_') != NULL) { 
-//      strcpy(subfontname + k * MAXFONTNAME, line);
-      if (subfontname[k] != NULL) free(subfontname[k]);
+
+    if (flag != 0 && strchr(line, '_') != NULL)
+    { 
+      if (subfontname[k] != NULL)
+        free(subfontname[k]);
+
       subfontname[k] = zstrdup(line);
+
 #ifdef DEBUG
-      if (traceflag) {
+      if (traceflag)
+      {
         sprintf(logline, "MM PS FontName %s\n", line);
         showline(logline, 0);
       }
 #endif
-/*  MM base PS FontName */ /* NO: now it is the instance PS FontName */
+
       return 0;
     }
-    else {  /* NamesFromPFM failed or no _ in name returned */
-/*      this message now comes up for missing fonts ... */
+    else
+    {  
+      /* NamesFromPFM failed or no _ in name returned */
+      /* this message now comes up for missing fonts ... */
       sprintf(logline,
           " Not a PFM file for a MM instance (%s) ", line);
       showline(logline, 1);
     }
+
     return -1;
   }
 }
 
-int notvalidPSS (int pssflag) { /* PSS or PFM file */
+int notvalidPSS (int pssflag)  /* PSS or PFM file */
+{
   sprintf(logline, " ERROR: not a valid %s file ",
        pssflag ? "MM PS Stub" : "PFM");
   showline(logline, 1);
+
   return -1;
 }
 
@@ -5647,267 +6140,289 @@ int notvalidPSS (int pssflag) { /* PSS or PFM file */
 
 /* we are assuming this happens *before* we start adding MM base fonts */
 
-void checksubstitute (void)
+void check_substitute (void)
 {
   FILE *fp_in;
   int k, j, i, n, baseexist, wipeflag;
-//  char fontnamek[MAXTEXNAME];
   char fontnamek[FNAMELEN];
-/*  char subfontnamek[MAXTEXNAME]; */
-//  char subfontnamek[MAXFONTNAME];         /* fix 1995/July/15 */
   char subfontnamek[FNAMELEN];          /* fix 1995/July/15 */
-/*  int proper; */
-//  char masterfontname[MAXFONTNAME];       /* saved 1995/July/15 */
   char masterfontname[FNAMELEN];        /* saved 1995/July/15 */
   char *fromfont;
   char *tofont;
 
   task = "looking for substitutions";
-  for (k = 0; k < fnext; k++) {
-    wipeflag = 0;               /* 1995/July/15 */
-/*    proper = fontproper[k]; */
-/*    printf("k %d proper ", k); */       /* debugging */
-/*    don't bother if font unused (?) */
-    if ((fontproper[k] & C_UNUSED) != 0) continue;  /* ??? */
-/*    don't bother if this font is another size of an existing one */
-    if ((fontproper[k] & C_DEPENDENT) != 0) continue; /* NEW */
-/*    if (strcmp(fontname[k], subfontname[k]) == 0) continue; */ /* size ? */
-/*    if forced substitution, pretend couldn't open file */
-//    strcpy (fontnamek, fontname + k * MAXTEXNAME);
-    if (fontname[k] != NULL) strcpy(fontnamek, fontname[k]);
-    else *fontnamek = '\0';
 
-/*    if ((n = forcedsubstitute(fontname[k])) >= 0 || */
-    if ((n = forcedsubstitute(fontnamek)) >= 0 ||
-/*      (fp_in = OpenFont(fontname[k])) == NULL) { */
-      (fp_in = OpenFont(fontnamek, 1)) == NULL) {
-/*      printf("FORCED %s %s\n", subfontname[k], fontname[k]); */
-/*      strcpy(subfontname[k], fontname[k]); */ /* copy real name */
-/* the following is a hack to deal with conflicing use of subfontname */
-/* both for substitution and for MM PS FontName ... */
-/* attempt to allow remapping (without name change) */
-//      if (*(subfontname + k * MAXFONTNAME) != '\0')   /* 95/July/15 */
-      if (subfontname[k] != NULL) { 
-/*        if (fontproper[k] & C_MULTIPLE) { } */
-        wipeflag = 1;             
-//        strcpy (masterfontname, subfontname + k * MAXFONTNAME);
+  for (k = 0; k < fnext; k++)
+  {
+    wipeflag = 0;
+
+    if ((fontproper[k] & C_UNUSED) != 0)
+      continue;
+
+    /* don't bother if this font is another size of an existing one */
+    if ((fontproper[k] & C_DEPENDENT) != 0)
+      continue;
+
+    if (fontname[k] != NULL)
+      strcpy(fontnamek, fontname[k]);
+    else
+      *fontnamek = '\0';
+
+    if ((n = forced_substitute(fontnamek)) >= 0 ||
+      (fp_in = open_font(fontnamek, 1)) == NULL)
+    {
+      /* the following is a hack to deal with conflicing use of subfontname */
+      /* both for substitution and for MM PS FontName ... */
+      /* attempt to allow remapping (without name change) */
+
+      if (subfontname[k] != NULL)
+      {
+        wipeflag = 1;
         strcpy(masterfontname, subfontname[k]);
-        if (traceflag) {              /* debugging */
+
+        if (traceflag)
+        {
           sprintf(logline, "Wiping out %s with %s (%d)\n",
                masterfontname, fontnamek, fontproper[k]);
           showline(logline, 0);
         }
       }
-//      strcpy(subfontname + k * MAXFONTNAME,
-//        fontname + k * MAXTEXNAME);     
-      if (subfontname[k] != NULL) free(subfontname[k]);
+    
+      if (subfontname[k] != NULL)
+        free(subfontname[k]);
 
       if (fontname[k] != NULL)
         subfontname[k] = zstrdup(fontname[k]);  /* copy real name */
-      else subfontname[k] = NULL;
+      else
+        subfontname[k] = NULL;
 
 /* in forced substitution we actually already know n ... */
-/* WARNING: fontremap writes new name back into given argument ... */
+/* WARNING: font_remap writes new name back into given argument ... */
 /*      so need to pass actual  argument */
-/*      if ((n = fontremap(subfontname[k])) >= 0) { */
-//      if ((n = fontremap(subfontname + k * MAXFONTNAME)) >= 0) 
-      if ((n = fontremap(subfontname[k])) >= 0) {
-        if (subfontname[k] != NULL) free(subfontname[k]);
+
+      if ((n = font_remap(subfontname[k])) >= 0)
+      {
+        if (subfontname[k] != NULL)
+          free(subfontname[k]);
+
         subfontname[k] = zstrdup(fontsubto[n]);   // 99/Nov/17
-/*        fontproper[k] = fontsubprop[n];     */
         fontproper[k] |= fontsubprop[n];  /* check */
+
         if ((fontproper[k] & C_REMAPIT) == 0)
-          fontsubflag[k] = n;       /* mark it */
-/*  for now anything non-neg - later get proper pointer */
-        else { /* remapped ? C_REMAPIT */
-/*          strcpy(fontvector[k], fontsubvec[n]); */ /* 94/Feb/2 */
-//          strcpy(fontvector[k], fontsubvec + n * MAXVECNAME);
-//          strcpy(fontvector + k * MAXVECNAME, fontsubvec + n * MAXVECNAME);
-          if (fontvector[k] != NULL) free(fontvector[k]);
-//          fontvector[k] = zstrdup(fontsubvec + n * MAXVECNAME);
+          fontsubflag[k] = n;
+        else
+        {
+          if (fontvector[k] != NULL)
+            free(fontvector[k]);
+
           fontvector[k] = zstrdup(fontsubvec[n]);
-/*          printf("COPYING %s TO %d from %d\n", fontvector[k], k, n); */
-/* Lets check the encoding vector at this point ! 1995/July/15 */
-          if (bCheckEncoding)         /* 1995/Aug/15 */
-            checkremapencode(k, fontnamek); /* 1995/July/15 */
+
+          if (bCheckEncoding)
+            check_remap_enc(k, fontnamek);
         }
-        if ((fontproper[k] & C_FORCESUB) != 0 &&  /* substitute ? */
-          (fontproper[k] & C_RESIDENT) == 0) {  /* not resident ? */
-//          strcpy(subfontnamek, subfontname + k * MAXFONTNAME);
+
+        if ((fontproper[k] & C_FORCESUB) != 0 && 
+          (fontproper[k] & C_RESIDENT) == 0)
+        {
           if (subfontname[k] != NULL)
             strcpy(subfontnamek, subfontname[k]);
-          else *subfontnamek = '\0';
-/*          if ((fp_in = OpenFont(subfontname[k])) == NULL) { */
-          if ((fp_in = OpenFont(subfontnamek, 1)) == NULL) {
+          else
+            *subfontnamek = '\0';
+
+          if ((fp_in = open_font(subfontnamek, 1)) == NULL)
+          {
             sprintf(logline, 
              "Font %s (substituted for %s) could not be found\n",
-/*              subfontname[k], fontname[k]); */
               subfontnamek, fontnamek);
             showline(logline, 1);
           }
-          else {
-            if (traceflag) {
+          else
+          {
+            if (traceflag)
+            {
               sprintf(logline, "Substituting * %s for %s\n", 
                  subfontnamek, fontnamek);/* debug 95/Mar/31 */
               showline(logline, 0);
             }
+
             fclose(fp_in);
           }
         }
       }
-      else {                /* no substitute found */
+      else
+      {
         fontproper[k] |= C_MISSING;   /* new */
         sprintf(logline, 
           " WARNING: Can't find font %s (and no substitute)\n", 
-/*            fontname[k]);  */
             fontnamek);
         showline(logline, 1);
         errcount(0);
       }
-      if (wipeflag) {           /* a hack 1995/July/15 */
-//        strcpy(subfontname + k * MAXFONTNAME, masterfontname);
-        if (subfontname[k] != NULL) free(subfontname[k]);
+
+      if (wipeflag)
+      {
+        if (subfontname[k] != NULL)
+          free(subfontname[k]);
+
         subfontname[k] = zstrdup(masterfontname);
-        if (traceflag) {          /* debugging */
+
+        if (traceflag)
+        {
           sprintf(logline, "Restoring %s (%d)\n", masterfontname, fontproper[k]);
           showline(logline, 0);
         }
-/*        fontproper[k] = C_MULTIPLE; */ /* | C_REMAPIT */
-/*        fontproper[k] = C_MULTIPLE | C_REMAPIT; */  /* ??? */
+
         wipeflag = 0;
       }
-    }   /* end of forced substitute or font file not found */
-    else {  /* font file *does* exist */
-      if (instanceflag != 0) {
-/*        this is an instance of an MM font */
+    }
+    else
+    {
+      if (instanceflag != 0)
+      {
         fontproper[k] |= C_INSTANCE;
-/*        subfontname is MM *instance* FontName, not MM base */
         fontproper[k] |= C_NOTBASE; 
-/*        if (AddMMFontName(fp_in, k, pssflag) != 0) *//* get PS FontName */
+
         if (AddMMFontName(fp_in, k, pssflag,
-                  fontnamek, sizeof(fontnamek)) != 0) { /* FNAMELEN */
+                  fontnamek, sizeof(fontnamek)) != 0)
+        {
           notvalidPSS(pssflag); /* specify which PSS file ? */
           sprintf(logline, "`%s' ", fontnamek);
           showline(logline, 0);
         }
+
         AddMMBase(k);   /* add corresponding MM base */
       }
-/*      fclose(fp_in); */     /* quitely close it again for now ! */
-      if (pssflag != 0) {     /* note that MM instance 94/Dec/6 */
+
+      if (pssflag != 0)
+      {
         fontproper[k] |= C_INSTANCE;
-/*        subfontname is MM *base* FontName, not MM instance */
-/*        if (bMMShortCut == 0) { */ /* 95/May/25 */
-/*        if (AddMMFontName(fp_in, k, pssflag) != 0) */
-        if (AddMMFontName(fp_in, k, pssflag,     /* get PS FontName */
-                  fontnamek, sizeof(fontnamek)) != 0) { /* FNAMLEN */
+
+        if (AddMMFontName(fp_in, k, pssflag, 
+                  fontnamek, sizeof(fontnamek)) != 0)
+        {
           notvalidPSS(pssflag); /* specify which PSS file ? */
           sprintf(logline, "`%s' ", fontnamek);
           showline(logline, 0);
         }
-/*        don't add it now ? */
-/*        may need to stick in base for subst - so things will get mixed up */
-/*        if (bMMNewFlag) */
+
         AddMMBase(k);   /* add corresponding MM base */
       }
-      fclose(fp_in);        /* quitely close it again for now ! */
-      if (syntheticsexist) {        /* 1993/Nov/6 */
-/*        if (checksynthetic(fontname[k]) >= 0) { */  /* 1993/Nov/6 */
-        if (checksynthetic(fontnamek) >= 0) { /* 1993/Nov/6 */
-/*          printf(" SYNTHETIC "); */ /* DEBUGGING */
+
+      fclose(fp_in);
+
+      if (syntheticsexist)
+      {
+        if (check_synthetic(fontnamek) >= 0)
+        {
           fontproper[k] |= C_SYNTHETIC;
         }
       }
     }
-  } /* end of for (k = 0; k < fnext; k++) loop */
+  }
 
   task = "checking whether base font exists";
-  for (k = 0; k < fnext; k++) {
-    if (fontsubflag[k] >= 0) {
+
+  for (k = 0; k < fnext; k++)
+  {
+    if (fontsubflag[k] >= 0)
+    {
       baseexist = 0;
-      if ((fontproper[k] & C_RESIDENT) != 0) baseexist = 1;  /* ? */
-      else if ((fontproper[k] & C_REMAPIT) != 0) baseexist = 1; 
-/*      else if ((fontproper[k] & C_ALIASED) != 0) baseexist = 1;  */
-      else {
-        for (i = 0; i < fnext; i++) {
-          if (i == k) continue; /* ignore if same */
-/*          if (strcmp(fontname[i], subfontname[k]) == 0) { */
+
+      if ((fontproper[k] & C_RESIDENT) != 0)
+        baseexist = 1;
+      else if ((fontproper[k] & C_REMAPIT) != 0)
+        baseexist = 1; 
+      else
+      {
+        for (i = 0; i < fnext; i++)
+        {
+          if (i == k)
+            continue;
+
           if (fontname[i] != NULL && subfontname[k] != NULL &&
-              strcmp(fontname[i], subfontname[k]) == 0) { 
-//          if (strcmp(fontname + i * MAXTEXNAME,
-//                subfontname + k * MAXFONTNAME) == 0)
-            fontsubflag[k] = i; baseexist = -1; /* base found */
-//            fromfont = fontchar + MAXCHRS * k;
-            fromfont = fontchar[k];  
-//            tofont = fontchar + MAXCHRS * i;
-            tofont = fontchar[i]; 
-            if (fromfont == NULL) {
+              strcmp(fontname[i], subfontname[k]) == 0)
+          {
+            fontsubflag[k] = i; baseexist = -1;
+            fromfont = fontchar[k];
+            tofont = fontchar[i];
+
+            if (fromfont == NULL)
+            {
               sprintf(logline, " BAD fromfont %d ", k);
               showline(logline, 1);
             }
-            if (tofont == NULL) {
+
+            if (tofont == NULL)
+            {
               sprintf(logline, " BAD tofont %d ", i);
               showline(logline, 1);
             }
-            for (j = 0; j < MAXCHRS; j++) /* or in char req */
-              if (fromfont[j] != 0) tofont[j] = 1;
+
+            for (j = 0; j < MAXCHRS; j++)
+              if (fromfont[j] != 0)
+                tofont[j] = 1;
+
             break;
           }
         }
       }
-      if (baseexist == 0) { /* base font does not exist - create it */
-        task = "adding in base font"; 
-        if (fnext >= maxfonts - 1) {  /* 1994/May/21 */
+
+      if (baseexist == 0) /* base font does not exist - create it */
+      {
+        task = "adding in base font";
+
+        if (fnext >= maxfonts - 1)
+        {
           sprintf(logline, 
              "Too many base fonts and substitutions (%d)\n", fnext);
           showline(logline, 1);
           errcount(0);
           fnext--;
         }
+
         fontsubflag[k] = fnext;
-/*        strcpy(fontname[fnext], subfontname[k]); */ /* ??? */
-//        strcpy(fontname + fnext * MAXTEXNAME,
-//          subfontname + k * MAXFONTNAME); 
-        if (fontname[fnext] != NULL) free(fontname[fnext]);
+
+        if (fontname[fnext] != NULL)
+          free(fontname[fnext]);
+
         if (subfontname[k] != NULL)
           fontname[fnext] = zstrdup(subfontname[k]);
-        else fontname[fnext] = NULL;
-//        strcpy(subfontname + fnext * MAXTEXNAME, "");
-        if (subfontname[fnext] != NULL) {
+        else
+          fontname[fnext] = NULL;
+
+        if (subfontname[fnext] != NULL)
+        {
           free(subfontname[fnext]);
           subfontname[fnext] = NULL;
-        }   /* 95/Mar/31 --- make clean for S output */
+        }
 
 /* following may have been exposed by fixing bug in previous comment line .. */
-        fontproper[fnext] = fontproper[k];  /* 0 ??? unmask problem ? */
-/*        if ((fontproper[fnext] & C_REMAPIT) != 0) { 
-          strcpy(fontvector[fnext], fontsubvec[k]);
-        } */
+        fontproper[fnext] = fontproper[k];
         fontsubflag[fnext] = -1;
-/*        following for debugging only: */
-/*        if (fontproper[k] != 0) 
-          printf("%d <= %d proper %d\n", fnext, k, fontproper[k]); */
-        if (fontchar[fnext] == NULL) setupfontchar(fnext); // 2000/Apr/4
 
-//        fromfont = fontchar + MAXCHRS * k;
+        if (fontchar[fnext] == NULL)
+          setupfontchar(fnext);
+
         fromfont = fontchar[k]; 
-//        tofont = fontchar + MAXCHRS * fnext;
-        tofont = fontchar[fnext]; 
-        if (fromfont == NULL) {
+        tofont = fontchar[fnext];
+
+        if (fromfont == NULL)
+        {
           sprintf(logline, " BAD fromfont %d ", k);
           showline(logline, 1);
         }
-        if (tofont == NULL) {
+
+        if (tofont == NULL)
+        {
           sprintf(logline, " BAD tofont %d ", fnext);
           showline(logline, 1);
         }
-/*    copy across to base font those chars used in font substituted for */
-        for (j = 0; j < MAXCHRS; j++) tofont[j] = fromfont[j];
-/*        for (j = 0; j < MAXCHRS; j++) { 
-          if (tofont[j]) printf("USING %d ", j);
-        } */ /* debug 95/Mar/31 */
+        
+        /*    copy across to base font those chars used in font substituted for */
+        for (j = 0; j < MAXCHRS; j++)
+          tofont[j] = fromfont[j];
 
         fnext++;
-/*        mmbase = fnext; *//* update start of MM base fonts 95/Mar/31 */
       }
     }
   }
@@ -5922,76 +6437,85 @@ FILE *OpenFontsub (char *subfile)
 {
   FILE *input;
 
-  if (strcmp(subfile, "") == 0) return NULL;  /* 1994/Feb/4 */
+  if (strcmp(subfile, "") == 0)
+    return NULL;
 
-/*  printf("FONTSUBREST %s\n", subfile);  */
-
-/*  if FONTSUBREST contains a path, use it directly - no other trials */
-  if (strpbrk(subfile, "\\/:") != NULL) {
+  if (strpbrk(subfile, "\\/:") != NULL)
+  {
     strcpy(fontsubfile, subfile); 
     extension(fontsubfile, "sub"); 
-/*    printf("FONTSUBFILE %s\n", fontsubfile);  */
+
     return(fopen(fontsubfile, "r"));
   }
 
 /*  if not fully qualified name, try in DVI file directory */
-  if (dvipath != NULL) strcpy(fontsubfile, dvipath);
-  else strcpy(fontsubfile, "");
-/*  if (strcmp(fontsubfile, "") != 0)
-    strcat(fontsubfile, "\\");
-  strcat(fontsubfile, subfile); */
-  make_file_name(fontsubfile, subfile);   /* 1992/Nov/28 */
+  if (dvipath != NULL)
+    strcpy(fontsubfile, dvipath);
+  else
+    strcpy(fontsubfile, "");
+
+  make_file_name(fontsubfile, subfile);
   extension(fontsubfile, "sub");
-/*  printf("FONTSUBFILE %s\n", fontsubfile);   */
-  if ((input = fopen(fontsubfile, "r")) != NULL) return input;
+
+  if ((input = fopen(fontsubfile, "r")) != NULL)
+    return input;
 
 /*  try in specified font substitution `path' */
   strcpy(fontsubfile, fontsubpath);
-/*  strcat(fontsubfile, "\\");
-  strcat(fontsubfile, subfile); */
   make_file_name(fontsubfile, subfile);   /* 1992/Nov/28 */
   extension(fontsubfile, "sub");  
-/*  printf("FONTSUBFILE %s\n", fontsubfile);  */
-  if ((input = fopen(fontsubfile, "r")) != NULL) return input;
+
+  if ((input = fopen(fontsubfile, "r")) != NULL)
+    return input;
 
 /*  try in SUBDIRECTORY of font substitution `path' *//* 1992/Nov/28 */
   strcpy(fontsubfile, fontsubpath);
-/*  strcat(fontsubfile, "\\");
-  strcat(fontsubfile, "sub\\"); */
   make_file_name(fontsubfile, "sub\\");   /* "sub" sundirectory */
   strcat(fontsubfile, subfile);
-  extension(fontsubfile, "sub");    
-/*  printf("FONTSUBFILE %s\n", fontsubfile);  */
-  if ((input = fopen(fontsubfile, "r")) != NULL) return input;
+  extension(fontsubfile, "sub");
 
-/*  try in current directory */       /* 1992/Dec/8 */
-  *fontsubfile = '\0';          /* strcpy(fontsubfile, ""); */
-  make_file_name(fontsubfile, subfile);   /*  */
-  extension(fontsubfile, "sub");    
-/*  printf("FONTSUBFILE %s\n", fontsubfile);  */
-  if ((input = fopen(fontsubfile, "r")) != NULL) return input;
+  if ((input = fopen(fontsubfile, "r")) != NULL)
+    return input;
+
+/*  try in current directory */
+  *fontsubfile = '\0';
+  make_file_name(fontsubfile, subfile);
+  extension(fontsubfile, "sub");
+
+  if ((input = fopen(fontsubfile, "r")) != NULL)
+    return input;
 
   return NULL;
 }
 
-/* int charneeded(char wantchrs[]) {  
-  int k;
-  for (k = 0; k < fontchrs; k++)  if (wantchrs[k] != 0) return -1;
-  return 0;
-} */
-
 /* see whether font actually used */
-int charneeded (char *wantchrs)
+int char_needed (char *wantchrs)
 {
   int k;
-  if (wantchrs == NULL) return 0;
-/*  test in decreasing order of expected use */
-//  for (k = 0; k < fontchrs; k++)  if (wantchrs[k] != 0) return -1;
-  for (k = 64; k < 128; k++) if (wantchrs[k]) return -1;
-  for (k = 32; k < 64; k++) if (wantchrs[k]) return -1;
-  for (k = 0; k < 32; k++) if (wantchrs[k]) return -1;
-  for (k = 160; k < fontchrs; k++) if (wantchrs[k]) return 1; /* G2 */
-  for (k = 128; k < 160; k++) if (wantchrs[k]) return 1;  /* C2 */
+
+  if (wantchrs == NULL)
+    return 0;
+
+  for (k = 64; k < 128; k++)
+    if (wantchrs[k])
+      return -1;
+
+  for (k = 32; k < 64; k++)
+    if (wantchrs[k])
+      return -1;
+
+  for (k = 0; k < 32; k++)
+    if (wantchrs[k])
+      return -1;
+
+  for (k = 160; k < fontchrs; k++)
+    if (wantchrs[k])
+      return 1; /* G2 */
+
+  for (k = 128; k < 160; k++)
+    if (wantchrs[k])
+      return 1;  /* C2 */
+
   return 0;
 }
 
@@ -6020,7 +6544,7 @@ int GetSubstitutes (void)
       {
 /*        if (traceflag)
           printf("Reading %s\n", nextfontsub); */ /* debugging */
-        readsubstitutes(input);   /* read font substitution file */
+        read_substitutes(input);   /* read font substitution file */
         fclose(input);                /* 1994/Feb/4 */
         flag++;
 /*        if (traceflag) show_sub_table(stdout); */ /* an experiment */ 
@@ -6056,7 +6580,7 @@ int GetSubstitutes (void)
 /*      if((input = OpenFontsub()) != NULL) { */
       if((input = OpenFontsub("standard")) != NULL)
       {
-        readsubstitutes(input);
+        read_substitutes(input);
         fclose(input);                /* 1994/Feb/4 */
 /*        if (traceflag) show_sub_table(stdout); */ /* an experiment */ 
 /*        return -1; */         /* OK, standard file worked */
@@ -6094,11 +6618,11 @@ int markunusedfonts0 (void)
 /*  fontproper[k] &= ~C_UNUSED; */
   for (k = 0; k < fnext; k++)
   {
-/*    if (charneeded(fontchar[k]) == 0)  */
+/*    if (char_needed(fontchar[k]) == 0)  */
 //    if (fontproper[k] | C_MULTIPLE) continue; /* for now 94/Dec/6 ??? */
     if (fontproper[k] & C_MULTIPLE) continue; /* fixed 2000 July 4 */
-//    if (charneeded(fontchar + MAXCHRS * k) == 0) 
-    if (charneeded(fontchar[k]) == 0) {
+//    if (char_needed(fontchar + MAXCHRS * k) == 0) 
+    if (char_needed(fontchar[k]) == 0) {
       fontproper[k] |= C_UNUSED;
       unused++;
     }
@@ -6132,17 +6656,17 @@ void preextract (void)
   if (fnext == 0) return;       /* moved down here 95/May/8 */
 
 /*  replace aliased names right away based on substitution table */
-  if (aliasesexist) replacealias(); /* replace aliased names right away */
+  if (aliasesexist) replace_alias(); /* replace aliased names right away */
 
 /*  replace aliased names right away based on texfonts.map 1995/Dec/29 */
-  if (bForceFontsMap) replacetexfontsmap(); /* 1995/Dec/29 */
+  if (bForceFontsMap) replace_tex_fonts_map(); /* 1995/Dec/29 */
 
-  flagduplicates(); /* look for same font at different magnifications */
+  flag_duplicates(); /* look for same font at different magnifications */
 /*  mark unused fonts here */
 /*  markunusedfonts0();  */ /* this was before 94/Oct/5 - problem ? */
 
   if (substituteflag)   // try to open fonts and 
-    checksubstitute();  // work out which fonts will be substituted for 
+    check_substitute();  // work out which fonts will be substituted for 
 
 /*  mmbase = fnext; */      /* update start of MM base fonts 95/Mar/31 ??? */
 /*  if (bMMNewFlag == 0) AddInBaseFonts();  */ /* old way  95/May/12 */
@@ -6393,7 +6917,7 @@ void dofont (FILE *fp_out, int f, int fn)
           PSputs(fontprefix, fp_out);
         }
       }
-      if (uppercaseflag != 0 && istexfont(fname) != 0) 
+      if (uppercaseflag != 0 && is_tex_font(fname) != 0) 
         uppercase(fname, fname);        /* 92/Dec/22 */
 /* This is where we insert  fname  after the /fn... */
 /* #ifdef ALLOWSCALE
@@ -6505,17 +7029,17 @@ int copyPSS_sub(FILE *output, FILE *input, char *fname, char *bname, char *encod
   if (getc(input) != 1) return -1;    /* should be 128, 1 */
 /*  skip over 4 byte length code */
   getc(input); getc(input); getc(input); getc(input);
-  if (readaline(line, input) != 0) return -1;
+  if (read_a_line(line, input) != 0) return -1;
   while (*line == '%') {          /* copy comment lines over */
 //    fputs(line, output);
     PSputs(line, output);
-    if (readaline(line, input) != 0) return -1;
+    if (read_a_line(line, input) != 0) return -1;
   }
 /*  while ((s = strchr(line, '/')) == NULL) {  */
   while ((s = strstr(line, "findfont")) == NULL) {
 //    fputs(line, output);
     PSputs(line, output);
-    if (readaline(line, input) != 0) return -1;
+    if (read_a_line(line, input) != 0) return -1;
   }
   if ((s = strchr(line, '/')) == NULL) return -1;
 /*  replace PostScript Multiple Master *Instance* FontName */
@@ -6538,7 +7062,7 @@ int copyPSS_sub(FILE *output, FILE *input, char *fname, char *bname, char *encod
   while ((s = strstr(line, "/FontName")) == NULL) {
 //    fputs(line, output);
     PSputs(line, output);
-    if (readaline(line, input) != 0) return -1;
+    if (read_a_line(line, input) != 0) return -1;
   }
 /*  if (replacename (s+9, fname) != 0) return -1; */
   if ((s = strchr(s+1, '/')) == NULL) return -1;
@@ -6547,7 +7071,7 @@ int copyPSS_sub(FILE *output, FILE *input, char *fname, char *bname, char *encod
   while ((s = strstr(line, "definefont")) == NULL) {
 //    fputs(line, output);
     PSputs(line, output);
-    if (readaline(line, input) != 0) return -1;
+    if (read_a_line(line, input) != 0) return -1;
   }
 /*  if (bMMNewFlag == 0) {*/  /* Insert new encoding vector in PSS 95/May/13 */
 /*  Should more generally check whether Base Font is resident ? */
@@ -6742,8 +7266,8 @@ int extractafont (FILE *fp_out, int k)
           strcpy (subfontnamek, fontname[k]);
         else *subfontnamek = '\0';
       }
-/*      if ((fp_in = OpenFont(subfontname[k])) == NULL) {  */
-      if ((fp_in = OpenFont(subfontnamek, 1)) == NULL) { 
+/*      if ((fp_in = open_font(subfontname[k])) == NULL) {  */
+      if ((fp_in = open_font(subfontnamek, 1)) == NULL) { 
 /*        fprintf(errout, " WARNING: "); */ /* REDUNDANT ? */
         sprintf(logline, " WARNING: %s ", subfontnamek);  /* REDUNDANT ? */
         showline(logline, 1);
@@ -6755,8 +7279,8 @@ int extractafont (FILE *fp_out, int k)
     }
     else { /* not a remapped font */
 /* can we assume fontnamek set correctly ? */
-/*      if ((fp_in = OpenFont(fontname[k])) == NULL) {  */
-      if ((fp_in = OpenFont(fontnamek, 1)) == NULL) { 
+/*      if ((fp_in = open_font(fontname[k])) == NULL) {  */
+      if ((fp_in = open_font(fontnamek, 1)) == NULL) { 
 /*        fprintf(errout, " WARNING: "); */ /* REDUNDANT ? */
         sprintf(logline, " WARNING: %s ", fontnamek); /* REDUNDANT ? */
         showline(logline, 1);
@@ -6785,14 +7309,14 @@ int extractafont (FILE *fp_out, int k)
     }
     else if (type3flag != 0) {
 /* How would type3flag ever get set here ? - By font open mechanism */
-      if (extracttype3(fp_out, fp_in, k, fontnamek) == 0) {
-        if (extracttype1(fp_out, fp_in, k, fontnamek) == 0)
+      if (extract_type3(fp_out, fp_in, k, fontnamek) == 0) {
+        if (extract_type1(fp_out, fp_in, k, fontnamek) == 0)
           copy_unknown(fp_out, fp_in, k, fontnamek);
       }
     }
     else {
-      if (extracttype1(fp_out, fp_in, k, fontnamek) == 0) {
-        if(extracttype3(fp_out, fp_in, k, fontnamek) == 0)
+      if (extract_type1(fp_out, fp_in, k, fontnamek) == 0) {
+        if(extract_type3(fp_out, fp_in, k, fontnamek) == 0)
           copy_unknown(fp_out, fp_in, k, fontnamek); 
       }
     }
@@ -6911,7 +7435,7 @@ void fontsetup (FILE *fp_out)
   char *fontptr;
 
 /*  now for the substitutions */
-  if (substituteflag && needsubstitute() != 0) {   
+  if (substituteflag && need_substitute() != 0) {   
     task = "constructing substituted fonts";
     nsubstitute = 0;
     if (stripcomment == 0) {
@@ -6976,7 +7500,7 @@ void fontsetup (FILE *fp_out)
         }
 /* shouldn't this depend on whether it is a texfont or not ??? */
 /*        if (uppercaseflag) */           /* 1995/July/1 */
-        if (uppercaseflag && istexfont(fontnamef))  /* 1996/June/20 */
+        if (uppercaseflag && is_tex_font(fontnamef))  /* 1996/June/20 */
           uppercase(fontnamef, fontnamef);
 /*        fprintf(fp_out, "/%s fs ", fontnamef); */
 //        fputs(fontnamef, fp_out);       /* 1995/July/5 */
@@ -7027,7 +7551,7 @@ void fontsetup (FILE *fp_out)
         }
 /* shouldn't this depend on whether it is a texfont or not ??? */
 /*        if (uppercaseflag) */           /* 1995/July/1 */
-        if (uppercaseflag && istexfont(fontnamek))  /* 1996/June/20 */
+        if (uppercaseflag && is_tex_font(fontnamek))  /* 1996/June/20 */
           uppercase(fontnamek, fontnamek);          
 //        fputs(fontnamek, fp_out);
         PSputs(fontnamek, fp_out);
@@ -7053,8 +7577,8 @@ void fontsetup (FILE *fp_out)
     }
   }
     
-/*  if (needremap() != 0) {  */
-  if ((flag = needremap()) != 0) { 
+/*  if (need_remap() != 0) {  */
+  if ((flag = need_remap()) != 0) { 
 /*    constructvectors(fp_out); */
     if (flag < 0) constructvectors(fp_out);
     task = "constructing remapped fonts";
@@ -7125,7 +7649,7 @@ void fontsetup (FILE *fp_out)
           if (fontname[k] != NULL) strcpy(fname, fontname[k]);  /* 1994/Feb/2 */
           else *fname = '\0';
         }
-        if (uppercaseflag != 0 && istexfont(fname) != 0) 
+        if (uppercaseflag != 0 && is_tex_font(fname) != 0) 
           uppercase(fname, fname);
 /*        fprintf(fp_out, "/%s %s /%s rmf\n",  
           fontname[k], fontvector[k], subfontname[k]); */
@@ -7432,7 +7956,7 @@ int ResidentFont (char *FileName)       /* 1994/Feb/10 */
 
 /* if forcereside on, we should still download/expand the PSS stubs ... */
 
-/* extracttype3, does fontname get printed ? */
+/* extract_type3, does fontname get printed ? */
 /* mac style font, does fontname get printed ? */
 /* what is font can't be found does font name get printed ? */
 /* what is some error in extraction does font name get printed ? */

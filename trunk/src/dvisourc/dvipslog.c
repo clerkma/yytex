@@ -50,7 +50,6 @@ char *currentfont;        /* pointer to current font */
 long pageno;  /* for convenience in error messages - may be logical page */
 
 /* now for the scan of the DVI file for font character log generation */
-
 /* now for the scan of the DVI file for PS output generation */
 
 void reset_stack(void)
@@ -65,8 +64,6 @@ void check_stack(int pageno)
     sprintf(logline, " ERROR: stack not empty at EOP: %d on page %d ", stinx, pageno); /* pageno ? logical page */
     showline(logline, 1);
     tellwhere(input, 1);
-/*    errcount(0); */
-/*    giveup(3); */
   }
 }
 
@@ -1421,7 +1418,7 @@ void logfnt_def(FILE *infile, unsigned int k)
   fontsubflag[fn] = -1;       /* all this goes to extract now */
   fontproper[fn] = 0;         /* 1992/May/4 */
 /*  possibly determine whether we need to reencode *control* range ??? */
-/*  if (substitute != 0) fontsubflag[fn] = fontremap(fontname[fn]);
+/*  if (substitute != 0) fontsubflag[fn] = font_remap(fontname[fn]);
   if (uppercaseflag != 0) uppercase(font, fontname[fn]);  else */ 
 /*  strcpy(font, fontname[fn]); */    /* what for ??? */
 //  tempfont = fontchar[fn];      /* reset character counts */
