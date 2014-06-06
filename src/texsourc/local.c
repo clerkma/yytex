@@ -53,7 +53,7 @@ char * aux_directory = "";
 char * fmt_directory = "";
 char * pdf_directory = "";
 
-char * texpath = "";   /* path to executable - used if env vars not set */
+char * texpath = "";
 
 char log_line[MAXLINE];  // used also in tex9.c
 
