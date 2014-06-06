@@ -38,20 +38,20 @@ LFLAGS=/NOLOGO /MAP
 objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
 	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
 	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
-	yandy_pool.obj yandytex.res md5.obj yandy_pdf_backend.obj
+	yandy_pool.obj yandytex.res md5.obj yandy_backend_pdf.obj
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 yandytex.exe: $(objs)
 	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
-	yandy_pool yandytex.res md5 yandy_pdf_backend \
+	yandy_pool yandytex.res md5 yandy_backend_pdf \
 	kpathsea\kpathsea.lib libharu\libhpdf.lib libpng\libpng.lib zlib\zlib.lib
 	del ..\yandy\bin\yandytex.exe
 	copy yandytex.exe ..\yandy\bin\yandytex.exe
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
-yandy_pdf_backend.obj: yandy_pdf_backend.c
-	$(CC) $(CFLAGS) yandy_pdf_backend.c
+yandy_backend_pdf.obj: yandy_backend_pdf.c
+	$(CC) $(CFLAGS) yandy_backend_pdf.c
 
 md5.obj: libmd5\md5.c
 	$(CC) -Ilibmd5 $(CFLAGS) libmd5\md5.c
