@@ -67,7 +67,7 @@ void print_hex_(integer);
 void print_roman_int_(integer);
 #define print_roman_int(n) print_roman_int_((integer) (n))
 void print_current_string(void);
-void term_input(char *, int);
+void term_input(void);
 void int_error_(integer);
 #define int_error(n) int_error_((integer) (n))
 void normalize_selector(void);

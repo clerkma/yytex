@@ -550,7 +550,7 @@ static const char *pool_file_arr[] =
 /* 0782 */  "", //"I can't find file `",
 /* 0783 */  "", //"I can't write on file `",
 /* 0784 */  "", //"'.",
-/* 0785 */  "", //".tex",
+/* 0785 */  ".tex",
 /* 0786 */  "", //"Please type another ",
 /* 0787 */  "", //"*** (job aborted, file error in nonstop mode)",
 /* 0788 */  "", //".dvi",

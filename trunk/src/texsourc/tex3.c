@@ -961,18 +961,12 @@ void read_toks_(integer n, halfword r)
       if (read_open[m] == closed)
         if (interaction > nonstop_mode)
           if (n < 0)
-          {
-            print_string("");
-            term_input("", 0);
-          }
+            prompt_input("");
           else
           {
             print_ln();
             sprint_cs(r);
-            {
-              print_string("=");
-              term_input("=", 0);
-            }
+            prompt_input("=");
             n = -1;
           }
         else
@@ -1459,7 +1453,6 @@ boolean more_name_(ASCII_code c)
     return true;
   }
 }
-/******************************** 2000 August 15th start ***********************/
 
 // The following code is to save string space used by TeX for filenames
 // Not really critical in a system that has dynamic memory allocation
@@ -1525,16 +1518,12 @@ void remove_string (int start, int end)
   int nlen = pool_ptr - end;  // how many bytes to move down
   char *s;
   
-//  int trace_flag=1;   // debugging only
-//  if (end < start) show_line("\nEND < START", 1);
-//  if (pool_ptr < end) show_line("\nPOOLPTR < END", 1);
-
   if (trace_flag)
   {
     int n = end - start;
     sprintf(log_line, "\nSTRIPPING OUT %d %d ", n, nlen);
     s = log_line + strlen(log_line);
-    strncpy(s, (const char *)str_pool + start, n);
+    strncpy(s, (const char *) str_pool + start, n);
     strcpy(s + n, "\n");
     show_line(log_line, 0);
   }
@@ -1542,7 +1531,7 @@ void remove_string (int start, int end)
   if (nlen > 0)
     memcpy(str_pool + start, str_pool + end, nlen);
 
-  pool_ptr = start + nlen;    // poolprt - (end-start);
+  pool_ptr = start + nlen;
 }
 
 void show_string (int k)
@@ -1576,13 +1565,13 @@ void end_name (void)
   if (str_ptr + 3 > current_max_strings)
   {
     overflow("number of strings", current_max_strings - init_str_ptr);
-    return;     // abort_flag set
+    return;
   }
 #else
   if (str_ptr + 3 > max_strings)
   {
     overflow("number of strings", max_strings - init_str_ptr);
-    return;     // abort_flag set
+    return;
   }
 #endif
 
@@ -1597,9 +1586,6 @@ void end_name (void)
 
       if (ext_delimiter != 0)
         ext_delimiter = ext_delimiter - area_delimiter;
-
-//      str_start[str_ptr + 1]= str_start[str_ptr]+ area_delimiter; // test only
-//      incr(str_ptr);    // test only
     }
     else         // carve out string for "cur_area"
     {
@@ -1616,7 +1602,6 @@ void end_name (void)
     if (save_strings_flag && (cur_name = find_string(str_start[str_ptr], pool_ptr)) > 0)
     {
       remove_string(str_start[str_ptr], pool_ptr);
-//    (void) make_string();  // test only
     }
     else            // Make string from str_start[str_ptr]to pool_ptr
       cur_name = make_string();
@@ -1627,8 +1612,6 @@ void end_name (void)
       (cur_name = find_string(str_start[str_ptr], str_start[str_ptr] + ext_delimiter - area_delimiter-1)) > 0)
     {
       remove_string(str_start[str_ptr], str_start[str_ptr] + ext_delimiter - area_delimiter - 1);
-//    str_start[str_ptr + 1]= str_start[str_ptr]+ ext_delimiter - area_delimiter - 1;   // test only
-//    incr(str_ptr);    // test only
     }
     else             // carve out string for "cur_name"
     {
@@ -1640,7 +1623,6 @@ void end_name (void)
     if (save_strings_flag && (cur_ext = find_string(str_start[str_ptr], pool_ptr)) > 0)
     {
       remove_string(str_start[str_ptr], pool_ptr);
-//    (void) make_string();  // test only
     }
     else            // Make string from str_start[str_ptr]to pool_ptr
       cur_ext = make_string();
@@ -1659,31 +1641,13 @@ void pack_file_name_(str_number n, str_number a, str_number e)
   k = 0;
 
   for (j = str_start[a]; j <= str_start[a + 1] - 1; j++)
-  {
-    c = str_pool[j];
-    incr(k);
-
-    if (k <= PATH_MAX)
-      name_of_file[k] = xchr[c];
-  }
+    append_to_name(str_pool[j]);
 
   for (j = str_start[n]; j <= str_start[n + 1] - 1; j++)
-  {
-    c = str_pool[j];
-    incr(k);
-
-    if (k <= PATH_MAX)
-      name_of_file[k] = xchr[c];
-  }
+    append_to_name(str_pool[j]);
 
   for (j = str_start[e]; j <= str_start[e + 1] - 1; j++)
-  {
-    c = str_pool[j];
-    incr(k);
-
-    if (k <= PATH_MAX)
-      name_of_file[k] = xchr[c];
-  }
+    append_to_name(str_pool[j]);
 
   if (k < PATH_MAX)
     name_length = k;
@@ -1694,7 +1658,7 @@ void pack_file_name_(str_number n, str_number a, str_number e)
   for (k = name_length + 1; k <= PATH_MAX; k++)
     name_of_file[k] = ' ';
 
-  name_of_file[PATH_MAX] = '\0';    /* paranoia 94/Mar/24 */
+  name_of_file[PATH_MAX] = '\0';
 
   {
     name_of_file [name_length+1] = '\0';
@@ -1885,19 +1849,14 @@ void prompt_file_name_(char * s, str_number e)
   if (interaction < 2)
   {
     fatal_error("*** (job aborted, file error in nonstop mode)");
-    return;     // abort_flag set
+    return;
   }
 
   if (!knuth_flag)
-#ifdef _WINDOWS
-    show_line(" (or ^z to exit)", 0);
-#else
     show_line(" (or Ctrl-Z to exit)", 0);
-#endif
-  {
-    print_string(": ");
-    term_input(": ", 0);
-  }
+
+  prompt_input(": ");
+
 /*  should we deal with tilde and space in file name here ??? */
   {
     begin_name();
@@ -1973,14 +1932,14 @@ void open_log_file (void)
     {
       stamp_it(log_line);
       strcat(log_line, "\n");
-      (void) fputs(log_line, log_file);
+      fputs(log_line, log_file);
       stampcopy(log_line);
       strcat(log_line, "\n");
-      (void) fputs(log_line, log_file);
+      fputs(log_line, log_file);
     }
     
-    (void) fputs(tex_version, log_file); 
-    (void) fprintf(log_file, " (%s %s)", application, yandyversion);
+    fputs(tex_version, log_file); 
+    fprintf(log_file, " (%s %s)", application, yandyversion);
 
     if (format_ident > 0)
       slow_print(format_ident);
@@ -1996,7 +1955,7 @@ void open_log_file (void)
     months = " JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 
     for (k = 3 * month - 2; k <= 3 * month; k++)
-      (void) putc(months[k],  log_file);
+      putc(months[k],  log_file);
 
     print_char(' ');
 
@@ -2035,76 +1994,6 @@ void open_log_file (void)
 
   selector = old_setting + 2;
 }
-
-/**************************** start of insertion 98/Feb/7 **************/
-// Attempt to deal with foo.bar.tex given as foo.bar on command line
-// Makes copy of job_name with extension
-
-void more_name_copy(ASCII_code c)
-{
-#ifdef ALLOCATESTRING
-  if (pool_ptr + 1 > current_pool_size)
-    str_pool = realloc_str_pool (increment_pool_size);
-
-  if (pool_ptr + 1 > current_pool_size)
-  {
-    overflow("pool size", current_pool_size - init_pool_ptr);
-    return;
-  }
-#else
-  if (pool_ptr + 1 > pool_size)
-  {
-    overflow("pool size", pool_size - init_pool_ptr);
-    return;
-  }
-#endif
-
-  str_pool[pool_ptr] = c; 
-  incr(pool_ptr);
-}
-
-int end_name_copy(void)
-{
-#ifdef ALLOCATESTRING
-  if (str_ptr + 1 > current_max_strings)
-    str_start = realloc_str_start(increment_max_strings + 1);
-
-  if (str_ptr + 1 > current_max_strings)
-  {
-    overflow("number of strings", current_max_strings - init_str_ptr);
-    return 0;
-  }
-#else
-  if (str_ptr + 1 > max_strings)
-  {
-    overflow("number of strings", max_strings - init_str_ptr);
-    return 0;
-  }
-#endif
-
-  return make_string();
-}
-
-void job_name_append (void)
-{ 
-  int k, n;
-
-  k = str_start[job_name];
-  n = str_start[job_name + 1];
-
-  while (k < n)
-    more_name_copy(str_pool[k++]);
-
-  k = str_start[cur_ext];
-  n = str_start[cur_ext + 1];
-
-  while (k < n)
-    more_name_copy(str_pool[k++]);
-
-  job_name = end_name_copy();
-}
-
-/**************************** end of insertion 98/Feb/7 **************/
 /* sec 0537 */
 void start_input(void)
 {
@@ -2116,31 +2005,9 @@ void start_input(void)
   while (true)
   {
     added_extension = false;
-    begin_file_reading(); 
-
-    if ((cur_ext != 335) && a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
-      goto lab30;
-
-    if ((cur_ext != 785) && (name_length + 5 < PATH_MAX))
-    {
-      name_of_file[name_length + 1] = '.';
-      name_of_file[name_length + 2] = 't';
-      name_of_file[name_length + 3] = 'e';
-      name_of_file[name_length + 4] = 'x';
-      name_of_file[name_length + 5] = ' ';
-      name_length = name_length + 4;
-
-      added_extension = true;
-
-      if (a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
-        goto lab30;
-
-      name_length = name_length - 4;
-      name_of_file[name_length + 1] = ' ';
-      added_extension = false;
-    }
-
-    if ((cur_ext == 335) && a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
+    begin_file_reading();
+    
+    if (a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
       goto lab30;
 
     end_file_reading();
@@ -2153,10 +2020,6 @@ lab30:
   if (job_name == 0)
   {
     job_name = cur_name;
-
-    if (cur_ext != 335 && added_extension)
-      job_name_append();
-
     open_log_file();
   }
 

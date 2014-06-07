@@ -494,7 +494,7 @@ void begin_token_list_ (halfword p, quarterword t)
             break;
 
           default:
-            print_cmd_chr(assign_toks, t + (hash_size + 1307));
+            print_cmd_chr(assign_toks, t - output_text + output_routine_loc);
             break;
         }
 
@@ -814,12 +814,7 @@ void firm_up_the_line (void)
           print(buffer[k]);
 
       first = cur_input.limit_field;
-
-      {
-        ;
-        print_string("=>");
-        term_input("=>", 0);
-      }
+      prompt_input("=>");
 
       if (last > first)
       {
@@ -2424,13 +2419,7 @@ lab40:
 
           print_ln();
           first = cur_input.start_field;
-
-          {
-            ;
-            print_string("*");
-            term_input("*", 0);
-          }
-
+          prompt_input("*");
           cur_input.limit_field = last;
 
           if ((end_line_char < 0) || (end_line_char > 255))
