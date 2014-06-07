@@ -911,6 +911,7 @@ enum
 /* sec 0544 */
 #define no_tag   0
 #define lig_tag  1
+#define gk_tag   1
 #define list_tag 2
 #define ext_tag  3
 /* sec 0545 */
@@ -938,6 +939,8 @@ enum
 #define non_address 0
 /* sec 0554 */
 #define char_info(a, b)   font_info[char_base[a] + b].qqqq
+#define kchar_code(a, b)  font_info[ctype_base[a] + b].hh.rh
+#define kchar_type(a, b)  font_info[ctype_base[a] + b].hh.lh
 #define char_width(a, b)  font_info[width_base[a] + b.b0].cint
 #define char_exists(a)    (a.b0 > min_quarterword)
 #define char_italic(a, b) font_info[italic_base[a] + (b.b2) / 4].cint
@@ -985,6 +988,40 @@ enum
     val = qw;                     \
   }
 /* sec 0571 */
+#define store_scaled(s)                                           \
+  do                                                              \
+    {                                                             \
+      tfm_temp = getc(tfm_file);                                  \
+      a = tfm_temp;                                               \
+      tfm_temp = getc(tfm_file);                                  \
+      b = tfm_temp;                                               \
+      tfm_temp = getc(tfm_file);                                  \
+      c = tfm_temp;                                               \
+      tfm_temp = getc(tfm_file);                                  \
+      d = tfm_temp;                                               \
+      sw = (((((d * z) / 256) + (c * z)) / 256) + (b * z)) / beta;\
+                                                                  \
+      if (a == 0)                                                 \
+        s = sw;                                                   \
+      else if (a == 255)                                          \
+        s = sw - alpha;                                           \
+      else                                                        \
+        goto lab11;                                               \
+    }                                                             \
+  while (0)
+/* sec 0573 */
+#define check_existence(s)      \
+  do                            \
+    {                           \
+      if ((s < bc) || (s > ec)) \
+        goto lab11;             \
+                                \
+      qw = char_info(f, s);     \
+                                \
+      if (!(qw.b0 > 0))         \
+        goto lab11;             \
+    }                           \
+  while (0)
 /* sec 0585 */
 #define set1      128 // c[1]
 #define set2      129 // c[2]
@@ -1416,6 +1453,7 @@ enum
 #define show_box_code 1
 #define show_the_code 2
 #define show_lists    3
+#define show_mode     4
 /* sec 1342 */
 #define write_node_size 2
 #define open_node_size  3
@@ -1437,3 +1475,13 @@ enum
 #define set_language_code 5
 /* sec 1371 */
 #define end_write_token (cs_token_flag + end_write)
+
+/* Appendix: pTeX*/
+// direction
+#define dir_default 0 // {direction of the box, default Left to Right}
+#define dir_dtou    1 // {direction of the box, Bottom to Top}
+#define dir_tate    3 // {direction of the box, Top to Bottom}
+#define dir_yoko    4 // {direction of the box, equal default}
+// jfm
+#define yoko_jfm_id 11 // {for `yoko-kumi' fonts}
+#define tate_jfm_id 9  // {for `tate-kumi' fonts}

@@ -22,7 +22,112 @@
 #define COMPACTFORMAT
 
 #define STAT
-#include "texmf.h"
+#include "yandytex.h"
+
+enum {
+  out_dvi_flag = (1 << 0),
+  out_pdf_flag = (1 << 1),
+  out_xdv_flag = (1 << 2),
+  out_dpx_flag = (1 << 3),
+};
+
+#define INLINE inline
+
+#define dump_file  fmt_file
+#define out_file   dvi_file
+
+/* Read a line of input as quickly as possible.  */
+extern boolean input_line (FILE *);
+#define input_ln(stream, flag) input_line(stream)
+
+/* `b_open_in' (and out) is used only for reading (and writing) .tfm
+   files; `w_open_in' (and out) only for dump files.  The filenames are
+   passed in as a global variable, `name_of_file'.  */
+   
+#define b_open_in(f)  open_input  (&(f), TFMFILEPATH, FOPEN_RBIN_MODE)
+#define w_open_in(f)  open_input  (&(f), TEXFORMATPATH, FOPEN_RBIN_MODE)
+#define b_open_out(f) open_output (&(f), FOPEN_WBIN_MODE)
+#define w_open_out    b_open_out
+#define b_close       a_close
+#define w_close       a_close
+#define gz_w_close    gzclose
+
+/* sec 0241 */
+#define fix_date_and_time() get_date_and_time (&(tex_time), &(day), &(month), &(year))
+
+/* If we're running under Unix, use system calls instead of standard I/O
+   to read and write the output files; also, be able to make a core dump. */ 
+#ifndef unix
+  #define dumpcore() exit(1)
+#else /* unix */
+  #define dumpcore abort
+#endif
+
+#define write_dvi(a, b)                                           \
+  if ((size_t) fwrite ((char *) &dvi_buf[a], sizeof (dvi_buf[a]), \
+         (size_t) ((size_t)(b) - (size_t)(a) + 1), dvi_file)      \
+         != (size_t) ((size_t)(b) - (size_t)(a) + 1))             \
+     FATAL_PERROR ("\n! dvi file")
+
+extern int do_dump (char *, int, int, FILE *);
+extern int do_undump (char *, int, int, FILE *);
+
+/* Reading and writing the dump files.  `(un)dumpthings' is called from
+   the change file.*/
+#define dumpthings(base, len)           \
+  do_dump ((char *) &(base), sizeof (base), (int) (len), dump_file)
+
+#define undumpthings(base, len)           \
+  do_undump ((char *) &(base), sizeof (base), (int) (len), dump_file)
+
+/* Use the above for all the other dumping and undumping.  */
+#define generic_dump(x)   dumpthings (x, 1)
+#define generic_undump(x) undumpthings (x, 1)
+
+#define dump_wd     generic_dump
+#define undump_wd   generic_undump
+#define dump_hh     generic_dump
+#define undump_hh   generic_undump
+#define dump_qqqq   generic_dump
+#define undump_qqqq generic_undump
+
+/* `dump_int' is called with constant integers, so we put them into a
+   variable first.  */
+#define dump_int(x)         \
+  do                        \
+    {                       \
+      integer x_val = (x);  \
+      generic_dump (x_val); \
+    }                       \
+  while (0)
+
+/* web2c/regfix puts variables in the format file loading into
+   registers.  Some compilers aren't willing to take addresses of such
+   variables.  So we must kludge.  */
+#ifdef REGFIX
+#define undump_int(x)         \
+  do                          \
+    {                         \
+      integer x_val;          \
+      generic_undump (x_val); \
+      x = x_val;              \
+    }                         \
+  while (0)
+#else
+#define undump_int  generic_undump
+#endif
+
+
+/* If we're running on an ASCII system, there is no need to use the
+   `xchr' array to convert characters to the external encoding.  */
+
+#define Xchr(x) xchr[x]
+
+/* following added from new texmf.c file 1996/Jan/12 */
+/* these, of course are useless definitions since parameters not given */
+
+/* Declare routines in texmf.c.  */
+extern void t_open_in();
 #include "yandy_macros.h"
 
 // #define max_halfword 65535L  /* for 32 bit memory word */
@@ -163,7 +268,61 @@ typedef halfword pointer;
 typedef char two_choices;
 typedef char four_choices;
 /* sec 0113 */
-#include "texmfmem.h"
+/*
+  meaning      structure                      TeX                 Y&Y TeX
+               ----------------------------------------------------------------------
+  integer      |            int            || 4: long           | 8: long long      |   min_quarterword 0
+               ---------------------------------------------------------------------- max_quarterword FFFF
+  scaled       |            sc             || 4: long           | 8: long long      |   min_halfword
+               ----------------------------------------------------------------------
+  glue_ratio   |            gr             || 4: float          | 8: double         |
+               ----------------------------------------------------------------------
+  halfword     |     lh      |     rh      || 2: unsigned short | 4: unsigned long  |
+               ----------------------------------------------------------------------
+  half+quarter |  b0  |  b1  |     rh      ||                                       |
+               ----------------------------------------------------------------------
+  quarter      |  b0  |  b1  |  b2  |  b3  || 1: unsigned char  | 2: unsigned short |
+               ----------------------------------------------------------------------
+*/
+
+typedef struct
+{
+#ifdef WORDS_BIGENDIAN
+  halfword rh;
+
+  union
+  {
+    halfword lh;
+
+    struct
+    {
+      quarterword b0, b1;
+    };
+  };
+#endif
+} two_halves;
+
+typedef struct
+{
+#ifdef WORDS_BIGENDIAN
+  quarterword b0, b1, b2, b3;
+#else
+  quarterword b3, b2, b1, b0;
+#endif
+} four_quarters;
+
+typedef union
+{
+  glue_ratio gr;
+  two_halves hh;
+  integer cint;
+  four_quarters qqqq;
+} memory_word;
+
+#ifndef WORDS_BIGENDIAN
+  #define cint u.CINT
+  #define qqqq v.QQQQ
+#endif
 /* sec 0150 */
 typedef char glue_ord; 
 /* sec 0212 */
@@ -475,6 +634,8 @@ EXTERN char * log_file_name;
   EXTERN memory_word font_info[font_mem_size + 1];
 #endif
 
+EXTERN eight_bits font_dir[font_max + 1];
+EXTERN integer font_num_ext[font_max + 1];
 EXTERN font_index fmem_ptr;
 EXTERN internal_font_number font_ptr;
 EXTERN internal_font_number frozen_font_ptr;
@@ -494,6 +655,7 @@ EXTERN font_index bchar_label[font_max + 1];
 EXTERN short font_bchar[font_max + 1];
 EXTERN short font_false_bchar[font_max + 1];
 EXTERN integer char_base[font_max + 1];
+EXTERN integer ctype_base[font_max + 1];
 EXTERN integer width_base[font_max + 1];
 EXTERN integer height_base[font_max + 1];
 EXTERN integer depth_base[font_max + 1];
