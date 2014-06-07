@@ -25,7 +25,6 @@
 #define dump_default        " plain.fmt"
 #define dump_ext_length     4
 #define dump_default_length format_default_length
-#define main_program        texbody
 #define edit_value          tex_edit_value
 
 extern char * replacement[];
@@ -40,8 +39,6 @@ char **gargv;   /* char *gargv[] -- bkph ? */
 /* The entry point: set up for reading the command line, which will
    happen in `t_open_in', then call the main body.  */
 
-int main_init(int, char **);     /* in local.c */
-
 int jump_used = 0;
 
 jmp_buf jumpbuffer;
@@ -49,10 +46,6 @@ jmp_buf jumpbuffer;
 int main (int ac, char *av[])
 {
   int flag = 0, ret = 0;
-
-#ifndef INI
-  char custom_default[PATH_MAX];
-#endif
 
 #ifdef WIN32
   _setmaxstdio(2048);
@@ -77,7 +70,7 @@ int main (int ac, char *av[])
 
     if (trace_flag)
     {
-      sprintf(log_line, "EXITING at %s %d %d %d\n", "MAIN", flag, ret, jump_used);
+      sprintf(log_line, "EXITING at %s: flag = %d, ret = %d, jump_used = %d\n", "main", flag, ret, jump_used);
       show_line(log_line, 0);
     }
   }
@@ -85,7 +78,7 @@ int main (int ac, char *av[])
   {
     if (trace_flag)
     {
-      sprintf(log_line, "EXITING at %s %d %d %d\n", "JUMPOUT", flag, ret, jump_used);
+      sprintf(log_line, "EXITING at %s: flag = %d, ret = %d, jump_used =  %d\n", "jump_out", flag, ret, jump_used);
       show_line(log_line, 0);
     }
   }
@@ -95,12 +88,8 @@ int main (int ac, char *av[])
 
   if (flag == 0)
     return 0;
-
-#ifdef _WINDOWS
-  return flag;
-#else
-  else exit (flag);   // avoid circularity!
-#endif
+  else
+    exit (flag);
 }
 
 /* texk/web2c/lib/texmfmp.c */

@@ -2362,7 +2362,7 @@ void show_frozen (void)
   fprintf(log_file, ") ");
 }
 
-int texbody (void)
+int main_program (void)
 {
   history = fatal_error_stop;
 
@@ -2994,21 +2994,6 @@ void sort_avail (void)
 #endif
 
 #ifdef INITEX
-str_number make_string_pool (char *s)
-{
-  int slen = strlen(s);
-
-  if (slen == 1)
-  {
-    return ((str_number)s[0]);
-  }
-  else
-  {
-    memcpy(str_pool + pool_ptr, s, slen);
-    pool_ptr += slen;
-    return (make_string());
-  }
-}
 /* sec 0264 */
 void primitive_ (str_number s, quarterword c, halfword o)
 { 

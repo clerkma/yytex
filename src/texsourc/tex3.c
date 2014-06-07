@@ -1566,7 +1566,6 @@ void show_all_strings (void)
     show_string(k);
 }
 
-/********************************** 2000 August 15 end ****************************/
 /* sec 0517 */
 void end_name (void) 
 {

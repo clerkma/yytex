@@ -32,8 +32,6 @@ boolean open_fmt_file (void)
 
   j = cur_input.loc_field;
 
-/* For Windows NT, lets allow + instead of & for format specification */
-/*  User specified a format name on the command line                  */
   if (buffer[cur_input.loc_field] == '&' || buffer[cur_input.loc_field] == '+')
   {
     incr(cur_input.loc_field);
@@ -50,7 +48,7 @@ boolean open_fmt_file (void)
   
     if (knuth_flag)
     {
-      (void) sprintf(log_line, "%s;%s\n", "Sorry, I can't find that format",
+      sprintf(log_line, "%s;%s\n", "Sorry, I can't find that format",
         " will try the default.");
       show_line(log_line, 1);
     }
@@ -59,26 +57,14 @@ boolean open_fmt_file (void)
       char *s = log_line;
 
       name_of_file[name_length + 1] = '\0';
-      (void) sprintf(s, "%s (%s);%s\n", "Sorry, I can't find that format",
+      sprintf(s, "%s (%s);%s\n", "Sorry, I can't find that format",
         name_of_file + 1, " will try the default."); 
       name_of_file[name_length + 1] = ' ';
       s += strlen(s);
-      (void) sprintf(s, "(Perhaps your %s environment variable is not set correctly)\n",
+      sprintf(s, "(Perhaps your %s environment variable is not set correctly)\n",
         "TEXFORMATS");
       s += strlen(s);
-      {
-        char *t;            /* extra info 97/June/13 */
-
-        if ((t = grabenv("TEXFORMATS")) != NULL)
-        {
-          sprintf(s, "(%s=%s)\n", "TEXFORMATS", t);
-        }
-        else
-        {
-          sprintf(s, "%s environment variable not set\n", "TEXFORMATS");
-        }
-      }
-      show_line(log_line, 1); // show all three lines at once
+      show_line(log_line, 1);
     }
 
 #ifndef _WINDOWS
@@ -86,14 +72,13 @@ boolean open_fmt_file (void)
 #endif
   }
 
-/* Try the default format (either because no format specified or failed) */
   pack_buffered_name(format_default_length - 4, 1, 0);
 
   if (!w_open_in(fmt_file))
   {
     if (knuth_flag)
     {
-      (void) sprintf(log_line, "%s!\n", "I can't find the default format file");
+      sprintf(log_line, "%s!\n", "I can't find the default format file");
       show_line(log_line, 1);
     }
     else
@@ -101,24 +86,12 @@ boolean open_fmt_file (void)
       char *s = log_line;
 
       name_of_file[name_length + 1] = '\0';
-      (void) sprintf(s, "%s (%s)!\n", "I can't find the default format file", name_of_file + 1);
+      sprintf(s, "%s (%s)!\n", "I can't find the default format file", name_of_file + 1);
       name_of_file[name_length + 1] = ' ';
       s += strlen(s);
-      (void) sprintf(s, "(Perhaps your %s environment variable is not set correctly)\n", "TEXFORMATS");
+      sprintf(s, "(Perhaps your %s environment variable is not set correctly)\n", "TEXFORMATS");
       s += strlen(s);
-      {
-        char *t;            /* extra info 97/June/13 */
-
-        if ((t = grabenv("TEXFORMATS")) != NULL)
-        {
-          sprintf(s, "(%s=%s)\n", "TEXFORMATS", t);
-        }
-        else
-        {
-          sprintf(s, "%s environment variable not set\n", "TEXFORMATS");
-        }
-      }
-      show_line(log_line, 1);   // show all three lines at once
+      show_line(log_line, 1);
     }
 
     return false;
@@ -135,10 +108,8 @@ void print_char_string (unsigned char *s)
   while (*s > 0)
     print_char(*s++);
 }
-void show_font_info (void);   // now in local.c
-extern int closed_already;     // make sure we don't try this more than once
-/* The following needs access to zdvibuf of ALLOCATEDVIBUF 94/Mar/24 */
-/* done in closefilesandterminate_regmem  in coerce.h */
+void show_font_info (void); // now in local.c
+extern int closed_already;  // make sure we don't try this more than once
 /* sec 1333 */
 void close_files_and_terminate (void)
 {
@@ -153,7 +124,6 @@ void close_files_and_terminate (void)
   if (trace_flag)
     show_line("\nclose_files_and_terminate ", 0);
 
-/* close all open files */
   for (k = 0; k <= 15; k++)
     if (write_open[k])
     {
@@ -161,95 +131,101 @@ void close_files_and_terminate (void)
     }
 
 #ifdef STAT
-  if (tracing_stats > 0 || verbose_flag != 0)  /* 93/Nov/30 - bkph */
+  if (tracing_stats > 0 || verbose_flag != 0)
     if (log_opened)
     {
-/* used to output paragraph breaking statistics here */
-      (void) fprintf(log_file, "%c\n", ' ');
-      (void) fprintf(log_file, "\n");
-      (void) fprintf(log_file, "%s%s\n", "Here is how much of TeX's memory", " you used:");
-      (void) fprintf(log_file, "%c%ld%s", ' ', (long)str_ptr - init_str_ptr, " string");
+      fprintf(log_file, "%c\n", ' ');
+      fprintf(log_file, "\n");
+      fprintf(log_file, "%s%s\n", "Here is how much of TeX's memory", " you used:");
+      fprintf(log_file, "%c%ld%s", ' ', str_ptr - init_str_ptr, " string");
+
       if (str_ptr != init_str_ptr + 1)
-        (void) putc('s',  log_file);
-#ifdef ALLOCATESTRING
-      if (show_current)
-        (void) fprintf(log_file, "%s%ld\n", " out of ", (long) current_max_strings - init_str_ptr);
-      else
-#endif
-        (void) fprintf(log_file, "%s%ld\n", " out of ", (long) max_strings - init_str_ptr);
+        putc('s',  log_file);
 
 #ifdef ALLOCATESTRING
       if (show_current)
-        (void) fprintf(log_file, "%c%ld%s%ld\n", ' ', (long) pool_ptr - init_pool_ptr, " string characters out of ", (long) current_pool_size - init_pool_ptr);
+        fprintf(log_file, "%s%ld\n", " out of ", current_max_strings - init_str_ptr);
       else
 #endif
-        (void) fprintf(log_file, "%c%ld%s%ld\n", ' ', (long) pool_ptr - init_pool_ptr, " string characters out of ", (long) pool_size - init_pool_ptr);
+        fprintf(log_file, "%s%ld\n", " out of ", max_strings - init_str_ptr);
+
+#ifdef ALLOCATESTRING
+      if (show_current)
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', pool_ptr - init_pool_ptr, " string characters out of ", current_pool_size - init_pool_ptr);
+      else
+#endif
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', pool_ptr - init_pool_ptr, " string characters out of ", pool_size - init_pool_ptr);
 
 #ifdef ALLOCATEMAIN
       if (show_current)
-        (void) fprintf(log_file, "%c%ld%s%ld\n", ' ', (long) lo_mem_max - mem_min + mem_end - hi_mem_min + 2, " words of memory out of ", (long)current_mem_size);
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', (long)lo_mem_max - mem_min + mem_end - hi_mem_min + 2, " words of memory out of ", current_mem_size);
       else
 #endif
-        (void) fprintf(log_file, "%c%ld%s%ld\n", ' ', (long) lo_mem_max - mem_min + mem_end - hi_mem_min + 2, " words of memory out of ", (long)mem_end + 1 - mem_min);
-      (void) fprintf(log_file, "%c%ld%s%ld\n", ' ', (long) cs_count, " multiletter control sequences out of ", (long)(hash_size + hash_extra));
-      (void) fprintf(log_file, "%c%ld%s%ld%s", ' ', (long) fmem_ptr, " words of font info for ", (long) font_ptr - 0, " font");
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', (long)lo_mem_max - mem_min + mem_end - hi_mem_min + 2, " words of memory out of ", mem_end + 1 - mem_min);
+
+      fprintf(log_file, "%c%ld%s%ld\n", ' ', cs_count, " multiletter control sequences out of ", (hash_size + hash_extra));
+      fprintf(log_file, "%c%ld%s%ld%s", ' ', (long)fmem_ptr, " words of font info for ", (long)font_ptr - font_base, " font");
+
       if (font_ptr != 1)
-        (void) putc('s',  log_file);
+        putc('s',  log_file);
 
 #ifdef ALLOCATEFONT
       if (show_current)
-        (void) fprintf(log_file, "%s%ld%s%ld\n", ", out of ", (long)current_font_mem_size, " for ", (long)font_max - 0);
+        fprintf(log_file, "%s%ld%s%ld\n", ", out of ", current_font_mem_size, " for ", font_max - font_base);
       else
 #endif
-        (void) fprintf(log_file, "%s%ld%s%ld\n", ", out of ", (long)font_mem_size, " for ", (long)font_max - 0);
-      (void) fprintf(log_file, "%c%ld%s", ' ', (long)hyph_count, " hyphenation exception");
-      if (hyph_count != 1)
-        (void) putc('s',  log_file);
+        fprintf(log_file, "%s%ld%s%ld\n", ", out of ", font_mem_size, " for ", font_max - font_base);
 
-      (void) fprintf(log_file, "%s%ld\n",  " out of ", (long) hyphen_prime);
-      (void) fprintf(log_file, " ");
-      (void) fprintf(log_file, "%ld%s", (long)max_in_stack, "i,");
-      (void) fprintf(log_file, "%ld%s", (long)max_nest_stack, "n,");
-      (void) fprintf(log_file, "%ld%s", (long)max_param_stack, "p,");
-      (void) fprintf(log_file, "%ld%s", (long)max_buf_stack + 1, "b,");
-      (void) fprintf(log_file, "%ld%s", (long)max_save_stack + 6, "s");
-      (void) fprintf(log_file, " stack positions out of ");
+      fprintf(log_file, "%c%ld%s", ' ', hyph_count, " hyphenation exception");
+
+      if (hyph_count != 1)
+        putc('s',  log_file);
+
+      fprintf(log_file, "%s%ld\n",  " out of ", hyphen_prime);
+      fprintf(log_file, " ");
+      fprintf(log_file, "%ld%s", max_in_stack, "i,");
+      fprintf(log_file, "%ld%s", max_nest_stack, "n,");
+      fprintf(log_file, "%ld%s", max_param_stack, "p,");
+      fprintf(log_file, "%ld%s", max_buf_stack + 1, "b,");
+      fprintf(log_file, "%ld%s", max_save_stack + 6, "s");
+      fprintf(log_file, " stack positions out of ");
 
 #ifdef ALLOCATESAVESTACK
       if (show_current)
-        (void) fprintf(log_file, "%ld%s", (long)current_stack_size, "i,");
+        fprintf(log_file, "%ld%s", current_stack_size, "i,");
       else
 #endif
-        (void) fprintf(log_file, "%ld%s", (long)stack_size, "i,");
+        fprintf(log_file, "%ld%s", stack_size, "i,");
 
 #ifdef ALLOCATENESTSTACK
       if (show_current)
-        (void) fprintf(log_file, "%ld%s", (long)current_nest_size, "n,");
+        fprintf(log_file, "%ld%s", current_nest_size, "n,");
       else
 #endif
-        (void) fprintf(log_file, "%ld%s", (long)nest_size, "n,");
+        fprintf(log_file, "%ld%s", nest_size, "n,");
 
 #ifdef ALLOCATEPARAMSTACK
       if (show_current)
-        (void) fprintf(log_file, "%ld%s", (long)current_param_size, "p,");
+        fprintf(log_file, "%ld%s", current_param_size, "p,");
       else
 #endif
-        (void) fprintf(log_file, "%ld%s", (long)param_size, "p,");
+        fprintf(log_file, "%ld%s", param_size, "p,");
 
 #ifdef ALLOCATEBUFFER
       if (show_current)
-        (void) fprintf(log_file, "%ld%s", (long)current_buf_size, "b,");
+        fprintf(log_file, "%ld%s", current_buf_size, "b,");
       else
 #endif
-        (void) fprintf(log_file, "%ld%s", (long)buf_size, "b,");
+        fprintf(log_file, "%ld%s", buf_size, "b,");
 
 #ifdef ALLOCATESAVESTACK
       if (show_current)
-        (void) fprintf(log_file, "%ld%s", (long)current_save_size, "s");
+        fprintf(log_file, "%ld%s", current_save_size, "s");
       else
 #endif
-        (void) fprintf(log_file, "%ld%s", (long)save_size, "s");
-      (void) fprintf(log_file, "\n");
+        fprintf(log_file, "%ld%s", save_size, "s");
+
+      fprintf(log_file, "\n");
 
       if (!knuth_flag)
         fprintf(log_file, " (i = in_stack, n = nest_stack, p = param_stack, b = buf_stack, s = save_stack)\n");
@@ -257,57 +233,56 @@ void close_files_and_terminate (void)
       if (!knuth_flag)
         fprintf(log_file, " %d inputs open max out of %d\n", high_in_open, max_in_open);
 
-/*  Modified 98/Jan/14 to leave out lines with zero counts */
-      if (show_line_break_stats && first_pass_count > 0) /* 96/Feb/8 */
+      if (show_line_break_stats && first_pass_count > 0)
       {
-        int first_count, secondcount, thirdcount;
+        int first_count, second_count, third_count;
 
-        (void) fprintf(log_file, "\nSuccess at breaking %d paragraph%s:", first_pass_count, (first_pass_count == 1) ? "" : "s");
+        fprintf(log_file, "\nSuccess at breaking %d paragraph%s:", first_pass_count, (first_pass_count == 1) ? "" : "s");
 
         if (single_line > 0)
-          (void) fprintf(log_file, "\n %d single line `paragraph%s'", single_line, (single_line == 1) ? "" : "s");  /* 96/Apr/23 */
+          fprintf(log_file, "\n %d single line `paragraph%s'", single_line, (single_line == 1) ? "" : "s");
 
         first_count = first_pass_count - single_line - second_pass_count;
 
         if (first_count < 0)
           first_count = 0;
 
-        secondcount = second_pass_count - final_pass_count;
-        thirdcount = final_pass_count - paragraph_failed;
+        second_count = second_pass_count - final_pass_count;
+        third_count = final_pass_count - paragraph_failed;
 
         if (first_pass_count > 0)
-          (void) fprintf(log_file, "\n %d first pass (\\pretolerance = %d)", first_pass_count, pretolerance);
+          fprintf(log_file, "\n %d first pass (\\pretolerance = %d)", first_pass_count, pretolerance);
 
         if (second_pass_count > 0)
-          (void) fprintf(log_file, "\n %d second pass (\\tolerance = %d)", second_pass_count, tolerance);
+          fprintf(log_file, "\n %d second pass (\\tolerance = %d)", second_pass_count, tolerance);
 
         if (final_pass_count > 0 || emergency_stretch > 0)
         {
-          (void) fprintf(log_file, "\n %d third pass (\\emergencystretch = %lgpt)", final_pass_count, (double) emergency_stretch / 65536.0);
+          fprintf(log_file, "\n %d third pass (\\emergencystretch = %lgpt)", final_pass_count, (double) emergency_stretch / 65536.0);
         }
 
         if (paragraph_failed > 0)
-          (void) fprintf(log_file, "\n %d failed", paragraph_failed);
+          fprintf(log_file, "\n %d failed", paragraph_failed);
 
-        (void) putc('\n', log_file);
+        putc('\n', log_file);
 
         if (overfull_hbox > 0)
-          (void) fprintf(log_file, "\n %d overfull \\hbox%s", overfull_hbox, (overfull_hbox > 1) ? "es" : "");
+          fprintf(log_file, "\n %d overfull \\hbox%s", overfull_hbox, (overfull_hbox > 1) ? "es" : "");
 
         if (underfull_hbox > 0)
-          (void) fprintf(log_file, "\n %d underfull \\hbox%s", underfull_hbox, (underfull_hbox > 1) ? "es" : "");
+          fprintf(log_file, "\n %d underfull \\hbox%s", underfull_hbox, (underfull_hbox > 1) ? "es" : "");
 
         if (overfull_vbox > 0)
-          (void) fprintf(log_file, "\n %d overfull \\vbox%s", overfull_vbox, (overfull_vbox > 1) ? "es" : "");
+          fprintf(log_file, "\n %d overfull \\vbox%s", overfull_vbox, (overfull_vbox > 1) ? "es" : "");
 
         if (underfull_vbox > 0)
-          (void) fprintf(log_file, "\n %d underfull \\vbox%s", underfull_vbox, (underfull_vbox > 1) ? "es" : "");
+          fprintf(log_file, "\n %d underfull \\vbox%s", underfull_vbox, (underfull_vbox > 1) ? "es" : "");
 
         if (overfull_hbox || underfull_hbox || overfull_vbox || underfull_vbox)
-          (void) putc('\n', log_file);
+          putc('\n', log_file);
       }
-  } /* end of if (log_opened) */ 
-#endif /* STAT */
+  }
+#endif
 
   switch (shipout_flag)
   {
@@ -447,8 +422,8 @@ void close_files_and_terminate (void)
 
   if (log_opened)
   {
-    (void) putc('\n', log_file);
-    (void) a_close(log_file);
+    putc('\n', log_file);
+    a_close(log_file);
     selector = selector - 2;
 
     if (selector == term_only)
@@ -474,111 +449,131 @@ void close_files_and_terminate (void)
 #ifdef DEBUG
 /* sec 1338 */
 void debug_help (void) 
-{/* 888 10 */ 
-  integer k, l, m, n; 
-  while (true) {
- ; 
+{
+  integer k, l, m, n;
+
+  while (true)
+  { 
     print_nl(" debug # (-1 to exit):");
+
 #ifndef _WINDOWS
     fflush(stdout); 
 #endif
+
     read(stdin, m);  // ???
-    if (m < 0)return; 
+
+    if (m < 0)
+      return;
     else if (m == 0)
-    dumpcore(); 
-    else {
-      read(stdin, n);  // ???
+      dumpcore();
+    else
+    {
+      read(stdin, n);
+
       switch(m)
-      {case 1 : 
-  print_word(mem[n]); 
-  break; 
-      case 2 : 
-  print_int(mem[n].hh.lh); 
-  break; 
-      case 3 : 
-  print_int(mem[n].hh.rh); 
-  break; 
-      case 4 : 
-  print_word(eqtb[n]); 
-  break; 
-      case 5 : 
+      {
+        case 1:
+          print_word(mem[n]);
+          break;
+
+        case 2:
+          print_int(mem[n].hh.lh);
+          break;
+          
+        case 3:
+          print_int(mem[n].hh.rh);
+          break;
+        
+        case 4:
+          print_word(eqtb[n]);
+          break;
+
+        case 5:
 #ifdef SHORTFONTINFO
-  print_scaled(font_info[n].sc);  print_char(' ');
-  print_int(font_info[n].qqq.b0);  print_char(':');
-  print_int(font_info[n].qqq.b1);  print_char(':');
-  print_int(font_info[n].qqq.b2);  print_char(':');
-  print_int(font_info[n].qqq.b3);  
+          print_scaled(font_info[n].sc);
+          print_char(' ');
+          print_int(font_info[n].b0);
+          print_char(':');
+          print_int(font_info[n].b1);
+          print_char(':');
+          print_int(font_info[n].b2);
+          print_char(':');
+          print_int(font_info[n].b3);
 #else
-  print_word(font_info[n]); 
+          print_word(font_info[n]); 
 #endif
-  break; 
-      case 6 : 
-  print_word(save_stack[n]); 
-  break; 
-      case 7 : 
-  show_box(n); 
-  break; 
-      case 8 : 
-  {
-    breadth_max = 10000; 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+          break;
+        
+        case 6:
+          print_word(save_stack[n]);
+          break;
+          
+        case 7:
+          show_box(n);
+          break;
+        
+        case 8:
+          {
+            breadth_max = 10000;
 #ifdef ALLOCATESTRING
-/* About to output node list make some space in string pool 97/Mar/9 */
-  if (pool_ptr + 32000 > current_pool_size)
-    str_pool = realloc_str_pool (increment_pool_size);
-/* We don't bother to check whether this worked */
+            if (pool_ptr + 32000 > current_pool_size)
+              str_pool = realloc_str_pool (increment_pool_size);
 #endif
 #ifdef ALLOCATESTRING
-    depth_threshold = current_pool_size - pool_ptr - 10; 
+            depth_threshold = current_pool_size - pool_ptr - 10;
 #else
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-    depth_threshold = pool_size - pool_ptr - 10; 
+            depth_threshold = pool_size - pool_ptr - 10;
 #endif
-    show_node_list(n); 
-  } 
-  break; 
-      case 9 : 
-  show_token_list(n, 0, 1000); 
-  break; 
-      case 10 : 
-  slow_print(n); 
-  break; 
-      case 11 : 
-  check_mem(n > 0); 
-  break; 
-      case 12 : 
-  search_mem(n); 
-  break; 
-      case 13 : 
-  {
-    read(stdin, l);  // ???
-    print_cmd_chr(n, l); 
-  } 
-  break; 
-      case 14 : 
-  {
-    register integer for_end; 
-    k = 0; 
-    for_end = n; 
-    if (k <= for_end) 
-      do print(buffer[k]); 
-    while(k++ < for_end);
-  } 
-  break; 
-      case 15 : 
-  {
-    font_in_short_display = 0; 
-    short_display(n); 
-  } 
-  break; 
-      case 16 : 
-  panicking = !panicking; 
-  break; 
-  default: 
-  print(63);    /* ? */
-  break; 
-      } 
-    } 
-  } 
-} 
+            show_node_list(n);
+          }
+          break;
+        
+        case 9:
+          show_token_list(n, 0, 1000);
+          break;
+        
+        case 10:
+          slow_print(n);
+          break;
+        
+        case 11:
+          check_mem(n > 0);
+          break;
+        
+        case 12:
+          search_mem(n);
+          break;
+        
+        case 13:
+          {
+            read(stdin, l);
+            print_cmd_chr(n, l);
+          }
+          break;
+        
+        case 14:
+          {
+            for (k = 0; k <= n; k++)
+              print(buffer[k]);
+          }
+          break;
+        
+        case 15:
+          {
+            font_in_short_display = 0;
+            short_display(n);
+          }
+          break;
+        
+        case 16:
+          panicking = !panicking;
+          break;
+        
+        default:
+          print('?');
+          break;
+      }
+    }
+  }
+}
 #endif /* DEBUG */

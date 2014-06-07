@@ -22,12 +22,12 @@
 static const char *pool_file_arr[] =
 {
 /* 0256 */  "", //"buffer size",
-/* 0257 */  "pool size",
+/* 0257 */  "", //"pool size",
 /* 0258 */  "", //"number of strings",
 /* 0259 */  "" "?" "?" "?",
 /* 0260 */  "m2d5c2l5x2v5i",
 /* 0261 */  "", //"End of file on the terminal!",
-/* 0262 */  "! ",
+/* 0262 */  "", //"! ",
 /* 0263 */  "", //"(That makes 100 errors; please try again.)",
 /* 0264 */  "" "? ",
 /* 0265 */  "", //"Type <return> to proceed, S to scroll future error messages,",
@@ -1060,16 +1060,14 @@ static const char *pool_file_arr[] =
 /* 1292 */  "", //"On this page there's a \\write with fewer real {'s than }'s.",
 /* 1293 */  "", //"ext4",
 /* 1294 */  "", //"output file name",
-/* 1295 */  NULL };
+};
 
-int load_pool_strings (integer spare_size)
+str_number load_pool_strings (integer spare_size)
 {
-  str_number g = 0;
-  int i = 0;
-  int k = 0;
-  int l;
+  str_number g;
+  int k, l, i = 0;
 
-  for (k = 0; k < sizeof(pool_file_arr) / sizeof(char *) - 1; ++k)
+  for (k = 0; k < sizeof(pool_file_arr) / sizeof(char *); k++)
   {
     l = strlen(pool_file_arr[k]);
     i += l;
@@ -1078,11 +1076,25 @@ int load_pool_strings (integer spare_size)
       return 0;
 
     memcpy(str_pool + pool_ptr, pool_file_arr[k], l);
-
     pool_ptr += l;
-
     g = make_string();
   }
 
   return g;
+}
+
+str_number make_string_pool (const char *s)
+{
+  int slen = strlen(s);
+
+  if (slen == 1)
+  {
+    return ((str_number)s[0]);
+  }
+  else
+  {
+    memcpy(str_pool + pool_ptr, s, slen);
+    pool_ptr += slen;
+    return (make_string());
+  }
 }

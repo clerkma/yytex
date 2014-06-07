@@ -176,7 +176,6 @@ void show_eqtb_(halfword);
 #define show_eqtb(n) show_eqtb_((halfword) (n))
 halfword id_lookup_(integer, integer);
 #define id_lookup(j, l) id_lookup_((integer) (j), (integer) (l))
-str_number make_string_pool (char *s);
 void primitive_s (char * s, quarterword c, halfword o);
 void primitive_(str_number, quarterword, halfword);
 #define primitive(s, c, o) primitive_(make_string_pool((char *) s), (quarterword) (c), (halfword) (o))
@@ -513,4 +512,5 @@ void close_files_and_terminate(void);
 void final_cleanup(void);
 void init_prim(void);
 void debug_help(void);
-int texbody(void);
+int main_program(void);
+int main_init(int, char **);

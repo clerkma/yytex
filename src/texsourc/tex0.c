@@ -20,7 +20,7 @@
 #include "texd.h"
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-void synch_h(void)
+INLINE void synch_h(void)
 {
   if (cur_h != dvi_h)
   {
@@ -28,7 +28,7 @@ void synch_h(void)
     dvi_h = cur_h;
   }
 }
-void synch_v(void)
+INLINE void synch_v(void)
 {
   if (cur_v != dvi_v)
   {
@@ -36,7 +36,7 @@ void synch_v(void)
     dvi_v = cur_v;
   }
 }
-void set_cur_lang(void)
+INLINE void set_cur_lang(void)
 {
   if (language <= 0)
     cur_lang = 0;

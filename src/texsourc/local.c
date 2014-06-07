@@ -2219,6 +2219,7 @@ void check_fixed_align (int flag)
 #ifdef ALLOCATEDVIBUF
   test_align ((int) &zdvibuf, sizeof(zdvibuf[0]), "zdvibuf"); /* no op */
 #endif
+
   test_align ((int) &total_stretch, sizeof(total_stretch[0]), "total_stretch");
   test_align ((int) &total_shrink, sizeof(total_shrink[0]), "total_shrink");
   test_align ((int) &active_width, sizeof(active_width[0]), "active_width");
@@ -2257,13 +2258,17 @@ void check_alloc_align (int flag)
     show_line("PLEASE RECOMPILE ME!\n", 1);
 
 #ifdef CHECKALIGNMENT
-  if (!flag) return;
+  if (!flag)
+    return;
+
 #ifndef ALLOCZEQTB
   test_align ((int) zeqtb, sizeof(zeqtb[0]), "zeqtb"); 
 #endif
+
 #ifndef ALLOCATEDVIBUF
   test_align ((int) &zdvibuf, sizeof(zdvibuf[0]), "zdvibuf");  /* no op */
 #endif
+
   test_align ((int) str_pool, sizeof(str_pool[0]), "str_pool"); /* no op */
   test_align ((int) str_start, sizeof(str_start[0]), "str_start");
   test_align ((int) zmem, sizeof(zmem[0]), "main memory");
@@ -2282,9 +2287,9 @@ void check_alloc_align (int flag)
 #endif
 }
 
-boolean backwardflag       = false;              /* don't cripple all advanced features */
-boolean shorten_file_name  = false;              /* don't shorten file names to 8+3 for DOS */
-boolean usesourcedirectory = true;               /* use source file directory as local when WorkingDirectory is set */             /* if working directory set in ini */
+boolean backwardflag       = false; /* don't cripple all advanced features */
+boolean shorten_file_name  = false; /* don't shorten file names to 8+3 for DOS */
+boolean usesourcedirectory = true;  /* use source file directory as local when WorkingDirectory is set */
 
 /* cache to prevent allocating twice in a row */
 
@@ -2527,7 +2532,7 @@ int analyze_flag (int c, char *optarg)
     case 'Y':
       reorder_arg_flag = false; /* local */
       break;
-/* *********** following command line options take arguments **************  */
+
     case 'm':
       if (optarg == 0)
         mem_initex = mem_top;
@@ -3106,14 +3111,11 @@ void deslash_all (int ac, char **av)
   }
 }
 
-/* main entry point follows */
 /* note: those optarg == 0 test don't really work ... */
 /* note: optarg starts at = in case of x=... */
 
 int main_init (int ac, char **av)
 {
-  int k;
-
   kpse_set_program_name(av[0], NULL);
   xputenv("engine", "yandytex");
 
@@ -3190,7 +3192,7 @@ int main_init (int ac, char **av)
   closed_already    = 0;
 
   if (trace_flag)
-    show_line("Entering init (local)\n", 0);
+    show_line("Entering init (local.c)\n", 0);
 
   probe_memory(); /* show top address */
   ini_max_address = max_address; /* initial max address */
@@ -3208,18 +3210,18 @@ int main_init (int ac, char **av)
   }
 
   if (allocate_memory() != 0)
-    return -1;         // if failed to allocate
+    return -1;
 
   /* following is more or less useless since most all things not yet alloc */
   check_alloc_align(trace_flag);    /* sanity check 1994/Jan/8 */
 
   if (trace_flag)
-    show_line("Leaving init (local)\n", 0);
+    show_line("Leaving init (local.c)\n", 0);
 
   return 0;
 }
 
-#define CLK_TCK  CLOCKS_PER_SEC
+#define CLK_TCK CLOCKS_PER_SEC
 
 void show_inter_val (clock_t inter_val)
 {
@@ -3285,7 +3287,7 @@ int endit (int flag)
 
     if (total_pages > 0)
     {
-      show_inter_val ((finish_time - main_time) / total_pages);
+      show_inter_val((finish_time - main_time) / total_pages);
       show_line(" sec per page.", 0);
     }
 
