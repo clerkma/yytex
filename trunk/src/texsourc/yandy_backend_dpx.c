@@ -21,8 +21,18 @@
 
 #include "texd.h"
 
+double dev_origin_x = 72.0;
+double dev_origin_y = 770.0;
+
 void dpx_ship_out(pointer p)
 {
+//pdf_init_fontmaps();
+//read_config_file(DPX_CONFIG_FILE);
+//pdf_font_set_dpi(font_dpi);
+//dpx_delete_old_cache(image_cache_life);
+//pdf_files_init();
+//pdf_doc_begin_page(1, dev_origin_x, dev_origin_y);
+//pdf_doc_end_page();
 }
 
 void dpx_hlist_out (void)

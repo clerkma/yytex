@@ -884,10 +884,9 @@ char *unixify (char *);
 #include "coerce.h"
 
 /* sec 79 */
-extern void synch_h(void);
-extern void synch_v(void);
-extern void set_cur_lang(void);
-extern str_number make_string_pool (char *s);
+extern INLINE void synch_h(void);
+extern INLINE void synch_v(void);
+extern INLINE void set_cur_lang(void);
 extern char * md5_file(FILE * in_file);
 extern INLINE void str_room_ (int val);
 #define str_room(a) str_room_((int) a)
@@ -902,7 +901,8 @@ extern INLINE void dvi_out_ (ASCII_code op);
 extern INLINE void free_avail_(halfword p);
 #define free_avail(p) free_avail_((halfword) (p))
 extern INLINE void flush_string (void);
-extern int load_pool_strings (integer spare_size);
+extern str_number load_pool_strings (integer spare_size);
+extern str_number make_string_pool (const char *s);
 #define help0()     tex_help(0)
 #define help1(...)  tex_help(1, __VA_ARGS__)
 #define help2(...)  tex_help(2, __VA_ARGS__)
