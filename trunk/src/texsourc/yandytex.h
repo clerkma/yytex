@@ -20,7 +20,6 @@
 
 #define WORDS_BIGENDIAN 0
 
-//#pragma warning(disable:4032)
 #pragma warning(disable:4201)
 #pragma warning(disable:4996)
 #pragma warning(disable:4701)
@@ -46,6 +45,7 @@
 #include <kpathsea/tex-file.h>
 #include <kpathsea/variable.h>
 #include <kpathsea/absolute.h>
+#include <ptexenc/ptexenc.h>
 #include <stdarg.h>
 #include <setjmp.h>
 #include <time.h>
@@ -101,6 +101,9 @@ typedef enum
 #define a_open_in(f, p) open_input (&(f), p, FOPEN_R_MODE)
 #define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)
 #define a_close(f)	    check_fclose (f)
+
+#define Hi(x) (((x) >> 8) & 0xff)
+#define Lo(x) ((x) & 0xff)
 
 #define MAXLINE 256
 

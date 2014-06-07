@@ -970,6 +970,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
           new_memory, (current_mem_size + 1) * sizeof(memory_word));
       show_line(log_line, 0);
     }
+
     memmove (new_memory + lo_size, new_memory,
       (current_mem_size + 1) * sizeof(memory_word));
 /*  could reduce words moved by (mem_max - mem_end) */

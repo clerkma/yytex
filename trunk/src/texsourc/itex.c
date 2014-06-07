@@ -1980,6 +1980,9 @@ boolean load_fmt_file (void)
     if (undumpthings(char_base[0], font_ptr + 1))
       return -1;
 
+    if (undumpthings(ctype_base[0], font_ptr + 1))
+      return -1;
+
     if (undumpthings(width_base[0], font_ptr + 1))
       return -1;
 
@@ -2888,6 +2891,7 @@ void do_initex (void)
   font_ec[null_font]          = 0;
   font_size[null_font]        = 0;
   font_dsize[null_font]       = 0;
+  ctype_base[null_font]       = 0;
   char_base[null_font]        = 0;
   width_base[null_font]       = 0;
   height_base[null_font]      = 0;
@@ -3837,6 +3841,9 @@ lab32:
     if (dumpthings(char_base[0], font_ptr + 1))
       return;
 
+    if (dumpthings(ctype_base[0], font_ptr + 1))
+      return;
+
     if (dumpthings(width_base[0], font_ptr + 1))
       return;
 
@@ -4308,6 +4315,8 @@ void init_prim (void)
   primitive("muskipdef", shorthand_def, 5);
   primitive("toksdef", shorthand_def, 6);
   primitive("catcode", def_code, cat_code_base);
+  primitive("kcatcode", def_code, kcat_code_base);
+  primitive("xspcode", def_code, auto_xsp_code_base);
   primitive("mathcode", def_code, math_code_base);
   primitive("lccode", def_code, lc_code_base);
   primitive("uccode", def_code, uc_code_base);
@@ -4330,10 +4339,11 @@ void init_prim (void)
   primitive("errmessage", message, 1);
   primitive("lowercase", case_shift, lc_code_base);
   primitive("uppercase", case_shift, uc_code_base);
-  primitive("show", xray, 0);
-  primitive("showbox", xray, 1);
-  primitive("showthe", xray, 2);
-  primitive("showlists", xray, 3);
+  primitive("show", xray, show_code);
+  primitive("showbox", xray, show_box_code);
+  primitive("showthe", xray, show_the_code);
+  primitive("showlists", xray, show_lists);
+  //primitive("showmode", xray, show_mode);
   primitive("openout", extension, 0);
   primitive("write", extension, 1);
   write_loc = cur_val;

@@ -2062,6 +2062,9 @@ lab30:
 internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)
 {
   font_index k;
+  eight_bits jfm_flag;
+  halfword nt;
+  KANJI_code cx;
   boolean file_opened;
   halfword lf, lh, nw, nh, nd, ni, nl, nk, ne, np;
   int bc, ec;
@@ -2091,6 +2094,31 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     read_sixteen(lf);
     tfm_temp = getc(tfm_file);
     read_sixteen(lh);
+
+    if (lf == yoko_jfm_id)
+    {
+      jfm_flag = dir_yoko;
+      nt = lh;
+      tfm_temp = getc(tfm_file);
+      read_sixteen(lf);
+      tfm_temp = getc(tfm_file);
+      read_sixteen(lh);
+    }
+    else if (lf == tate_jfm_id)
+    {
+      jfm_flag = dir_tate;
+      nt = lh;
+      tfm_temp = getc(tfm_file);
+      read_sixteen(lf);
+      tfm_temp = getc(tfm_file);
+      read_sixteen(lh);
+    }
+    else
+    {
+      jfm_flag = dir_default;
+      nt = 0;
+    }
+
     tfm_temp = getc(tfm_file);
     read_sixteen(bc);
     tfm_temp = getc(tfm_file);
@@ -2122,14 +2150,25 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     tfm_temp = getc(tfm_file);
     read_sixteen(np);
 
-    if (lf != 6 + lh + (ec - bc + 1) + nw + nh + nd + ni + nl + nk + ne + np)
-      goto lab11;
+    if (jfm_flag != dir_default)
+    {
+      if (lf != 7 + lh + nt + (ec - bc + 1) + nw + nh + nd + ni + nl + nk + ne + np)
+        goto lab11;
+    }
+    else
+    {
+      if (lf != 6 + lh + (ec - bc + 1) + nw + nh + nd + ni + nl + nk + ne + np)
+        goto lab11;
+    }
 
     if ((nw == 0) || (nh == 0) || (nd == 0) || (ni == 0))
       goto lab11;
   }
 
-  lf = lf - 6 - lh;
+  if (jfm_flag != dir_default)
+    lf = lf - 7 - lh;
+  else
+    lf = lf - 6 - lh;
 
   if (np < 7)
     lf = lf + 7 - np;
@@ -2177,7 +2216,10 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   }
 
   f = font_ptr + 1;
-  char_base[f] = fmem_ptr - bc;
+  font_dir[f] = jfm_flag;
+  font_num_ext[f] = nt;
+  ctype_base[f] = fmem_ptr;
+  char_base[f] = ctype_base[f] + nt - bc;
   width_base[f] = char_base[f] + ec + 1;
   height_base[f] = width_base[f] + nw;
   depth_base[f] = height_base[f] + nh;
@@ -2200,7 +2242,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     z =(z * 16) + (tfm_temp / 16);
 
     if (z < 65536L)
-      goto lab11; 
+      goto lab11;
 
     while (lh > 2)
     {
@@ -2222,7 +2264,20 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     font_size[f] = z;
   }
 
-  for (k = fmem_ptr; k <= width_base[f] - 1; k++)
+  if (jfm_flag != dir_default)
+  {
+    for (k = ctype_base[f]; k <= ctype_base[f] + nt - 1; k++)
+    {
+      tfm_temp = getc(tfm_file);
+      read_sixteen(cx);
+      font_info[k].hh.rh = cx;
+      tfm_temp = getc(tfm_file);
+      read_sixteen(cx);
+      font_info[k].hh.lh = cx;
+    }
+  }
+
+  for (k = char_base[f] + bc; k <= width_base[f] - 1; k++)
   {
     store_four_quarters(font_info[k].qqqq);
 
@@ -2248,7 +2303,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
               goto lab11;
           }
 
-          while (d < k + bc - fmem_ptr)
+          while (d < k - char_base[f])
           {
             qw = char_info(f, d);
  
@@ -2258,7 +2313,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
             d = rem_byte(qw);
           }
 
-          if (d == k + bc - fmem_ptr)
+          if (d == k - char_base[f])
             goto lab11;
 lab45:; 
         }
@@ -2337,29 +2392,17 @@ lab45:;
       else
       {
         if (b != bchar)
-        {
-          {
-            if ((b < bc) || (b > ec))  /* check-existence(b) */
-              goto lab11;         /* error in TFM, abort */
-          }
-
-          qw = font_info[char_base[f] + b].qqqq;
-
-          if (!(qw.b0 > 0))
-            goto lab11;         /* error in TFM, abort */
-        }
+          check_existence(b);
 
         if (c < 128)
         {
+          if (jfm_flag != dir_default)
           {
-            if ((d < bc) || (d > ec))  /* check-existence(d) */
-              goto lab11;         /* error in TFM, abort */
+            if (d > ne)
+              goto lab11;
           }
-
-          qw = font_info[char_base[f] + d].qqqq;
-
-          if (!(qw.b0 > 0))
-            goto lab11;         /* error in TFM, abort */
+          else
+            check_existence(d);
         }
         else if (256 * (c - 128) + d >= nk)
           goto lab11;           /* error in TFM, abort */
@@ -2375,78 +2418,29 @@ lab45:;
   }
 
   for (k = kern_base[f] + 256 * (128); k <= exten_base[f] - 1; k++)
-  {
-    tfm_temp = getc(tfm_file);
-    a = tfm_temp;
-    tfm_temp = getc(tfm_file);
-    b = tfm_temp;
-    tfm_temp = getc(tfm_file);
-    c = tfm_temp;
-    tfm_temp = getc(tfm_file);
-    d = tfm_temp;
-    sw = (((((d * z) / 256) + (c * z)) / 256) + (b * z)) / beta;
+    store_scaled(font_info[k].cint);
 
-    if (a == 0)
-      font_info[k].cint = sw;
-    else if (a == 255)
-      font_info[k].cint = sw - alpha;
-    else goto lab11;
+  if (jfm_flag != dir_default)
+  {
+    for (k = exten_base[f]; k < param_base[f] - 1; k++)
+      store_scaled(font_info[k].cint);
   }
-
-  /*  read extensible character recipes */
-  for (k = exten_base[f]; k <= param_base[f] - 1; k++)
+  else
   {
-    store_four_quarters(font_info[k].qqqq);
-
-    if (a != 0)
+    for (k = exten_base[f]; k <= param_base[f] - 1; k++)
     {
-      {
-        if ((a < bc) || (a > ec))
-          goto lab11;
-      }
+      store_four_quarters(font_info[k].qqqq);
+      
+      if (a != 0)
+        check_existence(a);
 
-      qw = font_info[char_base[f] + a].qqqq;
+      if (b != 0)
+        check_existence(b);
 
-      if (!(qw.b0 > 0))
-        goto lab11;
-    }
+      if (c != 0)
+        check_existence(c);
 
-    if (b != 0)
-    {
-      {
-        if ((b < bc) || (b > ec))
-          goto lab11;
-      }
-
-      qw = font_info[char_base[f] + b].qqqq;
-
-      if (!(qw.b0 > 0))
-        goto lab11;
-    }
-
-    if (c != 0)
-    {
-      {
-        if ((c < bc) || (c > ec))
-          goto lab11;
-      }
-
-      qw = font_info[char_base[f] + c].qqqq;
-
-      if (!(qw.b0 > 0))
-        goto lab11;
-    }
-
-    {
-      {
-        if ((d < bc) || (d > ec))
-          goto lab11;
-      }
-
-      qw = font_info[char_base[f] + d].qqqq;
-
-      if (!(qw.b0 > 0))
-        goto lab11;
+      check_existence(d);
     }
   }
 
@@ -2468,23 +2462,7 @@ lab45:;
         font_info[param_base[f]].cint = (sw * 16) + (tfm_temp / 16);
       }
       else
-      {
-        tfm_temp = getc(tfm_file);
-        a = tfm_temp;
-        tfm_temp = getc(tfm_file);
-        b = tfm_temp;
-        tfm_temp = getc(tfm_file);
-        c = tfm_temp;
-        tfm_temp = getc(tfm_file);
-        d = tfm_temp;
-        sw = (((((d * z) / 256) + (c * z)) / 256) + (b * z)) / beta;
-
-        if (a == 0)
-          font_info[param_base[f] + k - 1].cint = sw;
-        else if (a == 255)
-          font_info[param_base[f] + k - 1].cint = sw - alpha;
-        else goto lab11;
-      }
+        store_scaled(font_info[param_base[f] + k - 1].cint);
 
     if (feof(tfm_file))
       goto lab11;
@@ -2512,10 +2490,10 @@ lab45:;
   if (bchar <= ec)
     if (bchar >= bc)
     {
-      qw = font_info[char_base[f] + bchar].qqqq;
+      qw = char_info(f, bchar);
 
       if ((qw.b0 > 0))
-        font_false_bchar[f] = 256;
+        font_false_bchar[f] = non_char;
     }
 
   font_name[f] = nom;
@@ -2523,6 +2501,7 @@ lab45:;
   font_bc[f] = bc;
   font_ec[f] = ec;
   font_glue[f] = 0;
+  ctype_base[f] = ctype_base[f];
   char_base[f] = char_base[f];
   width_base[f] = width_base[f];
   lig_kern_base[f] = lig_kern_base[f];

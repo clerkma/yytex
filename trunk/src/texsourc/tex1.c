@@ -1907,6 +1907,10 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
     case def_code:
       if (chr_code == cat_code_base)
         print_esc("catcode");
+      else if (chr_code == kcat_code_base)
+        print_esc("kcatcode");
+      else if (chr_code == auto_xsp_code_base)
+        print_esc("xspcode");
       else if (chr_code == math_code_base)
         print_esc("mathcode");
       else if (chr_code == lc_code_base)
@@ -2005,6 +2009,10 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
         case show_lists:
           print_esc("showlists");
           break;
+
+        //case show_mode:
+        //  print_esc("showmode");
+        //  break;
 
         default:
           print_esc("show");
