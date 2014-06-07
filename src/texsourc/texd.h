@@ -23,6 +23,7 @@
 
 #define STAT
 #include "texmf.h"
+#include "yandy_macros.h"
 
 // #define max_halfword 65535L  /* for 32 bit memory word */
 #define min_halfword -2147483647L /* for 64 bit memory word (signed) */
@@ -244,12 +245,10 @@ EXTERN halfword temp_ptr;
 
 /* sec 0116 */
 #ifdef ALLOCATEMAIN
-  EXTERN memory_word * main_memory;   /* remembered so can be free() later */
+  EXTERN memory_word * main_memory;
   EXTERN memory_word * mem;
 #else
   EXTERN memory_word 
-  /* #define zmem (zzzaa - (int)(mem_min)) */
-  /*  zzzaa[mem_max - mem_min + 1]; */
   #define zmem (zzzaa - (int)(mem_bot))
   zzzaa[mem_max - mem_bot + 1];
 #endif
@@ -310,12 +309,12 @@ EXTERN int old_setting;
 #endif
 
 #ifdef ALLOCATEZEQTB
-  EXTERN memory_word * zeqtb;
+  EXTERN memory_word * eqtb;
 #else
   #ifdef INCREASEFONTS
-    EXTERN memory_word eqtb[(hash_size + 4007) + eqtb_extra];
+    EXTERN memory_word eqtb[eqtb_size + 1];
   #else
-    EXTERN memory_word zeqtb[(hash_size + 4007)];
+    EXTERN memory_word eqtb[eqtb_size + 1];
   #endif
 #endif
 
@@ -493,9 +492,7 @@ EXTERN integer hyphen_char[font_max + 1];
 EXTERN integer skew_char[font_max + 1];
 EXTERN font_index bchar_label[font_max + 1];
 EXTERN short font_bchar[font_max + 1];
-/* don't change above to int or format file will be incompatible */
 EXTERN short font_false_bchar[font_max + 1];
-/* don't change above to int or format file will be incompatible */
 EXTERN integer char_base[font_max + 1];
 EXTERN integer width_base[font_max + 1];
 EXTERN integer height_base[font_max + 1];
@@ -671,13 +668,12 @@ EXTERN trie_op_code max_op_used;
   EXTERN trie_pointer trie_min[256];
   EXTERN trie_pointer trie_max;
   EXTERN boolean trie_not_ready;
-#endif /* INITEX */
+#endif
 
 EXTERN scaled best_height_plus_depth;
 EXTERN halfword page_tail;
 EXTERN int page_contents;
 
-/* do *some* sanity checking here --- rather than in TeX later 96/Jan/18 */
 /* (cannot catch everything here, since some is now dynamic) */
 
 #if (half_error_line < 30) || (half_error_line > error_line - 15)
@@ -875,15 +871,18 @@ void call_edit (ASCII_code *filename, pool_pointer fnstart,
 
 void add_variable_space(int);
 
-void get_date_and_time (integer *minutes, integer *day,
-                        integer *month, integer *year);
+void get_date_and_time (integer *, integer *, integer *, integer *);
+
+//void get_date_and_time (integer *minutes, integer *day,
+//                        integer *month, integer *year);
 
 char *unixify (char *);
 
-#include "yandy_macros.h"
+//#include "yandy_macros.h"
 #include "coerce.h"
 
 /* sec 79 */
+extern INLINE void prompt_input(const char *s);
 extern INLINE void synch_h(void);
 extern INLINE void synch_v(void);
 extern INLINE void set_cur_lang(void);

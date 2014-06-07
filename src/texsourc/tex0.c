@@ -20,6 +20,15 @@
 #include "texd.h"
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+INLINE void pack_cur_name(void)
+{
+  pack_file_name(cur_name, cur_area, cur_ext);
+}
+INLINE void prompt_input(const char *s)
+{
+  print_string(s);
+  term_input();
+}
 INLINE void synch_h(void)
 {
   if (cur_h != dvi_h)
@@ -61,7 +70,7 @@ INLINE void dvi_out_(ASCII_code op)
   if (dvi_ptr == dvi_limit)
     dvi_swap();
 }
-INLINE void succumb (void)
+INLINE void succumb(void)
 {
   if (interaction == error_stop_mode)
     interaction = scroll_mode;
@@ -79,30 +88,30 @@ INLINE void succumb (void)
   history = 3;
   jump_out();
 }
-INLINE void flush_string (void)
+INLINE void flush_string(void)
 {
   decr(str_ptr);
   pool_ptr = str_start[str_ptr];
 }
-INLINE void append_char (ASCII_code c)
+INLINE void append_char(ASCII_code c)
 {
   str_pool[pool_ptr] = c;
   incr(pool_ptr);
 }
-INLINE void append_lc_hex (ASCII_code c)
+INLINE void append_lc_hex(ASCII_code c)
 {
   if (c < 10)
     append_char(c + '0');
   else
     append_char(c - 10 + 'a');
 }
-INLINE void print_err (const char * s)
+INLINE void print_err(const char * s)
 {
   if (interaction == error_stop_mode);
     print_nl("! ");
   print_string(s);
 }
-INLINE void tex_help (unsigned int n, ...)
+INLINE void tex_help(unsigned int n, ...)
 {
   int i;
   va_list help_arg;
@@ -118,7 +127,7 @@ INLINE void tex_help (unsigned int n, ...)
 
   va_end(help_arg);
 }
-INLINE void str_room_ (int val)
+INLINE void str_room_(int val)
 {
 #ifdef ALLOCATESTRING
   if (pool_ptr + val > current_pool_size)
@@ -135,7 +144,7 @@ INLINE void str_room_ (int val)
   }
 #endif
 }
-INLINE void tail_append_ (pointer val)
+INLINE void tail_append_(pointer val)
 {
   link(tail) = val;
   tail = link(tail);
@@ -573,11 +582,7 @@ void error (void)
     {
 lab22:
       clear_for_error_prompt();
-
-      { /* prompt_input */
-        print_string("? ");
-        term_input("? ", help_ptr);
-      }
+      prompt_input("? ");
 
       if (last == first)
         return; // no input
@@ -687,10 +692,7 @@ lab22:
             }
             else
             {
-              { /* prompt_input */
-                print_string("insert>");
-                term_input("insert>", 0);
-              }
+              prompt_input("insert>");
               cur_input.loc_field = first;
             }
             first = last;
@@ -1047,190 +1049,31 @@ void print_current_string (void)
     incr(j);
   }
 }
-
-int stringlength (int str_ptr)
-{
-  return (str_start[str_ptr + 1] - str_start[str_ptr]) + 2;
-}
-
-char * add_string (char *s, char * str_string)
-{
-  int n;
-
-  n = strlen(str_string);
-  memcpy(s, &str_string, n);
-  s += n;
-  strcpy(s, "\r\n");
-  s += 2;
-
-  return s;
-}
-
-int addextrahelp = 1;
-
-// make one long \r\n separated string out of help lines 
-// str_pool is packed_ASCII_code *
-
-char * make_up_help_string (int nhelplines)
-{
-  char * helpstring, *s;
-  int k, nlen = 0;
-  
-//  get length of help for this specific message
-  for (k = nhelplines - 1; k >= 0; k--)
-  {
-    nlen += strlen(help_line[k]);
-  }
-
-  nlen += 2; // for blank line separator: "\r\n"
-
-  if (addextrahelp)
-  {
-    nlen += stringlength(265);
-    nlen += stringlength(266);
-    nlen += stringlength(267);
-
-    if (base_ptr > 0)
-      nlen += stringlength(268);
-
-    if (deletions_allowed)
-      nlen += stringlength(269);
-
-    nlen += stringlength(270);
-  }
-
-  helpstring = (char *) malloc(nlen + 1); // +1 = '\0'
-  s = helpstring;
-
-  for (k = nhelplines-1; k >= 0; k--)
-  {
-    s = add_string(s, help_line[k]);
-  }
-
-  if (addextrahelp)
-  {
-    strcpy(s, "\r\n");
-    s += 2;
-    s = add_string(s, "Type <return> to proceed, S to scroll future error messages,");
-    s = add_string(s, "R to run without stopping, Q to run quietly,");
-    s = add_string(s, "I to insert something, ");
-
-    if (base_ptr > 0)
-      s = add_string(s, "E to edit your file, ");
-
-    if (deletions_allowed)
-      s = add_string(s, "1 or ... or 9 to ignore the next 1 to 9 tokens of input,");
-
-    s = add_string(s, "H for help, X to quit.");
-  }
-
-  return helpstring;
-}
-
-char * make_up_query_string (int promptstr)
-{
-  char *querystr;
-  int nstart, nnext, n;
-  char *s;
-
-  nstart = str_start[ promptstr];
-  nnext = str_start[ promptstr + 1];
-  n = nnext - nstart;
-  querystr = (char *) malloc(n + 1);
-  s = querystr;
-  memcpy(s, &str_pool[nstart], n);  
-  s += n;
-  *s = '\0';
-
-  return querystr;
-}
-
-// abort_flag set if input_line / ConsoleInput returns non-zero
-// should set interrupt instead ???
-// called from tex0.c, tex2.c, tex3.c
 /* sec 0071 */
-// void term_input(void)
-void term_input (char * term_str, int term_help_lines)
+void term_input(void)
 { 
   integer k;
-  int flag;
-  char * helpstring = NULL;
-#ifdef _WINDOWS
-  char * querystring = NULL;
-#endif
-//  if (nhelplines != 0) {
-//    helpstring = make_up_help_string (nhelplines);
-//    printf(helpstring);
-//    free(helpstring);
-//  }
-  show_line("\n", 0);    // force it to show what may be buffered up ???
-  helpstring = NULL;  
 
-#ifdef _WINDOWS
-  if (term_str != NULL)
-    querystring = term_str;
+  if (!knuth_flag)
+    show_line("\n", 0); // force it to show what may be buffered up ??? 
 
-  if (term_help_lines != NULL)
-    helpstring = make_up_help_string(term_help_lines);
-
-  if (helpstring == NULL && querystring != NULL)
-  {
-    if (strcmp(querystring, ": ") == 0)
-      helpstring = xstrdup("Please type another file name (or ^z to exit):");
-    else if (strcmp(querystring, "=>") == 0)    // from firm_up_the_line
-      helpstring = xstrdup("Please type <enter> to accept this line\r\nor type a replacement line");
-    else if (strcmp(querystring, "insert>") == 0) // from error() after "I"
-      helpstring = xstrdup("Please type something to insert here");
-    else if (strcmp(querystring, "") == 0)      // from read_toks
-      helpstring = xstrdup("Please type a control sequence");
-    else if (strcmp(querystring, "= ") == 0)    // from read_toks
-      helpstring = xstrdup("Please type a token");
-    else if (strcmp(querystring, "*") == 0)   // get_next
-      helpstring = xstrdup("Please type a control sequence\r\n(or ^z to exit)");
-  }
-
-  flag = ConsoleInput(querystring, helpstring, (char *) &buffer[first]);  // ???
-//  flag == 0 means trouble --- EOF on terminal
-  if (querystring != NULL)
-    free(querystring);
-
-  if (helpstring != NULL)
-    free(helpstring);
-
-  helpstring = querystring = NULL;
-
-  last = first + strlen((char *) &buffer[first]); /* -1 ? */
-//  flag = (last > first);
-//  may need to be more elaborate see input_line in texmf.c ???
-//  sprintf(log_line, "first %d last %d flag %d - %s",
-//      first, last, flag, (char *) &buffer[first]);
-//  winerror(log_line);
-#else
   fflush(stdout);
-  flag = input_ln(stdin, true);
-#endif
-  if (!flag)
+
+  if (!input_ln(stdin, true))
   {
     fatal_error("End of file on the terminal!");
-    return;         // abort_flag set
+    return;
   }
+
   term_offset = 0;
-#ifdef _WINDOWS
-// echo what was typed into Console buffer also
-  if (last != first)
-    for (k = first; k <= last - 1; k++)
-      print(buffer[k]);
-  print_ln();
-#else
-  decr(selector);     // shut off echo
+  decr(selector);
 
   if (last != first)
     for (k = first; k <= last - 1; k++)
       print(buffer[k]);
 
   print_ln();
-  incr(selector);     // reset selector again
-#endif
+  incr(selector);
 }
 /* sec 0091 */
 void int_error_ (integer n)
@@ -2476,6 +2319,16 @@ void print_skip_param_(integer n)
       print_esc("parfillskip");
       break;
 
+    ///*
+    case kanji_skip_code:
+      print_esc("kanjiskip");
+      break;
+
+    case xkanji_skip_code:
+      print_esc("xkanjiskip");
+      break;
+    //*/
+
     case thin_mu_skip_code:
       print_esc("thinmuskip");
       break;
@@ -2486,6 +2339,10 @@ void print_skip_param_(integer n)
 
     case thick_mu_skip_code:
       print_esc("thickmuskip");
+      break;
+
+    case jfm_skip:
+      print("refer from jfm");
       break;
 
     default:
