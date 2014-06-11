@@ -242,7 +242,7 @@ void after_math (void)
     mlist_to_hlist();
     link(tail) = link(temp_head);
 
-    while(link(tail) != 0)
+    while (link(tail) != 0)
       tail = link(tail);
 
     tail_append(new_math(math_surround, 1));
@@ -317,7 +317,7 @@ void after_math (void)
       d = half(z - w - e);
 
       if (p != 0)
-        if (!(p >= hi_mem_min))
+        if (!is_char_node(p))
           if (type(p) == glue_node)
             d = 0;
     }
@@ -819,7 +819,7 @@ void new_font_(small_number a)
     l1 = length(cur_area);
     l2 = length(cur_name);
     show_char('\n');
-    show_line("FONT ", 0);
+    puts("FONT ");
 
     for (i = 0; i < l1; i++)
     {
@@ -957,7 +957,7 @@ void open_or_close_in (void)
 
     if ((cur_ext != 335) && a_open_in(read_file[n], TEXINPUTPATH))
       read_open[n] = 1;
-    else if ((cur_ext != 785) && (name_length + 5 < PATH_MAX))
+    else if ((cur_ext != 785) && (name_length + 5 < file_name_size))
     {
       strncpy((char *) name_of_file + name_length + 1, ".tex ", 5);
       name_length = name_length + 4;
@@ -1402,7 +1402,7 @@ void handle_right_brace (void)
       break;
     case output_group:
       {
-        if ((cur_input.loc_field != 0) || ((token_type != output_text) && (token_type != backed_up)))
+        if ((loc != 0) || ((token_type != output_text) && (token_type != backed_up)))
         {
           print_err("Unbalanced output routine");
           help2("Your sneaky output routine has problematic {'s and/or }'s.",
@@ -1413,7 +1413,7 @@ void handle_right_brace (void)
             {
               get_token();
             }
-          while (!(cur_input.loc_field == 0));
+          while (!(loc == 0));
         }
 
         end_token_list();
@@ -1521,7 +1521,7 @@ void handle_right_brace (void)
                 {
                   q = head;
 
-                  while(link(q) != tail)
+                  while (link(q) != tail)
                     q = link(q);
 
                   link(q) = p;
@@ -1625,7 +1625,7 @@ lab21:
           {
             get_x_token();
           }
-        while(!(cur_cmd != spacer));
+        while (!(cur_cmd != spacer));
         goto lab21;
       }
       break;
@@ -2105,7 +2105,7 @@ lab90:
   cur_l = character(lig_stack);
 
 lab91:
-  if (!(lig_stack >= hi_mem_min))
+  if (!is_char_node(lig_stack))
     goto lab95;
 
 lab92:
@@ -2247,7 +2247,7 @@ lab112:
               lig_stack = new_lig_item(cur_r);
               bchar = non_char;
             }
-            else if ((lig_stack >= hi_mem_min))
+            else if (is_char_node(lig_stack))
             {
               main_p = lig_stack;
               lig_stack = new_lig_item(cur_r);

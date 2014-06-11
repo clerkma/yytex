@@ -43,7 +43,9 @@ void unsave (void)
   if (cur_level > level_one)
   {
     decr(cur_level);
-    while (true) {
+
+    while (true)
+    {
       decr(save_ptr);
 
       if (save_type(save_ptr) == level_boundary)
@@ -75,7 +77,7 @@ void unsave (void)
 #ifdef STAT
             if (tracing_restores > 0)
               restore_trace(p, "retaining");
-#endif /* STAT */
+#endif
           }
           else
           {
@@ -84,7 +86,7 @@ void unsave (void)
 #ifdef STAT
             if (tracing_restores > 0)
               restore_trace(p, "restoring");
-#endif /* STAT */
+#endif
           }
         else if (xeq_level[p] != level_one)
         {
@@ -93,14 +95,14 @@ void unsave (void)
 #ifdef STAT
           if (tracing_restores > 0)
             restore_trace(p, "restoring");
-#endif /* STAT */
+#endif
         }
         else
         {
 #ifdef STAT
           if (tracing_restores > 0)
             restore_trace(p, "retaining");
-#endif /* STAT */
+#endif
         }
       }
     }
@@ -111,7 +113,7 @@ lab30:
   else
   {
     confusion("curlevel");
-    return;       // abort_flag set
+    return;
   }
 }
 /* This is where the old tex2.c used to start */
@@ -204,19 +206,19 @@ void show_context (void)
   {
     cur_input = input_stack[base_ptr];
 
-    if ((cur_input.state_field != 0))
+    if ((state != 0))
       if ((cur_input.name_field > 17) || (base_ptr == 0))
         bottomline = true;
 
     if ((base_ptr == input_ptr) || bottomline || (nn < error_context_lines))
     {
-      if ((base_ptr == input_ptr) || (cur_input.state_field != token_list) ||
-          (cur_input.index_field != backed_up) || (cur_input.loc_field != 0))
+      if ((base_ptr == input_ptr) || (state != token_list) ||
+          (index != backed_up) || (loc != 0))
       {
         tally = 0;
         old_setting = selector;
 
-        if (cur_input.state_field != 0)
+        if (state != 0)
         {
           if (cur_input.name_field <= 17)
             if ((cur_input.name_field == 0))
@@ -238,20 +240,20 @@ void show_context (void)
             if (c_style_flag)
             {
               print_ln();
-              /* show current input file name - ignore if from terminal */
-              if (cur_input.name_field > 17)  /* redundant ? */
+
+              if (cur_input.name_field > 17)
                 print(cur_input.name_field);
 
               print_char('(');
-              print_int(line); /* line number */
+              print_int(line);
               print_char(')');
               print_char(' ');
               print_char(':');
             }
             else
             {
-              print_nl("l.");        /* l. ? 573 ????? 98/Dec/8 check ! */
-              print_int(line);      /* line number */
+              print_nl("l.");
+              print_int(line);
             }
           }
 
@@ -264,15 +266,15 @@ void show_context (void)
             trick_count = 1000000L;
           }
 
-          if (buffer[cur_input.limit_field] == end_line_char)
-            j = cur_input.limit_field;
+          if (buffer[limit] == end_line_char)
+            j = limit;
           else
-            j = cur_input.limit_field + 1;
+            j = limit + 1;
 
           if (j > 0)
-            for (i = cur_input.start_field; i <= j - 1; i++)
+            for (i = start; i <= j - 1; i++)
             {
-              if (i == cur_input.loc_field)
+              if (i == loc)
               {
                 first_count = tally;
                 trick_count = tally + 1 + error_line - half_error_line;
@@ -285,7 +287,7 @@ void show_context (void)
         }
         else
         {
-          switch (cur_input.index_field)
+          switch (index)
           {
             case parameter:
               print_nl("<argument> ");
@@ -297,7 +299,7 @@ void show_context (void)
               break;
 
             case backed_up:
-              if (cur_input.loc_field == 0)
+              if (loc == 0)
                 print_nl("<recently read> ");
               else
                 print_nl("<to be read again> ");
@@ -364,10 +366,10 @@ void show_context (void)
             trick_count = 1000000L;
           }
 
-          if (cur_input.index_field < macro)
-            show_token_list(cur_input.start_field, cur_input.loc_field, 100000L);
+          if (index < macro)
+            show_token_list(start, loc, 100000L);
           else
-            show_token_list(link(cur_input.start_field), cur_input.loc_field, 100000L);
+            show_token_list(link(start), loc, 100000L);
         }
 
         selector = old_setting;
@@ -464,19 +466,19 @@ void begin_token_list_ (halfword p, quarterword t)
     incr(input_ptr);
   }
 
-  cur_input.state_field = token_list;
-  cur_input.start_field = p;
-  cur_input.index_field = t;
+  state = token_list;
+  start = p;
+  index = t;
 
   if (t >= macro)
   {
     add_token_ref(p);
 
     if (t == macro)
-      cur_input.limit_field = param_ptr;
+      limit = param_ptr;
     else
     {
-      cur_input.loc_field = link(p);
+      loc = link(p);
 
       if (tracing_macros > 1)
       {
@@ -494,7 +496,7 @@ void begin_token_list_ (halfword p, quarterword t)
             break;
 
           default:
-            print_cmd_chr(assign_toks, t - output_text + output_routine_loc);
+            print_cmd_chr(assign_toks, t + (hash_size + 1307));
             break;
         }
 
@@ -505,28 +507,28 @@ void begin_token_list_ (halfword p, quarterword t)
     }
   }
   else
-    cur_input.loc_field = p;
+    loc = p;
 }
 //#pragma optimize("", on)          /* 98/Dec/10 experiment */
 /* sec 0324 */
 void end_token_list (void) 
 { 
-  if (cur_input.index_field >= backed_up)
+  if (index >= backed_up)
   {
-    if (cur_input.index_field <= inserted)
-      flush_list(cur_input.start_field); 
+    if (index <= inserted)
+      flush_list(start); 
     else
     {
-      delete_token_ref(cur_input.start_field);
-      if (cur_input.index_field == macro)
-        while (param_ptr > cur_input.limit_field)
+      delete_token_ref(start);
+      if (index == macro)
+        while (param_ptr > limit)
         {
           decr(param_ptr);
           flush_list(param_stack[param_ptr]);
         }
     }
   }
-  else if (cur_input.index_field == u_template)
+  else if (index == u_template)
     if (align_state > 500000L)
       align_state = 0;
     else
@@ -552,8 +554,8 @@ void back_input (void)
 {
   halfword p;
 
-  while ((cur_input.state_field == 0) && (cur_input.loc_field == 0) &&
-      (cur_input.index_field != v_template))
+  while ((state == 0) && (loc == 0) &&
+      (index != v_template))
   {
     end_token_list();
   }
@@ -592,10 +594,10 @@ void back_input (void)
     incr(input_ptr);
   }
 
-  cur_input.state_field = token_list;
-  cur_input.start_field = p;
-  cur_input.index_field = backed_up;
-  cur_input.loc_field = p;
+  state = token_list;
+  start = p;
+  index = backed_up;
+  loc = p;
 }
 /* sec 0327 */
 void back_error (void)
@@ -610,7 +612,7 @@ void ins_error (void)
 {
   OK_to_interrupt = false;
   back_input();
-  cur_input.index_field = inserted;
+  index = inserted;
   OK_to_interrupt = true;
   error();
 }
@@ -664,20 +666,20 @@ void begin_file_reading (void)
     input_stack[input_ptr] = cur_input;
     incr(input_ptr);
   }
-  cur_input.index_field = in_open;
-  line_stack[cur_input.index_field] = line;
-  cur_input.start_field = first;
-  cur_input.state_field = 1;
+  index = in_open;
+  line_stack[index] = line;
+  start = first;
+  state = 1;
   cur_input.name_field = 0;
 }
 /* sec 0329 */
 void end_file_reading (void)
 {
-  first = cur_input.start_field;
-  line = line_stack[cur_input.index_field];
+  first = start;
+  line = line_stack[index];
 
   if (cur_input.name_field > 17)
-    (void) a_close(input_file[cur_input.index_field]);
+    (void) a_close(input_file[index]);
 
   {
     decr(input_ptr);
@@ -689,9 +691,9 @@ void end_file_reading (void)
 /* sec 0330 */
 void clear_for_error_prompt (void) 
 {
-  while ((cur_input.state_field != 0) &&
+  while ((state != 0) &&
       (cur_input.name_field == 0) && (input_ptr > 0) &&
-      (cur_input.loc_field > cur_input.limit_field))
+      (loc > limit))
     end_file_reading();
 
   print_ln();
@@ -708,7 +710,7 @@ void check_outer_validity (void)
 
     if (cur_cs != 0)
     {
-      if ((cur_input.state_field == 0) || (cur_input.name_field < 1) || (cur_input.name_field > 17))
+      if ((state == 0) || (cur_input.name_field < 1) || (cur_input.name_field > 17))
       {
         p = get_avail();
         info(p) = cs_token_flag + cur_cs;
@@ -792,16 +794,12 @@ void check_outer_validity (void)
     deletions_allowed = true;
   }
 }
-/*****************************************************************************/
-/* get_next() moved from here to end for pragma optimize reasons 96/Sep/12 */
-void get_next(void);
-/*****************************************************************************/
 /* sec 0363 */
 void firm_up_the_line (void)
 {
   integer k;
 
-  cur_input.limit_field = last;
+  limit = last;
 
   if (pausing > 0)
     if (interaction > nonstop_mode)
@@ -809,19 +807,19 @@ void firm_up_the_line (void)
       ;
       print_ln();
 
-      if (cur_input.start_field < cur_input.limit_field)
-        for (k = cur_input.start_field; k <= cur_input.limit_field - 1; k++)
+      if (start < limit)
+        for (k = start; k <= limit - 1; k++)
           print(buffer[k]);
 
-      first = cur_input.limit_field;
+      first = limit;
       prompt_input("=>");
 
       if (last > first)
       {
         for (k = first; k <= last - 1; k++)
-          buffer[k + cur_input.start_field - first] = buffer[k];
+          buffer[k + start - first] = buffer[k];
 
-        cur_input.limit_field = cur_input.start_field + last - first;
+        limit = start + last - first;
       }
     }
 }
@@ -846,20 +844,20 @@ void macro_call (void)
   halfword s;
   halfword t;
   halfword u, v;
-  halfword rbraceptr;
+  halfword rbrace_ptr;
   small_number n;
   halfword unbalance;
   halfword m;
-  halfword refcount;
-  small_number savescannerstatus;
-  halfword savewarningindex;
+  halfword ref_count;
+  small_number save_scanner_status;
+  halfword save_warning_index;
   ASCII_code match_chr;
 
-  savescannerstatus = scanner_status;
-  savewarningindex = warning_index;
+  save_scanner_status = scanner_status;
+  save_warning_index = warning_index;
   warning_index = cur_cs;
-  refcount = cur_chr;
-  r = link(refcount);
+  ref_count = cur_chr;
+  r = link(ref_count);
   n = 0;
 
   if (tracing_macros > 0)
@@ -867,7 +865,7 @@ void macro_call (void)
     begin_diagnostic();
     print_ln();
     print_cs(warning_index);
-    token_show(refcount);
+    token_show(ref_count);
     end_diagnostic(false);
   }
 
@@ -955,7 +953,7 @@ lab22:
 lab30:
                 t = link(t);
               }
-            while(!(t == r));
+            while (!(t == r));
 
             r = s;
           }
@@ -1029,7 +1027,7 @@ lab30:
                 }
             }
 lab31:
-            rbraceptr = p;
+            rbrace_ptr = p;
             store_new_token(cur_tok);
           }
           else
@@ -1072,7 +1070,7 @@ lab40:
         {
           if ((m == 1) && (info(p) < right_brace_limit) && (p != temp_head))
           {
-            link(rbraceptr) = 0; /* rbraceptr may be used without ... */
+            link(rbrace_ptr) = 0; /* rbrace_ptr may be used without ... */
             free_avail(p);
             p = link(temp_head);
             pstack[n] = link(p);
@@ -1095,16 +1093,16 @@ lab40:
           }
         }
       }
-    while(!(info(r) == end_match_token));
+    while (!(info(r) == end_match_token));
   }
 
-  while((cur_input.state_field == token_list) && (cur_input.loc_field == 0) &&
-      (cur_input.index_field != v_template))
+  while ((state == token_list) && (loc == 0) &&
+      (index != v_template))
     end_token_list();
 
-  begin_token_list(refcount, macro);
+  begin_token_list(ref_count, macro);
   cur_input.name_field = warning_index;
-  cur_input.loc_field = link(r);
+  loc = link(r);
 
   if (n > 0)
   {
@@ -1136,8 +1134,8 @@ lab40:
     param_ptr = param_ptr + n;
   }
 lab10:
-  scanner_status = savescannerstatus;
-  warning_index = savewarningindex;
+  scanner_status = save_scanner_status;
+  warning_index = save_warning_index;
 }
 /* sec 0379 */
 void insert_relax (void)
@@ -1146,24 +1144,24 @@ void insert_relax (void)
   back_input();
   cur_tok = cs_token_flag + frozen_relax;  /* 96/Jan/10 */
   back_input();
-  cur_input.index_field = inserted;
+  index = inserted;
 }
 /* sec 0366 */
 void expand (void)
 {
   halfword t;
-  halfword p, q, r;
+  pointer p, q, r;
   integer j;
-  integer cvbackup;
-  small_number cvlbackup, radixbackup, cobackup;
-  halfword backupbackup;
-  small_number savescannerstatus;
+  integer cv_backup;
+  small_number cvl_backup, radix_backup, co_backup;
+  halfword backup_backup;
+  small_number save_scanner_status;
 
-  cvbackup = cur_val;
-  cvlbackup = cur_val_level;
-  radixbackup = radix;
-  cobackup = cur_order;
-  backupbackup = link(backup_head);
+  cv_backup = cur_val;
+  cvl_backup = cur_val_level;
+  radix_backup = radix;
+  co_backup = cur_order;
+  backup_backup = link(backup_head);
 
   if (cur_cmd < call)
   {
@@ -1192,10 +1190,10 @@ void expand (void)
         break;
 
       case no_expand:
-        savescannerstatus = scanner_status;
+        save_scanner_status = scanner_status;
         scanner_status = normal;
         get_token();
-        scanner_status = savescannerstatus;
+        scanner_status = save_scanner_status;
         t = cur_tok;
         back_input();
 
@@ -1203,9 +1201,9 @@ void expand (void)
         {
           p = get_avail();
           info(p) = cs_token_flag + frozen_dont_expand; /*96/Jan/10*/
-          link(p) = cur_input.loc_field;
-          cur_input.start_field = p;
-          cur_input.loc_field = p;
+          link(p) = loc;
+          start = p;
+          loc = p;
         }
         break;
 
@@ -1219,7 +1217,7 @@ void expand (void)
             if (cur_cs == 0)
               store_new_token(cur_tok);
           }
-        while(!(cur_cs != 0));
+        while (!(cur_cs != 0));
 
         if (cur_cmd != end_cs_name)
         {
@@ -1310,7 +1308,7 @@ void expand (void)
           }
         else
         {
-          while(cur_chr != fi_code)
+          while (cur_chr != fi_code)
             pass_text();
 
           {
@@ -1354,11 +1352,11 @@ void expand (void)
     back_input();
   }
 
-  cur_val = cvbackup;
-  cur_val_level = cvlbackup;
-  radix = radixbackup;
-  cur_order = cobackup;
-  link(backup_head) = backupbackup;
+  cur_val = cv_backup;
+  cur_val_level = cvl_backup;
+  radix = radix_backup;
+  cur_order = co_backup;
+  link(backup_head) = backup_backup;
 }
 /* sec 0380 */
 void get_x_token (void)
@@ -1368,12 +1366,13 @@ lab20:
 
   if (cur_cmd <= max_command)
     goto lab30;
+
   if (cur_cmd >= call)
     if (cur_cmd < end_template)
       macro_call();
     else
     {
-      cur_cs = frozen_endv;  /* 96/Jan/10 */
+      cur_cs = frozen_endv;
       cur_cmd = endv;
       goto lab30;
     }
@@ -1381,6 +1380,7 @@ lab20:
     expand();
 
   goto lab20;
+
 lab30:
   if (cur_cs == 0)
     cur_tok = (cur_cmd * 256) + cur_chr;
@@ -1408,7 +1408,7 @@ void scan_left_brace (void)
     {
       get_x_token();
     }
-  while(!((cur_cmd != spacer) && (cur_cmd != relax)));
+  while (!((cur_cmd != spacer) && (cur_cmd != relax)));
 
   if (cur_cmd != left_brace)
   {
@@ -1431,13 +1431,13 @@ void scan_optional_equals (void)
     {
       get_x_token();
     }
-  while(!(cur_cmd != spacer));
+  while (!(cur_cmd != spacer));
 
   if (cur_tok != other_token + '=')
     back_input();
 }
 /* sec 0407 */
-boolean scan_keyword_(const char * s)
+boolean scan_keyword(const char * s)
 {
   halfword p;
   halfword q;
@@ -1524,6 +1524,7 @@ void scan_four_bit_int (void)
 void scan_fifteen_bit_int (void) 
 {
   scan_int();
+
   if ((cur_val < 0) || (cur_val > 32767))
   {
     print_err("Bad mathchar");
@@ -1604,38 +1605,36 @@ void find_font_dimen_(boolean writing)
     if (n > font_params[f])
       if (f < font_ptr)
         cur_val = fmem_ptr;
-    else
-    {
-      do
-        {
+      else
+      {
+        do
+          {
  #ifdef ALLOCATEFONT
-          if (fmem_ptr == current_font_mem_size) /* 93/Nov/28 ??? */
-          {
-            font_info = realloc_font_info(increment_font_mem_size);
-          }
+            if (fmem_ptr == current_font_mem_size)
+              font_info = realloc_font_info(increment_font_mem_size);
 
-          if (fmem_ptr == current_font_mem_size) /* 94/Jan/24 */
-          {
-            overflow("font memory", current_font_mem_size); /* font memory */
-            return;     // abort_flag set
-          }
+            if (fmem_ptr == current_font_mem_size)
+            {
+              overflow("font memory", current_font_mem_size);
+              return;
+            }
 #else
-          if (fmem_ptr == font_mem_size)
-          {
-            overflow("font memory", font_mem_size); /* font memory */
-            return;     // abort_flag set
-          }
+            if (fmem_ptr == font_mem_size)
+            {
+              overflow("font memory", font_mem_size);
+              return;
+            }
 #endif
-          font_info[fmem_ptr].cint = 0;
-          incr(fmem_ptr);
-          incr(font_params[f]);
-        }
-      while(!(n == font_params[f]));
+            font_info[fmem_ptr].cint = 0;
+            incr(fmem_ptr);
+            incr(font_params[f]);
+          }
+        while (!(n == font_params[f]));
 
-      cur_val = fmem_ptr - 1;
-    }
-  else if (n > 0)
-    cur_val = n + param_base[f];
+        cur_val = fmem_ptr - 1;
+      }
+    else if (n > 0)
+      cur_val = n + param_base[f];
   }
 
   if (cur_val == fmem_ptr)
@@ -1665,20 +1664,11 @@ void scan_something_internal_(small_number level, boolean negative)
         scan_char_num();
 
         if (m == math_code_base)
-        {
-          cur_val = math_code(cur_val);
-          cur_val_level = int_val;
-        }
+          scanned_result(math_code(cur_val), int_val);
         else if (m < math_code_base)
-        {
-          cur_val = equiv(m + cur_val);
-          cur_val_level = int_val;
-        }
+          scanned_result(equiv(m + cur_val), int_val);
         else
-        {
-          cur_val = eqtb[m + cur_val].cint;
-          cur_val_level = int_val;
-        }
+          scanned_result(eqtb[m + cur_val].cint, int_val);
       }
       break;
 
@@ -1694,10 +1684,7 @@ void scan_something_internal_(small_number level, boolean negative)
             "(If you can't figure out why I needed to see a number,",
             "look up `weird error' in the index to The TeXbook.)");
         back_error();
-        {
-          cur_val = 0;
-          cur_val_level = dimen_val;
-        }
+        scanned_result(0, dimen_val);
       }
       else if (cur_cmd <= assign_toks)
       {
@@ -1707,49 +1694,30 @@ void scan_something_internal_(small_number level, boolean negative)
           m = toks_base + cur_val;
         }
 
-        {
-          cur_val = eqtb[m].hh.rh;
-          cur_val_level = tok_val;
-        }
+        scanned_result(equiv(m), tok_val);
       }
       else
       {
         back_input();
         scan_font_ident();
-
-        {
-          cur_val = font_id_base + cur_val;
-          cur_val_level = ident_val;
-        }
+        scanned_result(font_id_base + cur_val, ident_val);
       }
       break;
 
     case assign_int:
-      {
-        cur_val = eqtb[m].cint;
-        cur_val_level = int_val;
-      }
+      scanned_result(eqtb[m].cint, int_val);
       break;
 
     case assign_dimen:
-      {
-        cur_val = eqtb[m].cint;
-        cur_val_level = dimen_val;
-      }
+      scanned_result(eqtb[m].cint, dimen_val);
       break; 
 
     case assign_glue:
-      {
-        cur_val = eqtb[m].hh.rh;
-        cur_val_level = glue_val;
-      }
+      scanned_result(equiv(m), glue_val);
       break;
 
     case assign_mu_glue:
-      {
-        cur_val = eqtb[m].hh.rh;
-        cur_val_level = mu_val;
-      }
+      scanned_result(equiv(m), mu_val);
       break;
 
     case set_aux:
@@ -1764,34 +1732,19 @@ void scan_something_internal_(small_number level, boolean negative)
         error();
 
         if (level != tok_val)
-        {
-          cur_val = 0;
-          cur_val_level = dimen_val;
-        }
+          scanned_result(0, dimen_val);
         else
-        {
-          cur_val = 0;
-          cur_val_level = int_val;
-        }
+          scanned_result(0, int_val);
       }
       else if (m == vmode)
-      {
-        cur_val = cur_list.aux_field.cint;
-        cur_val_level = dimen_val;
-      }
+        scanned_result(prev_depth, dimen_val);
       else
-      {
-        cur_val = space_factor;
-        cur_val_level = int_val;
-      }
+        scanned_result(space_factor, int_val);
       break;
 
     case set_prev_graf:
       if (mode == 0)
-      {
-        cur_val = 0;
-        cur_val_level = int_val;
-      }
+        scanned_result(0, int_val);
       else
       {
         nest[nest_ptr] = cur_list;
@@ -1800,10 +1753,7 @@ void scan_something_internal_(small_number level, boolean negative)
         while (abs(nest[p].mode_field) != vmode)
           decr(p);
 
-        {
-          cur_val = nest[p].pg_field;
-          cur_val_level = int_val;
-        }
+        scanned_result(nest[p].pg_field, int_val);
       }
       break;
 
@@ -1822,7 +1772,7 @@ void scan_something_internal_(small_number level, boolean negative)
       {
         if ((page_contents == 0) && (! output_active))
           if (m == 0)
-            cur_val = 1073741823L;  /* 2^30 - 1 */
+            cur_val = max_dimen;
           else
             cur_val = 0;
         else
@@ -1858,20 +1808,14 @@ void scan_something_internal_(small_number level, boolean negative)
 
     case char_given:
     case math_given:
-      {
-        cur_val = cur_chr;
-        cur_val_level = int_val;
-      }
+      scanned_result(cur_chr, int_val);
       break;
 
     case assign_font_dimen:
       {
         find_font_dimen(false);
         font_info[fmem_ptr].cint = 0;
-        {
-          cur_val = font_info[cur_val].cint;
-          cur_val_level = dimen_val;
-        }
+        scanned_result(font_info[cur_val].cint, dimen_val);
       }
       break;
 
@@ -1880,15 +1824,9 @@ void scan_something_internal_(small_number level, boolean negative)
         scan_font_ident();
 
         if (m == 0)
-        {
-          cur_val = hyphen_char[cur_val];
-          cur_val_level = int_val;
-        }
+          scanned_result(hyphen_char[cur_val], int_val);
         else
-        {
-          cur_val = skew_char[cur_val];
-          cur_val_level = int_val;
-        }
+          scanned_result(skew_char[cur_val], int_val);
       }
       break;
 
@@ -1938,7 +1876,7 @@ void scan_something_internal_(small_number level, boolean negative)
 
         cur_val_level = cur_chr;
 
-        if (!(tail >= hi_mem_min) && (mode != 0))
+        if (!is_char_node(tail) && (mode != 0))
           switch(cur_chr)
           {
             case int_val:
@@ -1961,7 +1899,7 @@ void scan_something_internal_(small_number level, boolean negative)
               }
               break;
           }
-        else if ((mode == 1) && (tail == cur_list.head_field))
+        else if ((mode == vmode) && (tail == head))
           switch (cur_chr)
           {
             case int_val:
@@ -1990,15 +1928,9 @@ void scan_something_internal_(small_number level, boolean negative)
         error();
 
         if (level != tok_val)
-        {
-          cur_val = 0;
-          cur_val_level = dimen_val;
-        }
+          scanned_result(0, dimen_val);
         else
-        {
-          cur_val = 0;
-          cur_val_level = int_val;
-        }
+          scanned_result(0, int_val);
       }
       break;
   }
@@ -2019,13 +1951,13 @@ void scan_something_internal_(small_number level, boolean negative)
       cur_val = new_spec(cur_val);
 
       {
-        width(cur_val) = - (integer) width(cur_val);
-        stretch(cur_val) = - (integer) stretch(cur_val);
-        shrink(cur_val) = - (integer) shrink(cur_val);
+        width(cur_val) = -width(cur_val);
+        stretch(cur_val) = -stretch(cur_val);
+        shrink(cur_val) = -shrink(cur_val);
       }
     }
     else
-      cur_val = - (integer) cur_val;
+      cur_val = -cur_val;
   else if ((cur_val_level >= glue_val) && (cur_val_level <= mu_val))
     add_glue_ref(cur_val);
 }
@@ -2042,17 +1974,17 @@ void get_next (void)
 lab20:
   cur_cs = 0;
 
-  if (cur_input.state_field != token_list)
+  if (state != token_list)
   {
 lab25:
-    if (cur_input.loc_field <= cur_input.limit_field)
+    if (loc <= limit)
     {
-      cur_chr = buffer[cur_input.loc_field];
-      incr(cur_input.loc_field);
+      cur_chr = buffer[loc];
+      incr(loc);
 lab21:
       cur_cmd = cat_code(cur_chr);
 
-      switch (cur_input.state_field + cur_cmd)
+      switch (state + cur_cmd)
       {
         case any_state_plus(ignore):
         case skip_blanks + spacer:
@@ -2062,24 +1994,24 @@ lab21:
 
         case any_state_plus(escape):
           {
-            if (cur_input.loc_field > cur_input.limit_field)
+            if (loc > limit)
               cur_cs = null_cs;
             else
             {
 lab26:
-              k = cur_input.loc_field;
+              k = loc;
               cur_chr = buffer[k];
               cat = cat_code(cur_chr);
               incr(k);
 
               if (cat == letter)
-                cur_input.state_field = skip_blanks;
+                state = skip_blanks;
               else if (cat == spacer)
-                cur_input.state_field = skip_blanks;
+                state = skip_blanks;
               else
-                cur_input.state_field = mid_line;
+                state = mid_line;
 
-              if ((cat == letter) && (k <= cur_input.limit_field))
+              if ((cat == letter) && (k <= limit))
               {
                 do
                   {
@@ -2087,12 +2019,12 @@ lab26:
                     cat = cat_code(cur_chr);
                     incr(k);
                   }
-                while(!((cat != letter) || (k > cur_input.limit_field)));
+                while (!((cat != letter) || (k > limit)));
 
                 {
                   if (buffer[k]== cur_chr)
                     if (cat == sup_mark)
-                      if (k < cur_input.limit_field)
+                      if (k < limit)
                       {
                         c = buffer[k + 1];
 
@@ -2100,7 +2032,7 @@ lab26:
                         {
                           d = 2;
                           if ((((c >= 48) && (c <= 57)) || ((c >= 97) && (c <= 102))))
-                            if (k + 2 <= cur_input.limit_field)
+                            if (k + 2 <= limit)
                             {
                               cc = buffer[k + 2];
 
@@ -2127,10 +2059,10 @@ lab26:
                           else
                             buffer[k - 1] = c - 64;
 
-                          cur_input.limit_field = cur_input.limit_field - d;
+                          limit = limit - d;
                           first = first - d;
 
-                          while (k <= cur_input.limit_field)
+                          while (k <= limit)
                           {
                             buffer[k] = buffer[k + d];
                             incr(k);
@@ -2144,10 +2076,10 @@ lab26:
                 if (cat != letter)
                   decr(k);
 
-                if (k > cur_input.loc_field + 1)
+                if (k > loc + 1)
                 {
-                  cur_cs = id_lookup(cur_input.loc_field, k - cur_input.loc_field);
-                  cur_input.loc_field = k;
+                  cur_cs = id_lookup(loc, k - loc);
+                  loc = k;
                   goto lab40;
                 }
               }
@@ -2155,7 +2087,7 @@ lab26:
               {
                 if (buffer[k] == cur_chr)
                   if (cat == sup_mark)
-                    if (k < cur_input.limit_field)
+                    if (k < limit)
                     {
                       c = buffer[k + 1];
 
@@ -2163,7 +2095,7 @@ lab26:
                       {
                         d = 2;
                         if ((((c >= 48) && (c <= 57)) || ((c >= 97) && (c <= 102))))
-                          if (k + 2 <= cur_input.limit_field)
+                          if (k + 2 <= limit)
                           {
                             cc = buffer[k + 2];
 
@@ -2190,10 +2122,10 @@ lab26:
                         else
                           buffer[k - 1] = c - 64;
 
-                        cur_input.limit_field = cur_input.limit_field - d;
+                        limit = limit - d;
                         first = first - d;
 
-                        while (k <= cur_input.limit_field)
+                        while (k <= limit)
                         {
                           buffer[k] = buffer[k + d];
                           incr(k);
@@ -2202,8 +2134,8 @@ lab26:
                       }
                     }
               }
-              cur_cs = single_base + buffer[cur_input.loc_field];
-              incr(cur_input.loc_field);
+              cur_cs = single_base + buffer[loc];
+              incr(loc);
             }
 lab40:
             cur_cmd = eq_type(cur_cs);
@@ -2219,7 +2151,7 @@ lab40:
             cur_cs = cur_chr + active_base;
             cur_cmd = eq_type(cur_cs);
             cur_chr = equiv(cur_cs);
-            cur_input.state_field = mid_line;
+            state = mid_line;
             
             if (cur_cmd >= outer_call)
               check_outer_validity();
@@ -2228,23 +2160,23 @@ lab40:
 
         case any_state_plus(sup_mark):
           {
-            if (cur_chr == buffer[cur_input.loc_field])
-              if (cur_input.loc_field < cur_input.limit_field)
+            if (cur_chr == buffer[loc])
+              if (loc < limit)
               {
-                c = buffer[cur_input.loc_field + 1];
+                c = buffer[loc + 1];
 
                 if (c < 128)
                 {
-                  cur_input.loc_field = cur_input.loc_field + 2;
+                  loc = loc + 2;
 
                   if ((((c >= 48) && (c <= 57)) || ((c >= 97) && (c <= 102))))
-                    if (cur_input.loc_field <= cur_input.limit_field)
+                    if (loc <= limit)
                     {
-                      cc = buffer[cur_input.loc_field];
+                      cc = buffer[loc];
 
                       if ((((cc >= 48) && (cc <= 57)) || ((cc >= 97) && (cc <= 102))))
                       {
-                        incr(cur_input.loc_field);
+                        incr(loc);
 
                         if (c <= 57)
                           cur_chr = c - 48;
@@ -2269,7 +2201,7 @@ lab40:
                 }
               }
 
-              cur_input.state_field = mid_line;
+              state = mid_line;
           }
           break;
 
@@ -2287,14 +2219,14 @@ lab40:
 
         case mid_line + spacer:
           {
-            cur_input.state_field = skip_blanks;
+            state = skip_blanks;
             cur_chr = ' ';
           }
           break;
 
         case mid_line + car_ret:
           {
-            cur_input.loc_field = cur_input.limit_field + 1;
+            loc = limit + 1;
             cur_cmd = spacer;
             cur_chr = ' ';
           }
@@ -2303,14 +2235,14 @@ lab40:
         case skip_blanks + car_ret:
         case any_state_plus(comment):
           {
-            cur_input.loc_field = cur_input.limit_field + 1;
+            loc = limit + 1;
             goto lab25;
           }
           break;
 
         case new_line + car_ret:
           {
-            cur_input.loc_field = cur_input.limit_field + 1;
+            loc = limit + 1;
             cur_cs = par_loc;
             cur_cmd = eq_type(cur_cs);
             cur_chr = equiv(cur_cs);
@@ -2327,7 +2259,7 @@ lab40:
         case skip_blanks + left_brace:
         case new_line + left_brace:
           {
-            cur_input.state_field = mid_line;
+            state = mid_line;
             incr(align_state);
           }
           break;
@@ -2339,14 +2271,14 @@ lab40:
         case skip_blanks + right_brace:
         case new_line + right_brace:
           {
-            cur_input.state_field = 1;
+            state = 1;
             decr(align_state);
           }
           break;
 
         case add_delims_to(skip_blanks):
         case add_delims_to(new_line):
-          cur_input.state_field = 1;
+          state = 1;
           break;
 
         default:
@@ -2355,16 +2287,16 @@ lab40:
     }
     else
     {
-      cur_input.state_field = new_line;
+      state = new_line;
 
       if (cur_input.name_field > 17)
       {
         incr(line);
-        first = cur_input.start_field;
+        first = start;
 
         if (!force_eof)
         {
-          if (input_ln(input_file[cur_input.index_field], true))
+          if (input_ln(input_file[index], true))
             firm_up_the_line();
           else
             force_eof = true;
@@ -2384,12 +2316,12 @@ lab40:
         }
 
         if ((end_line_char < 0) || (end_line_char > 255))
-          decr(cur_input.limit_field);
+          decr(limit);
         else
-          buffer[cur_input.limit_field] = end_line_char;
+          buffer[limit] = end_line_char;
 
-        first = cur_input.limit_field + 1;
-        cur_input.loc_field = cur_input.start_field;
+        first = limit + 1;
+        loc = start;
       }
       else
       {
@@ -2412,23 +2344,23 @@ lab40:
         if (interaction > nonstop_mode)
         {
           if ((end_line_char < 0) || (end_line_char > 255))
-            incr(cur_input.limit_field);
+            incr(limit);
 
-          if (cur_input.limit_field == cur_input.start_field)
+          if (limit == start)
             print_nl("(Please type a command or say `\\end')");
 
           print_ln();
-          first = cur_input.start_field;
+          first = start;
           prompt_input("*");
-          cur_input.limit_field = last;
+          limit = last;
 
           if ((end_line_char < 0) || (end_line_char > 255))
-            decr(cur_input.limit_field);
+            decr(limit);
           else
-            buffer[cur_input.limit_field]= end_line_char;
+            buffer[limit]= end_line_char;
 
-          first = cur_input.limit_field + 1;
-          cur_input.loc_field = cur_input.start_field;
+          first = limit + 1;
+          loc = start;
         }
         else
         {
@@ -2447,10 +2379,10 @@ lab40:
       goto lab25;
     }
   }
-  else if (cur_input.loc_field != 0)
+  else if (loc != 0)
   {
-    t = info(cur_input.loc_field);
-    cur_input.loc_field = link(cur_input.loc_field);
+    t = info(loc);
+    loc = link(loc);
 
     if (t >= cs_token_flag)
     {
@@ -2461,8 +2393,8 @@ lab40:
       if (cur_cmd >= outer_call)
         if (cur_cmd == dont_expand)
         {
-          cur_cs = info(cur_input.loc_field) - cs_token_flag;
-          cur_input.loc_field = 0;
+          cur_cs = info(loc) - cs_token_flag;
+          loc = 0;
           cur_cmd = eq_type(cur_cs);
           cur_chr = equiv(cur_cs);
 
@@ -2494,7 +2426,7 @@ lab40:
 
         case out_param:
           {
-            begin_token_list(param_stack[cur_input.limit_field + cur_chr - 1], parameter);
+            begin_token_list(param_stack[limit + cur_chr - 1], parameter);
             goto lab20;
           }
           break;

@@ -28,13 +28,9 @@
 #define edit_value          tex_edit_value
 
 extern char * replacement[];
-
-/* The main program, etc.  */
-/* What we were invoked as and with. */
-
-static char *program_name = NULL;
+static char * program_name = NULL;
 int    gargc;   /* number of args - set to zero after initialization */
-char **gargv;   /* char *gargv[] -- bkph ? */
+char **gargv;
 
 /* The entry point: set up for reading the command line, which will
    happen in `t_open_in', then call the main body.  */
@@ -178,9 +174,7 @@ void get_date_and_time (integer *sys_minutes,
   }
 
   if (clock < 0)
-  {
-    show_line("Time not available!\n", 1);
-  }
+    puts("Time not available!\n");
 
   tmptr = localtime (&clock);
 
@@ -218,9 +212,9 @@ void get_date_and_time (integer *sys_minutes,
     {
       if (signal(SIGINT, catch_interrupt) == SIG_ERR)
       {
-        show_line(" CTRL-C handler not installed\n", 0);
+        puts(" CTRL-C handler not installed\n");
 #ifndef _WINDOWS
-        uexit(1);  /* do we care when run as DLL ? */
+        uexit(EXIT_FAILURE);  /* do we care when run as DLL ? */
 #endif
       }
     }
@@ -246,13 +240,12 @@ void complain_line (FILE *output)
 
   if (output == stderr)
     show_line(log_line, 1);
+  else if (output == stdout)
+    show_line(log_line, 0);
   else
-    if (output == stdout)
-      show_line(log_line, 0);
-    else
-      fputs(log_line, output); // never
+    fputs(log_line, output); // never
 
-  show_line("  (File may have a line termination problem.)", 0);
+  puts("  (File may have a line termination problem.)");
 }
 
 void show_bad_line (FILE *output, int first, int last)
@@ -544,7 +537,7 @@ boolean input_line (FILE *f)
       last--;       /* just in case */
     }
     else
-      uexit(1);      /* line too long */
+      uexit(EXIT_FAILURE);      /* line too long */
   }
 
   return input_line_finish();
@@ -630,7 +623,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
             sprintf(log_line, "! `%%d' cannot appear twice in editor command.\n");
             show_line(log_line, 1);
 #endif
-            uexit(1); 
+            uexit(EXIT_FAILURE); 
           }
 
           (void) sprintf (s, "%d", linenumber);
@@ -651,7 +644,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
             sprintf(log_line, "! `%%s' cannot appear twice in editor command.\n");
             show_line(log_line, 1);
 #endif
-            uexit(1); 
+            uexit(EXIT_FAILURE); 
           }
 
           t = (char *) texfilename;
@@ -677,7 +670,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
             sprintf(log_line, "! `%%l' cannot appear twice in editor command.\n");
             show_line(log_line, 1);
 #endif
-            uexit(1); 
+            uexit(EXIT_FAILURE); 
           }
 
           t = (char *) log_file_name;
@@ -714,7 +707,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
   {
     sprintf(log_line, "Command too long (%d > %d)\n", strlen(command) + 1, commandlen);
     show_line(log_line, 1);
-    uexit(1);
+    uexit(EXIT_FAILURE);
   }
 
   //flushall();
@@ -733,11 +726,11 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 
     sprintf(log_line, "  (TEXEDIT=%s)\n", edit_value);
     show_line(log_line, 0);
-    show_line("  (Editor specified may be missing or path may be wrong)\n", 0);
-    show_line("  (or there may be missing -- or extraneous -- quotation signs)\n", 0);
+    puts("  (Editor specified may be missing or path may be wrong)\n");
+    puts("  (or there may be missing -- or extraneous -- quotation signs)\n");
   }
 
-  uexit(1);
+  uexit(EXIT_FAILURE);
 }
 
 /* Read and write format (for TeX) or base (for Metafont) files.  In
@@ -810,7 +803,7 @@ static int swap_items (char *p, int nitems, int size)
       show_line("\n", 0);
       sprintf(log_line, "! I can't (un)dump a %d byte item.\n", size);
       show_line(log_line, 1);
-      uexit(1);
+      uexit(EXIT_FAILURE);
   }
   return 0;
 }
@@ -839,7 +832,7 @@ int do_dump (char *p, int item_size, int nitems, FILE *out_file)
     sprintf(log_line, "! Could not write %d %d-byte item%s.\n",
                nitems, item_size, (nitems > 1) ? "s" : "");
     show_line(log_line, 1);
-    uexit(1);
+    uexit(EXIT_FAILURE);
   }
 
 /* Have to restore the old contents of memory, since some of it might get used again.  */
@@ -865,12 +858,13 @@ int do_undump (char *p, int item_size, int nitems, FILE *in_file)
     sprintf(log_line, "! Could not read %d %d-byte item%s.\n",
                nitems, item_size, (nitems > 1) ? "s" : "");
     show_line(log_line, 1);
-    uexit(1);
+    uexit(EXIT_FAILURE);
   }
 
 #if !defined (WORDS_BIGENDIAN) && !defined (NO_FMTBASE_SWAP)
   swap_items (p, nitems, item_size);
 #endif
+
   return 0;
 }
 
@@ -910,3 +904,15 @@ void funny_core_dump (void)
   }
 }
 #endif /* FUNNY_CORE_DUMP */
+/*
+#include <tex0.c>
+#include <tex1.c>
+#include <tex2.c>
+#include <tex3.c>
+#include <tex4.c>
+#include <tex5.c>
+#include <tex6.c>
+#include <tex7.c>
+#include <tex8.c>
+#include <tex9.c>
+*/

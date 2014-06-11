@@ -714,7 +714,7 @@ void box_end_(integer box_context)
         {
           get_x_token();
         }
-      while(!((cur_cmd != spacer) && (cur_cmd != relax)));
+      while (!((cur_cmd != spacer) && (cur_cmd != relax)));
 
       if (((cur_cmd == hskip) && (abs(mode) != vmode)) || ((cur_cmd == vskip) && (abs(mode) == vmode)))
       {
@@ -779,7 +779,7 @@ void begin_box_(integer box_context)
         }
         else
         {
-          if (!(tail >= hi_mem_min))
+          if (!is_char_node(tail))
             if ((type(tail) == hlist_node) || (type(tail) == vlist_node))
             {
               q = head;
@@ -788,7 +788,7 @@ void begin_box_(integer box_context)
                 {
                   p = q;
 
-                  if (!(q >= hi_mem_min))
+                  if (!is_char_node(q))
                     if (type(q) == disc_node)
                     {
                       for (m = 1; m <= replace_count(q); m++)
@@ -991,7 +991,7 @@ void head_for_vmode (void)
     back_input();
     cur_tok = par_token;
     back_input();
-    cur_input.index_field = inserted;
+    index = inserted;
   }
 }
 /* sec 1096 */
@@ -1082,7 +1082,7 @@ void delete_last (void)
   }
   else
   {
-    if (!(tail >= hi_mem_min))
+    if (!is_char_node(tail))
       if (type(tail) == cur_chr)
       {
         q = head;
@@ -1091,7 +1091,7 @@ void delete_last (void)
           {
             p = q;
 
-            if (!(q >= hi_mem_min))
+            if (!is_char_node(q))
               if (type(q) == disc_node)
               {
                 for (m = 1; m <= replace_count(q); m++)
@@ -1155,7 +1155,7 @@ void append_italic_correction (void)
 
   if (tail != head)
   {
-    if ((tail >= hi_mem_min))
+    if (is_char_node(tail))
       p = tail;
     else if (type(tail) == ligature_node)
       p = tail + 1;
@@ -1206,7 +1206,7 @@ void build_discretionary (void)
 
   while (p != 0)
   {
-    if (!(p >= hi_mem_min))
+    if (!is_char_node(p))
       if (type(p) > rule_node)
         if (type(p) != kern_node)
           if (type(p) != ligature_node)
@@ -1487,7 +1487,7 @@ void init_math (void)
       while (p != 0)
       {
 lab21:
-        if ((p >= hi_mem_min))
+        if (is_char_node(p))
         {
           f = font(p);
           d = char_width(f, char_info(f, character(p)));
@@ -1651,7 +1651,7 @@ lab20:
     {
       get_x_token();
     }
-  while(!((cur_cmd != spacer) && (cur_cmd != relax)));
+  while (!((cur_cmd != spacer) && (cur_cmd != relax)));
 
 lab21:
   switch (cur_cmd)

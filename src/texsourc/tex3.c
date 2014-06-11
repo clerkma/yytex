@@ -685,7 +685,7 @@ void conv_toks (void)
 {
   char old_setting;
   char c;
-  small_number savescannerstatus;
+  small_number save_scanner_status;
   pool_pointer b;
 
   c = cur_chr;
@@ -699,10 +699,10 @@ void conv_toks (void)
 
     case string_code:
     case meaning_code:
-      savescannerstatus = scanner_status;
+      save_scanner_status = scanner_status;
       scanner_status = 0;
       get_token();
-      scanner_status = savescannerstatus;
+      scanner_status = save_scanner_status;
       break;
 
     case font_name_code:
@@ -1001,16 +1001,16 @@ void read_toks_(integer n, halfword r)
         }
       }
 
-      cur_input.limit_field = last;
+      limit = last;
 
       if ((end_line_char < 0) || (end_line_char > 255))
-        decr(cur_input.limit_field);
+        decr(limit);
       else
-        buffer[cur_input.limit_field] = end_line_char;
+        buffer[limit] = end_line_char;
 
-      first = cur_input.limit_field + 1;
-      cur_input.loc_field = cur_input.start_field;
-      cur_input.state_field = new_line;
+      first = limit + 1;
+      loc = start;
+      state = new_line;
 
       while (true)
       {
@@ -1025,7 +1025,7 @@ void read_toks_(integer n, halfword r)
             {
               get_token();
             }
-          while(!(cur_tok == 0));
+          while (!(cur_tok == 0));
 
           align_state = 1000000L;
           goto lab30;
@@ -1036,7 +1036,7 @@ void read_toks_(integer n, halfword r)
 lab30:
       end_file_reading();
     }
-  while(!(align_state == 1000000L));
+  while (!(align_state == 1000000L));
 
   cur_val = def_ref;
   scanner_status = normal;
@@ -1046,9 +1046,9 @@ lab30:
 void pass_text (void)
 {
   integer l;
-  small_number savescannerstatus;
+  small_number save_scanner_status;
 
-  savescannerstatus = scanner_status;
+  save_scanner_status = scanner_status;
   scanner_status = skipping;
   l = 0;
   skip_line = line;
@@ -1069,7 +1069,7 @@ void pass_text (void)
       incr(l);
   }
 lab30:
-  scanner_status = savescannerstatus;
+  scanner_status = save_scanner_status;
 }
 /* sec 0497 */
 void change_if_limit_(small_number l, halfword p)
@@ -1108,7 +1108,7 @@ void conditional (void)
   char r;
   integer m, n;
   halfword p, q;
-  small_number savescannerstatus;
+  small_number save_scanner_status;
   halfword savecondptr;
   small_number thisif;
 
@@ -1191,7 +1191,7 @@ void conditional (void)
           {
             get_x_token();
           }
-        while(!(cur_cmd != spacer));
+        while (!(cur_cmd != spacer));
 
         if ((cur_tok >= other_token + '<') && (cur_tok <= other_token + '>'))
           r = cur_tok - other_token;
@@ -1267,7 +1267,7 @@ void conditional (void)
 
     case ifx_code:
       {
-        savescannerstatus = scanner_status;
+        save_scanner_status = scanner_status;
         scanner_status = 0;
         get_next();
         n = cur_cs;
@@ -1301,7 +1301,7 @@ void conditional (void)
           }
         }
 
-        scanner_status = savescannerstatus;
+        scanner_status = save_scanner_status;
       }
       break;
 
@@ -1454,107 +1454,6 @@ boolean more_name_(ASCII_code c)
   }
 }
 
-// The following code is to save string space used by TeX for filenames
-// Not really critical in a system that has dynamic memory allocation
-// And may slow it down slightly - although this linear search only
-// occurs when opening a file, which is somewhat slow inany case...
-
-// see if string from str_pool[start] to str_pool[end]
-// occurs elsewhere in string pool - returns string number
-// returns -1 if not found in string pool 2000 Aug 15
-
-int find_string (int start, int end)
-{
-  int k, nlen = end - start;
-  char *s;
-
-  if (trace_flag)
-  {
-    sprintf(log_line, "\nLOOKING for string (str_ptr %d nlen %d) ", str_ptr, end - start);
-    s = log_line + strlen(log_line);
-    strncpy(s, (const char *) str_pool + start, nlen);
-    strcpy(s + nlen, "");
-    show_line(log_line, 0);
-  }
-
-//  avoid problems with(cur_name == flushablestring)by going only up to str_ptr-1
-//  code in new_font (tex8.c) will take care of reuse of font name already
-  for (k = 0; k < str_ptr - 1; k++)
-  {
-    if (length(k) != nlen)
-      continue;
-
-    if (strncmp((const char *) str_pool + start, (const char *) str_pool + str_start[k], nlen) == 0)
-    {
-      if (trace_flag)
-      {
-        sprintf(log_line, "\nFOUND the string %d (%d) ", k, str_start[k+1]-str_start[k]);
-        s = log_line + strlen(log_line);
-        strncpy(s, (const char *)str_pool + start, nlen);
-        strcpy(s+nlen, "\n");
-        show_line(log_line, 0);
-      }
-      return k;     // return number of matching string
-    }
-  }
-
-  if (trace_flag)
-  {
-    sprintf(log_line, "\nNOT FOUND string ");
-    s = log_line + strlen(log_line);
-    strncpy(s, (const char*)str_pool + start, nlen);
-    strcpy(s + nlen, "\n");
-    show_line(log_line, 0);
-  }
-
-  return -1;          // no match found
-}
-
-// snip out the string from str_pool[start] to str_pool[end]
-// and move everything above it down 2000 Aug 15
-
-void remove_string (int start, int end)
-{
-  int nlen = pool_ptr - end;  // how many bytes to move down
-  char *s;
-  
-  if (trace_flag)
-  {
-    int n = end - start;
-    sprintf(log_line, "\nSTRIPPING OUT %d %d ", n, nlen);
-    s = log_line + strlen(log_line);
-    strncpy(s, (const char *) str_pool + start, n);
-    strcpy(s + n, "\n");
-    show_line(log_line, 0);
-  }
-
-  if (nlen > 0)
-    memcpy(str_pool + start, str_pool + end, nlen);
-
-  pool_ptr = start + nlen;
-}
-
-void show_string (int k)
-{
-  int nlen = length(k);
-  char *s;
-  
-  sprintf(log_line, "\nSTRING %5d (%3d) %5d--%5d ",
-      k, nlen, str_start[k], str_start[k+1]);
-  s = log_line + strlen(log_line);      
-  strncpy(s, (const char *)str_pool + str_start[k], nlen);
-  strcpy(s + nlen, "");
-  show_line(log_line, 0);
-}
-
-void show_all_strings (void)
-{
-  int k;
-
-  for (k = 0; k < str_ptr; k++)
-    show_string(k);
-}
-
 /* sec 0517 */
 void end_name (void) 
 {
@@ -1579,53 +1478,22 @@ void end_name (void)
     cur_area = 335;     // "" default area 
   else
   {
-    if (save_strings_flag && (cur_area = find_string(str_start[str_ptr], str_start[str_ptr] + area_delimiter)) > 0)
-    {
-      remove_string(str_start[str_ptr], str_start[str_ptr] + area_delimiter);
-      area_delimiter = 0; // area_delimiter - area_delimiter;
-
-      if (ext_delimiter != 0)
-        ext_delimiter = ext_delimiter - area_delimiter;
-    }
-    else         // carve out string for "cur_area"
-    {
-      cur_area = str_ptr; 
-      str_start[str_ptr + 1] = str_start[str_ptr] + area_delimiter; 
-      incr(str_ptr);
-    }
+    cur_area = str_ptr;
+    str_start[str_ptr + 1] = str_start[str_ptr] + area_delimiter;
+    incr(str_ptr);
   }
 
   if (ext_delimiter == 0) // no extension delimiter '.' found
   {
     cur_ext = 335;        // "" default extension 
-
-    if (save_strings_flag && (cur_name = find_string(str_start[str_ptr], pool_ptr)) > 0)
-    {
-      remove_string(str_start[str_ptr], pool_ptr);
-    }
-    else            // Make string from str_start[str_ptr]to pool_ptr
-      cur_name = make_string();
+    cur_name = make_string();
   } 
   else            // did find an extension
   {
-    if (save_strings_flag &&
-      (cur_name = find_string(str_start[str_ptr], str_start[str_ptr] + ext_delimiter - area_delimiter-1)) > 0)
-    {
-      remove_string(str_start[str_ptr], str_start[str_ptr] + ext_delimiter - area_delimiter - 1);
-    }
-    else             // carve out string for "cur_name"
-    {
-      cur_name = str_ptr;
-      str_start[str_ptr + 1]= str_start[str_ptr]+ ext_delimiter - area_delimiter - 1;
-      incr(str_ptr);
-    }
-
-    if (save_strings_flag && (cur_ext = find_string(str_start[str_ptr], pool_ptr)) > 0)
-    {
-      remove_string(str_start[str_ptr], pool_ptr);
-    }
-    else            // Make string from str_start[str_ptr]to pool_ptr
-      cur_ext = make_string();
+    cur_name = str_ptr;
+    str_start[str_ptr + 1] = str_start[str_ptr]+ ext_delimiter - area_delimiter - 1;
+    incr(str_ptr);
+    cur_ext = make_string();
   }
 }
 
@@ -1641,24 +1509,42 @@ void pack_file_name_(str_number n, str_number a, str_number e)
   k = 0;
 
   for (j = str_start[a]; j <= str_start[a + 1] - 1; j++)
-    append_to_name(str_pool[j]);
+  {
+    c = str_pool[j];
+    incr(k);
+
+    if (k <= file_name_size)
+      name_of_file[k] = xchr[c];
+  }
 
   for (j = str_start[n]; j <= str_start[n + 1] - 1; j++)
-    append_to_name(str_pool[j]);
+  {
+    c = str_pool[j];
+    incr(k);
+
+    if (k <= file_name_size)
+      name_of_file[k] = xchr[c];
+  }
 
   for (j = str_start[e]; j <= str_start[e + 1] - 1; j++)
-    append_to_name(str_pool[j]);
+  {
+    c = str_pool[j];
+    incr(k);
 
-  if (k < PATH_MAX)
+    if (k <= file_name_size)
+      name_of_file[k] = xchr[c];
+  }
+
+  if (k < file_name_size)
     name_length = k;
   else
-    name_length = PATH_MAX - 1;
+    name_length = file_name_size - 1;
 
 /*  pad it out with spaces ... what for ? in case we modify and forget  ? */
-  for (k = name_length + 1; k <= PATH_MAX; k++)
+  for (k = name_length + 1; k <= file_name_size; k++)
     name_of_file[k] = ' ';
 
-  name_of_file[PATH_MAX] = '\0';
+  name_of_file[file_name_size] = '\0';    /* paranoia 94/Mar/24 */
 
   {
     name_of_file [name_length+1] = '\0';
@@ -1682,8 +1568,8 @@ void pack_buffered_name_(small_number n, integer a, integer b)
   ASCII_code c;
   integer j;
 
-  if (n + b - a + 5 > PATH_MAX)
-    b = a + PATH_MAX - n - 5;
+  if (n + b - a + 5 > file_name_size)
+    b = a + file_name_size - n - 5;
 
   k = 0;
 
@@ -1693,7 +1579,7 @@ void pack_buffered_name_(small_number n, integer a, integer b)
     c = xord[TEX_format_default[j]];
     incr(k);
 
-    if (k <= PATH_MAX)
+    if (k <= file_name_size)
       name_of_file[k] = xchr[c];
   }
 /*  This loop kicks in when we want a specififed format name */
@@ -1702,7 +1588,7 @@ void pack_buffered_name_(small_number n, integer a, integer b)
     c = buffer[j];
     incr(k);
 
-    if (k <= PATH_MAX)
+    if (k <= file_name_size)
       name_of_file[k] = xchr[c];
   }
 
@@ -1712,20 +1598,20 @@ void pack_buffered_name_(small_number n, integer a, integer b)
     c = xord[TEX_format_default[j]];
     incr(k);
 
-    if (k <= PATH_MAX)
+    if (k <= file_name_size)
       name_of_file[k] = xchr[c];
   }
 
-  if (k < PATH_MAX)
+  if (k < file_name_size)
     name_length = k;
   else
-    name_length = PATH_MAX - 1;
+    name_length = file_name_size - 1;
 
  /*  pad it out with spaces ... what for ? */
-  for (k = name_length + 1; k <= PATH_MAX; k++)
+  for (k = name_length + 1; k <= file_name_size; k++)
     name_of_file[k]= ' ';
 
-  name_of_file[PATH_MAX] = '\0';    /* paranoia 94/Mar/24 */
+  name_of_file[file_name_size] = '\0';    /* paranoia 94/Mar/24 */
 }
 /* sec 0525 */
 str_number make_name_string (void)
@@ -1755,17 +1641,20 @@ str_number make_name_string (void)
   }
 }
 /* sec 0525 */
-str_number a_make_name_string_(alpha_file * f)
+//str_number a_make_name_string_(alpha_file * f)
+str_number a_make_name_string_(void)
 {
   return make_name_string();
 }
 /* sec 0525 */
-str_number b_make_name_string_(byte_file * f)
+//str_number b_make_name_string_(byte_file * f)
+str_number b_make_name_string_(void)
 {
   return make_name_string(); 
 }
 /* sec 0525 */
-str_number w_make_name_string_(word_file * f)
+//str_number w_make_name_string_(word_file * f)
+str_number w_make_name_string_(void)
 {
   return make_name_string();
 }
@@ -1849,12 +1738,15 @@ void prompt_file_name_(char * s, str_number e)
   if (interaction < 2)
   {
     fatal_error("*** (job aborted, file error in nonstop mode)");
-    return;
+    return;     // abort_flag set
   }
 
   if (!knuth_flag)
+#ifdef _WINDOWS
+    show_line(" (or ^z to exit)", 0);
+#else
     show_line(" (or Ctrl-Z to exit)", 0);
-
+#endif
   prompt_input(": ");
 
 /*  should we deal with tilde and space in file name here ??? */
@@ -1932,14 +1824,14 @@ void open_log_file (void)
     {
       stamp_it(log_line);
       strcat(log_line, "\n");
-      fputs(log_line, log_file);
+      (void) fputs(log_line, log_file);
       stampcopy(log_line);
       strcat(log_line, "\n");
-      fputs(log_line, log_file);
+      (void) fputs(log_line, log_file);
     }
     
-    fputs(tex_version, log_file); 
-    fprintf(log_file, " (%s %s)", application, yandyversion);
+    (void) fputs(tex_version, log_file); 
+    (void) fprintf(log_file, " (%s %s)", application, yandyversion);
 
     if (format_ident > 0)
       slow_print(format_ident);
@@ -1955,7 +1847,7 @@ void open_log_file (void)
     months = " JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 
     for (k = 3 * month - 2; k <= 3 * month; k++)
-      putc(months[k],  log_file);
+      (void) putc(months[k],  log_file);
 
     print_char(' ');
 
@@ -1994,20 +1886,85 @@ void open_log_file (void)
 
   selector = old_setting + 2;
 }
+
+// Attempt to deal with foo.bar.tex given as foo.bar on command line
+// Makes copy of job_name with extension
+
+void more_name_copy(ASCII_code c)
+{
+#ifdef ALLOCATESTRING
+  if (pool_ptr + 1 > current_pool_size)
+    str_pool = realloc_str_pool (increment_pool_size);
+
+  if (pool_ptr + 1 > current_pool_size)
+  {
+    overflow("pool size", current_pool_size - init_pool_ptr);
+    return;
+  }
+#else
+  if (pool_ptr + 1 > pool_size)
+  {
+    overflow("pool size", pool_size - init_pool_ptr);
+    return;
+  }
+#endif
+
+  str_pool[pool_ptr] = c; 
+  incr(pool_ptr);
+}
+
+int end_name_copy(void)
+{
+#ifdef ALLOCATESTRING
+  if (str_ptr + 1 > current_max_strings)
+    str_start = realloc_str_start(increment_max_strings + 1);
+
+  if (str_ptr + 1 > current_max_strings)
+  {
+    overflow("number of strings", current_max_strings - init_str_ptr);
+    return 0;
+  }
+#else
+  if (str_ptr + 1 > max_strings)
+  {
+    overflow("number of strings", max_strings - init_str_ptr);
+    return 0;
+  }
+#endif
+
+  return make_string();
+}
+
+void job_name_append (void)
+{ 
+  int k, n;
+
+  k = str_start[job_name];
+  n = str_start[job_name + 1];
+
+  while (k < n)
+    more_name_copy(str_pool[k++]);
+
+  k = str_start[cur_ext];
+  n = str_start[cur_ext + 1];
+
+  while (k < n)
+    more_name_copy(str_pool[k++]);
+
+  job_name = end_name_copy();
+}
+
 /* sec 0537 */
 void start_input(void)
 {
-  boolean added_extension = false;
-
   scan_file_name();
   pack_file_name(cur_name, cur_area, cur_ext); 
 
   while (true)
   {
-    added_extension = false;
     begin_file_reading();
     
-    if (a_open_in(input_file[cur_input.index_field], TEXINPUTPATH))
+    if (a_open_in(input_file[index], TEXINPUTPATH))
       goto lab30;
 
     end_file_reading();
@@ -2015,7 +1972,7 @@ void start_input(void)
   }
 
 lab30: 
-  cur_input.name_field = a_make_name_string(input_file[cur_input.index_field]);
+  cur_input.name_field = a_make_name_string(input_file[index]);
 
   if (job_name == 0)
   {
@@ -2040,31 +1997,28 @@ lab30:
   fflush(stdout);
 #endif
 
-  cur_input.state_field = new_line;
+  state = new_line;
 
   {
     line = 1;
 
-    if (input_ln(input_file[cur_input.index_field], false));
+    if (input_ln(input_file[index], false));
 
     firm_up_the_line();
 
     if ((end_line_char < 0) || (end_line_char > 255))
-      decr(cur_input.limit_field);
+      decr(limit);
     else
-      buffer[cur_input.limit_field] = end_line_char;
+      buffer[limit] = end_line_char;
 
-    first = cur_input.limit_field + 1;
-    cur_input.loc_field = cur_input.start_field;
+    first = limit + 1;
+    loc = start;
   }
 }
 /* sec 0560 */
 internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)
 {
   font_index k;
-  eight_bits jfm_flag;
-  halfword nt;
-  KANJI_code cx;
   boolean file_opened;
   halfword lf, lh, nw, nh, nd, ni, nl, nk, ne, np;
   int bc, ec;
@@ -2094,31 +2048,6 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     read_sixteen(lf);
     tfm_temp = getc(tfm_file);
     read_sixteen(lh);
-
-    if (lf == yoko_jfm_id)
-    {
-      jfm_flag = dir_yoko;
-      nt = lh;
-      tfm_temp = getc(tfm_file);
-      read_sixteen(lf);
-      tfm_temp = getc(tfm_file);
-      read_sixteen(lh);
-    }
-    else if (lf == tate_jfm_id)
-    {
-      jfm_flag = dir_tate;
-      nt = lh;
-      tfm_temp = getc(tfm_file);
-      read_sixteen(lf);
-      tfm_temp = getc(tfm_file);
-      read_sixteen(lh);
-    }
-    else
-    {
-      jfm_flag = dir_default;
-      nt = 0;
-    }
-
     tfm_temp = getc(tfm_file);
     read_sixteen(bc);
     tfm_temp = getc(tfm_file);
@@ -2150,25 +2079,14 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     tfm_temp = getc(tfm_file);
     read_sixteen(np);
 
-    if (jfm_flag != dir_default)
-    {
-      if (lf != 7 + lh + nt + (ec - bc + 1) + nw + nh + nd + ni + nl + nk + ne + np)
-        goto lab11;
-    }
-    else
-    {
-      if (lf != 6 + lh + (ec - bc + 1) + nw + nh + nd + ni + nl + nk + ne + np)
-        goto lab11;
-    }
+    if (lf != 6 + lh + (ec - bc + 1) + nw + nh + nd + ni + nl + nk + ne + np)
+      goto lab11;
 
     if ((nw == 0) || (nh == 0) || (nd == 0) || (ni == 0))
       goto lab11;
   }
 
-  if (jfm_flag != dir_default)
-    lf = lf - 7 - lh;
-  else
-    lf = lf - 6 - lh;
+  lf = lf - 6 - lh;
 
   if (np < 7)
     lf = lf + 7 - np;
@@ -2216,10 +2134,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   }
 
   f = font_ptr + 1;
-  font_dir[f] = jfm_flag;
-  font_num_ext[f] = nt;
-  ctype_base[f] = fmem_ptr;
-  char_base[f] = ctype_base[f] + nt - bc;
+  char_base[f] = fmem_ptr - bc;
   width_base[f] = char_base[f] + ec + 1;
   height_base[f] = width_base[f] + nw;
   depth_base[f] = height_base[f] + nh;
@@ -2242,7 +2157,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     z =(z * 16) + (tfm_temp / 16);
 
     if (z < 65536L)
-      goto lab11;
+      goto lab11; 
 
     while (lh > 2)
     {
@@ -2264,20 +2179,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     font_size[f] = z;
   }
 
-  if (jfm_flag != dir_default)
-  {
-    for (k = ctype_base[f]; k <= ctype_base[f] + nt - 1; k++)
-    {
-      tfm_temp = getc(tfm_file);
-      read_sixteen(cx);
-      font_info[k].hh.rh = cx;
-      tfm_temp = getc(tfm_file);
-      read_sixteen(cx);
-      font_info[k].hh.lh = cx;
-    }
-  }
-
-  for (k = char_base[f] + bc; k <= width_base[f] - 1; k++)
+  for (k = fmem_ptr; k <= width_base[f] - 1; k++)
   {
     store_four_quarters(font_info[k].qqqq);
 
@@ -2303,7 +2205,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
               goto lab11;
           }
 
-          while (d < k - char_base[f])
+          while (d < k + bc - fmem_ptr)
           {
             qw = char_info(f, d);
  
@@ -2313,7 +2215,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
             d = rem_byte(qw);
           }
 
-          if (d == k - char_base[f])
+          if (d == k + bc - fmem_ptr)
             goto lab11;
 lab45:; 
         }
@@ -2392,17 +2294,29 @@ lab45:;
       else
       {
         if (b != bchar)
-          check_existence(b);
+        {
+          {
+            if ((b < bc) || (b > ec))  /* check-existence(b) */
+              goto lab11;         /* error in TFM, abort */
+          }
+
+          qw = font_info[char_base[f] + b].qqqq;
+
+          if (!(qw.b0 > 0))
+            goto lab11;         /* error in TFM, abort */
+        }
 
         if (c < 128)
         {
-          if (jfm_flag != dir_default)
           {
-            if (d > ne)
-              goto lab11;
+            if ((d < bc) || (d > ec))  /* check-existence(d) */
+              goto lab11;         /* error in TFM, abort */
           }
-          else
-            check_existence(d);
+
+          qw = font_info[char_base[f] + d].qqqq;
+
+          if (!(qw.b0 > 0))
+            goto lab11;         /* error in TFM, abort */
         }
         else if (256 * (c - 128) + d >= nk)
           goto lab11;           /* error in TFM, abort */
@@ -2418,29 +2332,78 @@ lab45:;
   }
 
   for (k = kern_base[f] + 256 * (128); k <= exten_base[f] - 1; k++)
-    store_scaled(font_info[k].cint);
-
-  if (jfm_flag != dir_default)
   {
-    for (k = exten_base[f]; k < param_base[f] - 1; k++)
-      store_scaled(font_info[k].cint);
+    tfm_temp = getc(tfm_file);
+    a = tfm_temp;
+    tfm_temp = getc(tfm_file);
+    b = tfm_temp;
+    tfm_temp = getc(tfm_file);
+    c = tfm_temp;
+    tfm_temp = getc(tfm_file);
+    d = tfm_temp;
+    sw = (((((d * z) / 256) + (c * z)) / 256) + (b * z)) / beta;
+
+    if (a == 0)
+      font_info[k].cint = sw;
+    else if (a == 255)
+      font_info[k].cint = sw - alpha;
+    else goto lab11;
   }
-  else
+
+  /*  read extensible character recipes */
+  for (k = exten_base[f]; k <= param_base[f] - 1; k++)
   {
-    for (k = exten_base[f]; k <= param_base[f] - 1; k++)
+    store_four_quarters(font_info[k].qqqq);
+
+    if (a != 0)
     {
-      store_four_quarters(font_info[k].qqqq);
-      
-      if (a != 0)
-        check_existence(a);
+      {
+        if ((a < bc) || (a > ec))
+          goto lab11;
+      }
 
-      if (b != 0)
-        check_existence(b);
+      qw = font_info[char_base[f] + a].qqqq;
 
-      if (c != 0)
-        check_existence(c);
+      if (!(qw.b0 > 0))
+        goto lab11;
+    }
 
-      check_existence(d);
+    if (b != 0)
+    {
+      {
+        if ((b < bc) || (b > ec))
+          goto lab11;
+      }
+
+      qw = font_info[char_base[f] + b].qqqq;
+
+      if (!(qw.b0 > 0))
+        goto lab11;
+    }
+
+    if (c != 0)
+    {
+      {
+        if ((c < bc) || (c > ec))
+          goto lab11;
+      }
+
+      qw = font_info[char_base[f] + c].qqqq;
+
+      if (!(qw.b0 > 0))
+        goto lab11;
+    }
+
+    {
+      {
+        if ((d < bc) || (d > ec))
+          goto lab11;
+      }
+
+      qw = font_info[char_base[f] + d].qqqq;
+
+      if (!(qw.b0 > 0))
+        goto lab11;
     }
   }
 
@@ -2462,7 +2425,23 @@ lab45:;
         font_info[param_base[f]].cint = (sw * 16) + (tfm_temp / 16);
       }
       else
-        store_scaled(font_info[param_base[f] + k - 1].cint);
+      {
+        tfm_temp = getc(tfm_file);
+        a = tfm_temp;
+        tfm_temp = getc(tfm_file);
+        b = tfm_temp;
+        tfm_temp = getc(tfm_file);
+        c = tfm_temp;
+        tfm_temp = getc(tfm_file);
+        d = tfm_temp;
+        sw = (((((d * z) / 256) + (c * z)) / 256) + (b * z)) / beta;
+
+        if (a == 0)
+          font_info[param_base[f] + k - 1].cint = sw;
+        else if (a == 255)
+          font_info[param_base[f] + k - 1].cint = sw - alpha;
+        else goto lab11;
+      }
 
     if (feof(tfm_file))
       goto lab11;
@@ -2490,10 +2469,10 @@ lab45:;
   if (bchar <= ec)
     if (bchar >= bc)
     {
-      qw = char_info(f, bchar);
+      qw = font_info[char_base[f] + bchar].qqqq;
 
       if ((qw.b0 > 0))
-        font_false_bchar[f] = non_char;
+        font_false_bchar[f] = 256;
     }
 
   font_name[f] = nom;
@@ -2501,7 +2480,6 @@ lab45:;
   font_bc[f] = bc;
   font_ec[f] = ec;
   font_glue[f] = 0;
-  ctype_base[f] = ctype_base[f];
   char_base[f] = char_base[f];
   width_base[f] = width_base[f];
   lig_kern_base[f] = lig_kern_base[f];

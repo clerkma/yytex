@@ -147,7 +147,7 @@ lab22:
                   decr(t);
                   v = link(v);
 
-                  if ((v >= hi_mem_min))
+                  if (is_char_node(v))
                   {
                     f = font(v);
                     break_width[1] = break_width[1] - char_width(f, char_info(f, character(v)));
@@ -179,7 +179,7 @@ lab22:
 
                 while (s != 0)
                 {
-                  if ((s >= hi_mem_min))
+                  if (is_char_node(s))
                   {
                     f = font(s);
                     break_width[1] = break_width[1] + char_width(f, char_info(f, character(s)));
@@ -219,7 +219,7 @@ lab22:
 
               while (s != 0)
               {
-                if ((s >= hi_mem_min))
+                if (is_char_node(s))
                   goto lab30;
 
                 switch (type(s))
@@ -778,7 +778,7 @@ lab30:
             if (q == cur_break(cur_p))
               goto lab31;
 
-            if ((q >= hi_mem_min))
+            if (is_char_node(q))
               goto lab31;
 
             if (non_discardable(q))
@@ -835,7 +835,7 @@ small_number reconstitute_(small_number j, small_number n, halfword bchar, halfw
     if (ligature_present)
       lft_hit = init_lft; 
 
-    while(p != 0) /* 94/Mar/22 BUG FIX */
+    while (p != 0) /* 94/Mar/22 BUG FIX */
     {
       append_charnode_to_t(character(p));
       p = link(p);
@@ -1130,7 +1130,7 @@ void hyphenate (void)
           incr(j);
           incr(u);
         }
-      while(!(j > hn));
+      while (!(j > hn));
 
       s = hyph_list[h];
 
@@ -1181,7 +1181,7 @@ lab45:
 
             v = hyf_next[v];
           }
-        while(!(v == min_trie_op));
+        while (!(v == min_trie_op));
       }
 
       incr(l);
@@ -1207,7 +1207,7 @@ lab41:;
   link(ha) = 0;
   bchar = hyfbchar;
 
-  if ((ha >= hi_mem_min))
+  if (is_char_node(ha))
     if (font(ha) != hf)
       goto lab42;
     else
@@ -1237,7 +1237,7 @@ lab41:;
     }
   else
   {
-    if (!(r >= hi_mem_min))
+    if (!is_char_node(r))
       if (type(r) == ligature_node)
         if (subtype(r) > 1)
           goto lab42;
@@ -1406,9 +1406,9 @@ lab50:
             hyphen_passed = j - 1;
             link(hold_head) = 0;
           }
-        while(!(! odd(hyf[j - 1])));
+        while (!(! odd(hyf[j - 1])));
     }
-  while(!(j > hn));
+  while (!(j > hn));
 
   link(s) = q;
   flush_list(init_list);
@@ -1528,7 +1528,7 @@ lab21:
                   incr(u);
                   incr(v);
                 }
-              while(!(u == str_start[k + 1]));
+              while (!(u == str_start[k + 1]));
 lab40:
               q = hyph_list[h];
               hyph_list[h] = p;
@@ -1577,7 +1577,7 @@ halfword prune_page_top_(halfword p)
   prev_p = temp_head;
   link(temp_head) = p;
 
-  while(p != 0)
+  while (p != 0)
     switch(type(p))
     {
       case hlist_node:

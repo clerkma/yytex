@@ -20,6 +20,8 @@
 #define null_code       0     // 0
 #define carriage_return 015   // 13
 #define invalid_code    0177  // 127
+/* sec 0036 */
+#define loc cur_input.loc_field
 /* sec 0040 */
 #define length(s) (str_start[(s) + 1] - str_start[(s)])
 /* sec 0041 */
@@ -66,8 +68,8 @@ enum
 //#define pointer halfword
 #define null    min_halfword
 /* sec 0118 */
-#define link(p) mem[(p)].hh.rh
-#define info(p) mem[(p)].hh.lh
+#define link(p) mem[p].hh.rh
+#define info(p) mem[p].hh.lh
 /* sec 0122 */
 #ifdef STAT
 #define fast_get_avail(a) \
@@ -434,13 +436,10 @@ enum
 #define space_skip_code               12 // 794
 #define xspace_skip_code              13 // 795
 #define par_fill_skip_code            14 // 796
-#define kanji_skip_code               15 // 000 797
-#define xkanji_skip_code              16 //
-#define thin_mu_skip_code             17 //15 // 797
-#define med_mu_skip_code              18 //16 // 798
-#define thick_mu_skip_code            19 //17 // 799
-#define jfm_skip                      20 //
-#define glue_pars                     21 //18 // 800
+#define thin_mu_skip_code             15 // 797
+#define med_mu_skip_code              16 // 798
+#define thick_mu_skip_code            17 // 799
+#define glue_pars                     18 // 800
 #define skip_base                     (glue_base + glue_pars) // 800
 #define mu_skip_base                  (skip_base + 256) // 1056
 #define local_base                    (mu_skip_base + 256) // 1312
@@ -463,8 +462,6 @@ enum
 #define space_skip                    glue_par(space_skip_code)
 #define xspace_skip                   glue_par(xspace_skip_code)
 #define par_fill_skip                 glue_par(par_fill_skip_code)
-#define kanji_skip                    glue_par(kanji_skip_code)
-#define xkanji_skip                   glue_par(xkanji_skip_code)
 #define thin_mu_skip                  glue_par(thin_mu_skip_code)
 #define med_mu_skip                   glue_par(med_mu_skip_code)
 #define thick_mu_skip                 glue_par(thick_mu_skip_code)
@@ -483,17 +480,8 @@ enum
 #define box_base                      (toks_base + 256)      // 1578
 #define cur_font_loc                  (box_base + 256)       // 1834
 #define math_font_base                (cur_font_loc + 1)     // 1835
-#define cur_jfont_loc                 (math_font_base + 48)
-#define cur_tfont_loc                 (cur_jfont_loc + 1)
-#define auto_spacing_code             (cur_tfont_loc + 1)
-#define auto_xspacing_code            (auto_spacing_code + 1)
-#define cat_code_base                 (auto_xspacing_code + 1) //(math_font_base + 48)  // 1883
-#define kcat_code_base                (cat_code_base + 256)
-#define auto_xsp_code_base            (kcat_code_base + 256)
-#define inhibit_xsp_code_base         (auto_xsp_code_base + 256)
-#define kinsoku_base                  (inhibit_xsp_code_base + 256)
-#define kansuji_base                  (kinsoku_base + 256)
-#define lc_code_base                  (kansuji_base + 10) //(cat_code_base + 256)  // 2139
+#define cat_code_base                 (math_font_base + 48)  // 1883
+#define lc_code_base                  (cat_code_base + 256)  // 2139
 #define uc_code_base                  (lc_code_base + 256)   // 2395
 #define sf_code_base                  (uc_code_base + 256)   // 2651
 #define math_code_base                (sf_code_base + 256)   // 2907
@@ -513,18 +501,7 @@ enum
 #define box(a)                        equiv(box_base + a)
 #define cur_font                      equiv(cur_font_loc)
 #define fam_fnt(a)                    equiv(math_font_base + a)
-#define cur_jfont                     equiv(cur_jfont_loc)
-#define cur_tfont                     equiv(cur_tfont_loc)
-#define auto_spacing                  equiv(auto_spacing_code)
-#define auto_xspacing                 equiv(auto_xspacing_code)
 #define cat_code(a)                   equiv(cat_code_base + a)
-#define kcat_code(a)                  equiv(kcat_code_base + a)
-#define auto_xsp_code(a)              equiv(auto_xsp_code_base + a)
-#define inhibit_xsp_type(a)           eq_type(inhibit_xsp_code_base + a)
-#define inhibit_xsp_code(a)           equiv(inhibit_xsp_code_base + a)
-#define kinsoku_type(a)               eq_type(kinsoku_base + a)
-#define kinsoku_code(a)               equiv(kinsoku_base + a)
-#define kansuji_char(a)               equiv(kansuji_base + a)
 #define lc_code(a)                    equiv(lc_code_base + a)
 #define uc_code(a)                    equiv(uc_code_base + a)
 #define sf_code(a)                    equiv(sf_code_base + a)
@@ -578,19 +555,17 @@ enum
 #define floating_penalty_code         42 // 3205
 #define global_defs_code              43 // 3206
 #define cur_fam_code                  44 // 3207
-#define cur_jfam_code                 45
-#define escape_char_code              46 //45 // 3208
-#define default_hyphen_char_code      47 //46 // 3209
-#define default_skew_char_code        48 //47 // 3210
-#define end_line_char_code            49 //48 // 3211
-#define new_line_char_code            50 //49 // 3212
-#define language_code                 51 //50 // 3213
-#define left_hyphen_min_code          52 //51 // 3214
-#define right_hyphen_min_code         53 //52 // 3215
-#define holding_inserts_code          54 //53 // 3216
-#define error_context_lines_code      55 //54 // 3217
-#define jchr_widow_penalty_code       56
-#define int_pars                      57 //55
+#define escape_char_code              45 // 3208
+#define default_hyphen_char_code      46 // 3209
+#define default_skew_char_code        47 // 3210
+#define end_line_char_code            48 // 3211
+#define new_line_char_code            49 // 3212
+#define language_code                 50 // 3213
+#define left_hyphen_min_code          51 // 3214
+#define right_hyphen_min_code         52 // 3215
+#define holding_inserts_code          53 // 3216
+#define error_context_lines_code      54 // 3217
+#define int_pars                      55
 #define count_base                    (int_base + int_pars) // 3218
 #define del_code_base                 (count_base + 256)    // 3474
 #define dimen_base                    (del_code_base + 256) // 3730
@@ -643,7 +618,6 @@ enum
 #define floating_penalty              int_par(floating_penalty_code)
 #define global_defs                   int_par(global_defs_code)
 #define cur_fam                       int_par(cur_fam_code)
-#define cur_jfam                      int_par(cur_jfam_code)
 #define escape_char                   int_par(escape_char_code)
 #define default_hyphen_char           int_par(default_hyphen_char_code)
 #define default_skew_char             int_par(default_skew_char_code)
@@ -654,7 +628,6 @@ enum
 #define right_hyphen_min              int_par(right_hyphen_min_code)
 #define holding_inserts               int_par(holding_inserts_code)
 #define error_context_lines           int_par(error_context_lines_code)
-#define jchr_widow_penalty            int_par(jchr_widow_penalty_code)
 /* sec 0247 */
 #define par_indent_code               0  // 3730
 #define math_surround_code            1  // 3731
@@ -677,16 +650,12 @@ enum
 #define h_offset_code                 18 // 3748
 #define v_offset_code                 19 // 3749
 #define emergency_stretch_code        20 // 3750
-#define t_baseline_shift_code         21
-#define y_baseline_shift_code         22
-#define dimen_pars                    23 //21
+#define dimen_pars                    21
 #define scaled_base                   (dimen_base + dimen_pars) // 3751
-#define kinsoku_penalty_base          (scaled_base + 256)
-#define eqtb_size                     (kinsoku_penalty_base + 255) //(scaled_base + 255) // 4006
+#define eqtb_size                     (scaled_base + 255) // 4006
 // #
 #define dimen(a)                      eqtb[scaled_base + a].cint
 #define dimen_par(a)                  eqtb[dimen_base + a].cint
-#define kinsoku_penalty(a)            eqtb[kinsoku_penalty_base + a].cint
 #define par_indent                    dimen_par(par_indent_code)
 #define math_surround                 dimen_par(math_surround_code)
 #define line_skip_limit               dimen_par(line_skip_limit_code)
@@ -707,8 +676,6 @@ enum
 #define hang_indent                   dimen_par(hang_indent_code)
 #define h_offset                      dimen_par(h_offset_code)
 #define v_offset                      dimen_par(v_offset_code)
-#define t_baseline_shift              dimen_par(t_baseline_shift_code)
-#define y_baseline_shift              dimen_par(y_baseline_shift_code)
 #define emergency_stretch             dimen_par(emergency_stretch_code)
 /* sec 0256 */
 #define text(a)         hash[a].rh
@@ -758,6 +725,12 @@ enum
 #define other_token       06000 // 3072 = 2^8 * other_char
 #define match_token       06400 // 3328 = 2^8 * match
 #define end_match_token   07000 // 3584 = 2^8 * end_match
+/* sec 0302 */
+#define state cur_input.state_field
+#define index cur_input.index_field
+#define start cur_input.start_field
+#define limit cur_input.limit_field
+//#define name 
 /* sec 0303 */
 #define mid_line    1
 #define skip_blanks 2 + max_char_code // 17
@@ -770,8 +743,8 @@ enum
 #define absorbing 5
 /* sec 0307 */
 #define token_list         0
-#define token_type         cur_input.index_field
-#define param_start        cur_input.limit_field
+#define token_type         index
+#define param_start        limit
 #define parameter          0
 #define u_template         1
 #define v_template         2
@@ -840,6 +813,14 @@ enum
 #define mu_val    3
 #define ident_val 4
 #define tok_val   5
+/* sec 0413 */
+#define scanned_result(va, vb) \
+do                            \
+  {                           \
+    cur_val = va;             \
+    cur_val_level = vb;       \
+  }                           \
+while (0)
 /* sec 0416 */
 #define input_line_no_code (glue_val + 1)
 #define badness_code       (glue_val + 2)
@@ -897,21 +878,9 @@ enum
 #define fi_code          2
 #define else_code        3
 #define or_code          4
-/* sec 0519 */
-#define append_to_name(s)         \
-  do                              \
-    {                             \
-      c = s;                      \
-      incr(k);                    \
-                                  \
-      if (k <= PATH_MAX)          \
-        name_of_file[k] = xchr[c];\
-    }                             \
-  while (0)
 /* sec 0544 */
 #define no_tag   0
 #define lig_tag  1
-#define gk_tag   1
 #define list_tag 2
 #define ext_tag  3
 /* sec 0545 */
@@ -939,8 +908,6 @@ enum
 #define non_address 0
 /* sec 0554 */
 #define char_info(a, b)   font_info[char_base[a] + b].qqqq
-#define kchar_code(a, b)  font_info[ctype_base[a] + b].hh.rh
-#define kchar_type(a, b)  font_info[ctype_base[a] + b].hh.lh
 #define char_width(a, b)  font_info[width_base[a] + b.b0].cint
 #define char_exists(a)    (a.b0 > min_quarterword)
 #define char_italic(a, b) font_info[italic_base[a] + (b.b2) / 4].cint
@@ -988,40 +955,6 @@ enum
     val = qw;                     \
   }
 /* sec 0571 */
-#define store_scaled(s)                                           \
-  do                                                              \
-    {                                                             \
-      tfm_temp = getc(tfm_file);                                  \
-      a = tfm_temp;                                               \
-      tfm_temp = getc(tfm_file);                                  \
-      b = tfm_temp;                                               \
-      tfm_temp = getc(tfm_file);                                  \
-      c = tfm_temp;                                               \
-      tfm_temp = getc(tfm_file);                                  \
-      d = tfm_temp;                                               \
-      sw = (((((d * z) / 256) + (c * z)) / 256) + (b * z)) / beta;\
-                                                                  \
-      if (a == 0)                                                 \
-        s = sw;                                                   \
-      else if (a == 255)                                          \
-        s = sw - alpha;                                           \
-      else                                                        \
-        goto lab11;                                               \
-    }                                                             \
-  while (0)
-/* sec 0573 */
-#define check_existence(s)      \
-  do                            \
-    {                           \
-      if ((s < bc) || (s > ec)) \
-        goto lab11;             \
-                                \
-      qw = char_info(f, s);     \
-                                \
-      if (!(qw.b0 > 0))         \
-        goto lab11;             \
-    }                           \
-  while (0)
 /* sec 0585 */
 #define set1      128 // c[1]
 #define set2      129 // c[2]
@@ -1453,7 +1386,18 @@ enum
 #define show_box_code 1
 #define show_the_code 2
 #define show_lists    3
-#define show_mode     4
+/* sec 1306 */
+#define undump(va, vb, vc)        \
+do                                \
+  {                               \
+    undump_int(x);                \
+                                  \
+    if ((x < (va)) || (x > (vb))) \
+      goto lab_bad_fmt;           \
+    else                          \
+      vc = x;                     \
+  }                               \
+while (0)
 /* sec 1342 */
 #define write_node_size 2
 #define open_node_size  3
@@ -1475,13 +1419,3 @@ enum
 #define set_language_code 5
 /* sec 1371 */
 #define end_write_token (cs_token_flag + end_write)
-
-/* Appendix: pTeX*/
-// direction
-#define dir_default 0 // {direction of the box, default Left to Right}
-#define dir_dtou    1 // {direction of the box, Bottom to Top}
-#define dir_tate    3 // {direction of the box, Top to Bottom}
-#define dir_yoko    4 // {direction of the box, equal default}
-// jfm
-#define yoko_jfm_id 11 // {for `yoko-kumi' fonts}
-#define tate_jfm_id 9  // {for `tate-kumi' fonts}

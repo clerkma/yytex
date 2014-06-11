@@ -450,7 +450,7 @@ void pdf_ship_out(pointer p)
   print_char('[');
   j = 9;
 
-  while((count(j) == 0) && (j > 0))
+  while ((count(j) == 0) && (j > 0))
     decr(j);
 
   for (k = 0; k <= j; k++)
@@ -511,7 +511,7 @@ void pdf_ship_out(pointer p)
 
     pack_job_name(".pdf");
 
-    while(!b_open_out(pdf_file))
+    while (!b_open_out(pdf_file))
     {
       prompt_file_name("file name for output", ".pdf");
     }
@@ -612,7 +612,7 @@ lab21:
           cur_h = cur_h + char_width(f, char_info(f, c));
           p = link(p);
         }
-      while(((p >= hi_mem_min)));
+      while (((p >= hi_mem_min)));
 
       dvi_h = cur_h;
   }
