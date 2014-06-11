@@ -125,7 +125,7 @@ void show_usage (void)
   show_line(log_line, 1);
 
 #ifndef _WINDOWS
-  uexit(1);     // has this been setup yet ???
+  uexit(EXIT_FAILURE);     // has this been setup yet ???
 #endif
 }
 
@@ -205,7 +205,7 @@ void stampcopy (char *s)
 
 void read_xchr_sub (FILE * xchr_input)
 {
-  char buffer[PATH_MAX];
+  char buffer[file_name_size];
   int k, from, to, count = 0;
   char *s;
 
@@ -285,7 +285,7 @@ char *replacement[MAXCHRS];     /* pointers to replacement strings */
 void read_repl_sub (FILE * repl_input)
 {
   int k, n, m, chrs;
-  char buffer[PATH_MAX];
+  char buffer[file_name_size];
   char charname[128];
   int charnum[10];
   char *s, *t;
@@ -293,7 +293,7 @@ void read_repl_sub (FILE * repl_input)
   memset(replacement, 0, MAXCHRS * sizeof(replacement[ 0]));
 
 
-  while (fgets(buffer, PATH_MAX, repl_input) != NULL)
+  while (fgets(buffer, file_name_size, repl_input) != NULL)
   {
     if (*buffer == '%' || *buffer == ';' || *buffer == '\n')
       continue;
@@ -351,7 +351,7 @@ void read_repl_sub (FILE * repl_input)
 
   if (trace_flag)
   {
-    show_line("Key replacement table\n", 0);
+    puts("Key replacement table\n");
 
     for (k = 0; k < MAXCHRS; k++)
     {
@@ -369,7 +369,7 @@ void read_repl_sub (FILE * repl_input)
 int read_xchr_file (char *filename, int flag, char *argv[])
 {
   FILE *pinput;
-  char infile[PATH_MAX];
+  char infile[file_name_size];
   char *s;
 
   if (filename == NULL)
@@ -798,7 +798,7 @@ memory_word *allocate_main_memory (int size)
   if (main_memory != NULL)
   {
     if (trace_flag)
-      show_line("Reallocating initial memory allocation\n", 1);
+      puts("Reallocating initial memory allocation\n");
   }
 
   mem_top = mem_bot + size;
@@ -869,10 +869,10 @@ memory_word * realloc_main (int lo_size, int hi_size)
 
   if (is_initex)
   {
-    show_line("ERROR: Cannot extent main memory in iniTeX\n", 1);
+    puts("ERROR: Cannot extent main memory in iniTeX\n");
 
     if (! knuth_flag)
-      show_line("Please use `-m=...' on command line\n", 0);
+      puts("Please use `-m=...' on command line\n");
 
     return NULL;
   }
@@ -970,7 +970,6 @@ memory_word * realloc_main (int lo_size, int hi_size)
           new_memory, (current_mem_size + 1) * sizeof(memory_word));
       show_line(log_line, 0);
     }
-
     memmove (new_memory + lo_size, new_memory,
       (current_mem_size + 1) * sizeof(memory_word));
 /*  could reduce words moved by (mem_max - mem_end) */
@@ -989,7 +988,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
 
   if (current_mem_size != mem_max - mem_start)
   {
-    show_line("ERROR: Impossible Memory Error\n", 1);
+    puts("ERROR: Impossible Memory Error\n");
   }
 
   if (mem_start != 0)
@@ -1735,16 +1734,15 @@ int allocate_memory (void)
   current_pool_size = 0;
   str_start = NULL;
   current_max_strings = 0;
-/*  need to create space because iniTeX writes in before reading pool file */
-/*  for a start, puts in strings for 256 characters */
+
 /*  maybe taylor allocations to actual pool file 1300 strings 27000 bytes ? */
   if (is_initex)
   {
     if (trace_flag)
-      show_line("ini TeX pool and string allocation\n", 0);
+      puts("ini TeX pool and string allocation\n");
 
-    str_pool = realloc_str_pool (initial_pool_size); 
-    str_start = realloc_str_start (initial_max_strings);
+    str_pool = realloc_str_pool(initial_pool_size); 
+    str_start = realloc_str_start(initial_max_strings);
   }
 #endif
 
@@ -1829,7 +1827,7 @@ int free_memory (void)
   unsigned int heap_total = 0;
 
   if (trace_flag)
-    show_line("free_memory ", 0);
+    puts("free_memory ");
 
   if (verbose_flag || trace_flag)
     show_maximums(stdout); 
@@ -1849,7 +1847,7 @@ int free_memory (void)
   }
 
   if (trace_flag)
-    show_line("Freeing memory again\n", 0);
+    puts("Freeing memory again\n");
 
 /*  only free memory if safe ... additional check */
 #ifdef ALLOCATEINI
@@ -2129,7 +2127,7 @@ void check_fixed_align (int flag)
 {
   if (test_align ((int) &mem_top, 4, "FIXED ALIGNMENT"))
   {
-    show_line("PLEASE RECOMPILE ME!\n", 1);
+    puts("PLEASE RECOMPILE ME!\n");
   }
 
 #ifdef CHECKALIGNMENT
@@ -2256,7 +2254,7 @@ void check_fixed_align (int flag)
 void check_alloc_align (int flag)
 {
   if (test_align ((int) eqtb, sizeof(eqtb[0]), "ALLOCATED ALIGNMENT"))
-    show_line("PLEASE RECOMPILE ME!\n", 1);
+    puts("PLEASE RECOMPILE ME!\n");
 
 #ifdef CHECKALIGNMENT
   if (!flag)
@@ -2378,7 +2376,6 @@ void knuthify (void)
   ignore_frozen         = false;
   suppress_f_ligs       = false;
   full_file_name_flag   = false;
-  save_strings_flag     = false;
   knuth_flag            = true;  /* so other code can know about this */
 }
 
@@ -2507,10 +2504,6 @@ int analyze_flag (int c, char *optarg)
     case 'z':
       full_file_name_flag = false; // 00 Jun 18
       break;
-    case 'X':
-      save_strings_flag = false; // 00 Aug 15
-      break;
-/* following are unannounced options */ /* some may be recycled ... */
     case 't':
       trace_flag = true;
       break;
@@ -2757,7 +2750,7 @@ int read_command_line (int ac, char **av)
     if (read_xchr_file(repl_file, 1, av))
     {
       if (trace_flag)
-        show_line("KEY REPLACE ON\n", 0);
+        puts("KEY REPLACE ON\n");
 
       key_replace = true;
     }
@@ -2768,7 +2761,7 @@ int read_command_line (int ac, char **av)
     if (read_xchr_file(xchr_file, 0, av))
     {
       if (trace_flag)
-        show_line("NON ASCII ON\n", 0);
+        puts("NON ASCII ON\n");
 
       non_ascii = true;
     }
@@ -2812,10 +2805,9 @@ int init_commands (int ac, char **av)
   show_line_break_stats = true;  /* show line break statistics 96/Feb/8 */
   show_fonts_used       = true;  /* show fonts used in LOG file 97/Dec/24 */
   allow_quoted_names    = true;  /* allow quoted names with spaces 98/Mar/15 */
-  show_cs_names         = false; /* don't show csnames on start 98/Mar/31 */
+  show_cs_names         = false;
   knuth_flag            = false; /* allow extensions to TeX */
   full_file_name_flag   = true;  /* new default 2000 June 18 */
-  save_strings_flag     = true;
   errout                = stdout; /* as opposed to stderr say --- used ??? */
   abort_flag            = 0;      // not yet hooked up ???
   err_level             = 0;      // not yet hooked up ???
@@ -2872,7 +2864,7 @@ void initial_memory (void)
  #if defined(ALLOCATEHIGH) || defined(ALLOCATELOW)
     if (mem_extra_high != 0 || mem_extra_low != 0)
     {
-      show_line("ERROR: Cannot extend main memory in iniTeX\n", 1);
+      puts("ERROR: Cannot extend main memory in iniTeX\n");
       mem_extra_high = 0;   mem_extra_low = 0;
     }
 #endif
@@ -2881,13 +2873,13 @@ void initial_memory (void)
   {
     if (mem_initex != 0)
     {
-      show_line("ERROR: Can only set initial main memory size in iniTeX\n", 1);
+      puts("ERROR: Can only set initial main memory size in iniTeX\n");
       mem_initex = 0;
     }
 
     if (trie_size != 0)
     {
-      show_line("ERROR: Need only set hyphenation trie size in iniTeX\n", 1);
+      puts("ERROR: Need only set hyphenation trie size in iniTeX\n");
 /* trie_size = 0; */
     }
   }
@@ -2908,7 +2900,7 @@ void initial_memory (void)
 
   if (mem_initex > 2048L * 1024L) /* extend main memory by 16 mega byte! */
   {
-    show_line("WARNING: There may be no benefit to asking for so much memory\n", 0);
+    puts("WARNING: There may be no benefit to asking for so much memory\n");
 /* mem_initex = 2048 * 1024; */
   }
 
@@ -2918,7 +2910,7 @@ void initial_memory (void)
   if (new_hyphen_prime > 0)
   {
     if (! is_initex)
-      show_line("ERROR: Can only set hyphen prime in iniTeX\n", 1);
+      puts("ERROR: Can only set hyphen prime in iniTeX\n");
     else
     {
       if (new_hyphen_prime % 2 == 0)
@@ -2993,7 +2985,7 @@ void hidetwiddle (char *name)
 
 void deslash_all (int ac, char **av)
 {
-  char buffer[PATH_MAX];  
+  char buffer[file_name_size];  
   char *s;
 
   if ((s = grabenv("TEXDVI")) != NULL)
@@ -3193,7 +3185,7 @@ int main_init (int ac, char **av)
   closed_already    = 0;
 
   if (trace_flag)
-    show_line("Entering init (local.c)\n", 0);
+    puts("Entering init (local.c)\n");
 
   probe_memory(); /* show top address */
   ini_max_address = max_address; /* initial max address */
@@ -3206,9 +3198,7 @@ int main_init (int ac, char **av)
   no_interrupts = 0;
 
   if (format_spec && mem_spec_flag)
-  {
-    show_line("WARNING: Cannot change initial main memory size when format specified", 1);
-  }
+    puts("WARNING: Cannot change initial main memory size when format specified");
 
   if (allocate_memory() != 0)
     return -1;
@@ -3278,21 +3268,21 @@ int endit (int flag)
 
   if (verbose_flag)
   {
-    show_line("Total ", 0);
+    puts("Total ");
     show_inter_val(finish_time - start_time);
-    show_line(" sec (", 0);
+    puts(" sec (");
     show_inter_val(main_time - start_time);
-    show_line(" format load + ", 0);
+    puts(" format load + ");
     show_inter_val(finish_time - main_time);
-    show_line(" processing) ", 0);
+    puts(" processing) ");
 
     if (total_pages > 0)
     {
       show_inter_val((finish_time - main_time) / total_pages);
-      show_line(" sec per page.", 0);
+      puts(" sec per page.");
     }
 
-    show_line("\n", 0);
+    puts("\n");
   }
 
   return flag;

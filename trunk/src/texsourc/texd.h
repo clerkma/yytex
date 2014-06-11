@@ -1,3 +1,5 @@
+#ifndef _YANDYTEX_TEXD_H
+#define _YANDYTEX_TEXD_H
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #define ALLOCATEINI        /* allocate iniTeX (550 k) trie_c, trie_o, trie_l, trie_r, trie_hash, trie_taken */
 #define ALLOCATEMAIN       /* allocate main memory for TeX (2 Meg) zmem = zzzaa */
@@ -22,113 +24,9 @@
 #define COMPACTFORMAT
 
 #define STAT
-#include "yandytex.h"
+#include "texmf.h"
 
-enum {
-  out_dvi_flag = (1 << 0),
-  out_pdf_flag = (1 << 1),
-  out_xdv_flag = (1 << 2),
-  out_dpx_flag = (1 << 3),
-};
-
-#define INLINE inline
-
-#define dump_file  fmt_file
-#define out_file   dvi_file
-
-/* Read a line of input as quickly as possible.  */
-extern boolean input_line (FILE *);
-#define input_ln(stream, flag) input_line(stream)
-
-/* `b_open_in' (and out) is used only for reading (and writing) .tfm
-   files; `w_open_in' (and out) only for dump files.  The filenames are
-   passed in as a global variable, `name_of_file'.  */
-   
-#define b_open_in(f)  open_input  (&(f), TFMFILEPATH, FOPEN_RBIN_MODE)
-#define w_open_in(f)  open_input  (&(f), TEXFORMATPATH, FOPEN_RBIN_MODE)
-#define b_open_out(f) open_output (&(f), FOPEN_WBIN_MODE)
-#define w_open_out    b_open_out
-#define b_close       a_close
-#define w_close       a_close
-#define gz_w_close    gzclose
-
-/* sec 0241 */
-#define fix_date_and_time() get_date_and_time (&(tex_time), &(day), &(month), &(year))
-
-/* If we're running under Unix, use system calls instead of standard I/O
-   to read and write the output files; also, be able to make a core dump. */ 
-#ifndef unix
-  #define dumpcore() exit(1)
-#else /* unix */
-  #define dumpcore abort
-#endif
-
-#define write_dvi(a, b)                                           \
-  if ((size_t) fwrite ((char *) &dvi_buf[a], sizeof (dvi_buf[a]), \
-         (size_t) ((size_t)(b) - (size_t)(a) + 1), dvi_file)      \
-         != (size_t) ((size_t)(b) - (size_t)(a) + 1))             \
-     FATAL_PERROR ("\n! dvi file")
-
-extern int do_dump (char *, int, int, FILE *);
-extern int do_undump (char *, int, int, FILE *);
-
-/* Reading and writing the dump files.  `(un)dumpthings' is called from
-   the change file.*/
-#define dumpthings(base, len)           \
-  do_dump ((char *) &(base), sizeof (base), (int) (len), dump_file)
-
-#define undumpthings(base, len)           \
-  do_undump ((char *) &(base), sizeof (base), (int) (len), dump_file)
-
-/* Use the above for all the other dumping and undumping.  */
-#define generic_dump(x)   dumpthings (x, 1)
-#define generic_undump(x) undumpthings (x, 1)
-
-#define dump_wd     generic_dump
-#define undump_wd   generic_undump
-#define dump_hh     generic_dump
-#define undump_hh   generic_undump
-#define dump_qqqq   generic_dump
-#define undump_qqqq generic_undump
-
-/* `dump_int' is called with constant integers, so we put them into a
-   variable first.  */
-#define dump_int(x)         \
-  do                        \
-    {                       \
-      integer x_val = (x);  \
-      generic_dump (x_val); \
-    }                       \
-  while (0)
-
-/* web2c/regfix puts variables in the format file loading into
-   registers.  Some compilers aren't willing to take addresses of such
-   variables.  So we must kludge.  */
-#ifdef REGFIX
-#define undump_int(x)         \
-  do                          \
-    {                         \
-      integer x_val;          \
-      generic_undump (x_val); \
-      x = x_val;              \
-    }                         \
-  while (0)
-#else
-#define undump_int  generic_undump
-#endif
-
-
-/* If we're running on an ASCII system, there is no need to use the
-   `xchr' array to convert characters to the external encoding.  */
-
-#define Xchr(x) xchr[x]
-
-/* following added from new texmf.c file 1996/Jan/12 */
-/* these, of course are useless definitions since parameters not given */
-
-/* Declare routines in texmf.c.  */
-extern void t_open_in();
-#include "yandy_macros.h"
+#define file_name_size PATH_MAX
 
 // #define max_halfword 65535L  /* for 32 bit memory word */
 #define min_halfword -2147483647L /* for 64 bit memory word (signed) */
@@ -268,61 +166,7 @@ typedef halfword pointer;
 typedef char two_choices;
 typedef char four_choices;
 /* sec 0113 */
-/*
-  meaning      structure                      TeX                 Y&Y TeX
-               ----------------------------------------------------------------------
-  integer      |            int            || 4: long           | 8: long long      |   min_quarterword 0
-               ---------------------------------------------------------------------- max_quarterword FFFF
-  scaled       |            sc             || 4: long           | 8: long long      |   min_halfword
-               ----------------------------------------------------------------------
-  glue_ratio   |            gr             || 4: float          | 8: double         |
-               ----------------------------------------------------------------------
-  halfword     |     lh      |     rh      || 2: unsigned short | 4: unsigned long  |
-               ----------------------------------------------------------------------
-  half+quarter |  b0  |  b1  |     rh      ||                                       |
-               ----------------------------------------------------------------------
-  quarter      |  b0  |  b1  |  b2  |  b3  || 1: unsigned char  | 2: unsigned short |
-               ----------------------------------------------------------------------
-*/
-
-typedef struct
-{
-#ifdef WORDS_BIGENDIAN
-  halfword rh;
-
-  union
-  {
-    halfword lh;
-
-    struct
-    {
-      quarterword b0, b1;
-    };
-  };
-#endif
-} two_halves;
-
-typedef struct
-{
-#ifdef WORDS_BIGENDIAN
-  quarterword b0, b1, b2, b3;
-#else
-  quarterword b3, b2, b1, b0;
-#endif
-} four_quarters;
-
-typedef union
-{
-  glue_ratio gr;
-  two_halves hh;
-  integer cint;
-  four_quarters qqqq;
-} memory_word;
-
-#ifndef WORDS_BIGENDIAN
-  #define cint u.CINT
-  #define qqqq v.QQQQ
-#endif
+#include "texmfmem.h"
 /* sec 0150 */
 typedef char glue_ord; 
 /* sec 0212 */
@@ -355,7 +199,7 @@ typedef integer hyph_pointer;
 EXTERN integer bad;
 EXTERN ASCII_code xord[256];
 EXTERN ASCII_code xchr[256];
-EXTERN unsigned char name_of_file[PATH_MAX + 4];
+EXTERN unsigned char name_of_file[file_name_size + 4];
 EXTERN integer name_length;
 
 #ifdef ALLOCATESTRING
@@ -404,10 +248,12 @@ EXTERN halfword temp_ptr;
 
 /* sec 0116 */
 #ifdef ALLOCATEMAIN
-  EXTERN memory_word * main_memory;
+  EXTERN memory_word * main_memory;   /* remembered so can be free() later */
   EXTERN memory_word * mem;
 #else
   EXTERN memory_word 
+  /* #define zmem (zzzaa - (int)(mem_min)) */
+  /*  zzzaa[mem_max - mem_min + 1]; */
   #define zmem (zzzaa - (int)(mem_bot))
   zzzaa[mem_max - mem_bot + 1];
 #endif
@@ -468,12 +314,12 @@ EXTERN int old_setting;
 #endif
 
 #ifdef ALLOCATEZEQTB
-  EXTERN memory_word * eqtb;
+  EXTERN memory_word * zeqtb;
 #else
   #ifdef INCREASEFONTS
-    EXTERN memory_word eqtb[eqtb_size + 1];
+    EXTERN memory_word eqtb[(hash_size + 4007) + eqtb_extra];
   #else
-    EXTERN memory_word eqtb[eqtb_size + 1];
+    EXTERN memory_word zeqtb[(hash_size + 4007)];
   #endif
 #endif
 
@@ -634,8 +480,6 @@ EXTERN char * log_file_name;
   EXTERN memory_word font_info[font_mem_size + 1];
 #endif
 
-EXTERN eight_bits font_dir[font_max + 1];
-EXTERN integer font_num_ext[font_max + 1];
 EXTERN font_index fmem_ptr;
 EXTERN internal_font_number font_ptr;
 EXTERN internal_font_number frozen_font_ptr;
@@ -653,9 +497,10 @@ EXTERN integer hyphen_char[font_max + 1];
 EXTERN integer skew_char[font_max + 1];
 EXTERN font_index bchar_label[font_max + 1];
 EXTERN short font_bchar[font_max + 1];
+/* don't change above to int or format file will be incompatible */
 EXTERN short font_false_bchar[font_max + 1];
+/* don't change above to int or format file will be incompatible */
 EXTERN integer char_base[font_max + 1];
-EXTERN integer ctype_base[font_max + 1];
 EXTERN integer width_base[font_max + 1];
 EXTERN integer height_base[font_max + 1];
 EXTERN integer depth_base[font_max + 1];
@@ -810,15 +655,16 @@ EXTERN trie_op_code max_op_used;
     EXTERN trie_pointer *trie_l;      /* left subtrie links */
     EXTERN trie_pointer *trie_r;      /* right subtrie links */
     EXTERN trie_pointer *trie_hash;   /* used to identify equivlent subtries */
-  #else /* end ALLOCATEINI */
+  #else
     EXTERN packed_ASCII_code trie_c[trie_size + 1];
     EXTERN trie_op_code trie_o[trie_size + 1];
     EXTERN trie_pointer trie_l[trie_size + 1];
     EXTERN trie_pointer trie_r[trie_size + 1];
     EXTERN trie_pointer trie_hash[trie_size + 1];
-  #endif /* end not ALLOCATEINI */
+  #endif
+
   EXTERN trie_pointer trie_ptr;
-#endif /* INITEX */
+#endif
 
 #ifdef INITEX
   #ifdef ALLOCATEINI
@@ -836,6 +682,7 @@ EXTERN scaled best_height_plus_depth;
 EXTERN halfword page_tail;
 EXTERN int page_contents;
 
+/* do *some* sanity checking here --- rather than in TeX later 96/Jan/18 */
 /* (cannot catch everything here, since some is now dynamic) */
 
 #if (half_error_line < 30) || (half_error_line > error_line - 15)
@@ -921,7 +768,7 @@ EXTERN pool_pointer edit_name_start;
 EXTERN integer edit_name_length, edit_line;
 EXTERN int tfm_temp;
 
-/* new stuff defined in local.c - bkph */
+/* new variables defined in local.c */
 EXTERN boolean is_initex;
 EXTERN boolean verbose_flag;
 EXTERN boolean trace_flag;
@@ -945,7 +792,6 @@ EXTERN boolean show_numeric;
 EXTERN boolean restrict_to_ascii;
 EXTERN boolean show_missing;
 EXTERN boolean full_file_name_flag;
-EXTERN boolean save_strings_flag;
 EXTERN int mem_initex;
 EXTERN int mem_extra_high;
 EXTERN int mem_extra_low;
@@ -1033,14 +879,12 @@ void call_edit (ASCII_code *filename, pool_pointer fnstart,
 
 void add_variable_space(int);
 
-void get_date_and_time (integer *, integer *, integer *, integer *);
-
-//void get_date_and_time (integer *minutes, integer *day,
-//                        integer *month, integer *year);
+void get_date_and_time (integer *minutes, integer *day,
+                        integer *month, integer *year);
 
 char *unixify (char *);
 
-//#include "yandy_macros.h"
+#include "yandy_macros.h"
 #include "coerce.h"
 
 /* sec 79 */
@@ -1092,3 +936,4 @@ EXTERN void pdf_begin_text(void);
 EXTERN void pdf_font_def(internal_font_number f);
 EXTERN void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data);
 /********BINDING WITH LIBHARU*********/
+#endif

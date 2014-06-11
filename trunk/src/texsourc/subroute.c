@@ -39,7 +39,7 @@ void uexit (int unix_code)
 
   if (jump_used)
   {
-    show_line("Jump Buffer already used\n", 1);
+    puts("Jump Buffer already used\n");
     exit(1);
   }
 

@@ -28,7 +28,7 @@
 
 #define BUILDNAMEDIRECT
 
-extern int shorten_file_name;       /* in local.c bkph */
+extern int shorten_file_name;
 
 #ifdef FUNNY_CORE_DUMP
   extern void funny_core_dump(void);
@@ -340,12 +340,12 @@ extern char * pdf_directory;
 int check_fclose (FILE * f)
 {
   if (f == NULL)
-    return 0;      // sanity check
+    return 0;
 
   if (ferror(f) || fclose (f))
   {
     perrormod("\n! I/O Error");
-    uexit (1);
+    uexit(EXIT_FAILURE);
   }
 
   return 0;
@@ -399,7 +399,7 @@ boolean open_output (FILE **f, char *fopen_mode)
     if (temp_dir != NULL)
     {
 #ifdef BUILDNAMEDIRECT
-      unsigned char temp_name[PATH_MAX];
+      unsigned char temp_name[file_name_size];
       xconcat3((char *) temp_name, temp_dir, PATH_SEP_STRING, (char *) name_of_file + 1);
 #else
       string temp_name = concat3 (temp_dir, PATH_SEP_STRING, name_of_file + 1);

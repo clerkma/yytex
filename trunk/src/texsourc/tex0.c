@@ -19,12 +19,7 @@
 
 #include "texd.h"
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-INLINE void pack_cur_name(void)
-{
-  pack_file_name(cur_name, cur_area, cur_ext);
-}
-INLINE void prompt_input(const char *s)
+INLINE void prompt_input(const char * s)
 {
   print_string(s);
   term_input();
@@ -70,7 +65,7 @@ INLINE void dvi_out_(ASCII_code op)
   if (dvi_ptr == dvi_limit)
     dvi_swap();
 }
-INLINE void succumb(void)
+INLINE void succumb (void)
 {
   if (interaction == error_stop_mode)
     interaction = scroll_mode;
@@ -88,30 +83,30 @@ INLINE void succumb(void)
   history = 3;
   jump_out();
 }
-INLINE void flush_string(void)
+INLINE void flush_string (void)
 {
   decr(str_ptr);
   pool_ptr = str_start[str_ptr];
 }
-INLINE void append_char(ASCII_code c)
+INLINE void append_char (ASCII_code c)
 {
   str_pool[pool_ptr] = c;
   incr(pool_ptr);
 }
-INLINE void append_lc_hex(ASCII_code c)
+INLINE void append_lc_hex (ASCII_code c)
 {
   if (c < 10)
     append_char(c + '0');
   else
     append_char(c - 10 + 'a');
 }
-INLINE void print_err(const char * s)
+INLINE void print_err (const char * s)
 {
   if (interaction == error_stop_mode);
     print_nl("! ");
   print_string(s);
 }
-INLINE void tex_help(unsigned int n, ...)
+INLINE void tex_help (unsigned int n, ...)
 {
   int i;
   va_list help_arg;
@@ -127,7 +122,7 @@ INLINE void tex_help(unsigned int n, ...)
 
   va_end(help_arg);
 }
-INLINE void str_room_(int val)
+INLINE void str_room_ (int val)
 {
 #ifdef ALLOCATESTRING
   if (pool_ptr + val > current_pool_size)
@@ -144,7 +139,7 @@ INLINE void str_room_(int val)
   }
 #endif
 }
-INLINE void tail_append_(pointer val)
+INLINE void tail_append_ (pointer val)
 {
   link(tail) = val;
   tail = link(tail);
@@ -199,9 +194,9 @@ void print_char_ (ASCII_code s)
   switch (selector)
   {
     case term_and_log:
-      (void) show_char(Xchr(s));
+      (void) show_char(xchr[s]);
       incr(term_offset);
-      (void) putc(Xchr(s), log_file);
+      (void) putc(xchr[s], log_file);
       incr(file_offset);
 
       if (term_offset == max_print_line)
@@ -219,7 +214,7 @@ void print_char_ (ASCII_code s)
       break;
 
     case log_only:
-      (void) putc(Xchr(s), log_file);
+      (void) putc(xchr[s], log_file);
       incr(file_offset);
 
       if (file_offset == max_print_line)
@@ -228,7 +223,7 @@ void print_char_ (ASCII_code s)
       break;
 
     case term_only:
-      (void) show_char(Xchr(s));
+      (void) show_char(xchr[s]);
       incr(term_offset);
 
       if (term_offset == max_print_line)
@@ -267,7 +262,7 @@ void print_char_ (ASCII_code s)
       break;
 
     default:
-      (void) putc(Xchr(s), write_file[selector]);
+      (void) putc(xchr[s], write_file[selector]);
       break;
   }
 
@@ -381,7 +376,7 @@ void slow_print_ (integer s)
   }
 }
 /* sec 0062 */
-void print_nl_ (const char * s)
+void print_nl (const char * s)
 {
   if (((term_offset > 0) && (odd(selector))) ||
       ((file_offset > 0) && (selector >= log_only)))
@@ -390,7 +385,7 @@ void print_nl_ (const char * s)
   print_string(s);
 }
 /* sec 0063 */
-void print_esc_ (const char * s)
+void print_esc (const char * s)
 {
   integer c;
 
@@ -553,7 +548,7 @@ void jump_out (void)
     ready_already = 0;
 
     if (trace_flag)
-      show_line("EXITING at JUMPOUT\n", 0);
+      puts("EXITING at JUMPOUT\n");
 
     if ((history != 0) && (history != 1))
       code = 1;
@@ -687,16 +682,16 @@ lab22:
 
             if (last > first + 1)
             {
-              cur_input.loc_field = first + 1;
+              loc = first + 1;
               buffer[first] = 32;
             }
             else
             {
               prompt_input("insert>");
-              cur_input.loc_field = first;
+              loc = first;
             }
             first = last;
-            cur_input.limit_field = last - 1;
+            limit = last - 1;
             return;
           }
           break;
@@ -756,7 +751,7 @@ lab22:
 
         print_nl("H for help, X to quit.");
       }
-    } /* end of while(true) loop */
+    } /* end of while (true) loop */
 
   incr(error_count);
 
@@ -775,7 +770,7 @@ lab22:
     print_ln();
     give_err_help();
   }
-  else while(help_ptr > 0)
+  else while (help_ptr > 0)
   {
     decr(help_ptr);
     print_nl(help_line[help_ptr] == NULL ? "" : help_line[help_ptr]);
@@ -789,7 +784,7 @@ lab22:
   print_ln();
 }
 /* sec 0093 */
-void fatal_error_(char * s)
+void fatal_error(char * s)
 {
   normalize_selector();
   print_err("Emergency stop");
@@ -810,12 +805,12 @@ void overflow_(char * s, integer n)
 
   if (!knuth_flag)
   {
-    if (!strcmp(s, "pattern memory") && n == trie_size)
+    if (!strcmp(s, "pattern memory") && (n == trie_size))
     {
       sprintf(log_line, "\n  (Maybe use -h=... on command line in ini-TeX)\n");
       show_line(log_line, 0);
     }
-    else if (!strcmp(s, "exception dictionary") && n == hyphen_prime)
+    else if (!strcmp(s, "exception dictionary") && (n == hyphen_prime))
     {
       sprintf(log_line, "\n  (Maybe use -e=... on command line in ini-TeX)\n");
       show_line(log_line, 0);
@@ -825,7 +820,7 @@ void overflow_(char * s, integer n)
   succumb();
 }
 /* sec 0095 */
-void confusion_(char * s)
+void confusion_(const char * s)
 {
   normalize_selector();
 
@@ -854,41 +849,35 @@ boolean init_terminal (void)
 
   if (last > first)
   {
-    cur_input.loc_field = first;
+    loc = first;
 
-    while((cur_input.loc_field < last) && (buffer[cur_input.loc_field]== ' '))
-      incr(cur_input.loc_field);    // step over initial white space
+    while ((loc < last) && (buffer[loc]== ' '))
+      incr(loc);    // step over initial white space
 
-    if (cur_input.loc_field < last)
+    if (loc < last)
       return true;
   }
 
 // failed to find input file name
   while (true)
   {
-#ifdef _WINDOWS
-    flag = ConsoleInput("**", "Please type a file name or a control sequence\r\n(or ^z to exit)", (char *) &buffer[first]);
-    last = first + strlen((char *) &buffer[first]); /* -1 ? */
-//    may need to be more elaborate see input_line in texmf.c
-#else
-    (void) fputs("**", stdout);
+    fputs("**", stdout);
     fflush(stdout);
     flag = input_ln(stdin, true);
-#endif
 
     if (!flag)
     {
       show_char('\n');
-      show_line("! End of file on the terminal... why?\n", 1);
+      puts("! End of file on the terminal... why?\n");
       return false;
     }
 
-    cur_input.loc_field = first;
+    loc = first;
 
-    while ((cur_input.loc_field < last) && (buffer[cur_input.loc_field]== ' '))
-      incr(cur_input.loc_field);    // step over intial white space
+    while ((loc < last) && (buffer[loc]== ' '))
+      incr(loc);    // step over intial white space
 
-    if (cur_input.loc_field < last)
+    if (loc < last)
       return true;
 
     sprintf(log_line, "%s\n", "Please type the name of your input file.");
@@ -1049,31 +1038,133 @@ void print_current_string (void)
     incr(j);
   }
 }
+
+int stringlength (int str_ptr)
+{
+  return (str_start[str_ptr + 1] - str_start[str_ptr]) + 2;
+}
+
+char * add_string (char *s, char * str_string)
+{
+  int n;
+
+  n = strlen(str_string);
+  memcpy(s, &str_string, n);
+  s += n;
+  strcpy(s, "\r\n");
+  s += 2;
+
+  return s;
+}
+
+int addextrahelp = 1;
+
+// make one long \r\n separated string out of help lines 
+// str_pool is packed_ASCII_code *
+
+char * make_up_help_string (int nhelplines)
+{
+  char * helpstring, *s;
+  int k, nlen = 0;
+  
+//  get length of help for this specific message
+  for (k = nhelplines - 1; k >= 0; k--)
+  {
+    nlen += strlen(help_line[k]);
+  }
+
+  nlen += 2; // for blank line separator: "\r\n"
+
+  if (addextrahelp)
+  {
+    nlen += stringlength(265);
+    nlen += stringlength(266);
+    nlen += stringlength(267);
+
+    if (base_ptr > 0)
+      nlen += stringlength(268);
+
+    if (deletions_allowed)
+      nlen += stringlength(269);
+
+    nlen += stringlength(270);
+  }
+
+  helpstring = (char *) malloc(nlen + 1); // +1 = '\0'
+  s = helpstring;
+
+  for (k = nhelplines-1; k >= 0; k--)
+  {
+    s = add_string(s, help_line[k]);
+  }
+
+  if (addextrahelp)
+  {
+    strcpy(s, "\r\n");
+    s += 2;
+    s = add_string(s, "Type <return> to proceed, S to scroll future error messages,");
+    s = add_string(s, "R to run without stopping, Q to run quietly,");
+    s = add_string(s, "I to insert something, ");
+
+    if (base_ptr > 0)
+      s = add_string(s, "E to edit your file, ");
+
+    if (deletions_allowed)
+      s = add_string(s, "1 or ... or 9 to ignore the next 1 to 9 tokens of input,");
+
+    s = add_string(s, "H for help, X to quit.");
+  }
+
+  return helpstring;
+}
+
+char * make_up_query_string (int promptstr)
+{
+  char *querystr;
+  int nstart, nnext, n;
+  char *s;
+
+  nstart = str_start[ promptstr];
+  nnext = str_start[ promptstr + 1];
+  n = nnext - nstart;
+  querystr = (char *) malloc(n + 1);
+  s = querystr;
+  memcpy(s, &str_pool[nstart], n);  
+  s += n;
+  *s = '\0';
+
+  return querystr;
+}
+
+// abort_flag set if input_line / ConsoleInput returns non-zero
+// should set interrupt instead ???
+// called from tex0.c, tex2.c, tex3.c
 /* sec 0071 */
 void term_input(void)
 { 
   integer k;
-
+  int flag;
+  
   if (!knuth_flag)
-    show_line("\n", 0); // force it to show what may be buffered up ??? 
+    show_line("\n", 0);
 
   fflush(stdout);
+  flag = input_ln(stdin, true);
 
-  if (!input_ln(stdin, true))
+  if (!flag)
   {
     fatal_error("End of file on the terminal!");
-    return;
+    return;         // abort_flag set
   }
-
   term_offset = 0;
-  decr(selector);
+  decr(selector);     // shut off echo
 
   if (last != first)
     for (k = first; k <= last - 1; k++)
       print(buffer[k]);
 
   print_ln();
-  incr(selector);
+  incr(selector);     // reset selector again
 }
 /* sec 0091 */
 void int_error_ (integer n)
@@ -1600,7 +1691,7 @@ lab20:
   if (s == 1073741824L)    /* 2^30 - special case - merge adjacent */
   {
     if (trace_flag)
-      show_line("Merged adjacent multi-word nodes\n", 0);
+      puts("Merged adjacent multi-word nodes\n");
 
     return max_halfword;
   }
@@ -1829,7 +1920,7 @@ pointer new_skip_param_(small_number n)
   return p;
 }
 /* sec 0155 */
-pointer new_kern_(scaled w)
+pointer new_kern(scaled w)
 {
   pointer p;
 
@@ -1841,7 +1932,7 @@ pointer new_kern_(scaled w)
   return p;
 }
 /* sec 0158 */
-pointer new_penalty_(integer m)
+pointer new_penalty(integer m)
 {
   pointer p;
 
@@ -1855,7 +1946,7 @@ pointer new_penalty_(integer m)
 
 #ifdef DEBUG
 /* sec 0167 */
-void check_mem_(boolean printlocs)
+void check_mem(boolean printlocs)
 {
   pointer p, q;
   boolean clobbered;
@@ -2087,7 +2178,7 @@ void short_display_(integer p)
   }
 }
 /* sec 0176 */
-void print_font_and_char_ (integer p)
+void print_font_and_char (integer p)
 {
   if (p > mem_end)
     print_esc("CLOBBERED.");
@@ -2118,7 +2209,7 @@ void print_mark_ (integer p)
   print_char('}');
 }
 /* sec 0176 */
-void print_rule_dimen_ (scaled d)
+void print_rule_dimen(scaled d)
 {
   if ((d == -1073741824L)) /* - 2^30 */
     print_char('*');
@@ -2319,16 +2410,6 @@ void print_skip_param_(integer n)
       print_esc("parfillskip");
       break;
 
-    ///*
-    case kanji_skip_code:
-      print_esc("kanjiskip");
-      break;
-
-    case xkanji_skip_code:
-      print_esc("xkanjiskip");
-      break;
-    //*/
-
     case thin_mu_skip_code:
       print_esc("thinmuskip");
       break;
@@ -2339,10 +2420,6 @@ void print_skip_param_(integer n)
 
     case thick_mu_skip_code:
       print_esc("thickmuskip");
-      break;
-
-    case jfm_skip:
-      print("refer from jfm");
       break;
 
     default:
@@ -2384,7 +2461,7 @@ void show_node_list_(integer p)
       return;
     }
 
-    if ((p >= hi_mem_min))
+    if (is_char_node(p))
       print_font_and_char(p);
     else switch (type(p))
     {

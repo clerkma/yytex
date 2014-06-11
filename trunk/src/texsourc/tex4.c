@@ -141,7 +141,7 @@ void dvi_four_(integer x)
   dvi_out(x % 0400); // dvi_out(x & 255);
 }
 /* sec 0601 */
-void zdvipop(integer l)
+void dvi_pop_(integer l)
 {
   if ((l == dvi_offset + dvi_ptr) && (dvi_ptr > 0))
     decr(dvi_ptr);
@@ -481,7 +481,7 @@ void write_out_(pointer p)
       {
         get_token();
       }
-    while(!(cur_tok == end_write_token));
+    while (!(cur_tok == end_write_token));
   }
 
   mode = oldmode;
@@ -541,7 +541,7 @@ void out_what_(pointer p)
 
             pack_file_name(cur_name, cur_area, cur_ext);
 
-            while(! a_open_out(write_file[j]))
+            while (! a_open_out(write_file[j]))
             {
               prompt_file_name("output file name", ".tex");
             }
@@ -667,7 +667,7 @@ lab21:
           cur_h = cur_h + char_width(f, char_info(f, c));
           p = link(p);
         }
-      while(!(!(p >= hi_mem_min)));
+      while (!(!is_char_node(p)));
 
       dvi_h = cur_h;
   }
@@ -918,7 +918,7 @@ void vlist_out (void)
 
   while (p != 0)
   {
-    if ((p >= hi_mem_min))
+    if (is_char_node(p))
     {
       confusion("vlistout");
       return;       // abort_flag set
@@ -1139,7 +1139,7 @@ void dvi_ship_out_(halfword p)
   print_char('[');
   j = 9;
 
-  while((count(j) == 0) && (j > 0))
+  while ((count(j) == 0) && (j > 0))
     decr(j);
 
   for (k = 0; k <= j; k++)
@@ -1200,7 +1200,7 @@ void dvi_ship_out_(halfword p)
 
     pack_job_name(".dvi");
 
-    while(!b_open_out(dvi_file))
+    while (!b_open_out(dvi_file))
     {
       prompt_file_name("file name for output", ".dvi");
     }
@@ -1375,7 +1375,7 @@ halfword hpack_(halfword p, scaled w, small_number m)
   while (p != 0)
   {
 lab21:
-    while ((p >= hi_mem_min))
+    while (is_char_node(p))
     {
       f = font(p);
       i = char_info(f, character(p));
@@ -1590,7 +1590,7 @@ lab21:
       {
           if ((overfull_rule > 0) && (- (integer) x - total_shrink[0] > hfuzz))
           {
-              while(link(q) != 0)
+              while (link(q) != 0)
                 q = link(q);
  
               link(q) = new_rule();
@@ -1683,7 +1683,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
 
   while (p != 0)
   {
-    if ((p >= hi_mem_min))
+    if (is_char_node(p))
     {
       confusion("vpack");
       return 0;       // abort_flag set
@@ -2142,7 +2142,7 @@ lab40:
       n = 0;
 
       if (u > 0)
-        while(w < v)
+        while (w < v)
         {
           w = w + u;
           incr(n);

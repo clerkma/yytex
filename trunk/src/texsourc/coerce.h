@@ -27,10 +27,8 @@ void print_string_(unsigned char * s);
 #define print_string(s) print_string_((unsigned char *) s)
 void slow_print_(integer);
 #define slow_print(s) slow_print_((integer) (s))
-void print_nl_(const char *);
-#define print_nl(s) print_nl_((const char *) (s))
-void print_esc_(const char *);
-#define print_esc(s) print_esc_((const char *) (s))
+void print_nl(const char *);
+void print_esc(const char *);
 void print_the_digs_(eight_bits);
 #define print_the_digs(k) print_the_digs_((eight_bits) (k))
 void print_int_(integer);
@@ -47,12 +45,11 @@ void print_write_whatsit_(str_number, pointer);
 #define print_write_whatsit(s, p) print_write_whatsit_((str_number) (s), (pointer) (p))
 void jump_out(void);
 void error(void);
-void fatal_error_(char *);
-#define fatal_error(s) fatal_error_((char *) (s))
+void fatal_error(char *);
 void overflow_(char *, integer);
 #define overflow(s, n) overflow_((char *) (s), (integer) (n))
-void confusion_(char *);
-#define confusion(s) confusion_((char *) (s))
+void confusion_(const char *);
+#define confusion(s) confusion_((const char *) (s))
 boolean init_terminal(void);
 str_number make_string(void);
 boolean str_eq_buf_(str_number, integer);
@@ -116,22 +113,17 @@ pointer new_glue_(pointer);
 #define new_glue(q) new_glue_((pointer) (q))
 pointer new_skip_param_(small_number);
 #define new_skip_param(n) new_skip_param_((small_number) (n))
-pointer new_kern_(scaled);
-#define new_kern(w) new_kern_((scaled) (w))
-pointer new_penalty_(integer);
-#define new_penalty(m) new_penalty_((integer) (m))
-void check_mem_(boolean);
-#define check_mem(printlocs) check_mem_((boolean) (printlocs))
+pointer new_kern(scaled);
+pointer new_penalty(integer);
+void check_mem(boolean);
 void search_mem_(halfword);
 #define search_mem(p) search_mem_((halfword) (p))
 void short_display_(integer);
 #define short_display(p) short_display_((integer) (p))
-void print_font_and_char_(integer);
-#define print_font_and_char(p) print_font_and_char_((integer) (p))
+void print_font_and_char(integer);
 void print_mark_(integer);
 #define print_mark(p) print_mark_((integer) (p))
-void print_rule_dimen_(scaled);
-#define print_rule_dimen(d) print_rule_dimen_((scaled) (d))
+void print_rule_dimen(scaled);
 void print_glue_(scaled, integer, char *);
 #define print_glue(d, order, s) print_glue_((scaled) (d), (integer) (order), (char *) (s))
 void print_spec_(integer, char *);
@@ -224,8 +216,7 @@ void get_x_token(void);
 void x_token(void);
 void scan_left_brace(void);
 void scan_optional_equals(void);
-boolean scan_keyword_(const char *);
-#define scan_keyword(s) scan_keyword_((const char *) (s))
+boolean scan_keyword(const char *);
 void mu_error(void);
 void scan_eight_bit_int(void);
 void scan_char_num(void);
@@ -265,12 +256,12 @@ void pack_file_name_(str_number, str_number, str_number);
 void pack_buffered_name_(small_number, integer, integer);
 #define pack_buffered_name(n, a, b) pack_buffered_name_((small_number) (n), (integer) (a), (integer) (b))
 str_number make_name_string(void);
-str_number a_make_name_string_(alpha_file *);
-#define a_make_name_string(f) a_make_name_string_((alpha_file *) &(f))
-str_number b_make_name_string_(byte_file *);
-#define b_make_name_string(f) b_make_name_string_((byte_file *) &(f))
-str_number w_make_name_string_(word_file *);
-#define w_make_name_string(f) w_make_name_string_((word_file *) &(f))
+str_number a_make_name_string_(void);
+#define a_make_name_string(f) a_make_name_string_()
+str_number b_make_name_string_(void);
+#define b_make_name_string(f) b_make_name_string_()
+str_number w_make_name_string_(void);
+#define w_make_name_string(f) w_make_name_string_()
 void scan_file_name(void);
 void pack_job_name_(str_number);
 #define pack_job_name(s) pack_job_name_(make_string_pool((char*)s))
@@ -287,8 +278,8 @@ halfword new_character_(internal_font_number, eight_bits);
 void dvi_swap(void);
 void dvi_four_(integer);
 #define dvi_four(x) dvi_four_((integer) (x))
-void zdvipop(integer);
-#define dvi_pop(l) zdvipop((integer) (l))
+void dvi_pop_(integer);
+#define dvi_pop(l) dvi_pop_((integer) (l))
 void dvi_font_def_(internal_font_number);
 #define dvi_font_def(f) dvi_font_def_((internal_font_number) (f))
 void zmovement(scaled, eight_bits);

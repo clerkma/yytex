@@ -33,7 +33,7 @@ halfword rebox_(halfword b, scaled w)
 
     p = list_ptr(b);
 
-    if (((p >= hi_mem_min)) && (link(p) == 0))
+    if ((is_char_node(p)) && (link(p) == 0))
     {
       f = font(p);
       v = char_width(f, char_info(f, character(p)));
@@ -175,7 +175,7 @@ halfword clean_box_(halfword p, small_number s)
     cur_mu = x_over_n(math_quad(cur_size), 18);
   }
 lab40:
-  if ((q >= hi_mem_min) || (q == 0))
+  if (is_char_node(q) || (q == 0))
     x = hpack(q, 0, 1);
   else if ((link(q) == 0) && (type(q) <= vlist_node) && (shift_amount(q) == 0))
     x = q;
@@ -184,13 +184,13 @@ lab40:
 
   q = list_ptr(x);
 
-  if ((q >= hi_mem_min))
+  if (is_char_node(q))
   {
     r = link(q);
 
     if (r != 0)
       if (link(r) == 0)
-        if (!(r >= hi_mem_min))
+        if (!is_char_node(r))
           if (type(r) == kern_node)
           {
             free_node(r, small_node_size);
@@ -1637,7 +1637,7 @@ void fin_align (void)
 
   while (q != 0)
   {
-    if (!(q >= hi_mem_min))
+    if (!is_char_node(q))
       if (type(q) == unset_node)
       {
         if (mode == -vmode)
@@ -1785,7 +1785,7 @@ void fin_align (void)
             r = link(link(r));
             s = link(link(s));
           }
-        while(!(r == 0));
+        while (!(r == 0));
       }
       else if (type(q) == rule_node)
       {
@@ -2191,7 +2191,7 @@ void make_scripts_(halfword q, scaled delta)
 
   p = new_hlist(q);
 
-  if ((p >= hi_mem_min))
+  if (is_char_node(p))
   {
     shift_up = 0;
     shift_down = 0;

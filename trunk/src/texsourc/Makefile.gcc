@@ -20,7 +20,7 @@ objects = yandytex.o itex.o openinou.o subroute.o local.o \
 	tex5.o tex6.o tex7.o tex8.o tex9.o \
 	yandy_pool.o md5.o yandy_backend_pdf.o
 
-headers = yandytex.h texd.h coerce.h
+headers = yandytex.h texd.h coerce.h texmf.h texmfmem.h
 
 yandytex: $(objects)
 	$(CC) -o yandytex $(objects) $(LDFLAGS)

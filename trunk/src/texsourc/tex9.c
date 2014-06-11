@@ -30,18 +30,18 @@ boolean open_fmt_file (void)
 {
   integer j;
 
-  j = cur_input.loc_field;
+  j = loc;
 
-  if (buffer[cur_input.loc_field] == '&' || buffer[cur_input.loc_field] == '+')
+  if (buffer[loc] == '&' || buffer[loc] == '+')
   {
-    incr(cur_input.loc_field);
-    j = cur_input.loc_field;
+    incr(loc);
+    j = loc;
     buffer[last] = ' ';
 
     while (buffer[j] != ' ')
       incr(j);
 
-    pack_buffered_name(0, cur_input.loc_field, j - 1);
+    pack_buffered_name(0, loc, j - 1);
 
     if (w_open_in(fmt_file))
       goto lab40;
@@ -98,7 +98,7 @@ boolean open_fmt_file (void)
   }
 
 lab40:
-  cur_input.loc_field = j;
+  loc = j;
 
   return true;
 }
@@ -117,12 +117,12 @@ void close_files_and_terminate (void)
 
   if (closed_already++)
   {
-    show_line("close_files_and_terminated already ", 0);
+    puts("close_files_and_terminated already ");
     return;     // sanity check
   }
 
   if (trace_flag)
-    show_line("\nclose_files_and_terminate ", 0);
+    puts("\nclose_files_and_terminate ");
 
   for (k = 0; k <= 15; k++)
     if (write_open[k])
