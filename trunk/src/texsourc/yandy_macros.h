@@ -743,6 +743,8 @@ while (0)
 #define mid_line    1
 #define skip_blanks 2 + max_char_code // 17
 #define new_line    3 + max_char_code + max_char_code // 33
+/* sec 0304 */
+#define cur_file input_file[index]
 /* sec 0305 */
 #define skipping  1
 #define defining  2
@@ -790,6 +792,26 @@ while (0)
   case (a) + sub_mark:   \
   case (a) + letter:     \
   case (a) + other_char
+/* sec 0352 */
+#define is_hex(a) \
+  (((a >= '0') && (a <= '9')) || ((a >= 'a') && (a <= 'f')))
+#define hex_to_cur_chr()                    \
+do                                          \
+{                                           \
+  if (c <= '9')                             \
+    cur_chr = c - '0';                      \
+  else                                      \
+    cur_chr = c - 'a' + 10;                 \
+                                            \
+  if (cc <= '9')                            \
+    cur_chr = 16 * cur_chr + cc - '0';      \
+  else                                      \
+    cur_chr = 16 * cur_chr + cc - 'a' + 10; \
+}                                           \
+while (0)
+/* sec 0360 */
+#define end_line_char_inactive()  \
+  (end_line_char < 0) || (end_line_char > 255)
 /* sec 0358 */
 /* sec 0371 */
 #define store_new_token(a)  \
@@ -1191,6 +1213,14 @@ while (0)
 #define delta_node      2
 /* sec 0823 */
 #define do_all_six(a) a(1); a(2); a(3); a(4); a(5); a(6)
+/* sec 0825 */
+#define check_shrinkage(s)                            \
+do                                                    \
+{                                                     \
+  if ((shrink_order(s) != normal) && (shrink(s) != 0))\
+    s = finite_shrink(s);                             \
+}                                                     \
+while (0)
 /* sec 0829 */
 #define copy_to_cur_active(a) cur_active_width[a] = active_width[a]
 /* sec 0832 */
@@ -1210,6 +1240,18 @@ while (0)
 #define downdate_width(a)     cur_active_width[(a)] = cur_active_width[(a)] - mem[prev_r + (a)].cint
 /* sec 0861 */
 #define update_active(a) active_width[(a)] = active_width[(a)] + mem[r + (a)].cint
+/* sec 0866 */
+#define act_width active_width[1]
+#define kern_break()                                \
+do                                                  \
+{                                                   \
+  if (!is_char_node(link(cur_p)) && auto_breaking)  \
+    if (type(link(cur_p)) == glue_node)             \
+      try_break(0, unhyphenated);                   \
+                                                    \
+  act_width = act_width + width(cur_p);             \
+}                                                   \
+while (0)
 /* sec 0877 */
 #define next_break prev_break
 /* sec 0908 */

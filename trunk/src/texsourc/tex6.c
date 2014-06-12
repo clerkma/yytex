@@ -1702,7 +1702,7 @@ halfword vert_break_(halfword p, scaled h, scaled d)
         else
           b = badness(h - cur_height, active_width[2]);
       else
-        if (active_width[1] - h > active_width[6])
+        if (act_width - h > active_width[6])
           b = awful_bad;
         else
           b = badness(cur_height - h, active_width[6]);
@@ -1903,7 +1903,7 @@ void freeze_page_specs_(small_number s)
     print_scaled(page_max_depth);
     end_diagnostic(false);
   }
-#endif /* STAT */
+#endif
 }
 /* sec 0992 */
 void box_error_(eight_bits n)
