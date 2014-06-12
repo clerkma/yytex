@@ -1003,7 +1003,7 @@ void read_toks_(integer n, halfword r)
 
       limit = last;
 
-      if ((end_line_char < 0) || (end_line_char > 255))
+      if (end_line_char_inactive())
         decr(limit);
       else
         buffer[limit] = end_line_char;
@@ -1964,7 +1964,7 @@ void start_input(void)
   {
     begin_file_reading();
     
-    if (a_open_in(input_file[index], TEXINPUTPATH))
+    if (a_open_in(cur_file, TEXINPUTPATH))
       goto lab30;
 
     end_file_reading();
@@ -1972,7 +1972,7 @@ void start_input(void)
   }
 
 lab30: 
-  cur_input.name_field = a_make_name_string(input_file[index]);
+  cur_input.name_field = a_make_name_string(cur_file);
 
   if (job_name == 0)
   {
@@ -2002,11 +2002,11 @@ lab30:
   {
     line = 1;
 
-    if (input_ln(input_file[index], false));
+    if (input_ln(cur_file, false));
 
     firm_up_the_line();
 
-    if ((end_line_char < 0) || (end_line_char > 255))
+    if (end_line_char_inactive())
       decr(limit);
     else
       buffer[limit] = end_line_char;

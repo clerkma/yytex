@@ -297,7 +297,7 @@ void initialize_aux (void)
 void line_break_ (integer final_widow_penalty)
 {
   boolean auto_breaking;
-  halfword prevp;
+  halfword prev_p;
   halfword q, r, s, prevs;
   internal_font_number f;
 /*  small_number j;  */
@@ -326,13 +326,8 @@ void line_break_ (integer final_widow_penalty)
   init_r_hyf = (prev_graf / 65536L) % 64;
   pop_nest();
   no_shrink_error_yet = true;
-
-  if ((shrink_order(left_skip) != normal) && (shrink(left_skip) != 0))
-    left_skip = finite_shrink(left_skip);
-
-  if ((shrink_order(right_skip) != normal) && (shrink(right_skip) != 0))
-    right_skip = finite_shrink(right_skip);
-
+  check_shrinkage(left_skip);
+  check_shrinkage(right_skip);
   q = left_skip;
   r = right_skip;
   background[1] = width(q) + width(r);
@@ -452,7 +447,7 @@ void line_break_ (integer final_widow_penalty)
     line_number(q) = prev_graf + 1;
     total_demerits(q) = 0;
     link(active) = q;
-    active_width[1] = background[1];
+    act_width = background[1];
     active_width[2] = background[2];
     active_width[3] = background[3];
     active_width[4] = background[4];
@@ -466,18 +461,18 @@ void line_break_ (integer final_widow_penalty)
 
     cur_p = link(temp_head);
     auto_breaking = true;
-    prevp = cur_p;
+    prev_p = cur_p;
 
     while ((cur_p != 0) && (link(active) != active))
     {
       if (is_char_node(cur_p))
       {
-        prevp = cur_p;
+        prev_p = cur_p;
 
         do
           {
             f = font(cur_p);
-            active_width[1] = active_width[1] + char_width(f, char_info(f, character(cur_p)));
+            act_width = act_width + char_width(f, char_info(f, character(cur_p)));
             cur_p = link(cur_p);
           }
         while (!(!is_char_node(cur_p)));
@@ -488,7 +483,7 @@ void line_break_ (integer final_widow_penalty)
         case hlist_node:
         case vlist_node:
         case rule_node:
-          active_width[1] = active_width[1] + width(cur_p);
+          act_width = act_width + width(cur_p);
           break;
 
         case whatsit_node:
@@ -504,21 +499,17 @@ void line_break_ (integer final_widow_penalty)
           {
             if (auto_breaking)
             {
-              if (is_char_node(prevp))
+              if (is_char_node(prev_p))
                 try_break(0, unhyphenated);
-              else if ((mem[prevp].hh.b0 < 9))
+              else if ((mem[prev_p].hh.b0 < 9))
                 try_break(0, unhyphenated);
-              else if ((type(prevp) == kern_node) && (subtype(prevp) != explicit))
+              else if ((type(prev_p) == kern_node) && (subtype(prev_p) != explicit))
                 try_break(0, unhyphenated);
             }
 
-            if ((mem[glue_ptr(cur_p)].hh.b1 != 0) && (mem[glue_ptr(cur_p) + 3].cint != 0))
-            {
-              glue_ptr(cur_p) = finite_shrink(glue_ptr(cur_p));
-            }
-
+            check_shrinkage(glue_ptr(cur_p));
             q = glue_ptr(cur_p);
-            active_width[1] = active_width[1]+ width(q);
+            act_width = act_width+ width(q);
             active_width[2 + stretch_order(q)] = active_width[2 + stretch_order(q)] + stretch(q);
             active_width[6] = active_width[6] + shrink(q);
 
@@ -691,20 +682,14 @@ lab31:;
           break;
         case kern_node:
           if (subtype(cur_p) == explicit)
-          {
-            if (!is_char_node(link(cur_p)) && auto_breaking)
-              if (type(link(cur_p)) == glue_node)
-                try_break(0, unhyphenated);
-
-            active_width[1] = active_width[1] + width(cur_p);
-          }
+            kern_break();
           else
-            active_width[1] = active_width[1] + width(cur_p);
+            act_width = act_width + width(cur_p);
           break;
         case ligature_node:
           {
             f = font(lig_char(cur_p));
-            active_width[1] = active_width[1] + char_width(f, char_info(f, character(lig_char(cur_p))));
+            act_width = act_width + char_width(f, char_info(f, character(lig_char(cur_p))));
           }
           break;
         case disc_node:
@@ -748,9 +733,9 @@ lab31:;
               }
               while (!(s == 0));
 
-              active_width[1] = active_width[1] + disc_width;
+              act_width = act_width + disc_width;
               try_break(hyphen_penalty, hyphenated);
-              active_width[1] = active_width[1] - disc_width;
+              act_width = act_width - disc_width;
             }
             r = replace_count(cur_p);
             s = link(cur_p);
@@ -760,14 +745,14 @@ lab31:;
               if (is_char_node(s))
               {
                 f = font(s);
-                active_width[1] = active_width[1] + char_width(f, char_info(f, character(s)));
+                act_width = act_width + char_width(f, char_info(f, character(s)));
               }
               else switch(type(s))
               {
                 case ligature_node:
                   {
                     f = font(lig_char(s));
-                    active_width[1] = active_width[1] + char_width(f, char_info(f, character(lig_char(s))));
+                    act_width = act_width + char_width(f, char_info(f, character(lig_char(s))));
                   }
                   break;
 
@@ -775,7 +760,7 @@ lab31:;
                 case vlist_node:
                 case rule_node:
                 case kern_node:
-                  active_width[1] = active_width[1] + width(s);
+                  act_width = act_width + width(s);
                   break;
 
                 default:
@@ -790,7 +775,7 @@ lab31:;
               s = link(s);
             }
 
-            prevp = cur_p;
+            prev_p = cur_p;
             cur_p = s;
             goto lab35;
           }
@@ -798,14 +783,8 @@ lab31:;
 
         case math_node:
           {
-            auto_breaking = (subtype(cur_p) == 1);
-            {
-              if (!is_char_node(link(cur_p)) && auto_breaking)
-                if (type(link(cur_p)) == glue_node)
-                  try_break(0, unhyphenated);
-
-              active_width[1] = active_width[1] + width(cur_p);
-            }
+            auto_breaking = (subtype(cur_p) == after);
+            kern_break();
           }
           break;
 
@@ -826,7 +805,7 @@ lab31:;
           break;
       }
 
-      prevp = cur_p;
+      prev_p = cur_p;
       cur_p = link(cur_p);
 lab35:;
     }
@@ -926,7 +905,7 @@ lab35:;
 #ifdef STAT
       if (tracing_paragraphs > 0)
         print_nl("@secondpass");
-#endif /* STAT */
+#endif
       threshold = tolerance;
       second_pass = true;
       second_pass_count++;          /* 96 Feb 9 */
@@ -2314,7 +2293,7 @@ lab1:
         incr(loc);
     }
 
-    if ((end_line_char < 0) || (end_line_char > 255))
+    if (end_line_char_inactive())
       decr(limit);
     else
       buffer[limit] = end_line_char;

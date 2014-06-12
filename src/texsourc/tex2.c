@@ -670,7 +670,7 @@ void end_file_reading (void)
   line = line_stack[index];
 
   if (cur_input.name_field > 17)
-    a_close(input_file[index]);
+    a_close(cur_file);
 
   pop_input();
   decr(in_open);
@@ -2019,27 +2019,18 @@ lab26:
                         if (c < 128)
                         {
                           d = 2;
-                          if ((((c >= 48) && (c <= 57)) || ((c >= 97) && (c <= 102))))
+                          if (is_hex(c))
                             if (k + 2 <= limit)
                             {
                               cc = buffer[k + 2];
 
-                              if ((((cc >= 48) && (cc <= 57)) || ((cc >= 97) && (cc <= 102))))
+                              if (is_hex(cc))
                                 incr(d);
                             }
 
                           if (d > 2)
                           {
-                            if (c <= 57)
-                              cur_chr = c - 48;
-                            else
-                              cur_chr = c - 87;
-
-                            if (cc <= 57)
-                              cur_chr = 16 * cur_chr + cc - 48;
-                            else
-                              cur_chr = 16 * cur_chr + cc - 87;
-
+                            hex_to_cur_chr();
                             buffer[k - 1] = cur_chr;
                           }
                           else if (c < 64)
@@ -2082,27 +2073,19 @@ lab26:
                       if (c < 128)             /* ? */
                       {
                         d = 2;
-                        if ((((c >= 48) && (c <= 57)) || ((c >= 97) && (c <= 102))))
+
+                        if (is_hex(c))
                           if (k + 2 <= limit)
                           {
                             cc = buffer[k + 2];
 
-                            if ((((cc >= 48) && (cc <= 57)) || ((cc >= 97) && (cc <= 102))))
+                            if (is_hex(cc))
                               incr(d);
                           }
 
                         if (d > 2)
                         {
-                          if (c <= 57)
-                            cur_chr = c - 48;
-                          else
-                            cur_chr = c - 87;
-
-                          if (cc <= 57)          /* cc may be used without ... */
-                            cur_chr = 16 * cur_chr + cc - 48;
-                          else
-                            cur_chr = 16 * cur_chr + cc - 87;
-
+                          hex_to_cur_chr();
                           buffer[k - 1] = cur_chr;
                         }
                         else if (c < 64)
@@ -2157,25 +2140,15 @@ lab40:
                 {
                   loc = loc + 2;
 
-                  if ((((c >= 48) && (c <= 57)) || ((c >= 97) && (c <= 102))))
+                  if (is_hex(c))
                     if (loc <= limit)
                     {
                       cc = buffer[loc];
 
-                      if ((((cc >= 48) && (cc <= 57)) || ((cc >= 97) && (cc <= 102))))
+                      if (is_hex(cc))
                       {
                         incr(loc);
-
-                        if (c <= 57)
-                          cur_chr = c - 48;
-                        else
-                          cur_chr = c - 87;
-
-                        if (cc <= 57)
-                          cur_chr = 16 * cur_chr + cc - 48;
-                        else
-                          cur_chr = 16 * cur_chr + cc - 87;
-
+                        hex_to_cur_chr();
                         goto lab21;
                       }
                     }
@@ -2284,7 +2257,7 @@ lab40:
 
         if (!force_eof)
         {
-          if (input_ln(input_file[index], true))
+          if (input_ln(cur_file, true))
             firm_up_the_line();
           else
             force_eof = true;
@@ -2303,7 +2276,7 @@ lab40:
           goto lab20;
         }
 
-        if ((end_line_char < 0) || (end_line_char > 255))
+        if (end_line_char_inactive())
           decr(limit);
         else
           buffer[limit] = end_line_char;
@@ -2331,7 +2304,7 @@ lab40:
 
         if (interaction > nonstop_mode)
         {
-          if ((end_line_char < 0) || (end_line_char > 255))
+          if (end_line_char_inactive())
             incr(limit);
 
           if (limit == start)
@@ -2342,7 +2315,7 @@ lab40:
           prompt_input("*");
           limit = last;
 
-          if ((end_line_char < 0) || (end_line_char > 255))
+          if (end_line_char_inactive())
             decr(limit);
           else
             buffer[limit]= end_line_char;
