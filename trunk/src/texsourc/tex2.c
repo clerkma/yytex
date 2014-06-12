@@ -537,17 +537,8 @@ void end_token_list (void)
       return;     // abort_flag set
     }
 
-  {
-    decr(input_ptr);
-    cur_input = input_stack[input_ptr];
-  }
-
-  {
-    if (interrupt != 0)
-    {
-      pause_for_instructions();
-    }
-  }
+  pop_input();
+  check_interrupt();
 }
 /* sec 0325 */
 void back_input (void)
@@ -679,12 +670,9 @@ void end_file_reading (void)
   line = line_stack[index];
 
   if (cur_input.name_field > 17)
-    (void) a_close(input_file[index]);
+    a_close(input_file[index]);
 
-  {
-    decr(input_ptr);
-    cur_input = input_stack[input_ptr];
-  }
+  pop_input();
   decr(in_open);
 }
 /* called only form tex0.c */
@@ -2369,13 +2357,7 @@ lab40:
         }
       }
 
-      {
-        if (interrupt != 0)
-        {
-          pause_for_instructions();
-        }
-      }
-
+      check_interrupt();
       goto lab25;
     }
   }

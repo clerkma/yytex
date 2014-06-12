@@ -98,9 +98,7 @@ void math_left_right (void)
       error();
     }
     else
-    {
       off_save();
-    }
   }
   else
   {
@@ -175,7 +173,7 @@ void after_math (void)
   l = false;
   p = fin_mlist(0);
 
-  if (mode == - (integer) m)
+  if (mode == -m)
   {
     {
       get_x_token();
@@ -397,7 +395,7 @@ void resume_after_display (void)
   if (cur_group != math_shift_group)
   {
     confusion("display");
-    return;       // abort_flag set
+    return;
   }
 
   unsave();
@@ -417,9 +415,7 @@ void resume_after_display (void)
   }
 
   if (nest_ptr == 1)
-  {
     build_page();
-  }
 }
 /* sec 1215 */
 void get_r_token (void)
@@ -614,20 +610,11 @@ lab40:
   }
 
   if (p < glue_val)
-  {
-    if ((a >= 4))
-      geq_word_define(l, cur_val);
-    else
-      eq_word_define(l, cur_val);
-  }
+    word_define(l, cur_val);
   else
   {
     trap_zero_glue();
-
-    if ((a >= 4))
-      geq_define(l, glue_ref, cur_val);
-    else
-      eq_define(l, glue_ref, cur_val);
+    define(l, glue_ref, cur_val);
   }
 }
 /* sec 1243 */
@@ -636,9 +623,7 @@ void alter_aux (void)
   halfword c;
 
   if (cur_chr != abs(mode))
-  {
     report_illegal_case();
-  }
   else
   {
     c = cur_chr;
@@ -764,11 +749,7 @@ void new_font_(small_number a)
     t = make_string();
   }
 
-  if ((a >= 4))
-    geq_define(u, set_font, 0);
-  else
-    eq_define(u, set_font, 0);
-
+  define(u, set_font, null_font);
   scan_optional_equals();
   scan_file_name();
 
@@ -793,7 +774,7 @@ void new_font_(small_number a)
   else if (scan_keyword("scaled"))
   {
     scan_int();
-    s = - (integer) cur_val;
+    s = -cur_val;
 
     if ((cur_val <= 0) || (cur_val > 32768L))
     {
@@ -945,7 +926,7 @@ void open_or_close_in (void)
 
   if (read_open[n] != closed)
   {
-    (void) a_close(read_file[n]);
+    a_close(read_file[n]);
     read_open[n] = closed;
   }
 
@@ -1144,19 +1125,15 @@ lab50:
     decr(error_count);
   }
   else if (tracing_online > 0)
-  {
     help3("This isn't an error message; I'm just \\showing something.",
       "Type `I\\show...' to show more (e.g., \\show\\cs,",
       "\\showthe\\count10, \\showbox255, \\showlists).");
-  }
   else
-  {
     help5("This isn't an error message; I'm just \\showing something.",
       "Type `I\\show...' to show more (e.g., \\show\\cs,",
       "\\showthe\\count10, \\showbox255, \\showlists).",
       "And type `I\\tracingonline=1\\show...' to show boxes and",
       "lists on your terminal as well as in the transcript file.");
-  }
 
   error();
 }
@@ -1281,7 +1258,7 @@ void do_extension (void)
     default:
       {
         confusion("ext1");
-        return;       // abort_flag set
+        return;
       }
       break;
   }
@@ -1290,7 +1267,7 @@ void do_extension (void)
 void fix_language (void)
 {
 /*  ASCII_code l;  */
-  int l;                  /* 95/Jan/7 */
+  int l;
 
   if (language <= 0)
     l = 0; 
@@ -1395,11 +1372,10 @@ void handle_right_brace (void)
         free_node(p, box_node_size);
 
         if (nest_ptr == 0)
-        {
           build_page();
-        }
       }
       break;
+
     case output_group:
       {
         if ((loc != 0) || ((token_type != output_text) && (token_type != backed_up)))
@@ -1449,6 +1425,7 @@ void handle_right_brace (void)
           link(page_head) = 0;
           page_tail = page_head;
         }
+
         pop_nest();
         build_page();
       }
@@ -1533,7 +1510,7 @@ void handle_right_brace (void)
     default:
       {
         confusion("rightbrace");
-        return;       // abort_flag set
+        return;
       }
       break;
   }
@@ -1547,21 +1524,16 @@ void main_control (void)
   if (every_job != 0)
     begin_token_list(every_job, every_job_text);
 
-lab60:
+big_switch:
   get_x_token();       /* big_switch */
 
-lab21:
+reswitch:
   if (interrupt != 0)
     if (OK_to_interrupt)
     {
       back_input();
-      {
-        if (interrupt != 0)
-        {
-          pause_for_instructions();
-        }
-      }
-      goto lab60;
+      check_interrupt();
+      goto big_switch;
     }
 
 #ifdef DEBUG
@@ -1572,20 +1544,19 @@ lab21:
   if (tracing_commands > 0)
     show_cur_cmd_chr();
 
-/*  the big switch --- don't bother to test abort_flag ??? */
   switch(abs(mode) + cur_cmd)
   {
     case hmode + letter:
     case hmode + other_char:
     case hmode + char_given:
-      goto lab70;
+      goto main_loop;
       break;
 
     case hmode + char_num:
       {
         scan_char_num();
         cur_chr = cur_val;
-        goto lab70;
+        goto main_loop;
       }
       break;
 
@@ -1596,20 +1567,20 @@ lab21:
         if ((cur_cmd == letter) || (cur_cmd == other_char) ||
           (cur_cmd == char_given) || (cur_cmd == char_num))
           cancel_boundary = true;
-        goto lab21;
+        goto reswitch;
       }
       break;
 
     case hmode + spacer:
       if (space_factor == 1000)
-        goto lab120;
+        goto append_normal_space;
       else
         app_space();
       break;
 
     case hmode + ex_space:
     case mmode + ex_space:
-      goto lab120;
+      goto append_normal_space;
       break;
 
     case any_mode(relax):
@@ -1626,7 +1597,7 @@ lab21:
             get_x_token();
           }
         while (!(cur_cmd != spacer));
-        goto lab21;
+        goto reswitch;
       }
       break;
 
@@ -2059,10 +2030,11 @@ lab21:
     case any_mode(extension):
       do_extension();
       break;
-  } /* end of big switch */
-  goto lab60; /*  main_loop */
+  }
 
-lab70:
+  goto big_switch;
+
+main_loop:
   adjust_space_factor();
   main_f = cur_font;
   bchar = font_bchar[main_f];
@@ -2087,33 +2059,32 @@ lab70:
     main_k = bchar_label[main_f];
 
   if (main_k == non_address)
-    goto lab92;
+    goto main_loop_move_2;
 
   cur_r = cur_l;
   cur_l = non_char;
-  goto lab111;
+  goto main_lig_loop_1;
 
-lab80: 
+main_loop_wrapup: 
   wrapup(rt_hit);
 
-/*  main_loop_move */
-lab90:
+main_loop_move:
   if (lig_stack == 0)
-    goto lab21;
+    goto reswitch;
 
   cur_q = tail;
   cur_l = character(lig_stack);
 
-lab91:
+main_loop_move_1:
   if (!is_char_node(lig_stack))
-    goto lab95;
+    goto main_loop_move_lig;
 
-lab92:
+main_loop_move_2:
   if ((cur_chr < font_bc[main_f]) || (cur_chr > font_ec[main_f]))
   {
     char_warning(main_f, cur_chr);
     free_avail(lig_stack);
-    goto lab60;
+    goto big_switch;
   }
 
   main_i = char_info(main_f, cur_l);
@@ -2122,38 +2093,37 @@ lab92:
   {
     char_warning(main_f, cur_chr);
     free_avail(lig_stack);
-    goto lab60; 
+    goto big_switch; 
   }
   {
     link(tail) = lig_stack;
     tail = lig_stack;
   }
 
-/*  main_loop_lookahead */
-lab100:
+main_loop_lookahead:
   get_next();
 
   if (cur_cmd == letter)
-    goto lab101;
+    goto main_loop_lookahead_1;
   if (cur_cmd == other_char)
-    goto lab101;
+    goto main_loop_lookahead_1;
   if (cur_cmd == char_given)
-    goto lab101;
+    goto main_loop_lookahead_1;
 
   x_token();
 
   if (cur_cmd == letter)
-    goto lab101;
+    goto main_loop_lookahead_1;
   if (cur_cmd == other_char)
-    goto lab101;
+    goto main_loop_lookahead_1;
   if (cur_cmd == char_given)
-    goto lab101;
+    goto main_loop_lookahead_1;
 
   if (cur_cmd == char_num)
   {
     scan_char_num();
     cur_chr = cur_val;
-    goto lab101;
+    goto main_loop_lookahead_1;
   }
 
   if (cur_cmd == no_boundary)
@@ -2161,9 +2131,9 @@ lab100:
 
   cur_r = bchar;
   lig_stack = 0;
-  goto lab110;
+  goto main_lig_loop;
 
-lab101:
+main_loop_lookahead_1:
   adjust_space_factor();
   fast_get_avail(lig_stack);
   font(lig_stack) = main_f;
@@ -2173,30 +2143,25 @@ lab101:
   if (cur_r == false_bchar)
     cur_r = non_char;
 
-// main_lig_loop:@<If there's a ligature/kern command relevant to |cur_l| and
-//  |cur_r|, adjust the text appropriately; exit to |main_loop_wrapup|@>;
-lab110:
-
+main_lig_loop:
   if (char_tag(main_i) != lig_tag)
-    goto lab80;
+    goto main_loop_wrapup;
 
   if (cur_r == non_char)
-    goto lab80;
+    goto main_loop_wrapup;
 
   main_k = lig_kern_start(main_f, main_i);
   main_j = font_info[main_k].qqqq;
 
   if (skip_byte(main_j) <= stop_flag)
-    goto lab112;
+    goto main_lig_loop_2;
 
   main_k = lig_kern_restart(main_f, main_j);
 
-/* main_lig_loop+1:main_j:=font_info[main_k].qqqq; */
-lab111:
+main_lig_loop_1:
   main_j = font_info[main_k].qqqq;
 
-lab112:
-/* provide for suppression of f-ligatures 99/Jan/5 */
+main_lig_loop_2:
   bSuppress = 0;
 
   if (suppress_f_ligs && next_char(main_j) == cur_r && op_byte(main_j) == no_tag)
@@ -2212,7 +2177,7 @@ lab112:
       {
         wrapup(rt_hit);
         tail_append(new_kern(char_kern(main_f, main_j)));
-        goto lab90;
+        goto main_loop_move;
       }
 
       if (cur_l == non_char)
@@ -2220,12 +2185,7 @@ lab112:
       else if (lig_stack == 0)
         rt_hit = true;
 
-      {
-        if (interrupt != 0)
-        {
-          pause_for_instructions();
-        }
-      }
+      check_interrupt();
 
       switch (op_byte(main_j))
       {
@@ -2281,22 +2241,22 @@ lab112:
             ligature_present = true;
  
             if (lig_stack == 0)
-              goto lab80;
+              goto main_loop_wrapup;
             else
-              goto lab91;
+              goto main_loop_move_1;
           }
           break;
       }
 
       if (op_byte(main_j) > 4)
         if (op_byte(main_j) != 7)
-          goto lab80;
+          goto main_loop_wrapup;
 
       if (cur_l < non_char)
-        goto lab110;
+        goto main_lig_loop;
 
       main_k = bchar_label[main_f];
-      goto lab111;
+      goto main_lig_loop_1;
     }
 
     if (skip_byte(main_j) == 0)
@@ -2304,15 +2264,14 @@ lab112:
     else
     {
       if (skip_byte(main_j) >= stop_flag)
-        goto lab80;
+        goto main_loop_wrapup;
 
       main_k = main_k + skip_byte(main_j) + 1;
     }
 
-    goto lab111;
+    goto main_lig_loop_1;
 
-/*  main_move_log */
-lab95:
+main_loop_move_lig:
   main_p = lig_ptr(lig_stack);
 
   if (main_p != 0)     /* BUG FIX */
@@ -2326,16 +2285,15 @@ lab95:
 
   if (lig_stack == 0)
     if (main_p != 0)   /* BUG FIX */
-      goto lab100;
+      goto main_loop_lookahead;
     else
       cur_r = bchar;
   else
     cur_r = character(lig_stack);
 
-  goto lab110;
+  goto main_lig_loop;
 
-/*  append_normal_space */
-lab120:
+append_normal_space:
   if (space_skip == 0)
   {
     {
@@ -2358,6 +2316,6 @@ lab120:
 
   link(tail) = temp_ptr;
   tail = temp_ptr;
-  goto lab60;
+
+  goto big_switch;
 }
-/* give_err_help etc followed here in the old tex8.c */

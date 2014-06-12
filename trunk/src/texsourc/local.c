@@ -87,9 +87,7 @@ unsigned char wintodos[128] =
 
 void show_usage (void)
 {
-  char * s = log_line;
-
-  sprintf (s, "\n"
+  printf("\n"
       " Useage: yanytex [OPTION]... [+format_file] [tex_file]\n\n"
       "    --help    -?\n"
       "        show this usage summary\n"
@@ -122,7 +120,6 @@ void show_usage (void)
       "        write LOG file in specified directory (default current directory)\n"
       "    --aux-dir     -a\n"
       "        write AUX file in specified directory (default current directory)\n");
-  show_line(log_line, 1);
 
 #ifndef _WINDOWS
   uexit(EXIT_FAILURE);     // has this been setup yet ???
@@ -134,8 +131,6 @@ void show_usage (void)
 /* \t-d\tallow DOS style file names - i.e. convert \\ to / \n\ */
 /* \t\t(applies to file name and format file name, if present)\n\ */
 /* \t-r\tallow Mac style line termination - i.e. convert \\r to \\n \n\ */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 // Sep 27 1990 => 1990 Sep 27
 // 012456789      0123456789
@@ -198,8 +193,6 @@ void stampcopy (char *s)
   }
 }
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
 #define MAXCHRS 256
 #define NOTDEF  127
 
@@ -209,8 +202,8 @@ void read_xchr_sub (FILE * xchr_input)
   int k, from, to, count = 0;
   char *s;
 
-  memset (xchr, NOTDEF, MAXCHRS);
-  memset (xord, NOTDEF, MAXCHRS);
+  memset(xchr, NOTDEF, MAXCHRS);
+  memset(xord, NOTDEF, MAXCHRS);
 
 #ifdef ALLOCATEBUFFER
   while (fgets(buffer, current_buf_size, xchr_input) != NULL)
