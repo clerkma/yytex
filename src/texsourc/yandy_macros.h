@@ -53,6 +53,14 @@ enum
   error_message_issued = 2,
   fatal_error_stop     = 3,
 };
+/* sec 0096 */
+#define check_interrupt()     \
+do                            \
+{                             \
+  if (interrupt != 0)         \
+    pause_for_instructions(); \
+}                             \
+while (0)
 /* sec 0105 */
 #define nx_plux_y(...)   mult_and_add(..., 07777777777L)
 #define mult_integers(a) mult_and_add(a,0,017777777777L)
@@ -761,6 +769,14 @@ enum
 #define every_cr_text      13
 #define mark_text          14
 #define write_text         15
+/* sec 0322 */
+#define pop_input()                   \
+do                                    \
+{                                     \
+  decr(input_ptr);                    \
+  cur_input = input_stack[input_ptr]; \
+}                                     \
+while (0)
 /* sec 0323 */
 #define back_list(a) begin_token_list(a, backed_up)
 #define ins_list(a)  begin_token_list(a, inserted)
@@ -1373,6 +1389,25 @@ while (0)
 #define over_code      1
 #define atop_code      2
 #define delimited_code 3
+/* sec 1214 */
+#define define(p, t, e) \
+do                      \
+{                       \
+  if (a >= 4)           \
+    geq_define(p, t, e);\
+  else                  \
+    eq_define(p, t, e); \
+}                       \
+while (0)
+#define word_define(p, w) \
+do                        \
+{                         \
+  if (a >= 4)             \
+    geq_word_define(p, w);\
+  else                    \
+    eq_word_define(p, w); \
+}                         \
+while (0)
 /* sec 1222 */
 #define char_def_code      0
 #define math_char_def_code 1

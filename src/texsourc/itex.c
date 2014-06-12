@@ -114,10 +114,7 @@ void initialize (void)
       for (k = 0; k < 256; k++)
       {
         if (xord[k] != 127)
-        {
-          sprintf(log_line, "%d => %d\n", k, xord[k]);
-          show_line(log_line, 0);
-        }
+          printf("%d => %d\n", k, xord[k]);
       }
     }
   }
@@ -287,7 +284,7 @@ void initialize_aux (void)
   mode = 1;
   head = contrib_head;
   tail = contrib_head;
-  cur_list.aux_field.cint = ignore_depth;
+  prev_depth = ignore_depth;
   mode_line = 0;
   prev_graf = 0;
 /*  shown_mode = 0; */
@@ -307,7 +304,6 @@ void line_break_ (integer final_widow_penalty)
   int j;                /* 95/Jan/7 */
 /*  unsigned char c;  */
   unsigned int c;           /* 95/Jan/7 */
-/*  savedbadness = 0; */    /* 96/Feb/9 */
 
   pack_begin_line = mode_line;
   link(temp_head) = link(head);
@@ -332,14 +328,10 @@ void line_break_ (integer final_widow_penalty)
   no_shrink_error_yet = true;
 
   if ((shrink_order(left_skip) != normal) && (shrink(left_skip) != 0))
-  {
     left_skip = finite_shrink(left_skip);
-  }
 
   if ((shrink_order(right_skip) != normal) && (shrink(right_skip) != 0))
-  {
     right_skip = finite_shrink(right_skip);
-  }
 
   q = left_skip;
   r = right_skip;
@@ -351,7 +343,6 @@ void line_break_ (integer final_widow_penalty)
   background[2 + stretch_order(q)] = stretch(q);
   background[2 + stretch_order(r)] = background[2 + stretch_order(r)] + stretch(r);
   background[6] = shrink(q) + shrink(r);
-
   minimum_demerits = 1073741823L; /* 2^30 - 1 *//* 40000000 hex - 1 */
   minimal_demerits[tight_fit] = 1073741823L;
   minimal_demerits[decent_fit] = 1073741823L;
@@ -409,14 +400,13 @@ void line_break_ (integer final_widow_penalty)
 
   if (threshold >= 0)
   {
-
 #ifdef STAT
     if (tracing_paragraphs > 0)
     {
       begin_diagnostic();
       print_nl("@firstpass");
     }
-#endif /* STAT */
+#endif
 
     second_pass = false;
     final_pass = false;
@@ -431,7 +421,7 @@ void line_break_ (integer final_widow_penalty)
 #ifdef STAT
     if (tracing_paragraphs > 0)
       begin_diagnostic();
-#endif /* STAT */
+#endif
   }
 
   while (true)
@@ -500,6 +490,7 @@ void line_break_ (integer final_widow_penalty)
         case rule_node:
           active_width[1] = active_width[1] + width(cur_p);
           break;
+
         case whatsit_node:
           if (subtype(cur_p) == language_node)
           {
@@ -508,6 +499,7 @@ void line_break_ (integer final_widow_penalty)
             rhyf = what_rhm(cur_p);
           }
           break;
+
         case glue_node:
           {
             if (auto_breaking)
@@ -945,15 +937,15 @@ lab35:;
 #ifdef STAT
       if (tracing_paragraphs > 0)
         print_nl("@emergencypass");
-#endif /* STAT */
-/*     can only get here is \emergencystretch has been set positive */
+#endif
+
       background[2] = background[2] + emergency_stretch;
       final_pass = true;
       ++final_pass_count;         /* 96 Feb 9 */
-    } /* end of if second_pass */
-  } /* end of while (true)do */
-/* cannot drop through from above loop */
-lab30:                /* common exit point */
+    }
+  }
+
+lab30:
   if (best_line == 2)
     single_line++;
 
@@ -963,7 +955,7 @@ lab30:                /* common exit point */
     end_diagnostic(true);
     normalize_selector();
   }
-#endif /* STAT */
+#endif
 
   post_line_break(final_widow_penalty);
   q = link(active);
@@ -1054,10 +1046,7 @@ void prefixed_command (void)
   switch (cur_cmd)
   {
     case set_font:
-      if ((a >= 4))
-        geq_define(cur_font_loc, data, cur_chr);
-      else
-        eq_define(cur_font_loc, data, cur_chr);
+      define(cur_font_loc, data, cur_chr);
       break;
 
     case def:
@@ -1069,11 +1058,7 @@ void prefixed_command (void)
         get_r_token();
         p = cur_cs;
         q = scan_toks(true, e);
-
-        if ((a >= 4))
-          geq_define(p, call + (a % 4), def_ref);
-        else
-          eq_define(p, call + (a % 4), def_ref);
+        define(p, call + (a % 4), def_ref);
       }
       break;
 
@@ -1110,12 +1095,9 @@ void prefixed_command (void)
         }
 
         if (cur_cmd >= call)
-          incr(mem[cur_chr].hh.lh);
+          add_token_ref(cur_chr);
 
-        if ((a >= 4))
-          geq_define(p, cur_cmd, cur_chr);
-        else
-          eq_define(p, cur_cmd, cur_chr);
+        define(p, cur_cmd, cur_chr);
       }
       break;
 
@@ -1124,12 +1106,7 @@ void prefixed_command (void)
         n = cur_chr;
         get_r_token();
         p = cur_cs;
-
-        if ((a >= 4))
-          geq_define(p, relax, 256);
-        else
-          eq_define(p, relax, 256);
-
+        define(p, relax, 256);
         scan_optional_equals();
 
         switch (n)
@@ -1137,22 +1114,14 @@ void prefixed_command (void)
           case char_def_code:
             {
               scan_char_num();
-
-              if ((a >= 4))
-                geq_define(p, char_given, cur_val);
-              else
-                eq_define(p, char_given, cur_val);
+              define(p, char_given, cur_val);
             }
             break;
 
           case math_char_def_code:
             {
               scan_fifteen_bit_int();
-
-              if ((a >= 4))
-                geq_define(p, math_given, cur_val);
-              else
-                eq_define(p, math_given, cur_val);
+              define(p, math_given, cur_val);
             }
             break;
 
@@ -1163,38 +1132,23 @@ void prefixed_command (void)
               switch (n)
               {
                 case count_def_code:
-                  if ((a >= 4))
-                    geq_define(p, assign_int, count_base + cur_val);
-                  else
-                    eq_define(p, assign_int, count_base + cur_val);
+                  define(p, assign_int, count_base + cur_val);
                   break;
 
                 case dimen_def_code:
-                  if ((a >= 4))
-                    geq_define(p, assign_dimen, scaled_base + cur_val);
-                  else
-                    eq_define(p, assign_dimen, scaled_base + cur_val);
+                  define(p, assign_dimen, scaled_base + cur_val);
                   break;
 
                 case skip_def_code:
-                  if ((a >= 4)) 
-                    geq_define(p, assign_glue, skip_base + cur_val);
-                  else
-                    eq_define(p, assign_glue, skip_base + cur_val);
+                  define(p, assign_glue, skip_base + cur_val);
                   break;
 
                 case mu_skip_def_code:
-                  if ((a >= 4))
-                    geq_define(p, assign_mu_glue, mu_skip_base + cur_val);
-                  else
-                    eq_define(p, assign_mu_glue, mu_skip_base + cur_val);
+                  define(p, assign_mu_glue, mu_skip_base + cur_val);
                   break;
 
                 case toks_def_code:
-                  if ((a >= 4))
-                    geq_define(p, assign_toks, toks_base + cur_val);
-                  else
-                    eq_define(p, assign_toks, toks_base + cur_val);
+                  define(p, assign_toks, toks_base + cur_val);
                   break;
               }
             }
@@ -1208,7 +1162,7 @@ void prefixed_command (void)
         scan_int();
         n = cur_val;
 
-        if (! scan_keyword("to"))
+        if (!scan_keyword("to"))
         {
           print_err("Missing `to' inserted");
           help2("You should have said `\\read<number> to \\cs'.",
@@ -1219,11 +1173,7 @@ void prefixed_command (void)
         get_r_token();
         p = cur_cs;
         read_toks(n, p);
-
-        if ((a >= 4))
-          geq_define(p, call, cur_val);
-        else
-          eq_define(p, call, cur_val);
+        define(p, call, cur_val);
       }
       break;
 
@@ -1262,18 +1212,11 @@ void prefixed_command (void)
             q = equiv(cur_chr);
 
             if (q == 0)
-              if ((a >= 4))
-                geq_define(p, undefined_cs, 0);
-              else
-                eq_define(p, undefined_cs, 0);
+              define(p, undefined_cs, 0);
             else
             {
-              incr(mem[q].hh.lh);
-
-              if ((a >= 4))
-                geq_define(p, call, q);
-              else
-                eq_define(p, call, q);
+              add_token_ref(q);
+              define(p, call, q);
             }
             goto lab30;
           }
@@ -1285,11 +1228,7 @@ void prefixed_command (void)
 
         if (link(def_ref) == 0)
         {
-          if ((a >= 4))
-            geq_define(p, undefined_cs, 0);
-          else
-            eq_define(p, undefined_cs, 0);
-
+          define(p, undefined_cs, 0);
           free_avail(def_ref);
         }
         else
@@ -1305,10 +1244,7 @@ void prefixed_command (void)
             link(def_ref) = q;
           }
 
-          if ((a >= 4))
-            geq_define(p, call, def_ref);
-          else
-            eq_define(p, call, def_ref);
+          define(p, call, def_ref);
         }
       }
       break;
@@ -1318,11 +1254,7 @@ void prefixed_command (void)
         p = cur_chr;
         scan_optional_equals();
         scan_int();
-
-        if ((a >= 4))
-          geq_word_define(p, cur_val);
-        else
-          eq_word_define(p, cur_val);
+        word_define(p, cur_val);
       }
       break;
 
@@ -1331,11 +1263,7 @@ void prefixed_command (void)
         p = cur_chr;
         scan_optional_equals();
         scan_dimen(false, false, false);
-
-        if ((a >= 4))
-          geq_word_define(p, cur_val);
-        else
-          eq_word_define(p, cur_val);
+        word_define(p, cur_val);
       }
       break;
 
@@ -1352,11 +1280,7 @@ void prefixed_command (void)
           scan_glue(glue_val);
 
         trap_zero_glue();
-
-        if ((a >= 4))
-          geq_define(p, glue_ref, cur_val);
-        else
-          eq_define(p, glue_ref, cur_val);
+        define(p, glue_ref, cur_val);
       }
       break;
 
@@ -1371,7 +1295,7 @@ void prefixed_command (void)
         else if (cur_chr == del_code_base)
           n = 16777215L; /* 2^24 - 1 */
         else
-          n = 255; /* 2^8 - 1 */
+          n = 255;
 
         p = cur_chr;
         scan_char_num();
@@ -1396,20 +1320,11 @@ void prefixed_command (void)
         }
 
         if (p < math_code_base)
-          if ((a >= 4))
-            geq_define(p, data, cur_val);
-          else
-            eq_define(p, data, cur_val);
+          define(p, data, cur_val);
         else if (p < del_code_base)
-          if ((a >= 4))
-            geq_define(p, data, cur_val);
-          else
-            eq_define(p, data, cur_val);
+          define(p, data, cur_val);
         else 
-          if ((a >= 4))
-            geq_word_define(p, cur_val);
-          else
-            eq_word_define(p, cur_val);
+          word_define(p, cur_val);
       }
       break;
 
@@ -1420,11 +1335,7 @@ void prefixed_command (void)
         p = p + cur_val;
         scan_optional_equals();
         scan_font_ident();
-
-        if ((a >= 4))
-          geq_define(p, data, cur_val);
-        else
-          eq_define(p, data, cur_val);
+        define(p, data, cur_val);
       }
       break;
 
@@ -1447,9 +1358,7 @@ void prefixed_command (void)
         scan_optional_equals();
 
         if (set_box_allowed)
-        {
           scan_box(box_flag + n);
-        }
         else
         {
           print_err("Improper ");
@@ -1503,10 +1412,7 @@ void prefixed_command (void)
           }
         }
 
-        if ((a >= 4))
-          geq_define(par_shape_loc, shape_ref, p);
-        else
-          eq_define(par_shape_loc, shape_ref, p);
+        define(par_shape_loc, shape_ref, p);
       }
       break;
 
@@ -1519,7 +1425,7 @@ void prefixed_command (void)
           new_patterns();
           goto lab30;
         }
-#endif /* INITEX */
+#endif
         print_err("Patterns can be loaded only by INITEX");
         help_ptr = 0;
         error();
@@ -1610,10 +1516,7 @@ boolean load_fmt_file (void)
 #ifdef ALLOCATEMAIN
 /* we already read this once earlier to grab mem_top */
   if (trace_flag)
-  {
-    sprintf(log_line, "Read from fmt file mem_top = %d TeX words\n", x);
-    show_line(log_line, 0);
-  }
+    printf("Read from fmt file mem_top = %d TeX words\n", x);
 
   mem = allocate_main_memory(x); /* allocate main memory at this point */
 
@@ -1628,7 +1531,7 @@ boolean load_fmt_file (void)
 
   undump_int(x); /* eqtb_size */
 
-  if (x != (eqtb_size))
+  if (x != eqtb_size)
     goto lab_bad_fmt;
 
   undump_int(x); /* hash_prime */
@@ -1640,7 +1543,7 @@ boolean load_fmt_file (void)
 
 #ifdef ALLOCATEHYPHEN
 /* allow format files dumped with arbitrary (prime) hyphenation exceptions */
-  realloc_hyphen(x); /* reset_hyphen(); */
+  realloc_hyphen(x);
   hyphen_prime = x;
 #endif
 
@@ -1657,21 +1560,17 @@ boolean load_fmt_file (void)
     if (x > current_pool_size)
     {
       if (trace_flag)
-      {
-        sprintf(log_line, "undump string pool reallocation (%d > %d)\n", x, current_pool_size);
-        show_line(log_line, 0);
-      }
+        printf("undump string pool reallocation (%d > %d)\n", x, current_pool_size);
 
       str_pool = realloc_str_pool (x - current_pool_size + increment_pool_size);
     }
 
-    if (x > current_pool_size)   /* 94/Jan/24 */
+    if (x > current_pool_size)
 #else
     if (x > pool_size)
 #endif
     {
-      sprintf(log_line, "%s%s\n",  "---! Must increase the ", "string pool size");
-      show_line(log_line, 0);
+      printf("%s%s\n",  "---! Must increase the ", "string pool size");
       goto lab_bad_fmt;
     }
     else
@@ -1688,10 +1587,7 @@ boolean load_fmt_file (void)
     if (x > current_max_strings)
     {
       if (trace_flag)
-      {
-        sprintf(log_line, "undump string pointer reallocation (%d > %d)\n", x, current_max_strings);
-        show_line(log_line, 0);
-      }
+        printf("undump string pointer reallocation (%d > %d)\n", x, current_max_strings);
 
       str_start = realloc_str_start(x - current_max_strings + increment_max_strings);
     }
@@ -1701,8 +1597,7 @@ boolean load_fmt_file (void)
     if (x > max_strings)
 #endif
     {
-      sprintf(log_line,  "%s%s\n",  "---! Must increase the ", "max strings");
-      show_line(log_line, 0);
+      printf("%s%s\n",  "---! Must increase the ", "max strings");
       goto lab_bad_fmt;
     }
     else
@@ -1812,42 +1707,32 @@ boolean load_fmt_file (void)
   undump_int(cs_count);
 
   if (trace_flag)
-  {
-    sprintf(log_line, "itex undump cs_count %d ", cs_count);
-    show_line(log_line, 0);
-  }
+    printf("itex undump cs_count %d ", cs_count);
 
   {
-    undump_int(x);        /* font_mem_size */
+    undump_int(x); /* font_mem_size */
 
     if (x < 7)
       goto lab_bad_fmt;
 
 #ifdef ALLOCATEFONT
     if (trace_flag)
-    {
-      sprintf(log_line, "Read from fmt fmem_ptr = %d\n", x);
-      show_line(log_line, 0);
-    }
+      printf("Read from fmt fmem_ptr = %d\n", x);
 
-    if (x > current_font_mem_size) /* 93/Nov/28 dynamic allocate font_info */
+    if (x > current_font_mem_size)
     {
       if (trace_flag)
-      {
-        sprintf(log_line, "Undump realloc font_info (%d > %d)\n", x, current_font_mem_size);
-        show_line(log_line, 0);
-      }
+        printf("Undump realloc font_info (%d > %d)\n", x, current_font_mem_size);
 
       font_info = realloc_font_info (x - current_font_mem_size + increment_font_mem_size);
     }
 
-    if (x > current_font_mem_size)  /* in case allocation failed 94/Jan/24 */
+    if (x > current_font_mem_size)
 #else
     if (x > font_mem_size)
 #endif
     {
-      sprintf(log_line, "%s%s\n",  "---! Must increase the ", "font mem size");
-      show_line(log_line, 0);
+      puts("---! Must increase the font mem size\n");
       goto lab_bad_fmt;
     }
     else
@@ -1866,15 +1751,14 @@ boolean load_fmt_file (void)
 
       if (x > font_max)
       {
-        sprintf(log_line, "%s%s\n",  "---! Must increase the ", "font max"); 
-        show_line(log_line, 0);
+        puts("---! Must increase the font max\n"); 
         goto lab_bad_fmt;
       }
       else
         font_ptr = x;
     }
 
-    frozen_font_ptr = font_ptr; /* remember number of fonts frozen into format */
+    frozen_font_ptr = font_ptr;
 
     if (undumpthings(font_check[0], font_ptr + 1))
       return -1;
@@ -1951,7 +1835,6 @@ boolean load_fmt_file (void)
 /* non_address from font_mem_size to 0 96/Jan/15 ??? */
 
 #ifdef ALLOCATEFONT
-/* deal with fmt files dumped with *different* font_mem_size 93/Nov/29 */
   {
     int count = 0, oldfont_mem_size = 0;
     
@@ -1960,26 +1843,21 @@ boolean load_fmt_file (void)
       if (bchar_label[x] > oldfont_mem_size)
         oldfont_mem_size = bchar_label[x];
     }
-     
-    /* somewhat arbitrary sanity check ... */
-    if (oldfont_mem_size != non_address && oldfont_mem_size > font_max) /* 96/Jan/16 */
+
+    if (oldfont_mem_size != non_address && oldfont_mem_size > font_max)
     {
       for (x = 0; x <= font_ptr; x++)
       {
         if (bchar_label[x] == oldfont_mem_size)
         {
-          /* bchar_label[x] = font_mem_size; */
-          bchar_label[x] = non_address;  /* 96/Jan/16 */
+          bchar_label[x] = non_address;
           count++;
         }
       }
 
       if (trace_flag)
-      {
-        sprintf(log_line, "oldfont_mem_size is %d --- hit %d times. Using non_address %d\n",
+        printf("oldfont_mem_size is %d --- hit %d times. Using non_address %d\n",
             oldfont_mem_size, count, non_address);
-        show_line(log_line, 0);
-      }
     }
   }
 #endif
@@ -2022,8 +1900,7 @@ boolean load_fmt_file (void)
 
     if (x > trie_size)
     {
-      sprintf(log_line, "%s%s\n",  "---! Must increase the ", "trie size");
-      show_line(log_line, 0);
+      puts("---! Must increase the trie size\n");
       goto lab_bad_fmt;
     }
     else
@@ -2052,8 +1929,7 @@ boolean load_fmt_file (void)
 
     if (x > trie_op_size)
     {
-      sprintf(log_line, "%s%s\n",  "---! Must increase the ", "trie op size");
-      show_line(log_line, 0);
+      puts("---! Must increase the trie op size\n");
       goto lab_bad_fmt;
     }
     else
@@ -2113,8 +1989,7 @@ boolean load_fmt_file (void)
   return true;
 
 lab_bad_fmt:;
-  sprintf(log_line, "(Fatal format file error; I'm stymied)\n");
-  show_line(log_line, 1);
+  puts("(Fatal format file error; I'm stymied)\n");
 
   return false;
 }
@@ -2317,9 +2192,8 @@ int main_program (void)
 
   if (bad > 0)
   {
-    sprintf(log_line, "%s%s%ld\n", "Ouch---my internal constants have been clobbered!",
+    printf("%s%s%ld\n", "Ouch---my internal constants have been clobbered!",
         "---case ", (long) bad);
-    show_line(log_line, 1);
 
     goto lab9999;
   }
@@ -2348,19 +2222,15 @@ lab1:
   file_offset = 0;
   show_line(tex_version, 0);
 
-  {
 #ifdef _WIN32
   #ifdef _WIN64
-    sprintf(log_line, " (%s %s/Windows 64bit)", application, yandyversion);
+    printf(log_line, " (%s %s/Windows 64bit)", application, yandyversion);
   #else
-    sprintf(log_line, " (%s %s/Windows 32bit)", application, yandyversion);
+    printf(log_line, " (%s %s/Windows 32bit)", application, yandyversion);
   #endif
 #else
-    sprintf(log_line, " (%s %s/Linux)", application, yandyversion);
+    printf(log_line, " (%s %s/Linux)", application, yandyversion);
 #endif
-  }
-
-  show_line(log_line, 0);
 
   if (format_ident > 0)
     slow_print(format_ident);
@@ -3619,11 +3489,8 @@ lab32:
   cs_count = frozen_control_sequence - 1 - hash_used;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "itex cs_count %d hash_size %d hash_extra %d hash_used %d",
+    printf("itex cs_count %d hash_size %d hash_extra %d hash_used %d",
         cs_count, hash_size, hash_extra, hash_used);
-    show_line(log_line, 0);
-  }
 
   for (p = hash_base; p <= hash_used; p++)
   {
@@ -3634,10 +3501,7 @@ lab32:
       incr(cs_count);
 
       if (trace_flag)
-      {
-        sprintf(log_line, "itex cs_count++ ");
-        show_line(log_line, 0);
-      }
+        puts("itex cs_count++ ");
     }
   }
 

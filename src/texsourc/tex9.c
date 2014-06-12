@@ -442,9 +442,7 @@ void close_files_and_terminate (void)
   print_ln();
 
   if ((edit_name_start != 0) && (interaction > 0))
-  {
     call_edit(str_pool, edit_name_start, edit_name_length, edit_line);
-  }
 }
 #ifdef DEBUG
 /* sec 1338 */

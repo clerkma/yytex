@@ -92,7 +92,7 @@ void try_break_ (integer pi, small_number break_type)
   boolean node_r_stays_active;
   scaled line_width;
   char fit_class;
-  halfword b;       /* current badness */
+  halfword b;
   integer d;
   boolean artificial_demerits;
   halfword save_link;
@@ -171,7 +171,7 @@ lab22:
                     default:
                       {
                         confusion("disc1");
-                        return;       // abort_flag set
+                        return;
                       }
                       break;
                   }
@@ -294,7 +294,7 @@ lab30:;
 #ifdef STAT
               incr(pass_number);
               serial(q) = pass_number;
-#endif /* STAT */
+#endif
               prev_break(q) = best_place[fit_class];
               q = get_node(active_node_size);
               break_node(q) = passive;
@@ -910,12 +910,7 @@ lab22:
               if (lig_stack == 0)
                 rt_hit = true;
 
-            {
-              if (interrupt != 0)
-              {
-                pause_for_instructions();
-              }
-            }
+            check_interrupt();
 
             switch (op_byte(q))
             {
@@ -972,11 +967,7 @@ lab22:
                       mem[p].hh.b1 = 2;
                       lft_hit = false;
                     }
-/*        if (false)
-        if (lig_stack == 0){
-          incr(mem[p].hh.b1); 
-          rt_hit = false; 
-        } */              /* removed 99/Jan/6 */
+
                     mem[cur_q].hh.rh = p;
                     t = p;
                     ligature_present = false;
@@ -1498,8 +1489,7 @@ lab21:
             if (hyph_count == hyphen_prime)
             {
               overflow("exception dictionary", hyphen_prime); /* exception dictionary - NOT DYNAMIC */
-              /*    not dynamic ---- but can be set -e=... from command line in ini-TeX */
-              return;     // abort_flag set
+              return;
             }
 
             incr(hyph_count);

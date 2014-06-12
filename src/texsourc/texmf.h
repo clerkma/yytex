@@ -23,7 +23,8 @@
 
 #include "yandytex.h"
 
-enum {
+enum
+{
   out_dvi_flag = (1 << 0),
   out_pdf_flag = (1 << 1),
   out_xdv_flag = (1 << 2),
