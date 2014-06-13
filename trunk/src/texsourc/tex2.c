@@ -496,7 +496,7 @@ void begin_token_list_ (halfword p, quarterword t)
             break;
 
           default:
-            print_cmd_chr(assign_toks, t + (hash_size + 1307));
+            print_cmd_chr(assign_toks, t - output_text + output_routine_loc);
             break;
         }
 
@@ -509,7 +509,6 @@ void begin_token_list_ (halfword p, quarterword t)
   else
     loc = p;
 }
-//#pragma optimize("", on)          /* 98/Dec/10 experiment */
 /* sec 0324 */
 void end_token_list (void) 
 { 

@@ -21,10 +21,7 @@
 
 #include "texd.h"
 
-#define dump_default_var    TEX_format_default
-#define dump_default        " plain.fmt"
 #define dump_ext_length     4
-#define dump_default_length format_default_length
 #define edit_value          tex_edit_value
 
 extern char * replacement[];
@@ -43,18 +40,14 @@ int main (int ac, char *av[])
 {
   int flag = 0, ret = 0;
 
-#ifdef WIN32
-  _setmaxstdio(2048);
-#endif
-
   gargc = ac;
   gargv = av;
 
   if (main_init(gargc, gargv))
     return -1; // failure
 
-  dump_default_var = dump_default;
-  dump_default_length = strlen(dump_default_var + 1);
+  TEX_format_default = " plain.fmt";
+  format_default_length = strlen(TEX_format_default + 1);
 
   jump_used = 0;
 
@@ -65,18 +58,12 @@ int main (int ac, char *av[])
     flag = main_program();
 
     if (trace_flag)
-    {
-      sprintf(log_line, "EXITING at %s: flag = %d, ret = %d, jump_used = %d\n", "main", flag, ret, jump_used);
-      show_line(log_line, 0);
-    }
+      printf("EXITING at %s: flag = %d, ret = %d, jump_used = %d\n", "main", flag, ret, jump_used);
   }
   else
   {
     if (trace_flag)
-    {
-      sprintf(log_line, "EXITING at %s: flag = %d, ret = %d, jump_used =  %d\n", "jump_out", flag, ret, jump_used);
-      show_line(log_line, 0);
-    }
+      printf("EXITING at %s: flag = %d, ret = %d, jump_used =  %d\n", "jump_out", flag, ret, jump_used);
   }
 
   if (endit(flag) != 0)
@@ -138,40 +125,25 @@ void t_open_in (void)
   }
 }
 
-/* All our interrupt handler has to do is set TeX's or Metafont's global
-   variable `interrupt'; then they will do everything needed.  */
-
-static void catch_interrupt (int err)
+static void catch_interrupt(int err)
 {
-  (void) signal (SIGINT, SIG_IGN);
+  (void) signal(SIGINT, SIG_IGN);
 
   if (interrupt++ >= 3)
     exit(1);
 
-  (void) signal (SIGINT, catch_interrupt);
+  (void) signal(SIGINT, catch_interrupt);
 }
 
-/* Besides getting the date and time here, we also set up the interrupt
-   handler, for no particularly good reason.  It's just that since the
-   `fix_date_and_time' routine is called early on (section 1337 in TeX,
-   ``Get the first line of input and prepare to start''), this is as
-   good a place as any.  */
-
-void get_date_and_time (integer *sys_minutes,
-                        integer *sys_day,
-                        integer *sys_month,
-                        integer *sys_year)
+void fix_date_and_time (void)
 {
   time_t clock;
   struct tm *tmptr;
 
-  (void) time (&clock);  /* - seconds since 1970 */ 
+  (void) time(&clock);
 
   if (trace_flag)
-  {
-    sprintf(log_line, "The time is %u\n", clock);
-    show_line(log_line, 0);   
-  }
+    printf("The time is %u\n", clock);
 
   if (clock < 0)
     puts("Time not available!\n");
@@ -180,30 +152,26 @@ void get_date_and_time (integer *sys_minutes,
 
   if (tmptr == NULL)
   {
-    sprintf(log_line, "Cannot convert time (%0ld)!\n", clock);
-    show_line(log_line, 1);
-    *sys_year    = 2038;
-    *sys_month   = 1;
-    *sys_day     = 18;
-    *sys_minutes = 22 * 60 + 14;
+    printf("Cannot convert time (%0ld)!\n", clock);
+    year     = 2038;
+    month    = 1;
+    day      = 18;
+    tex_time = 22 * 60 + 14;
   }
   else
   {
-    *sys_minutes = tmptr->tm_hour * 60 + tmptr->tm_min;
-    *sys_day     = tmptr->tm_mday;
-    *sys_month   = tmptr->tm_mon + 1;
-    *sys_year    = tmptr->tm_year + 1900;
+    tex_time = tmptr->tm_hour * 60 + tmptr->tm_min;
+    day      = tmptr->tm_mday;
+    month    = tmptr->tm_mon + 1;
+    year     = tmptr->tm_year + 1900;
 
     if (trace_flag)
-    {
-      sprintf(log_line, "%d-%d-%d %d:%d\n",
+      printf("%d-%d-%d %d:%d\n",
         tmptr->tm_year + 1900,
         tmptr->tm_mon + 1,
         tmptr->tm_mday,
         tmptr->tm_hour,
         tmptr->tm_min);
-      show_line(log_line, 0);
-    }
   }
 
   {
@@ -238,13 +206,7 @@ void complain_line (FILE *output)
   sprintf(log_line, "! Unable to read an entire line---buf_size=%d.\n", buf_size);
 #endif
 
-  if (output == stderr)
-    show_line(log_line, 1);
-  else if (output == stdout)
-    show_line(log_line, 0);
-  else
-    fputs(log_line, output); // never
-
+  fputs(log_line, output);
   puts("  (File may have a line termination problem.)");
 }
 
@@ -303,13 +265,8 @@ void show_bad_line (FILE *output, int first, int last)
 //  putc(' ', output);    /*  putc('\n', output); */
   *s++ = ' ';
   *s++ = '\0';
-  if (output == stderr)
-    show_line(log_line, 1);
-  else
-    if (output == stdout)
-      show_line(log_line, 0);
-    else
-      fputs(log_line, output);   // log_file
+
+  fputs(log_line, output);   // log_file
 }
 
 // split off for convenience and use in ConsoleInput
@@ -322,6 +279,7 @@ boolean input_line_finish (void)
 /*  if (i == EOF && buffer[last] != '\n') buffer[last++] = '\n'; */
 
   buffer[last] = ' ';           /* space terminate */
+
   if (last >= max_buf_stack)
     max_buf_stack = last; /* remember longest line */
 
@@ -337,17 +295,9 @@ boolean input_line_finish (void)
 
     if (i == ' ' || i == '\t')
       --last;
-/*    else if (trimeof && i == 26) --last;   */   /* 93/Nov/24 */
     else
       break;
   }
-/*  if (trimeof != 0 && i == EOF && last == first)  
-      return false; */              /* EOF and line empty */
-// #else
-//   while (last > first
-//         && isblank (buffer[last - 1]) && buffer[last - 1] != '\r')
-//    --last;
-// #endif
 
 /* following added to check source file integrity ASCII 32 - 127 */
 /* allow space, tab, new-page - also allow return, newline ? */
@@ -809,23 +759,20 @@ static int swap_items (char *p, int nitems, int size)
 }
 #endif /* not WORDS_BIGENDIAN and not NO_FMTBASE_SWAP */
 
-/* Hmm, this could benefit from some on the fly compression - bkph */
-/* and complementary decompression on input - bkph */
-
-/* Here we write NITEMS items, each item being ITEM_SIZE bytes long.
-   The pointer to the stuff to write is P, and we write to the file
-   OUT_FILE.  */
-
-int do_dump (char *p, int item_size, int nitems, FILE *out_file)
+#ifdef COMPACTFORMAT
+int do_dump(char *p, int item_size, int nitems, gzFile out_file)
+#else
+int do_dump(char *p, int item_size, int nitems, FILE *out_file)
+#endif
 {
 #if !defined (WORDS_BIGENDIAN) && !defined (NO_FMTBASE_SWAP)
   swap_items (p, nitems, item_size);
 #endif
 
 #ifdef COMPACTFORMAT
-  if (gzwrite(gz_fmt_file, p, (item_size * nitems)) != (item_size * nitems))
+  if (gzwrite(out_file, p, (item_size * nitems)) != (item_size * nitems))
 #else
-  if ((int) fwrite (p, item_size, nitems, out_file) != nitems)
+  if ((int) fwrite(p, item_size, nitems, out_file) != nitems)
 #endif
   {
     show_line("\n", 0);
@@ -843,13 +790,14 @@ int do_dump (char *p, int item_size, int nitems, FILE *out_file)
   return 0;
 }
 
-/* Hmm, this could benefit from some on the fly decompression - bkph */
-
-/* Here is the dual of the writing routine.  */
-int do_undump (char *p, int item_size, int nitems, FILE *in_file)
+#ifdef COMPACTFORMAT
+int do_undump(char *p, int item_size, int nitems, gzFile in_file)
+#else
+int do_undump(char *p, int item_size, int nitems, FILE *in_file)
+#endif
 {
 #ifdef COMPACTFORMAT
-  if (gzread(gz_fmt_file, (void *) p, (unsigned int) (item_size * nitems)) <= 0)
+  if (gzread(in_file, (void *) p, (unsigned int) (item_size * nitems)) <= 0)
 #else
   if ((int) fread((void *) p, item_size, nitems, in_file) != nitems)
 #endif

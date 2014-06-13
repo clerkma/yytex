@@ -143,9 +143,9 @@ EXTERN integer max_buf_stack;
   #define dvi_buf_size 16384
 #endif
 
-#define hash_size 32768 // 9500 25000
 #define hash_extra (255 - font_max)
-#define hash_prime 27197
+#define hash_prime 27197 // (prime ~ 85% * (hash_size + hash_extra))
+#define hash_size  32768 // 97280 9500 25000
 
 #if (hash_extra != 255 - font_max)
   #error ERROR: hash_extra not equal to (255 - font_max)
@@ -167,6 +167,7 @@ typedef char two_choices;
 typedef char four_choices;
 /* sec 0113 */
 #include "texmfmem.h"
+#include "yandy_macros.h"
 /* sec 0150 */
 typedef char glue_ord; 
 /* sec 0212 */
@@ -879,12 +880,8 @@ void call_edit (ASCII_code *filename, pool_pointer fnstart,
 
 void add_variable_space(int);
 
-void get_date_and_time (integer *minutes, integer *day,
-                        integer *month, integer *year);
-
 char *unixify (char *);
 
-#include "yandy_macros.h"
 #include "coerce.h"
 
 /* sec 79 */
@@ -916,24 +913,5 @@ extern str_number make_string_pool (const char *s);
 #define help5(...)  tex_help(5, __VA_ARGS__)
 #define help6(...)  tex_help(6, __VA_ARGS__)
 
-/********BINDING WITH LIBHARU*********/
-typedef struct _mapping_table mapping_table;
-typedef struct _mapping_entry mapping_entry;
-EXTERN HPDF_Doc  yandy_pdf;
-EXTERN HPDF_Page yandy_page;
-EXTERN HPDF_Font yandy_font[1024];
-EXTERN boolean pdf_doing_string;
-EXTERN boolean pdf_doing_text;
-EXTERN integer scaled_out;
 EXTERN boolean shipout_flag;
-EXTERN mapping_table * gentbl;
-EXTERN mapping_table * font_name_hash_init (void);
-EXTERN void font_name_hash_free (mapping_table * tbl);
-EXTERN void pdf_ship_out(pointer p);
-EXTERN void pdf_vlist_out (void);
-EXTERN void pdf_hlist_out (void);
-EXTERN void pdf_begin_text(void);
-EXTERN void pdf_font_def(internal_font_number f);
-EXTERN void pdf_error_handler (HPDF_STATUS error_no, HPDF_STATUS detail_no, void * user_data);
-/********BINDING WITH LIBHARU*********/
 #endif

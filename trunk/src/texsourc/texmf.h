@@ -33,9 +33,6 @@ enum
 
 #define INLINE inline
 
-#define dump_file  fmt_file
-#define out_file   dvi_file
-
 /* Read a line of input as quickly as possible.  */
 extern boolean input_line (FILE *);
 #define input_ln(stream, flag) input_line(stream)
@@ -49,7 +46,7 @@ extern boolean input_line (FILE *);
 #define gz_w_close    gzclose
 
 /* sec 0241 */
-#define fix_date_and_time() get_date_and_time (&(tex_time), &(day), &(month), &(year))
+extern void fix_date_and_time(void);
 
 /* If we're running under Unix, use system calls instead of standard I/O
    to read and write the output files; also, be able to make a core dump. */ 
@@ -65,11 +62,17 @@ extern boolean input_line (FILE *);
          != (size_t) ((size_t)(b) - (size_t)(a) + 1))             \
      FATAL_PERROR ("\n! dvi file")
 
+
+#ifdef COMPACTFORMAT
+extern int do_dump   (char *, int, int, gzFile);
+extern int do_undump (char *, int, int, gzFile);
+#define dump_file gz_fmt_file
+#else
 extern int do_dump   (char *, int, int, FILE *);
 extern int do_undump (char *, int, int, FILE *);
+#define dump_file fmt_file
+#endif
 
-/* Reading and writing the dump files.  `(un)dumpthings' is called from
-   the change file.*/
 #define dumpthings(base, len)           \
   do_dump   ((char *) &(base), sizeof (base), (int) (len), dump_file)
 
@@ -77,8 +80,8 @@ extern int do_undump (char *, int, int, FILE *);
   do_undump ((char *) &(base), sizeof (base), (int) (len), dump_file)
 
 /* Use the above for all the other dumping and undumping.  */
-#define generic_dump(x)   dumpthings (x, 1)
-#define generic_undump(x) undumpthings (x, 1)
+#define generic_dump(x)   dumpthings(x, 1)
+#define generic_undump(x) undumpthings(x, 1)
 
 #define dump_wd     generic_dump
 #define undump_wd   generic_undump

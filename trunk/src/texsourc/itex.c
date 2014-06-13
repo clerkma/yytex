@@ -3682,6 +3682,7 @@ lab32:
 void init_prim (void)
 {
   no_new_control_sequence = false;
+  /* sec 0266 */
   primitive("lineskip", assign_glue, glue_base + line_skip_code);
   primitive("baselineskip", assign_glue, glue_base + baseline_skip_code);
   primitive("parskip", assign_glue, glue_base + par_skip_code);
@@ -3700,6 +3701,7 @@ void init_prim (void)
   primitive("thinmuskip", assign_mu_glue, glue_base + thin_mu_skip_code);
   primitive("medmuskip", assign_mu_glue, glue_base + med_mu_skip_code);
   primitive("thickmuskip", assign_mu_glue, glue_base + thick_mu_skip_code);
+  /* sec 0230 */
   primitive("output", assign_toks, output_routine_loc);
   primitive("everypar", assign_toks, every_par_loc);
   primitive("everymath", assign_toks, every_math_loc);
@@ -3709,6 +3711,7 @@ void init_prim (void)
   primitive("everyjob", assign_toks, every_job_loc);
   primitive("everycr", assign_toks, every_cr_loc);
   primitive("errhelp", assign_toks, err_help_loc);
+  /* sec 0238 */
   primitive("pretolerance", assign_int, int_base + pretolerance_code);
   primitive("tolerance", assign_int, int_base + tolerance_code);
   primitive("linepenalty", assign_int, int_base + line_penalty_code);
@@ -3764,6 +3767,7 @@ void init_prim (void)
   primitive("righthyphenmin", assign_int, int_base + right_hyphen_min_code);
   primitive("holdinginserts", assign_int, int_base + holding_inserts_code);
   primitive("errorcontextlines", assign_int, int_base + error_context_lines_code);
+  /* sec 0248 */
   primitive("parindent", assign_dimen, dimen_base + par_indent_code);
   primitive("mathsurround", assign_dimen, dimen_base + math_surround_code);
   primitive("lineskiplimit", assign_dimen, dimen_base + line_skip_limit_code);
@@ -4000,10 +4004,10 @@ void init_prim (void)
   primitive("lccode", def_code, lc_code_base);
   primitive("uccode", def_code, uc_code_base);
   primitive("sfcode", def_code, sf_code_base);
-  primitive("delcode", def_code, (hash_size + 3474));
-  primitive("textfont", def_family, (hash_size + 1835));
-  primitive("scriptfont", def_family, (hash_size + 1851));
-  primitive("scriptscriptfont", def_family, (hash_size + 1867));
+  primitive("delcode", def_code, del_code_base);
+  primitive("textfont", def_family, math_font_base);
+  primitive("scriptfont", def_family, math_font_base + script_size);
+  primitive("scriptscriptfont", def_family, math_font_base + script_script_size);
   primitive("hyphenation", hyph_data, 0);
   primitive("patterns", hyph_data, 1);
   primitive("hyphenchar", assign_font_int, 0);
@@ -4016,8 +4020,8 @@ void init_prim (void)
   primitive("closein", in_stream, 0);
   primitive("message", message, 0);
   primitive("errmessage", message, 1);
-  primitive("lowercase", case_shift, (hash_size + 2139));
-  primitive("uppercase", case_shift, (hash_size + 2395));
+  primitive("lowercase", case_shift, lc_code_base);
+  primitive("uppercase", case_shift, uc_code_base);
   primitive("show", xray, 0);
   primitive("showbox", xray, 1);
   primitive("showthe", xray, 2);

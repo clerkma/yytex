@@ -286,37 +286,6 @@ void close_files_and_terminate (void)
 
   switch (shipout_flag)
   {
-    case out_pdf_flag:
-      {
-        if (total_pages == 0)
-        {
-          print_nl("No pages of output.");
-        }
-        else
-        {
-          HPDF_SaveToFile(yandy_pdf, pdf_file_name);
-      
-          print_nl("Output written on ");
-
-          if (full_file_name_flag && pdf_file_name != NULL)
-            print_char_string((unsigned char *) pdf_file_name);
-          else
-            slow_print(output_file_name);
-
-          print_string(" (");
-          print_int(total_pages);
-          print_string(" page");
-
-          if (total_pages != 1)
-            print_char('s');
-          
-          print_string(").");
-        }
-
-        HPDF_Free(yandy_pdf);
-        font_name_hash_free(gentbl);
-      }
-      break;
     case out_dvi_flag:
     case out_xdv_flag:
       {

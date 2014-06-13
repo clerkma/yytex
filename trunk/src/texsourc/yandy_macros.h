@@ -424,9 +424,7 @@ while (0)
 #define frozen_dont_expand            (frozen_control_sequence + 9)        // (hash_size + hash_extra + 523)
 #define frozen_null_font              (frozen_control_sequence + 10)       // (hash_size + hash_extra + 524)
 #define font_id_base                  (frozen_null_font - font_base)       // (hash_size + hash_extra + 524)
-#define undefined_control_sequence    (frozen_null_font + 1025)            // (hash_size + hash_extra + 781) = font_max + 2
-                                                                           // (hash_size + (255 - 1023) + 1025 + 524)
-                                                                           // (hash_size + 781)
+#define undefined_control_sequence    (frozen_null_font + font_max + 2)    // (hash_size + 781)
 #define glue_base                     (undefined_control_sequence + 1)     // (hash_size + 782)
 /* sec 0224 */
 #define line_skip_code                0  // 782
@@ -733,6 +731,14 @@ while (0)
 #define other_token       06000 // 3072 = 2^8 * other_char
 #define match_token       06400 // 3328 = 2^8 * match
 #define end_match_token   07000 // 3584 = 2^8 * end_match
+/* sec 0298 */
+#define chr_cmd(s)  \
+do                  \
+{                   \
+  print_string(s);  \
+  print(chr_code);  \
+}                   \
+while (0)
 /* sec 0302 */
 #define state cur_input.state_field
 #define index cur_input.index_field

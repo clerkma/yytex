@@ -979,72 +979,58 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
   switch (cmd)
   {
     case left_brace:
-      print_string("begin-group character ");
-      print(chr_code);
+      chr_cmd("begin-group character ");
       break;
 
     case right_brace:
-      print_string("end-group character ");
-      print(chr_code);
+      chr_cmd("end-group character ");
       break;
 
     case math_shift:
-      print_string("math shift character ");
-      print(chr_code);
+      chr_cmd("math shift character ");
       break;
 
     case mac_param:
-      print_string("macro parameter character ");
-      print(chr_code);
+      chr_cmd("macro parameter character ");
       break;
 
     case sup_mark:
-      print_string("superscript character ");
-      print(chr_code);
+      chr_cmd("superscript character ");
       break;
 
     case sub_mark:
-      print_string("subscript character ");
-      print(chr_code);
+      chr_cmd("subscript character ");
       break;
 
     case endv:
-      print_string("end of alignment template");
+      chr_cmd("end of alignment template");
       break;
 
     case spacer:
-      print_string("blank space ");
-      print(chr_code);
+      chr_cmd("blank space ");
       break;
 
     case letter:
-      print_string("the letter ");
-      print(chr_code);
+      chr_cmd("the letter ");
       break;
 
     case other_char:
-      print_string("the character ");
-      print(chr_code);
+      chr_cmd("the character ");
       break;
 
     case assign_glue:
     case assign_mu_glue:
       if (chr_code < skip_base)
-      {
         print_skip_param(chr_code - glue_base);
+      else if (chr_code < mu_skip_base)
+      {
+        print_esc("skip");
+        print_int(chr_code - skip_base);
       }
       else
       {
-        if (chr_code < mu_skip_base)
-        {
-          print_esc("skip");
-          print_int(chr_code - skip_base);
-        }
-        else
-        {
-          print_esc("muskip");
-          print_int(chr_code - mu_skip_base);
-        }
+        print_esc("muskip");
+        print_int(chr_code - mu_skip_base);
       }
       break;
 
@@ -1099,9 +1085,7 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
 
     case assign_int:
       if (chr_code < count_base)
-      {
         print_param(chr_code - int_base);
-      }
       else
       {
         print_esc("count");
@@ -1111,9 +1095,7 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
 
     case assign_dimen:
       if (chr_code < scaled_base)
-      {
         print_length_param(chr_code - dimen_base);
-      }
       else
       {
         print_esc("dimen");
@@ -2065,193 +2047,177 @@ void show_eqtb_(halfword n)
 { 
   if (n < active_base)
     print_char('?');
-  else
-    if (n < glue_base)
+  else if (n < glue_base)
+  {
+    sprint_cs(n);
+    print_char('=');
+    print_cmd_chr(eq_type(n), equiv(n));
+    
+    if (eq_type(n) >= call)
     {
-      sprint_cs(n);
+      print_char(':');
+      show_token_list(link(equiv(n)), 0, 32);
+    }
+  }
+  else if (n < local_base)
+    if (n < skip_base)
+    {
+      print_skip_param(n - glue_base);
       print_char('=');
-      print_cmd_chr(eq_type(n), equiv(n));
-
-      if (eq_type(n) >= call)
-      {
-        print_char(':');
+      
+      if (n < glue_base + thin_mu_skip_code)
+        print_spec(equiv(n), "pt");
+      else
+        print_spec(equiv(n), "mu");
+    }
+    else if (n < mu_skip_base)
+    {
+      print_esc("skip");
+      print_int(n - skip_base);
+      print_char('=');
+      print_spec(equiv(n), "pt");
+    }
+    else
+    {
+      print_esc("muskip");
+      print_int(n - mu_skip_base);
+      print_char('=');
+      print_spec(equiv(n), "mu");
+    }
+  else if (n < int_base)
+    if (n == par_shape_loc)
+    {
+      print_esc("parshape");
+      print_char('=');
+      
+      if (par_shape_ptr == 0)
+        print_char('0');
+      else
+        print_int(info(par_shape_ptr));
+    }
+    else if (n < toks_base)
+    {
+      print_cmd_chr(assign_toks, n);
+      print_char('=');
+      
+      if (equiv(n) != 0)
         show_token_list(link(equiv(n)), 0, 32);
-      }
     }
-    else
-      if (n < local_base)
-        if (n < skip_base)
-        {
-          print_skip_param(n - glue_base);
-          print_char('=');
-
-          if (n < glue_base + thin_mu_skip_code)
-            print_spec(equiv(n), "pt");
-          else
-            print_spec(equiv(n), "mu");
-        }
-        else
-          if (n < mu_skip_base)
-          {
-            print_esc("skip");
-            print_int(n - skip_base);
-            print_char('=');
-            print_spec(equiv(n), "pt");
-          }
-          else
-          {
-            print_esc("muskip");
-            print_int(n - mu_skip_base);
-            print_char('=');
-            print_spec(equiv(n), "mu");
-          }
-      else
-        if (n < int_base)
-          if (n == par_shape_loc)
-          {
-            print_esc("parshape");
-            print_char('=');
-
-            if (par_shape_ptr == 0)
-              print_char('0');
-            else
-              print_int(info(par_shape_ptr));
-          }
-          else
-            if (n < toks_base)
-            {
-              print_cmd_chr(assign_toks, n);
-              print_char('=');
-
-              if (equiv(n) != 0)
-                show_token_list(link(equiv(n)), 0, 32);
-            }
-            else
-              if (n < box_base)
-              {
-                print_esc("toks");
-                print_int(n - toks_base);
-                print_char('=');
-
-                if (equiv(n) != 0)
-                  show_token_list(link(equiv(n)), 0, 32);
-              }
-              else
-                if (n < cur_font_loc)
-                {
-                  print_esc("box");
-                  print_int(n - box_base);
-                  print_char('=');
-
-                  if (equiv(n) == 0)
-                    print_string("void");
-                  else
-                  {
-                    depth_threshold = 0;
-                    breadth_max = 1;
-                    show_node_list(equiv(n));
-                  }
-                }
-                else
-                  if (n < cat_code_base)
-                  {
-                    if (n == cur_font_loc)
-                      print_string("current font");
-                    else
-                      if (n < math_font_base + 16)
-                      {
-                        print_esc("textfont");
-                        print_int(n - math_font_base);
-                      }
-                      else
-                        if (n < math_font_base + 32)
-                        {
-                          print_esc("scriptfont");
-                          print_int(n - math_font_base - 16);
-                        }
-                        else
-                        {
-                          print_esc("scriptscriptfont");
-                          print_int(n - math_font_base - 32);
-                        }
-
-                    print_char('=');
-                    print_esc("");
-                    print(hash[font_id_base + equiv(n)].rh);
-                  }
-                  else
-                    if (n < math_code_base)
-                    {
-                      if (n < lc_code_base)
-                      {
-                        print_esc("catcode");
-                        print_int(n - cat_code_base);
-                      }
-                      else
-                        if (n < uc_code_base)
-                        {
-                          print_esc("lccode");
-                          print_int(n - lc_code_base);
-                        }
-                        else
-                          if (n < sf_code_base)
-                          {
-                            print_esc("uccode");
-                            print_int(n - uc_code_base);
-                          }
-                          else
-                          {
-                            print_esc("sfcode");
-                            print_int(n - sf_code_base);
-                          }
-
-                      print_char('=');
-                      print_int(equiv(n));
-                    }
-                    else
-                    {
-                      print_esc("mathcode");
-                      print_int(n - math_code_base);
-                      print_char('=');
-                      print_int(equiv(n));
-                    }
-  else
-    if (n < dimen_base)
+    else if (n < box_base)
     {
-      if (n < count_base)
-        print_param(n - int_base);
-      else
-        if (n < del_code_base)
-        {
-          print_esc("count");
-          print_int(n - count_base);
-        }
-        else
-        {
-          print_esc("delcode");
-          print_int(n - del_code_base);
-        }
-
+      print_esc("toks");
+      print_int(n - toks_base);
       print_char('=');
-      print_int(eqtb[n].cint);
+      
+      if (equiv(n) != 0)
+        show_token_list(link(equiv(n)), 0, 32);
     }
-    else
-      if (n <= eqtb_size)
+    else if (n < cur_font_loc)
+    {
+      print_esc("box");
+      print_int(n - box_base);
+      print_char('=');
+      
+      if (equiv(n) == 0)
+        print_string("void");
+      else
       {
-        if (n < scaled_base)
-          print_length_param(n - dimen_base);
-        else
-        {
-          print_esc("dimen");
-          print_int(n - scaled_base);
-        }
-
-        print_char('=');
-        print_scaled(eqtb[n].cint);
-        print_string("pt");
+        depth_threshold = 0;
+        breadth_max = 1;
+        show_node_list(equiv(n));
+      }
+    }
+    else if (n < cat_code_base)
+    {
+      if (n == cur_font_loc)
+        print_string("current font");
+      else if (n < math_font_base + 16)
+      {
+        print_esc("textfont");
+        print_int(n - math_font_base);
+      }
+      else if (n < math_font_base + 32)
+      {
+        print_esc("scriptfont");
+        print_int(n - math_font_base - 16);
       }
       else
-        print_char('?');
+      {
+        print_esc("scriptscriptfont");
+        print_int(n - math_font_base - 32);
+      }
+      
+      print_char('=');
+      print_esc("");
+      print(hash[font_id_base + equiv(n)].rh);
+    }
+    else if (n < math_code_base)
+    {
+      if (n < lc_code_base)
+      {
+        print_esc("catcode");
+        print_int(n - cat_code_base);
+      }
+      else if (n < uc_code_base)
+      {
+        print_esc("lccode");
+        print_int(n - lc_code_base);
+      }
+      else if (n < sf_code_base)
+      {
+        print_esc("uccode");
+        print_int(n - uc_code_base);
+      }
+      else
+      {
+        print_esc("sfcode");
+        print_int(n - sf_code_base);
+      }
+      
+      print_char('=');
+      print_int(equiv(n));
+    }
+    else
+    {
+      print_esc("mathcode");
+      print_int(n - math_code_base);
+      print_char('=');
+      print_int(equiv(n));
+    }
+  else if (n < dimen_base)
+  {
+    if (n < count_base)
+      print_param(n - int_base);
+    else if (n < del_code_base)
+    {
+      print_esc("count");
+      print_int(n - count_base);
+    }
+    else
+    {
+      print_esc("delcode");
+      print_int(n - del_code_base);
+    }
+    
+    print_char('=');
+    print_int(eqtb[n].cint);
+  }
+  else if (n <= eqtb_size)
+  {
+    if (n < scaled_base)
+      print_length_param(n - dimen_base);
+    else
+    {
+      print_esc("dimen");
+      print_int(n - scaled_base);
+    }
+    
+    print_char('=');
+    print_scaled(eqtb[n].cint);
+    print_string("pt");
+  }
+  else
+    print_char('?');
 }
 #endif /* STAT */
 /* sec 0259 */
