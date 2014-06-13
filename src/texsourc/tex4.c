@@ -638,7 +638,6 @@ lab21:
               dvi_out(f - 1);
             }
 #else
-            /* normal TeX 82 case */
             else
             {
               dvi_out(fnt1);
@@ -646,9 +645,7 @@ lab21:
             }
 #endif
 
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 #ifdef INCREASEFONTS
-            /* fnt2 followed by f / 256,  f % 256 */
             else
             {
               dvi_out(fnt2);
@@ -656,7 +653,7 @@ lab21:
               dvi_out(((f - 1) & 255)); /* bottom byte */
             }
 #endif
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
             dvi_f = f;
           }
 
@@ -1295,9 +1292,6 @@ void ship_out_(halfword p)
 {
   switch (shipout_flag)
   {
-    case out_pdf_flag:
-      pdf_ship_out(p);
-      break;
     case out_dvi_flag:
     case out_xdv_flag:
       dvi_ship_out_(p);

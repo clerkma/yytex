@@ -2118,6 +2118,8 @@ int test_align (int address, int size, char *name)
 
 void check_fixed_align (int flag)
 {
+  (void) flag;
+
   if (test_align ((int) &mem_top, 4, "FIXED ALIGNMENT"))
   {
     puts("PLEASE RECOMPILE ME!\n");
@@ -2246,6 +2248,8 @@ void check_fixed_align (int flag)
 
 void check_alloc_align (int flag)
 {
+  (void) flag;
+
   if (test_align ((int) eqtb, sizeof(eqtb[0]), "ALLOCATED ALIGNMENT"))
     puts("PLEASE RECOMPILE ME!\n");
 

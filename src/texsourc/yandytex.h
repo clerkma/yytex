@@ -57,8 +57,6 @@
 #endif
 #include "zlib.h"
 #include "md5.h"
-#include "hpdf.h"
-#include "hpdf_utils.h"
 
 typedef long long   integer;
 typedef double      glue_ratio;
