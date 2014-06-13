@@ -2250,7 +2250,7 @@ void check_alloc_align (int flag)
 {
   (void) flag;
 
-  if (test_align ((int) eqtb, sizeof(eqtb[0]), "ALLOCATED ALIGNMENT"))
+  if (test_align((int) eqtb, sizeof(eqtb[0]), "ALLOCATED ALIGNMENT"))
     puts("PLEASE RECOMPILE ME!\n");
 
 #ifdef CHECKALIGNMENT
@@ -2806,8 +2806,6 @@ int init_commands (int ac, char **av)
   knuth_flag            = false; /* allow extensions to TeX */
   full_file_name_flag   = true;  /* new default 2000 June 18 */
   errout                = stdout; /* as opposed to stderr say --- used ??? */
-  abort_flag            = 0;      // not yet hooked up ???
-  err_level             = 0;      // not yet hooked up ???
   new_hyphen_prime      = 0;
 
 #ifdef VARIABLETRIESIZE
@@ -3011,26 +3009,25 @@ void deslash_all (int ac, char **av)
 
   s = buffer + strlen(buffer) - 1;
 
-  if (*s == '\\' || *s == '/') *s = '\0';   /* flush trailing PATH_SEP */
+  if (*s == '\\' || *s == '/')
+    *s = '\0';
 
   texpath = xstrdup(buffer);
 
-/*  Hmm, we may be operating on DOS environment variables here !!! */
-
   if (strcmp(dvi_directory, "") != 0)
-    flush_trailing_slash (dvi_directory);
+    flush_trailing_slash(dvi_directory);
 
   if (strcmp(log_directory, "") != 0)
-    flush_trailing_slash (log_directory);
+    flush_trailing_slash(log_directory);
 
   if (strcmp(aux_directory, "") != 0)
-    flush_trailing_slash (aux_directory);
+    flush_trailing_slash(aux_directory);
 
   if (strcmp(fmt_directory, "") != 0)
-    flush_trailing_slash (fmt_directory);
+    flush_trailing_slash(fmt_directory);
 
   if (strcmp(pdf_directory, "") != 0)
-    flush_trailing_slash (pdf_directory);
+    flush_trailing_slash(pdf_directory);
 
   if (deslash)
   {
@@ -3053,10 +3050,7 @@ void deslash_all (int ac, char **av)
   }
 
   format_spec = 0;
-/*  NOTE: assuming that command line arguments are in writable memory ! */
-/*  if (trace_flag || debug_flag)
-    sprintf(log_line, "optind %d ac %d\n", optind, ac); */   /* debugging */ 
-/*  if (optind < ac) { */           /* bkph */
+
   if (optind < ac && optind > 0)
   {
     if (deslash)
@@ -3074,7 +3068,6 @@ void deslash_all (int ac, char **av)
     if (pseudo_tilde != 0 || pseudo_space != 0)
       hidetwiddle (av[optind]);
 
-    /* For Windows NT, lets allow + instead of & for format specification */
     if (*av[optind] == '&' || *av[optind] == '+')
     {
       format_spec = 1;
@@ -3110,10 +3103,7 @@ int main_init (int ac, char **av)
   xputenv("engine", "yandytex");
 
   if (sizeof(memory_word) != sizeof(halfword) * 2)
-  {
-    sprintf(log_line, "ERROR: Bad word size %d!\n", sizeof(memory_word));
-    show_line(log_line, 1);
-  }
+    printf("ERROR: Bad word size %d!\n", sizeof(memory_word));
 
   start_time = clock();
   main_time  = start_time;
@@ -3182,10 +3172,10 @@ int main_init (int ac, char **av)
   closed_already    = 0;
 
   if (trace_flag)
-    puts("Entering init (local.c)\n");
+    puts("Entering init (local.c)");
 
-  probe_memory(); /* show top address */
-  ini_max_address = max_address; /* initial max address */
+  probe_memory();
+  ini_max_address = max_address;
 
   if (trace_flag)
     show_maximums(stdout);
@@ -3200,11 +3190,10 @@ int main_init (int ac, char **av)
   if (allocate_memory() != 0)
     return -1;
 
-  /* following is more or less useless since most all things not yet alloc */
-  check_alloc_align(trace_flag);    /* sanity check 1994/Jan/8 */
+  check_alloc_align(trace_flag);
 
   if (trace_flag)
-    show_line("Leaving init (local.c)\n", 0);
+    puts("Leaving init (local.c)");
 
   return 0;
 }
@@ -3220,32 +3209,27 @@ void show_inter_val (clock_t inter_val)
     tenths = (inter_val * 10 + CLK_TCK / 2) / CLK_TCK; 
     seconds = tenths / 10; 
     tenths = tenths % 10;
-    sprintf(log_line, "%d.%d", seconds, tenths);
-    show_line(log_line, 0);
+    printf("%d.%d", seconds, tenths);
+  }
+  else if (inter_val >= CLK_TCK)
+  {
+    hundredth = (inter_val * 100 + CLK_TCK / 2) / CLK_TCK;
+    seconds = hundredth / 100;
+    hundredth = hundredth % 100;
+    printf("%d.%02d", seconds, hundredth);
+  }
+  else if (inter_val > 0)
+  {
+    thousands = (inter_val * 1000 + CLK_TCK / 2) / CLK_TCK;
+    seconds = thousands / 1000;
+    thousands = thousands % 1000;
+    printf("%d.%03d", seconds, thousands);
   }
   else
-    if (inter_val >= CLK_TCK)     /* 94/Feb/25 */
-    {
-      hundredth = (inter_val * 100 + CLK_TCK / 2) / CLK_TCK;
-      seconds = hundredth / 100;
-      hundredth = hundredth % 100;
-      sprintf(log_line, "%d.%02d", seconds, hundredth);
-      show_line(log_line, 0);
-    }
-    else
-      if (inter_val > 0)         /* 94/Oct/4 */
-      {
-        thousands = (inter_val * 1000 + CLK_TCK / 2) / CLK_TCK;
-        seconds = thousands / 1000;
-        thousands = thousands % 1000;
-        sprintf(log_line, "%d.%03d", seconds, thousands);
-        show_line(log_line, 0);
-      }
-      else
-        show_line("0", 0);
+    show_line("0", 0);
 }
 
-int endit (int flag)
+int endit(int flag)
 {
   finish_time = clock();
 
@@ -3265,21 +3249,19 @@ int endit (int flag)
 
   if (verbose_flag)
   {
-    puts("Total ");
+    printf("Total ");
     show_inter_val(finish_time - start_time);
-    puts(" sec (");
+    printf(" sec (");
     show_inter_val(main_time - start_time);
-    puts(" format load + ");
+    printf(" format load + ");
     show_inter_val(finish_time - main_time);
-    puts(" processing) ");
+    printf(" processing) ");
 
     if (total_pages > 0)
     {
       show_inter_val((finish_time - main_time) / total_pages);
-      puts(" sec per page.");
+      printf(" sec per page.");
     }
-
-    puts("\n");
   }
 
   return flag;
@@ -3448,8 +3430,6 @@ void print_cs_names (FILE *output, int pass)
   }
 }
 
-/***************** font info listing moved from TEX9.C ******************/
-/* compare two strings in str_pool (not null terminated) */
 /* k1 and k2 are positions in string pool */
 /* l1 and l2 are lengths of strings */
 int compare_strn (int k1, int l1, int k2, int l2)
@@ -3565,7 +3545,6 @@ double sclpnt (long x)
   return (pt);
 }
 
-// Shows list of fonts in log file
 void dvi_font_show(internal_font_number f, int suppressname)
 {
   int a, l, k, n;
@@ -3627,7 +3606,7 @@ void show_font_info (void)
   if (fcount == 0)
     return;
 
-  fnumtable = (short *) malloc (fcount * sizeof(short));
+  fnumtable = (short *) malloc(fcount * sizeof(short));
 
   fprintf(log_file, "\nUsed %d font%s:\n", fcount, (fcount == 1) ? "" : "s");
 
@@ -3637,7 +3616,7 @@ void show_font_info (void)
     if (font_used[k])
       fnumtable[fcount++] = (short) k;
 
-  qsort ((void *)fnumtable, fcount, sizeof (short), &compare_fnt);
+  qsort ((void *)fnumtable, fcount, sizeof(short), &compare_fnt);
 
   repeatflag = 0;
 

@@ -498,9 +498,7 @@ EXTERN integer hyphen_char[font_max + 1];
 EXTERN integer skew_char[font_max + 1];
 EXTERN font_index bchar_label[font_max + 1];
 EXTERN short font_bchar[font_max + 1];
-/* don't change above to int or format file will be incompatible */
 EXTERN short font_false_bchar[font_max + 1];
-/* don't change above to int or format file will be incompatible */
 EXTERN integer char_base[font_max + 1];
 EXTERN integer width_base[font_max + 1];
 EXTERN integer height_base[font_max + 1];
@@ -828,8 +826,6 @@ EXTERN FILE * errout;
 EXTERN int font_dimen_zero;
 EXTERN int ignore_frozen;
 EXTERN boolean suppress_f_ligs;
-EXTERN int abort_flag;
-EXTERN int err_level;
 EXTERN int jump_used;
 EXTERN jmp_buf jumpbuffer;
 extern int current_pool_size;
@@ -885,24 +881,27 @@ char *unixify (char *);
 #include "coerce.h"
 
 /* sec 79 */
-extern INLINE void prompt_input(const char *s);
-extern INLINE void synch_h(void);
-extern INLINE void synch_v(void);
-extern INLINE void set_cur_lang(void);
+extern inline void print_err (const char * s);
+extern inline void ensure_dvi_open(void);
+extern inline void write_dvi(size_t a, size_t b);
+extern inline void prompt_input(const char *s);
+extern inline void synch_h(void);
+extern inline void synch_v(void);
+extern inline void set_cur_lang(void);
 extern char * md5_file(FILE * in_file);
-extern INLINE void str_room_ (int val);
+extern inline void str_room_ (int val);
 #define str_room(a) str_room_((int) a)
-extern INLINE void tail_append_ (pointer val);
+extern inline void tail_append_ (pointer val);
 #define tail_append(a) tail_append_((pointer) a)
-extern INLINE void tex_help (unsigned int n, ...);
-extern INLINE void append_char(ASCII_code c);
-extern INLINE void append_lc_hex(ASCII_code c);
-extern INLINE void succumb(void);
-extern INLINE void dvi_out_ (ASCII_code op);
+extern inline void tex_help (unsigned int n, ...);
+extern inline void append_char(ASCII_code c);
+extern inline void append_lc_hex(ASCII_code c);
+extern inline void succumb(void);
+extern inline void dvi_out_ (ASCII_code op);
 #define dvi_out(op) dvi_out_((ASCII_code) (op))
-extern INLINE void free_avail_(halfword p);
+extern inline void free_avail_(halfword p);
 #define free_avail(p) free_avail_((halfword) (p))
-extern INLINE void flush_string (void);
+extern inline void flush_string (void);
 extern str_number load_pool_strings (integer spare_size);
 extern str_number make_string_pool (const char *s);
 #define help0()     tex_help(0)

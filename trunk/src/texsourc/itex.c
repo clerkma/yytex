@@ -142,7 +142,7 @@ void initialize (void)
   mode = 1;
   head = contrib_head;
   tail = contrib_head;
-  cur_list.aux_field.cint = ignore_depth;
+  prev_depth = ignore_depth;
   mode_line = 0;
   prev_graf = 0;
   shown_mode = 0;
@@ -2174,7 +2174,7 @@ int main_program (void)
     printf("%s%s%ld\n", "Ouch---my internal constants have been clobbered!",
         "---case ", (long) bad);
 
-    goto lab9999;
+    goto final_end;
   }
 
   initialize();
@@ -2183,7 +2183,7 @@ int main_program (void)
   if (is_initex)
   {
     if (!get_strings_started())
-      goto lab9999;
+      goto final_end;
 
     init_prim();
     init_str_ptr = str_ptr;
@@ -2203,12 +2203,12 @@ lab1:
 
 #ifdef _WIN32
   #ifdef _WIN64
-    printf(log_line, " (%s %s/Windows 64bit)", application, yandyversion);
+    printf(" (%s %s/Win64)", application, yandyversion);
   #else
-    printf(log_line, " (%s %s/Windows 32bit)", application, yandyversion);
+    printf(" (%s %s/Win32)", application, yandyversion);
   #endif
 #else
-    printf(log_line, " (%s %s/Linux)", application, yandyversion);
+    printf(" (%s %s/Linux)", application, yandyversion);
 #endif
 
   if (format_ident > 0)
@@ -2256,21 +2256,20 @@ lab1:
       align_state = 1000000L;
 
       if (!init_terminal())
-        goto lab9999;
+        goto final_end;
 
       limit = last;
       first = last + 1;
     }
     
-    if ((format_ident == 0) ||
-        (buffer[loc] == '&') ||
-        (buffer[loc] == '+'))
+    if ((format_ident == 0) || (buffer[loc] == '&') ||
+      (buffer[loc] == '+'))
     {
       if (format_ident != 0)
         initialize();
 
       if (!open_fmt_file ())
-        goto lab9999;
+        goto final_end;
 
       if (!load_fmt_file ())
       {
@@ -2279,7 +2278,7 @@ lab1:
 #else
         w_close(fmt_file);
 #endif
-        goto lab9999;
+        goto final_end;
       }
 
 #ifdef COMPACTFORMAT
@@ -2288,8 +2287,7 @@ lab1:
       w_close(fmt_file);
 #endif
 
-      while ((loc < limit) &&
-          (buffer[loc] == ' '))
+      while ((loc < limit) && (buffer[loc] == ' '))
         incr(loc);
     }
 
@@ -2306,8 +2304,7 @@ lab1:
     else
       selector = term_only;
 
-    if ((loc < limit) &&
-      (cat_code(buffer[loc]) != escape))
+    if ((loc < limit) && (cat_code(buffer[loc]) != escape))
       start_input();
   }
 
@@ -2328,7 +2325,7 @@ lab1:
   final_cleanup();
   close_files_and_terminate();
 
-lab9999:
+final_end:
   {
     int code;
 
@@ -2365,7 +2362,7 @@ void add_variable_space(int size)
   if (mem_min < mem_start)      /* sanity test */
   {
     if (trace_flag)
-      puts("WARNING: mem_min < mem_start!\n");
+      puts("WARNING: mem_min < mem_start!");
 
     mem_min = mem_start;
   }
@@ -2384,15 +2381,13 @@ void add_variable_space(int size)
 }
 #endif
 
-/**************************************************************************/
-
 #ifdef INITEX
 /* split out to allow sharing of code from do_initex and newpattern */
 void reset_trie (void)
 {
   integer k;
 
-  for (k = - (integer) trie_op_size; k <= trie_op_size; k++)
+  for (k = -(integer)trie_op_size; k <= trie_op_size; k++)
     trie_op_hash[k] = 0;
 
   for (k = 0; k <= 255; k++)
@@ -2407,7 +2402,7 @@ void reset_trie (void)
   trie_not_ready = true;
 }
 /* borrowed code from initialize() */
-void reset_hyphen (void)
+void reset_hyphen(void)
 {
   hyph_pointer z;
 
@@ -2439,15 +2434,15 @@ void do_initex (void)
     k = k + glue_spec_size;
   }
 
-  stretch(fil_glue) = 65535L;
+  stretch(fil_glue) = unity;
   stretch_order(fil_glue) = fil;
-  stretch(fill_glue) = 65535L;
+  stretch(fill_glue) = unity;
   stretch_order(fill_glue) = fill;
-  stretch(ss_glue) = 65535L;
+  stretch(ss_glue) = unity;
   stretch_order(ss_glue) = fil;
-  shrink(ss_glue) = 65535L;
+  shrink(ss_glue) = unity;
   shrink_order(ss_glue) = fil;
-  stretch(fil_neg_glue) = -65536L;
+  stretch(fil_neg_glue) = -unity;
   stretch_order(fil_neg_glue) = fil;
   rover = lo_mem_stat_max + 1;
   link(rover) = empty_flag;
@@ -2472,7 +2467,7 @@ void do_initex (void)
   link(mem_top) = page_ins_head;
   type(page_head) = glue_node;
   subtype(page_head) = normal;
-  avail = 0;                   /* avail <- null p.164 */
+  avail = 0;
   mem_end = mem_top;
   hi_mem_min = hi_mem_stat_min;
   var_used = lo_mem_stat_max + 1 - mem_bot;
@@ -2871,7 +2866,7 @@ void first_fit_ (trie_pointer p)
       {
         overflow("pattern memory", trie_size);
 /*      not dynamic ---- but can be set -h=... from command line in ini-TeX */
-        return;     // abort_flag set
+        return;
       }
 
       do
@@ -3275,7 +3270,6 @@ void store_fmt_file (void)
     if (!knuth_flag)
       puts("  (Use -i on the command line)\n");
 
-    abort_flag++;
     return;
   }
 

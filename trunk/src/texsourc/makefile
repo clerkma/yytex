@@ -9,20 +9,8 @@ CC = cl
 LINK = link
 RC = rc
 
-# -Gf saves about 7k bytes in EXE file
-
-# For production (-Bd show compiler passes)
-# ASSUMING WE WORK WITH MS COMPILER AND LINKER ONLY use -Gy and -Gf
-# CFLAGS=-c -DDOS -DMSDOS -DPHARLAP -DTeX -DMYDEBUG -Ilib -Ox -Gy -Gf -W3
-# CFLAGS=-c -DDOS -DMSDOS -DPHARLAP -DTeX -DMYDEBUG -Ilib -YX -Ox -Ge -Gy -Gf -W4
-# Release version
-# CFLAGS=/c /Ge /Gy /Gf /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG /Ilib /YX
 CFLAGS=/nologo /c /MT /GF /Gy /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG \
 	/I"kpathsea" /I"zlib" /I"libmd5"
-# Debugging version
-# CFLAGS=/c /Ge /Gy /Gf /Od /Zi /W4 /DMSDOS /DTeX /DPHARLAP /Ilib /YX
-
-# NOTE: -Ox => -Ogityb1 -Gs
 
 # Link with MS LINK
 # LFLAGS=@yandytex.nt /MAP lib\libdos.lib
@@ -37,14 +25,14 @@ LFLAGS=/NOLOGO /MAP
 objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
 	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
 	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
-	yandy_pool.obj yandytex.res md5.obj
+	yandy_pool.obj yandytex.res md5.obj yandy_inlines.obj
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 yandytex.exe: $(objs)
 	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
-	yandy_pool yandytex.res md5 \
+	yandy_pool yandytex.res md5 yandy_inlines\
 	kpathsea\kpathsea.lib libpng\libpng.lib zlib\zlib.lib \
 	dvipdfmx\libdvipdfmx.lib
 	del ..\yandy\bin\yandytex.exe
@@ -107,6 +95,9 @@ tex9.obj: tex9.c \
 	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 yandy_pool.obj: yandy_pool.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+yandy_inlines.obj: yandy_inlines.c \
 	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
 
 .SUFFIXES:

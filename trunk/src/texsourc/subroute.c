@@ -98,11 +98,7 @@ char * unixify (char * t)
   }
 
   if (trace_flag)
-  {
     printf("Unixified name: %s\n", t);
-    //sprintf(log_line, "Unixified name: %s\n", t);
-    //show_line(log_line, 0);
-  }
 
   return t;
 }

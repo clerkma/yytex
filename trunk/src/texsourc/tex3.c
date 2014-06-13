@@ -440,7 +440,7 @@ lab88:
   if (cur_val >= 16384)     /* 2^14 */
     arith_error = true;
   else
-    cur_val = cur_val * 65536L + f;
+    cur_val = cur_val * unity + f;
 lab30:;
   {
     get_x_token();
@@ -1830,8 +1830,7 @@ void open_log_file (void)
       (void) fputs(log_line, log_file);
     }
     
-    (void) fputs(tex_version, log_file); 
-    (void) fprintf(log_file, " (%s %s)", application, yandyversion);
+    fprintf(log_file, "%s (%s %s)", tex_version, application, yandyversion);
 
     if (format_ident > 0)
       slow_print(format_ident);
@@ -2156,7 +2155,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
     tfm_temp = getc(tfm_file);
     z =(z * 16) + (tfm_temp / 16);
 
-    if (z < 65536L)
+    if (z < unity)
       goto lab11; 
 
     while (lh > 2)

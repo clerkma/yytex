@@ -31,8 +31,6 @@ enum
   out_dpx_flag = (1 << 3),
 };
 
-#define INLINE inline
-
 /* Read a line of input as quickly as possible.  */
 extern boolean input_line (FILE *);
 #define input_ln(stream, flag) input_line(stream)
@@ -56,11 +54,11 @@ extern void fix_date_and_time(void);
   #define dumpcore abort
 #endif
 
-#define write_dvi(a, b)                                           \
-  if ((size_t) fwrite ((char *) &dvi_buf[a], sizeof (dvi_buf[a]), \
-         (size_t) ((size_t)(b) - (size_t)(a) + 1), dvi_file)      \
-         != (size_t) ((size_t)(b) - (size_t)(a) + 1))             \
-     FATAL_PERROR ("\n! dvi file")
+//#define write_dvi(a, b)                                           \
+//  if ((size_t) fwrite ((char *) &dvi_buf[a], sizeof (dvi_buf[a]), \
+//         (size_t) ((size_t)(b) - (size_t)(a) + 1), dvi_file)      \
+//         != (size_t) ((size_t)(b) - (size_t)(a) + 1))             \
+//     FATAL_PERROR ("\n! dvi file")
 
 
 #ifdef COMPACTFORMAT

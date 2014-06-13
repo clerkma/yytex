@@ -121,24 +121,23 @@ void dvi_swap (void)
 
   dvi_gone = dvi_gone + half_buf;
 }
-/* attempt at speeding up bkph - is compiler smart ? */
 /* sec 0600 */
 void dvi_four_(integer x)
 { 
   if (x >= 0)
-    dvi_out(x / 0100000000); // dvi_out((x >> 24));
+    dvi_out(x / 0100000000);
   else
   {
     x = x + 010000000000;
     x = x + 010000000000;
-    dvi_out((x / 0100000000) + 128); // dvi_out((x >> 24) + 128);
+    dvi_out((x / 0100000000) + 128);
   }
 
-  x = x % 0100000000; // x = x & 16777215L;
-  dvi_out(x / 0200000); // dvi_out((x >> 16));
-  x = x % 0200000; // x = x & 65535L;
-  dvi_out(x / 0400); // dvi_out((x >> 8));
-  dvi_out(x % 0400); // dvi_out(x & 255);
+  x = x % 0100000000;
+  dvi_out(x / 0200000);
+  x = x % 0200000;
+  dvi_out(x / 0400);
+  dvi_out(x % 0400);
 }
 /* sec 0601 */
 void dvi_pop_(integer l)
@@ -146,7 +145,7 @@ void dvi_pop_(integer l)
   if ((l == dvi_offset + dvi_ptr) && (dvi_ptr > 0))
     decr(dvi_ptr);
   else
-    dvi_out(142);
+    dvi_out(pop);
 }
 /* sec 0602 */
 void dvi_font_def_(internal_font_number f)
@@ -599,7 +598,7 @@ void hlist_out (void)
   incr(cur_s);
 
   if (cur_s > 0)
-    dvi_out(141);
+    dvi_out(push);
 
   if (cur_s > max_push)
     max_push = cur_s;
@@ -903,7 +902,7 @@ void vlist_out (void)
   incr(cur_s);
 
   if (cur_s > 0)
-    dvi_out(141);
+    dvi_out(push);
 
   if (cur_s > max_push)
     max_push = cur_s;
@@ -1189,21 +1188,7 @@ void dvi_ship_out_(halfword p)
   dvi_v = 0;
   cur_h = h_offset;
   dvi_f = null_font;
-
-  if (output_file_name == 0)
-  {
-    if (job_name == 0)
-      open_log_file();
-
-    pack_job_name(".dvi");
-
-    while (!b_open_out(dvi_file))
-    {
-      prompt_file_name("file name for output", ".dvi");
-    }
-
-    output_file_name = b_make_name_string(dvi_file);
-  }
+  ensure_dvi_open();
 
   if (total_pages == 0)
   {
