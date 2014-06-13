@@ -16,7 +16,6 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-void print_err (const char * s);
 void initialize (void);
 void print_ln (void);
 void print_char_(ASCII_code);

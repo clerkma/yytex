@@ -768,7 +768,7 @@ void new_font_(small_number a)
       help2("I can only handle fonts at positive sizes that are",
         "less than 2048pt, so I've changed what you said to 10pt.");
       error();
-      s = 10 * 65536L;
+      s = 10 * unity;
     }
   }
   else if (scan_keyword("scaled"))

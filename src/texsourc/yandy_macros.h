@@ -61,6 +61,9 @@ do                            \
     pause_for_instructions(); \
 }                             \
 while (0)
+/* sec 0101 */
+#define unity 0200000
+#define two   0400000
 /* sec 0105 */
 #define nx_plux_y(...)   mult_and_add(..., 07777777777L)
 #define mult_integers(a) mult_and_add(a,0,017777777777L)
@@ -1013,8 +1016,8 @@ while (0)
 #define nop       138 // NULL
 #define bop       139 // c0[4] c1[4] ... c9[4] p[4]
 #define eop       140 // NULL
-//#define dvi_push 141
-//#define dvi_pop  142
+#define push      141
+#define pop       142
 #define right1    143 // b[1]
 #define right2    144 // b[2]
 #define right3    145 // b[3]

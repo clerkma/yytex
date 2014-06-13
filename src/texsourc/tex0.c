@@ -19,134 +19,6 @@
 
 #include "texd.h"
 
-INLINE void prompt_input(const char * s)
-{
-  print_string(s);
-  term_input();
-}
-INLINE void synch_h(void)
-{
-  if (cur_h != dvi_h)
-  {
-    movement(cur_h - dvi_h, right1);
-    dvi_h = cur_h;
-  }
-}
-INLINE void synch_v(void)
-{
-  if (cur_v != dvi_v)
-  {
-    movement(cur_v - dvi_v, down1);
-    dvi_v = cur_v;
-  }
-}
-INLINE void set_cur_lang(void)
-{
-  if (language <= 0)
-    cur_lang = 0;
-  else if (language > 255)
-    cur_lang = 0;
-  else
-    cur_lang = language;
-}
-INLINE void free_avail_(halfword p)
-{
-  link(p) = avail;
-  avail = p;
-#ifdef STAT
-  decr(dyn_used);
-#endif /* STAT */
-}
-INLINE void dvi_out_(ASCII_code op)
-{
-  dvi_buf[dvi_ptr] = op;
-  incr(dvi_ptr);
-
-  if (dvi_ptr == dvi_limit)
-    dvi_swap();
-}
-INLINE void succumb (void)
-{
-  if (interaction == error_stop_mode)
-    interaction = scroll_mode;
-
-  if (log_opened)
-  {
-    error();
-  }
-
-#ifdef DEBUG
-  if (interaction > 0)
-    debug_help();
-#endif
-
-  history = 3;
-  jump_out();
-}
-INLINE void flush_string (void)
-{
-  decr(str_ptr);
-  pool_ptr = str_start[str_ptr];
-}
-INLINE void append_char (ASCII_code c)
-{
-  str_pool[pool_ptr] = c;
-  incr(pool_ptr);
-}
-INLINE void append_lc_hex (ASCII_code c)
-{
-  if (c < 10)
-    append_char(c + '0');
-  else
-    append_char(c - 10 + 'a');
-}
-INLINE void print_err (const char * s)
-{
-  if (interaction == error_stop_mode);
-    print_nl("! ");
-  print_string(s);
-}
-INLINE void tex_help (unsigned int n, ...)
-{
-  int i;
-  va_list help_arg;
-
-  if (n > 6)
-    n = 6;
-
-  help_ptr = n;
-  va_start(help_arg, n);
-
-  for (i = n - 1; i > -1; --i)
-    help_line[i] = va_arg(help_arg, char *);
-
-  va_end(help_arg);
-}
-INLINE void str_room_ (int val)
-{
-#ifdef ALLOCATESTRING
-  if (pool_ptr + val > current_pool_size)
-    str_pool = realloc_str_pool(increment_pool_size);
-
-  if (pool_ptr + val > current_pool_size)
-  {
-    overflow("pool size", current_pool_size - init_pool_ptr);
-  }
-#else
-  if (pool_ptr + val > pool_size)
-  {
-    overflow("pool size", pool_size - init_pool_ptr);
-  }
-#endif
-}
-INLINE void tail_append_ (pointer val)
-{
-  link(tail) = val;
-  tail = link(tail);
-}
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 /* sec 0058 */
 void print_ln (void)
 {
@@ -155,12 +27,12 @@ void print_ln (void)
     case term_and_log:
       show_char('\n');
       term_offset = 0;
-      (void) putc ('\n', log_file);
+      (void) putc('\n', log_file);
       file_offset = 0;
       break;
 
     case log_only:
-      (void) putc ('\n',  log_file);
+      (void) putc('\n',  log_file);
       file_offset = 0;
       break;
 
@@ -175,7 +47,7 @@ void print_ln (void)
       break;
 
     default:
-      (void) putc ('\n', write_file[selector]);
+      (void) putc('\n', write_file[selector]);
       break;
   }
 }
@@ -183,13 +55,11 @@ void print_ln (void)
 void print_char_ (ASCII_code s)
 {
   if (s == new_line_char)
-  {
     if (selector < pseudo)
     {
       print_ln();
       return;
     }
-  }
 
   switch (selector)
   {
@@ -249,13 +119,13 @@ void print_char_ (ASCII_code s)
       
       if (pool_ptr < current_pool_size)
       {
-        str_pool[pool_ptr]= s;
+        str_pool[pool_ptr] = s;
         incr(pool_ptr);
       }
 #else
       if (pool_ptr < pool_size)
       {
-        str_pool[pool_ptr]= s;
+        str_pool[pool_ptr] = s;
         incr(pool_ptr);
       }
 #endif
@@ -299,14 +169,15 @@ void print_ (integer s)
           
           nl = new_line_char;
           new_line_char = -1;
-/* translate ansi to dos 850 */
+          
+          /* translate ansi to dos 850 */
           if (!show_in_hex && s < 256 && s >= 32)
           {
             if (show_in_dos && s > 127)
             {
               if (wintodos[s - 128] > 0)
               {
-                print_char (wintodos[s - 128]);
+                print_char(wintodos[s - 128]);
               }
               else
               {
@@ -2521,10 +2392,10 @@ void show_node_list_(integer p)
                 else
                   print_string("< -");
 
-                print_glue(20000 * 65536L, glue_order(p), "");
+                print_glue(20000 * unity, glue_order(p), "");
               }
               else
-                print_glue(round(65536L * g), glue_order(p), "");
+                print_glue(round(unity * g), glue_order(p), "");
             }
 
             if (shift_amount(p) != 0)

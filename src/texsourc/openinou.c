@@ -23,6 +23,12 @@
 
 #include "texd.h"
 
+extern char * dvi_directory;
+extern char * log_directory;
+extern char * aux_directory;
+extern char * fmt_directory;
+extern char * pdf_directory;
+
 #define PATH_SEP        '/'
 #define PATH_SEP_STRING "/"
 
@@ -77,7 +83,6 @@ char * xconcat3 (char *buffer, char *s1, char *s2, char *s3)
 }
 #endif
 
-// separated out 1996/Jan/20 to make easier to read
 // assumes path does not end in PATH_SEP
 void patch_in_path (unsigned char *buffer, unsigned char *name, unsigned char *path)
 {
@@ -197,9 +202,7 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     retwiddle(name_of_file + 1);
 
   if (shorten_file_name)
-  {
     check_short_name(name_of_file + 1);
-  }
   
   if (open_trace_flag)
   {
@@ -319,16 +322,6 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
   return openable;
 }
 
-/* Call the external program PROGRAM, passing it `name_of_file'.  */
-/* This nonsense probably only works for Unix anyway. bkph */
-/* For one thing, MakeTeXTFM etc is more than 8 characters ! */
-
-extern char * dvi_directory;
-extern char * log_directory;
-extern char * aux_directory;
-extern char * fmt_directory;
-extern char * pdf_directory;
-
 /* At least check for I/O error (such as disk full) when closing */
 /* Would be better to check while writing - but this is better than nothing */
 /* This is used for both input and output files, but never mind ... */
@@ -376,19 +369,12 @@ boolean open_output (FILE **f, char *fopen_mode)
       prepend_path_if(name_of_file + 1, name_of_file + 1, ".pdf", (unsigned char *) pdf_directory))
   {
     if (open_trace_flag)
-    {
-      sprintf(log_line, "After prepend %s\n", name_of_file + 1);
-      show_line(log_line, 0);
-    }
+      printf("After prepend %s\n", name_of_file + 1);
   }
 
   if (open_trace_flag)
-  {
-    sprintf(log_line, " Open `%s' for output ", name_of_file + 1);
-    show_line(log_line, 0);
-  }
+    printf(" Open `%s' for output ", name_of_file + 1);
 
-/*  but we can assume this is opening here for *output* */
   *f = fopen((char *) name_of_file + 1, fopen_mode);
 
 /* Can't open as given.  Try the envvar.  */
@@ -421,9 +407,7 @@ boolean open_output (FILE **f, char *fopen_mode)
 
 #ifdef COMPACTFORMAT
   if (strstr((char *) name_of_file + 1, ".fmt") != NULL)
-  {
     gz_fmt_file = gzdopen(fileno(*f), "wb9");
-  }
 #endif
 
   if (strstr((char *) name_of_file + 1, ".dvi") != NULL)
@@ -475,5 +459,5 @@ boolean open_output (FILE **f, char *fopen_mode)
   if (*f)
     name_length = temp_length;
   
-  return *f != NULL;
+  return (*f != NULL);
 }

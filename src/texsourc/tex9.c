@@ -102,12 +102,7 @@ lab40:
 
   return true;
 }
-/**************************************************************************/
-void print_char_string (unsigned char *s)
-{
-  while (*s > 0)
-    print_char(*s++);
-}
+
 void show_font_info (void); // now in local.c
 extern int closed_already;  // make sure we don't try this more than once
 /* sec 1333 */
@@ -137,34 +132,34 @@ void close_files_and_terminate (void)
       fprintf(log_file, "%c\n", ' ');
       fprintf(log_file, "\n");
       fprintf(log_file, "%s%s\n", "Here is how much of TeX's memory", " you used:");
-      fprintf(log_file, "%c%ld%s", ' ', str_ptr - init_str_ptr, " string");
+      fprintf(log_file, "%c%ld%s", ' ', (int)(str_ptr - init_str_ptr), " string");
 
       if (str_ptr != init_str_ptr + 1)
         putc('s',  log_file);
 
 #ifdef ALLOCATESTRING
       if (show_current)
-        fprintf(log_file, "%s%ld\n", " out of ", current_max_strings - init_str_ptr);
+        fprintf(log_file, "%s%ld\n", " out of ", (int)(current_max_strings - init_str_ptr));
       else
 #endif
-        fprintf(log_file, "%s%ld\n", " out of ", max_strings - init_str_ptr);
+        fprintf(log_file, "%s%ld\n", " out of ", (int)(max_strings - init_str_ptr));
 
 #ifdef ALLOCATESTRING
       if (show_current)
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', pool_ptr - init_pool_ptr, " string characters out of ", current_pool_size - init_pool_ptr);
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(pool_ptr - init_pool_ptr), " string characters out of ", current_pool_size - init_pool_ptr);
       else
 #endif
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', pool_ptr - init_pool_ptr, " string characters out of ", pool_size - init_pool_ptr);
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(pool_ptr - init_pool_ptr), " string characters out of ", pool_size - init_pool_ptr);
 
 #ifdef ALLOCATEMAIN
       if (show_current)
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', (long)lo_mem_max - mem_min + mem_end - hi_mem_min + 2, " words of memory out of ", current_mem_size);
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(lo_mem_max - mem_min + mem_end - hi_mem_min + 2), " words of memory out of ", current_mem_size);
       else
 #endif
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', (long)lo_mem_max - mem_min + mem_end - hi_mem_min + 2, " words of memory out of ", mem_end + 1 - mem_min);
+        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(lo_mem_max - mem_min + mem_end - hi_mem_min + 2), " words of memory out of ", mem_end + 1 - mem_min);
 
-      fprintf(log_file, "%c%ld%s%ld\n", ' ', cs_count, " multiletter control sequences out of ", (hash_size + hash_extra));
-      fprintf(log_file, "%c%ld%s%ld%s", ' ', (long)fmem_ptr, " words of font info for ", (long)font_ptr - font_base, " font");
+      fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(cs_count), " multiletter control sequences out of ", (hash_size + hash_extra));
+      fprintf(log_file, "%c%ld%s%ld%s", ' ', (int)(fmem_ptr), " words of font info for ", (int)(font_ptr - font_base), " font");
 
       if (font_ptr != 1)
         putc('s',  log_file);
@@ -183,11 +178,11 @@ void close_files_and_terminate (void)
 
       fprintf(log_file, "%s%ld\n",  " out of ", hyphen_prime);
       fprintf(log_file, " ");
-      fprintf(log_file, "%ld%s", max_in_stack, "i,");
-      fprintf(log_file, "%ld%s", max_nest_stack, "n,");
-      fprintf(log_file, "%ld%s", max_param_stack, "p,");
-      fprintf(log_file, "%ld%s", max_buf_stack + 1, "b,");
-      fprintf(log_file, "%ld%s", max_save_stack + 6, "s");
+      fprintf(log_file, "%ld%s", (int)max_in_stack, "i,");
+      fprintf(log_file, "%ld%s", (int)max_nest_stack, "n,");
+      fprintf(log_file, "%ld%s", (int)max_param_stack, "p,");
+      fprintf(log_file, "%ld%s", (int)max_buf_stack + 1, "b,");
+      fprintf(log_file, "%ld%s", (int)max_save_stack + 6, "s");
       fprintf(log_file, " stack positions out of ");
 
 #ifdef ALLOCATESAVESTACK
@@ -231,7 +226,7 @@ void close_files_and_terminate (void)
         fprintf(log_file, " (i = in_stack, n = nest_stack, p = param_stack, b = buf_stack, s = save_stack)\n");
 
       if (!knuth_flag)
-        fprintf(log_file, " %d inputs open max out of %d\n", high_in_open, max_in_open);
+        fprintf(log_file, " %d inputs open max out of %ld\n", high_in_open, max_in_open);
 
       if (show_line_break_stats && first_pass_count > 0)
       {
@@ -292,7 +287,7 @@ void close_files_and_terminate (void)
         while (cur_s > -1)
         {
           if (cur_s > 0) 
-            dvi_out(142);
+            dvi_out(pop);
           else
           {
             dvi_out(eop);
@@ -369,7 +364,7 @@ void close_files_and_terminate (void)
           print_nl("Output written on ");
 
           if (full_file_name_flag && dvi_file_name != NULL)
-            print_char_string((unsigned char *) dvi_file_name);
+            print_string(dvi_file_name);
           else
             slow_print(output_file_name);
 
@@ -400,7 +395,7 @@ void close_files_and_terminate (void)
       print_nl("Transcript written on ");
 
       if (full_file_name_flag && log_file_name != NULL)
-        print_char_string((unsigned char *) log_file_name);
+        print_string(log_file_name);
       else
         slow_print(texmf_log_name);
 
