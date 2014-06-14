@@ -972,7 +972,7 @@ void read_toks_(integer n, halfword r)
         else
         {
           fatal_error("*** (cannot \\read from terminal in nonstop modes)");
-          return;     // abort_flag set
+          return;
         }
       else if (read_open[m] == 1)
         if (input_ln(read_file[m], false))
@@ -1087,7 +1087,7 @@ void change_if_limit_(small_number l, halfword p)
       if (q == 0)
       {
         confusion("if");
-        return;       // abort_flag set
+        return;
       }
 
       if (link(q) == p)
@@ -1738,7 +1738,7 @@ void prompt_file_name_(char * s, str_number e)
   if (interaction < 2)
   {
     fatal_error("*** (job aborted, file error in nonstop mode)");
-    return;     // abort_flag set
+    return;
   }
 
   if (!knuth_flag)

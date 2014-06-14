@@ -118,7 +118,7 @@ void flush_node_list_(pointer p)
               default:
                 {
                   confusion("ext3");
-                  return;         // abort_flag set
+                  return;
                 }
                 break;
             }
@@ -222,7 +222,7 @@ void flush_node_list_(pointer p)
         default:
           {
             confusion("flushing");
-            return;         // abort_flag set
+            return;
           }
           break;
       }
@@ -309,7 +309,7 @@ pointer copy_node_list_(pointer p)
           default:
             {
               confusion("ext2");
-              return 0;         // abort_flag set
+              return 0;
             }
             break;
         }
@@ -367,7 +367,7 @@ pointer copy_node_list_(pointer p)
       default:
         {
           confusion("copying");
-          return 0;       // abort_flag set
+          return 0;
         }
         break;
     }
@@ -446,13 +446,13 @@ void push_nest (void)
     if (nest_ptr == current_nest_size)
     {
       overflow("semantic nest size", current_nest_size);
-      return;     // abort_flag set
+      return;
     }
 #else
     if (nest_ptr == nest_size)
     {
       overflow("semantic nest size", nest_size);
-      return;     // abort_flag set
+      return;
     }
 #endif
   }
@@ -2262,7 +2262,7 @@ halfword id_lookup_(integer j, integer l)
               if (hash_is_full)
               {
                 overflow("hash size", hash_size + hash_extra); /* 96/Jan/10 */
-                return 0;     // abort_flag set
+                return 0;
               }
 
               decr(hash_used);
@@ -2344,13 +2344,13 @@ void new_save_level_(group_code c)
      if (max_save_stack > current_save_size - 6) /* check again after allocation */
      {
        overflow("save size", current_save_size);
-       return;     // abort_flag set
+       return;
      }
 #else
      if (max_save_stack > save_size - 6) /* save size - not dynamic */
      {
        overflow("save size", save_size);
-       return;     // abort_flag set
+       return;
      }
 #endif
   }
@@ -2362,7 +2362,7 @@ void new_save_level_(group_code c)
   if (cur_level == max_quarterword)
   {
     overflow("grouping levels", max_quarterword - min_quarterword); /* 96/Oct/12 ??? */
-    return;     // abort_flag set
+    return;
   }
 
   cur_boundary = save_ptr;
@@ -2417,13 +2417,13 @@ void eq_save_(halfword p, quarterword l)
     if (max_save_stack > current_save_size - 6) /* check again after allocation */
     {
       overflow("save size", current_save_size);
-      return;     // abort_flag set
+      return;
     }
 #else
     if (max_save_stack > save_size - 6) /* save size not dynamic */
     {
       overflow("save size", save_size);
-      return;     // abort_flag set
+      return;
     }
 #endif
   }
@@ -2494,13 +2494,13 @@ void save_for_after_(halfword t)
       if (max_save_stack > current_save_size - 6) /* check again after allocation */
       {
         overflow("save size", current_save_size);
-        return;     // abort_flag set
+        return;
       }
 #else
       if (max_save_stack > save_size - 6) /* save satck - not dynamic */
       {
         overflow("save size", save_size);
-        return;     // abort_flag set
+        return;
       }
 #endif
     }

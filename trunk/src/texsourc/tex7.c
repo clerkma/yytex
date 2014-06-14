@@ -255,7 +255,7 @@ lab22:
         default:
           {
             confusion("page");
-            return;       // abort_flag set
+            return;
           }
           break;
       }
@@ -478,9 +478,9 @@ boolean privileged (void)
 /* sec 1054 */
 boolean its_all_over (void)
 {
-  if (privileged ())
+  if (privileged())
   {
-    if ((page_head == page_tail) && (head == cur_list.tail_field) && (dead_cycles == 0))
+    if ((page_head == page_tail) && (head == tail) && (dead_cycles == 0))
     {
       return true;
     }
@@ -546,7 +546,7 @@ void append_kern (void)
 
   s = cur_chr;
 
-  scan_dimen(s == mu_glue, false, false);
+  scan_dimen((s == mu_glue), false, false);
   tail_append(new_kern(cur_val));
   subtype(tail) = s;
 }
@@ -1892,7 +1892,7 @@ halfword fin_mlist_(halfword p)
       if (type(q) != left_noad)
       {
         confusion("right");
-        return 0;       // abort_flag set
+        return 0;
       }
 
       info(numerator(incompleat_noad)) = link(q);
@@ -1905,6 +1905,7 @@ halfword fin_mlist_(halfword p)
     link(tail) = p;
     q = link(head);
   }
+
   pop_nest();
 
   return q;

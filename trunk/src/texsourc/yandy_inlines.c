@@ -19,6 +19,38 @@
 
 #include "texd.h"
 
+inline void push_input(void)
+{
+  if (input_ptr > max_in_stack)
+  {
+    max_in_stack = input_ptr;
+
+#ifdef ALLOCATEINPUTSTACK
+    if (input_ptr == current_stack_size)
+      input_stack = realloc_input_stack(increment_stack_size);
+    
+    if (input_ptr == current_stack_size)
+    {
+      overflow("input stack size", current_stack_size);
+      return;
+    }
+#else
+    if (input_ptr == stack_size)
+    {
+      overflow("input stack size", stack_size);
+      return;
+    }
+#endif
+  }
+  
+  input_stack[input_ptr] = cur_input;
+  incr(input_ptr);
+}
+inline void pop_input(void)
+{
+  decr(input_ptr);
+  cur_input = input_stack[input_ptr];
+}
 inline void ensure_dvi_open(void)
 {
   if (output_file_name == 0)
@@ -147,7 +179,7 @@ inline void tex_help (unsigned int n, ...)
 
   va_end(help_arg);
 }
-inline void str_room_ (int val)
+inline void str_room(int val)
 {
 #ifdef ALLOCATESTRING
   if (pool_ptr + val > current_pool_size)

@@ -44,7 +44,7 @@ int main (int ac, char *av[])
   gargv = av;
 
   if (main_init(gargc, gargv))
-    return -1; // failure
+    return -1;
 
   TEX_format_default = " plain.fmt";
   format_default_length = strlen(TEX_format_default + 1);
@@ -127,6 +127,7 @@ void t_open_in (void)
 
 static void catch_interrupt(int err)
 {
+  (void) err;
   (void) signal(SIGINT, SIG_IGN);
 
   if (interrupt++ >= 3)
@@ -146,7 +147,7 @@ void fix_date_and_time (void)
     printf("The time is %u\n", clock);
 
   if (clock < 0)
-    puts("Time not available!\n");
+    puts("Time not available!");
 
   tmptr = localtime (&clock);
 
@@ -313,8 +314,10 @@ boolean input_line_finish (void)
       {
         sprintf(log_line, "\n! non ASCII char (%d) in line: ", ch);
         show_line(log_line, 1);
+
         if (log_opened)
           fprintf(log_file, "\n! non ASCII char (%d) in line: ", ch);
+
 /*        buffer[i]= 127; */ /* not defined - invalid char */
         flag = 1;
         break;
@@ -683,15 +686,8 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
   uexit(EXIT_FAILURE);
 }
 
-/* Read and write format (for TeX) or base (for Metafont) files.  In
-   tex.web, these files are architecture dependent; specifically,
-   BigEndian and LittleEndian architectures produce different files.
-   These routines always output BigEndian files.  This still does not
-   make the dump files architecture-independent, because it is possible
-   to make a format file that dumps a glue ratio, i.e., a floating-point
-   number.  Fortunately, none of the standard formats do that.  */
 
-#if !defined (WORDS_BIGENDIAN) && !defined (NO_FMTBASE_SWAP) /* this fn */
+#if !defined (WORDS_BIGENDIAN) && !defined (NO_FMTBASE_SWAP)
 
 /* We don't REALLY care what `endian' the machine is after all ! */
 /* But we do care about speed - so check exe file for following - bkph */
@@ -817,11 +813,6 @@ int do_undump(char *p, int item_size, int nitems, FILE *in_file)
 }
 
 #ifdef FUNNY_CORE_DUMP
-/* This procedure is due to chris@mimsy.umd.edu.  It makes a core dump
-   without any sort of error status (abort(2) does return an error status,
-   so we don't want to use that).  It is used only when making a preloaded
-   TeX from virtex, and is triggered by a magic file name requested as
-   input (see `open_input', above).  */
 
 void funny_core_dump (void)
 {
@@ -852,15 +843,3 @@ void funny_core_dump (void)
   }
 }
 #endif /* FUNNY_CORE_DUMP */
-/*
-#include <tex0.c>
-#include <tex1.c>
-#include <tex2.c>
-#include <tex3.c>
-#include <tex4.c>
-#include <tex5.c>
-#include <tex6.c>
-#include <tex7.c>
-#include <tex8.c>
-#include <tex9.c>
-*/

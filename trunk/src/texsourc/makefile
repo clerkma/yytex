@@ -32,7 +32,7 @@ objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
 yandytex.exe: $(objs)
 	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
-	yandy_pool yandytex.res md5 yandy_inlines\
+	yandy_pool yandytex.res md5 yandy_inlines \
 	kpathsea\kpathsea.lib libpng\libpng.lib zlib\zlib.lib \
 	dvipdfmx\libdvipdfmx.lib
 	del ..\yandy\bin\yandytex.exe

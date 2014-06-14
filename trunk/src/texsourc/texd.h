@@ -881,6 +881,8 @@ char *unixify (char *);
 #include "coerce.h"
 
 /* sec 79 */
+extern inline void push_input(void);
+extern inline void pop_input(void);
 extern inline void print_err (const char * s);
 extern inline void ensure_dvi_open(void);
 extern inline void write_dvi(size_t a, size_t b);
@@ -888,9 +890,8 @@ extern inline void prompt_input(const char *s);
 extern inline void synch_h(void);
 extern inline void synch_v(void);
 extern inline void set_cur_lang(void);
-extern char * md5_file(FILE * in_file);
-extern inline void str_room_ (int val);
-#define str_room(a) str_room_((int) a)
+extern char * md5_file (FILE * in_file);
+extern inline void str_room (int val);
 extern inline void tail_append_ (pointer val);
 #define tail_append(a) tail_append_((pointer) a)
 extern inline void tex_help (unsigned int n, ...);

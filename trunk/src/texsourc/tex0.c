@@ -16,7 +16,6 @@
    02110-1301 USA.  */
 
 #define EXTERN extern
-
 #include "texd.h"
 
 /* sec 0058 */
@@ -27,12 +26,12 @@ void print_ln (void)
     case term_and_log:
       show_char('\n');
       term_offset = 0;
-      (void) putc('\n', log_file);
+      putc('\n', log_file);
       file_offset = 0;
       break;
 
     case log_only:
-      (void) putc('\n',  log_file);
+      putc('\n', log_file);
       file_offset = 0;
       break;
 
@@ -47,7 +46,7 @@ void print_ln (void)
       break;
 
     default:
-      (void) putc('\n', write_file[selector]);
+      putc('\n', write_file[selector]);
       break;
   }
 }
@@ -64,9 +63,9 @@ void print_char_ (ASCII_code s)
   switch (selector)
   {
     case term_and_log:
-      (void) show_char(xchr[s]);
+      show_char(xchr[s]);
       incr(term_offset);
-      (void) putc(xchr[s], log_file);
+      putc(xchr[s], log_file);
       incr(file_offset);
 
       if (term_offset == max_print_line)
@@ -77,14 +76,14 @@ void print_char_ (ASCII_code s)
       
       if (file_offset == max_print_line)
       {
-        (void) putc ('\n', log_file);
+        putc ('\n', log_file);
         file_offset = 0;
       }
 
       break;
 
     case log_only:
-      (void) putc(xchr[s], log_file);
+      putc(xchr[s], log_file);
       incr(file_offset);
 
       if (file_offset == max_print_line)
@@ -93,7 +92,7 @@ void print_char_ (ASCII_code s)
       break;
 
     case term_only:
-      (void) show_char(xchr[s]);
+      show_char(xchr[s]);
       incr(term_offset);
 
       if (term_offset == max_print_line)
@@ -113,9 +112,7 @@ void print_char_ (ASCII_code s)
     case new_string:
 #ifdef ALLOCATESTRING
       if (pool_ptr + 1 > current_pool_size)
-      {
         str_pool = realloc_str_pool (increment_pool_size);
-      }
       
       if (pool_ptr < current_pool_size)
       {
@@ -132,7 +129,7 @@ void print_char_ (ASCII_code s)
       break;
 
     default:
-      (void) putc(xchr[s], write_file[selector]);
+      putc(xchr[s], write_file[selector]);
       break;
   }
 
@@ -419,7 +416,7 @@ void jump_out (void)
     ready_already = 0;
 
     if (trace_flag)
-      puts("EXITING at JUMPOUT\n");
+      puts("EXITING at JUMPOUT");
 
     if ((history != 0) && (history != 1))
       code = 1;
@@ -453,10 +450,10 @@ lab22:
       if (last == first)
         return; // no input
 
-      c = buffer[first];   // analyze first letter typed
+      c = buffer[first];
 
-      if (c >= 'a')         // uppercase letter first
-        c = (unsigned char) (c + 'A' - 'a'); 
+      if (c >= 'a')
+        c = (c + 'A' - 'a'); 
 
       switch (c)
       {
@@ -480,9 +477,9 @@ lab22:
             OK_to_interrupt = false;
 
             if ((last > first + 1) && (buffer[first + 1] >= '0') && (buffer[first + 1] <= '9'))
-              c = (unsigned char) (c * 10 + buffer[first + 1] - '0' * 11);
+              c = (c * 10 + buffer[first + 1] - '0' * 11);
             else
-              c = (unsigned char) (c - 48);
+              c = (c - 48);
             
             while (c > 0)
             {
@@ -509,7 +506,8 @@ lab22:
             goto lab22;       /* loop again */
           }
           break;
-#endif /* DEBUG */
+#endif
+
         case 'E':
           if (base_ptr > 0)
           {
@@ -532,11 +530,13 @@ lab22:
               if (help_ptr == 0)
                 help2("Sorry, I don't know how to help in this situation.",
                     "Maybe you should try asking a human?");
-              do {
-                decr(help_ptr);
-                print_string(help_line[help_ptr]);
-                print_ln();
-              } while (!(help_ptr == 0));
+              do
+                {
+                  decr(help_ptr);
+                  print_string(help_line[help_ptr]);
+                  print_ln();
+                }
+              while (!(help_ptr == 0));
             }
 
             help4("Sorry, I already gave what help I could...",
@@ -561,8 +561,10 @@ lab22:
               prompt_input("insert>");
               loc = first;
             }
+
             first = last;
             limit = last - 1;
+
             return;
           }
           break;
@@ -581,9 +583,11 @@ lab22:
                 print_esc("batchmode");
                 decr(selector);
                 break;
+
               case 'R':
                 print_esc("nonstopmode");
                 break;
+
               case 'S':
                 print_esc("scrollmode");
                 break;
@@ -622,7 +626,7 @@ lab22:
 
         print_nl("H for help, X to quit.");
       }
-    } /* end of while (true) loop */
+    }
 
   incr(error_count);
 
@@ -765,15 +769,16 @@ str_number make_string (void)
   if (str_ptr == current_max_strings)
   {
     overflow("number of strings", current_max_strings - init_str_ptr); /* 97/Mar/9 */
-    return 0;     // abort_flag set
+    return 0;
   }
 #else
   if (str_ptr == max_strings)
   {
     overflow("number of strings", max_strings - init_str_ptr);
-    return 0;     // abort_flag set
+    return 0;
   }
 #endif
+
   incr(str_ptr);
   str_start[str_ptr] = pool_ptr;
 
@@ -800,6 +805,7 @@ boolean str_eq_buf_ (str_number s, integer k)
   }
 
   result = true;
+
 lab45:
   return result;
 }
@@ -827,6 +833,7 @@ boolean str_eq_str_ (str_number s, str_number t)
   }
 
   result = true;
+
 lab45:
   return result;
 }
@@ -910,106 +917,6 @@ void print_current_string (void)
   }
 }
 
-int stringlength (int str_ptr)
-{
-  return (str_start[str_ptr + 1] - str_start[str_ptr]) + 2;
-}
-
-char * add_string (char *s, char * str_string)
-{
-  int n;
-
-  n = strlen(str_string);
-  memcpy(s, &str_string, n);
-  s += n;
-  strcpy(s, "\r\n");
-  s += 2;
-
-  return s;
-}
-
-int addextrahelp = 1;
-
-// make one long \r\n separated string out of help lines 
-// str_pool is packed_ASCII_code *
-
-char * make_up_help_string (int nhelplines)
-{
-  char * helpstring, *s;
-  int k, nlen = 0;
-  
-//  get length of help for this specific message
-  for (k = nhelplines - 1; k >= 0; k--)
-  {
-    nlen += strlen(help_line[k]);
-  }
-
-  nlen += 2; // for blank line separator: "\r\n"
-
-  if (addextrahelp)
-  {
-    nlen += stringlength(265);
-    nlen += stringlength(266);
-    nlen += stringlength(267);
-
-    if (base_ptr > 0)
-      nlen += stringlength(268);
-
-    if (deletions_allowed)
-      nlen += stringlength(269);
-
-    nlen += stringlength(270);
-  }
-
-  helpstring = (char *) malloc(nlen + 1); // +1 = '\0'
-  s = helpstring;
-
-  for (k = nhelplines-1; k >= 0; k--)
-  {
-    s = add_string(s, help_line[k]);
-  }
-
-  if (addextrahelp)
-  {
-    strcpy(s, "\r\n");
-    s += 2;
-    s = add_string(s, "Type <return> to proceed, S to scroll future error messages,");
-    s = add_string(s, "R to run without stopping, Q to run quietly,");
-    s = add_string(s, "I to insert something, ");
-
-    if (base_ptr > 0)
-      s = add_string(s, "E to edit your file, ");
-
-    if (deletions_allowed)
-      s = add_string(s, "1 or ... or 9 to ignore the next 1 to 9 tokens of input,");
-
-    s = add_string(s, "H for help, X to quit.");
-  }
-
-  return helpstring;
-}
-
-char * make_up_query_string (int promptstr)
-{
-  char *querystr;
-  int nstart, nnext, n;
-  char *s;
-
-  nstart = str_start[ promptstr];
-  nnext = str_start[ promptstr + 1];
-  n = nnext - nstart;
-  querystr = (char *) malloc(n + 1);
-  s = querystr;
-  memcpy(s, &str_pool[nstart], n);  
-  s += n;
-  *s = '\0';
-
-  return querystr;
-}
-
-// abort_flag set if input_line / ConsoleInput returns non-zero
-// should set interrupt instead ???
-// called from tex0.c, tex2.c, tex3.c
 /* sec 0071 */
 void term_input(void)
 { 
@@ -1025,8 +932,9 @@ void term_input(void)
   if (!flag)
   {
     fatal_error("End of file on the terminal!");
-    return;         // abort_flag set
+    return;
   }
+
   term_offset = 0;
   decr(selector);     // shut off echo
 
@@ -1122,6 +1030,7 @@ void print_scaled_(scaled s)
     {
       if (delta > 65536L)
         s = s - 17232; /* 2^15 - 50000 - rounding */
+
       print_char('0' + (s / 65536L));
       s = 10 * (s % 65536L);
       delta = delta * 10;
@@ -1337,56 +1246,55 @@ void show_token_list_(integer p, integer q, integer l)
 
       if (info(p) < 0)
         print_esc("BAD.");
-      else
-        switch (m)
-        {
-          case left_brace:
-          case right_brace:
-          case math_shift:
-          case tab_mark:
-          case sup_mark:
-          case sub_mark:
-          case spacer:
-          case letter:
-          case other_char:
-            print(c);
-            break;
-
-          case mac_param:
-            print(c);
-            print(c);
-            break;
-
-          case out_param:
-            print(match_chr);
-
-            if (c <= 9)
-              print_char(c + '0');
-            else
-            {
-              print_char('!');
-              return;
-            }
-            break;
-
-          case match:
-            match_chr = (ASCII_code) c;
-            print(c);
-            incr(n);
-            print_char(n);
-
-            if (n > '9')
-              return;
-            break;
-
-          case end_match:
-            print_string("->");
-            break;
-
-          default:
-            print_esc("BAD.");
-            break;
-        }
+      else switch (m)
+      {
+        case left_brace:
+        case right_brace:
+        case math_shift:
+        case tab_mark:
+        case sup_mark:
+        case sub_mark:
+        case spacer:
+        case letter:
+        case other_char:
+          print(c);
+          break;
+        
+        case mac_param:
+          print(c);
+          print(c);
+          break;
+        
+        case out_param:
+          print(match_chr);
+          
+          if (c <= 9)
+            print_char(c + '0');
+          else
+          {
+            print_char('!');
+            return;
+          }
+          break;
+        
+        case match:
+          match_chr = (ASCII_code) c;
+          print(c);
+          incr(n);
+          print_char(n);
+          
+          if (n > '9')
+            return;
+          break;
+        
+        case end_match:
+          print_string("->");
+          break;
+        
+        default:
+          print_esc("BAD.");
+          break;
+      }
     }
     p = link(p);
   }
@@ -1469,7 +1377,7 @@ halfword get_avail (void)
       {
         runaway();
         overflow("main memory size", mem_max + 1 - mem_min);
-        return 0;           // abort_flag set
+        return 0;
       }
 
       incr(mem_end);        /* then grab from new area */
@@ -1619,7 +1527,7 @@ lab20:
     }
 
     overflow("main memory size", mem_max + 1 - mem_min); /* darn: allocation failed ! */
-    return 0;     // abort_flag set
+    return 0;
   }
 
   add_variable_space (block_size); /* now to be found in itex.c */
@@ -1987,7 +1895,8 @@ void short_display_(integer p)
 {
   integer n; 
 
-  while (p != 0) {      /* want p != null here bkph 93/Dec/15 !!! NOTE: still not fixed in 3.14159 ! */
+  while (p != 0) /* want p != null here ! */
+  {
      if (is_char_node(p))
      {
        if (p <= mem_end)
@@ -2001,6 +1910,7 @@ void short_display_(integer p)
              print_esc("");
              print(font_id_text(font(p)));
            }
+
            print_char(' ');
            font_in_short_display = font(p);
          }
@@ -2036,9 +1946,11 @@ void short_display_(integer p)
         short_display(post_break(p));
         n = replace_count(p);
 
-        while (n > 0) {
-          if (link(p) != 0) /* if link(p)<>null then */
+        while (n > 0)
+        {
+          if (link(p) != 0)
             p = link(p);
+
           decr(n);
         }
         break;
@@ -2098,11 +2010,13 @@ void print_glue_(scaled d, integer order, char * s)
   {
     print_string("fil");
 
-    while (order > 1) {
+    while (order > 1)
+    {
       print_char('l');
       decr(order);
     }
-  } else if (*s != '\0')
+  }
+  else if (*s != '\0')
     print_string(s);
 }
 /* sec 0178 */
