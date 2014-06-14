@@ -188,7 +188,7 @@ void show_context (void)
 {
   char old_setting;
   integer nn;
-  boolean bottomline;
+  boolean bottom_line;
   integer i;
   integer j;
   integer l;
@@ -200,17 +200,17 @@ void show_context (void)
   base_ptr = input_ptr;
   input_stack[base_ptr] = cur_input;
   nn = -1;
-  bottomline = false;
+  bottom_line = false;
 
   while (true)
   {
     cur_input = input_stack[base_ptr];
 
-    if ((state != 0))
+    if ((state != token_list))
       if ((cur_input.name_field > 17) || (base_ptr == 0))
-        bottomline = true;
+        bottom_line = true;
 
-    if ((base_ptr == input_ptr) || bottomline || (nn < error_context_lines))
+    if ((base_ptr == input_ptr) || bottom_line || (nn < error_context_lines))
     {
       if ((base_ptr == input_ptr) || (state != token_list) ||
           (index != backed_up) || (loc != 0))
@@ -218,7 +218,7 @@ void show_context (void)
         tally = 0;
         old_setting = selector;
 
-        if (state != 0)
+        if (state != token_list)
         {
           if (cur_input.name_field <= 17)
             if ((cur_input.name_field == 0))
@@ -229,10 +229,12 @@ void show_context (void)
             else
             {
               print_nl("<read ");
+
               if (cur_input.name_field == 17)
                 print_char('*');
               else
                 print_int(cur_input.name_field - 1);
+
               print_char('>');
             }
           else
@@ -246,9 +248,7 @@ void show_context (void)
 
               print_char('(');
               print_int(line);
-              print_char(')');
-              print_char(' ');
-              print_char(':');
+              print_string(") :");
             }
             else
             {
@@ -258,13 +258,7 @@ void show_context (void)
           }
 
           print_char(' ');
-
-          {
-            l = tally;
-            tally = 0;
-            selector = pseudo;
-            trick_count = 1000000L;
-          }
+          begin_pseudoprint();
 
           if (buffer[limit] == end_line_char)
             j = limit;
@@ -275,13 +269,8 @@ void show_context (void)
             for (i = start; i <= j - 1; i++)
             {
               if (i == loc)
-              {
-                first_count = tally;
-                trick_count = tally + 1 + error_line - half_error_line;
+                set_trick_count();
 
-                if (trick_count < error_line)
-                  trick_count = error_line;
-              }
               print(buffer[i]);
             }
         }
@@ -359,12 +348,7 @@ void show_context (void)
               break;
           }
 
-          {
-            l = tally;
-            tally = 0;
-            selector = pseudo;
-            trick_count = 1000000L;
-          }
+          begin_pseudoprint();
 
           if (index < macro)
             show_token_list(start, loc, 100000L);
@@ -375,13 +359,7 @@ void show_context (void)
         selector = old_setting;
 
         if (trick_count == 1000000L)
-        {
-          first_count = tally;
-          trick_count = tally + 1 + error_line - half_error_line;
-
-          if (trick_count < error_line)
-            trick_count = error_line;
-        }
+          set_trick_count();
         
         if (tally < trick_count)
           m = tally - first_count;
@@ -407,7 +385,7 @@ void show_context (void)
 
         for (q = 1; q <= n; q++)
           print_char(' ');
-
+        
         if (m + n <= error_line)
           p = first_count + m;
         else
@@ -418,6 +396,7 @@ void show_context (void)
 
         if (m + n > error_line)
           print_string("...");
+
         incr(nn);
       }
     }
@@ -427,45 +406,19 @@ void show_context (void)
       incr(nn); 
     }
 
-    if (bottomline)
+    if (bottom_line)
       goto lab30;
 
     decr(base_ptr);
   }
+
 lab30:
   cur_input = input_stack[input_ptr];
 }
-//#pragma optimize("g", off)          /* 98/Dec/10 experiment */
 /* sec 0323 */
 void begin_token_list_ (halfword p, quarterword t)
 {
-  {
-    if (input_ptr > max_in_stack)
-    {
-      max_in_stack = input_ptr;
-
-#ifdef ALLOCATEINPUTSTACK
-      if (input_ptr == current_stack_size)
-        input_stack = realloc_input_stack(increment_stack_size);
-
-      if (input_ptr == current_stack_size) /* check again after allocation */
-      {
-        overflow("input stack size", current_stack_size);
-        return;     // abort_flag set
-      }
-#else
-      if (input_ptr == stack_size) /* input stack - not dynamic */
-      {
-        overflow("input stack size", stack_size);
-        return;     // abort_flag set
-      }
-#endif
-    }
-
-    input_stack[input_ptr] = cur_input;
-    incr(input_ptr);
-  }
-
+  push_input();
   state = token_list;
   start = p;
   index = t;
@@ -533,7 +486,7 @@ void end_token_list (void)
     else
     {
       fatal_error("(interwoven alignment preambles are not allowed)");
-      return;     // abort_flag set
+      return;
     }
 
   pop_input();
@@ -559,31 +512,7 @@ void back_input (void)
     else
       incr(align_state);
 
-  {
-    if (input_ptr > max_in_stack)
-    {
-      max_in_stack = input_ptr;
-#ifdef ALLOCATEINPUTSTACK
-      if (input_ptr == current_stack_size)
-        input_stack = realloc_input_stack(increment_stack_size);
-
-      if (input_ptr == current_stack_size) /* check again after allocation */
-      {
-        overflow("input stack size", current_stack_size);
-        return;     // abort_flag set
-      }
-#else
-      if (input_ptr == stack_size) /* stack size - not dynamic */
-      {
-        overflow("input stack size", stack_size);
-        return;     // abort_flag set
-      }
-#endif
-    }
-    input_stack[input_ptr] = cur_input;
-    incr(input_ptr);
-  }
-
+  push_input();
   state = token_list;
   start = p;
   index = backed_up;
@@ -611,8 +540,8 @@ void begin_file_reading (void)
 {
   if (in_open == max_in_open)
   {
-    overflow("text input levels", max_in_open); /* text input levels - NOT DYNAMIC */
-    return;     // abort_flag set
+    overflow("text input levels", max_in_open);
+    return;
   }
 #ifdef ALLOCATEBUFFER
   if (first == current_buf_size)
@@ -621,41 +550,22 @@ void begin_file_reading (void)
   if (first == current_buf_size) /* check again after allocation */
   {
     overflow("buffer size", current_buf_size);
-    return;     // abort_flag set
+    return;
   }
 #else
   if (first == buf_size)
   {
-    overflow("buffer size", buf_size);  /* buffer size - not dynamic */
-    return;     // abort_flag set
+    overflow("buffer size", buf_size);
+    return;
   }
 #endif
+
   incr(in_open);
-  if (in_open > high_in_open)     /* 1999 Jan 17 */
+
+  if (in_open > high_in_open) /* 1999 Jan 17 */
     high_in_open = in_open;
-  {
-    if (input_ptr > max_in_stack)
-    {
-      max_in_stack = input_ptr;
-#ifdef ALLOCATEINPUTSTACK
-      if (input_ptr == current_stack_size)
-        input_stack = realloc_input_stack(increment_stack_size);
-      if (input_ptr == current_stack_size)
-      {
-        overflow("input stack size", current_stack_size);  /* check again after allocation */
-        return;     // abort_flag set
-      }
-#else
-      if (input_ptr == stack_size)
-      {
-        overflow("input stack size", stack_size);    /* input stack - not dynamic */
-        return;     // abort_flag set
-      }
-#endif
-    }
-    input_stack[input_ptr] = cur_input;
-    incr(input_ptr);
-  }
+
+  push_input();
   index = in_open;
   line_stack[index] = line;
   start = first;
@@ -678,8 +588,7 @@ void end_file_reading (void)
 /* sec 0330 */
 void clear_for_error_prompt (void) 
 {
-  while ((state != 0) &&
-      (cur_input.name_field == 0) && (input_ptr > 0) &&
+  while ((state != 0) && (cur_input.name_field == 0) && (input_ptr > 0) &&
       (loc > limit))
     end_file_reading();
 
@@ -742,7 +651,7 @@ void check_outer_validity (void)
           q = p;
           p = get_avail();
           link(p) = q;
-          info(p) = cs_token_flag + frozen_cr; /*96/Jan/10*/
+          info(p) = cs_token_flag + frozen_cr;
           align_state = -1000000L;
           break;
 
@@ -751,6 +660,7 @@ void check_outer_validity (void)
           info(p) = right_brace_token + '}';
           break;
       }
+
       ins_list(p);
       print_string(" of ");
       sprint_cs(warning_index);
@@ -775,9 +685,10 @@ void check_outer_validity (void)
       else
         help_line[2] = "The file ended while I was skipping conditional text.";
 
-      cur_tok = cs_token_flag + frozen_fi; /* 96/Jan/10 */
+      cur_tok = cs_token_flag + frozen_fi;
       ins_error();
-  }
+    }
+
     deletions_allowed = true;
   }
 }
@@ -1104,13 +1015,13 @@ lab40:
       if (max_param_stack > current_param_size) /* check again after allocation */
       {
         overflow("parameter stack size", current_param_size);
-        return;     // abort_flag set
+        return;
       }
 #else
       if (max_param_stack > param_size)
       {
         overflow("parameter stack size", param_size); /* parameter stack - not dynamic */
-        return;     // abort_flag set
+        return;
       }
 #endif
     }
@@ -1232,13 +1143,13 @@ void expand (void)
             if (max_buf_stack == current_buf_size) /* check again after allocation */
             {
               overflow("buffer size", current_buf_size);
-              return;     // abort_flag set
+              return;
             }
 #else
             if (max_buf_stack == buf_size)
             {
               overflow("buffer size", buf_size); /* buffer size - not dynamic */
-              return;     // abort_flag set
+              return;
             }
 #endif
           }
@@ -2325,7 +2236,7 @@ lab40:
         else
         {
           fatal_error("*** (job aborted, no legal \\end found)");
-          return;     // abort_flag set
+          return;
         }
       }
 
@@ -2403,7 +2314,7 @@ lab40:
         if ((scanner_status == aligning) && (cur_align == 0))
         {
           fatal_error("(interwoven alignment preambles are not allowed)");
-          return;     // abort_flag set
+          return;
         }
 
         cur_cmd = extra_info(cur_align);

@@ -780,14 +780,27 @@ while (0)
 #define every_cr_text      13
 #define mark_text          14
 #define write_text         15
-/* sec 0322 */
-#define pop_input()                   \
-do                                    \
-{                                     \
-  decr(input_ptr);                    \
-  cur_input = input_stack[input_ptr]; \
-}                                     \
+/* sec 0316 */
+#define begin_pseudoprint() \
+do                          \
+{                           \
+  l = tally;                \
+  tally = 0;                \
+  selector = pseudo;        \
+  trick_count = 1000000L;   \
+}                           \
 while (0)
+#define set_trick_count()                                 \
+do                                                        \
+{                                                         \
+  first_count = tally;                                    \
+  trick_count = tally + 1 + error_line - half_error_line; \
+                                                          \
+  if (trick_count < error_line)                           \
+    trick_count = error_line;                             \
+}                                                         \
+while (0)
+/* sec 0322 */
 /* sec 0323 */
 #define back_list(a) begin_token_list(a, backed_up)
 #define ins_list(a)  begin_token_list(a, inserted)

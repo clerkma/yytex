@@ -725,7 +725,7 @@ lab31:;
                   default:
                     {
                       confusion("disc3");
-                      return;       // abort_flag set
+                      return;
                     }
                     break;
                 }
@@ -766,7 +766,7 @@ lab31:;
                 default:
                   {
                     confusion("disc4");
-                    return;       // abort_flag set
+                    return;
                   }
                   break;
               }
@@ -800,7 +800,7 @@ lab31:;
         default:
           {
             confusion("paragraph");
-            return;       // abort_flag set
+            return;
           }
           break;
       }
@@ -1460,7 +1460,7 @@ void prefixed_command (void)
     default:
       {
         confusion("prefix");
-        return;       // abort_flag set
+        return;
       }
       break;
   }
@@ -2359,7 +2359,7 @@ void add_variable_space(int size)
 
   mem_min = t - (size + 1);     /* first word in new block - 1 */
 
-  if (mem_min < mem_start)      /* sanity test */
+  if (mem_min < mem_start)
   {
     if (trace_flag)
       puts("WARNING: mem_min < mem_start!");
@@ -2761,7 +2761,7 @@ trie_op_code new_trie_op_ (small_number d, small_number n, trie_op_code v)
       if (trie_op_ptr == trie_op_size)
       {
         overflow("pattern memory ops", trie_op_size);
-        return 0;     // abort_flag set
+        return 0;
       }
 
       u = trie_used[cur_lang];
@@ -2769,7 +2769,7 @@ trie_op_code new_trie_op_ (small_number d, small_number n, trie_op_code v)
       if (u == max_trie_op)
       {
         overflow("pattern memory ops per language", max_trie_op - min_trie_op);
-        return 0;     // abort_flag set
+        return 0;
       }
 
       incr(trie_op_ptr);
@@ -3096,7 +3096,7 @@ lab31:
                   {
                     overflow("pattern memory", trie_size);  /* pattern memory - NOT DYNAMIC */
 /*      not dynamic ---- but can be set -h=... from command line in ini-TeX */
-                    return;     // abort_flag set
+                    return;
                   }
 
                   incr(trie_ptr);

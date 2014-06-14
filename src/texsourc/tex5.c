@@ -272,7 +272,7 @@ void make_vcenter_(halfword q)
   if (type(v) != vlist_node)
   {
     confusion("vcenter");
-    return;         // abort_flag set
+    return;
   }
 
   delta = height(v) + depth(v);
@@ -922,7 +922,7 @@ lab21:
       default:
         {
           confusion("mlist1");
-          return;       // abort_flag set
+          return;
         }
         break;
     }
@@ -985,7 +985,7 @@ lab21:
       default:
         {
           confusion("mlist2");
-          return;       // abort_flag set
+          return;
         }
         break;
     }
@@ -1127,7 +1127,7 @@ lab81:
       default:
         {
           confusion("mlist3");
-          return;       // abort_flag set
+          return;
         }
         break;
     }
@@ -1168,7 +1168,7 @@ lab81:
         default:
           {
             confusion("mlist4");
-            return;       // abort_flag set
+            return;
           }
           break;
       }
@@ -1272,7 +1272,7 @@ lab20:
   if (cur_cmd == endv)
   {
     fatal_error("(interwoven alignment preambles are not allowed)");
-    return;     // abort_flag set
+    return;
   }
 
   if ((cur_cmd == assign_glue) && (cur_chr == glue_base + tab_skip_code))
@@ -1422,7 +1422,7 @@ void init_span_ (halfword p)
     space_factor = 1000;
   else
   {
-    cur_list.aux_field.cint = ignore_depth;
+    prev_depth = ignore_depth;
     normal_paragraph();
   }
 
@@ -1438,7 +1438,7 @@ void init_row (void)
   if (mode == -hmode)
     space_factor = 0;
   else
-    cur_list.aux_field.cint = 0;
+    prev_depth = 0;
 
   tail_append(new_glue(glue_ptr(preamble)));
   subtype(tail) = tab_skip_code + 1;
@@ -1506,7 +1506,7 @@ void fin_align (void)
   if (cur_group != align_group)
   {
     confusion("align1");
-    return;       // abort_flag set
+    return;
   }
 
   unsave();
@@ -1514,7 +1514,7 @@ void fin_align (void)
   if (cur_group != align_group)
   {
     confusion("align0");
-    return;       // abort_flag set
+    return;
   }
 
   unsave();
@@ -1853,7 +1853,7 @@ void fin_align (void)
 
     tail_append(new_penalty(post_display_penalty));
     tail_append(new_param_glue(below_display_skip_code));
-    cur_list.aux_field.cint = aux_save.cint;
+    prev_depth = aux_save.cint;
     resume_after_display();
   }
   else
@@ -1865,18 +1865,9 @@ void fin_align (void)
       tail = q;
 
     if (mode == vmode)
-    {
       build_page();
-    }
   }
 }
-/* used to be align_peek, zfintieshrink, etc in old tex5.c */
-/************************************************************************/
-/* moved down here to avoid questions about pragma optimize */
-/* #pragma optimize("g", off) */
-/* for MC VS compiler */
-/* Moved down here 96/Oct/12 in response to problem with texerror.tex */
-/* pragma optimize("a", off) not strong enough - this may slow things */
 /* sec 0791 */
 boolean fin_col (void)
 {
@@ -1891,7 +1882,7 @@ boolean fin_col (void)
   if (cur_align == 0)
   {
     confusion("endv");
-    return 0;       // abort_flag set
+    return 0;
   }
 
   q = link(cur_align);
@@ -1899,13 +1890,13 @@ boolean fin_col (void)
   if (q == 0)
   {
     confusion("endv");
-    return 0;       // abort_flag set
+    return 0;
   }
 
   if (align_state < 500000L)
   {
     fatal_error("(interwoven alignment preambles are not allowed)");
-    return 0;     // abort_flag set
+    return 0;
   }
 
   p = link(q);
@@ -1913,8 +1904,6 @@ boolean fin_col (void)
   if ((p == 0) && (extra_info(cur_align) < cr_code))
     if (cur_loop != 0)
     {
-/*  potential problem here if new_null_box causes memory reallocation ??? */
-/*  compiler optimization does not refresh `mem' loaded in registers ? */
       link(q) = new_null_box();
       p = link(q);
       info(p) = end_span;
@@ -1963,7 +1952,6 @@ boolean fin_col (void)
   if (extra_info(cur_align) != span_code)
   {
     unsave();
-
     new_save_level(align_group);
 
     {
@@ -1996,8 +1984,8 @@ boolean fin_col (void)
 
         if (n > max_quarterword)
         {
-          confusion("256 spans");   /* 256 spans --- message wrong now, but ... */
-          return 0;       // abort_flag set
+          confusion("256 spans");
+          return 0;
         }
 
         q = cur_span;

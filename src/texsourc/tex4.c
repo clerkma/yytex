@@ -562,7 +562,7 @@ void out_what_(pointer p)
     default:
       {
         confusion("ext4");
-        return;       // abort_flag set
+        return;
       }
       break;
   }
@@ -917,7 +917,7 @@ void vlist_out (void)
     if (is_char_node(p))
     {
       confusion("vlistout");
-      return;       // abort_flag set
+      return;
     }
     else
     {
@@ -1234,9 +1234,10 @@ void dvi_ship_out_(halfword p)
   else
     hlist_out();
 
-  dvi_out(eop); // do not need a endpage in haru.
+  dvi_out(eop);
   incr(total_pages);
   cur_s = -1;
+
 lab30:;
   if (tracing_output <= 0)
     print_char(']');
@@ -1256,7 +1257,7 @@ lab30:;
     print_int(dyn_used);
     print_char(';');
   }
-#endif /* STAT */
+#endif
 
   flush_node_list(p);
 
@@ -1268,10 +1269,10 @@ lab30:;
     print_char('&');
     print_int(dyn_used);
     print_string("; still utouched: ");
-    print_int(hi_mem_min - lo_mem_max - 1); /* somewhat inaccurate free mem */
+    print_int(hi_mem_min - lo_mem_max - 1);
     print_ln();
   }
-#endif /* STAT */
+#endif
 }
 void ship_out_(halfword p)
 {
@@ -1581,7 +1582,7 @@ lab21:
           print_scaled(- (integer) x - total_shrink[normal]);
           print_string("pt too wide");
 
-          overfull_hbox++;      /* 1996/Feb/9 */
+          overfull_hbox++;
 
           goto lab50;
       }
@@ -1601,6 +1602,7 @@ lab21:
       }
       goto lab10;
   }
+
 lab50:
   if (output_active)
     print_string(") has occurred while \\output is active");
@@ -1629,6 +1631,7 @@ lab50:
   begin_diagnostic();
   show_box(r);
   end_diagnostic(true);
+
 lab10:
   return r;
 }
@@ -1665,7 +1668,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
     if (is_char_node(p))
     {
       confusion("vpack");
-      return 0;       // abort_flag set
+      return 0;
     }
     else switch (type(p))
     {
@@ -1847,6 +1850,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
       }
     goto lab10;
   }
+
 lab50:
   if (output_active)
     print_string(") has occurred while \\output is active");
@@ -1868,6 +1872,7 @@ lab50:
   begin_diagnostic();
   show_box(r);
   end_diagnostic(true);
+
 lab10:
   return r;
 }
@@ -1877,7 +1882,7 @@ void append_to_vlist_(halfword b)
   scaled d;
   halfword p;
 
-  if (cur_list.aux_field.cint > ignore_depth)
+  if (prev_depth > ignore_depth)
   {
     d = width(baseline_skip) - prev_depth - height(b);
 

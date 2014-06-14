@@ -203,7 +203,7 @@ lab22:
                     default:
                       {
                         confusion("disc2");
-                        return;       // abort_flag set
+                        return;
                       }
                       break;
                   }
@@ -804,7 +804,7 @@ lab31:
   if ((cur_line != best_line) || (link(temp_head) != 0))
   {
     confusion("line breaking");
-    return;       // abort_flag set
+    return;
   }
 
   prev_graf = best_line - 1;
@@ -1611,7 +1611,7 @@ halfword prune_page_top_(halfword p)
       default:
         {
           confusion("pruning");
-          return 0;       // abort_flag set
+          return 0;
         }
         break;
     }
@@ -1689,7 +1689,7 @@ halfword vert_break_(halfword p, scaled h, scaled d)
       default:
         {
           confusion("vertbreak");
-          return 0;       // abort_flag set
+          return 0;
         }
         break;
     }
@@ -2104,7 +2104,7 @@ void fire_up_(halfword c)
 
   split_top_skip = save_split_top_skip;
 
-  if (p != 0)    /* if p<>null then l.19730 */
+  if (p != 0)
   {
     if (link(contrib_head) == 0)
       if (nest_ptr == 0)
@@ -2177,7 +2177,7 @@ void fire_up_(halfword c)
       incr(dead_cycles);
       push_nest();
       mode = -vmode;
-      cur_list.aux_field.cint = ignore_depth;
+      prev_depth = ignore_depth;
       mode_line = - (integer) line;
       begin_token_list(output_routine, output_text);
       new_save_level(output_group);
