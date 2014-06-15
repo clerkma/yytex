@@ -2269,14 +2269,6 @@ halfword id_lookup_(integer j, integer l)
             }
           while (!(text(hash_used) == 0));
 
-#ifdef SHORTHASH
-          if (hash_used > 65535L) /* debugging only 1996/Jan/20 */
-          {
-            sprintf(log_line, "ERROR: %s too large %d\n", "hash entry", hash_used);
-            show_line(log_line, 1);
-          }
-#endif
-
           next(p) = hash_used;
           p = hash_used;
         }
@@ -2293,21 +2285,7 @@ halfword id_lookup_(integer j, integer l)
         for (k = j; k <= j + l - 1; k++)
           append_char(buffer[k]);
 
-#ifdef SHORTHASH
-        {
-          pool_pointer tempstring = make_string();
-
-          if (tempstring > 65535L) /* cannot happen */
-          {
-            sprintf(log_line, "ERROR: %s too large %d\n", "string ptr", tempstring);
-            show_line(log_line, 1);
-          }
-          text(p) = tempstring;
-        }
-#else
         text(p) = make_string();
-#endif
-
         pool_ptr = pool_ptr + d;
 
 #ifdef STAT
@@ -2316,10 +2294,9 @@ halfword id_lookup_(integer j, integer l)
         if (trace_flag)
         {
           str_pool[pool_ptr] = '\0';
-          sprintf(log_line, " tex1 cs_count++ '%s' ", &str_pool[pool_ptr - l - d]);
-          show_line(log_line, 0);      /* debugging */
+          printf(" tex1.c cs_count++ '%s' ", &str_pool[pool_ptr - l - d]);
         }
-#endif /* STAT */
+#endif
       }
 
       goto lab40; 

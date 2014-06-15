@@ -380,12 +380,12 @@ void show_context (void)
 
         for (q = p; q <= first_count - 1; q++)
           print_char(trick_buf[q % error_line]);
-        
+
         print_ln();
 
         for (q = 1; q <= n; q++)
           print_char(' ');
-        
+
         if (m + n <= error_line)
           p = first_count + m;
         else

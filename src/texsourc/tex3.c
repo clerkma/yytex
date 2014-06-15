@@ -360,9 +360,11 @@ lab31:
     if (cur_cmd != spacer)
       back_input();
   }
+
 lab40:
   cur_val = mult_and_add(savecurval, v, xn_over_d(v, f, 65536L), 1073741823L);   /* 2^30 - 1 */
   goto lab89;
+
 lab45:
   if (mu)
   {
@@ -455,7 +457,7 @@ lab89:
     help2("I can't work with sizes bigger than about 19 feet.",
         "Continue and I'll use the largest value I can.");
     error();
-    cur_val = 1073741823L;  /* 2^30 - 1 */
+    cur_val = max_dimen;
     arith_error = false;
   }
 

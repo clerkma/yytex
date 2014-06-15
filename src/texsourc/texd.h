@@ -1,6 +1,6 @@
 #ifndef _YANDYTEX_TEXD_H
 #define _YANDYTEX_TEXD_H
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
 #define ALLOCATEINI        /* allocate iniTeX (550 k) trie_c, trie_o, trie_l, trie_r, trie_hash, trie_taken */
 #define ALLOCATEMAIN       /* allocate main memory for TeX (2 Meg) zmem = zzzaa */
 #define ALLOCATEFONT       /* allocate font_info (800 k) (dynamically now) */
@@ -14,12 +14,7 @@
 #define ALLOCATEPARAMSTACK /* experiment to dynamically deal with param_stack 99/Jan/21 */
 #define ALLOCATEBUFFER     /* experiment to dynamically deal with input buffer 99/Jan/22 */
 #define INCREASEFIXED
-/* increase number of fonts - quarterword 16 bit - max_quarterword limit */
-/* there may still be some bugs with this however ... also may slow down */
-/* also: should split use of quarterword for (i) font from (ii) char */
-/* for example, xeq_level ? hyphenation trie_trc ? */
 #define INCREASEFONTS
-#define SHORTFONTINFO
 #define INCREASETRIEOP
 #define COMPACTFORMAT
 
@@ -29,8 +24,8 @@
 #define file_name_size PATH_MAX
 
 // #define max_halfword 65535L  /* for 32 bit memory word */
-#define min_halfword -2147483647L /* for 64 bit memory word (signed) */
-#define max_halfword  2147483647L /* for 64 bit memory word (signed) */
+#define min_halfword -2147483647L /* LONG_MIN, for 64 bit memory word (signed) */
+#define max_halfword  2147483647L /* LONG_MAX, for 64 bit memory word (signed) */
 
 #define block_size 1000 /* block_size for variable length node alloc */
 
@@ -91,7 +86,7 @@ EXTERN integer max_buf_stack;
 #endif
 
 #ifdef INCREASEFONTS
-  #define font_max 1023
+  #define font_max 65535 //1023 (2^n - 1)
 #else
   #define font_max 255
 #endif
@@ -136,16 +131,12 @@ EXTERN integer max_buf_stack;
   #define max_trie_op       500
 #endif
 
-#ifdef ALLOCATEDVIBUF
-  #define default_dvi_buf_size 16384
-  EXTERN int dvi_buf_size;
-#else
-  #define dvi_buf_size 16384
-#endif
+
+#define dvi_buf_size 16384
 
 #define hash_extra (255 - font_max)
 #define hash_prime 27197 // (prime ~ 85% * (hash_size + hash_extra))
-#define hash_size  32768 // 97280 9500 25000
+#define hash_size  97280 // 32768 9500 25000
 
 #if (hash_extra != 255 - font_max)
   #error ERROR: hash_extra not equal to (255 - font_max)
@@ -249,14 +240,11 @@ EXTERN halfword temp_ptr;
 
 /* sec 0116 */
 #ifdef ALLOCATEMAIN
-  EXTERN memory_word * main_memory;   /* remembered so can be free() later */
+  EXTERN memory_word * main_memory;
   EXTERN memory_word * mem;
 #else
-  EXTERN memory_word 
-  /* #define zmem (zzzaa - (int)(mem_min)) */
-  /*  zzzaa[mem_max - mem_min + 1]; */
+  EXTERN memory_word zzzaa[mem_max - mem_bot + 1];
   #define zmem (zzzaa - (int)(mem_bot))
-  zzzaa[mem_max - mem_bot + 1];
 #endif
 
 EXTERN pointer lo_mem_max;
@@ -309,19 +297,14 @@ EXTERN int old_setting;
   #define eqtb_extra 0
 #endif
 
-/* Probably require eqtb_extra to be zero, so hash_extra = 255 - font_max */
 #if (eqtb_extra != 0)
   #error ERROR: eqtb_extra is not zero (need hash_extra equal 255 - font_max)
 #endif
 
-#ifdef ALLOCATEZEQTB
-  EXTERN memory_word * zeqtb;
+#ifdef INCREASEFONTS
+  EXTERN memory_word eqtb[eqtb_size + 1 + eqtb_extra];
 #else
-  #ifdef INCREASEFONTS
-    EXTERN memory_word eqtb[(hash_size + 4007) + eqtb_extra];
-  #else
-    EXTERN memory_word zeqtb[(hash_size + 4007)];
-  #endif
+  EXTERN memory_word eqtb[eqtb_size + 1];
 #endif
 
 #ifdef INCREASEFONTS
@@ -330,31 +313,19 @@ EXTERN int old_setting;
   #define xeq_level (zzzad - (int_base))
 #endif
 
-EXTERN quarterword zzzad[844];
-/* region 5 & 6 int_base to eqtb_size: 13507 - 12663 */
+EXTERN quarterword zzzad[eqtb_size - int_base + 1];
 
 #ifdef ALLOCATEHASH
-  #ifdef SHORTHASH
-    EXTERN htwo_halves *zzzae;
-  #else
-    EXTERN two_halves *zzzae;
-  #endif
-
-  #define hash (zzzae - 514)
+  EXTERN two_halves *zzzae;
+  #define hash (zzzae - hash_base)
 #else
-  #ifdef SHORTHASH
-    EXTERN htwo_halves 
-  #else
-    EXTERN two_halves 
-  #endif
-
-  #define hash (zzzae - 514)
-
   #ifdef INCREASEFONTS
-    zzzae[hash_size + 267 + eqtb_extra];
+    EXTERN two_halves zzzae[undefined_control_sequence - hash_base + eqtb_extra];
   #else
-    zzzae[hash_size + 267];
+    EXTERN two_halves zzzae[undefined_control_sequence - hash_base];
   #endif
+
+  #define hash (zzzae - hash_base)
 #endif
 
 EXTERN halfword hash_used;
@@ -448,7 +419,7 @@ EXTERN int cur_val;
 EXTERN int cur_val_level;
 EXTERN int radix;
 EXTERN int cur_order;
-EXTERN alpha_file read_file[16];  /* hard wired limit in TeX */
+EXTERN alpha_file read_file[16];
 EXTERN char read_open[20];
 EXTERN halfword cond_ptr;
 EXTERN int if_limit;
@@ -535,7 +506,7 @@ EXTERN scaled pdf_delta_h, pdf_delta_v;
 EXTERN scaled cur_h, cur_v;
 EXTERN internal_font_number dvi_f;
 EXTERN internal_font_number pdf_f;
-EXTERN integer cur_s; /* sec 616 */
+EXTERN integer cur_s;
 EXTERN scaled total_stretch[4], total_shrink[4];
 EXTERN integer last_badness;
 EXTERN halfword adjust_tail;
@@ -621,8 +592,6 @@ EXTERN small_number hyf_num[trie_op_size + 1];
 EXTERN trie_op_code hyf_next[trie_op_size + 1];
 EXTERN integer op_start[256];
 
-/* if ALLOCATEHYPHEN is true, then hyphen_prime is a variable */
-/* otherwise it is a pre-processor defined constant */
 #ifdef ALLOCATEHYPHEN
   #define default_hyphen_prime 1009
   EXTERN str_number * hyph_word;
@@ -680,9 +649,6 @@ EXTERN trie_op_code max_op_used;
 EXTERN scaled best_height_plus_depth;
 EXTERN halfword page_tail;
 EXTERN int page_contents;
-
-/* do *some* sanity checking here --- rather than in TeX later 96/Jan/18 */
-/* (cannot catch everything here, since some is now dynamic) */
 
 #if (half_error_line < 30) || (half_error_line > error_line - 15)
   #error ERROR: (half_error_line < 30) || (half_error_line > error_line - 15) BAD 1
