@@ -333,7 +333,7 @@ lab30:;
             minimal_demerits[fit_class] = awful_bad;
           }
 
-          minimum_demerits = 1073741823L; /* 2^30 - 1 */
+          minimum_demerits = awful_bad;
 
           if (r != active)
           {
@@ -835,7 +835,7 @@ small_number reconstitute_(small_number j, small_number n, halfword bchar, halfw
     if (ligature_present)
       lft_hit = init_lft; 
 
-    while (p != 0) /* 94/Mar/22 BUG FIX */
+    while (p != 0)
     {
       append_charnode_to_t(character(p));
       p = link(p);
@@ -983,30 +983,33 @@ lab22:
                   cur_l = rem_byte(q);
                   ligature_present = true;
 
-                  if (lig_stack != 0)        /* BUG FIX  */
+                  if (lig_stack != 0)
                   {
-                    if (mem[lig_stack + 1].hh.rh != 0) /* l.17828 ? */
+                    if (lig_ptr(lig_stack) != 0)
                     {
-                      mem[t].hh.rh = mem[lig_stack + 1].hh.rh;
-                      t = mem[t].hh.rh;
+                      link(t) = lig_ptr(lig_stack);
+                      t = link(t);
                       incr(j);
                     }
+
                     p = lig_stack;
-                    lig_stack = mem[p].hh.rh;
-                    free_node(p, 2);
-                    if (lig_stack == 0)  /* if lig_stack=null ? */
+                    lig_stack = link(p);
+                    free_node(p, small_node_size);
+
+                    if (lig_stack == 0)
                     {
                       if (j < n)
                         cur_r = hu[j + 1];
                       else
                         cur_r = bchar;
+
                       if (odd(hyf[j]))
                         cur_rh = hchar;
                       else
                         cur_rh = 256;
                     }
                     else
-                      cur_r = mem[lig_stack].hh.b1;
+                      cur_r = character(lig_stack);
                   }
                   else if (j == n)
                     goto lab30;
@@ -1179,6 +1182,7 @@ lab45:
       z = trie_trl[z] + hc[l];
     }
   }
+
 lab40:
   for (j = 0; j <= lhyf - 1; j++)
     hyf[j] = 0;
@@ -1191,6 +1195,7 @@ lab40:
       goto lab41;
 
   return;
+
 lab41:;
   q = link(hb);
   link(hb) = 0;

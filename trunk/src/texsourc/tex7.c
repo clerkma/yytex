@@ -233,7 +233,7 @@ lab22:
 
                   end_diagnostic(false);
                 }
-#endif /* STAT */
+#endif
                 if (count(n) != 1000)
                   best_height_plus_depth = x_over_n(best_height_plus_depth, 1000) * count(n);
 
@@ -268,11 +268,11 @@ lab22:
           else
             b = badness(page_goal - page_total, page_so_far[2]);
         else if (page_total - page_goal > page_shrink)
-          b = awful_bad;  /* 2^30 - 1 */
+          b = awful_bad;
         else
           b = badness(page_total - page_goal, page_shrink);
   
-        if (b < awful_bad) /* 2^30 - 1 */
+        if (b < awful_bad)
           if (pi <= eject_penalty)
             c = pi; 
           else if (b < inf_bad)

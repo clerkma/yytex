@@ -9,25 +9,15 @@ CC = cl
 LINK = link
 RC = rc
 
-CFLAGS=/nologo /c /MT /GF /Gy /Ox /W4 /DMSDOS /DTeX /DPHARLAP /DNDEBUG \
+CFLAGS=/nologo /c /MT /GF /Gy /Ox /W4 /DMSDOS /DTeX \
 	/I"kpathsea" /I"zlib" /I"libmd5"
 
-# Link with MS LINK
-# LFLAGS=@yandytex.nt /MAP lib\libdos.lib
-# Release version
-# LFLAGS=/MAP lib\libdos.lib
 LFLAGS=/NOLOGO /MAP
-# /MACHINE:X86
-# debugging version
-# LFLAGS=@yandytex.nt /MAP /DEBUG /PDB:yandytex.pdb lib\libdos.lib
-# LFLAGS=/MAP /DEBUG /PDB:yandytex.pdb
 
 objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
 	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
 	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
 	yandy_pool.obj yandytex.res md5.obj yandy_inlines.obj
-
-# ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
 yandytex.exe: $(objs)
 	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
@@ -37,7 +27,7 @@ yandytex.exe: $(objs)
 	dvipdfmx\libdvipdfmx.lib
 	del ..\yandy\bin\yandytex.exe
 	copy yandytex.exe ..\yandy\bin\yandytex.exe
-# ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
+
 md5.obj: libmd5\md5.c
 	$(CC) -Ilibmd5 $(CFLAGS) libmd5\md5.c
 
@@ -46,7 +36,7 @@ yandytex.res: yandytex.rc
 
 yandytex.obj: yandytex.c \
 	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
-	$(CC) /DINITEX /DINI $(CFLAGS) yandytex.c
+	$(CC) /DINITEX $(CFLAGS) yandytex.c
 
 itex.obj: itex.c \
 	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h

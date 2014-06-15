@@ -338,11 +338,11 @@ void line_break_ (integer final_widow_penalty)
   background[2 + stretch_order(q)] = stretch(q);
   background[2 + stretch_order(r)] = background[2 + stretch_order(r)] + stretch(r);
   background[6] = shrink(q) + shrink(r);
-  minimum_demerits = 1073741823L; /* 2^30 - 1 *//* 40000000 hex - 1 */
-  minimal_demerits[tight_fit] = 1073741823L;
-  minimal_demerits[decent_fit] = 1073741823L;
-  minimal_demerits[loose_fit] = 1073741823L;
-  minimal_demerits[very_loose_fit] = 1073741823L;
+  minimum_demerits = awful_bad;
+  minimal_demerits[tight_fit] = awful_bad;
+  minimal_demerits[decent_fit] = awful_bad;
+  minimal_demerits[loose_fit] = awful_bad;
+  minimal_demerits[very_loose_fit] = awful_bad;
 
   if (par_shape_ptr == 0)
     if (hang_indent == 0)
@@ -817,7 +817,7 @@ lab35:;
       if (link(active) != active)
       {
         r = link(active);
-        fewest_demerits = 1073741823L; /* 2^30 - 1 */
+        fewest_demerits = awful_bad;
 
         do
           {
@@ -883,10 +883,10 @@ lab35:;
     {
       cur_p = link(q);
 
-      if (type(q) == 2)
-        free_node(q, 7);
+      if (type(q) == delta_node)
+        free_node(q, delta_node_size);
       else
-        free_node(q, 3);
+        free_node(q, active_node_size);
 
       q = cur_p;
     }
@@ -896,11 +896,11 @@ lab35:;
     while (q != 0)
     {
       cur_p = link(q);
-      free_node(q, 2);
+      free_node(q, passive_node_size);
       q = cur_p;
     }
 
-    if (! second_pass)
+    if (!second_pass)
     {
 #ifdef STAT
       if (tracing_paragraphs > 0)
@@ -943,10 +943,10 @@ lab30:
   {
     cur_p = link(q);
 
-    if (type(q) == 2)
-      free_node(q, 7);
+    if (type(q) == delta_node)
+      free_node(q, delta_node_size);
     else
-      free_node(q, 3);
+      free_node(q, active_node_size);
 
     q = cur_p;
   }
@@ -956,7 +956,7 @@ lab30:
   while (q != 0)
   {
     cur_p = link(q);
-    free_node(q, 2);
+    free_node(q, passive_node_size);
     q = cur_p;
   }
 
@@ -2022,10 +2022,10 @@ void final_cleanup (void)
 
     print_string(" was incomplete)");
     if_line = mem[cond_ptr + 1].cint;
-    cur_if = mem[cond_ptr].hh.b1;
+    cur_if = subtype(cond_ptr);
     temp_ptr = cond_ptr;
-    cond_ptr = mem[cond_ptr].hh.rh;
-    free_node(temp_ptr, 2);
+    cond_ptr = link(cond_ptr);
+    free_node(temp_ptr, if_node_size);
   }
 
   if (history != spotless)
@@ -2145,7 +2145,7 @@ int main_program (void)
     bad = 15;
 
 #ifdef INCREASEFONTS
-  if (font_max > 1024)
+  if (font_max > 65535)
 #else
   if (font_max > 256)
 #endif
@@ -3253,7 +3253,7 @@ void init_trie (void)
   trie_trc[0] = 63;
   trie_not_ready = false;
 }
-#endif /* INITEX */
+#endif
 
 #ifdef INITEX
 /* sec 1302 */

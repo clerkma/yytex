@@ -20,17 +20,20 @@
 
 #define WORDS_BIGENDIAN 0
 
-//#pragma warning(disable:4032)
-#pragma warning(disable:4201)
-#pragma warning(disable:4996)
-#pragma warning(disable:4701)
-//#pragma warning(disable:4100)
-//#pragma warning(disable:4244)
-#pragma warning(disable:4131) // old style declarator
-#pragma warning(disable:4135) // conversion between different integral types
-#pragma warning(disable:4127) // conditional expression is constant
+#ifdef _WIN32
+  #pragma warning(disable:4201) // nameless struct/union
+  #pragma warning(disable:4996) // a function that was marked with deprecated
+  #pragma warning(disable:4701) // potentially uninitialized local variable 'name' used
+  #pragma warning(disable:4131) // old style declarator
+  #pragma warning(disable:4135) // conversion between different integral types
+  #pragma warning(disable:4127) // conditional expression is constant
+#endif
 
-/* ``Standard'' headers.  */
+#include <stdarg.h>
+#include <setjmp.h>
+#include <time.h>
+#include <signal.h>
+
 #include <kpathsea/c-auto.h>
 #include <kpathsea/c-std.h>
 #include <kpathsea/c-pathmx.h>
@@ -46,10 +49,6 @@
 #include <kpathsea/tex-file.h>
 #include <kpathsea/variable.h>
 #include <kpathsea/absolute.h>
-#include <stdarg.h>
-#include <setjmp.h>
-#include <time.h>
-#include <signal.h>
 #ifdef _WIN32
   #include <kpathsea/win32lib.h>
 #else
