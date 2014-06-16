@@ -115,16 +115,10 @@ void print_char_ (ASCII_code s)
         str_pool = realloc_str_pool (increment_pool_size);
       
       if (pool_ptr < current_pool_size)
-      {
-        str_pool[pool_ptr] = s;
-        incr(pool_ptr);
-      }
+        append_char(s);
 #else
       if (pool_ptr < pool_size)
-      {
-        str_pool[pool_ptr] = s;
-        incr(pool_ptr);
-      }
+        append_char(s);
 #endif
       break;
 
@@ -218,7 +212,7 @@ void print_ (integer s)
   }
 }
 /* string version print. */
-void print_string_ (unsigned char *s)
+void print_string_ (const char *s)
 {
   while (*s > 0)
     print_char(*s++);
@@ -229,9 +223,7 @@ void slow_print_ (integer s)
   pool_pointer j;
 
   if ((s >= str_ptr) || (s < 256))
-  {
     print(s);
-  }
   else
   {
     j = str_start[s];
@@ -443,7 +435,7 @@ void error (void)
   if (interaction == error_stop_mode)
     while (true)
     {
-lab22:
+continu:
       clear_for_error_prompt();
       prompt_input("? ");
 
@@ -495,7 +487,7 @@ lab22:
             help2("I have just deleted some text, as you asked.",
                 "You can now delete more, or insert, or whatever.");
             show_context();
-            goto lab22;     /* loop again */
+            goto continu;
           }
           break;
 
@@ -503,7 +495,7 @@ lab22:
         case 'D':
           {
             debug_help();
-            goto lab22;       /* loop again */
+            goto continu;
           }
           break;
 #endif
@@ -543,7 +535,7 @@ lab22:
                 "Maybe you should try asking a human?",
                 "An error might have occurred before I noticed any problems.",
                 "``If all else fails, read the instructions.''");
-            goto lab22; /* loop again */
+            goto continu;
           }
           break;
 
@@ -595,9 +587,7 @@ lab22:
 
             print_string("...");
             print_ln();
-#ifndef _WINDOWS
-            fflush(stdout);
-#endif
+            update_terminal();
             return;
           }
           break;
@@ -737,7 +727,7 @@ boolean init_terminal (void)
   while (true)
   {
     fputs("**", stdout);
-    fflush(stdout);
+    update_terminal();
     flag = input_ln(stdin, true);
 
     if (!flag)
@@ -797,7 +787,7 @@ boolean str_eq_buf_ (str_number s, integer k)
     if (str_pool[j] != buffer[k])
     {
       result = false;
-      goto lab45;
+      goto not_found;
     }
 
     incr(j);
@@ -806,7 +796,7 @@ boolean str_eq_buf_ (str_number s, integer k)
 
   result = true;
 
-lab45:
+not_found:
   return result;
 }
 /* sec 0045 */
@@ -818,7 +808,7 @@ boolean str_eq_str_ (str_number s, str_number t)
   result = false;
 
   if (length(s) != length(t))
-    goto lab45;
+    goto not_found;
 
   j = str_start[s];
   k = str_start[t];
@@ -826,7 +816,7 @@ boolean str_eq_str_ (str_number s, str_number t)
   while (j < str_start[s + 1])
   {
     if (str_pool[j] != str_pool[k])
-      goto lab45;
+      goto not_found;
 
     incr(j);
     incr(k);
@@ -834,7 +824,7 @@ boolean str_eq_str_ (str_number s, str_number t)
 
   result = true;
 
-lab45:
+not_found:
   return result;
 }
 /* sec 0066 */
@@ -926,7 +916,7 @@ void term_input(void)
   if (!knuth_flag)
     show_line("\n", 0);
 
-  fflush(stdout);
+  update_terminal();
   flag = input_ln(stdin, true);
 
   if (!flag)
@@ -1423,7 +1413,7 @@ pointer get_node_(integer s)
   pointer q;
   integer r;
   integer t;
-lab20:
+restart:
 
   p = rover;
 
@@ -1449,7 +1439,7 @@ lab20:
       {
         node_size(p) = r - p;
         rover = p;
-        goto lab40;
+        goto found;
       }
 
       if (r == p)
@@ -1459,7 +1449,7 @@ lab20:
           t = llink(p);
           llink(rover) = t;
           rlink(t) = rover;
-          goto lab40;
+          goto found;
         }
 
       node_size(p) = q - p;
@@ -1502,7 +1492,7 @@ lab20:
       link(lo_mem_max) = 0;
       info(lo_mem_max) = 0;
       rover = q;
-      goto lab20;
+      goto restart;
     }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
@@ -1531,9 +1521,9 @@ lab20:
   }
 
   add_variable_space (block_size); /* now to be found in itex.c */
-  goto lab20;         /* go try get_node again */
+  goto restart;         /* go try get_node again */
 
-lab40:
+found:
   link(r) = 0;
 
 #ifdef STAT
@@ -1745,13 +1735,13 @@ void check_mem(boolean printlocs)
     {
       print_nl("AVAIL list clobbered at ");
       print_int(q);
-      goto lab31;
+      goto done1;
     }
     freearr[p] = true;
     q = p;
     p = link(q);
   }
-lab31:;
+done1:;
   p = rover;
   q = 0;
   clobbered = false;
@@ -1768,7 +1758,7 @@ lab31:;
       {
         print_nl("Double-AVAIL list clobbered at ");
         print_int(q);
-        goto lab32;
+        goto done2;
       }
 
       for (q = p; q <= p + node_size(p) - 1; q++)
@@ -1777,14 +1767,14 @@ lab31:;
         {
           print_nl("Doubly free location at ");
           print_int(q);
-          goto lab32;
+          goto done2;
         }
         freearr[q]= true;
       }
       q = p;
       p = rlink(p);
   } while (!(p == rover));
-lab32:;
+done2:;
   p = mem_min;
   while (p <= lo_mem_max) {
     if (is_empty(p))

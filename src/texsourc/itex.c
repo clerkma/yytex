@@ -529,7 +529,7 @@ void line_break_ (integer final_widow_penalty)
                   }
                   else if (type(s) == ligature_node)
                     if (lig_ptr(s) == 0)
-                      goto lab22;
+                      goto continu;
                     else
                     {
                       q = lig_ptr(s);
@@ -537,7 +537,7 @@ void line_break_ (integer final_widow_penalty)
                       hf = font(q);
                     }
                   else if ((type(s) == kern_node) && (subtype(s) == normal))
-                    goto lab22;
+                    goto continu;
                   else if (type(s) == whatsit_node)
                   {
                     if (subtype(s) == language_node)
@@ -546,33 +546,33 @@ void line_break_ (integer final_widow_penalty)
                       lhyf = what_lhm(s);
                       rhyf = what_rhm(s);
                     }
-                    goto lab22;
+                    goto continu;
                   }
                   else
-                    goto lab31;
+                    goto done1;
 
                   if (lc_code(c) != 0)
                     if ((lc_code(c) == (halfword) c) || (uc_hyph > 0)) /* fixed signed tyoe */
-                      goto lab32;
+                      goto done2;
                     else
-                      goto lab31;
-lab22:
+                      goto done1;
+continu:
                   prevs = s;
                   s = link(prevs);
                 }
-lab32:
+done2:
                 hyf_char = hyphen_char[hf];
 
                 if (hyf_char < 0)
-                  goto lab31; 
+                  goto done1; 
 
                 if (hyf_char > 255)
-                  goto lab31; /* ? */
+                  goto done1; /* ? */
 
                 ha = prevs;
 
                 if (lhyf + rhyf > 63)
-                  goto lab31;
+                  goto done1;
 
                 hn = 0;
 
@@ -581,17 +581,17 @@ lab32:
                   if (is_char_node(s))
                   {
                     if (font(s) != hf)
-                      goto lab33;
+                      goto done3;
 
                     hyfbchar = character(s);
 
                     c = hyfbchar;     /*  unsigned char c;  */
 
                     if (lc_code(c) == 0)
-                      goto lab33;
+                      goto done3;
 
                     if (hn == 63)
-                      goto lab33;
+                      goto done3;
 
                     hb = s;
                     incr(hn);
@@ -602,7 +602,7 @@ lab32:
                   else if (type(s) == ligature_node)
                   {
                     if (font(lig_char(s)) != hf)
-                      goto lab33;
+                      goto done3;
 
                     j = hn;
                     q = lig_ptr(s);
@@ -615,10 +615,10 @@ lab32:
                       c = character(q);
 
                       if (lc_code(c) == 0)
-                        goto lab33;
+                        goto done3;
 
                       if (j == 63)
-                        goto lab33;
+                        goto done3;
 
                       incr(j);
                       hu[j] = c;
@@ -640,13 +640,13 @@ lab32:
                     hyfbchar = font_bchar[hf];
                   }
                   else
-                    goto lab33;
+                    goto done3;
 
                   s = link(s);
                 }
-lab33:;
+done3:;
                 if (hn < lhyf + rhyf)
-                  goto lab31;
+                  goto done1;
 
                 while (true)
                 {
@@ -657,7 +657,7 @@ lab33:;
                         break;
                       case kern_node:
                         if (subtype(s) != normal)
-                          goto lab34;
+                          goto done4;
                         break;
                       case whatsit_node:
                       case glue_node:
@@ -665,18 +665,18 @@ lab33:;
                       case ins_node:
                       case adjust_node:
                       case mark_node:
-                        goto lab34;
+                        goto done4;
                         break;
                       default:
-                        goto lab31;
+                        goto done1;
                         break;
                     }
                   s = link(s);
                 }
-lab34:;
+done4:;
                 hyphenate();
               }
-lab31:;
+done1:;
             }
           }
           break;
@@ -777,7 +777,7 @@ lab31:;
 
             prev_p = cur_p;
             cur_p = s;
-            goto lab35;
+            goto done5;
           }
           break;
 
@@ -807,7 +807,7 @@ lab31:;
 
       prev_p = cur_p;
       cur_p = link(cur_p);
-lab35:;
+done5:;
     }
 
     if (cur_p == 0)
@@ -836,7 +836,7 @@ lab35:;
 
         if (looseness == 0)
         {
-          goto lab30;           /* normal exit */
+          goto done;           /* normal exit */
         }
 
         {
@@ -872,7 +872,7 @@ lab35:;
 
         if ((actual_looseness == looseness) || final_pass)
         {
-          goto lab30;
+          goto done;
         }
       }
     }
@@ -924,7 +924,7 @@ lab35:;
     }
   }
 
-lab30:
+done:
   if (best_line == 2)
     single_line++;
 
@@ -1197,7 +1197,7 @@ void prefixed_command (void)
               add_token_ref(q);
               define(p, call, q);
             }
-            goto lab30;
+            goto done;
           }
         }
 
@@ -1402,7 +1402,7 @@ void prefixed_command (void)
         if (is_initex)
         {
           new_patterns();
-          goto lab30;
+          goto done;
         }
 #endif
         print_err("Patterns can be loaded only by INITEX");
@@ -1420,7 +1420,7 @@ void prefixed_command (void)
       else
       {
         new_hyph_exceptions();
-        goto lab30;
+        goto done;
       }
       break;
 
@@ -1465,7 +1465,7 @@ void prefixed_command (void)
       break;
   }
 
-lab30:
+done:
   if (after_token != 0)
   {
     cur_tok = after_token;
@@ -1483,12 +1483,12 @@ boolean load_fmt_file (void)
   undump_int(x);
 
   if (x != BEGINFMTCHECKSUM)
-    goto lab_bad_fmt;
+    goto bad_fmt;
 
   undump_int(x); /* mem_bot */
 
   if (x != mem_bot)
-    goto lab_bad_fmt;
+    goto bad_fmt;
 
   undump_int(x); /* mem_top */
 
@@ -1506,17 +1506,17 @@ boolean load_fmt_file (void)
 #endif
 
   if (x != mem_top)
-    goto lab_bad_fmt;
+    goto bad_fmt;
 
   undump_int(x); /* eqtb_size */
 
   if (x != eqtb_size)
-    goto lab_bad_fmt;
+    goto bad_fmt;
 
   undump_int(x); /* hash_prime */
 
   if (x != hash_prime)
-    goto lab_bad_fmt;
+    goto bad_fmt;
 
   undump_int(x); /* hyphen_prime */
 
@@ -1527,13 +1527,13 @@ boolean load_fmt_file (void)
 #endif
 
   if (x != hyphen_prime)
-    goto lab_bad_fmt;
+    goto bad_fmt;
 
   {
     undump_int(x); /* pool_size */
 
     if (x < 0)
-      goto lab_bad_fmt; 
+      goto bad_fmt; 
 
 #ifdef ALLOCATESTRING
     if (x > current_pool_size)
@@ -1550,7 +1550,7 @@ boolean load_fmt_file (void)
 #endif
     {
       printf("%s%s\n",  "---! Must increase the ", "string pool size");
-      goto lab_bad_fmt;
+      goto bad_fmt;
     }
     else
       pool_ptr = x;
@@ -1560,7 +1560,7 @@ boolean load_fmt_file (void)
     undump_int(x);  /* max_strings */
 
     if (x < 0)
-      goto lab_bad_fmt;
+      goto bad_fmt;
 
 #ifdef ALLOCATESTRING
     if (x > current_max_strings)
@@ -1577,7 +1577,7 @@ boolean load_fmt_file (void)
 #endif
     {
       printf("%s%s\n",  "---! Must increase the ", "max strings");
-      goto lab_bad_fmt;
+      goto bad_fmt;
     }
     else
       str_ptr = x;
@@ -1604,7 +1604,7 @@ boolean load_fmt_file (void)
       p = q + node_size(q);
 
       if ((p > lo_mem_max) || ((q >= rlink(q)) && (rlink(q) != rover)))
-        goto lab_bad_fmt;
+        goto bad_fmt;
 
       q = rlink(q);
     }
@@ -1617,7 +1617,7 @@ boolean load_fmt_file (void)
   {
 /*  or call add_variable_space(mem_bot - (mem_min + 1)) */
     if (trace_flag)
-      puts("Splicing in mem_min space in undump!\n");
+      puts("Splicing in mem_min space in undump!");
 
     p = llink(rover);
     q = mem_min + 1;
@@ -1648,7 +1648,7 @@ boolean load_fmt_file (void)
       undump_int(x);
 
       if ((x < 1) || (k + x > (eqtb_size + 1)))
-        goto lab_bad_fmt;
+        goto bad_fmt;
 
       if (undumpthings(eqtb[k], x))
         return -1;
@@ -1657,7 +1657,7 @@ boolean load_fmt_file (void)
       undump_int(x);
 
       if ((x < 0) || (k + x > (eqtb_size + 1)))
-        goto lab_bad_fmt;
+        goto bad_fmt;
 
       for (j = k; j <= k + x - 1; j++)
         eqtb[j] = eqtb[k - 1];
@@ -1692,7 +1692,7 @@ boolean load_fmt_file (void)
     undump_int(x); /* font_mem_size */
 
     if (x < 7)
-      goto lab_bad_fmt;
+      goto bad_fmt;
 
 #ifdef ALLOCATEFONT
     if (trace_flag)
@@ -1711,8 +1711,8 @@ boolean load_fmt_file (void)
     if (x > font_mem_size)
 #endif
     {
-      puts("---! Must increase the font mem size\n");
-      goto lab_bad_fmt;
+      puts("---! Must increase the font mem size");
+      goto bad_fmt;
     }
     else
       fmem_ptr = x;
@@ -1726,12 +1726,12 @@ boolean load_fmt_file (void)
       undump_int(x); /* font_max */
 
       if (x < 0)
-        goto lab_bad_fmt;
+        goto bad_fmt;
 
       if (x > font_max)
       {
-        puts("---! Must increase the font max\n"); 
-        goto lab_bad_fmt;
+        puts("---! Must increase the font max"); 
+        goto bad_fmt;
       }
       else
         font_ptr = x;
@@ -1867,7 +1867,7 @@ boolean load_fmt_file (void)
     undump_int(x);
 
     if (x < 0)
-      goto lab_bad_fmt;
+      goto bad_fmt;
 
 #ifdef ALLOCATETRIES
     if (!is_initex)
@@ -1880,7 +1880,7 @@ boolean load_fmt_file (void)
     if (x > trie_size)
     {
       puts("---! Must increase the trie size\n");
-      goto lab_bad_fmt;
+      goto bad_fmt;
     }
     else
       j = x;
@@ -1904,12 +1904,12 @@ boolean load_fmt_file (void)
     undump_int(x);
 
     if (x < 0)
-      goto lab_bad_fmt;
+      goto bad_fmt;
 
     if (x > trie_op_size)
     {
       puts("---! Must increase the trie op size\n");
-      goto lab_bad_fmt;
+      goto bad_fmt;
     }
     else
       j = x;
@@ -1963,11 +1963,11 @@ boolean load_fmt_file (void)
   undump_int(x);
   
   if ((x != ENDFMTCHECKSUM) || feof(fmt_file))
-    goto lab_bad_fmt;
+    goto bad_fmt;
 
   return true;
 
-lab_bad_fmt:;
+bad_fmt:;
   puts("(Fatal format file error; I'm stymied)\n");
 
   return false;
@@ -2215,11 +2215,7 @@ lab1:
     slow_print(format_ident);
 
   print_ln();
-
-#ifndef _WINDOWS
-  fflush(stdout);
-#endif
-
+  update_terminal();
   job_name = 0;
   name_in_progress = false;
   log_opened = false;
@@ -2880,23 +2876,23 @@ void first_fit_ (trie_pointer p)
     }
 
     if (trie_taken[h])
-      goto lab45;
+      goto not_found;
 
     q = trie_r[p];
 
     while (q > 0)
     {
       if (trie_trl[h + trie_c[q]] == 0)
-        goto lab45;
+        goto not_found;
 
       q = trie_r[q];
     }
 
-    goto lab40;
-lab45:
+    goto found;
+not_found:
     z = trie_trl[z];
   }
-lab40:
+found:
   trie_taken[h] = true; /* h may be used without ... */
   trie_hash[p] = h;
   q = p;
@@ -3072,9 +3068,9 @@ void new_patterns (void)
                 if (l > 0)
                   decr(l);
                 else
-                  goto lab31;
+                  goto done1;
               }
-lab31:
+done1:
               q = 0;
               hc[0] = cur_lang;
 
@@ -3126,7 +3122,7 @@ lab31:
             }
 
             if (cur_cmd == right_brace)
-              goto lab30;
+              goto done;
 
             k = 0;
             hyf[0] = 0;
@@ -3143,7 +3139,7 @@ lab31:
           break;
       }
     }
-lab30:;
+done:;
   }
   else
   {
@@ -3393,13 +3389,13 @@ void store_fmt_file (void)
         if ((equiv(j) == equiv(j + 1)) &&
           (eq_type(j) == eq_type(j + 1)) &&
           (eq_level(j) == eq_level(j + 1)))
-          goto lab41;
+          goto found1;
         incr(j);
       }
 
       l = (int_base);
-      goto lab31;
-lab41:
+      goto done1;
+found1:
       incr(j);
       l = j;
       while (j < (int_base - 1))
@@ -3407,10 +3403,10 @@ lab41:
         if ((equiv(j) != equiv(j + 1)) ||
           (eq_type(j) != eq_type(j + 1)) ||
           (eq_level(j) != eq_level(j + 1)))
-          goto lab31;
+          goto done1;
         incr(j);
       }
-lab31:
+done1:
       dump_int(l - k);
 
       if (dumpthings(eqtb[k], l - k))
@@ -3428,23 +3424,23 @@ lab31:
       while (j < (eqtb_size))
       {
         if (eqtb[j].cint == eqtb[j + 1].cint)
-          goto lab42;
+          goto found2;
         incr(j);
       }
 
       l = (eqtb_size + 1);
-      goto lab32;
-lab42:
+      goto done2;
+found2:
       incr(j);
       l = j;
 
       while (j < (eqtb_size))
       {
         if (eqtb[j].cint != eqtb[j + 1].cint)
-          goto lab32;
+          goto done2;
         incr(j);
       }
-lab32:
+done2:
       dump_int(l - k);
 
       if (dumpthings(eqtb[k], l - k))

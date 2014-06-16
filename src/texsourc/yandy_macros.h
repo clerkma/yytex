@@ -152,7 +152,7 @@ while (0)
 #define rule_node      2
 #define rule_node_size 4
 #define null_flag      -010000000000L
-#define is_running(a)  (a = null_flag)
+#define is_running(a)  (a == null_flag)
 /* sec 0140 */
 #define ins_node         3
 #define ins_node_size    5
@@ -991,14 +991,17 @@ while (0)
 #define extra_space(f)   param(extra_space_code, f)
 /* sec 0564 */
 #define read_sixteen(a)         \
+do                              \
   {                             \
     a = tfm_temp;               \
     if (a > 127)                \
-      goto lab11;               \
+      goto bad_tfm;             \
     tfm_temp = getc(tfm_file);  \
     a = a * 256 + tfm_temp;     \
-  }
+  }                             \
+while (0)
 #define store_four_quarters(val)  \
+do                                \
   {                               \
     tfm_temp = getc(tfm_file);    \
     a = tfm_temp;                 \
@@ -1013,7 +1016,8 @@ while (0)
     d = tfm_temp;                 \
     qw.b3 = d;                    \
     val = qw;                     \
-  }
+  }                               \
+while (0)
 /* sec 0571 */
 /* sec 0585 */
 #define set1      128 // c[1]
@@ -1091,6 +1095,18 @@ while (0)
 #define none_seen 0
 #define y_seen    6
 #define z_seen    12
+/* sec 0625 */
+#define billion 1000000000.0
+#define vet_glue(a)             \
+do                              \
+{                               \
+  glue_temp = a;                \
+  if (glue_temp > billion)      \
+    glue_temp = billion;        \
+  else if (glue_temp < -billion)\
+    glue_temp = -billion;       \
+}                               \
+while (0)
 /* sec 0644 */
 #define exactly    0
 #define additional 1
@@ -1278,13 +1294,16 @@ while (0)
 #define next_break prev_break
 /* sec 0908 */
 #define append_charnode_to_t(a) \
+do                              \
   {                             \
     link(t) = get_avail();      \
     t = link(t);                \
     font(t) = hf;               \
     character(t) = (a);         \
-  }
+  }                             \
+while (0)
 #define set_cur_r()      \
+do                       \
   {                      \
     if (j < n)           \
       cur_r = hu[j + 1]; \
@@ -1295,9 +1314,12 @@ while (0)
       cur_rh = hchar;    \
     else                 \
       cur_rh = non_char; \
-  }
+  }                      \
+while (0)
 /* sec 0910 */
 #define wrap_lig(a)                           \
+do                                            \
+{                                             \
   if (ligature_present)                       \
   {                                           \
     p = new_ligature(hf, cur_l, link(cur_q)); \
@@ -1318,8 +1340,11 @@ while (0)
     link(cur_q) = p;                          \
     t = p;                                    \
     ligature_present = false;                 \
-  }
+  }                                           \
+}                                             \
+while (0)
 #define pop_lig_stack()                       \
+do                                            \
   {                                           \
     if (lig_ptr(lig_stack) != 0)              \
     {                                         \
@@ -1338,13 +1363,16 @@ while (0)
     }                                         \
     else                                      \
       cur_r = character(lig_stack);           \
-  }
+  }                                           \
+while (0)
 /* sec 0914 */
 #define advance_major_tail()       \
+do                                 \
   {                                \
     major_tail = link(major_tail); \
     incr(r_count);                 \
-  }
+  }                                \
+while (0)
 /* sec 0970 */
 #define active_height      active_width
 #define cur_height         active_height[1]
@@ -1371,6 +1399,7 @@ while (0)
 #define set_page_so_far_zero(a) page_so_far[(a)] = 0
 /* sec 1034 */
 #define adjust_space_factor()   \
+do                              \
 {                               \
   main_s = sf_code(cur_chr);    \
   if (main_s == 1000)           \
@@ -1384,10 +1413,12 @@ while (0)
     space_factor = 1000;        \
   else                          \
     space_factor = main_s;      \
-}
+}                               \
+while (0)
 /* sec 1035 */
 /* -> false */
 #define wrapup(a)                                         \
+do                                                        \
 {                                                         \
   if (cur_l < non_char)                                   \
   {                                                       \
@@ -1427,7 +1458,8 @@ while (0)
       }                                                   \
     }                                                     \
   }                                                       \
-}
+}                                                         \
+while (0)
 /* sec 1045 */
 #define any_mode(a) vmode + a: case hmode + a: case mmode + a
 /* sec 1046 */
@@ -1492,7 +1524,7 @@ do                                \
     undump_int(x);                \
                                   \
     if ((x < (va)) || (x > (vb))) \
-      goto lab_bad_fmt;           \
+      goto bad_fmt;               \
     else                          \
       vc = x;                     \
   }                               \

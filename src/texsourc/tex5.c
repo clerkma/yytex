@@ -143,7 +143,7 @@ halfword clean_box_(halfword p, small_number s)
     case sub_box:
       {
         q = info(p);
-        goto lab40;
+        goto found;
       }
       break;
 
@@ -154,7 +154,7 @@ halfword clean_box_(halfword p, small_number s)
     default:
       {
         q = new_null_box();
-        goto lab40;
+        goto found;
       }
     break;
   }
@@ -174,7 +174,7 @@ halfword clean_box_(halfword p, small_number s)
 
     cur_mu = x_over_n(math_quad(cur_size), 18);
   }
-lab40:
+found:
   if (is_char_node(q) || (q == 0))
     x = hpack(q, 0, 1);
   else if ((link(q) == 0) && (type(q) <= vlist_node) && (shift_amount(q) == 0))
@@ -350,18 +350,18 @@ void make_math_accent_(halfword q)
             if (op_byte(cur_i) >= kern_flag)
               if (skip_byte(cur_i) <= stop_flag)
                 s = char_kern(cur_f, cur_i);
-            goto lab31;
+            goto done1;
           }
 
           if (skip_byte(cur_i) >= stop_flag)
-            goto lab31;
+            goto done1;
 
           a = a + skip_byte(cur_i) + 1;
           cur_i = font_info[a].qqqq;
         }
       }
     }
-lab31:;
+done1:;
     x = clean_box(nucleus(q), cramped_style(cur_style));
     w = width(x);
     h = height(x);
@@ -369,20 +369,20 @@ lab31:;
     while (true)
     {
       if (char_tag(i) != list_tag)
-        goto lab30;
+        goto done;
 
       y = rem_byte(i);
       i = char_info(f, y);
 
       if (!(i.b0 > 0))
-        goto lab30;
+        goto done;
 
       if (char_width(f, i) > w)
-        goto lab30;
+        goto done;
 
       c = y;
     }
-lab30:;
+done:;
     if (h < x_height(f))
       delta = h;
     else
@@ -535,7 +535,7 @@ void make_ord_(halfword q)
   integer a;
   halfword p, r;
 
-lab20:
+restart:
   if (math_type(subscr(q)) == 0)
     if (math_type(supscr(q)) == 0)
       if (math_type(nucleus(q)) == math_char)
@@ -624,7 +624,7 @@ lab20:
                             return;
 
                           math_type(nucleus(q)) = math_char;
-                          goto lab20;
+                          goto restart;
                         }
 
                     if (skip_byte(cur_i) >= stop_flag)
@@ -704,7 +704,7 @@ void mlist_to_hlist (void)
 
   while (q != 0)
   {
-lab21:
+reswitch:
     delta = 0;
 
     switch (type(q))
@@ -720,7 +720,7 @@ lab21:
           case left_noad:
             {
               type(q) = ord_noad;
-              goto lab21;
+              goto reswitch;
             }
             break;
 
@@ -739,18 +739,18 @@ lab21:
             type(r) = ord_noad;
 
           if (type(q) == right_noad)
-            goto lab80;
+            goto done_with_noad;
         }
         break;
 
       case left_noad:
-        goto lab80;
+        goto done_with_noad;
         break;
 
       case fraction_noad:
         {
           make_fraction(q);
-          goto lab82;
+          goto check_dimensions;
         }
         break;
 
@@ -759,7 +759,7 @@ lab21:
           delta = make_op(q);
 
           if (subtype(q) == limits)
-            goto lab82;
+            goto check_dimensions;
         }
         break;
 
@@ -805,7 +805,7 @@ lab21:
             cur_mu = x_over_n(math_quad(cur_size), 18);
           }
 
-          goto lab81;
+          goto done_with_node;
         }
         break;
 
@@ -861,7 +861,7 @@ lab21:
 
             link(p) = z;
           }
-          goto lab81;
+          goto done_with_node;
         }
         break;
 
@@ -871,7 +871,7 @@ lab21:
       case whatsit_node:
       case penalty_node:
       case disc_node:
-        goto lab81;
+        goto done_with_node;
         break;
 
       case rule_node:
@@ -882,7 +882,7 @@ lab21:
           if (depth(q) > max_d)
             max_d = depth(q);
 
-          goto lab81;
+          goto done_with_node;
         }
         break;
 
@@ -908,14 +908,14 @@ lab21:
                 flush_node_list(p);
               }
           }
-          goto lab81;
+          goto done_with_node;
         }
         break;
 
       case kern_node:
         {
           math_kern(q, cur_mu);
-          goto lab81;
+          goto done_with_node;
         }
         break;
 
@@ -993,10 +993,10 @@ lab21:
     new_hlist(q) = p;
 
     if ((math_type(subscr(q)) == 0) && (math_type(supscr(q)) == 0))
-      goto lab82;
+      goto check_dimensions;
 
     make_scripts(q, delta);
-lab82:
+check_dimensions:
     z = hpack(new_hlist(q), 0, 1);
 
     if (height(z) > max_h)
@@ -1006,10 +1006,10 @@ lab82:
       max_d = depth(z);
 
     free_node(z, box_node_size);
-lab80:
+done_with_noad:
     r = q;
     r_type = type(r);
-lab81:
+done_with_node:
     q = link(q);
   }
 
@@ -1102,7 +1102,7 @@ lab81:
             cur_mu = x_over_n(math_quad(cur_size), 18);
           }
 
-          goto lab83;
+          goto delete_q;
         }
         break;
 
@@ -1120,7 +1120,7 @@ lab81:
           p = q;
           q = link(q);
           link(p) = 0;
-          goto lab30;
+          goto done;
         }
         break;
 
@@ -1211,11 +1211,11 @@ lab81:
         }
 
     r_type = t;
-lab83:
+delete_q:
     r = q;
     q = link(q);
     free_node(r, s);
-lab30:;
+done:;
   }
 }
 /* sec 0772 */
@@ -1255,7 +1255,7 @@ void pop_alignment (void)
 /* sec 0782 */
 void get_preamble_token (void)
 {
-lab20:
+restart:
   get_token();
 
   while ((cur_chr == span_code) && (cur_cmd == tab_mark))
@@ -1285,7 +1285,7 @@ lab20:
     else
       eq_define(glue_base + tab_skip_code, glue_ref, cur_val);
 
-    goto lab20;
+    goto restart;
   }
 }
 /* sec 0774 */
@@ -1334,7 +1334,7 @@ void init_align (void)
     cur_align = link(cur_align);
 
     if (cur_cmd == car_ret)
-      goto lab30;
+      goto done;
 
     p = hold_head;
     link(p) = 0;
@@ -1344,7 +1344,7 @@ void init_align (void)
       get_preamble_token();
 
       if (cur_cmd == mac_param)
-        goto lab31;
+        goto done1;
 
       if ((cur_cmd <= car_ret) && (cur_cmd >= tab_mark) && (align_state == -1000000L))
         if ((p == hold_head) && (cur_loop == 0) && (cur_cmd == tab_mark))
@@ -1356,7 +1356,7 @@ void init_align (void)
               "\\halign or \\valign is being set up. In this case you had",
               "none, so I've put one in; maybe that will work.");
           back_error();
-          goto lab31;
+          goto done1;
         }
       else if ((cur_cmd != spacer) || (p != hold_head))
       {
@@ -1366,7 +1366,7 @@ void init_align (void)
       }
     }
 
-lab31:
+done1:
     link(cur_align) = new_null_box();
     cur_align = link(cur_align);
     info(cur_align) = end_span;
@@ -1377,11 +1377,11 @@ lab31:
 
     while (true)
     {
-lab22:
+continu:
       get_preamble_token();
 
       if ((cur_cmd <= car_ret) && (cur_cmd >= tab_mark) && (align_state == -1000000L))
-        goto lab32;
+        goto done2;
 
       if (cur_cmd == mac_param)
       {
@@ -1390,7 +1390,7 @@ lab22:
             "\\halign or \\valign is being set up. In this case you had",
             "more than one, so I'm ignoring all but the first.");
         error();
-        goto lab22;
+        goto continu;
       }
 
       link(p) = get_avail();
@@ -1398,14 +1398,14 @@ lab22:
       info(p) = cur_tok;
     }
 
-lab32:
+done2:
     link(p) = get_avail();
     p = link(p);
     info(p) = end_template_token;
     v_part(cur_align) = link(hold_head);
   }
 
-lab30:
+done:
   scanner_status = 0;
   new_save_level(align_group);
 

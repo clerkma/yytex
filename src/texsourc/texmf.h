@@ -54,13 +54,6 @@ extern void fix_date_and_time(void);
   #define dumpcore abort
 #endif
 
-//#define write_dvi(a, b)                                           \
-//  if ((size_t) fwrite ((char *) &dvi_buf[a], sizeof (dvi_buf[a]), \
-//         (size_t) ((size_t)(b) - (size_t)(a) + 1), dvi_file)      \
-//         != (size_t) ((size_t)(b) - (size_t)(a) + 1))             \
-//     FATAL_PERROR ("\n! dvi file")
-
-
 #ifdef COMPACTFORMAT
 extern int do_dump   (char *, int, int, gzFile);
 extern int do_undump (char *, int, int, gzFile);

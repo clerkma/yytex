@@ -22,7 +22,7 @@
 /* sec 0785 */
 void align_peek (void)
 {
-lab20:
+restart:
   align_state = 1000000L;
 
   do
@@ -45,7 +45,7 @@ lab20:
     fin_align();
   }
   else if ((cur_cmd == car_ret) && (cur_chr == cr_cr_code))
-    goto lab20;
+    goto restart;
   else
   {
     init_row();
@@ -100,7 +100,7 @@ void try_break_ (integer pi, small_number break_type)
 
   if (abs(pi)>= inf_penalty)
     if (pi > 0)
-      goto lab10;
+      goto exit;
     else
       pi = eject_penalty;
 
@@ -111,7 +111,7 @@ void try_break_ (integer pi, small_number break_type)
 
   while (true)
   {
-lab22:
+continu:
     r = link(prev_r);
 
     if (type(r) == delta_node)
@@ -119,7 +119,7 @@ lab22:
       do_all_six(update_width);
       prev_prev_r = prev_r;
       prev_r = r;
-      goto lab22;
+      goto continu;
     }
 
     {
@@ -220,7 +220,7 @@ lab22:
               while (s != 0)
               {
                 if (is_char_node(s))
-                  goto lab30;
+                  goto done;
 
                 switch (type(s))
                 {
@@ -243,19 +243,19 @@ lab22:
 
                   case kern_node:
                     if (subtype(s) != explicit)
-                      goto lab30;
+                      goto done;
                     else
                       break_width[1] = break_width[1] - width(s);
                     break;
 
                   default:
-                    goto lab30;
+                    goto done;
                     break;
                 }
 
                 s = link(s);
               }
-lab30:;
+done:;
           }
 
           if (type(prev_r) == delta_node)
@@ -349,7 +349,7 @@ lab30:;
         }
 
         if (r == active)
-          goto lab10;
+          goto exit;
 
         if (l > easyline)
         {
@@ -387,7 +387,7 @@ lab30:;
             {
               b = 10000;
               fit_class = very_loose_fit;
-              goto lab31;
+              goto done1;
             }
 
           b = badness(shortfall, cur_active_width[2]);
@@ -399,7 +399,7 @@ lab30:;
               fit_class = loose_fit;
           else
             fit_class = decent_fit;
-lab31:;
+done1:;
         }
       else
       {
@@ -419,7 +419,7 @@ lab31:;
         if (final_pass && (minimum_demerits == awful_bad) && (link(r) == active) && (prev_r == active))
           artificial_demerits = true;
         else if (b > threshold)
-          goto lab60;
+          goto deactivate;
 
         node_r_stays_active = false;
       }
@@ -428,7 +428,7 @@ lab31:;
         prev_r = r;
 
         if (b > threshold)
-          goto lab22;
+          goto continu;
 
         node_r_stays_active = true;
       }
@@ -535,8 +535,8 @@ lab31:;
       }
 
       if (node_r_stays_active)
-        goto lab22;
-lab60:
+        goto continu;
+deactivate:
       link(prev_r) = link(r);
       free_node(r, active_node_size);
 
@@ -573,7 +573,7 @@ lab60:
       }
     }
   }
-lab10:
+exit:
   ;
 #ifdef STAT
   if (cur_p == printed_node)
@@ -630,7 +630,7 @@ void post_line_break_(integer final_widow_penalty)
           glue_ptr(q) = right_skip;
           subtype(q) = right_skip_code + 1;
           add_glue_ref(right_skip);
-          goto lab30;
+          goto done;
         }
         else
         {
@@ -700,7 +700,7 @@ void post_line_break_(integer final_widow_penalty)
       link(r) = link(q);
       link(q) = r;
       q = r;
-lab30:
+done:
       r = link(q);
       link(q) = 0;
       q = link(temp_head);
@@ -776,21 +776,21 @@ lab30:
             q = link(r);
 
             if (q == cur_break(cur_p))
-              goto lab31;
+              goto done1;
 
             if (is_char_node(q))
-              goto lab31;
+              goto done1;
 
             if (non_discardable(q))
-              goto lab31;
+              goto done1;
 
             if (type(q) == kern_node)
               if (subtype(q) != 1)
-                goto lab31;
+                goto done1;
 
             r = q;
           }
-lab31:
+done1:
           if (r != temp_head)
           {
             link(r) = 0;
@@ -849,13 +849,13 @@ small_number reconstitute_(small_number j, small_number n, halfword bchar, halfw
   lig_stack = 0;
   set_cur_r();
 
-lab22:
+continu:
   if (cur_l == non_char)
   {
     k = bchar_label[hf];
 
     if (k == non_address)
-      goto lab30;
+      goto done;
     else
       q = font_info[k].qqqq;
   }
@@ -864,7 +864,7 @@ lab22:
     q = char_info(hf, cur_l);
 
     if (char_tag(q) != lig_tag)
-      goto lab30;
+      goto done;
 
     k = lig_kern_start(hf, q);
     q = font_info[k].qqqq;
@@ -890,7 +890,7 @@ lab22:
           hyphen_passed = j;
           hchar = non_char;
           cur_rh = non_char;
-          goto lab22;     /* goto continue; */
+          goto continu;
         }
         else
         {
@@ -1012,7 +1012,7 @@ lab22:
                       cur_r = character(lig_stack);
                   }
                   else if (j == n)
-                    goto lab30;
+                    goto done;
                   else
                   {
                     append_charnode_to_t(cur_r);
@@ -1025,28 +1025,28 @@ lab22:
 
             if (op_byte(q) > 4)
               if (op_byte(q) != 7)
-                goto lab30;
+                goto done;
 
-            goto lab22;
+            goto continu;
           }
 
           w = char_kern(hf, q);
-          goto lab30;
+          goto done;
         }
 
     if (q.b0 >= stop_flag)
       if (cur_rh == non_char)
-        goto lab30;
+        goto done;
       else
       {
         cur_rh = non_char;
-        goto lab22;
+        goto continu;
       }
       
     k = k + skip_byte(q) + 1;
     q = font_info[k].qqqq;
   }
-lab30:
+done:
   wrap_lig(rt_hit);
 
   if (w != 0)
@@ -1062,7 +1062,7 @@ lab30:
     cur_l = character(lig_stack);
     ligature_present = true;
     pop_lig_stack();
-    goto lab22;
+    goto continu;
   }
 
   return j;
@@ -1103,10 +1103,10 @@ void hyphenate (void)
     k = hyph_word[h];
 
     if (k == 0)
-      goto lab45;
+      goto not_found;
 
     if (length(k) < hn)
-      goto lab45;
+      goto not_found;
 
     if (length(k) == hn)
     {
@@ -1116,10 +1116,10 @@ void hyphenate (void)
       do
         {
           if (str_pool[u] < hc[j])
-            goto lab45;
+            goto not_found;
 
           if (str_pool[u] > hc[j])
-            goto lab30;
+            goto done;
 
           incr(j);
           incr(u);
@@ -1135,16 +1135,16 @@ void hyphenate (void)
       }
 
       decr(hn);
-      goto lab40;
+      goto found;
     }
 
-lab30:;
+done:;
     if (h > 0)
       decr(h);
     else
       h = hyphen_prime;
   }
-lab45:
+not_found:
   decr(hn);
 
   if (trie_trc[cur_lang + 1] != cur_lang)
@@ -1183,7 +1183,7 @@ lab45:
     }
   }
 
-lab40:
+found:
   for (j = 0; j <= lhyf - 1; j++)
     hyf[j] = 0;
 
@@ -1192,11 +1192,11 @@ lab40:
 
   for (j = lhyf; j <= hn - rhyf; j++)
     if (odd(hyf[j]))
-      goto lab41;
+      goto found1;
 
   return;
 
-lab41:;
+found1:;
   q = link(hb);
   link(hb) = 0;
   r = link(ha);
@@ -1205,7 +1205,7 @@ lab41:;
 
   if (is_char_node(ha))
     if (font(ha) != hf)
-      goto lab42;
+      goto found2;
     else
     {
       init_list = ha;
@@ -1214,7 +1214,7 @@ lab41:;
     }
   else if (type(ha) == ligature_node)
     if (font(lig_char(ha)) != hf)
-      goto lab42;
+      goto found2;
     else
     {
       init_list = lig_ptr(ha);
@@ -1236,12 +1236,12 @@ lab41:;
     if (!is_char_node(r))
       if (type(r) == ligature_node)
         if (subtype(r) > 1)
-          goto lab42;
+          goto found2;
 
     j = 1;
     s = ha;
     init_list = 0;
-    goto lab50;
+    goto common_ending;
   }
 
   s = cur_p;
@@ -1250,14 +1250,14 @@ lab41:;
     s = link(s);
 
   j = 0;
-  goto lab50;
-lab42:
+  goto common_ending;
+found2:
   s = ha;
   j = 0;
   hu[0] = 256;
   init_lig = false;
   init_list = 0;
-lab50:
+common_ending:
   flush_node_list(r);
 
   do
@@ -1354,7 +1354,7 @@ lab50:
 
                   if (c_loc > 0)
                   {
-                    hu[c_loc] = c;    /* c may be used ... */
+                    hu[c_loc] = c;
                     c_loc = 0;
                   }
 
@@ -1431,7 +1431,7 @@ void new_hyph_exceptions (void)
   while (true)
   {
     get_x_token();
-lab21:
+reswitch:
     switch (cur_cmd)
     {
       case letter:
@@ -1469,7 +1469,7 @@ lab21:
           scan_char_num();
           cur_chr = cur_val;
           cur_cmd = char_given;
-          goto lab21;
+          goto reswitch;
         }
         break;
 
@@ -1504,10 +1504,10 @@ lab21:
               k = hyph_word[h];
 
               if (length(k) < length(s))
-                goto lab40;
+                goto found;
 
               if (length(k) > length(s))
-                goto lab45;
+                goto not_found;
 
               u = str_start[k];
               v = str_start[s];
@@ -1515,23 +1515,23 @@ lab21:
               do
                 {
                   if (str_pool[u] < str_pool[v])
-                    goto lab40;
+                    goto found;
 
                   if (str_pool[u] > str_pool[v])
-                    goto lab45;
+                    goto not_found;
 
                   incr(u);
                   incr(v);
                 }
               while (!(u == str_start[k + 1]));
-lab40:
+found:
               q = hyph_list[h];
               hyph_list[h] = p;
               p = q;
               t = hyph_word[h];
               hyph_word[h] = s;
               s = t;
-lab45:;
+not_found:;
               if (h > 0)
                 decr(h);
               else
@@ -1653,19 +1653,19 @@ halfword vert_break_(halfword p, scaled h, scaled d)
         {
           cur_height = cur_height + prev_dp + height(p);
           prev_dp = depth(p);
-          goto lab45;
+          goto not_found;
         }
         break;
 
       case whatsit_node:
-        goto lab45;
+        goto not_found;
         break;
 
       case glue_node:
         if (precedes_break(prev_p))
           pi = 0;
         else
-          goto lab90;
+          goto update_heights;
         break;
 
       case kern_node:
@@ -1678,7 +1678,7 @@ halfword vert_break_(halfword p, scaled h, scaled d)
           if (t == glue_node)
             pi = 0;
           else
-            goto lab90;
+            goto update_heights;
         }
         break;
 
@@ -1688,7 +1688,7 @@ halfword vert_break_(halfword p, scaled h, scaled d)
 
       case mark_node:
       case ins_node:
-        goto lab45;
+        goto not_found;
         break;
 
       default:
@@ -1729,12 +1729,13 @@ halfword vert_break_(halfword p, scaled h, scaled d)
       }
 
       if ((b == awful_bad) || (pi <= eject_penalty))
-        goto lab30;
+        goto done;
     }
 
     if ((type(p) < glue_node) || (type(p) > kern_node))
-      goto lab45;
-lab90:
+      goto not_found;
+
+update_heights:
     if (type(p) == kern_node)
       q = p;
     else
@@ -1761,7 +1762,7 @@ lab90:
 
     cur_height = cur_height + prev_dp + width(q);
     prev_dp = 0;
-lab45:
+not_found:
     if (prev_dp > d)
     {
       cur_height = cur_height + prev_dp - d;
@@ -1772,7 +1773,7 @@ lab45:
     p = link(prev_p);
   }
 
-lab30:
+done:
   return best_place;
 }
 /* sec 0977 */
@@ -1833,11 +1834,11 @@ halfword vsplit_(eight_bits n, scaled h)
     if (link(p) == q)
     {
       link(p) = 0;
-      goto lab30;
+      goto done;
     }
     p = link(p);
   }
-lab30:;
+done:;
   q = prune_page_top(q);
   p = list_ptr(v);
   free_node(v, box_node_size);

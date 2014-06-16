@@ -420,7 +420,7 @@ void resume_after_display (void)
 /* sec 1215 */
 void get_r_token (void)
 {
-lab20:
+restart:
   do
     {
       get_token();
@@ -441,7 +441,7 @@ lab20:
 
     cur_tok = cs_token_flag + frozen_protection;
     ins_error();
-    goto lab20;
+    goto restart;
   }
 }
 /* sec 1229 */
@@ -471,7 +471,7 @@ void do_register_command_ (small_number a)
       {
         l = cur_chr;
         p = cur_cmd - assign_int;
-        goto lab40;
+        goto found;
       }
 
       if (cur_cmd != tex_register)
@@ -509,7 +509,7 @@ void do_register_command_ (small_number a)
     }
   }
 
-lab40:
+found:
   if (q == tex_register)
     scan_optional_equals();
   else
@@ -838,7 +838,7 @@ void new_font_(small_number a)
               sprintf(log_line, "SKIPPING %ld ", s);
               show_line(log_line, 0);
             }
-            goto lab50;
+            goto common_ending;
           }
         }
       }
@@ -851,7 +851,7 @@ void new_font_(small_number a)
             sprintf(log_line, "SKIPPING %ld ", s);
             show_line(log_line, 0);
           }
-          goto lab50;
+          goto common_ending;
         }
       }
     }
@@ -862,7 +862,7 @@ void new_font_(small_number a)
 
   f = read_font_info(u, cur_name, cur_area, s); 
 
-lab50:
+common_ending:
   if (trace_flag)
   {
     sprintf(log_line, "NEW FONT %d ", f);
@@ -981,10 +981,7 @@ void issue_message (void)
       print_char(' ');
 
     slow_print(s);
-
-#ifndef _WINDOWS
-    fflush(stdout);
-#endif
+    update_terminal();
   }
   else
   {
@@ -1087,7 +1084,7 @@ void show_whatever (void)
         }
 
         print_meaning();
-        goto lab50;
+        goto common_ending;
       }
       break;
 
@@ -1101,7 +1098,7 @@ void show_whatever (void)
         print_nl("> ");
         token_show(temp_head);
         flush_list(link(temp_head));
-        goto lab50;
+        goto common_ending;
       }
       break;
   }
@@ -1117,7 +1114,7 @@ void show_whatever (void)
       selector = term_and_log;
     }
 
-lab50:
+common_ending:
 
   if (interaction < error_stop_mode)
   {

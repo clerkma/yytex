@@ -44,38 +44,34 @@ void char_warning_(internal_font_number f, eight_bits c)
 
       if (c / 100 > 0)
       {
-        print_char(48 + c / 100);
-/*      c = c % 100; */
-        c = c - (c / 100) * 100;      /* ? */
-        print_char(48 + c / 10);
+        print_char('0' + c / 100);
+        c = c - (c / 100) * 100;
+        print_char('0' + c / 10);
       }
       else
       {
-/*      c = c % 100; */
-        c = c - (c / 100) * 100;      /* ? */
-        if (c / 10 > 0) print_char(48 + c / 10);
+        c = c - (c / 100) * 100;
+        if (c / 10 > 0)
+          print_char('0' + c / 10);
       }
-      print_char(48 + c % 10);
+      print_char('0' + c % 10);
       print_char(')');
-/*    print_char(32); */
     }
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
     print_string(" in font ");
     slow_print(font_name[f]);
     print_char('!');
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-/*  if (show_missing) show_context(); */    /* in tex2.c 94/June/10 */
+
     if (show_missing)
     {
       if (f != 0)
         show_context();     /* not if its the nullfont */
     }
 
-    if (show_missing == 0)            /* show on screen 94/June/10 */
+    if (show_missing == 0)
       end_diagnostic(false);
 
     missing_characters++;           /* bkph 93/Dec/16 */
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
   }
 }
 /* sec 0582 */
@@ -102,7 +98,7 @@ void dvi_swap (void)
   if (trace_flag)
   {
     show_char('\n');
-    sprintf(log_line, "dvi_swap %d", dvi_gone);
+    sprintf(log_line, "dvi_swap() %d", dvi_gone);
     show_line(log_line, 0);
   }
 
@@ -219,7 +215,7 @@ void zmovement(scaled w, eight_bits o)
         case z_seen + yz_OK:
         case z_seen + y_OK:
           if (location(p) < dvi_gone)
-            goto lab45;
+            goto not_found;
           else
           {
             k = location(p) - dvi_offset;
@@ -229,7 +225,7 @@ void zmovement(scaled w, eight_bits o)
 
             dvi_buf[k] = dvi_buf[k] + y1 - down1;
             info(p) = y_here;
-            goto lab40;
+            goto found;
           }
           break;
 
@@ -237,7 +233,7 @@ void zmovement(scaled w, eight_bits o)
         case y_seen + yz_OK:
         case y_seen + z_OK:
           if (location(p) < dvi_gone)
-            goto lab45;
+            goto not_found;
           else
           {
             k = location(p) - dvi_offset;
@@ -247,7 +243,7 @@ void zmovement(scaled w, eight_bits o)
 
             dvi_buf[k] = dvi_buf[k] + z1 - down1;
             info(p) = z_here;
-            goto lab40;
+            goto found;
           }
           break;
 
@@ -255,33 +251,35 @@ void zmovement(scaled w, eight_bits o)
         case none_seen + z_here:
         case y_seen + z_here:
         case z_seen + y_here:
-          goto lab40;
+          goto found;
           break;
 
         default:
           break;
       }
-    else switch (mstate + info(p))
-    {
-      case none_seen + y_here:
-        mstate = y_seen;
-        break;
+    else
+      switch (mstate + info(p))
+      {
+        case none_seen + y_here:
+          mstate = y_seen;
+          break;
 
-      case none_seen + z_here:
-        mstate = z_seen;
-        break;
+        case none_seen + z_here:
+          mstate = z_seen;
+          break;
 
-      case y_seen + z_here:
-      case z_seen + y_here:
-        goto lab45;
-        break;
+        case y_seen + z_here:
+        case z_seen + y_here:
+          goto not_found;
+          break;
 
-      default:
-        break;
-    }
+        default:
+          break;
+      }
+
     p = link(p);
   }
-lab45:
+not_found:
 
   info(q) = yz_OK;
 
@@ -321,14 +319,15 @@ lab45:
     w = w + 256;
 
   goto lab1;
+
 lab2:
-  //dvi_out(w / 256);
-  dvi_out((w >> 8));
+  dvi_out(w / 256);
+
 lab1:
-  //dvi_out(w % 256);
-  dvi_out(w & 255);
+  dvi_out(w % 256);
   return;
-lab40:
+
+found:
   info(q) = info(p);
 
   if (info(q) == y_here)
@@ -386,14 +385,14 @@ void prune_movements_(integer l)
   while (down_ptr != 0)
   {
     if (location(down_ptr) < l)
-      goto lab30;
+      goto done;
 
     p = down_ptr;
     down_ptr = link(p);
     free_node(p, movement_node_size);
   }
 
-lab30:
+done:
   while (right_ptr != 0)
   {
     if (location(right_ptr) < l)
@@ -525,10 +524,10 @@ void out_what_(pointer p)
         else
         {
           if (write_open[j])
-            (void) a_close(write_file[j]); 
+            a_close(write_file[j]); 
 
           if (subtype(p) == close_node)
-            write_open[j]= false; 
+            write_open[j]= false;
           else if (j < 16)
           {
             cur_name = open_name(p);
@@ -540,10 +539,8 @@ void out_what_(pointer p)
 
             pack_file_name(cur_name, cur_area, cur_ext);
 
-            while (! a_open_out(write_file[j]))
-            {
+            while (!a_open_out(write_file[j]))
               prompt_file_name("output file name", ".tex");
-            }
 
             write_open[j] = true;
           }
@@ -575,9 +572,9 @@ void hlist_out (void)
   scaled save_h, save_v;
   halfword this_box;
 /*  glue_ord g_order;  */
-  int g_order;           /* 95/Jan/7 */
+  int g_order;
 /*  char g_sign;  */
-  int g_sign;            /* 95/Jan/7 */
+  int g_sign;
   halfword p;
   integer save_loc;
   halfword leader_box;
@@ -608,7 +605,7 @@ void hlist_out (void)
   left_edge = cur_h;
 
   while (p != 0)
-lab21:
+reswitch:
     if (is_char_node(p))
     {
       synch_h();
@@ -700,7 +697,7 @@ lab21:
           rule_ht = height(p);
           rule_dp = depth(p);
           rule_wd = width(p);
-          goto lab14;
+          goto fin_rule;
         }
         break;
 
@@ -720,26 +717,14 @@ lab21:
               if (stretch_order(g) == g_order)
               {
                 cur_glue = cur_glue + stretch(g);
-                glue_temp = glue_set(this_box) * cur_glue;
-
-                if (glue_temp > 1000000000.0)
-                  glue_temp = 1000000000.0;
-                else if (glue_temp < -1000000000.0)
-                  glue_temp = -1000000000.0;
-
+                vet_glue(glue_set(this_box) * cur_glue);
                 cur_g = round(glue_temp);
               }
             }
             else if (shrink_order(g) == g_order)
             {
               cur_glue = cur_glue - shrink(g);
-              glue_temp = glue_set(this_box) * cur_glue;
-
-              if (glue_temp > 1000000000.0)
-                glue_temp = 1000000000.0;
-              else if (glue_temp < -1000000000.0)
-                glue_temp = -1000000000.0;
-
+              vet_glue(glue_set(this_box) * cur_glue);
               cur_g = round(glue_temp);
             }
           }
@@ -754,7 +739,7 @@ lab21:
             {
               rule_ht = height(leader_box);
               rule_dp = depth(leader_box);
-              goto lab14;
+              goto fin_rule;
             }
 
             leader_wd = width(leader_box);
@@ -811,11 +796,11 @@ lab21:
               }
 
               cur_h = edge - 10;
-              goto lab15;
+              goto next_p;
             }
           }
 
-          goto lab13;
+          goto move_past;
         }
         break;
 
@@ -829,7 +814,7 @@ lab21:
           mem[lig_trick] = mem[lig_char(p)];
           link(lig_trick) = link(p);
           p = lig_trick;
-          goto lab21;
+          goto reswitch;
         }
         break;
 
@@ -837,12 +822,13 @@ lab21:
         break;
     }
 
-    goto lab15;
-lab14:
-    if ((rule_ht == -1073741824L))  /* - 2^30 */
+    goto next_p;
+
+fin_rule:
+    if (is_running(rule_ht))
       rule_ht = height(this_box);
 
-    if ((rule_dp == -1073741824L))     /* - 2^30 */
+    if (is_running(rule_dp))
       rule_dp = depth(this_box);
 
     rule_ht = rule_ht + rule_dp;
@@ -858,9 +844,11 @@ lab14:
       cur_v = base_line;
       dvi_h = dvi_h + rule_wd;
     }
-lab13:
+
+move_past:
     cur_h = cur_h + rule_wd;
-lab15:
+
+next_p:
     p = link(p);
   }
 
@@ -953,7 +941,7 @@ void vlist_out (void)
             rule_ht = height(p);
             rule_dp = depth(p);
             rule_wd = width(p);
-            goto lab14;
+            goto fin_rule;
           }
           break;
 
@@ -973,26 +961,14 @@ void vlist_out (void)
                 if (stretch_order(g) == g_order)
                 {
                   cur_glue = cur_glue + stretch(g);
-                  glue_temp = glue_set(this_box) * cur_glue;
-
-                  if (glue_temp > 1000000000.0)
-                    glue_temp = 1000000000.0;
-                  else if (glue_temp < -1000000000.0)
-                    glue_temp = -1000000000.0;
-
+                  vet_glue(glue_set(this_box) * cur_glue);
                   cur_g = round(glue_temp);
                 }
               }
               else if (shrink_order(g) == g_order)   /* BUG FIX !!! */
               {
                 cur_glue = cur_glue - shrink(g);
-                glue_temp = glue_set(this_box) * cur_glue;
-
-                if (glue_temp > 1000000000.0)
-                  glue_temp = 1000000000.0;
-                else if (glue_temp < -1000000000.0)
-                  glue_temp = -1000000000.0;
-
+                vet_glue(glue_set(this_box) * cur_glue);
                 cur_g = round(glue_temp);
               }
             }
@@ -1007,7 +983,7 @@ void vlist_out (void)
               {
                 rule_wd = width(leader_box);
                 rule_dp = 0;
-                goto lab14;
+                goto fin_rule;
               }
 
               leader_ht = height(leader_box) + depth(leader_box);
@@ -1065,11 +1041,11 @@ void vlist_out (void)
                 }
 
                 cur_v = edge - 10;
-                goto lab15;
+                goto next_p;
               }
             }
 
-            goto lab13;
+            goto move_past;
           }
           break;
 
@@ -1080,9 +1056,11 @@ void vlist_out (void)
         default:
           break;
       }
-      goto lab15;
-lab14:
-      if ((rule_wd == -1073741824L))    /* -2^30 */
+
+      goto next_p;
+
+fin_rule:
+      if (is_running(rule_wd))
         rule_wd = width(this_box);
 
       rule_ht = rule_ht + rule_dp;
@@ -1097,11 +1075,13 @@ lab14:
         dvi_four(rule_wd);
       }
 
-      goto lab15;
-lab13:
+      goto next_p;
+
+move_past:
       cur_v = cur_v + rule_ht;
     }
-lab15:
+
+next_p:
     p = link(p);
   }
 
@@ -1145,10 +1125,8 @@ void dvi_ship_out_(halfword p)
     if (k < j)
       print_char('.');
   }
-
-#ifndef _WINDOWS
-  fflush(stdout);
-#endif
+  
+  update_terminal();
 
   if (tracing_output > 0)
   {
@@ -1175,7 +1153,7 @@ void dvi_ship_out_(halfword p)
       end_diagnostic(true);
     }
 
-    goto lab30;
+    goto done;
   }
 
   if (height(p) + depth(p) + v_offset > max_v)
@@ -1194,8 +1172,8 @@ void dvi_ship_out_(halfword p)
   {
     dvi_out(pre);
     dvi_out(id_byte);
-    dvi_four(25400000L);  /* magic DVI scale factor */
-    dvi_four(473628672L); /* 7227 * 65536 */
+    dvi_four(25400000L);
+    dvi_four(473628672L);
     prepare_mag();
     dvi_four(mag);
     old_setting = selector;
@@ -1238,15 +1216,12 @@ void dvi_ship_out_(halfword p)
   incr(total_pages);
   cur_s = -1;
 
-lab30:;
+done:;
   if (tracing_output <= 0)
     print_char(']');
 
   dead_cycles = 0;
-
-#ifndef _WINDOWS
-  fflush(stdout);
-#endif
+  update_terminal();
 
 #ifdef STAT
   if (tracing_stats > 1)
@@ -1301,12 +1276,12 @@ void scan_spec_(group_code c, boolean three_codes)
   {
     spec_code = additional;
     cur_val = 0;
-    goto lab40;
+    goto found;
   }
 
   scan_dimen(false, false, false);
 
-lab40:
+found:
   if (three_codes)
   {
     saved(0) = s;
@@ -1354,7 +1329,7 @@ halfword hpack_(halfword p, scaled w, small_number m)
 
   while (p != 0)
   {
-lab21:
+reswitch:
     while (is_char_node(p))
     {
       f = font(p);
@@ -1430,6 +1405,7 @@ lab21:
 
         case whatsit_node:
           break;
+
         case glue_node:
           {
             g = glue_ptr(p);
@@ -1462,7 +1438,7 @@ lab21:
             mem[lig_trick] = mem[lig_char(p)];
             link(lig_trick) = link(p);
             p = lig_trick;
-            goto lab21;
+            goto reswitch;
           }
           break;
 
@@ -1490,7 +1466,7 @@ lab21:
     glue_sign(r) = normal;
     glue_order(r) = normal;
     glue_set(r) = 0.0;
-    goto lab10;
+    goto exit;
   }
   else if (x > 0)
   {
@@ -1532,12 +1508,12 @@ lab21:
           print_int(last_badness);
 
           if (last_badness > 100) /* Y&Y TeX */
-            underfull_hbox++;   /* 1996/Feb/9 */
+            underfull_hbox++;
 
-          goto lab50;
+          goto common_ending;
         }
       }
-      goto lab10;
+      goto exit;
   }
   else
   {
@@ -1554,7 +1530,7 @@ lab21:
     glue_sign(r) = shrinking;
 
     if (total_shrink[o] != 0)
-      glue_set(r) =(- (integer) x) / ((double) total_shrink[o]);
+      glue_set(r) = ((- (integer) x) / ((double) total_shrink[o]));
     else
     {
       glue_sign(r) = normal;
@@ -1584,7 +1560,7 @@ lab21:
 
           overfull_hbox++;
 
-          goto lab50;
+          goto common_ending;
       }
     }
     else if (o == normal)
@@ -1597,13 +1573,13 @@ lab21:
           print_ln();
           print_nl("Tight \\hbox (badness ");
           print_int(last_badness);
-          goto lab50;
+          goto common_ending;
         }
       }
-      goto lab10;
+      goto exit;
   }
 
-lab50:
+common_ending:
   if (output_active)
     print_string(") has occurred while \\output is active");
   else
@@ -1632,7 +1608,7 @@ lab50:
   show_box(r);
   end_diagnostic(true);
 
-lab10:
+exit:
   return r;
 }
 /* sec 0668 */
@@ -1748,7 +1724,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
     glue_sign(r) = normal;
     glue_order(r) = normal;
     glue_set(r) = 0.0;
-    goto lab10;
+    goto exit;
   }
   else if (x > 0)
   {
@@ -1792,10 +1768,10 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
           if (last_badness > 100)
             underfull_vbox++; /* 1996/Feb/9 */
 
-          goto lab50;
+          goto common_ending;
         }
       }
-      goto lab10;
+      goto exit;
   }
   else
   {
@@ -1833,7 +1809,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
 
         overfull_vbox++;    /* 1996/Feb/9 */
 
-        goto lab50;
+        goto common_ending;
       }
     }
     else if (o == 0)
@@ -1845,13 +1821,13 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
           print_ln();
           print_nl("Tight \\vbox (badness ");
           print_int(last_badness);
-          goto lab50;
+          goto common_ending;
         }
       }
-    goto lab10;
+    goto exit;
   }
 
-lab50:
+common_ending:
   if (output_active)
     print_string(") has occurred while \\output is active");
   else
@@ -1873,7 +1849,7 @@ lab50:
   show_box(r);
   end_diagnostic(true);
 
-lab10:
+exit:
   return r;
 }
 /* sec 0679 */
@@ -1893,6 +1869,7 @@ void append_to_vlist_(halfword b)
       p = new_skip_param(baseline_skip_code);
       width(temp_ptr) = d;
     }
+
     link(tail) = p;
     tail = p;
   }
@@ -2052,7 +2029,7 @@ halfword var_delimiter_(halfword d, small_number s, scaled v)
 
             if ((y >= font_bc[g]) && (y <= font_ec[g]))
             {
-lab22:
+continu:
               q = char_info(g, y);
               
               if ((q.b0 > 0))
@@ -2061,7 +2038,7 @@ lab22:
                 {
                   f = g;
                   c = y;
-                  goto lab40;
+                  goto found;
                 }
 
                 hd = height_depth(q);
@@ -2074,13 +2051,13 @@ lab22:
                   w = u;
 
                   if (u >= v)
-                    goto lab40;
+                    goto found;
                 }
 
                 if (char_tag(q) == list_tag)
                 {
                   y = rem_byte(q);
-                  goto lab22;
+                  goto continu;
                 }
               }
             }
@@ -2090,13 +2067,14 @@ lab22:
     }
 
     if (large_attempt)
-      goto lab40;
+      goto found;
 
     large_attempt = true;
     z = large_fam(d);
     x = large_char(d);
   }
-lab40:
+
+found:
   if (f != null_font)
     if (char_tag(q) == ext_tag)
     {

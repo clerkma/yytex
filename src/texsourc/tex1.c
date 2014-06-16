@@ -79,13 +79,13 @@ void flush_node_list_(pointer p)
           {
             flush_node_list(list_ptr(p));
             free_node(p, box_node_size);
-            goto lab30;
+            goto done;
           }
           break;
         case rule_node:
           {
             free_node(p, rule_node_size);
-            goto lab30;
+            goto done;
           }
           break;
         case ins_node:
@@ -93,7 +93,7 @@ void flush_node_list_(pointer p)
             flush_node_list(ins_ptr(p));
             delete_glue_ref(split_top_ptr(p));
             free_node(p, ins_node_size);
-            goto lab30;
+            goto done;
           }
           break;
         case whatsit_node:
@@ -108,7 +108,7 @@ void flush_node_list_(pointer p)
                 {
                   delete_token_ref(write_tokens(p));
                   free_node(p, write_node_size);
-                  goto lab30;
+                  goto done;
                 }
                 break;
               case close_node:
@@ -122,7 +122,7 @@ void flush_node_list_(pointer p)
                 }
                 break;
             }
-            goto lab30;
+            goto done;
           }
           break;
         case glue_node:
@@ -156,7 +156,7 @@ void flush_node_list_(pointer p)
         case style_node:
           {
             free_node(p, style_node_size);
-            goto lab30;
+            goto done;
           }
           break;
         case choice_node:
@@ -166,7 +166,7 @@ void flush_node_list_(pointer p)
             flush_node_list(script_mlist(p));
             flush_node_list(script_script_mlist(p));
             free_node(p, style_node_size);
-            goto lab30;
+            goto done;
           }
           break;
         case ord_noad:
@@ -201,14 +201,14 @@ void flush_node_list_(pointer p)
               else
                 free_node(p, noad_size);
             }
-            goto lab30;
+            goto done;
           }
           break;
         case left_noad:
         case right_noad:
           {
             free_node(p, noad_size);
-            goto lab30;
+            goto done;
           }
           break;
         case fraction_noad:
@@ -216,7 +216,7 @@ void flush_node_list_(pointer p)
             flush_node_list(info(numerator(p)));
             flush_node_list(info(denominator(p)));
             free_node(p, fraction_noad_size);
-            goto lab30;
+            goto done;
           }
           break;
         default:
@@ -228,7 +228,7 @@ void flush_node_list_(pointer p)
       }
 
       free_node(p, small_node_size);
-lab30:;
+done:;
     }
 
     p = q;
@@ -2245,14 +2245,12 @@ halfword id_lookup_(integer j, integer l)
     if (text(p) > 0)
       if (length(text(p)) == l)
         if (str_eq_buf(text(p), j))
-          goto lab40;
+          goto found;
 
     if (next(p) == 0)
     {
       if (no_new_control_sequence)
-      {
         p = undefined_control_sequence;
-      }
       else
       {
         if (text(p) > 0)
@@ -2261,7 +2259,8 @@ halfword id_lookup_(integer j, integer l)
             {
               if (hash_is_full)
               {
-                overflow("hash size", hash_size + hash_extra); /* 96/Jan/10 */
+                overflow("hash size", hash_size + hash_extra);
+                /* not dynamic        ^~~~~~~~~~~~~~~~~~~~~~*/
                 return 0;
               }
 
@@ -2299,46 +2298,26 @@ halfword id_lookup_(integer j, integer l)
 #endif
       }
 
-      goto lab40; 
+      goto found; 
     }
+
     p = next(p);
   } 
 
-lab40:
+found:
   return p;
 }
 /* sec 0274 */
 void new_save_level_(group_code c)
-{ 
-   if (save_ptr > max_save_stack)
-   {
-     max_save_stack = save_ptr;
-
-#ifdef ALLOCATESAVESTACK
-     if (max_save_stack > current_save_size - 6)
-       save_stack = realloc_save_stack(increment_save_size);
-
-     if (max_save_stack > current_save_size - 6) /* check again after allocation */
-     {
-       overflow("save size", current_save_size);
-       return;
-     }
-#else
-     if (max_save_stack > save_size - 6) /* save size - not dynamic */
-     {
-       overflow("save size", save_size);
-       return;
-     }
-#endif
-  }
-
+{
+  check_full_save_stack();
   save_type(save_ptr) = level_boundary;
   save_level(save_ptr) = (quarterword) cur_group; 
   save_index(save_ptr) = cur_boundary;
 
   if (cur_level == max_quarterword)
   {
-    overflow("grouping levels", max_quarterword - min_quarterword); /* 96/Oct/12 ??? */
+    overflow("grouping levels", max_quarterword - min_quarterword);
     return;
   }
 
@@ -2383,27 +2362,7 @@ void eq_destroy_(memory_word w)
 /* sec 0276 */
 void eq_save_(halfword p, quarterword l)
 {
-  if (save_ptr > max_save_stack)
-  {
-    max_save_stack = save_ptr;
-
-#ifdef ALLOCATESAVESTACK
-    if (max_save_stack > current_save_size - 6)
-      save_stack = realloc_save_stack (increment_save_size);
-
-    if (max_save_stack > current_save_size - 6) /* check again after allocation */
-    {
-      overflow("save size", current_save_size);
-      return;
-    }
-#else
-    if (max_save_stack > save_size - 6) /* save size not dynamic */
-    {
-      overflow("save size", save_size);
-      return;
-    }
-#endif
-  }
+  check_full_save_stack();
 
   if (l == level_zero)
     save_type(save_ptr) = restore_zero;
@@ -2460,28 +2419,7 @@ void save_for_after_(halfword t)
 { 
   if (cur_level > 1)
   {
-    if (save_ptr > max_save_stack)
-    {
-      max_save_stack = save_ptr;
-
-#ifdef ALLOCATESAVESTACK
-      if (max_save_stack > current_save_size - 6)
-        save_stack = realloc_save_stack (increment_save_size);
-
-      if (max_save_stack > current_save_size - 6) /* check again after allocation */
-      {
-        overflow("save size", current_save_size);
-        return;
-      }
-#else
-      if (max_save_stack > save_size - 6) /* save satck - not dynamic */
-      {
-        overflow("save size", save_size);
-        return;
-      }
-#endif
-    }
-
+    check_full_save_stack();
     save_type(save_ptr) = insert_token;
     save_level(save_ptr) = level_zero;
     save_index(save_ptr) = t;
