@@ -44,7 +44,7 @@ boolean open_fmt_file (void)
     pack_buffered_name(0, loc, j - 1);
 
     if (w_open_in(fmt_file))
-      goto lab40;
+      goto found;
   
     if (knuth_flag)
     {
@@ -67,9 +67,7 @@ boolean open_fmt_file (void)
       show_line(log_line, 1);
     }
 
-#ifndef _WINDOWS
-    fflush(stdout);
-#endif
+    update_terminal();
   }
 
   pack_buffered_name(format_default_length - 4, 1, 0);
@@ -97,7 +95,7 @@ boolean open_fmt_file (void)
     return false;
   }
 
-lab40:
+found:
   loc = j;
 
   return true;

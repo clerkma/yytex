@@ -35,7 +35,7 @@ void build_page (void)
 
   do
     {
-lab22:
+continu:
       p = link(contrib_head);
 
       if (last_glue != max_halfword)
@@ -80,49 +80,49 @@ lab22:
 
             link(q) = p;
             link(contrib_head) = q;
-            goto lab22;
+            goto continu;
           }
           else
           {
             page_total = page_total + page_depth + height(p);
             page_depth = depth(p);
-            goto lab80;
+            goto contribute;
           }
           break;
 
         case whatsit_node:
-          goto lab80;
+          goto contribute;
           break;
 
         case glue_node:
           if (page_contents < box_there)
-            goto lab31;
+            goto done1;
           else if (precedes_break(page_tail))
             pi = 0;
           else
-            goto lab90;
+            goto update_heights;
           break;
 
         case kern_node:
           if (page_contents < box_there)
-            goto lab31;
+            goto done1;
           else if (link(p) == 0)
             return;
           else if (type(link(p)) == glue_node)
             pi = 0;
           else
-            goto lab90;
+            goto update_heights;
           break;
 
         case penalty_node:
           if (page_contents < box_there)
-            goto lab31;
+            goto done1;
           else
             pi = penalty(p);
           break;
 
         case mark_node:
-          goto lab80;
+          goto contribute;
           break;
 
         case ins_node:
@@ -248,7 +248,7 @@ lab22:
                   insert_penalties = insert_penalties + penalty(q);
               }
             }
-            goto lab80;
+            goto contribute;
           }
           break;
 
@@ -338,13 +338,14 @@ lab22:
           if (output_active)
             return;
 
-          goto lab30;
+          goto done;
         }
       }
 
       if ((type(p) < glue_node) || (type(p) > kern_node))
-        goto lab80; 
-lab90:
+        goto contribute;
+
+update_heights:
       if (type(p) == kern_node)
         q = p;
       else
@@ -371,7 +372,7 @@ lab90:
 
       page_total = page_total + page_depth + width(q);
       page_depth = 0;
-lab80:
+contribute:
       if (page_depth > page_max_depth)
       {
         page_total = page_total + page_depth - page_max_depth;
@@ -382,12 +383,12 @@ lab80:
       page_tail = p;
       link(contrib_head) = link(p);
       link(p) = 0;
-      goto lab30;
-lab31:
+      goto done;
+done1:
       link(contrib_head) = link(p);
       link(p) = 0;
       flush_node_list(p);
-lab30:;
+done:;
     }
   while (!(link(contrib_head) == 0));
 
@@ -795,7 +796,7 @@ void begin_box_(integer box_context)
                         p = link(p);
 
                       if (p == tail)
-                        goto lab30;
+                        goto done;
                     }
 
                   q = link(p);
@@ -806,7 +807,7 @@ void begin_box_(integer box_context)
               shift_amount(cur_box) = 0;
               tail = p;
               link(p) = 0;
-lab30:
+done:
               ;
             }
         }
@@ -1220,7 +1221,7 @@ void build_discretionary (void)
             end_diagnostic(true);
             flush_node_list(p);
             link(q) = 0;
-            goto lab30;
+            goto done;
           }
 
     q = p;
@@ -1228,7 +1229,7 @@ void build_discretionary (void)
     incr(n);
   }
 
-lab30:
+done:
   p = link(head);
   pop_nest();
 
@@ -1486,12 +1487,12 @@ void init_math (void)
 
       while (p != 0)
       {
-lab21:
+reswitch:
         if (is_char_node(p))
         {
           f = font(p);
           d = char_width(f, char_info(f, character(p)));
-          goto lab40;
+          goto found;
         }
 
         switch (type(p))
@@ -1501,7 +1502,7 @@ lab21:
           case rule_node:
             {
               d = width(p);
-              goto lab40;
+              goto found;
             }
             break;
 
@@ -1510,7 +1511,7 @@ lab21:
               mem[lig_trick] = mem[lig_char(p)];
               link(lig_trick) = link(p);
               p = lig_trick;
-              goto lab21;
+              goto reswitch;
             }
             break;
 
@@ -1536,7 +1537,7 @@ lab21:
               }
 
               if (subtype(p) >= a_leaders)
-                goto lab40;
+                goto found;
             }
             break;
 
@@ -1552,8 +1553,8 @@ lab21:
         if (v < max_dimen) /* - (2^30 - 1) */
           v = v + d;
 
-        goto lab45;
-lab40:
+        goto not_found;
+found:
         if (v < max_dimen) /* - (2^30 - 1) */
         {
           v = v + d;
@@ -1562,12 +1563,12 @@ lab40:
         else
         {
           w = max_dimen;  /* - (2^30 - 1) */
-          goto lab30;
+          goto done;
         }
-lab45:
+not_found:
         p = link(p);
       }
-lab30:;
+done:;
     }
 
     if (par_shape_ptr == 0)
@@ -1646,14 +1647,14 @@ void scan_math_(pointer p)
 {
   integer c;
 
-lab20:
+restart:
   do
     {
       get_x_token();
     }
   while (!((cur_cmd != spacer) && (cur_cmd != relax)));
 
-lab21:
+reswitch:
   switch (cur_cmd)
   {
     case letter:
@@ -1672,7 +1673,7 @@ lab21:
             back_input();
           }
 
-          goto lab20;
+          goto restart;
         }
       }
       break;
@@ -1682,7 +1683,7 @@ lab21:
         scan_char_num();
         cur_chr = cur_val;
         cur_cmd = char_given;
-        goto lab21;
+        goto reswitch;
       }
       break;
 

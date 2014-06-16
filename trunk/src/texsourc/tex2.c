@@ -49,7 +49,7 @@ void unsave (void)
       decr(save_ptr);
 
       if (save_type(save_ptr) == level_boundary)
-        goto lab30;
+        goto done;
 
       p = save_index(save_ptr);
 
@@ -106,7 +106,7 @@ void unsave (void)
         }
       }
     }
-lab30:
+done:
     cur_group = save_level(save_ptr);
     cur_boundary = save_index(save_ptr);
   }
@@ -407,12 +407,12 @@ void show_context (void)
     }
 
     if (bottom_line)
-      goto lab30;
+      goto done;
 
     decr(base_ptr);
   }
 
-lab30:
+done:
   cur_input = input_stack[input_ptr];
 }
 /* sec 0323 */
@@ -790,7 +790,7 @@ void macro_call (void)
           p = temp_head;
           m = 0;
         }
-lab22:
+continu:
         get_token();
 
         if (cur_tok == info(r))
@@ -802,10 +802,10 @@ lab22:
             if (cur_tok < left_brace_limit)
               decr(align_state);
 
-            goto lab40;
+            goto found;
           }
           else
-            goto lab22;
+            goto continu;
         }
 
         if (s != r)
@@ -819,7 +819,7 @@ lab22:
               "made up of letters only. The macro here has not been",
               "followed by the required stuff, so I'm ignoring it.");
             error();
-            goto lab10;
+            goto exit;
           }
           else
           {
@@ -835,20 +835,20 @@ lab22:
                 {
                   if (u == r)
                     if (cur_tok != info(v))
-                      goto lab30;
+                      goto done;
                     else
                     {
                       r = link(v);
-                      goto lab22;
+                      goto continu;
                     }
 
                     if (info(u) != info(v))
-                      goto lab30;
+                      goto done;
 
                     u = link(u);
                     v = link(v);
                 }
-lab30:
+done:
                 t = link(t);
               }
             while (!(t == r));
@@ -877,7 +877,7 @@ lab30:
             for (m = 0; m <= n; m++)
               flush_list(pstack[m]);
 
-            goto lab10;
+            goto exit;
           }
 
         if (cur_tok < right_brace_limit)
@@ -910,7 +910,7 @@ lab30:
 
                   for (m = 0; m <= n; m++)
                     flush_list(pstack[m]);
-                  goto lab10;
+                  goto exit;
                 }
 
               if (cur_tok < right_brace_limit)
@@ -921,10 +921,10 @@ lab30:
                   decr(unbalance);
 
                   if (unbalance == 0)
-                    goto lab31;
+                    goto done1;
                 }
             }
-lab31:
+done1:
             rbrace_ptr = p;
             store_new_token(cur_tok);
           }
@@ -944,14 +944,14 @@ lab31:
             long_state = call;
             cur_tok = par_token;
             ins_error();
-            goto lab22;
+            goto continu;
           }
         else
         {
           if (cur_tok == space_token)
             if (info(r) <= end_match_token)
               if (info(r) >= match_token)
-                goto lab22;
+                goto continu;
 
           store_new_token(cur_tok);
         }
@@ -959,11 +959,11 @@ lab31:
         incr(m);          /* m may be used without having been ... */
 
         if (info(r) > end_match_token)
-          goto lab22;
+          goto continu;
 
         if (info(r) < match_token)
-          goto lab22;
-lab40:
+          goto continu;
+found:
         if (s != 0)
         {
           if ((m == 1) && (info(p) < right_brace_limit) && (p != temp_head))
@@ -1031,7 +1031,7 @@ lab40:
 
     param_ptr = param_ptr + n;
   }
-lab10:
+exit:
   scanner_status = save_scanner_status;
   warning_index = save_warning_index;
 }
@@ -1259,11 +1259,11 @@ void expand (void)
 /* sec 0380 */
 void get_x_token (void)
 {
-lab20:
+restart:
   get_next();
 
   if (cur_cmd <= max_command)
-    goto lab30;
+    goto done;
 
   if (cur_cmd >= call)
     if (cur_cmd < end_template)
@@ -1272,14 +1272,14 @@ lab20:
     {
       cur_cs = frozen_endv;
       cur_cmd = endv;
-      goto lab30;
+      goto done;
     }
   else
     expand();
 
-  goto lab20;
+  goto restart;
 
-lab30:
+done:
   if (cur_cs == 0)
     cur_tok = (cur_cmd * 256) + cur_chr;
   else
@@ -1869,17 +1869,17 @@ void get_next (void)
   ASCII_code c, cc;
   char d;
 
-lab20:
+restart:
   cur_cs = 0;
 
   if (state != token_list)
   {
-lab25:
+lab_switch:
     if (loc <= limit)
     {
       cur_chr = buffer[loc];
       incr(loc);
-lab21:
+reswitch:
       cur_cmd = cat_code(cur_chr);
 
       switch (state + cur_cmd)
@@ -1887,7 +1887,7 @@ lab21:
         case any_state_plus(ignore):
         case skip_blanks + spacer:
         case new_line + spacer:
-          goto lab25;
+          goto lab_switch;
           break;
 
         case any_state_plus(escape):
@@ -1896,7 +1896,7 @@ lab21:
               cur_cs = null_cs;
             else
             {
-lab26:
+start_cs:
               k = loc;
               cur_chr = buffer[k];
               cat = cat_code(cur_chr);
@@ -1957,7 +1957,7 @@ lab26:
                             incr(k);
                           }
 
-                          goto lab26;
+                          goto start_cs;
                         }
                       }
                 }
@@ -1969,7 +1969,7 @@ lab26:
                 {
                   cur_cs = id_lookup(loc, k - loc);
                   loc = k;
-                  goto lab40;
+                  goto found;
                 }
               }
               else
@@ -2011,14 +2011,14 @@ lab26:
                           buffer[k] = buffer[k + d];
                           incr(k);
                         }
-                        goto lab26;
+                        goto start_cs;
                       }
                     }
               }
               cur_cs = single_base + buffer[loc];
               incr(loc);
             }
-lab40:
+found:
             cur_cmd = eq_type(cur_cs);
             cur_chr = equiv(cur_cs);
             
@@ -2059,7 +2059,7 @@ lab40:
                       {
                         incr(loc);
                         hex_to_cur_chr();
-                        goto lab21;
+                        goto reswitch;
                       }
                     }
 
@@ -2068,7 +2068,7 @@ lab40:
                   else
                     cur_chr = c - 64;
 
-                  goto lab21;
+                  goto reswitch;
                 }
               }
 
@@ -2084,7 +2084,7 @@ lab40:
             deletions_allowed = false;
             error();
             deletions_allowed = true;
-            goto lab20;
+            goto restart;
           }
           break;
 
@@ -2107,7 +2107,7 @@ lab40:
         case any_state_plus(comment):
           {
             loc = limit + 1;
-            goto lab25;
+            goto lab_switch;
           }
           break;
 
@@ -2177,13 +2177,11 @@ lab40:
         {
           print_char(')');
           decr(open_parens);
-#ifndef _WINDOWS
-          fflush(stdout);
-#endif
+          update_terminal();
           force_eof = false;
           end_file_reading();
           check_outer_validity();
-          goto lab20;
+          goto restart;
         }
 
         if (end_line_char_inactive())
@@ -2206,7 +2204,7 @@ lab40:
         if (input_ptr > 0)
         {
           end_file_reading();
-          goto lab20;
+          goto restart;
         }
 
         if (selector < log_only)
@@ -2241,7 +2239,7 @@ lab40:
       }
 
       check_interrupt();
-      goto lab25;
+      goto lab_switch;
     }
   }
   else if (loc != 0)
@@ -2292,7 +2290,7 @@ lab40:
         case out_param:
           {
             begin_token_list(param_stack[limit + cur_chr - 1], parameter);
-            goto lab20;
+            goto restart;
           }
           break;
 
@@ -2304,7 +2302,7 @@ lab40:
   else
   {
     end_token_list();
-    goto lab20;
+    goto restart;
   }
 
   if (cur_cmd <= car_ret)
@@ -2326,6 +2324,6 @@ lab40:
           begin_token_list(v_part(cur_align), v_template);
 
         align_state = 1000000L;
-        goto lab20;
+        goto restart;
       }
 }

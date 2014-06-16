@@ -1834,13 +1834,14 @@ int free_memory (void)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Main Memory: variable node %d (%d - %d) one word %d (%d - %d)\n",
-      lo_mem_max - mem_min, mem_min, lo_mem_max, mem_end  - hi_mem_min, hi_mem_min, mem_end);
-    show_line(log_line, 0);
+    printf("Main Memory: variable node %d (%d - %d);\n"
+      "             one word %d (%d - %d)\n",
+      lo_mem_max - mem_min, mem_min, lo_mem_max,
+      mem_end - hi_mem_min, hi_mem_min, mem_end);
   }
 
   if (trace_flag)
-    puts("Freeing memory again\n");
+    puts("Freeing memory again");
 
 /*  only free memory if safe ... additional check */
 #ifdef ALLOCATEINI
