@@ -604,8 +604,7 @@ void memory_error (char *s, int n)
 
 void trace_memory (char *s, int n)
 {
-  sprintf(log_line, "Allocating %d bytes for %s\n", n, s);
-  show_line(log_line, 0);
+  printf("Allocating %d bytes for %s\n", n, s);
 }
 
 void update_statistics (int address, int size, int old_size)
@@ -618,9 +617,7 @@ void update_statistics (int address, int size, int old_size)
 
 void probe_memory (void)
 {
-  char *s;
-
-  s = (char *) malloc(4); /* get current top address */
+  char *s = (char *) malloc(4); /* get current top address */
   free(s);
   update_statistics ((int) s, 0, 0); /* show where we are */
 }
@@ -640,14 +637,7 @@ size_t roundup (size_t n)
 }
 
 #ifdef ALLOCATETRIES
-/* using allocating hyphenation trie slows things down maybe 1%              */
-/* but saves typically (270k - 55k) = 215k of memory                         */
-/* NOTE: it's safe to allocate based on the trie_max read from fmt file      */
-/* since hyphenation trie cannot be extended (after iniTeX)                  */
-/* for iniTeX, however, we need to allocate the full trie_size ahead of time */
-/*                                                                           */
-/* NOTE: we don't ever reallocate these                                      */
-/* returns -1 if it fails                                                    */
+/* returns -1 if it fails */
 
 int allocate_tries (int trie_max)
 {
@@ -743,13 +733,15 @@ int realloc_hyphen (int hyphen_prime)
 #ifdef USEMEMSET
   memset(hyph_word, 0, (hyphen_prime + 1) * sizeof (hyph_word[0]));
 #else
-  for (k = 0; k <= hyphen_prime; k++) hyph_word[k]= 0;
+  for (k = 0; k <= hyphen_prime; k++)
+    hyph_word[k]= 0;
 #endif
 
 #ifdef USEMEMSET
   memset(hyph_list, 0, (hyphen_prime + 1) * sizeof (hyph_list[0]));
 #else
-  for (k = 0; k <= hyphen_prime; k++) hyph_list[k]= 0;
+  for (k = 0; k <= hyphen_prime; k++)
+    hyph_list[k]= 0;
 #endif
 
   hyph_count = 0;
@@ -791,7 +783,7 @@ memory_word *allocate_main_memory (int size)
   if (main_memory != NULL)
   {
     if (trace_flag)
-      puts("Reallocating initial memory allocation\n");
+      puts("Reallocating initial memory allocation");
   }
 
   mem_top = mem_bot + size;
@@ -864,8 +856,8 @@ memory_word * realloc_main (int lo_size, int hi_size)
   {
     puts("ERROR: Cannot extent main memory in iniTeX\n");
 
-    if (! knuth_flag)
-      puts("Please use `-m=...' on command line\n");
+    if (!knuth_flag)
+      puts("Please use `-m=...' on command line");
 
     return NULL;
   }
@@ -920,8 +912,10 @@ memory_word * realloc_main (int lo_size, int hi_size)
 
     if (new_size >= max_mem_size) /* bump against limit - ha ha ha */
     {
-      while (new_size >= max_mem_size) {
-        lo_size = lo_size / 2; hi_size = hi_size / 2;
+      while (new_size >= max_mem_size)
+      {
+        lo_size = lo_size / 2;
+        hi_size = hi_size / 2;
         new_size = current_mem_size + lo_size + hi_size;
       }
     }
@@ -963,10 +957,12 @@ memory_word * realloc_main (int lo_size, int hi_size)
           new_memory, (current_mem_size + 1) * sizeof(memory_word));
       show_line(log_line, 0);
     }
+
     memmove (new_memory + lo_size, new_memory,
       (current_mem_size + 1) * sizeof(memory_word));
 /*  could reduce words moved by (mem_max - mem_end) */
   }
+
   main_memory = new_memory;       /* remember for free later */
 
   if (lo_size > 0)
@@ -981,7 +977,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
 
   if (current_mem_size != mem_max - mem_start)
   {
-    puts("ERROR: Impossible Memory Error\n");
+    puts("ERROR: Impossible Memory Error");
   }
 
   if (mem_start != 0)
@@ -997,8 +993,6 @@ memory_word * realloc_main (int lo_size, int hi_size)
 #endif
 
 #ifdef ALLOCATEFONT
-/* font_mem_size = 10000L ==> font_info array 100k * 8 = 800 kilobytes */
-
 int current_font_mem_size = 0;
 
 /* fmemoryword can be either halfword or memory_word */

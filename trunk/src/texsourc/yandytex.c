@@ -29,9 +29,6 @@ static char * program_name = NULL;
 int    gargc;   /* number of args - set to zero after initialization */
 char **gargv;
 
-/* The entry point: set up for reading the command line, which will
-   happen in `t_open_in', then call the main body.  */
-
 int jump_used = 0;
 
 jmp_buf jumpbuffer;
@@ -220,76 +217,61 @@ void show_bad_line (FILE *output, int first, int last)
   {
     ch = buffer[i];
 
-    if ((show_in_hex && ch > 127))
+    if (show_in_hex && (ch > 127))
     {
       c = ch >> 4;
-      d = ch & 15; 
+      d = ch & 15;
+
       if (c > 9)
         c = c + 'a' - 10;
       else
         c = c + '0';
+
       if (d > 9)
         d = d + 'a' - 10;
       else
         d = d + '0';
-/* putc('^', output); putc('^', output); */
+
       *s++ = '^';
       *s++ = '^';
-/* putc (c, output); putc (d, output); */
+
       *s++ = (char) c;
       *s++ = (char) d;
     }
+    else if (ch < 32)
+    {
+      *s++ = '^';
+      *s++ = '^';
+      *s++ = (char) (ch + 64);
+    }
+    else if (ch == 127)
+    {
+      *s++ = '^';
+      *s++ = '^';
+      *s++ = (char) (ch - 64);
+    }
     else
-      if (ch < 32)
-      {
-/* putc('^', output); putc('^', output); */
-        *s++ = '^';
-        *s++ = '^';
-/* putc (ch + 64, output); */
-        *s++ = (char) (ch + 64);
-      }
-      else
-        if (ch == 127)
-        {
-/* putc('^', output); putc('^', output); */
-          *s++ = '^';
-          *s++ = '^';
-/* putc (ch - 64, output); */
-          *s++ = (char) (ch - 64);
-        }
-        else
-        {
-/* putc(ch, output); */
-          *s++ = (char) ch;
-        }
+    {
+      *s++ = (char) ch;
+    }
   }
-//  putc(' ', output);    /*  putc('\n', output); */
+
   *s++ = ' ';
   *s++ = '\0';
 
   fputs(log_line, output);   // log_file
 }
 
-// split off for convenience and use in ConsoleInput
 boolean input_line_finish (void)
 {
   int i = '\0';
   int ch, flag;
-  
-/*  if last line in file does not end with \n - never happens ? */
-/*  if (i == EOF && buffer[last] != '\n') buffer[last++] = '\n'; */
 
-  buffer[last] = ' ';           /* space terminate */
+  buffer[last] = ' ';
 
   if (last >= max_buf_stack)
-    max_buf_stack = last; /* remember longest line */
+    max_buf_stack = last;
 
-/* Trim trailing whitespace.  */ 
-/* #define isblank(c) ((c) == ' ' || (c) == '\t') */
-/* What about \n ?  Can't get in here ?- bkph */
-/* What about control-Z that gets read in binary mode ? - bkph */
-// #ifdef MYDEBUG
-/*  while (last > first && buffer[last - 1] <= ' ')  --last; */
   while (last > first)
   {
     i = buffer[last - 1];
@@ -300,16 +282,14 @@ boolean input_line_finish (void)
       break;
   }
 
-/* following added to check source file integrity ASCII 32 - 127 */
-/* allow space, tab, new-page - also allow return, newline ? */
   if (restrict_to_ascii)
   {
     flag = 0;
+
     for (i = first; i <= last; i++)
     {
       ch = buffer[i];
-/*      if (ch > 127 || (ch < ' ' && ch != '\t' && ch != '\f')) */
-/*      1 -- 8, 11, 14 -- 31 are not good ASCII characters */
+
       if (ch > 126 ||  (ch < ' ' && ch != '\t' && ch != '\f' && ch != '\r' && ch != '\n'))
       {
         sprintf(log_line, "\n! non ASCII char (%d) in line: ", ch);
@@ -318,26 +298,26 @@ boolean input_line_finish (void)
         if (log_opened)
           fprintf(log_file, "\n! non ASCII char (%d) in line: ", ch);
 
-/*        buffer[i]= 127; */ /* not defined - invalid char */
         flag = 1;
         break;
       }
     }
+
     if (flag)
     {
       show_bad_line(errout, first, last);
+
       if (log_opened)
         show_bad_line(log_file, first, last);
     }
   }
-/* Don't bother using xord if we don't need to. */ /* for input line */
-/* #ifdef NONASCII */ /* has been turned into command line flag - bkph */
+
   if (non_ascii)
   {
     for (i = first; i <= last; i++)
       buffer[i] = xord[buffer[i]];
   }
-/* #endif */
+
   return true;
 }
 

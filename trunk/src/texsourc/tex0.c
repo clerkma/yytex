@@ -331,7 +331,8 @@ void print_cs_ (integer p)
       }
     else if (p < active_base)
       print_esc("IMPOSSIBLE.");
-    else print(p - active_base);
+    else
+      print(p - active_base);
   else if (p >= undefined_control_sequence)
     print_esc("IMPOSSIBLE.");
   else if ((text(p) >= str_ptr))
