@@ -201,6 +201,7 @@ void flush_node_list_(pointer p)
               else
                 free_node(p, noad_size);
             }
+
             goto done;
           }
           break;
@@ -375,7 +376,7 @@ pointer copy_node_list_(pointer p)
     while (words > 0)
     {
       decr(words);
-      mem[r + words] = mem[p + words]; /* r may be used without having ... */
+      mem[r + words] = mem[p + words];
     }
 
     link(q) = r;
@@ -410,9 +411,7 @@ void print_mode_(integer m)
   else
   {
     if (m == 0)
-    {
       print_string("no");
-    }
     else
     {
       switch ((- (integer) m) / (max_command + 1))
@@ -508,9 +507,7 @@ void show_activities (void)
     }
 
     if (nest[p].ml_field < 0)
-    {
       print_string(" (\\output routine)");
-    }
 
     if (p == 0)
     {
@@ -519,9 +516,7 @@ void show_activities (void)
         print_nl("### current page:");
         
         if (output_active)
-        {
           print_string(" (held over for next output)");
-        }
 
         show_box(link(page_head));
 
@@ -2298,7 +2293,7 @@ halfword id_lookup_(integer j, integer l)
 #endif
       }
 
-      goto found; 
+      goto found;
     }
 
     p = next(p);
@@ -2385,7 +2380,7 @@ void eq_define_(halfword p, quarterword t, halfword e)
   else if (cur_level > level_one)
     eq_save(p, eq_level(p));
 
-  eq_level(p) = (quarterword) cur_level; /* because cur_level padded out */
+  eq_level(p) = (quarterword) cur_level;
   eq_type(p) = t;
   equiv(p) = e;
 }
@@ -2395,7 +2390,7 @@ void eq_word_define_(halfword p, integer w)
   if (xeq_level[p] != cur_level)
   {
     eq_save(p, xeq_level[p]);
-    xeq_level[p] = (quarterword) cur_level; /* because cur_level padded out */
+    xeq_level[p] = (quarterword) cur_level;
   }
 
   eqtb[p].cint = w;

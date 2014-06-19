@@ -472,6 +472,7 @@ void end_token_list (void)
     else
     {
       delete_token_ref(start);
+
       if (index == macro)
         while (param_ptr > limit)
         {
@@ -588,8 +589,8 @@ void end_file_reading (void)
 /* sec 0330 */
 void clear_for_error_prompt (void) 
 {
-  while ((state != 0) && (cur_input.name_field == 0) && (input_ptr > 0) &&
-      (loc > limit))
+  while ((state != 0) && (cur_input.name_field == 0) &&
+    (input_ptr > 0) && (loc > limit))
     end_file_reading();
 
   print_ln();
@@ -956,7 +957,7 @@ done1:
           store_new_token(cur_tok);
         }
 
-        incr(m);          /* m may be used without having been ... */
+        incr(m);
 
         if (info(r) > end_match_token)
           goto continu;
@@ -968,7 +969,7 @@ found:
         {
           if ((m == 1) && (info(p) < right_brace_limit) && (p != temp_head))
           {
-            link(rbrace_ptr) = 0; /* rbrace_ptr may be used without ... */
+            link(rbrace_ptr) = 0;
             free_avail(p);
             p = link(temp_head);
             pstack[n] = link(p);
@@ -982,7 +983,7 @@ found:
           if (tracing_macros > 0)
           {
             begin_diagnostic();
-            //print_nl(match_chr); /* matchchar may be used without ... */
+            //print_nl(match_chr);
             print_nl(""); print(match_chr);
             print_int(n);
             print_string("<-");
@@ -1012,7 +1013,7 @@ found:
       if (max_param_stack > current_param_size)
         param_stack = realloc_param_stack(increment_param_size);
 
-      if (max_param_stack > current_param_size) /* check again after allocation */
+      if (max_param_stack > current_param_size)
       {
         overflow("parameter stack size", current_param_size);
         return;
@@ -1020,7 +1021,7 @@ found:
 #else
       if (max_param_stack > param_size)
       {
-        overflow("parameter stack size", param_size); /* parameter stack - not dynamic */
+        overflow("parameter stack size", param_size);
         return;
       }
 #endif
@@ -1437,7 +1438,7 @@ void scan_twenty_seven_bit_int (void)
 {
   scan_int();
 
-  if ((cur_val < 0) || (cur_val > 134217727L)) /* 2^27 - 1 */
+  if ((cur_val < 0) || (cur_val > 134217727L))
   {
     print_err("Bad delimiter code");
     help2("A numeric delimiter code must be between 0 and 2^{27}-1.",
