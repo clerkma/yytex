@@ -961,7 +961,7 @@ void read_toks_(integer n, halfword r)
   do
     {
       begin_file_reading();
-      cur_input.name_field = m + 1;
+      name = m + 1;
 
       if (read_open[m] == closed)
         if (interaction > nonstop_mode)
@@ -1976,7 +1976,7 @@ void start_input(void)
   }
 
 done: 
-  cur_input.name_field = a_make_name_string(cur_file);
+  name = a_make_name_string(cur_file);
 
   if (job_name == 0)
   {
@@ -1984,7 +1984,7 @@ done:
     open_log_file();
   }
 
-  if (term_offset + length(cur_input.name_field) > max_print_line - 2)
+  if (term_offset + length(name) > max_print_line - 2)
     print_ln();
   else if ((term_offset > 0) || (file_offset > 0))
     print_char(' ');
@@ -1995,7 +1995,7 @@ done:
   if (open_parens > max_open_parens)
     max_open_parens = open_parens;
 
-  slow_print(cur_input.name_field);
+  slow_print(name);
   update_terminal();
   state = new_line;
 

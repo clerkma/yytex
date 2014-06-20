@@ -2091,7 +2091,7 @@ void reorderargs (int ac, char **av)
   }
 }
 
-int test_align (int address, int size, char *name)
+int test_align (int address, int size, char *str)
 {
   int n;
 
@@ -2102,7 +2102,7 @@ int test_align (int address, int size, char *name)
 
   if (n != 0)
   {
-    sprintf(log_line, "OFFSET %d (ELEMENT %d) in %s\n", n, size, name);
+    sprintf(log_line, "OFFSET %d (ELEMENT %d) in %s\n", n, size, str);
     show_line(log_line, 0);
   }
 
@@ -2943,14 +2943,14 @@ void perrormod (char *s)
 /* this is then undone in tex3.c both for fopen input and output */
 /* not ideal, since pseudo name appears in log and in error messages ... */
 
-void hidetwiddle (char *name)
+void hidetwiddle (char *tname)
 {
-  char *s = name;
+  char *s = tname;
 
 #ifdef DEBUGTWIDDLE
   if (trace_flag)
   {
-    sprintf(log_line, "Hidetwiddle %s", name);
+    sprintf(log_line, "Hidetwiddle %s", tname);
     show_line(log_line, 0);
   }
 #endif
@@ -2967,7 +2967,7 @@ void hidetwiddle (char *name)
 #ifdef DEBUGTWIDDLE
   if (trace_flag)
   {
-    sprintf(log_line, "=> %s\n", name);
+    sprintf(log_line, "=> %s\n", tname);
     show_line(log_line, 0);
   }
 #endif

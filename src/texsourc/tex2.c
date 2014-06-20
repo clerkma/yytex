@@ -207,7 +207,7 @@ void show_context (void)
     cur_input = input_stack[base_ptr];
 
     if ((state != token_list))
-      if ((cur_input.name_field > 17) || (base_ptr == 0))
+      if ((name > 17) || (base_ptr == 0))
         bottom_line = true;
 
     if ((base_ptr == input_ptr) || bottom_line || (nn < error_context_lines))
@@ -220,8 +220,8 @@ void show_context (void)
 
         if (state != token_list)
         {
-          if (cur_input.name_field <= 17)
-            if ((cur_input.name_field == 0))
+          if (name <= 17)
+            if ((name == 0))
               if (base_ptr == 0)
                 print_nl("<*>");
               else
@@ -230,10 +230,10 @@ void show_context (void)
             {
               print_nl("<read ");
 
-              if (cur_input.name_field == 17)
+              if (name == 17)
                 print_char('*');
               else
-                print_int(cur_input.name_field - 1);
+                print_int(name - 1);
 
               print_char('>');
             }
@@ -243,8 +243,8 @@ void show_context (void)
             {
               print_ln();
 
-              if (cur_input.name_field > 17)
-                print(cur_input.name_field);
+              if (name > 17)
+                print(name);
 
               print_char('(');
               print_int(line);
@@ -300,7 +300,7 @@ void show_context (void)
 
             case macro:
               print_ln();
-              print_cs(cur_input.name_field);
+              print_cs(name);
               break;
 
             case output_text:
@@ -571,7 +571,7 @@ void begin_file_reading (void)
   line_stack[index] = line;
   start = first;
   state = 1;
-  cur_input.name_field = 0;
+  name = 0;
 }
 /* sec 0329 */
 void end_file_reading (void)
@@ -579,7 +579,7 @@ void end_file_reading (void)
   first = start;
   line = line_stack[index];
 
-  if (cur_input.name_field > 17)
+  if (name > 17)
     a_close(cur_file);
 
   pop_input();
@@ -589,7 +589,7 @@ void end_file_reading (void)
 /* sec 0330 */
 void clear_for_error_prompt (void) 
 {
-  while ((state != 0) && (cur_input.name_field == 0) &&
+  while ((state != 0) && (name == 0) &&
     (input_ptr > 0) && (loc > limit))
     end_file_reading();
 
@@ -607,7 +607,7 @@ void check_outer_validity (void)
 
     if (cur_cs != 0)
     {
-      if ((state == 0) || (cur_input.name_field < 1) || (cur_input.name_field > 17))
+      if ((state == 0) || (name < 1) || (name > 17))
       {
         p = get_avail();
         info(p) = cs_token_flag + cur_cs;
@@ -1000,7 +1000,7 @@ found:
     end_token_list();
 
   begin_token_list(ref_count, macro);
-  cur_input.name_field = warning_index;
+  name = warning_index;
   loc = link(r);
 
   if (n > 0)
@@ -2161,7 +2161,7 @@ found:
     {
       state = new_line;
 
-      if (cur_input.name_field > 17)
+      if (name > 17)
       {
         incr(line);
         first = start;
@@ -2195,7 +2195,7 @@ found:
       }
       else
       {
-        if (!(cur_input.name_field == 0))
+        if (!(name == 0))
         {
           cur_cmd = 0;
           cur_chr = 0;
