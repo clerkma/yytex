@@ -22,6 +22,7 @@
 #define EXTERN extern
 
 #include "texd.h"
+#undef name
 
 extern char * dvi_directory;
 extern char * log_directory;

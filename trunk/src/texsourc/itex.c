@@ -2247,7 +2247,7 @@ lab1:
       start = 1;
       index = 0;
       line = 0;
-      cur_input.name_field = 0;
+      name = 0;
       force_eof = false;
       align_state = 1000000L;
 

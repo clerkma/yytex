@@ -747,7 +747,7 @@ while (0)
 #define index cur_input.index_field
 #define start cur_input.start_field
 #define limit cur_input.limit_field
-//#define name 
+#define name  cur_input.name_field
 /* sec 0303 */
 #define mid_line    1
 #define skip_blanks 2 + max_char_code // 17
