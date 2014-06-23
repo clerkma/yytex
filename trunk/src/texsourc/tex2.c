@@ -26,7 +26,7 @@ void restore_trace_(halfword p, char * s)
 {
   begin_diagnostic();
   print_char('{');
-  print_string(s);
+  prints(s);
   print_char(' ');
   show_eqtb(p);
   print_char('}');
@@ -124,7 +124,7 @@ void prepare_mag (void)
   {
     print_err("Incompatible magnification (");
     print_int(mag);
-    print_string(");");
+    prints(");");
     print_nl(" the previous value will be retained");
     help2("I can handle only one magnification ratio per job. So I've",
         "reverted to the magnification you used earlier on this run.");
@@ -175,7 +175,7 @@ void show_cur_cmd_chr (void)
   if (mode != shown_mode)
   {
     print_mode(mode);
-    print_string(": ");
+    prints(": ");
     shown_mode = mode;
   }
 
@@ -248,7 +248,7 @@ void show_context (void)
 
               print_char('(');
               print_int(line);
-              print_string(") :");
+              prints(") :");
             }
             else
             {
@@ -373,7 +373,7 @@ void show_context (void)
         }
         else
         {
-          print_string("...");
+          prints("...");
           p = l + first_count - half_error_line + 3;
           n = half_error_line;
         }
@@ -395,7 +395,7 @@ void show_context (void)
           print_char(trick_buf[q % error_line]);
 
         if (m + n > error_line)
-          print_string("...");
+          prints("...");
 
         incr(nn);
       }
@@ -453,7 +453,7 @@ void begin_token_list_ (halfword p, quarterword t)
             break;
         }
 
-        print_string("->");
+        prints("->");
         token_show(p);
         end_diagnostic(false);
       }
@@ -630,24 +630,24 @@ void check_outer_validity (void)
         print_err("Forbidden control sequence found");
       }
 
-      print_string(" while scanning ");
+      prints(" while scanning ");
       p = get_avail();
 
       switch (scanner_status)
       {
         case defining:
-          print_string("definition");
+          prints("definition");
           info(p) = right_brace_token + '}';
           break;
 
         case matching:
-          print_string("use");
+          prints("use");
           info(p) = par_token;
           long_state = outer_call;
           break;
 
         case aligning:
-          print_string("preamble");
+          prints("preamble");
           info(p) = right_brace_token + '}';
           q = p;
           p = get_avail();
@@ -657,13 +657,13 @@ void check_outer_validity (void)
           break;
 
         case absorbing:
-          print_string("text");
+          prints("text");
           info(p) = right_brace_token + '}';
           break;
       }
 
       ins_list(p);
-      print_string(" of ");
+      prints(" of ");
       sprint_cs(warning_index);
       help4("I suspect you have forgotten a `}', causing me",
           "to read past where you wanted me to stop.",
@@ -675,7 +675,7 @@ void check_outer_validity (void)
     {
       print_err("Incomplete ");
       print_cmd_chr(if_test, cur_if);
-      print_string("; all text was ignored after line ");
+      prints("; all text was ignored after line ");
       print_int(skip_line);
       help3("A forbidden control sequence occurred in skipped text.",
           "This kind of error happens when you say `\\if...' and forget",
@@ -814,7 +814,7 @@ continu:
           {
             print_err("Use of ");
             sprint_cs(warning_index);
-            print_string(" doesn't match its definition");
+            prints(" doesn't match its definition");
             help4("If you say, e.g., `\\def\\a1{...}', then you must always",
               "put `1' after `\\a', since control sequence names are",
               "made up of letters only. The macro here has not been",
@@ -865,7 +865,7 @@ done:
               runaway();
               print_err("Paragraph ended before ");
               sprint_cs(warning_index);
-              print_string("was complete");
+              prints("was complete");
               help3("I suspect you've forgotten a `}', causing me to apply this",
                   "control sequence to too much text. How can we recover?",
                   "My plan is to forget the whole thing and hope for the best.");
@@ -899,7 +899,7 @@ done:
                     runaway();
                     print_err("Paragraph ended before ");
                     sprint_cs(warning_index);
-                    print_string(" was complete");
+                    prints(" was complete");
                     help3("I suspect you've forgotten a `}', causing me to apply this",
                         "control sequence to too much text. How can we recover?",
                         "My plan is to forget the whole thing and hope for the best.");
@@ -934,7 +934,7 @@ done1:
             back_input();
             print_err("Argument of ");
             sprint_cs(warning_index);
-            print_string(" has an extra }");
+            prints(" has an extra }");
             help6("I've run across a `}' that doesn't seem to match anything.",
                 "For example, `\\def\\a#1{...}' and `\\a}' would produce",
                 "this error. If you simply proceed now, the `\\par' that",
@@ -986,7 +986,7 @@ found:
             //print_nl(match_chr);
             print_nl(""); print(match_chr);
             print_int(n);
-            print_string("<-");
+            prints("<-");
             show_token_list(pstack[n - 1], 0, 1000);
             end_diagnostic(false);
           }
@@ -1122,7 +1122,7 @@ void expand (void)
         {
           print_err("Missing ");
           print_esc("endcsname");
-          print_string(" inserted");
+          prints(" inserted");
           help2("The control sequence marked <to be read again> should",
               "not appear between \\csname and \\endcsname.");
           back_error();
@@ -1540,9 +1540,9 @@ void find_font_dimen_(boolean writing)
   {
     print_err("Font ");
     print_esc(""); print(font_id_text(f));
-    print_string(" has only ");
+    prints(" has only ");
     print_int(font_params[f]);
-    print_string(" fontdimen parameters");
+    prints(" fontdimen parameters");
     help2("To increase the number of font parameters, you must",
       "use \\fontdimen immediately after the \\font is loaded.");
     error();
@@ -1821,7 +1821,7 @@ void scan_something_internal_(small_number level, boolean negative)
       {
         print_err("You can't use `");
         print_cmd_chr(cur_cmd, cur_chr);
-        print_string("' after ");
+        prints("' after ");
         print_esc("the");
         help1("I'm forgetting what you said and using zero instead.");
         error();

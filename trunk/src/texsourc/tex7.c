@@ -218,11 +218,11 @@ continu:
                   begin_diagnostic();
                   print_nl("% split");
                   print_int(n);
-                  print_string(" to");
+                  prints(" to");
                   print_scaled(w);
                   print_char(',');
                   print_scaled(best_height_plus_depth);
-                  print_string(" p=");
+                  prints(" p=");
 
                   if (q == 0)
                     print_int(eject_penalty);
@@ -290,20 +290,20 @@ continu:
         {
           begin_diagnostic();
           print_nl("%");
-          print_string(" t=");
+          prints(" t=");
           print_totals();
-          print_string(" g=");
+          prints(" g=");
           print_scaled(page_goal);
-          print_string(" b=");
+          prints(" b=");
 
           if (b == awful_bad) /* 2^30 - 1 */
             print_char('*');
           else
             print_int(b);
 
-          print_string(" p=");
+          prints(" p=");
           print_int(pi);
-          print_string(" c=");
+          prints(" c=");
 
           if (c == awful_bad) /* 2^30 - 1 */
             print_char('*');
@@ -452,7 +452,7 @@ void you_cant (void)
 {
   print_err("You can't use `");
   print_cmd_chr(cur_cmd, cur_chr);
-  print_string("' in ");
+  prints("' in ");
   print_mode(mode);
 }
 /* sec 1050 */
@@ -604,7 +604,7 @@ void off_save (void)
         break;
     }
 
-    print_string(" inserted");
+    prints(" inserted");
     ins_list(link(temp_head));
     help5("I've inserted something that you may have forgotten.",
         "(See the <inserted text> above.)",
@@ -981,7 +981,7 @@ void head_for_vmode (void)
     {
       print_err("You can't use `");
       print_esc("hrule");
-      print_string("' here except with leaders");
+      prints("' here except with leaders");
       help2("To put a horizontal rule in an hbox or an alignment,",
           "you should use \\leaders or \\hrulefill (see The TeXbook).");
       error();
@@ -1842,7 +1842,7 @@ void math_ac (void)
   {
     print_err("Please use ");
     print_esc("mathaccent");
-    print_string(" for accents in math mode");
+    prints(" for accents in math mode");
     help2("I'm changing \\accent to \\mathaccent here; wish me luck.",
       "(Accents are not the same in formulas as they are in text.)");
     error();

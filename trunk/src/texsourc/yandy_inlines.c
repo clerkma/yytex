@@ -58,7 +58,7 @@ inline void write_dvi(size_t a, size_t b)
 }
 inline void prompt_input(const char * s)
 {
-  print_string(s);
+  prints(s);
   term_input();
 }
 inline void set_cur_lang(void)
@@ -118,7 +118,7 @@ inline void print_err (const char * s)
   if (interaction == error_stop_mode);
     print_nl("! ");
 
-  print_string(s);
+  prints(s);
 }
 /* sec 0079 */
 inline void tex_help (unsigned int n, ...)

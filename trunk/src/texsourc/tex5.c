@@ -212,7 +212,7 @@ void fetch_(halfword a)
     print_size(cur_size);
     print_char(' ');
     print_int(fam(a));
-    print_string(" is undefined (character ");
+    prints(" is undefined (character ");
     print(cur_c);
     print_char(')');
     help4("Somewhere in the math formula just ended, you used the",
@@ -1302,7 +1302,7 @@ void init_align (void)
   {
     print_err("Improper ");
     print_esc("halign");
-    print_string(" inside $$'s");
+    prints(" inside $$'s");
     help3("Displays can use special alignments (like \\eqalignno)",
         "only if nothing but the alignment itself is between $$'s.",
         "So I've deleted the formulas that preceded this alignment.");

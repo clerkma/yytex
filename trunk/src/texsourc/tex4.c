@@ -30,7 +30,7 @@ void char_warning_(internal_font_number f, eight_bits c)
     if (show_missing) /* add ! before 94/June/10 */
     {
       print_nl("! ");
-      print_string("Missing character: there is no ");
+      prints("Missing character: there is no ");
     }
     else
       print_nl("Missing character: there is no ");
@@ -58,7 +58,7 @@ void char_warning_(internal_font_number f, eight_bits c)
       print_char(')');
     }
 
-    print_string(" in font ");
+    prints(" in font ");
     slow_print(font_name[f]);
     print_char('!');
 
@@ -1104,7 +1104,7 @@ void dvi_ship_out_(halfword p)
   {
     print_nl("");
     print_ln();
-    print_string("Completed box being shipped out");
+    prints("Completed box being shipped out");
   }
 
   if (term_offset > max_print_line - 9)
@@ -1178,7 +1178,7 @@ void dvi_ship_out_(halfword p)
     dvi_four(mag);
     old_setting = selector;
     selector = new_string;
-    print_string(" TeX output ");
+    prints(" TeX output ");
     print_int(year);
     print_char('.');
     print_two(month);
@@ -1239,11 +1239,11 @@ done:;
 #ifdef STAT
   if (tracing_stats > 1)
   {
-    print_string(" after: ");
+    prints(" after: ");
     print_int(var_used);
     print_char('&');
     print_int(dyn_used);
-    print_string("; still utouched: ");
+    prints("; still utouched: ");
     print_int(hi_mem_min - lo_mem_max - 1);
     print_ln();
   }
@@ -1504,7 +1504,7 @@ reswitch:
           else
             print_nl("Loose");
 
-          print_string(" \\hbox (badness ");
+          prints(" \\hbox (badness ");
           print_int(last_badness);
 
           if (last_badness > 100) /* Y&Y TeX */
@@ -1556,7 +1556,7 @@ reswitch:
           print_ln();
           print_nl("Overfull \\hbox (");
           print_scaled(- (integer) x - total_shrink[normal]);
-          print_string("pt too wide");
+          prints("pt too wide");
 
           overfull_hbox++;
 
@@ -1581,21 +1581,21 @@ reswitch:
 
 common_ending:
   if (output_active)
-    print_string(") has occurred while \\output is active");
+    prints(") has occurred while \\output is active");
   else
   {
     if (pack_begin_line != 0)
     {
       if (pack_begin_line > 0)
-        print_string(") in paragraph at lines ");
+        prints(") in paragraph at lines ");
       else
-        print_string(") in alignment at lines ");
+        prints(") in alignment at lines ");
 
       print_int(abs(pack_begin_line));
-      print_string("--");
+      prints("--");
     }
     else
-      print_string(") detected at line ");
+      prints(") detected at line ");
 
     print_int(line);
   }
@@ -1762,7 +1762,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
           else
             print_nl("Loose");
 
-          print_string(" \\vbox (badness ");
+          prints(" \\vbox (badness ");
           print_int(last_badness);
 
           if (last_badness > 100)
@@ -1805,7 +1805,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
         print_ln();
         print_nl("Overfull \\vbox (");
         print_scaled(- (integer) x - total_shrink[0]);
-        print_string("pt too high");
+        prints("pt too high");
 
         overfull_vbox++;    /* 1996/Feb/9 */
 
@@ -1829,17 +1829,17 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
 
 common_ending:
   if (output_active)
-    print_string(") has occurred while \\output is active");
+    prints(") has occurred while \\output is active");
   else
   {
     if (pack_begin_line != 0)
     {
-      print_string(") in alignment at lines ");
+      prints(") in alignment at lines ");
       print_int(abs(pack_begin_line));
-      print_string("--");
+      prints("--");
     }
     else
-      print_string(") detected at line ");
+      prints(") detected at line ");
 
     print_int(line);
     print_ln();

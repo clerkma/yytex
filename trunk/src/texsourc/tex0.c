@@ -212,7 +212,7 @@ void print_ (integer s)
   }
 }
 /* string version print. */
-void print_string_ (const char *s)
+void prints_ (const char *s)
 {
   while (*s > 0)
     print_char(*s++);
@@ -242,7 +242,7 @@ void print_nl (const char * s)
       ((file_offset > 0) && (selector >= log_only)))
     print_ln();
 
-  print_string(s);
+  prints(s);
 }
 /* sec 0063 */
 void print_esc (const char * s)
@@ -255,7 +255,7 @@ void print_esc (const char * s)
     if (c < 256)
       print(c);
 
-  print_string(s);
+  prints(s);
 }
 /* sec 0064 */
 void print_the_digs_ (eight_bits k)
@@ -526,7 +526,7 @@ continu:
               do
                 {
                   decr(help_ptr);
-                  print_string(help_line[help_ptr]);
+                  prints(help_line[help_ptr]);
                   print_ln();
                 }
               while (!(help_ptr == 0));
@@ -568,7 +568,7 @@ continu:
           {
             error_count = 0; 
             interaction = 0 + c - 81; /* Q = 0, R = 1, S = 2, T = 3 */
-            print_string("OK, entering ");
+            prints("OK, entering ");
 
             switch (c)
             {
@@ -586,7 +586,7 @@ continu:
                 break;
             }
 
-            print_string("...");
+            prints("...");
             print_ln();
             update_terminal();
             return;
@@ -605,12 +605,12 @@ continu:
       }           /* end of switch analysing response character */
 
       {
-        print_string("Type <return> to proceed, S to scroll future error messages,");
+        prints("Type <return> to proceed, S to scroll future error messages,");
         print_nl("R to run without stopping, Q to run quietly,");
         print_nl("I to insert something, ");
 
         if (base_ptr > 0)
-          print_string("E to edit your file,");
+          prints("E to edit your file,");
 
         if (deletions_allowed)
           print_nl("1 or ... or 9 to ignore the next 1 to 9 tokens of input,");
@@ -662,7 +662,7 @@ void overflow_(char * s, integer n)
 {
   normalize_selector();
   print_err("TeX capacity exceeded, sorry [");
-  print_string(s);
+  prints(s);
   print_char('=');
   print_int(n);
   print_char(']');
@@ -693,7 +693,7 @@ void confusion_(const char * s)
   if (history < error_message_issued)
   {
     print_err("This can't happen (");
-    print_string(s);
+    prints(s);
     print_char(')');
     help1("I'm broken. Please show this to someone who can fix can fix");
   }
@@ -939,7 +939,7 @@ void term_input(void)
 /* sec 0091 */
 void int_error_ (integer n)
 {
-  print_string(" (");
+  prints(" (");
   print_int(n);
   print_char(')');
   error();
@@ -1279,7 +1279,7 @@ void show_token_list_(integer p, integer q, integer l)
           break;
         
         case end_match:
-          print_string("->");
+          prints("->");
           break;
         
         default:
@@ -1305,22 +1305,22 @@ void runaway (void)
     switch (scanner_status)
     {
       case defining:
-        print_string("definition");
+        prints("definition");
         p = def_ref;
         break;
 
       case matching:
-        print_string("argument");
+        prints("argument");
         p = temp_head;
         break;
 
       case aligning:
-        print_string("preamble");
+        prints("preamble");
         p = hold_head;
         break;
 
       case absorbing:
-        print_string("text");
+        prints("text");
         p = def_ref;
         break;
     }
@@ -1521,8 +1521,8 @@ restart:
     return 0;
   }
 
-  add_variable_space (block_size); /* now to be found in itex.c */
-  goto restart;         /* go try get_node again */
+  add_variable_space (block_size);
+  goto restart; /* go try get_node again */
 
 found:
   link(r) = 0;
@@ -1917,7 +1917,7 @@ void short_display_(integer p)
       case mark_node:
       case adjust_node:
       case unset_node:
-        print_string("[]");
+        prints("[]");
         break;
       case rule_node:
         print_char('|');
@@ -1996,10 +1996,10 @@ void print_glue_(scaled d, integer order, char * s)
   print_scaled(d); 
 
   if ((order < normal) || (order > filll))
-    print_string("foul");
+    prints("foul");
   else if (order > 0)
   {
-    print_string("fil");
+    prints("fil");
 
     while (order > 1)
     {
@@ -2008,7 +2008,7 @@ void print_glue_(scaled d, integer order, char * s)
     }
   }
   else if (*s != '\0')
-    print_string(s);
+    prints(s);
 }
 /* sec 0178 */
 void print_spec_(integer p, char * s)
@@ -2020,17 +2020,17 @@ void print_spec_(integer p, char * s)
     print_scaled(width(p));
 
     if (*s != '\0')
-      print_string(s);
+      prints(s);
 
     if (stretch(p) != 0)
     {
-      print_string("plus");
+      prints("plus");
       print_glue(stretch(p), stretch_order(p), s);
     }
 
     if (shrink(p) != 0)
     {
-      print_string("minus");
+      prints("minus");
       print_glue(shrink(p), shrink_order(p), s);
     }
   }
@@ -2062,7 +2062,7 @@ void print_subsidiary_data_(halfword p, ASCII_code c)
   if ((pool_ptr - str_start[str_ptr]) >= depth_threshold)
   {
     if (math_type(p) != 0)
-      print_string(" []");
+      prints(" []");
   }
   else
   {
@@ -2086,7 +2086,7 @@ void print_subsidiary_data_(halfword p, ASCII_code c)
         {
           print_ln();
           print_current_string();
-          print_string("{}");
+          prints("{}");
         }
         else
           show_info();
@@ -2117,7 +2117,7 @@ void print_style_(integer c)
       print_esc("scriptscriptstyle");
       break;
     default:
-      print_string("Unknown style!");
+      prints("Unknown style!");
       break;
   }
 }
@@ -2199,7 +2199,7 @@ void print_skip_param_(integer n)
       break;
 
     default:
-      print_string("[unknown glue parameter!]");
+      prints("[unknown glue parameter!]");
       break;
   }
 }
@@ -2212,7 +2212,7 @@ void show_node_list_(integer p)
   if (cur_length > depth_threshold)
   {
     if (p != 0)    /* fixed 94/Mar/23 BUG FIX NOTE: still not fixed in 3.14159 ! */
-      print_string(" []");
+      prints(" []");
 
     return; 
   }
@@ -2225,7 +2225,7 @@ void show_node_list_(integer p)
 
     if (p > mem_end)
     {
-      print_string("Bad link, display aborted.");
+      prints("Bad link, display aborted.");
       return;
     }
 
@@ -2233,7 +2233,7 @@ void show_node_list_(integer p)
 
     if (n > breadth_max)
     {
-      print_string("etc.");
+      prints("etc.");
       return;
     }
 
@@ -2251,31 +2251,31 @@ void show_node_list_(integer p)
             print_esc("v");
           else print_esc("unset");
 
-          print_string("box(");
+          prints("box(");
           print_scaled(height(p));
           print_char('+');
           print_scaled(depth(p));
-          print_string(")x");
+          prints(")x");
           print_scaled(width(p));
 
           if (type(p) == unset_node)
           {
             if (span_count(p) != 0)
             {
-              print_string(" (");
+              prints(" (");
               print_int(span_count(p) + 1);
-              print_string(" columns)");
+              prints(" columns)");
             }
 
             if (glue_stretch(p) != 0)
             {
-              print_string(", stretch ");
+              prints(", stretch ");
               print_glue(glue_stretch(p), glue_order(p), "");
             }
 
             if (glue_shrink(p) != 0)
             {
-              print_string(", shrink ");
+              prints(", shrink ");
               print_glue(glue_shrink(p), glue_sign(p), "");
             }
           }
@@ -2285,17 +2285,17 @@ void show_node_list_(integer p)
 
             if ((g != 0.0) && (glue_sign(p) != 0))
             {
-              print_string(", glue set ");
+              prints(", glue set ");
 
               if (glue_sign(p) == shrinking)
-                print_string("- ");
+                prints("- ");
 
               if (fabs(g)> 20000.0)
               {
                 if (g > 0.0)
                   print_char('>');
                 else
-                  print_string("< -");
+                  prints("< -");
 
                 print_glue(20000 * unity, glue_order(p), "");
               }
@@ -2305,7 +2305,7 @@ void show_node_list_(integer p)
 
             if (shift_amount(p) != 0)
             {
-              print_string(", shifted ");
+              prints(", shifted ");
               print_scaled(shift_amount(p));
             }
           }
@@ -2327,7 +2327,7 @@ void show_node_list_(integer p)
           print_rule_dimen(height(p));
           print_char('+');
           print_rule_dimen(depth(p));
-          print_string(")x");
+          prints(")x");
           print_rule_dimen(width(p));
         }
         break;
@@ -2336,13 +2336,13 @@ void show_node_list_(integer p)
         {
           print_esc("insert");
           print_int(subtype(p));
-          print_string(", natural size ");
+          prints(", natural size ");
           print_scaled(height(p));
-          print_string("; split(");
+          prints("; split(");
           print_spec(split_top_ptr(p), "");
           print_char(',');
           print_scaled(depth(p));
-          print_string("); float cost ");
+          prints("); float cost ");
           print_int(float_cost(p));
           {
             {
@@ -2387,7 +2387,7 @@ void show_node_list_(integer p)
             {
               print_esc("setlanguage");
               print_int(what_lang(p));
-              print_string(" (hyphenmin ");
+              prints(" (hyphenmin ");
               print_int(what_lhm(p));
               print_char(',');
               print_int(what_rhm(p));
@@ -2396,7 +2396,7 @@ void show_node_list_(integer p)
             break;
 
           default:
-            print_string("whatsit?");
+            prints("whatsit?");
             break;
         }
         break;
@@ -2411,7 +2411,7 @@ void show_node_list_(integer p)
           else if (subtype(p) == x_leaders)
             print_char('x');
 
-          print_string("leaders ");
+          prints("leaders ");
 
           print_spec(glue_ptr(p), "");
           {
@@ -2463,13 +2463,13 @@ void show_node_list_(integer p)
           print_scaled(width(p));
 
           if (subtype(p) == acc_kern)
-            print_string(" (for accent)");
+            prints(" (for accent)");
         }
         else
         {
           print_esc("mkern");
           print_scaled(width(p));
-          print_string("mu");
+          prints("mu");
         }
         break;
 
@@ -2478,13 +2478,13 @@ void show_node_list_(integer p)
           print_esc("math");
 
           if (subtype(p) == before)
-            print_string("on");
+            prints("on");
           else
-            print_string("off");
+            prints("off");
 
           if (width(p) != 0)
           {
-            print_string(", surrounded ");
+            prints(", surrounded ");
             print_scaled(width(p));
           }
         }
@@ -2493,7 +2493,7 @@ void show_node_list_(integer p)
       case ligature_node:
         {
           print_font_and_char(lig_char(p));
-          print_string("(ligature ");
+          prints("(ligature ");
 
           if (subtype(p) > 1)
             print_char('|');
@@ -2521,7 +2521,7 @@ void show_node_list_(integer p)
 
           if (replace_count(p) > 0)
           {
-            print_string(" replacing ");
+            prints(" replacing ");
             print_int(replace_count(p));
           }
 
@@ -2695,21 +2695,21 @@ void show_node_list_(integer p)
           print_esc("fraction, thickness ");
 
           if (thickness(p) == 1073741824L)  /* 2^30 */
-            print_string("= default");
+            prints("= default");
           else
             print_scaled(thickness(p));
 
           if ((small_fam(left_delimiter(p)) != 0) || (small_char(left_delimiter(p)) != 0) ||
               (large_fam(left_delimiter(p)) != 0) || (large_char(left_delimiter(p)) != 0))
           {
-            print_string(", left-delimiter ");
+            prints(", left-delimiter ");
             print_delimiter(left_delimiter(p));
           }
 
           if ((small_fam(right_delimiter(p)) != 0) || (small_char(right_delimiter(p)) != 0) ||
               (large_fam(right_delimiter(p)) != 0) || (large_char(right_delimiter(p)) != 0))
           {
-            print_string(", right-delimiter ");
+            prints(", right-delimiter ");
             print_delimiter(right_delimiter(p));
           }
 
@@ -2719,7 +2719,7 @@ void show_node_list_(integer p)
         break;
 
       default:
-        print_string("Unknown node type!");
+        prints("Unknown node type!");
         break;
     }
     p = link(p);

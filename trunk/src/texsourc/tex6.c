@@ -310,7 +310,7 @@ done:;
               {
                 print_nl("@@");
                 print_int(serial(passive));
-                print_string(": line ");
+                prints(": line ");
                 print_int(line_number(q) - 1);
                 print_char('.');
                 print_int(fit_class);
@@ -318,9 +318,9 @@ done:;
                 if (break_type == hyphenated)
                   print_char('-');
 
-                print_string(" t=");
+                prints(" t=");
                 print_int(total_demerits(q));
-                print_string(" -> @@");
+                prints(" -> @@");
 
                 if (prev_break(passive) == 0)
                   print_char('0');
@@ -497,23 +497,23 @@ done1:;
             print_esc("math");
         }
 
-        print_string(" via @@");
+        prints(" via @@");
 
         if (break_node(r) == 0)
           print_char('0');
         else
           print_int(serial(break_node(r)));
 
-        print_string(" b=");
+        prints(" b=");
 
         if (b > inf_bad)
           print_char('*');
         else
           print_int(b);
 
-        print_string(" p=");
+        prints(" p=");
         print_int(pi);
-        print_string(" d=");
+        prints(" d=");
 
         if (artificial_demerits)
           print_char('*');
@@ -1554,7 +1554,7 @@ not_found:;
         {
           print_err("Improper ");
           print_esc("hyphenation");
-          print_string(" will be flushed");
+          prints(" will be flushed");
           help2("Hyphenation exceptions must contain only letters",
               "and hyphens. But continue; I'll forgive and forget.");
           error();
@@ -1802,7 +1802,7 @@ halfword vsplit_(eight_bits n, scaled h)
   {
     print_err("");
     print_esc("vsplit");
-    print_string(" needs a ");
+    prints(" needs a ");
     print_esc("vbox");
     help2("The box you are trying to split is an \\hbox.",
         "I can't split such a box, so I'll leave it alone.");
@@ -1857,35 +1857,35 @@ void print_totals (void)
 
   if (page_so_far[2] != 0)
   {
-    print_string(" plus ");
+    prints(" plus ");
     print_scaled(page_so_far[2]);
-    print_string("");
+    prints("");
   }
 
   if (page_so_far[3] != 0)
   {
-    print_string(" plus ");
+    prints(" plus ");
     print_scaled(page_so_far[3]);
-    print_string("fil");
+    prints("fil");
   }
 
   if (page_so_far[4] != 0)
   {
-    print_string(" plus ");
+    prints(" plus ");
     print_scaled(page_so_far[4]);
-    print_string("fill");
+    prints("fill");
   }
 
   if (page_so_far[5] != 0)
   {
-    print_string(" plus ");
+    prints(" plus ");
     print_scaled(page_so_far[5]);
-    print_string("filll");
+    prints("filll");
   }
 
   if (page_so_far[6] != 0)
   {
-    print_string(" minus ");
+    prints(" minus ");
     print_scaled(page_so_far[6]);
   }
 }
@@ -1905,7 +1905,7 @@ void freeze_page_specs_(small_number s)
     begin_diagnostic();
     print_nl("%% goal height=");
     print_scaled(page_goal);
-    print_string(", max depth=");
+    prints(", max depth=");
     print_scaled(page_max_depth);
     end_diagnostic(false);
   }
@@ -1977,7 +1977,7 @@ void fire_up_(halfword c)
   {
     print_err("");
     print_esc("box");
-    print_string("255 is not void");
+    prints("255 is not void");
     help2("You shouldn't use \\box255 except in \\output routines.",
         "Proceed, and I'll discard its present contents.");
     box_error(255);
@@ -2171,7 +2171,7 @@ void fire_up_(halfword c)
     {
       print_err("Output loop---");
       print_int(dead_cycles);
-      print_string(" consecutive dead cycles");
+      prints(" consecutive dead cycles");
       help3("I've concluded that your \\output is awry; it never does",
           "\\ship_out, so I'm shipping \box255 out myself. Next ",
           "increase \\maxdeadcycles if you want me to be more patient!");

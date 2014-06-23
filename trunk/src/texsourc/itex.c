@@ -1001,9 +1001,9 @@ void prefixed_command (void)
   {
     print_err("You can't use `");
     print_esc("long");
-    print_string("' or `");
+    prints("' or `");
     print_esc("outer");
-    print_string("' with `");
+    prints("' with `");
     print_cmd_chr(cur_cmd, cur_chr); 
     print_char('\'');
     help1("I'll pretend you didn't say \\long or \\outer here.");
@@ -1288,9 +1288,9 @@ void prefixed_command (void)
           print_int(cur_val);
 
           if (p < del_code_base)
-            print_string("), should be in the range 0..");
+            prints("), should be in the range 0..");
           else
-            print_string("), should be at most ");
+            prints("), should be at most ");
 
           print_int(n);
           help1("I'm going to use 0 instead of that illegal code value.");
@@ -1994,7 +1994,7 @@ void final_cleanup (void)
 
   while (open_parens > 0)
   {
-    print_string(" )");
+    prints(" )");
     decr(open_parens);
   }
 
@@ -2002,7 +2002,7 @@ void final_cleanup (void)
   {
     print_nl("(");
     print_esc("end occurred ");
-    print_string("inside a group at level ");
+    prints("inside a group at level ");
     print_int(cur_level - 1);
     print_char(')');
   }
@@ -2011,16 +2011,16 @@ void final_cleanup (void)
   {
     print_nl("(");
     print_esc("end occurred ");
-    print_string("when ");
+    prints("when ");
     print_cmd_chr('i', cur_if);
 
     if (if_line != 0)
     {
-      print_string("on line ");
+      prints("on line ");
       print_int(if_line);
     }
 
-    print_string(" was incomplete)");
+    prints(" was incomplete)");
     if_line = mem[cond_ptr + 1].cint;
     cur_if = subtype(cond_ptr);
     temp_ptr = cond_ptr;
@@ -2341,7 +2341,7 @@ final_end:
 }
 
 #ifdef ALLOCATEMAIN
-/* add a block of variable size node space below mem_bot */
+/* add a block of variable size node space below mem_bot(0) */
 void add_variable_space(int size)
 {
   halfword p;
@@ -2620,21 +2620,20 @@ boolean get_strings_started (void)
 
   for (k = 0; k <= 255; k++)
   {
-    if (((k < ' ') || (k > '~')))
+    if ( (k < ' ') || (k > '~') )
     {
       append_char('^');
       append_char('^');
 
       if (k < 64)
         append_char(k + 64);
+      else if (k < 128)
+        append_char(k - 64);
       else
-        if (k < 128)
-          append_char(k - 64);
-        else
-        {
-          append_lc_hex(k / 16);
-          append_lc_hex(k % 16);
-        }
+      {
+        append_lc_hex(k / 16);
+        append_lc_hex(k % 16);
+      }
     }
     else
       append_char(k);
@@ -2652,7 +2651,7 @@ boolean get_strings_started (void)
 
   return true;
 }
-#endif /* INITEX */
+#endif
 
 #ifdef INITEX
 /* sec 0131 */
@@ -2709,7 +2708,7 @@ void primitive_ (str_number s, quarterword c, halfword o)
   pool_pointer k;
   small_number j;
 /*  small_number l;  */
-  int l; /* 95/Jan/7 */
+  int l;
 
   if (s < 256)
     cur_val = s + single_base;
@@ -2723,12 +2722,6 @@ void primitive_ (str_number s, quarterword c, halfword o)
 
     cur_val = id_lookup(0, l);
     flush_string();
-
-#ifdef SHORTHASH
-    if (s > 65535L)
-      puts("ERROR: hash entry too large\n");
-#endif
-
     text(cur_val) = s;
   }
 
@@ -3277,7 +3270,7 @@ void store_fmt_file (void)
   }
 
   selector = new_string;
-  print_string(" (format=");
+  prints(" (format=");
   print(job_name);
   print_char(' ');
   print_int(year);
@@ -3324,7 +3317,7 @@ void store_fmt_file (void)
 
   print_ln();
   print_int(str_ptr);
-  print_string(" strings of total length ");
+  prints(" strings of total length ");
   print_int(pool_ptr);
 
   sort_avail();
@@ -3373,7 +3366,7 @@ void store_fmt_file (void)
   dump_int(dyn_used);
   print_ln();
   print_int(x);
-  print_string(" memory locations dumped; current usage is ");
+  prints(" memory locations dumped; current usage is ");
   print_int(var_used);
   print_char('&');
   print_int(dyn_used);
@@ -3480,7 +3473,7 @@ done2:
   dump_int(cs_count);
   print_ln();
   print_int(cs_count);
-  print_string(" multiletter control sequences");
+  prints(" multiletter control sequences");
 
   dump_int(fmem_ptr);
 
@@ -3569,18 +3562,18 @@ done2:
 
       if (font_size[k] != font_dsize[k])
       {
-        print_string(" at ");
+        prints(" at ");
         print_scaled(font_size[k]);
-        print_string("pt");
+        prints("pt");
       }
     }
   }
 
   print_ln();
   print_int(fmem_ptr - 7);
-  print_string(" words of font info for ");
+  prints(" words of font info for ");
   print_int(font_ptr - 0);
-  print_string(" preloaded font");
+  prints(" preloaded font");
 
   if (font_ptr != 1)
     print_char('s');
@@ -3599,7 +3592,7 @@ done2:
 
   print_ln();
   print_int(hyph_count);
-  print_string(" hyphenation exception");
+  prints(" hyphenation exception");
 
   if (hyph_count != 1)
     print_char('s');
@@ -3631,14 +3624,14 @@ done2:
 
   print_nl("Hyphenation trie of length ");
   print_int(trie_max);
-  print_string(" has ");
+  prints(" has ");
   print_int(trie_op_ptr);
-  print_string(" op");
+  prints(" op");
 
   if (trie_op_ptr != 1)
     print_char('s');
 
-  print_string(" out of ");
+  prints(" out of ");
   print_int(trie_op_size);
 
   for (k = 255; k >= 0; k--)
@@ -3647,7 +3640,7 @@ done2:
     {
       print_nl("  ");
       print_int(trie_used[k]);
-      print_string(" for language ");
+      prints(" for language ");
       print_int(k);
       dump_int(k);
       dump_int(trie_used[k]);

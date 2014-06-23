@@ -296,7 +296,7 @@ done1:
         if (cur_order == filll)
         {
           print_err("Illegal unit of measure (");
-          print_string("replaced by filll)");
+          prints("replaced by filll)");
           help1("I dddon't go any higher than filll.");
           error();
         }
@@ -373,7 +373,7 @@ not_found:
     else
     {
       print_err("Illegal unit of measure (");
-      print_string("mu inserted)");
+      prints("mu inserted)");
       help4("The unit of measurement in math glue must be mu.",
           "To recover gracefully from this error, it's best to",
           "delete the erroneous units; e.g., type `2' to delete",
@@ -422,7 +422,7 @@ not_found:
   else
   {
     print_err("Illegal unit of measure (");
-    print_string("pt inserted)");
+    prints("pt inserted)");
     help6("Dimensions can be in units of em, ex, in, pt, pc,",
       "cm, mm, dd, cc, bp, or sp; but yours is a new one!",
       "I'll assume that you meant to say pt, for printer's points.",
@@ -657,7 +657,7 @@ halfword the_toks (void)
       case dimen_val:
         {
           print_scaled(cur_val);
-          print_string("pt");
+          prints("pt");
         }
         break;
       case glue_val:
@@ -750,9 +750,9 @@ void conv_toks (void)
 
       if (font_size[cur_val] != font_dsize[cur_val])
       {
-        print_string(" at ");
+        prints(" at ");
         print_scaled(font_size[cur_val]);
-        print_string("pt");
+        prints("pt");
       }
       break;
 
@@ -1333,7 +1333,7 @@ void conditional (void)
         if (tracing_commands > 1)
         {
           begin_diagnostic();
-          print_string("{case ");
+          prints("{case ");
           print_int(n); 
           print_char('}');
           end_diagnostic(false);
@@ -1370,9 +1370,9 @@ void conditional (void)
     begin_diagnostic();
 
     if (b)
-      print_string("{true}");
+      prints("{true}");
     else
-      print_string("{false}");
+      prints("{false}");
 
     end_diagnostic(false);
   }
@@ -1732,13 +1732,13 @@ void prompt_file_name_(char * s, str_number e)
     print_err("I can't write on file `");
 
   print_file_name(cur_name, cur_area, cur_ext);
-  print_string("'.");
+  prints("'.");
 
   if (e == 785)    /* .tex */
     show_context();
 
   print_nl("Please type another ");
-  print_string(s); 
+  prints(s); 
 
   if (interaction < 2)
   {
@@ -1840,7 +1840,7 @@ void open_log_file (void)
     if (format_ident > 0)
       slow_print(format_ident);
 
-    print_string("  ");
+    prints("  ");
 
     if (civilize_flag)
       print_int(year);
@@ -2114,17 +2114,17 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
 
     if (s >= 0)
     {
-      print_string(" at ");
+      prints(" at ");
       print_scaled(s);
-      print_string("pt");
+      prints("pt");
     }
     else if (s != -1000)
     {
-      print_string(" scaled ");
+      prints(" scaled ");
       print_int(- (integer) s);
     }
 
-    print_string(" not loaded: Not enough room left");
+    prints(" not loaded: Not enough room left");
     help4("I'm afraid I won't be able to make use of this font,",
         "because my memory for character-size data is too small.",
         "If you're really stuck, ask a wizard to enlarge me.",
@@ -2499,20 +2499,20 @@ bad_tfm:
 
   if (s >= 0)
   {
-    print_string(" at ");
+    prints(" at ");
     print_scaled(s);
-    print_string("pt");
+    prints("pt");
   }
   else if (s != -1000)
   {
-    print_string("scaled");
+    prints("scaled");
     print_int(- (integer) s);
   } 
 
   if (file_opened)
-    print_string(" not loadable: Bad metric (TFM) file");
+    prints(" not loadable: Bad metric (TFM) file");
   else
-    print_string(" not loadable: Metric (TFM) file not found");
+    prints(" not loadable: Metric (TFM) file not found");
 
   help5("I wasn't able to read the size data for this font,",
       "so I will ignore the font specification.",
