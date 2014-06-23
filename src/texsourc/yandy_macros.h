@@ -738,7 +738,7 @@ while (0)
 #define chr_cmd(s)  \
 do                  \
 {                   \
-  print_string(s);  \
+  prints(s);        \
   print(chr_code);  \
 }                   \
 while (0)

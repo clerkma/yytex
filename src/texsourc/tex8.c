@@ -478,7 +478,7 @@ void do_register_command_ (small_number a)
       {
         print_err("You can't use `");
         print_cmd_chr(cur_cmd, cur_chr);
-        print_string("' after ");
+        prints("' after ");
         print_cmd_chr(q, 0);
         help1("I'm forgetting what you said and not changing anything.");
         error();
@@ -742,7 +742,7 @@ void new_font_(small_number a)
   {
     old_setting = selector;
     selector = new_string;
-    print_string("FONT");
+    prints("FONT");
     print(u - active_base);
     selector = old_setting;
     str_room(1);
@@ -764,7 +764,7 @@ void new_font_(small_number a)
     {
       print_err("Improper `at' size (");
       print_scaled(s);
-      print_string("pt), replaced by 10pt");
+      prints("pt), replaced by 10pt");
       help2("I can only handle fonts at positive sizes that are",
         "less than 2048pt, so I've changed what you said to 10pt.");
       error();
@@ -871,14 +871,6 @@ common_ending:
 
   equiv(u) = f;
   eqtb[font_id_base + f] = eqtb[u];
-
-#ifdef SHORTHASH
-  if (t > 65535L)
-  {
-    sprintf(log_line, "ERROR: %s too large %d\n",  "hash_used", t);
-    show_line(log_line, 1);
-  }
-#endif
   font_id_text(f) = t;
 }
 /* sec 1265 */
@@ -1062,7 +1054,7 @@ void show_whatever (void)
         print_char('=');
 
         if (box(cur_val) == 0)
-          print_string("void");
+          prints("void");
         else
           show_box(box(cur_val));
       }
@@ -1110,7 +1102,7 @@ void show_whatever (void)
     if (tracing_online <= 0)
     {
       selector = term_only;
-      print_string(" (see the transcript file)");
+      prints(" (see the transcript file)");
       selector = term_and_log;
     }
 
@@ -1438,7 +1430,7 @@ void handle_right_brace (void)
         cur_tok = cs_token_flag + frozen_cr;
         print_err("Missing ");
         print_esc("cr");
-        print_string("inserted");
+        prints("inserted");
         help1("I'm guessing that you meant to end an alignment here.");
         ins_error();
       }

@@ -22,8 +22,8 @@ void print_char_(ASCII_code);
 #define print_char(s) print_char_((ASCII_code) (s))
 void print_(integer);
 #define print(s) print_((integer) (s))
-void print_string_(const char * s);
-#define print_string(s) print_string_((const char *) s)
+void prints_(const char * s);
+#define prints(s) prints_((const char *) s)
 void slow_print_(integer);
 #define slow_print(s) slow_print_((integer) (s))
 void print_nl(const char *);

@@ -362,20 +362,20 @@ void close_files_and_terminate (void)
           print_nl("Output written on ");
 
           if (full_file_name_flag && dvi_file_name != NULL)
-            print_string(dvi_file_name);
+            prints(dvi_file_name);
           else
             slow_print(output_file_name);
 
-          print_string(" (");
+          prints(" (");
           print_int(total_pages);
-          print_string(" page");
+          prints(" page");
 
           if (total_pages != 1)
             print_char('s');
 
-          print_string(", ");
+          prints(", ");
           print_int(dvi_offset + dvi_ptr);
-          print_string(" bytes).");
+          prints(" bytes).");
           b_close(dvi_file);
         }
       }
@@ -393,7 +393,7 @@ void close_files_and_terminate (void)
       print_nl("Transcript written on ");
 
       if (full_file_name_flag && log_file_name != NULL)
-        print_string(log_file_name);
+        prints(log_file_name);
       else
         slow_print(texmf_log_name);
 

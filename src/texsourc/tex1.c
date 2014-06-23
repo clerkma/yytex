@@ -398,38 +398,38 @@ void print_mode_(integer m)
     switch (m / (max_command + 1))
     {
       case 0:
-        print_string("vertical");
+        prints("vertical");
         break;
       case 1:
-        print_string("horizontal");
+        prints("horizontal");
         break;
       case 2:
-        print_string("display math");
+        prints("display math");
         break;
     }
   }
   else
   {
     if (m == 0)
-      print_string("no");
+      prints("no");
     else
     {
       switch ((- (integer) m) / (max_command + 1))
       {
         case 0:
-          print_string("internal vertical");
+          prints("internal vertical");
           break;
         case 1:
-          print_string("restricted horizontal");
+          prints("restricted horizontal");
           break;
         case 2:
-          print_string("math");
+          prints("math");
           break;
       }
     }
   }
 
-  print_string(" mode");
+  prints(" mode");
 }
 /* sec 0216 */
 void push_nest (void) 
@@ -489,16 +489,16 @@ void show_activities (void)
     a = nest[p].aux_field;
     print_nl("### ");
     print_mode(m);
-    print_string(" entered at line ");
+    prints(" entered at line ");
     print_int(abs(nest[p].ml_field));
 
     if (m == hmode)
     {
       if (nest[p].pg_field != 040600000)
       {
-        print_string(" (language");
+        prints(" (language");
         print_int(nest[p].pg_field % 65536L);
-        print_string(":hyphenmin");
+        prints(":hyphenmin");
         print_int(nest[p].pg_field / 4194304L);
         print_char(',');
         print_int((nest[p].pg_field / 65536L) % 64);
@@ -507,7 +507,7 @@ void show_activities (void)
     }
 
     if (nest[p].ml_field < 0)
-      print_string(" (\\output routine)");
+      prints(" (\\output routine)");
 
     if (p == 0)
     {
@@ -516,7 +516,7 @@ void show_activities (void)
         print_nl("### current page:");
         
         if (output_active)
-          print_string(" (held over for next output)");
+          prints(" (held over for next output)");
 
         show_box(link(page_head));
 
@@ -534,7 +534,7 @@ void show_activities (void)
             print_esc("insert");
             t = subtype(r);
             print_int(t);
-            print_string(" adds ");
+            prints(" adds ");
 
             if (count(t) == 1000)
               t = height(r);
@@ -557,9 +557,9 @@ void show_activities (void)
                 }
               while (!(q == broken_ins(r)));
 
-              print_string(", #");
+              prints(", #");
               print_int(t);
-              print_string(" might split");
+              prints(" might split");
             }
             r = link(r);
           }
@@ -579,15 +579,15 @@ void show_activities (void)
           print_nl("prevdepth ");
 
           if  (a.cint <= ignore_depth)
-            print_string("ignored");
+            prints("ignored");
           else
             print_scaled(a.cint);
 
           if (nest[p].pg_field != 0)
           {
-            print_string(", prevgraf ");
+            prints(", prevgraf ");
             print_int(nest[p].pg_field);
-            print_string(" line");
+            prints(" line");
 
             if (nest[p].pg_field != 1)
               print_char('s');
@@ -604,7 +604,7 @@ void show_activities (void)
           {
             if (a.hh.rh > 0)
             {
-              print_string(", current language ");
+              prints(", current language ");
               print_int(a.hh.rh);
             }
           }
@@ -614,7 +614,7 @@ void show_activities (void)
       case 2:
         if (a.cint != 0)
         {
-          print_string("this will be denominator of:");
+          prints("this will be denominator of:");
           show_box(a.cint);
         }
         break;
@@ -847,7 +847,7 @@ void print_param_(integer n)
       break;
 
     default:
-      print_string("[unknown integer parameter!]");
+      prints("[unknown integer parameter!]");
       break;
   }
 }
@@ -964,7 +964,7 @@ void print_length_param_ (integer n)
       break;
 
     default:
-      print_string("[unknown dimen parameter!]");
+      prints("[unknown dimen parameter!]");
       break;
   }
 }
@@ -1481,7 +1481,7 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
         print_esc("span");
       else
       {
-        print_string("alignment tab character ");
+        prints("alignment tab character ");
         print(chr_code);
       }
       break;
@@ -1899,14 +1899,14 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
       break;
 
     case set_font:
-      print_string("select font ");
+      prints("select font ");
       slow_print(font_name[chr_code]);
 
       if (font_size[chr_code] != font_dsize[chr_code])
       {
-        print_string(" at ");
+        prints(" at ");
         print_scaled(font_size[chr_code]);
-        print_string("pt");
+        prints("pt");
       }
       break;
 
@@ -1974,11 +1974,11 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
       break;
 
     case undefined_cs:
-      print_string("undefined");
+      prints("undefined");
       break;
 
     case call:
-      print_string("macro");
+      prints("macro");
       break;
 
     case long_call:
@@ -2026,13 +2026,13 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
           break;
 
         default:
-          print_string("[unknown extension!]");
+          prints("[unknown extension!]");
           break;
       }
       break;
 
     default:
-      print_string("[unknown command code!]");
+      prints("[unknown command code!]");
       break;
   }
 }
@@ -2114,7 +2114,7 @@ void show_eqtb_(halfword n)
       print_char('=');
       
       if (equiv(n) == 0)
-        print_string("void");
+        prints("void");
       else
       {
         depth_threshold = 0;
@@ -2125,7 +2125,7 @@ void show_eqtb_(halfword n)
     else if (n < cat_code_base)
     {
       if (n == cur_font_loc)
-        print_string("current font");
+        prints("current font");
       else if (n < math_font_base + 16)
       {
         print_esc("textfont");
@@ -2209,7 +2209,7 @@ void show_eqtb_(halfword n)
     
     print_char('=');
     print_scaled(eqtb[n].cint);
-    print_string("pt");
+    prints("pt");
   }
   else
     print_char('?');
