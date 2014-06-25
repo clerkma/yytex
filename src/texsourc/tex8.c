@@ -512,8 +512,8 @@ void do_register_command_ (small_number a)
 found:
   if (q == tex_register)
     scan_optional_equals();
-  else
-    if (scan_keyword("by"));
+  else if (scan_keyword("by"))
+    do_nothing();
 
   arith_error = false;
 
@@ -835,7 +835,7 @@ void new_font_(small_number a)
           {
             if (trace_flag)
             {
-              sprintf(log_line, "SKIPPING %ld ", s);
+              sprintf(log_line, "SKIPPING %lld ", s);
               show_line(log_line, 0);
             }
             goto common_ending;
@@ -848,7 +848,7 @@ void new_font_(small_number a)
         {
           if (trace_flag)
           {
-            sprintf(log_line, "SKIPPING %ld ", s);
+            sprintf(log_line, "SKIPPING %lld ", s);
             show_line(log_line, 0);
           }
           goto common_ending;
@@ -865,7 +865,7 @@ void new_font_(small_number a)
 common_ending:
   if (trace_flag)
   {
-    sprintf(log_line, "NEW FONT %d ", f);
+    sprintf(log_line, "NEW FONT %lld ", f);
     show_line(log_line, 0);
   }
 

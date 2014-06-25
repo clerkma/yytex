@@ -1556,7 +1556,7 @@ void pack_file_name_(str_number n, str_number a, str_number e)
 
     if (trace_flag)
     {
-      sprintf(log_line, " pack_file_name `%s' (%d) ", name_of_file + 1, name_length); /* debugging */
+      sprintf(log_line, " pack_file_name `%s' (%lld) ", name_of_file + 1, name_length); /* debugging */
       show_line(log_line, 0);
     }
 
@@ -1724,7 +1724,8 @@ void prompt_file_name_(char * s, str_number e)
 {
   integer k;
 
-  if (interaction == scroll_mode);
+  if (interaction == scroll_mode)
+    do_nothing();
 
   if (!strcmp("input file name", s))
     print_err("I can't find file `");
@@ -2102,7 +2103,7 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   {
     if (trace_flag)
     {
-      sprintf(log_line, "font_ptr %d font_max %d fmem_ptr %d lf %d font_mem_size %d\n",
+      sprintf(log_line, "font_ptr %lld font_max %d fmem_ptr %lld lf %ld font_mem_size %ld\n",
           font_ptr, font_max, fmem_ptr, lf, font_mem_size);
       show_line(log_line, 0);
     }

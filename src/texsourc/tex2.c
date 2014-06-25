@@ -221,7 +221,7 @@ void show_context (void)
         if (state != token_list)
         {
           if (name <= 17)
-            if ((name == 0))
+            if (name == 0)
               if (base_ptr == 0)
                 print_nl("<*>");
               else

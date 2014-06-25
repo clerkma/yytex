@@ -1789,13 +1789,13 @@ void fin_align (void)
       }
       else if (type(q) == rule_node)
       {
-        if ((width(q) == -1073741824L))  /* 2^30  */
+        if (is_running(width(q)))
           width(q) = width(p);
 
-        if ((height(q) == -1073741824L))  /* 2^30  */
+        if (is_running(height(q)))
           height(q) = height(p);
 
-        if ((depth(q) == -1073741824L))  /* 2^30  */
+        if (is_running(depth(q)))
           depth(q) = depth(p);
 
         if (o != 0)

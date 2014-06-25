@@ -40,8 +40,8 @@ void print_file_name_(integer, integer, integer);
 #define print_file_name(n, a, e) print_file_name_((integer) (n), (integer) (a), (integer) (e))
 void print_size_(integer);
 #define print_size(s) print_size_((integer) (s))
-void print_write_whatsit_(str_number, pointer);
-#define print_write_whatsit(s, p) print_write_whatsit_((str_number) (s), (pointer) (p))
+void print_write_whatsit_(const char *, pointer);
+#define print_write_whatsit(s, p) print_write_whatsit_((const char *) (s), (pointer) (p))
 void jump_out(void);
 void error(void);
 void fatal_error(char *);
@@ -228,7 +228,7 @@ void find_font_dimen_(boolean);
 void scan_something_internal_(small_number, boolean);
 #define scan_something_internal(level, negative) scan_something_internal_((small_number) (level), (boolean) (negative))
 void scan_int(void);
-void scan_dimen_(bool, bool, bool);
+void scan_dimen_(boolean, boolean, boolean);
 #define scan_dimen(mu, inf, shortcut) scan_dimen_((boolean) (mu), (boolean) (inf), (boolean) (shortcut))
 void scan_glue_(small_number);
 #define scan_glue(level) scan_glue_((small_number) (level))
@@ -238,7 +238,7 @@ halfword str_toks_(pool_pointer);
 halfword the_toks(void);
 void ins_the_toks(void);
 void conv_toks(void);
-halfword scan_toks_(bool, bool);
+halfword scan_toks_(boolean, boolean);
 #define scan_toks(macrodef, xpand) scan_toks_((boolean) (macrodef), (boolean) (xpand))
 void read_toks_(integer, halfword);
 #define read_toks(n, r) read_toks_((integer) (n), (halfword) (r))

@@ -76,7 +76,6 @@ typedef char small_number;
 
 typedef enum
 {
-  NO_FILE_PATH = -1,
   TEXFORMATPATH,
   TEXINPUTPATH,
   TFMFILEPATH,

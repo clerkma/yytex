@@ -130,44 +130,44 @@ void close_files_and_terminate (void)
       fprintf(log_file, "%c\n", ' ');
       fprintf(log_file, "\n");
       fprintf(log_file, "%s%s\n", "Here is how much of TeX's memory", " you used:");
-      fprintf(log_file, "%c%ld%s", ' ', (int)(str_ptr - init_str_ptr), " string");
+      fprintf(log_file, "%c%lld%s", ' ', (integer)(str_ptr - init_str_ptr), " string");
 
       if (str_ptr != init_str_ptr + 1)
         putc('s',  log_file);
 
 #ifdef ALLOCATESTRING
       if (show_current)
-        fprintf(log_file, "%s%ld\n", " out of ", (int)(current_max_strings - init_str_ptr));
+        fprintf(log_file, "%s%d\n", " out of ", (int)(current_max_strings - init_str_ptr));
       else
 #endif
-        fprintf(log_file, "%s%ld\n", " out of ", (int)(max_strings - init_str_ptr));
+        fprintf(log_file, "%s%d\n", " out of ", (int)(max_strings - init_str_ptr));
 
 #ifdef ALLOCATESTRING
       if (show_current)
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(pool_ptr - init_pool_ptr), " string characters out of ", current_pool_size - init_pool_ptr);
+        fprintf(log_file, "%c%lld%s%lld\n", ' ', (integer)(pool_ptr - init_pool_ptr), " string characters out of ", current_pool_size - init_pool_ptr);
       else
 #endif
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(pool_ptr - init_pool_ptr), " string characters out of ", pool_size - init_pool_ptr);
+        fprintf(log_file, "%c%lld%s%lld\n", ' ', (integer)(pool_ptr - init_pool_ptr), " string characters out of ", pool_size - init_pool_ptr);
 
 #ifdef ALLOCATEMAIN
       if (show_current)
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(lo_mem_max - mem_min + mem_end - hi_mem_min + 2), " words of memory out of ", current_mem_size);
+        fprintf(log_file, "%c%lld%s%d\n", ' ', (integer)(lo_mem_max - mem_min + mem_end - hi_mem_min + 2), " words of memory out of ", current_mem_size);
       else
 #endif
-        fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(lo_mem_max - mem_min + mem_end - hi_mem_min + 2), " words of memory out of ", mem_end + 1 - mem_min);
+        fprintf(log_file, "%c%lld%s%lld\n", ' ', (integer)(lo_mem_max - mem_min + mem_end - hi_mem_min + 2), " words of memory out of ", mem_end + 1 - mem_min);
 
-      fprintf(log_file, "%c%ld%s%ld\n", ' ', (int)(cs_count), " multiletter control sequences out of ", (hash_size + hash_extra));
-      fprintf(log_file, "%c%ld%s%ld%s", ' ', (int)(fmem_ptr), " words of font info for ", (int)(font_ptr - font_base), " font");
+      fprintf(log_file, "%c%lld%s%d\n", ' ', (cs_count), " multiletter control sequences out of ", (hash_size + hash_extra));
+      fprintf(log_file, "%c%lld%s%lld%s", ' ', (fmem_ptr), " words of font info for ", (font_ptr - font_base), " font");
 
       if (font_ptr != 1)
         putc('s',  log_file);
 
 #ifdef ALLOCATEFONT
       if (show_current)
-        fprintf(log_file, "%s%ld%s%ld\n", ", out of ", current_font_mem_size, " for ", font_max - font_base);
+        fprintf(log_file, "%s%d%s%d\n", ", out of ", current_font_mem_size, " for ", font_max - font_base);
       else
 #endif
-        fprintf(log_file, "%s%ld%s%ld\n", ", out of ", font_mem_size, " for ", font_max - font_base);
+        fprintf(log_file, "%s%d%s%d\n", ", out of ", font_mem_size, " for ", font_max - font_base);
 
       fprintf(log_file, "%c%ld%s", ' ', hyph_count, " hyphenation exception");
 
@@ -224,7 +224,7 @@ void close_files_and_terminate (void)
         fprintf(log_file, " (i = in_stack, n = nest_stack, p = param_stack, b = buf_stack, s = save_stack)\n");
 
       if (!knuth_flag)
-        fprintf(log_file, " %d inputs open max out of %ld\n", high_in_open, max_in_open);
+        fprintf(log_file, " %lld inputs open max out of %d\n", high_in_open, max_in_open);
 
       if (show_line_break_stats && first_pass_count > 0)
       {
@@ -244,10 +244,10 @@ void close_files_and_terminate (void)
         third_count = final_pass_count - paragraph_failed;
 
         if (first_pass_count > 0)
-          fprintf(log_file, "\n %d first pass (\\pretolerance = %d)", first_pass_count, pretolerance);
+          fprintf(log_file, "\n %d first pass (\\pretolerance = %lld)", first_pass_count, pretolerance);
 
         if (second_pass_count > 0)
-          fprintf(log_file, "\n %d second pass (\\tolerance = %d)", second_pass_count, tolerance);
+          fprintf(log_file, "\n %d second pass (\\tolerance = %lld)", second_pass_count, tolerance);
 
         if (final_pass_count > 0 || emergency_stretch > 0)
         {
@@ -311,13 +311,13 @@ void close_files_and_terminate (void)
           dvi_out(max_push / 256);
           dvi_out(max_push % 256);
 
-          if (total_pages >= 65536)    // 99/Oct/10 dvi_t 16 bit problem
+          if (total_pages >= 65536)
           {
-            sprintf(log_line, "\nWARNING: page count (dvi_t) in DVI file will be %ld not %ld\n",
+            sprintf(log_line, "\nWARNING: page count (dvi_t) in DVI file will be %lld not %lld\n",
               (total_pages % 65536), total_pages);
 
             if (log_opened)
-              (void) fputs (log_line, log_file);
+              fputs(log_line, log_file);
 
             show_line(log_line, 1);
           }
@@ -325,8 +325,8 @@ void close_files_and_terminate (void)
           dvi_out((total_pages / 256) % 256);
           dvi_out(total_pages % 256);
 
-          if (show_fonts_used && log_opened)     /* 97/Dec/24 */
-            show_font_info();           // now in local.c
+          if (show_fonts_used && log_opened)
+            show_font_info();
 
           while (font_ptr > 0)
           {
@@ -347,9 +347,9 @@ void close_files_and_terminate (void)
             decr(k);
           }
 
-          if (trace_flag) /* 93/Dec/28 - bkph */
+          if (trace_flag)
           {
-            sprintf(log_line, "\ndviwrite %d", dvi_gone);
+            sprintf(log_line, "\ndviwrite %lld", dvi_gone);
             show_line(log_line, 0);
           }
 

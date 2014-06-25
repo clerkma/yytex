@@ -291,7 +291,7 @@ void read_repl_sub (FILE * repl_input)
     if (*buffer == '%' || *buffer == ';' || *buffer == '\n')
       continue;
 
-    if ((m = sscanf (buffer, "%d%n %s", &chrs, &n, &charname)) == 0)
+    if ((m = sscanf(buffer, "%d%n %s", &chrs, &n, &charname)) == 0)
       continue;
     else if (m == 2)
     {
@@ -557,7 +557,7 @@ void *ourrealloc (void *old, size_t new_size)
   {
     if (trace_flag)
     {
-      sprintf(log_line, "EXPANDED! %d (%d) == %d (%d)\n",
+      sprintf(log_line, "EXPANDED! %p (%d) == %p (%d)\n",
           mnew, new_size, old, old_size);
       show_line(log_line, 0);
     }
@@ -666,7 +666,7 @@ int allocate_tries (int trie_max)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Addresses trie_trl %d trie_tro %d trie_trc %d\n", trie_trl, trie_tro, trie_trc);
+    sprintf(log_line, "Addresses trie_trl %p trie_tro %p trie_trc %p\n", trie_trl, trie_tro, trie_trc);
     show_line(log_line, 0);
   }
 
@@ -725,7 +725,7 @@ int realloc_hyphen (int hyphen_prime)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Addresses hyph_word %d hyph_list %d\n", hyph_word, hyph_list);
+    sprintf(log_line, "Addresses hyph_word %p hyph_list %p\n", hyph_word, hyph_list);
     show_line(log_line, 0);
   }
 
@@ -806,7 +806,7 @@ memory_word *allocate_main_memory (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Address main memory == %d\n", main_memory);
+    sprintf(log_line, "Address main memory == %p\n", main_memory);
     show_line(log_line, 0);
   }
 
@@ -817,7 +817,7 @@ memory_word *allocate_main_memory (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Offset address main memory == %d\n", mem);
+    sprintf(log_line, "Offset address main memory == %p\n", mem);
     show_line(log_line, 0);
   }
 
@@ -864,7 +864,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n", "main memory", main_memory);
+    sprintf(log_line, "Old Address %s == %p\n", "main memory", main_memory);
     show_line(log_line, 0);
   }
 
@@ -944,7 +944,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "New Address %s == %d\n", "main memory", new_memory);
+    sprintf(log_line, "New Address %s == %p\n", "main memory", new_memory);
     show_line(log_line, 0);
   }
 
@@ -953,7 +953,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
 /*  shift everything upward to make space for new low area */
     if (trace_flag)
     {
-      sprintf(log_line, "memmove %d %d %d \n", new_memory + lo_size,
+      sprintf(log_line, "memmove %p %p %d \n", new_memory + lo_size,
           new_memory, (current_mem_size + 1) * sizeof(memory_word));
       show_line(log_line, 0);
     }
@@ -1005,7 +1005,7 @@ memory_word * realloc_font_info (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n",  "font_info", font_info);
+    sprintf(log_line, "Old Address %s == %p\n",  "font_info", font_info);
     show_line(log_line, 0);
   }
 /*  during initial allocation, font_info == NULL - realloc acts like malloc */
@@ -1060,7 +1060,7 @@ memory_word * realloc_font_info (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "New Address %s == %d\n", "font_info", font_info);
+    sprintf(log_line, "New Address %s == %p\n", "font_info", font_info);
     show_line(log_line, 0);
   }
 
@@ -1086,7 +1086,7 @@ packed_ASCII_code * realloc_str_pool (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n", "string pool", str_pool);
+    sprintf(log_line, "Old Address %s == %p\n", "string pool", str_pool);
     show_line(log_line, 0);
   }
 
@@ -1140,7 +1140,7 @@ packed_ASCII_code * realloc_str_pool (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "New Address %s == %d\n", "string pool", str_pool);
+    sprintf(log_line, "New Address %s == %p\n", "string pool", str_pool);
     show_line(log_line, 0);
   }
   
@@ -1163,7 +1163,7 @@ pool_pointer *realloc_str_start (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n", "string start", str_start);
+    sprintf(log_line, "Old Address %s == %p\n", "string start", str_start);
     show_line(log_line, 0);
   }
 
@@ -1217,7 +1217,7 @@ pool_pointer *realloc_str_start (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "New Address %s == %d\n", "string start", str_start);
+    sprintf(log_line, "New Address %s == %p\n", "string start", str_start);
     show_line(log_line, 0);
   }
 
@@ -1263,9 +1263,9 @@ int allocate_ini (int size)
   
   if (trace_flag)
   {
-    sprintf(log_line, "Addresses trie_l %d trie_o %d trie_c %d\n", trie_l, trie_o, trie_c);
+    sprintf(log_line, "Addresses trie_l %p trie_o %p trie_c %p\n", trie_l, trie_o, trie_c);
     show_line(log_line, 0);
-    sprintf(log_line, "Addresses trie_r %d trie_hash %d trie_taken %d\n",
+    sprintf(log_line, "Addresses trie_r %p trie_hash %p trie_taken %p\n",
       trie_r, trie_hash, trie_taken);
     show_line(log_line, 0);
   }
@@ -1295,7 +1295,7 @@ memory_word *realloc_save_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n", "save stack", save_stack);
+    sprintf(log_line, "Old Address %s == %p\n", "save stack", save_stack);
     show_line(log_line, 0);
   }
 
@@ -1351,7 +1351,7 @@ memory_word *realloc_save_stack (int size)
   {
     sprintf(log_line, "Current %s %d\n", "save_size", current_save_size);
     show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %d\n", "save stack", save_stack);
+    sprintf(log_line, "New Address %s == %p\n", "save stack", save_stack);
     show_line(log_line, 0);
   }
 
@@ -1373,7 +1373,7 @@ in_state_record *realloc_input_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n",  "input stack", input_stack);
+    sprintf(log_line, "Old Address %s == %p\n",  "input stack", input_stack);
     show_line(log_line, 0);
   }
 
@@ -1429,7 +1429,7 @@ in_state_record *realloc_input_stack (int size)
   {
     sprintf(log_line, "Current %s %d\n", "stack_size", current_stack_size);
     show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %d\n", "input stack", input_stack);
+    sprintf(log_line, "New Address %s == %p\n", "input stack", input_stack);
     show_line(log_line, 0);
   }
 
@@ -1451,7 +1451,7 @@ list_state_record *realloc_nest_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n",  "nest stack", nest);
+    sprintf(log_line, "Old Address %s == %p\n",  "nest stack", nest);
     show_line(log_line, 0);
   }
 
@@ -1507,7 +1507,7 @@ list_state_record *realloc_nest_stack (int size)
   {
     sprintf(log_line, "Current %s %d\n", "nest_size", current_nest_size);
     show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %d\n", "nest stack", nest);
+    sprintf(log_line, "New Address %s == %p\n", "nest stack", nest);
     show_line(log_line, 0);
   }
 
@@ -1529,7 +1529,7 @@ halfword *realloc_param_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n",  "param stack", param_stack);
+    sprintf(log_line, "Old Address %s == %p\n",  "param stack", param_stack);
     show_line(log_line, 0);
   }
 
@@ -1585,7 +1585,7 @@ halfword *realloc_param_stack (int size)
   {
     sprintf(log_line, "Current %s %d\n", "param_size", current_param_size);
     show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %d\n", "param stack", param_stack);
+    sprintf(log_line, "New Address %s == %p\n", "param stack", param_stack);
     show_line(log_line, 0);
   }
 
@@ -1607,7 +1607,7 @@ ASCII_code * realloc_buffer (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Old Address %s == %d\n", "buffer", buffer);
+    sprintf(log_line, "Old Address %s == %p\n", "buffer", buffer);
     show_line(log_line, 0);
   }
 
@@ -1670,7 +1670,7 @@ ASCII_code * realloc_buffer (int size)
   {
     sprintf(log_line, "Current %s %d\n", "buffer", current_buf_size);
     show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %d\n", "buffer", buffer);
+    sprintf(log_line, "New Address %s == %p\n", "buffer", buffer);
     show_line(log_line, 0);
   }
 
@@ -1828,8 +1828,8 @@ int free_memory (void)
 
   if (trace_flag)
   {
-    printf("Main Memory: variable node %d (%d - %d);\n"
-      "             one word %d (%d - %d)\n",
+    printf("Main Memory: variable node %lld (%lld - %ld);\n"
+      "             one word %ld (%ld - %ld)\n",
       lo_mem_max - mem_min, mem_min, lo_mem_max,
       mem_end - hi_mem_min, hi_mem_min, mem_end);
   }
@@ -3288,7 +3288,7 @@ void print_cs_name (FILE *output, int h)
     if (output == stdout)
       show_line(log_line, 0);
     else
-      fprintf(output, log_line);
+      fprintf(output, "%s", log_line);
   }
 
 }
@@ -3366,7 +3366,7 @@ void print_cs_names (FILE *output, int pass)
     if (output == stdout)
       show_line(log_line, 0);
     else
-      fprintf(output, log_line);
+      fprintf(output, "%s", log_line);
   }
 
   if (ccount > 0)
@@ -3412,7 +3412,7 @@ void print_cs_names (FILE *output, int pass)
       if (output == stdout)
         show_line(log_line, 0);
       else
-        fprintf(output, log_line);
+        fprintf(output, "%s", log_line);
     }
 
     free((void *)cnumtable);

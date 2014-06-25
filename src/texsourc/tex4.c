@@ -98,7 +98,7 @@ void dvi_swap (void)
   if (trace_flag)
   {
     show_char('\n');
-    sprintf(log_line, "dvi_swap() %d", dvi_gone);
+    sprintf(log_line, "dvi_swap() %lld", dvi_gone);
     show_line(log_line, 0);
   }
 

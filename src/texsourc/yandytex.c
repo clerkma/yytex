@@ -25,7 +25,6 @@
 #define edit_value          tex_edit_value
 
 extern char * replacement[];
-static char * program_name = NULL;
 int    gargc;   /* number of args - set to zero after initialization */
 char **gargv;
 
@@ -141,7 +140,7 @@ void fix_date_and_time (void)
   (void) time(&clock);
 
   if (trace_flag)
-    printf("The time is %u\n", clock);
+    printf("The time is %lld\n", clock);
 
   if (clock < 0)
     puts("Time not available!");
@@ -150,7 +149,7 @@ void fix_date_and_time (void)
 
   if (tmptr == NULL)
   {
-    printf("Cannot convert time (%0ld)!\n", clock);
+    printf("Cannot convert time (%0lld)!\n", clock);
     year     = 2038;
     month    = 1;
     day      = 18;
@@ -559,7 +558,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
             uexit(EXIT_FAILURE); 
           }
 
-          (void) sprintf (s, "%d", linenumber);
+          (void) sprintf (s, "%lld", linenumber);
 
           while (*s != '\0')
             s++;
