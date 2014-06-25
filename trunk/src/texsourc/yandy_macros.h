@@ -116,7 +116,7 @@ while (0)
 #endif
 /* sec 0124 */
 #define empty_flag  max_halfword
-#define is_empty(a) (link(a) = empty_flag)
+#define is_empty(a) (link(a) == empty_flag)
 #define node_size   info
 #define llink(a)    info(a+1)
 #define rlink(a)    link(a+1)

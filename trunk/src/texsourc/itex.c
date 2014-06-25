@@ -109,12 +109,12 @@ void initialize (void)
 
     if (flag)
     {
-      puts("Inverted mapping xord[] pairs:\n");
+      puts("Inverted mapping xord[] pairs:");
 
       for (k = 0; k < 256; k++)
       {
         if (xord[k] != 127)
-          printf("%d => %d\n", k, xord[k]);
+          printf("%lld => %d\n", k, xord[k]);
       }
     }
   }
@@ -1495,7 +1495,7 @@ boolean load_fmt_file (void)
 #ifdef ALLOCATEMAIN
 /* we already read this once earlier to grab mem_top */
   if (trace_flag)
-    printf("Read from fmt file mem_top = %d TeX words\n", x);
+    printf("Read from fmt file mem_top = %lld TeX words\n", x);
 
   mem = allocate_main_memory(x); /* allocate main memory at this point */
 
@@ -1539,7 +1539,7 @@ boolean load_fmt_file (void)
     if (x > current_pool_size)
     {
       if (trace_flag)
-        printf("undump string pool reallocation (%d > %d)\n", x, current_pool_size);
+        printf("undump string pool reallocation (%lld > %d)\n", x, current_pool_size);
 
       str_pool = realloc_str_pool (x - current_pool_size + increment_pool_size);
     }
@@ -1566,7 +1566,7 @@ boolean load_fmt_file (void)
     if (x > current_max_strings)
     {
       if (trace_flag)
-        printf("undump string pointer reallocation (%d > %d)\n", x, current_max_strings);
+        printf("undump string pointer reallocation (%lld > %d)\n", x, current_max_strings);
 
       str_start = realloc_str_start(x - current_max_strings + increment_max_strings);
     }
@@ -1686,7 +1686,7 @@ boolean load_fmt_file (void)
   undump_int(cs_count);
 
   if (trace_flag)
-    printf("itex undump cs_count %d ", cs_count);
+    printf("itex undump cs_count %lld ", cs_count);
 
   {
     undump_int(x); /* font_mem_size */
@@ -1696,12 +1696,12 @@ boolean load_fmt_file (void)
 
 #ifdef ALLOCATEFONT
     if (trace_flag)
-      printf("Read from fmt fmem_ptr = %d\n", x);
+      printf("Read from fmt fmem_ptr = %lld\n", x);
 
     if (x > current_font_mem_size)
     {
       if (trace_flag)
-        printf("Undump realloc font_info (%d > %d)\n", x, current_font_mem_size);
+        printf("Undump realloc font_info (%lld > %d)\n", x, current_font_mem_size);
 
       font_info = realloc_font_info (x - current_font_mem_size + increment_font_mem_size);
     }
@@ -2064,7 +2064,7 @@ void show_frozen (void)
   int i, j, n;
 
   fprintf(log_file, "\n");
-  fprintf(log_file, "(%d fonts frozen in format file:\n", font_ptr);
+  fprintf(log_file, "(%lld fonts frozen in format file:\n", font_ptr);
 
   for (i = 1; i <= font_ptr; i++)
   {
@@ -3451,7 +3451,7 @@ done2:
   cs_count = frozen_control_sequence - 1 - hash_used;
 
   if (trace_flag)
-    printf("itex cs_count %d hash_size %d hash_extra %d hash_used %d",
+    printf("itex cs_count %lld hash_size %d hash_extra %d hash_used %ld",
         cs_count, hash_size, hash_extra, hash_used);
 
   for (p = hash_base; p <= hash_used; p++)

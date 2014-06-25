@@ -19,6 +19,12 @@
 
 #include "texd.h"
 
+inline void do_nothing(void)
+{
+  if (trace_flag)
+    printf("DO_NOTHING.\n");
+}
+
 inline void update_terminal(void)
 {
 #ifndef _WINDOWS
@@ -115,9 +121,10 @@ inline void append_lc_hex (ASCII_code c)
 /* sec 0073 */
 inline void print_err (const char * s)
 {
-  if (interaction == error_stop_mode);
-    print_nl("! ");
-
+  if (interaction == error_stop_mode)
+    do_nothing();
+  
+  print_nl("! ");
   prints(s);
 }
 /* sec 0079 */
@@ -155,6 +162,13 @@ inline void succumb (void)
 
   history = error_stop_mode;
   jump_out();
+}
+/* sec 0180 */
+inline void node_list_display(integer p)
+{
+  append_char('.');
+  show_node_list(p);
+  decr(pool_ptr);
 }
 /* sec 0214 */
 inline void tail_append_ (pointer val)
