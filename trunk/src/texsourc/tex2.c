@@ -791,6 +791,7 @@ void macro_call (void)
           p = temp_head;
           m = 0;
         }
+
 continu:
         get_token();
 
@@ -825,6 +826,7 @@ continu:
           else
           {
             t = s;
+
             do
               {
                 store_new_token(info(t));
@@ -1099,7 +1101,7 @@ void expand (void)
         if (t >= cs_token_flag)
         {
           p = get_avail();
-          info(p) = cs_token_flag + frozen_dont_expand; /*96/Jan/10*/
+          info(p) = cs_token_flag + frozen_dont_expand;
           link(p) = loc;
           start = p;
           loc = p;
@@ -1141,7 +1143,7 @@ void expand (void)
             if (max_buf_stack == current_buf_size)
               buffer = realloc_buffer (increment_buf_size);
 
-            if (max_buf_stack == current_buf_size) /* check again after allocation */
+            if (max_buf_stack == current_buf_size)
             {
               overflow("buffer size", current_buf_size);
               return;
@@ -1149,7 +1151,7 @@ void expand (void)
 #else
             if (max_buf_stack == buf_size)
             {
-              overflow("buffer size", buf_size); /* buffer size - not dynamic */
+              overflow("buffer size", buf_size);
               return;
             }
 #endif
@@ -1247,7 +1249,7 @@ void expand (void)
   }
   else
   {
-    cur_tok = cs_token_flag + frozen_endv; /* 96/Jan/10 */
+    cur_tok = cs_token_flag + frozen_endv;
     back_input();
   }
 
@@ -1491,7 +1493,7 @@ void find_font_dimen_(boolean writing)
   scan_font_ident();
   f = cur_val;
 
-  if (n < 0 || (n == 0 && font_dimen_zero == 0)) /* change 98/Oct/5 */
+  if (n < 0)
     cur_val = fmem_ptr;
   else
   {
@@ -1733,7 +1735,7 @@ void scan_something_internal_(small_number level, boolean negative)
       {
         scan_eight_bit_int();
 
-        switch(m)
+        switch (m)
         {
           case int_val:
             cur_val = count(cur_val);
@@ -1776,7 +1778,7 @@ void scan_something_internal_(small_number level, boolean negative)
         cur_val_level = cur_chr;
 
         if (!is_char_node(tail) && (mode != 0))
-          switch(cur_chr)
+          switch (cur_chr)
           {
             case int_val:
               if (type(tail) == penalty_node)
@@ -1865,8 +1867,8 @@ void get_next (void)
 {
   integer k;
   halfword t;
-/*  char cat; */    /* make this an int ? */
-  int cat;      /* make this an int ? 95/Jan/7 */
+/* char cat; */
+  int cat;
   ASCII_code c, cc;
   char d;
 

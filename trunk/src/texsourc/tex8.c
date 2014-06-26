@@ -1164,7 +1164,7 @@ void do_extension (void)
   integer k;
   pointer p;
 
-  switch(cur_chr)
+  switch (cur_chr)
   {
     case open_node:
       {
@@ -1281,7 +1281,7 @@ void handle_right_brace (void)
   scaled d;
   integer f;
 
-  switch(cur_group)
+  switch (cur_group)
   {
     case simple_group:
       unsave();
@@ -1533,7 +1533,7 @@ reswitch:
   if (tracing_commands > 0)
     show_cur_cmd_chr();
 
-  switch(abs(mode) + cur_cmd)
+  switch (abs(mode) + cur_cmd)
   {
     case hmode + letter:
     case hmode + other_char:

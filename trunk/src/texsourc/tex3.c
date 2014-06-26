@@ -2039,11 +2039,9 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
   pack_file_name(nom, aire, 805); /* .tfm */
 
   if (!b_open_in(tfm_file))
-  {
     goto bad_tfm;
-  } 
 
-  file_opened = true; 
+  file_opened = true;
 
   {
     read_sixteen(lf);
@@ -2295,30 +2293,10 @@ not_found:;
       else
       {
         if (b != bchar)
-        {
-          {
-            if ((b < bc) || (b > ec))  /* check-existence(b) */
-              goto bad_tfm;
-          }
-
-          qw = font_info[char_base[f] + b].qqqq;
-
-          if (!(qw.b0 > 0))
-            goto bad_tfm;
-        }
+          check_existence(b);
 
         if (c < 128)
-        {
-          {
-            if ((d < bc) || (d > ec))  /* check-existence(d) */
-              goto bad_tfm;
-          }
-
-          qw = font_info[char_base[f] + d].qqqq;
-
-          if (!(qw.b0 > 0))
-            goto bad_tfm;
-        }
+          check_existence(d);
         else if (256 * (c - 128) + d >= nk)
           goto bad_tfm;
 
@@ -2357,55 +2335,15 @@ not_found:;
     store_four_quarters(font_info[k].qqqq);
 
     if (a != 0)
-    {
-      {
-        if ((a < bc) || (a > ec))
-          goto bad_tfm;
-      }
-
-      qw = font_info[char_base[f] + a].qqqq;
-
-      if (!(qw.b0 > 0))
-        goto bad_tfm;
-    }
+      check_existence(a);
 
     if (b != 0)
-    {
-      {
-        if ((b < bc) || (b > ec))
-          goto bad_tfm;
-      }
-
-      qw = font_info[char_base[f] + b].qqqq;
-
-      if (!(qw.b0 > 0))
-        goto bad_tfm;
-    }
+      check_existence(b);
 
     if (c != 0)
-    {
-      {
-        if ((c < bc) || (c > ec))
-          goto bad_tfm;
-      }
+      check_existence(c);
 
-      qw = font_info[char_base[f] + c].qqqq;
-
-      if (!(qw.b0 > 0))
-        goto bad_tfm;
-    }
-
-    {
-      {
-        if ((d < bc) || (d > ec))
-          goto bad_tfm;
-      }
-
-      qw = font_info[char_base[f] + d].qqqq;
-
-      if (!(qw.b0 > 0))
-        goto bad_tfm;
-    }
+    check_existence(d);
   }
 
   {

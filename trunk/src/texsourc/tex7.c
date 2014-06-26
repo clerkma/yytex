@@ -503,7 +503,7 @@ void append_glue (void)
 
   s = cur_chr;
 
-  switch(s)
+  switch (s)
   {
     case fil_code:
       cur_val = fil_glue;
@@ -619,7 +619,7 @@ void extra_right_brace (void)
 {
   print_err("Extra }, or forgotten ");
 
-  switch(cur_group)
+  switch (cur_group)
   {
     case semi_simple_group:
       print_esc("endgroup");
@@ -744,7 +744,7 @@ void begin_box_(integer box_context)
   halfword k;
   eight_bits n;
 
-  switch(cur_chr)
+  switch (cur_chr)
   {
     case box_code:
       {
@@ -1329,7 +1329,7 @@ void make_accent (void)
         shift_amount(p) = x - h;
       }
 
-      delta = round((w - a) / ((double) 2.0)+ h * t - x * s);
+      delta = round((w - a) / ((double) 2.0) + h * t - x * s);
       r = new_kern(delta);
       subtype(r) = acc_kern;
       link(tail) = r;

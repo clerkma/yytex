@@ -208,7 +208,7 @@ void zmovement(scaled w, eight_bits o)
   while (p != 0)
   {
     if (width(p) == w)
-      switch(mstate + info(p))
+      switch (mstate + info(p))
       {
         case none_seen + yz_OK:
         case none_seen + y_OK:
