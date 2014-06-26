@@ -478,7 +478,7 @@ void line_break_ (integer final_widow_penalty)
         while (!(!is_char_node(cur_p)));
       }
 
-      switch(type(cur_p))
+      switch (type(cur_p))
       {
         case hlist_node:
         case vlist_node:
@@ -651,7 +651,7 @@ done3:;
                 while (true)
                 {
                   if (!(is_char_node(s)))
-                    switch(type(s))
+                    switch (type(s))
                     {
                       case ligature_node:
                         break;
@@ -708,7 +708,7 @@ done1:;
                   f = font(s);
                   disc_width = disc_width + char_width(f, char_info(f, character(s)));
                 }
-                else switch(type(s))
+                else switch (type(s))
                 {
                   case ligature_node:
                     {
@@ -747,7 +747,7 @@ done1:;
                 f = font(s);
                 act_width = act_width + char_width(f, char_info(f, character(s)));
               }
-              else switch(type(s))
+              else switch (type(s))
               {
                 case ligature_node:
                   {

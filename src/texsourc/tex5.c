@@ -131,7 +131,7 @@ halfword clean_box_(halfword p, small_number s)
   halfword x;
   halfword r;
 
-  switch(math_type(p))
+  switch (math_type(p))
   {
     case math_char:
       {

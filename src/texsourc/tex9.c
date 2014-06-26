@@ -430,7 +430,7 @@ void debug_help (void)
     {
       read(stdin, n);
 
-      switch(m)
+      switch (m)
       {
         case 1:
           print_word(mem[n]);

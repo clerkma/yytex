@@ -3176,7 +3176,7 @@ int main_init (int ac, char **av)
     show_maximums(stdout);
 
   initial_memory();
-  deslash_all(ac, av); /* deslash and note if format specified */
+  deslash_all(ac, av);
   no_interrupts = 0;
 
   if (format_spec && mem_spec_flag)
@@ -3496,36 +3496,41 @@ int decode_fourty (unsigned long checksum, char *codingvector)
 {
   int c;
   int k;
-/*  char codingvector[6+1]; */
 
   if (checksum == 0)
   {
     strcpy(codingvector, "unknwn");
     return 1;
   }
+  else if ((checksum >> 8) == (checkdefault >> 8))
+  {
+    strcpy (codingvector, "fixed ");
+    return 1;
+  }
   else
-    if ((checksum >> 8) == (checkdefault >> 8))  /* last byte random */
+  {
+    for (k = 0; k < 6; k++)
     {
-/*    strcpy (codingvector,  "native"); */  /* if not specified ... */
-      strcpy (codingvector,  "fixed ");   /* if not specified ... */
-      return 1;               /* no info available */
+      c = (int) (checksum % 40);
+      checksum = checksum / 40;
+      
+      if (c <= 'z' - 'a')
+        c = c + 'a';
+      else if (c < 36)
+        c = (c + '0') - ('z' - 'a') - 1;
+      else if (c == 36)
+        c = '-';
+      else if (c == 37)
+        c = '&';
+      else if (c == 38)
+        c = '_';
+      else
+        c = '.';
+      
+      codingvector[5-k] = (char) c;
     }
-    else
-    {
-      for (k = 0; k < 6; k++)
-      {
-        c = (int) (checksum % 40);
-        checksum = checksum / 40;
-        if (c <= 'z' - 'a') c = c + 'a';
-        else if (c < 36) c = (c + '0') - ('z' - 'a') - 1;
-        else if (c == 36) c = '-';
-        else if (c == 37) c = '&';
-        else if (c == 38) c = '_';
-        else c = '.';       /* unknown */
-        codingvector[5-k] = (char) c;
-      }
-      codingvector[6] = '\0';
-    }
+    codingvector[6] = '\0';
+  }
 
   return 0;
 }

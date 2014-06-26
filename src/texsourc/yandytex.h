@@ -89,7 +89,7 @@ typedef enum
 #define chr(x)   (x)
 #define ord(x)   (x)
 #define odd(x)   ((x) % 2)
-#define round(x) zround((double) (x))
+#define round(x) web2c_round((double) (x))
 #define decr(x)  --(x)
 #define incr(x)  ++(x)
 #define fabs(x)  ((x) >= 0.0 ? (x) : -(x))
@@ -100,7 +100,7 @@ typedef enum
 
 #define MAXLINE 256
 
-extern integer zround (double);
+extern integer web2c_round (double);
 extern boolean eoln (FILE * file);
 extern boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode);
 extern boolean open_output (FILE **f, char *fopen_mode);

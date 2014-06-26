@@ -1019,6 +1019,21 @@ do                                \
   }                               \
 while (0)
 /* sec 0571 */
+/* sec 0573 */
+#define check_existence(a)    \
+do                            \
+{                             \
+  {                           \
+    if ((a < bc) || (a > ec)) \
+      goto bad_tfm;           \
+  }                           \
+                              \
+  qw = char_info(f, a);       \
+                              \
+  if (!(qw.b0 > 0))           \
+    goto bad_tfm;             \
+}                             \
+while (0)
 /* sec 0585 */
 #define set1      128 // c[1]
 #define set2      129 // c[2]

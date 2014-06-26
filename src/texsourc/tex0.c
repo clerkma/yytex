@@ -1157,7 +1157,7 @@ void print_word_(memory_word w)
   print_char(' ');
   print_scaled(w.cint); 
   print_char(' ');
-  print_scaled(round(65536L * w.gr));
+  print_scaled(round(unity * w.gr));
   print_ln();
   print_int(w.hh.lh);
   print_char('=');
@@ -1182,7 +1182,7 @@ void zprintfword(memory_word w)
   print_char(' ');
   print_scaled(w.cint);
   print_char(' ');
-  print_scaled(round(65536L * w.gr));
+  print_scaled(round(unity * w.gr));
   print_ln();
   print_int(w.hh.lh);
   print_char('=');
@@ -2125,7 +2125,7 @@ void print_style_(integer c)
 /* sec 0225 */
 void print_skip_param_(integer n)
 {
-  switch(n)
+  switch (n)
   {
     case line_skip_code:
       print_esc("lineskip");

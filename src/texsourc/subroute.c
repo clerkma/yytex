@@ -26,9 +26,7 @@ void uexit (int unix_code)
 {
   int final_code;
 
-#ifndef _WINDOWS
-  fflush(stdout);
-#endif
+  update_terminal();
 
   if (unix_code == 0)
     final_code = EXIT_SUCCESS;
@@ -39,7 +37,7 @@ void uexit (int unix_code)
 
   if (jump_used)
   {
-    puts("Jump Buffer already used\n");
+    printf("Jump Buffer already used\n");
     exit(1);
   }
 
@@ -47,7 +45,7 @@ void uexit (int unix_code)
   exit(final_code);
 }
 // texk/web2c/lib/zround.c
-integer zround (double r)
+integer web2c_round (double r)
 {
   integer i;
 

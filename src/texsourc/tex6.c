@@ -184,7 +184,7 @@ continu:
                     f = font(s);
                     break_width[1] = break_width[1] + char_width(f, char_info(f, character(s)));
                   }
-                  else switch(type(s))
+                  else switch (type(s))
                   {
                     case ligature_node:
                       {
@@ -1573,7 +1573,7 @@ halfword prune_page_top_(halfword p)
   link(temp_head) = p;
 
   while (p != 0)
-    switch(type(p))
+    switch (type(p))
     {
       case hlist_node:
       case vlist_node:
@@ -1645,7 +1645,7 @@ halfword vert_break_(halfword p, scaled h, scaled d)
   {
     if (p == 0)
       pi = eject_penalty;
-    else switch(type(p))
+    else switch (type(p))
     {
       case hlist_node:
       case vlist_node:
