@@ -417,7 +417,7 @@ boolean open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
-      (void) getcwd(log_line, sizeof(log_line));
+      getcwd(log_line, sizeof(log_line));
       strcat(log_line, PATH_SEP_STRING);
     }
 
@@ -431,7 +431,7 @@ boolean open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
-      (void) getcwd(log_line, sizeof(log_line));
+      getcwd(log_line, sizeof(log_line));
       strcat(log_line, PATH_SEP_STRING);
     }
 
@@ -445,7 +445,7 @@ boolean open_output (FILE **f, char *fopen_mode)
       *log_line = '\0';
     else
     {
-      (void) getcwd(log_line, sizeof(log_line));
+      getcwd(log_line, sizeof(log_line));
       strcat(log_line, PATH_SEP_STRING);
     }
 
