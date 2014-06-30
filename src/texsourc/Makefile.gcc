@@ -13,7 +13,7 @@
 
 CC = gcc
 CFLAGS = -DMSDOS -DTeX -DINITEX -DINI -Ilibmd5
-LDFLAGS = -lkpathsea -lhpdf -lpng -lz
+LDFLAGS = -lkpathsea -lz
 
 objects = yandytex.o itex.o openinou.o subroute.o local.o \
 	tex0.o tex1.o tex2.o tex3.o tex4.o \

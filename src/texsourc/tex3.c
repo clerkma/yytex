@@ -2003,7 +2003,8 @@ done:
   {
     line = 1;
 
-    if (input_ln(cur_file, false));
+    if (input_ln(cur_file, false))
+      do_nothing();
 
     firm_up_the_line();
 
@@ -2445,7 +2446,7 @@ bad_tfm:
   else if (s != -1000)
   {
     prints("scaled");
-    print_int(- (integer) s);
+    print_int(-(integer)s);
   } 
 
   if (file_opened)

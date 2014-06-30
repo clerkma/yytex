@@ -845,7 +845,8 @@ void add_variable_space(int);
 char *unixify (char *);
 
 #include "coerce.h"
-
+#undef inline
+#define inline
 /* sec 79 */
 extern inline void node_list_display(integer p);
 extern inline void do_nothing(void);
