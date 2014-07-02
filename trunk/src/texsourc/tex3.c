@@ -615,7 +615,6 @@ halfword str_toks_(pool_pointer b)
 /* sec 0465 */
 halfword the_toks (void)
 {
-  register halfword Result;
   char old_setting;
   halfword p, q, r;
   pool_pointer b;
@@ -641,7 +640,7 @@ halfword the_toks (void)
       }
     }
 
-    Result = p;
+    return p;
   }
   else
   {
@@ -654,18 +653,21 @@ halfword the_toks (void)
       case int_val:
         print_int(cur_val);
         break;
+
       case dimen_val:
         {
           print_scaled(cur_val);
           prints("pt");
         }
         break;
+
       case glue_val:
         {
           print_spec(cur_val, "pt");
           delete_glue_ref(cur_val);
         }
         break;
+
       case mu_val:
         {
           print_spec(cur_val, "mu");
@@ -673,17 +675,16 @@ halfword the_toks (void)
         }
         break;
     }
-    selector = old_setting;
-    Result = str_toks(b);
-  }
 
-  return Result;
+    selector = old_setting;
+    return str_toks(b);
+  }
 }
 /* sec 0467 */
 void ins_the_toks (void) 
 { 
   link(garbage) = the_toks();
-  begin_token_list(link(temp_head), 4);
+  ins_list(link(temp_head));
 }
 /* sec 0470 */
 void conv_toks (void)
@@ -766,17 +767,16 @@ void conv_toks (void)
   begin_token_list(link(temp_head), 4);
 }
 /* sec 0473 */
-halfword scan_toks_(boolean macrodef, boolean xpand)
+halfword scan_toks_(boolean macro_def, boolean xpand)
 {
-  register halfword Result;
   halfword t;
   halfword s;
   halfword p;
   halfword q;
   halfword unbalance;
-  halfword hashbrace;
+  halfword hash_brace;
 
-  if (macrodef)
+  if (macro_def)
     scanner_status = defining;
   else
     scanner_status = absorbing;
@@ -785,10 +785,10 @@ halfword scan_toks_(boolean macrodef, boolean xpand)
   def_ref = get_avail();
   token_ref_count(def_ref) = 0;
   p = def_ref;
-  hashbrace = 0;
+  hash_brace = 0;
   t = zero_token;
 
-  if (macrodef)
+  if (macro_def)
   {
     while (true)
     {
@@ -804,7 +804,7 @@ halfword scan_toks_(boolean macrodef, boolean xpand)
 
         if (cur_cmd == left_brace)
         {
-          hashbrace = cur_tok;
+          hash_brace = cur_tok;
           store_new_token(cur_tok);
           store_new_token(end_match_token);
           goto done;
@@ -827,6 +827,7 @@ halfword scan_toks_(boolean macrodef, boolean xpand)
                 "Type `1' to delete what you did use.");
             back_error();
           }
+
           cur_tok = s;
         }
       }
@@ -898,7 +899,7 @@ done2:
           goto found;
       }
     else if (cur_cmd == mac_param)
-      if (macrodef)
+      if (macro_def)
       {
         s = cur_tok;
 
@@ -927,11 +928,10 @@ done2:
 found:
   scanner_status = 0;
 
-  if (hashbrace != 0)
-    store_new_token(hashbrace);
+  if (hash_brace != 0)
+    store_new_token(hash_brace);
 
-  Result = p;
-  return Result;
+  return p;
 }
 /* used only in ITEX.C */
 /* sec 0482 */
@@ -1114,8 +1114,8 @@ void conditional (void)
   integer m, n;
   halfword p, q;
   small_number save_scanner_status;
-  halfword savecondptr;
-  small_number thisif;
+  halfword save_cond_ptr;
+  small_number this_if;
 
   {
     p = get_node(if_node_size);
@@ -1129,10 +1129,10 @@ void conditional (void)
     if_line = line;
   }
 
-  savecondptr = cond_ptr;
-  thisif = cur_chr;
+  save_cond_ptr = cond_ptr;
+  this_if = cur_chr;
 
-  switch (thisif)
+  switch (this_if)
   {
     case if_char_code:
     case if_cat_code:
@@ -1175,7 +1175,7 @@ void conditional (void)
           cur_chr = 256;
         }
 
-        if (thisif == if_char_code)
+        if (this_if == if_char_code)
           b = (n == cur_chr); 
         else
           b = (m == cur_cmd);
@@ -1185,7 +1185,7 @@ void conditional (void)
     case if_int_code:
     case if_dim_code:
       {
-        if (thisif == if_int_code)
+        if (this_if == if_int_code)
           scan_int();
         else
           scan_dimen(false, false, false);
@@ -1203,13 +1203,13 @@ void conditional (void)
         else
         {
           print_err("Missing = inserted for ");
-          print_cmd_chr(if_test, thisif);
+          print_cmd_chr(if_test, this_if);
           help1("I was expecting to see `<', `=', or `>'. Didn't.");
           back_error();
           r = '=';
         }
 
-        if (thisif == if_int_code)
+        if (this_if == if_int_code)
           scan_int();
         else 
           scan_dimen(false, false, false);
@@ -1237,15 +1237,15 @@ void conditional (void)
       break;
 
     case if_vmode_code:
-      b = (abs(mode) == 1);
+      b = (abs(mode) == vmode);
       break;
 
     case if_hmode_code:
-      b = (abs(mode) == 102);
+      b = (abs(mode) == hmode);
       break;
 
     case if_mmode_code:
-      b = (abs(mode) == 203);
+      b = (abs(mode) == mmode);
       break;
 
     case if_inner_code:
@@ -1259,11 +1259,11 @@ void conditional (void)
         scan_eight_bit_int();
         p = box(cur_val);
 
-        if (thisif == if_void_code)
+        if (this_if == if_void_code)
           b = (p == 0);
         else if (p == 0)
           b = false;
-        else if (thisif == if_hbox_code)
+        else if (this_if == if_hbox_code)
           b = (type(p) == hlist_node);
         else
           b = (type(p) == vlist_node);
@@ -1343,7 +1343,7 @@ void conditional (void)
         {
           pass_text();
 
-          if (cond_ptr == savecondptr)
+          if (cond_ptr == save_cond_ptr)
             if (cur_chr == or_code)
               decr(n);
             else 
@@ -1359,7 +1359,7 @@ void conditional (void)
           }
         }
 
-        change_if_limit(or_code, savecondptr);
+        change_if_limit(or_code, save_cond_ptr);
         return;
       }
       break;
@@ -1377,9 +1377,9 @@ void conditional (void)
     end_diagnostic(false);
   }
 
-  if (b)     /* b may be used without ... */
+  if (b)
   {
-    change_if_limit(else_code, savecondptr);
+    change_if_limit(else_code, save_cond_ptr);
     return;
   }
 
@@ -1387,7 +1387,7 @@ void conditional (void)
   {
     pass_text();
 
-    if (cond_ptr == savecondptr)
+    if (cond_ptr == save_cond_ptr)
     {
       if (cur_chr != or_code)
         goto common_ending;
@@ -1496,7 +1496,7 @@ void end_name (void)
   else            // did find an extension
   {
     cur_name = str_ptr;
-    str_start[str_ptr + 1] = str_start[str_ptr]+ ext_delimiter - area_delimiter - 1;
+    str_start[str_ptr + 1] = str_start[str_ptr] + ext_delimiter - area_delimiter - 1;
     incr(str_ptr);
     cur_ext = make_string();
   }
@@ -1684,7 +1684,7 @@ void scan_file_name (void)
   {
     if (cur_chr == '"')
     {
-      quoted_file_name = 1;
+      quoted_file_name = true;
       get_x_token();
     }
   }
@@ -1716,8 +1716,6 @@ void pack_job_name_(str_number s)
   cur_name = job_name;
   pack_file_name(cur_name, cur_area, cur_ext);
 }
-
-/**********************************************************************/
 /* sec 0530 */
 /* s - what can't be found, e - default */
 void prompt_file_name_(char * s, str_number e) 
@@ -1753,6 +1751,7 @@ void prompt_file_name_(char * s, str_number e)
 #else
     show_line(" (or Ctrl-Z to exit)", 0);
 #endif
+
   prompt_input(": ");
 
 /*  should we deal with tilde and space in file name here ??? */
@@ -1852,7 +1851,7 @@ void open_log_file (void)
     months = " JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 
     for (k = 3 * month - 2; k <= 3 * month; k++)
-      (void) putc(months[k],  log_file);
+      putc(months[k],  log_file);
 
     print_char(' ');
 
@@ -1939,26 +1938,6 @@ int end_name_copy(void)
 
   return make_string();
 }
-
-void job_name_append (void)
-{ 
-  int k, n;
-
-  k = str_start[job_name];
-  n = str_start[job_name + 1];
-
-  while (k < n)
-    more_name_copy(str_pool[k++]);
-
-  k = str_start[cur_ext];
-  n = str_start[cur_ext + 1];
-
-  while (k < n)
-    more_name_copy(str_pool[k++]);
-
-  job_name = end_name_copy();
-}
-
 /* sec 0537 */
 void start_input(void)
 {
