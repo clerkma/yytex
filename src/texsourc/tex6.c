@@ -53,9 +53,9 @@ restart:
   }
 }
 /* sec 0826 */
-halfword finite_shrink_(halfword p)
+pointer finite_shrink_(pointer p)
 {
-  halfword q;
+  pointer q;
 
   if (no_shrink_error_yet)
   {
@@ -78,14 +78,14 @@ halfword finite_shrink_(halfword p)
 /* sec 0829 */
 void try_break_ (integer pi, small_number break_type)
 {
-  halfword r;
-  halfword prev_r;
+  pointer r;
+  pointer prev_r;
   halfword old_l;
   boolean no_break_yet;
-  halfword prev_prev_r;
-  halfword s;
-  halfword q;
-  halfword v;
+  pointer prev_prev_r;
+  pointer s;
+  pointer q;
+  pointer v;
   integer t;
   internal_font_number f;
   halfword l;
@@ -95,10 +95,10 @@ void try_break_ (integer pi, small_number break_type)
   halfword b;
   integer d;
   boolean artificial_demerits;
-  halfword save_link;
+  pointer save_link;
   scaled shortfall;
 
-  if (abs(pi)>= inf_penalty)
+  if (abs(pi) >= inf_penalty)
     if (pi > 0)
       goto exit;
     else
@@ -259,13 +259,9 @@ done:;
           }
 
           if (type(prev_r) == delta_node)
-          {
             do_all_six(convert_to_break_width);
-          }
           else if (prev_r == active)
-          {
             do_all_six(store_break_width);
-          }
           else
           {
             q = get_node(delta_node_size);
@@ -573,8 +569,8 @@ deactivate:
       }
     }
   }
-exit:
-  ;
+
+exit:;
 #ifdef STAT
   if (cur_p == printed_node)
     if (cur_p != 0)
@@ -594,7 +590,7 @@ exit:
 /* sec 0877 */
 void post_line_break_(integer final_widow_penalty)
 {
-  halfword q, r, s;
+  pointer q, r, s;
   boolean disc_break;
   boolean post_disc_break;
   scaled cur_width;
@@ -700,7 +696,9 @@ void post_line_break_(integer final_widow_penalty)
       link(r) = link(q);
       link(q) = r;
       q = r;
+
 done:
+
       r = link(q);
       link(q) = 0;
       q = link(temp_head);
@@ -812,8 +810,8 @@ done1:
 /* sec 0906 */
 small_number reconstitute_(small_number j, small_number n, halfword bchar, halfword hchar)
 {
-  halfword p;
-  halfword t;
+  pointer p;
+  pointer t;
   four_quarters q;
   halfword cur_rh;
   halfword test_char;
@@ -972,6 +970,7 @@ continu:
                     t = p;
                     ligature_present = false;
                   }
+
                   cur_q = t;
                   cur_l = rem_byte(q);
                   ligature_present = true;
@@ -1046,6 +1045,7 @@ continu:
     k = k + skip_byte(q) + 1;
     q = font_info[k].qqqq;
   }
+
 done:
   wrap_lig(rt_hit);
 
@@ -1056,7 +1056,7 @@ done:
     w = 0;
   }
 
-  if (lig_stack != 0)        /* l.17841 */
+  if (lig_stack != 0)
   {
     cur_q = t;
     cur_l = character(lig_stack);
@@ -1073,15 +1073,15 @@ void hyphenate (void)
 /*  char i, j, l;  */
   char i, j;
   int l;              /* 95/Jan/7 */
-  halfword q, r, s;
+  pointer q, r, s;
   halfword bchar;
-  halfword major_tail, minor_tail;
+  pointer major_tail, minor_tail;
 /*  ASCII_code c;  */
-  int c;              /* 95/Jan/7 */
+  int c;
   char c_loc;
 /*  integer r_count; */
-  int r_count;           /* 95/Jan/7 */
-  halfword hyf_node;
+  int r_count;
+  pointer hyf_node;
   trie_pointer z;
   integer v;
   hyph_pointer h;
@@ -1138,12 +1138,13 @@ void hyphenate (void)
       goto found;
     }
 
-done:;
+done:
     if (h > 0)
       decr(h);
     else
       h = hyphen_prime;
   }
+
 not_found:
   decr(hn);
 
@@ -1196,7 +1197,7 @@ found:
 
   return;
 
-found1:;
+found1:
   q = link(hb);
   link(hb) = 0;
   r = link(ha);
@@ -1251,12 +1252,14 @@ found1:;
 
   j = 0;
   goto common_ending;
+
 found2:
   s = ha;
   j = 0;
   hu[0] = 256;
   init_lig = false;
   init_list = 0;
+
 common_ending:
   flush_node_list(r);
 
@@ -1412,14 +1415,12 @@ common_ending:
 /* sec 0934 */
 void new_hyph_exceptions (void)
 {
-/*  small_number n;  */ /* in 3.141 */
   char n;
-/*  small_number j;  */ /* in 3.141 */
   char j;
   hyph_pointer h;
   str_number k;
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
   str_number s, t;
   pool_pointer u, v;
 
@@ -1431,6 +1432,7 @@ void new_hyph_exceptions (void)
   while (true)
   {
     get_x_token();
+
 reswitch:
     switch (cur_cmd)
     {
@@ -1493,7 +1495,7 @@ reswitch:
 
             if (hyph_count == hyphen_prime)
             {
-              overflow("exception dictionary", hyphen_prime); /* exception dictionary - NOT DYNAMIC */
+              overflow("exception dictionary", hyphen_prime);
               return;
             }
 
@@ -1531,7 +1533,8 @@ found:
               t = hyph_word[h];
               hyph_word[h] = s;
               s = t;
-not_found:;
+
+not_found:
               if (h > 0)
                 decr(h);
               else
@@ -1560,14 +1563,14 @@ not_found:;
           error();
         }
         break;
-    } /* end of switch */
+    }
   }
 }
 /* sec 0968 */
-halfword prune_page_top_(halfword p)
+pointer prune_page_top_(pointer p)
 {
-  halfword prev_p;
-  halfword q;
+  pointer prev_p;
+  pointer q;
 
   prev_p = temp_head;
   link(temp_head) = p;
@@ -1624,19 +1627,19 @@ halfword prune_page_top_(halfword p)
   return link(temp_head);
 }
 /* sec 0970 */
-halfword vert_break_(halfword p, scaled h, scaled d)
+pointer vert_break_(pointer p, scaled h, scaled d)
 {
-  halfword prev_p;
-  halfword q, r;
+  pointer prev_p;
+  pointer q, r;
   integer pi;
   integer b;
   integer least_cost;
-  halfword best_place;
+  pointer best_place;
   scaled prev_dp; 
-/*  small_number t;  */
-  int t;              /* 95/Jan/7 */
-  prev_p = p;
+/*  small_number t; */
+  int t;
 
+  prev_p = p;
   least_cost = awful_bad;
   do_all_six(set_height_zero);
   prev_dp = 0;
@@ -1706,20 +1709,18 @@ halfword vert_break_(halfword p, scaled h, scaled d)
           b = 0;
         else
           b = badness(h - cur_height, active_width[2]);
+      else if (act_width - h > active_width[6])
+        b = awful_bad;
       else
-        if (act_width - h > active_width[6])
-          b = awful_bad;
-        else
-          b = badness(cur_height - h, active_width[6]);
+        b = badness(cur_height - h, active_width[6]);
 
       if (b < awful_bad)
         if (pi <= eject_penalty)
           b = pi;
+        else if (b < inf_bad)
+          b = b + pi;
         else
-          if (b < inf_bad)
-            b = b + pi;
-          else
-            b = deplorable;
+          b = deplorable;
 
       if (b <= least_cost)
       {
@@ -1736,6 +1737,7 @@ halfword vert_break_(halfword p, scaled h, scaled d)
       goto not_found;
 
 update_heights:
+
     if (type(p) == kern_node)
       q = p;
     else
@@ -1762,7 +1764,9 @@ update_heights:
 
     cur_height = cur_height + prev_dp + width(q);
     prev_dp = 0;
+
 not_found:
+
     if (prev_dp > d)
     {
       cur_height = cur_height + prev_dp - d;
@@ -1777,11 +1781,11 @@ done:
   return best_place;
 }
 /* sec 0977 */
-halfword vsplit_(eight_bits n, scaled h)
+pointer vsplit_(eight_bits n, scaled h)
 {
-  halfword v;
-  halfword p;
-  halfword q;
+  pointer v;
+  pointer p;
+  pointer q;
 
   v = box(n);
 
@@ -1836,9 +1840,11 @@ halfword vsplit_(eight_bits n, scaled h)
       link(p) = 0;
       goto done;
     }
+
     p = link(p);
   }
-done:;
+
+done:
   q = prune_page_top(q);
   p = list_ptr(v);
   free_node(v, box_node_size);
@@ -1925,7 +1931,7 @@ void box_error_(eight_bits n)
 /* sec 0993 */
 void ensure_vbox_(eight_bits n)
 {
-  halfword p;
+  pointer p;
 
   p = box(n);
 
@@ -1940,12 +1946,12 @@ void ensure_vbox_(eight_bits n)
     }
 }
 /* sec 1012 */
-void fire_up_(halfword c)
+void fire_up_(pointer c)
 {
   pointer p, q, r, s;
   pointer prev_p;
-/*  unsigned char n;  */
-  unsigned int n;         /* 95/Jan/7 */
+/*  unsigned char n; */
+  unsigned int n;
   boolean wait;
   integer save_vbadness;
   scaled save_vfuzz;

@@ -20,9 +20,9 @@
 #include "texd.h"
 
 /* sec 0715 */
-halfword rebox_(halfword b, scaled w)
+pointer rebox_(pointer b, scaled w)
 {
-  halfword p;
+  pointer p;
   internal_font_number f;
   scaled v;
 
@@ -60,9 +60,9 @@ halfword rebox_(halfword b, scaled w)
 }
 /* This is to be the start of tex5.c */
 /* sec 0716 */
-halfword math_glue_(halfword g, scaled m)
+pointer math_glue_(pointer g, scaled m)
 {
-  halfword p;
+  pointer p;
   integer n;
   scaled f;
 
@@ -76,25 +76,25 @@ halfword math_glue_(halfword g, scaled m)
   }
 
   p = get_node(glue_spec_size);
-  width(p) = mult_and_add(n, width(g), xn_over_d(width(g), f, 65536L), 1073741823L);  /* 2^30 - 1 */
+  width(p) = mu_mult(width(g));
   stretch_order(p) = stretch_order(g);
 
   if (stretch_order(p) == normal)
-    stretch(p) = mult_and_add(n, stretch(g), xn_over_d(stretch(g), f, 65536L), 1073741823L);  /* 2^30 - 1 */
+    stretch(p) = mu_mult(stretch(g));
   else
     stretch(p) = stretch(g);
 
   shrink_order(p) = shrink_order(g);
 
   if (shrink_order(p) == normal)
-    shrink(p) = mult_and_add(n, shrink(g), xn_over_d(shrink(g), f, 65536L), 1073741823L);  /* 2^30 - 1 */
+    shrink(p) = mu_mult(shrink(g));
   else
     shrink(p) = shrink(g);
 
   return p;
 }
 /* sec 0717 */
-void math_kern_ (halfword p, scaled m)
+void math_kern_ (pointer p, scaled m)
 {
   integer n;
   scaled f;
@@ -110,7 +110,7 @@ void math_kern_ (halfword p, scaled m)
       f = f + 65536L;
     }
 
-    width(p) = mult_and_add(n, width(p), xn_over_d(width(p), f, 65536L), 1073741823L);  /* 2^30 - 1 */
+    width(p) = mu_mult(width(p));
     subtype(p) = explicit;
   }
 }
@@ -126,10 +126,10 @@ void flush_math (void)
 /* sec 0720 */
 halfword clean_box_(halfword p, small_number s)
 {
-  halfword q;
+  pointer q;
   small_number save_style;
-  halfword x;
-  halfword r;
+  pointer x;
+  pointer r;
 
   switch (math_type(p))
   {
@@ -174,6 +174,7 @@ halfword clean_box_(halfword p, small_number s)
 
     cur_mu = x_over_n(math_quad(cur_size), 18);
   }
+
 found:
   if (is_char_node(q) || (q == 0))
     x = hpack(q, 0, 1);
@@ -201,7 +202,7 @@ found:
   return x;
 }
 /* sec 0722 */
-void fetch_(halfword a)
+void fetch_(pointer a)
 {
   cur_c = character(a);
   cur_f = fam_fnt(fam(a) + cur_size);
@@ -230,7 +231,7 @@ void fetch_(halfword a)
     else
       cur_i = null_character;
 
-    if (!((cur_i.b0 > 0)))
+    if (!char_exists(cur_i))
     {
       char_warning(cur_f, cur_c);
       math_type(a) = 0;
@@ -238,16 +239,16 @@ void fetch_(halfword a)
   }
 }
 /* sec 0734 */
-void make_over_(halfword q)
+void make_over_(pointer q)
 {
   info(nucleus(q)) = overbar(clean_box(nucleus(q), 2 * (cur_style / 2) + 1),
       3 * default_rule_thickness, default_rule_thickness);
   math_type(nucleus(q)) = sub_box;
 }
 /* sec 0735 */
-void make_under_(halfword q)
+void make_under_(pointer q)
 {
-  halfword p, x, y;
+  pointer p, x, y;
   scaled delta;
 
   x = clean_box(nucleus(q), cur_style);
@@ -262,9 +263,9 @@ void make_under_(halfword q)
   math_type(nucleus(q)) = sub_box;
 }
 /* sec 0736 */
-void make_vcenter_(halfword q)
+void make_vcenter_(pointer q)
 { 
-  halfword v;
+  pointer v;
   scaled delta;
 
   v = info(nucleus(q));
@@ -280,9 +281,9 @@ void make_vcenter_(halfword q)
   depth(v) = delta - height(v);
 }
 /* sec 0737 */
-void make_radical_(halfword q)
+void make_radical_(pointer q)
 {
-  halfword x, y;
+  pointer x, y;
   scaled delta, clr;
 
   x = clean_box(nucleus(q), 2 * (cur_style / 2) + 1);
@@ -307,9 +308,9 @@ void make_radical_(halfword q)
   math_type(nucleus(q)) = sub_box;
 }
 /* sec 0738 */
-void make_math_accent_(halfword q)
+void make_math_accent_(pointer q)
 {
-  halfword p, x, y;
+  pointer p, x, y;
   integer a;
   quarterword c;
   internal_font_number f;
@@ -321,7 +322,7 @@ void make_math_accent_(halfword q)
 
   fetch(accent_chr(q));
 
-  if ((cur_i.b0 > 0))
+  if (char_exists(cur_i))
   {
     i = cur_i;
     c = cur_c;
@@ -350,6 +351,7 @@ void make_math_accent_(halfword q)
             if (op_byte(cur_i) >= kern_flag)
               if (skip_byte(cur_i) <= stop_flag)
                 s = char_kern(cur_f, cur_i);
+
             goto done1;
           }
 
@@ -361,7 +363,8 @@ void make_math_accent_(halfword q)
         }
       }
     }
-done1:;
+
+done1:
     x = clean_box(nucleus(q), cramped_style(cur_style));
     w = width(x);
     h = height(x);
@@ -374,7 +377,7 @@ done1:;
       y = rem_byte(i);
       i = char_info(f, y);
 
-      if (!(i.b0 > 0))
+      if (!char_exists(i))
         goto done;
 
       if (char_width(f, i) > w)
@@ -382,7 +385,8 @@ done1:;
 
       c = y;
     }
-done:;
+
+done:
     if (h < x_height(f))
       delta = h;
     else
@@ -393,9 +397,9 @@ done:;
       {
         flush_node_list(x);
         x = new_noad();
-        mem[nucleus(x)]= mem[nucleus(q)];
-        mem[supscr(x)]= mem[supscr(q)];
-        mem[subscr(x)]= mem[subscr(q)];
+        mem[nucleus(x)] = mem[nucleus(q)];
+        mem[supscr(x)] = mem[supscr(q)];
+        mem[subscr(x)] = mem[subscr(q)];
         mem[supscr(q)].hh = empty_field;
         mem[subscr(q)].hh = empty_field;
         math_type(nucleus(q)) = sub_mlist;
@@ -408,7 +412,7 @@ done:;
     y = char_box(f, c);
     shift_amount(y) = s + half(w - width(y));
     width(y) = 0;
-    p = new_kern(- (integer) delta);
+    p = new_kern(-(integer) delta);
     link(p) = x;
     link(y) = p;
     y = vpackage(y, 0, 1, 1073741823L);  /* 2^30 - 1 */
@@ -427,12 +431,12 @@ done:;
   }
 }
 /* sec 0743 */
-void make_fraction_(halfword q)
+void make_fraction_(pointer q)
 {
-  halfword p, v, x, y, z;
+  pointer p, v, x, y, z;
   scaled delta, delta1, delta2, shift_up, shift_down, clr;
   
-  if (thickness(q) == default_code) /* 2^30 */
+  if (thickness(q) == default_code)
     thickness(q) = default_rule_thickness;
 
   x = clean_box(numerator(q), num_style(cur_style));
@@ -526,14 +530,11 @@ void make_fraction_(halfword q)
   link(v) = z;
   new_hlist(q) = hpack(x, 0, 1);
 }
-/***************************************************************************/
-scaled make_op_ (halfword);
-/***************************************************************************/
 /* sec 0752 */
-void make_ord_(halfword q)
+void make_ord_(pointer q)
 {
   integer a;
-  halfword p, r;
+  pointer p, r;
 
 restart:
   if (math_type(subscr(q)) == 0)
@@ -637,11 +638,8 @@ restart:
               }
       }
 }
-/***************************************************************************/
-void make_scripts_ (halfword, scaled);
-/***************************************************************************/
 /* sec 0762 */
-small_number make_left_right_(halfword q, small_number style, scaled max_d, scaled max_h)
+small_number make_left_right_(pointer q, small_number style, scaled max_d, scaled max_h)
 {
   scaled delta, delta1, delta2;
 
@@ -668,17 +666,17 @@ small_number make_left_right_(halfword q, small_number style, scaled max_d, scal
 /* sec 0726 */
 void mlist_to_hlist (void)
 {
-  halfword mlist;
+  pointer mlist;
   boolean penalties;
   small_number style;
   small_number save_style;
-  halfword q;
-  halfword r;
+  pointer q;
+  pointer r;
 /*  small_number r_type;  */
-  int r_type;            /* 95/Jan/7 */
+  int r_type;
 /*  small_number t; */
-  int t;              /* 95/Jan/7 */
-  halfword p, x, y, z;
+  int t;
+  pointer p, x, y, z;
   integer pen;
   small_number s;
   scaled max_h, max_d;
@@ -725,7 +723,7 @@ reswitch:
             break;
 
           default:
-            ;
+            do_nothing();
             break;
         }
         break;
@@ -769,7 +767,7 @@ reswitch:
 
       case open_noad:
       case inner_noad:
-        ;
+        do_nothing();
         break;
 
       case radical_noad:
@@ -814,31 +812,19 @@ reswitch:
           switch (cur_style / 2)
           {
             case 0:
-              {
-                p = display_mlist(q);
-                display_mlist(q) = 0;
-              }
+              choose_mlist(display_mlist);
               break;
 
             case 1:
-              {
-                p = text_mlist(q);
-                text_mlist(q) = 0;
-              }
+              choose_mlist(text_mlist);
               break;
 
             case 2:
-              {
-                p = script_mlist(q);
-                script_mlist(q) = 0;
-              }
+              choose_mlist(script_mlist);
               break;
 
             case 3:
-              {
-                p = script_script_mlist(q);
-                script_script_mlist(q) = 0;
-              }
+              choose_mlist(script_script_mlist);
               break;
           }
 
@@ -861,6 +847,7 @@ reswitch:
 
             link(p) = z;
           }
+
           goto done_with_node;
         }
         break;
@@ -908,6 +895,7 @@ reswitch:
                 flush_node_list(p);
               }
           }
+
           goto done_with_node;
         }
         break;
@@ -934,7 +922,7 @@ reswitch:
         {
           fetch(nucleus(q));
 
-          if ((cur_i.b0 > 0))
+          if (char_exists(cur_i))
           {
             delta = char_italic(cur_f, cur_i);
             p = new_character(cur_f, cur_c);
@@ -996,6 +984,7 @@ reswitch:
       goto check_dimensions;
 
     make_scripts(q, delta);
+
 check_dimensions:
     z = hpack(new_hlist(q), 0, 1);
 
@@ -1006,9 +995,11 @@ check_dimensions:
       max_d = depth(z);
 
     free_node(z, box_node_size);
+
 done_with_noad:
     r = q;
     r_type = type(r);
+
 done_with_node:
     q = link(q);
   }
@@ -1065,7 +1056,7 @@ done_with_node:
       case vcenter_noad:
       case over_noad:
       case under_noad:
-        ;
+        do_nothing();
         break;
 
       case radical_noad:
@@ -1211,6 +1202,7 @@ done_with_node:
         }
 
     r_type = t;
+
 delete_q:
     r = q;
     q = link(q);
@@ -1221,7 +1213,7 @@ done:;
 /* sec 0772 */
 void push_alignment (void)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(align_stack_node_size);
   link(p) = align_ptr;
@@ -1238,7 +1230,7 @@ void push_alignment (void)
 /* sec 0772 */
 void pop_alignment (void)
 {
-  halfword p;
+  pointer p;
 
   free_avail(cur_head);
   p = align_ptr;
@@ -1291,8 +1283,8 @@ restart:
 /* sec 0774 */
 void init_align (void)
 {
-  halfword save_cs_ptr;
-  halfword p;
+  pointer save_cs_ptr;
+  pointer p;
 
   save_cs_ptr = cur_cs;
   push_alignment();
@@ -1370,7 +1362,7 @@ done1:
     link(cur_align) = new_null_box();
     cur_align = link(cur_align);
     info(cur_align) = end_span;
-    width(cur_align) = null_flag;  /* - 2^30 */
+    width(cur_align) = null_flag;
     u_part(cur_align) = link(hold_head);
     p = hold_head;
     link(p) = 0;
@@ -1411,10 +1403,11 @@ done:
 
   if (every_cr != 0)
     begin_token_list(every_cr, every_cr_text);
+
   align_peek();
 }
 /* sec 0787 */
-void init_span_ (halfword p)
+void init_span_ (pointer p)
 {
   push_nest();
 
@@ -1462,7 +1455,7 @@ void init_col (void)
 /* sec 0799 */
 void fin_row (void)
 {
-  halfword p;
+  pointer p;
 
   if (mode == -hmode)
   {
@@ -1496,7 +1489,7 @@ void fin_row (void)
 /* sec 0800 */
 void fin_align (void)
 {
-  halfword p, q, r, s, u, v;
+  pointer p, q, r, s, u, v;
   scaled t, w;
   scaled o;
   halfword n;
@@ -1532,7 +1525,7 @@ void fin_align (void)
       flush_list(v_part(q));
       p = link(link(q));
 
-      if (width(q) == null_flag) /* - 2^30 */
+      if (width(q) == null_flag)
       {
         width(q) = 0;
         r = link(q);
@@ -1871,10 +1864,10 @@ void fin_align (void)
 /* sec 0791 */
 boolean fin_col (void)
 {
-  halfword p;
-  halfword q, r;
-  halfword s;
-  halfword u;
+  pointer p;
+  pointer q, r;
+  pointer s;
+  pointer u;
   scaled w;
   glue_ord o;
   halfword n;
@@ -2063,10 +2056,10 @@ boolean fin_col (void)
   return false;
 }
 /* sec 0749 */
-scaled make_op_(halfword q)
+scaled make_op_(pointer q)
 {
   scaled delta;
-  halfword p, v, x, y, z;
+  pointer p, v, x, y, z;
   quarterword c;
   four_quarters i;
   scaled shift_up, shift_down;
@@ -2083,7 +2076,7 @@ scaled make_op_(halfword q)
       c = rem_byte(cur_i);
       i = char_info(cur_f, c);
 
-      if ((i.b0 > 0))
+      if (char_exists(i))
       {
         cur_c = c;
         cur_i = i;
@@ -2171,9 +2164,9 @@ scaled make_op_(halfword q)
   return delta;
 }
 /* sec 0756 */
-void make_scripts_(halfword q, scaled delta)
+void make_scripts_(pointer q, scaled delta)
 {
-  halfword p, x, y, z;
+  pointer p, x, y, z;
   scaled shift_up, shift_down, clr;
   small_number t;
 

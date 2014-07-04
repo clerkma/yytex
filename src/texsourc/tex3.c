@@ -26,10 +26,10 @@ void scan_int (void)
   integer m;
   small_number d;
   boolean vacuous;
-  boolean OKsofar;
+  boolean OK_so_far;
 
   radix = 0;
-  OKsofar = true;
+  OK_so_far = true;
   negative = false;
 
   do
@@ -126,22 +126,22 @@ void scan_int (void)
 
       if ((cur_val >= m) && ((cur_val > m) || (d > 7) || (radix != 10)))
       {
-        if (OKsofar)
+        if (OK_so_far)
         {
           print_err("Number too big");
           help2("I can only go up to 2147483647='17777777777=\"7FFFFFFF,",
             "so I'm using that number instead of yours.");
           error();
           cur_val = 2147483647L;    /* 7FFFFFFF hex */
-          OKsofar = false;
+          OK_so_far = false;
         }
       }
       else
         cur_val = cur_val * radix + d;
       get_x_token();
     }
-done:;
 
+done:
     if (vacuous)
     {
       print_err("Missing number, treated as zero");
@@ -166,7 +166,7 @@ void scan_dimen_(boolean mu, boolean inf, boolean shortcut)
   small_number k, kk;
   halfword p, q;
   scaled v;
-  integer savecurval;
+  integer save_cur_val;
 
   f = 0;
   arith_error = false;
@@ -243,7 +243,7 @@ void scan_dimen_(boolean mu, boolean inf, boolean shortcut)
       if ((radix == 10) && (cur_tok == point_token))
       {
         k = 0;
-        p = 0;      /* p:=null l.8883 */
+        p = 0;
         get_token();
 
         while (true)
@@ -307,7 +307,7 @@ done1:
     }
   }
 
-  savecurval = cur_val;
+  save_cur_val = cur_val;
 
   do
     {
@@ -362,7 +362,7 @@ done1:
   }
 
 found:
-  cur_val = mult_and_add(savecurval, v, xn_over_d(v, f, 65536L), 1073741823L);   /* 2^30 - 1 */
+  cur_val = mult_and_add(save_cur_val, v, xn_over_d(v, f, 65536L), 1073741823L);   /* 2^30 - 1 */
   goto attach_sign;
 
 not_found:
@@ -767,12 +767,12 @@ void conv_toks (void)
   begin_token_list(link(temp_head), 4);
 }
 /* sec 0473 */
-halfword scan_toks_(boolean macro_def, boolean xpand)
+pointer scan_toks_(boolean macro_def, boolean xpand)
 {
   halfword t;
   halfword s;
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
   halfword unbalance;
   halfword hash_brace;
 
@@ -1435,17 +1435,18 @@ void begin_name (void)
 /* sec 0516 */
 boolean more_name_(ASCII_code c)
 {
-  if (quoted_file_name == 0 && c == ' ')
+  if (quoted_file_name == false && c == ' ')
     return false;
-  else if (quoted_file_name != 0 && c == '"')
+  else if (quoted_file_name != false && c == '"')
   {
-    quoted_file_name = 0; /* catch next space character */
-    return true;    /* accept ending quote, but throw away */
+    quoted_file_name = false; /* catch next space character */
+    return true;     /* accept ending quote, but throw away */
   }
   else
   {   
     str_room(1);
     append_char(c);
+
     //  for DOS/Windows
     if ((c == '/' || c == '\\' || c == ':')) 
     {
@@ -1761,14 +1762,14 @@ void prompt_file_name_(char * s, str_number e)
 
     while ((buffer[k] == ' ') && (k < last))
       incr(k);
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-    quoted_file_name = 0;         /* 98/March/15 */
+
+    quoted_file_name = false;
 
     if (allow_quoted_names && k < last) /* check whether quoted name */
     {
       if (buffer[k]== '"')
       {
-        quoted_file_name = 1;
+        quoted_file_name = true;
         incr(k);
       }
     }
@@ -2388,9 +2389,9 @@ not_found:;
   if (bchar <= ec)
     if (bchar >= bc)
     {
-      qw = font_info[char_base[f] + bchar].qqqq;
+      qw = char_info(f, bchar);
 
-      if ((qw.b0 > 0))
+      if (char_exists(qw))
         font_false_bchar[f] = 256;
     }
 

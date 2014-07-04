@@ -27,7 +27,7 @@ void char_warning_(internal_font_number f, eight_bits c)
     if (show_missing == 0)
       begin_diagnostic();
 
-    if (show_missing) /* add ! before 94/June/10 */
+    if (show_missing)
     {
       print_nl("! ");
       prints("Missing character: there is no ");
@@ -54,6 +54,7 @@ void char_warning_(internal_font_number f, eight_bits c)
         if (c / 10 > 0)
           print_char('0' + c / 10);
       }
+
       print_char('0' + c % 10);
       print_char(')');
     }
@@ -77,7 +78,7 @@ void char_warning_(internal_font_number f, eight_bits c)
 /* sec 0582 */
 halfword new_character_(internal_font_number f, eight_bits c)
 {
-  halfword p;
+  pointer p;
 
   if (font_bc[f] <= c)
     if (font_ec[f] >= c)
@@ -279,6 +280,7 @@ void zmovement(scaled w, eight_bits o)
 
     p = link(p);
   }
+
 not_found:
 
   info(q) = yz_OK;
@@ -298,12 +300,12 @@ not_found:
       w = w + 16777216L;  /* 2^24 */
     //dvi_out(w / 65536L);
     dvi_out((w >> 16));
-/*    w = w % 65536L; */
+    //w = w % 65536L;
     w = w & 65535L;
     goto lab2;
   }
 
-  if (abs(w)>= 128)
+  if (abs(w) >= 128)
   {
     dvi_out(o + 1);
 
@@ -380,7 +382,7 @@ found:
 /* sec 0615 */
 void prune_movements_(integer l)
 {
-  halfword p;
+  pointer p;
 
   while (down_ptr != 0)
   {
@@ -446,10 +448,10 @@ void special_out_(pointer p)
 void write_out_(pointer p)
 {
   char old_setting;
-/*  integer oldmode;  */
-  int oldmode;          /* 1995/Jan/7 */
+/*  integer old_mode;  */
+  int old_mode;
 /*  small_number j;  */
-  int j;              /* 1995/Jan/7 */
+  int j;
   halfword q, r;
 
   q = get_avail();
@@ -462,7 +464,7 @@ void write_out_(pointer p)
   q = get_avail();
   info(q) = left_brace_token + '{';
   ins_list(q);
-  oldmode = mode;
+  old_mode = mode;
   mode = 0;
   cur_cs = write_loc;
   q = scan_toks(false, true);
@@ -482,7 +484,7 @@ void write_out_(pointer p)
     while (!(cur_tok == end_write_token));
   }
 
-  mode = oldmode;
+  mode = old_mode;
   end_token_list();
   old_setting = selector;
   j = write_stream(p);
@@ -553,7 +555,7 @@ void out_what_(pointer p)
       break;
 
     case language_node:
-      ;
+      do_nothing();
       break;
 
     default:
@@ -627,7 +629,6 @@ reswitch:
             if (f <= 64 + font_base)
               dvi_out(f - font_base - 1 + fnt_num_0);
 #ifdef INCREASEFONTS
-            /* if we allow greater than 256 fonts */
             else if (f <= 256)
             {
               dvi_out(fnt1);
@@ -866,10 +867,10 @@ void vlist_out (void)
   scaled top_edge;
   scaled save_h, save_v;
   halfword this_box;
-/*  glue_ord g_order;  */
-  int g_order;         /* 95/Jan/7 */
-/*  char g_sign;  */
-  int g_sign;          /* 95/Jan/7 */
+/*  glue_ord g_order; */
+  int g_order;
+/*  char g_sign; */
+  int g_sign;
   halfword p;
   integer save_loc;
   halfword leader_box;
@@ -1216,7 +1217,7 @@ void dvi_ship_out_(halfword p)
   incr(total_pages);
   cur_s = -1;
 
-done:;
+done:
   if (tracing_output <= 0)
     print_char(']');
 
@@ -1303,7 +1304,7 @@ halfword hpack_(halfword p, scaled w, small_number m)
   scaled s;
   halfword g;
 /*  glue_ord o;  */
-  int o;              /* 95/Jan/7 */
+  int o;
   internal_font_number f;
   four_quarters i;
   eight_bits hd;
@@ -1330,6 +1331,7 @@ halfword hpack_(halfword p, scaled w, small_number m)
   while (p != 0)
   {
 reswitch:
+
     while (is_char_node(p))
     {
       f = font(p);
@@ -1580,6 +1582,7 @@ reswitch:
   }
 
 common_ending:
+
   if (output_active)
     prints(") has occurred while \\output is active");
   else
@@ -1619,7 +1622,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
   scaled s;
   halfword g;
 /*  glue_ord o;  */
-  int o;              /* 95/Jan/7 */
+  int o;
 
   last_badness = 0;
   r = get_node(box_node_size);
@@ -1700,6 +1703,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
       default:
         break;
     }
+
     p = link(p);
   }
 
@@ -1766,7 +1770,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
           print_int(last_badness);
 
           if (last_badness > 100)
-            underfull_vbox++; /* 1996/Feb/9 */
+            underfull_vbox++;
 
           goto common_ending;
         }
@@ -1807,7 +1811,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
         print_scaled(- (integer) x - total_shrink[0]);
         prints("pt too high");
 
-        overfull_vbox++;    /* 1996/Feb/9 */
+        overfull_vbox++;
 
         goto common_ending;
       }
@@ -1828,6 +1832,7 @@ halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
   }
 
 common_ending:
+
   if (output_active)
     prints(") has occurred while \\output is active");
   else
@@ -1856,7 +1861,7 @@ exit:
 void append_to_vlist_(halfword b)
 {
   scaled d;
-  halfword p;
+  pointer p;
 
   if (prev_depth > ignore_depth)
   {
@@ -1879,9 +1884,9 @@ void append_to_vlist_(halfword b)
   prev_depth = depth(b);
 }
 /* sec 0686 */
-halfword new_noad (void)
+pointer new_noad (void)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(noad_size);
   type(p) = ord_noad;
@@ -1893,9 +1898,9 @@ halfword new_noad (void)
   return p;
 }
 /* sec 0688 */
-halfword new_style_(small_number s)
+pointer new_style_(small_number s)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(style_node_size);
   type(p) = style_node;
@@ -1906,9 +1911,9 @@ halfword new_style_(small_number s)
   return p;
 }
 /* sec 0689 */
-halfword new_choice (void)
+pointer new_choice (void)
 {
-  halfword p;
+  pointer p;
 
   p = get_node(style_node_size);
   type(p) = choice_node;
@@ -1926,9 +1931,9 @@ void show_info (void)
   show_node_list(info(temp_ptr));
 }
 /* sec 0704 */
-halfword fraction_rule_(scaled t)
+pointer fraction_rule_(scaled t)
 {
-  halfword p;
+  pointer p;
 
   p = new_rule();
   height(p) = t;
@@ -1937,9 +1942,9 @@ halfword fraction_rule_(scaled t)
   return p;
 }
 /* sec 0705 */
-halfword overbar_(halfword b, scaled k, scaled t)
+pointer overbar_(pointer b, scaled k, scaled t)
 {
-  halfword p, q;
+  pointer p, q;
 
   p = new_kern(k);
   link(p) = b;
@@ -1947,14 +1952,15 @@ halfword overbar_(halfword b, scaled k, scaled t)
   link(q) = p;
   p = new_kern(t);
   link(p) = q;
+
   return vpackage(p, 0, 1, 1073741823L); /* 2^30 - 1 */
 }
 /* sec 0709 */
-halfword char_box_(internal_font_number f, quarterword c)
+pointer char_box_(internal_font_number f, quarterword c)
 {
   four_quarters q;
   eight_bits hd;
-  halfword b, p;
+  pointer b, p;
 
   q = char_info(f, c);
   hd = height_depth(q);
@@ -1970,9 +1976,9 @@ halfword char_box_(internal_font_number f, quarterword c)
   return b;
 }
 /* sec 0711 */
-void stack_into_box_(halfword b, internal_font_number f, quarterword c)
+void stack_into_box_(pointer b, internal_font_number f, quarterword c)
 {
-  halfword p;
+  pointer p;
 
   p = char_box(f, c);
   link(p) = list_ptr(b);
@@ -1987,12 +1993,13 @@ scaled height_plus_depth_(internal_font_number f, quarterword c)
 
   q = char_info(f, c);
   hd = height_depth(q);
+
   return char_height(f, hd) + char_depth(f, hd);
 }
 /* sec 0706 */
-halfword var_delimiter_(halfword d, small_number s, scaled v)
+pointer var_delimiter_(pointer d, small_number s, scaled v)
 {
-  halfword b;
+  pointer b;
   internal_font_number f, g;
   quarterword c, x, y;
   integer m, n;
@@ -2002,9 +2009,9 @@ halfword var_delimiter_(halfword d, small_number s, scaled v)
   four_quarters r;
   eight_bits hd;
 /*  small_number z;  */
-  int z;                  /* 95/Jan/7 */
+  int z;
 /*  boolean large_attempt;  */
-  int large_attempt;           /* 95/Jan/7 */
+  int large_attempt;
 
   f = null_font;
   w = 0;
@@ -2032,7 +2039,7 @@ halfword var_delimiter_(halfword d, small_number s, scaled v)
 continu:
               q = char_info(g, y);
               
-              if ((q.b0 > 0))
+              if (char_exists(q))
               {
                 if (char_tag(q) == ext_tag)
                 {
