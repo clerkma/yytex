@@ -22,12 +22,12 @@
 /* sec 0994 */
 void build_page (void)
 {
-  halfword p;
-  halfword q, r;
+  pointer p;
+  pointer q, r;
   integer b, c;
   integer pi;
-/*  unsigned char n;  */
-  unsigned int n;             /* 95/Jan/7 */
+/*  unsigned char n; */
+  unsigned int n;
   scaled delta, h, w;
 
   if ((link(contrib_head) == 0) || output_active)
@@ -197,7 +197,7 @@ continu:
               else
               {
                 if (count(n) <= 0)
-                  w = max_dimen;  /* 2^30 - 1 */
+                  w = max_dimen;
                 else
                 {
                   w = page_goal - page_total - page_depth;
@@ -283,7 +283,7 @@ continu:
           c = b;
 
         if (insert_penalties >= 10000)
-          c = awful_bad;  /* 2^30 - 1 */
+          c = awful_bad;
 
 #ifdef STAT
         if (tracing_pages > 0)
@@ -296,7 +296,7 @@ continu:
           print_scaled(page_goal);
           prints(" b=");
 
-          if (b == awful_bad) /* 2^30 - 1 */
+          if (b == awful_bad)
             print_char('*');
           else
             print_int(b);
@@ -305,7 +305,7 @@ continu:
           print_int(pi);
           prints(" c=");
 
-          if (c == awful_bad) /* 2^30 - 1 */
+          if (c == awful_bad)
             print_char('*');
           else
             print_int(c);
@@ -315,7 +315,7 @@ continu:
 
           end_diagnostic(false);
         }
-#endif /* STAT */
+#endif
 
         if (c <= least_page_cost)
         {
@@ -331,7 +331,7 @@ continu:
           }
         }
 
-        if ((c == awful_bad) || (pi <= eject_penalty))  /* 2^30 - 1 */
+        if ((c == awful_bad) || (pi <= eject_penalty))
         {
           fire_up(p);
 
@@ -372,6 +372,7 @@ update_heights:
 
       page_total = page_total + page_depth + width(q);
       page_depth = 0;
+
 contribute:
       if (page_depth > page_max_depth)
       {
@@ -384,6 +385,7 @@ contribute:
       link(contrib_head) = link(p);
       link(p) = 0;
       goto done;
+
 done1:
       link(contrib_head) = link(p);
       link(p) = 0;
@@ -807,8 +809,7 @@ void begin_box_(integer box_context)
               shift_amount(cur_box) = 0;
               tail = p;
               link(p) = 0;
-done:
-              ;
+done:;
             }
         }
       }
@@ -872,6 +873,7 @@ done:
           if (every_hbox != 0)
             begin_token_list(every_hbox, every_vbox_text);
         }
+
         return;
       }
       break;
@@ -906,9 +908,6 @@ void scan_box_(integer box_context)
     back_error();
   }
 }
-/****************************************************************************/
-void package_ (small_number);
-/****************************************************************************/
 /* sec 1091 */
 small_number norm_min_ (integer h)
 {
@@ -932,7 +931,7 @@ void new_graf_(boolean indented)
   space_factor = 1000;
   set_cur_lang();
   clang = cur_lang;
-  prev_graf =(norm_min(left_hyphen_min) * 64 + norm_min(right_hyphen_min)) * 65536L + cur_lang;
+  prev_graf = (norm_min(left_hyphen_min) * 64 + norm_min(right_hyphen_min)) * 65536L + cur_lang;
 
   if (indented)
   {
@@ -1476,13 +1475,13 @@ void init_math (void)
     if (head == tail)
     {
       pop_nest();
-      w = -max_dimen; /* - (2^30 - 1) */
+      w = -max_dimen;
     }
     else
     {
       line_break(display_widow_penalty);
       v = shift_amount(just_box) + 2 * quad(cur_font);
-      w = -max_dimen;  /* - (2^30 - 1) */
+      w = -max_dimen;
       p = list_ptr(just_box);
 
       while (p != 0)
@@ -1528,12 +1527,12 @@ reswitch:
               if (glue_sign(just_box) == stretching)
               {
                 if ((glue_order(just_box) == stretch_order(q)) && (stretch(q) != 0))
-                  v = max_dimen;  /* - (2^30 - 1) */
+                  v = max_dimen;
               }
               else if (glue_sign(just_box) == shrinking)
               {
                 if ((glue_order(just_box) == shrink_order(q)) && (shrink(q) != 0))
-                  v = max_dimen;  /* - (2^30 - 1) */
+                  v = max_dimen;
               }
 
               if (subtype(p) >= a_leaders)
@@ -1550,21 +1549,23 @@ reswitch:
             break;
         }
 
-        if (v < max_dimen) /* - (2^30 - 1) */
+        if (v < max_dimen)
           v = v + d;
 
         goto not_found;
+
 found:
-        if (v < max_dimen) /* - (2^30 - 1) */
+        if (v < max_dimen)
         {
           v = v + d;
           w = v;
         }
         else
         {
-          w = max_dimen;  /* - (2^30 - 1) */
+          w = max_dimen;
           goto done;
         }
+
 not_found:
         p = link(p);
       }
@@ -1950,7 +1951,7 @@ void build_choices (void)
 void sub_sup (void)
 {
 /*  small_number t; */
-  int t; /* 95/Jan/7 */
+  int t;
   pointer p;
 
   t = 0;
@@ -1983,6 +1984,7 @@ void sub_sup (void)
       error();
     }
   }
+
   scan_math(p);
 }
 /* sec 1086 */

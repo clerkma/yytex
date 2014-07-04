@@ -570,9 +570,9 @@ found:
     if (p < glue_val)
       if (q == multiply)
         if (p == int_val)
-          cur_val = mult_and_add(eqtb[l].cint, cur_val, 0, 2147483647L); /*  2^31 - 1 */
+          cur_val = mult_integers(eqtb[l].cint, cur_val);
         else
-          cur_val = mult_and_add(eqtb[l].cint, cur_val, 0, 1073741823L); /*  2^30 - 1 */
+          cur_val = nx_plus_y(eqtb[l].cint, cur_val, 0);
       else
         cur_val = x_over_n(eqtb[l].cint, cur_val);
     else
@@ -582,9 +582,9 @@ found:
 
       if (q == multiply)
       {
-        width(r) = mult_and_add(width(s), cur_val, 0, 1073741823L);  /* 2^30 - 1 */
-        stretch(r) = mult_and_add(stretch(s), cur_val, 0, 1073741823L);  /* 2^30 - 1 */
-        shrink(r) = mult_and_add(shrink(s), cur_val, 0, 1073741823L);  /* 2^30 - 1 */
+        width(r) = nx_plus_y(width(s), cur_val, 0);
+        stretch(r) = nx_plus_y(stretch(s), cur_val, 0);
+        shrink(r) = nx_plus_y(shrink(s), cur_val, 0);
       }
       else
       {
@@ -735,7 +735,7 @@ void new_font_(small_number a)
     t = text(u);
   else if (u >= single_base)
     if (u == null_cs)
-      t = 1213;     /* FONT */
+      t = 1213; /* FONT */
     else
       t = u - single_base;
   else
@@ -1065,7 +1065,7 @@ void show_whatever (void)
         get_token();
 
         if (interaction == error_stop_mode)
-          ;
+          do_nothing();
 
         print_nl("> ");
 
@@ -1085,7 +1085,7 @@ void show_whatever (void)
         p = the_toks();
 
         if (interaction == error_stop_mode)
-          ;
+          do_nothing();
 
         print_nl("> ");
         token_show(temp_head);
@@ -1514,7 +1514,7 @@ void main_control (void)
     begin_token_list(every_job, every_job_text);
 
 big_switch:
-  get_x_token();       /* big_switch */
+  get_x_token();
 
 reswitch:
   if (interrupt != 0)
@@ -1576,7 +1576,7 @@ reswitch:
     case vmode + spacer:
     case mmode + spacer:
     case mmode + no_boundary:
-      ;
+      do_nothing();
       break;
 
     case any_mode(ignore_spaces):
@@ -2078,24 +2078,25 @@ main_loop_move_2:
 
   main_i = char_info(main_f, cur_l);
 
-  if (!(main_i.b0 > 0))
+  if (!char_exists(main_i))
   {
     char_warning(main_f, cur_chr);
     free_avail(lig_stack);
     goto big_switch; 
   }
-  {
-    link(tail) = lig_stack;
-    tail = lig_stack;
-  }
+
+  link(tail) = lig_stack;
+  tail = lig_stack;
 
 main_loop_lookahead:
   get_next();
 
   if (cur_cmd == letter)
     goto main_loop_lookahead_1;
+
   if (cur_cmd == other_char)
     goto main_loop_lookahead_1;
+
   if (cur_cmd == char_given)
     goto main_loop_lookahead_1;
 
@@ -2103,8 +2104,10 @@ main_loop_lookahead:
 
   if (cur_cmd == letter)
     goto main_loop_lookahead_1;
+
   if (cur_cmd == other_char)
     goto main_loop_lookahead_1;
+
   if (cur_cmd == char_given)
     goto main_loop_lookahead_1;
 
@@ -2159,7 +2162,7 @@ main_lig_loop_2:
       bSuppress = 1;
   }
 
-  if (next_char(main_j) == cur_r && bSuppress == 0)  /* 99/Jan/5 */
+  if (next_char(main_j) == cur_r && bSuppress == 0)
     if (skip_byte(main_j) <= stop_flag)
     {
       if (op_byte(main_j) >= kern_flag)
@@ -2263,7 +2266,7 @@ main_lig_loop_2:
 main_loop_move_lig:
   main_p = lig_ptr(lig_stack);
 
-  if (main_p != 0)     /* BUG FIX */
+  if (main_p != 0)
     tail_append(main_p);
 
   temp_ptr = lig_stack;
@@ -2273,7 +2276,7 @@ main_loop_move_lig:
   ligature_present = true;
 
   if (lig_stack == 0)
-    if (main_p != 0)   /* BUG FIX */
+    if (main_p != 0)
       goto main_loop_lookahead;
     else
       cur_r = bchar;
@@ -2298,6 +2301,7 @@ append_normal_space:
         font_glue[cur_font] = main_p;
       }
     }
+
     temp_ptr = new_glue(main_p);
   }
   else

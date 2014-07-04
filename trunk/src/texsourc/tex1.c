@@ -865,11 +865,11 @@ void begin_diagnostic (void)
   }
 }
 /* sec 0245 */
-void end_diagnostic_(boolean blankline)
+void end_diagnostic_(boolean blank_line)
 {
   print_nl("");
 
-  if (blankline)
+  if (blank_line)
     print_ln();
 
   selector = old_setting;

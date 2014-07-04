@@ -18,9 +18,9 @@
 
 void initialize (void);
 void print_ln (void);
-void print_char_(ASCII_code);
+void print_char_(ASCII_code s);
 #define print_char(s) print_char_((ASCII_code) (s))
-void print_(integer);
+void print_(integer s);
 #define print(s) print_((integer) (s))
 void prints_(const char * s);
 #define prints(s) prints_((const char *) s)
@@ -158,7 +158,7 @@ void print_param_(integer);
 #define print_param(n) print_param_((integer) (n))
 void begin_diagnostic(void);
 void end_diagnostic_(boolean);
-#define end_diagnostic(blankline) end_diagnostic_((boolean) (blankline))
+#define end_diagnostic(blank_line) end_diagnostic_((boolean) (blank_line))
 void print_length_param_(integer);
 #define print_length_param(n) print_length_param_((integer) (n))
 void print_cmd_chr_(quarterword, halfword);
@@ -167,7 +167,6 @@ void show_eqtb_(halfword);
 #define show_eqtb(n) show_eqtb_((halfword) (n))
 halfword id_lookup_(integer, integer);
 #define id_lookup(j, l) id_lookup_((integer) (j), (integer) (l))
-void primitive_s (char * s, quarterword c, halfword o);
 void primitive_(str_number, quarterword, halfword);
 #define primitive(s, c, o) primitive_(make_string_pool((char *) s), (quarterword) (c), (halfword) (o))
 void new_save_level_(group_code);
@@ -238,8 +237,8 @@ halfword str_toks_(pool_pointer);
 halfword the_toks(void);
 void ins_the_toks(void);
 void conv_toks(void);
-halfword scan_toks_(boolean, boolean);
-#define scan_toks(macrodef, xpand) scan_toks_((boolean) (macrodef), (boolean) (xpand))
+pointer scan_toks_(boolean, boolean);
+#define scan_toks(macro_def, xpand) scan_toks_((boolean) (macro_def), (boolean) (xpand))
 void read_toks_(integer, halfword);
 #define read_toks(n, r) read_toks_((integer) (n), (halfword) (r))
 void pass_text(void);
@@ -263,7 +262,7 @@ str_number w_make_name_string_(void);
 #define w_make_name_string(f) w_make_name_string_()
 void scan_file_name(void);
 void pack_job_name_(str_number);
-#define pack_job_name(s) pack_job_name_(make_string_pool((char*)s))
+#define pack_job_name(s) pack_job_name_(make_string_pool((char*) (s)))
 void prompt_file_name_(char *, str_number);
 #define prompt_file_name(s, e) prompt_file_name_((char *) s, make_string_pool((char*) e))
 void open_log_file(void);
@@ -296,76 +295,76 @@ void write_out_(pointer);
 void out_what_(pointer);
 #define out_what(p) out_what_((pointer) (p))
 void scan_spec_(group_code, boolean);
-#define scan_spec(c, threecodes) scan_spec_((group_code) (c), (boolean) (threecodes))
+#define scan_spec(c, three_codes) scan_spec_((group_code) (c), (boolean) (three_codes))
 halfword hpack_(halfword, scaled, small_number);
 #define hpack(p, w, m) hpack_((halfword) (p), (scaled) (w), (small_number) (m))
 halfword vpackage_(halfword, scaled, small_number, scaled);
 #define vpackage(p, h, m, l) vpackage_((halfword) (p), (scaled) (h), (small_number) (m), (scaled) (l))
 void append_to_vlist_(halfword);
 #define append_to_vlist(b) append_to_vlist_((halfword) (b))
-halfword new_noad(void);
-halfword new_style_(small_number);
+pointer new_noad(void);
+pointer new_style_(small_number);
 #define new_style(s) new_style_((small_number) (s))
-halfword new_choice(void);
+pointer new_choice(void);
 void show_info(void);
-halfword fraction_rule_(scaled);
+pointer fraction_rule_(scaled);
 #define fraction_rule(t) fraction_rule_((scaled) (t))
-halfword overbar_(halfword, scaled, scaled);
-#define overbar(b, k, t) overbar_((halfword) (b), (scaled) (k), (scaled) (t))
-halfword char_box_(internal_font_number, quarterword);
+pointer overbar_(pointer, scaled, scaled);
+#define overbar(b, k, t) overbar_((pointer) (b), (scaled) (k), (scaled) (t))
+pointer char_box_(internal_font_number, quarterword);
 #define char_box(f, c) char_box_((internal_font_number) (f), (quarterword) (c))
-void stack_into_box_(halfword, internal_font_number, quarterword);
-#define stack_into_box(b, f, c) stack_into_box_((halfword) (b), (internal_font_number) (f), (quarterword) (c))
+void stack_into_box_(pointer, internal_font_number, quarterword);
+#define stack_into_box(b, f, c) stack_into_box_((pointer) (b), (internal_font_number) (f), (quarterword) (c))
 scaled height_plus_depth_(internal_font_number, quarterword); 
 #define height_plus_depth(f, c) height_plus_depth_((internal_font_number) (f), (quarterword) (c))
-halfword var_delimiter_(halfword, small_number, scaled);
-#define var_delimiter(d, s, v) var_delimiter_((halfword) (d), (small_number) (s), (scaled) (v))
-halfword rebox_(halfword, scaled);
-#define rebox(b, w) rebox_((halfword) (b), (scaled) (w))
-halfword math_glue_(halfword, scaled);
-#define math_glue(g, m) math_glue_((halfword) (g), (scaled) (m))
-void math_kern_(halfword, scaled);
-#define math_kern(p, m) math_kern_((halfword) (p), (scaled) (m))
+pointer var_delimiter_(pointer, small_number, scaled);
+#define var_delimiter(d, s, v) var_delimiter_((pointer) (d), (small_number) (s), (scaled) (v))
+pointer rebox_(pointer, scaled);
+#define rebox(b, w) rebox_((pointer) (b), (scaled) (w))
+pointer math_glue_(pointer, scaled);
+#define math_glue(g, m) math_glue_((pointer) (g), (scaled) (m))
+void math_kern_(pointer, scaled);
+#define math_kern(p, m) math_kern_((pointer) (p), (scaled) (m))
 void flush_math(void);
-halfword clean_box_(halfword, small_number);
-#define clean_box(p, s) clean_box_((halfword) (p), (small_number) (s))
-void fetch_(halfword);
-#define fetch(a) fetch_((halfword) (a))
-void make_over_(halfword);
-#define make_over(q) make_over_((halfword) (q))
-void make_under_(halfword);
-#define make_under(q) make_under_((halfword) (q))
-void make_vcenter_(halfword);
-#define make_vcenter(q) make_vcenter_((halfword) (q))
-void make_radical_(halfword);
-#define make_radical(q) make_radical_((halfword) (q))
-void make_math_accent_(halfword);
-#define make_math_accent(q) make_math_accent_((halfword) (q))
-void make_fraction_(halfword);
-#define make_fraction(q) make_fraction_((halfword) (q))
-scaled make_op_(halfword);
-#define make_op(q) make_op_((halfword) (q))
-void make_ord_(halfword);
-#define make_ord(q) make_ord_((halfword) (q))
-void make_scripts_(halfword, scaled);
-#define make_scripts(q, delta) make_scripts_((halfword) (q), (scaled) (delta))
-small_number make_left_right_(halfword, small_number, scaled, scaled);
-#define make_left_right(q, style, maxd, max_h) make_left_right_((halfword) (q), (small_number) (style), (scaled) (maxd), (scaled) (max_h))
+pointer clean_box_(pointer, small_number);
+#define clean_box(p, s) clean_box_((pointer) (p), (small_number) (s))
+void fetch_(pointer);
+#define fetch(a) fetch_((pointer) (a))
+void make_over_(pointer);
+#define make_over(q) make_over_((pointer) (q))
+void make_under_(pointer);
+#define make_under(q) make_under_((pointer) (q))
+void make_vcenter_(pointer);
+#define make_vcenter(q) make_vcenter_((pointer) (q))
+void make_radical_(pointer);
+#define make_radical(q) make_radical_((pointer) (q))
+void make_math_accent_(pointer);
+#define make_math_accent(q) make_math_accent_((pointer) (q))
+void make_fraction_(pointer);
+#define make_fraction(q) make_fraction_((pointer) (q))
+scaled make_op_(pointer);
+#define make_op(q) make_op_((pointer) (q))
+void make_ord_(pointer);
+#define make_ord(q) make_ord_((pointer) (q))
+void make_scripts_(pointer, scaled);
+#define make_scripts(q, delta) make_scripts_((pointer) (q), (scaled) (delta))
+small_number make_left_right_(pointer, small_number, scaled, scaled);
+#define make_left_right(q, style, max_d, max_h) make_left_right_((pointer) (q), (small_number) (style), (scaled) (max_d), (scaled) (max_h))
 void mlist_to_hlist(void);
 void push_alignment(void);
 void pop_alignment(void);
 void get_preamble_token(void);
 void init_align(void);
-void init_span_(halfword);
-#define init_span(p) init_span_((halfword) (p))
+void init_span_(pointer);
+#define init_span(p) init_span_((pointer) (p))
 void init_row(void);
 void init_col(void);
 boolean fin_col(void);
 void fin_row(void);
 void fin_align(void);
 void align_peek(void);
-halfword finite_shrink_(halfword);
-#define finite_shrink(p) finite_shrink_((halfword) (p))
+pointer finite_shrink_(pointer);
+#define finite_shrink(p) finite_shrink_((pointer) (p))
 void try_break_(integer, small_number);
 #define try_break(pi, breaktype) try_break_((integer) (pi), (small_number) (breaktype))
 void post_line_break_(integer);
@@ -390,11 +389,11 @@ void init_trie(void);
 void line_break_(integer);
 #define line_break(final_widow_penalty) line_break_((integer) (final_widow_penalty))
 void new_hyph_exceptions(void);
-halfword prune_page_top_(halfword);
-#define prune_page_top(p) prune_page_top_((halfword) (p))
-halfword vert_break_(halfword, scaled, scaled);
-#define vert_break(p, h, d) vert_break_((halfword) (p), (scaled) (h), (scaled) (d))
-halfword vsplit_(eight_bits, scaled);
+pointer prune_page_top_(pointer);
+#define prune_page_top(p) prune_page_top_((pointer) (p))
+pointer vert_break_(pointer, scaled, scaled);
+#define vert_break(p, h, d) vert_break_((pointer) (p), (scaled) (h), (scaled) (d))
+pointer vsplit_(eight_bits, scaled);
 #define vsplit(n, h) vsplit_((eight_bits) (n), (scaled) (h))
 void print_totals(void);
 void freeze_page_specs_(small_number);
@@ -403,8 +402,8 @@ void box_error_(eight_bits);
 #define box_error(n) box_error_((eight_bits) (n))
 void ensure_vbox_(eight_bits);
 #define ensure_vbox(n) ensure_vbox_((eight_bits) (n))
-void fire_up_(halfword);
-#define fire_up(c) fire_up_((halfword) (c))
+void fire_up_(pointer);
+#define fire_up(c) fire_up_((pointer) (c))
 void build_page(void);
 void app_space(void);
 void insert_dollar_sign(void);
@@ -418,11 +417,11 @@ void off_save(void);
 void extra_right_brace(void);
 void normal_paragraph(void);
 void box_end_(integer);
-#define box_end(boxcontext) box_end_((integer) (boxcontext))
+#define box_end(box_context) box_end_((integer) (box_context))
 void begin_box_(integer);
-#define begin_box(boxcontext) begin_box_((integer) (boxcontext))
+#define begin_box(box_context) begin_box_((integer) (box_context))
 void scan_box_(integer);
-#define scan_box(boxcontext) scan_box_((integer) (boxcontext))
+#define scan_box(box_context) scan_box_((integer) (box_context))
 void package_(small_number);
 #define package(c) package_((small_number) (c))
 small_number norm_min_(integer);

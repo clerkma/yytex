@@ -65,8 +65,8 @@ while (0)
 #define unity 0200000
 #define two   0400000
 /* sec 0105 */
-#define nx_plux_y(...)   mult_and_add(..., 07777777777L)
-#define mult_integers(a) mult_and_add(a,0,017777777777L)
+#define nx_plus_y(a, b, c)  mult_and_add(a, b, c, 07777777777L)
+#define mult_integers(a, b) mult_and_add(a, b, 0, 017777777777L)
 /* sec 0108 */
 #define inf_bad 10000L
 /* sec 0109 */
@@ -1230,8 +1230,18 @@ while (0)
 #define sup_style(a)     (2 * ((a) / 4) + script_style + ((a) % 2))
 #define num_style(a)     ((a) + 2 - 2 * ((a) / 6))
 #define denom_style(a)   (2 * ((a) / 2) + cramped + 2 - 2 * ((a) / 6))
+/* sec 0716 */
+#define mu_mult(a) nx_plus_y(n, a, xn_over_d(a, f, 0200000))
 /* sec 0725 */
 #define new_hlist(a) mem[nucleus(a)].cint
+/* sec 0731 */
+#define choose_mlist(a) \
+do                      \
+{                       \
+  p = a(q);             \
+  a(q) = 0;             \
+}                       \
+while (0)
 /* sec 0770 */
 #define preamble              link(align_head)
 #define align_stack_node_size 5
@@ -1265,7 +1275,13 @@ while (0)
 #define delta_node_size 7
 #define delta_node      2
 /* sec 0823 */
-#define do_all_six(a) a(1); a(2); a(3); a(4); a(5); a(6)
+#define do_all_six(a) \
+do                    \
+{                     \
+  a(1); a(2); a(3);   \
+  a(4); a(5); a(6);   \
+}                     \
+while (0)
 /* sec 0825 */
 #define check_shrinkage(s)                            \
 do                                                    \
