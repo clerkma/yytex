@@ -19,20 +19,20 @@
 
 #include "texd.h"
 
-inline void do_nothing(void)
+void do_nothing(void)
 {
   if (trace_flag)
     printf("DO_NOTHING.\n");
 }
 
-inline void update_terminal(void)
+void update_terminal(void)
 {
 #ifndef _WINDOWS
   fflush(stdout);
 #endif
 }
 
-inline void check_full_save_stack(void)
+void check_full_save_stack(void)
 {
   if (save_ptr > max_save_stack)
   {
@@ -56,18 +56,18 @@ inline void check_full_save_stack(void)
 #endif
   }
 }
-inline void write_dvi(size_t a, size_t b)
+void write_dvi(size_t a, size_t b)
 {
   if (fwrite((char *) &dvi_buf[a], sizeof(dvi_buf[a]),
     ((b) - (a) + 1), dvi_file) != ((b) - (a) + 1))
     FATAL_PERROR ("\n! dvi file");
 }
-inline void prompt_input(const char * s)
+void prompt_input(const char * s)
 {
   prints(s);
   term_input();
 }
-inline void set_cur_lang(void)
+void set_cur_lang(void)
 {
   if (language <= 0)
     cur_lang = 0;
@@ -76,7 +76,7 @@ inline void set_cur_lang(void)
   else
     cur_lang = language;
 }
-inline void free_avail_(halfword p)
+void free_avail_(halfword p)
 {
   link(p) = avail;
   avail = p;
@@ -85,13 +85,13 @@ inline void free_avail_(halfword p)
 #endif
 }
 /* sec 0042 */
-inline void append_char (ASCII_code c)
+void append_char (ASCII_code c)
 {
   str_pool[pool_ptr] = c;
   incr(pool_ptr);
 }
 /* sec 0042 */
-inline void str_room(int val)
+void str_room(int val)
 {
 #ifdef ALLOCATESTRING
   if (pool_ptr + val > current_pool_size)
@@ -105,13 +105,13 @@ inline void str_room(int val)
 #endif
 }
 /* sec 0044 */
-inline void flush_string (void)
+void flush_string (void)
 {
   decr(str_ptr);
   pool_ptr = str_start[str_ptr];
 }
 /* sec 0048 */
-inline void append_lc_hex (ASCII_code c)
+void append_lc_hex (ASCII_code c)
 {
   if (c < 10)
     append_char(c + '0');
@@ -119,7 +119,7 @@ inline void append_lc_hex (ASCII_code c)
     append_char(c - 10 + 'a');
 }
 /* sec 0073 */
-inline void print_err (const char * s)
+void print_err (const char * s)
 {
   if (interaction == error_stop_mode)
     do_nothing();
@@ -128,7 +128,7 @@ inline void print_err (const char * s)
   prints(s);
 }
 /* sec 0079 */
-inline void tex_help (unsigned int n, ...)
+void tex_help (unsigned int n, ...)
 {
   int i;
   va_list help_arg;
@@ -145,7 +145,7 @@ inline void tex_help (unsigned int n, ...)
   va_end(help_arg);
 }
 /* sec 0093 */
-inline void succumb (void)
+void succumb (void)
 {
   if (interaction == error_stop_mode)
     interaction = scroll_mode;
@@ -164,20 +164,20 @@ inline void succumb (void)
   jump_out();
 }
 /* sec 0180 */
-inline void node_list_display(integer p)
+void node_list_display(integer p)
 {
   append_char('.');
   show_node_list(p);
   decr(pool_ptr);
 }
 /* sec 0214 */
-inline void tail_append_ (pointer val)
+void tail_append_ (pointer val)
 {
   link(tail) = val;
   tail = link(tail);
 }
 /* sec 0321 */
-inline void push_input(void)
+void push_input(void)
 {
   if (input_ptr > max_in_stack)
   {
@@ -205,13 +205,13 @@ inline void push_input(void)
   incr(input_ptr);
 }
 /* sec 0322 */
-inline void pop_input(void)
+void pop_input(void)
 {
   decr(input_ptr);
   cur_input = input_stack[input_ptr];
 }
 /* sec 0532 */
-inline void ensure_dvi_open(void)
+void ensure_dvi_open(void)
 {
   if (output_file_name == 0)
   {
@@ -229,7 +229,10 @@ inline void ensure_dvi_open(void)
   }
 }
 /* sec 0598 */
-inline void dvi_out_(ASCII_code op)
+md5_state_t dvi_md5_state;
+md5_byte_t  dvi_md5_digest[16];
+
+void dvi_out_(ASCII_code op)
 {
   dvi_buf[dvi_ptr] = op;
   incr(dvi_ptr);
@@ -238,7 +241,7 @@ inline void dvi_out_(ASCII_code op)
     dvi_swap();
 }
 /* sec 0616 */
-inline void synch_h(void)
+void synch_h(void)
 {
   if (cur_h != dvi_h)
   {
@@ -247,7 +250,7 @@ inline void synch_h(void)
   }
 }
 /* sec 0616 */
-inline void synch_v(void)
+void synch_v(void)
 {
   if (cur_v != dvi_v)
   {

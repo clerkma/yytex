@@ -751,7 +751,6 @@ EXTERN boolean show_fonts_used;
 EXTERN boolean reset_exceptions;
 EXTERN boolean show_current;
 EXTERN boolean return_flag;
-EXTERN boolean want_version;
 EXTERN boolean civilize_flag;
 EXTERN boolean show_numeric;
 EXTERN boolean restrict_to_ascii;
@@ -845,35 +844,34 @@ void add_variable_space(int);
 char *unixify (char *);
 
 #include "coerce.h"
-#undef inline
-#define inline
+
 /* sec 79 */
-extern inline void node_list_display(integer p);
-extern inline void do_nothing(void);
-extern inline void update_terminal(void);
-extern inline void check_full_save_stack(void);
-extern inline void push_input(void);
-extern inline void pop_input(void);
-extern inline void print_err (const char * s);
-extern inline void ensure_dvi_open(void);
-extern inline void write_dvi(size_t a, size_t b);
-extern inline void prompt_input(const char *s);
-extern inline void synch_h(void);
-extern inline void synch_v(void);
-extern inline void set_cur_lang(void);
-extern char * md5_file (FILE * in_file);
-extern inline void str_room (int val);
-extern inline void tail_append_ (pointer val);
+extern void node_list_display(integer p);
+extern void do_nothing(void);
+extern void update_terminal(void);
+extern void check_full_save_stack(void);
+extern void push_input(void);
+extern void pop_input(void);
+extern void print_err (const char * s);
+extern void ensure_dvi_open(void);
+extern void write_dvi(size_t a, size_t b);
+extern void prompt_input(const char *s);
+extern void synch_h(void);
+extern void synch_v(void);
+extern void set_cur_lang(void);
+extern char * md5_file(FILE * in_file);
+extern void str_room(int val);
+extern void tail_append_(pointer val);
 #define tail_append(a) tail_append_((pointer) a)
-extern inline void tex_help (unsigned int n, ...);
-extern inline void append_char(ASCII_code c);
-extern inline void append_lc_hex(ASCII_code c);
-extern inline void succumb(void);
-extern inline void dvi_out_ (ASCII_code op);
+extern void tex_help(unsigned int n, ...);
+extern void append_char(ASCII_code c);
+extern void append_lc_hex(ASCII_code c);
+extern void succumb(void);
+extern void dvi_out_(ASCII_code op);
 #define dvi_out(op) dvi_out_((ASCII_code) (op))
-extern inline void free_avail_(halfword p);
+extern void free_avail_(halfword p);
 #define free_avail(p) free_avail_((halfword) (p))
-extern inline void flush_string (void);
+extern void flush_string (void);
 extern str_number load_pool_strings (integer spare_size);
 extern str_number make_string_pool (const char *s);
 #define help0()     tex_help(0)

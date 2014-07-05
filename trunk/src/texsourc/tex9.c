@@ -167,56 +167,56 @@ void close_files_and_terminate (void)
         fprintf(log_file, "%s%d%s%d\n", ", out of ", current_font_mem_size, " for ", font_max - font_base);
       else
 #endif
-        fprintf(log_file, "%s%d%s%d\n", ", out of ", font_mem_size, " for ", font_max - font_base);
+        fprintf(log_file, "%s%lu%s%d\n", ", out of ", font_mem_size, " for ", font_max - font_base);
 
-      fprintf(log_file, "%c%ld%s", ' ', hyph_count, " hyphenation exception");
+      fprintf(log_file, "%c%d%s", ' ', hyph_count, " hyphenation exception");
 
       if (hyph_count != 1)
         putc('s',  log_file);
 
-      fprintf(log_file, "%s%ld\n",  " out of ", hyphen_prime);
+      fprintf(log_file, "%s%lld\n",  " out of ", hyphen_prime);
       fprintf(log_file, " ");
-      fprintf(log_file, "%ld%s", (int)max_in_stack, "i,");
-      fprintf(log_file, "%ld%s", (int)max_nest_stack, "n,");
-      fprintf(log_file, "%ld%s", (int)max_param_stack, "p,");
-      fprintf(log_file, "%ld%s", (int)max_buf_stack + 1, "b,");
-      fprintf(log_file, "%ld%s", (int)max_save_stack + 6, "s");
+      fprintf(log_file, "%d%s", (int) max_in_stack, "i,");
+      fprintf(log_file, "%d%s", (int) max_nest_stack, "n,");
+      fprintf(log_file, "%d%s", (int) max_param_stack, "p,");
+      fprintf(log_file, "%d%s", (int) max_buf_stack + 1, "b,");
+      fprintf(log_file, "%d%s", (int) max_save_stack + 6, "s");
       fprintf(log_file, " stack positions out of ");
 
 #ifdef ALLOCATESAVESTACK
       if (show_current)
-        fprintf(log_file, "%ld%s", current_stack_size, "i,");
+        fprintf(log_file, "%d%s", current_stack_size, "i,");
       else
 #endif
-        fprintf(log_file, "%ld%s", stack_size, "i,");
+        fprintf(log_file, "%d%s", stack_size, "i,");
 
 #ifdef ALLOCATENESTSTACK
       if (show_current)
-        fprintf(log_file, "%ld%s", current_nest_size, "n,");
+        fprintf(log_file, "%d%s", current_nest_size, "n,");
       else
 #endif
-        fprintf(log_file, "%ld%s", nest_size, "n,");
+        fprintf(log_file, "%d%s", nest_size, "n,");
 
 #ifdef ALLOCATEPARAMSTACK
       if (show_current)
-        fprintf(log_file, "%ld%s", current_param_size, "p,");
+        fprintf(log_file, "%d%s", current_param_size, "p,");
       else
 #endif
-        fprintf(log_file, "%ld%s", param_size, "p,");
+        fprintf(log_file, "%d%s", param_size, "p,");
 
 #ifdef ALLOCATEBUFFER
       if (show_current)
-        fprintf(log_file, "%ld%s", current_buf_size, "b,");
+        fprintf(log_file, "%d%s", current_buf_size, "b,");
       else
 #endif
         fprintf(log_file, "%ld%s", buf_size, "b,");
 
 #ifdef ALLOCATESAVESTACK
       if (show_current)
-        fprintf(log_file, "%ld%s", current_save_size, "s");
+        fprintf(log_file, "%d%s", current_save_size, "s");
       else
 #endif
-        fprintf(log_file, "%ld%s", save_size, "s");
+        fprintf(log_file, "%d%s", save_size, "s");
 
       fprintf(log_file, "\n");
 
