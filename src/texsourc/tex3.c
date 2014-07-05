@@ -1826,16 +1826,6 @@ void open_log_file (void)
   log_opened = true;
 
   {
-    if (want_version)
-    {
-      stamp_it(log_line);
-      strcat(log_line, "\n");
-      (void) fputs(log_line, log_file);
-      stampcopy(log_line);
-      strcat(log_line, "\n");
-      (void) fputs(log_line, log_file);
-    }
-    
     fprintf(log_file, "%s (%s %s)", tex_version, application, yandyversion);
 
     if (format_ident > 0)

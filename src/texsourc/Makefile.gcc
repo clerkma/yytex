@@ -3,16 +3,14 @@
 #
 # You may freely use, modify and/or distribute this file.
 #
-# makefle for linux (tested in ubuntu 14.04).
+# makefle for linux (tested in ubuntu 14.04: gcc/clang).
 #
 # apt-get install libkpathsea6 libkpathsea-dev
-# apt-get install libhpdf-2.2.1 libhpdf-dev
-# apt-get install libpng12-0 libpng12-dev
 # apt-get install zlib1g zlib1g-dev
 #
 
 CC = gcc
-CFLAGS = -DMSDOS -DTeX -DINITEX -DINI -Ilibmd5
+CFLAGS = -O2 -DMSDOS -DTeX -DINITEX -DINI -Ilibmd5
 LDFLAGS = -lkpathsea -lz
 
 objects = yandytex.o itex.o openinou.o subroute.o local.o \

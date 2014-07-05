@@ -2412,7 +2412,6 @@ int analyze_flag (int c, char *optarg)
   switch (c)
   {
     case 'v':
-      want_version = true;
       verbose_flag = true;
       break;
     case 'i':
@@ -2770,7 +2769,6 @@ int init_commands (int ac, char **av)
   reset_exceptions      = false;
   non_ascii             = false;
   key_replace           = false;
-  want_version          = false;
   open_trace_flag       = false;
   trace_flag            = false;
   verbose_flag          = false;
@@ -2821,18 +2819,6 @@ int init_commands (int ac, char **av)
 
   if (optind == 0)
     optind = ac;
-
-/*
-  if (want_version)
-  {
-    stamp_it(log_line);
-    strcat(log_line, "\n");
-    show_line(log_line, 0);
-    stampcopy(log_line);
-    strcat(log_line, "\n");
-    show_line(log_line, 0);
-  }
-*/
 
   return 0;
 }
@@ -3255,7 +3241,7 @@ int endit(int flag)
     if (total_pages > 0)
     {
       show_inter_val((finish_time - main_time) / total_pages);
-      printf(" sec per page.");
+      printf(" sec per page.\n");
     }
   }
 

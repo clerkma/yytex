@@ -23,7 +23,7 @@ yandytex.exe: $(objs)
 	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
 	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
 	yandy_pool yandytex.res md5 yandy_inlines \
-	kpathsea\kpathsea.lib libpng\libpng.lib zlib\zlib.lib \
+	kpathsea\kpathsea.lib zlib\zlib.lib \
 	dvipdfmx\libdvipdfmx.lib
 	del ..\yandy\bin\yandytex.exe
 	copy yandytex.exe ..\yandy\bin\yandytex.exe
