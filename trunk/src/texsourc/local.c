@@ -29,21 +29,11 @@
   #define REALLOC realloc
 #endif
 
-int wantcopyrght = 1;
-
-char *compiletime  =  __TIME__;
-char *compiledate  =  __DATE__;
-char *www          = "http://www.tug.org/yandy";
-char *copyright    = "\nCopyright (C) 1993--2000 Y&Y, Inc.\n"
-                     "Copyright (C) 2007 TeX Users Group.\n"
-                     "Copyright (C) 2014 Clerk Ma.\n\n"
-                     "This program is free software; you can redistribute it and/or modify\n"
-                     "it under the terms of the GNU General Public License as published by\n"
-                     "the Free Software Foundation; either version 2 of the License, or\n"
-                     "(at your option) any later version.\n\n  ";
-char *yandyversion = "2.3.0";
-char *application  = "Y&Y TeX";
-char *tex_version  = "This is TeX, Version 3.14159265";
+const char * compiletime  = __TIME__;
+const char * compiledate  = __DATE__;
+const char * yandyversion = "2.3.0";
+const char * application  = "Y&Y TeX";
+const char * tex_version  = "This is TeX, Version 3.14159265";
 
 clock_t start_time, main_time, finish_time;
 
@@ -55,7 +45,7 @@ char * pdf_directory = "";
 
 char * texpath = "";
 
-char log_line[MAXLINE];  // used also in tex9.c
+char log_line[MAXLINE]; // used also in tex9.c
 
 int mem_spec_flag     = 0;    /* non-zero if `-m=...' was used */ 
 int format_spec       = 0;    /* non-zero if a format specified on command line */
@@ -83,7 +73,7 @@ unsigned char wintodos[128] =
   138, 130, 136, 137, 141, 161, 140, 139,
   208, 164, 149, 162, 147, 228, 148, 246,
   155, 151, 163, 150, 129, 236, 231, 152
-};  
+};
 
 void show_usage (void)
 {
@@ -183,14 +173,6 @@ void stamp_it (char *s)
   s += strlen(s);
   sprintf(s, "(compiled time: %s %s)", date, compiletime);
   s += strlen(s);
-}
-
-void stampcopy (char *s)
-{
-  if (wantcopyrght)
-  {
-    sprintf(s, "%s %s", copyright, www);
-  }
 }
 
 #define MAXCHRS 256
@@ -361,7 +343,7 @@ void read_repl_sub (FILE * repl_input)
 /* the flag is 0 for -x=... and the flag is 1 for -k=... */
 int read_xchr_file (char *filename, int flag, char *argv[])
 {
-  FILE *pinput;
+  FILE *xchr_input;
   char infile[file_name_size];
   char *s;
 
@@ -383,9 +365,9 @@ int read_xchr_file (char *filename, int flag, char *argv[])
     show_line(log_line, 0);
   }
 
-  pinput = fopen (infile, "r");
+  xchr_input = fopen (infile, "r");
 
-  if (pinput == NULL)
+  if (xchr_input == NULL)
   {
     if (strrchr(infile, '.') == NULL)
     {
@@ -400,17 +382,20 @@ int read_xchr_file (char *filename, int flag, char *argv[])
         show_line(log_line, 0);
       }
       
-      pinput = fopen (infile, "r");
+      xchr_input = fopen (infile, "r");
     }
   }
 
-  if (pinput == NULL)
+  if (xchr_input == NULL)
   {
     strcpy(infile, argv[0]);     /* try TeX program path */
 
-    if ((s = strrchr (infile, '\\')) != NULL) *(s+1) = '\0';
-    else if ((s = strrchr (infile, '/')) != NULL) *(s+1) = '\0';
-    else if ((s = strrchr (infile, ':')) != NULL) *(s+1) = '\0';
+    if ((s = strrchr (infile, '\\')) != NULL)
+      *(s+1) = '\0';
+    else if ((s = strrchr (infile, '/')) != NULL)
+      *(s+1) = '\0';
+    else if ((s = strrchr (infile, ':')) != NULL)
+      *(s+1) = '\0';
 
     strcat (infile, filename);
 
@@ -420,9 +405,9 @@ int read_xchr_file (char *filename, int flag, char *argv[])
       show_line(log_line, 0);
     }
 
-    pinput = fopen (infile, "r");
+    xchr_input = fopen (infile, "r");
 
-    if (pinput == NULL)
+    if (xchr_input == NULL)
     {
       if (strchr(infile, '.') == NULL)
       {
@@ -437,18 +422,21 @@ int read_xchr_file (char *filename, int flag, char *argv[])
           show_line(log_line, 0);
         }
 
-        pinput = fopen (infile, "r");
+        xchr_input = fopen (infile, "r");
       }
     }
   }
 
-  if (pinput == NULL)   /* 97/July/31 */
+  if (xchr_input == NULL)   /* 97/July/31 */
   {
     strcpy (infile, argv[0]);     /* try TeX program path */
 
-    if ((s = strrchr (infile, '\\')) != NULL) *(s+1) = '\0';
-    else if ((s = strrchr (infile, '/')) != NULL) *(s+1) = '\0';
-    else if ((s = strrchr (infile, ':')) != NULL) *(s+1) = '\0';
+    if ((s = strrchr (infile, '\\')) != NULL)
+      *(s+1) = '\0';
+    else if ((s = strrchr (infile, '/')) != NULL)
+      *(s+1) = '\0';
+    else if ((s = strrchr (infile, ':')) != NULL)
+      *(s+1) = '\0';
 
     strcat (infile, "keyboard\\");
     strcat (infile, filename);
@@ -459,9 +447,9 @@ int read_xchr_file (char *filename, int flag, char *argv[])
       show_line(log_line, 0);
     }
 
-    pinput = fopen (infile, "r");
+    xchr_input = fopen (infile, "r");
 
-    if (pinput == NULL)
+    if (xchr_input == NULL)
     {
       if (strchr(infile, '.') == NULL)
       {
@@ -476,12 +464,12 @@ int read_xchr_file (char *filename, int flag, char *argv[])
           show_line(log_line, 0);
         }
 
-        pinput = fopen (infile, "r");
+        xchr_input = fopen (infile, "r");
       }
     }
   }
 /*  Note: can't look in TeX source file dir, since that is not known yet */
-  if (pinput == NULL)
+  if (xchr_input == NULL)
   {
     sprintf(log_line, "ERROR: Sorry, cannot find %s file %s",
         flag ? " xchr[]" : "key mapping", filename);
@@ -491,11 +479,12 @@ int read_xchr_file (char *filename, int flag, char *argv[])
   }
 
   if (flag == 0)
-    read_xchr_sub (pinput);
+    read_xchr_sub (xchr_input);
   else
-    read_repl_sub (pinput);
+    read_repl_sub (xchr_input);
 
-  (void) fclose (pinput);
+  (void) fclose (xchr_input);
+
   return 1;
 }
 
@@ -530,7 +519,7 @@ void *ourrealloc (void *old, size_t new_size)
   void * mnew;
   size_t old_size, overlap;
   
-  /*  round up to nearest multiple of four bytes */
+  /* round up to nearest multiple of four bytes */
   /* avoid unlikely alignment */
   if ((new_size % 4) != 0)
     new_size = ((new_size / 4) + 1) * 4;
@@ -597,8 +586,7 @@ void memory_error (char *s, int n)
     show_maximums(log_file);
   }
 
-  sprintf(log_line, "\n! Unable to allocate %d bytes for %s\n", n, s);
-  show_line(log_line, 1);
+  printf("\n! Unable to allocate %d bytes for %s\n", n, s);
   show_maximums(stderr);
 }
 
@@ -684,8 +672,6 @@ int allocate_tries (int trie_max)
 #endif
 
 #ifdef ALLOCATEHYPHEN
-boolean prime(int); /* test function later in this file */
-
 int current_prime = 0; /* remember in case reallocated later */
 
 /* we don't return an address here, since TWO memory regions allocated */
@@ -1349,10 +1335,8 @@ memory_word *realloc_save_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Current %s %d\n", "save_size", current_save_size);
-    show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %p\n", "save stack", save_stack);
-    show_line(log_line, 0);
+    printf("Current %s %d\n", "save_size", current_save_size);
+    printf("New Address %s == %p\n", "save stack", save_stack);
   }
 
   if (trace_flag)
@@ -1994,9 +1978,8 @@ boolean floating = false;
 
 void complainarg (int c, char *s)
 {
-  sprintf(log_line, "ERROR: Do not understand `%c' argument value `%s'\n", c, s);
-  show_line(log_line, 1);
-  show_use = 1;
+  printf("ERROR: Do not understand `%c' argument value `%s'\n", c, s);
+  show_use = true;
 }
 
 /* following is list of allowed command line flags and args */
@@ -2284,7 +2267,8 @@ boolean usesourcedirectory = true;  /* use source file directory as local when W
 
 /* cache to prevent allocating twice in a row */
 
-char *lastname = NULL, *lastvalue = NULL;
+char * lastname  = NULL;
+char * lastvalue = NULL;
 
 /* returns allocated string -- these strings are not freed again */
 /* is it safe to do that now ? 98/Jan/31 */
