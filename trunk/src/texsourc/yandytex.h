@@ -24,7 +24,6 @@
   #pragma warning(disable:4201) // nameless struct/union
   #pragma warning(disable:4996) // a function that was marked with deprecated
   #pragma warning(disable:4701) // potentially uninitialized local variable 'name' used
-  #pragma warning(disable:4131) // old style declarator
   #pragma warning(disable:4135) // conversion between different integral types
   #pragma warning(disable:4127) // conditional expression is constant
 #endif

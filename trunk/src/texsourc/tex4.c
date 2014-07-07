@@ -99,8 +99,7 @@ void dvi_swap (void)
   if (trace_flag)
   {
     show_char('\n');
-    sprintf(log_line, "dvi_swap() %lld", dvi_gone);
-    show_line(log_line, 0);
+    printf("dvi_swap() %lld", dvi_gone);
   }
 
   if (dvi_limit == dvi_buf_size)
@@ -508,7 +507,7 @@ void write_out_(pointer p)
 void out_what_(pointer p)
 {
 /*  small_number j;  */
-  int j;            /* 1995/Jan/7 */
+  int j;
 
   switch (subtype(p))
   {
@@ -520,9 +519,7 @@ void out_what_(pointer p)
         j = write_stream(p);
 
         if (subtype(p) == write_node)
-        {
           write_out(p);
-        }
         else
         {
           if (write_open[j])
@@ -536,8 +533,8 @@ void out_what_(pointer p)
             cur_area = open_area(p);
             cur_ext = open_ext(p); 
 
-            if (cur_ext == 335)  /* "" */
-              cur_ext = 785;  /* => ".tex" */
+            if (cur_ext == 335) /* "" */
+              cur_ext = 785;    /* => ".tex" */
 
             pack_file_name(cur_name, cur_area, cur_ext);
 
@@ -548,7 +545,7 @@ void out_what_(pointer p)
           }
         }
       }
-      break; 
+      break;
 
     case special_node:
       special_out(p); 
@@ -572,14 +569,14 @@ void hlist_out (void)
   scaled base_line;
   scaled left_edge;
   scaled save_h, save_v;
-  halfword this_box;
-/*  glue_ord g_order;  */
+  pointer this_box;
+  /* glue_ord g_order; */
   int g_order;
-/*  char g_sign;  */
+  /* char g_sign; */
   int g_sign;
-  halfword p;
+  pointer p;
   integer save_loc;
-  halfword leader_box;
+  pointer leader_box;
   scaled leader_wd;
   scaled lx;
   boolean outer_doing_leaders;
@@ -866,14 +863,14 @@ void vlist_out (void)
   scaled left_edge;
   scaled top_edge;
   scaled save_h, save_v;
-  halfword this_box;
-/*  glue_ord g_order; */
+  pointer this_box;
+  /* glue_ord g_order; */
   int g_order;
-/*  char g_sign; */
+  /* char g_sign; */
   int g_sign;
-  halfword p;
+  pointer p;
   integer save_loc;
-  halfword leader_box;
+  pointer leader_box;
   scaled leader_ht;
   scaled lx;
   boolean outer_doing_leaders;
@@ -1250,7 +1247,7 @@ done:
   }
 #endif
 }
-void ship_out_(halfword p)
+void ship_out_(pointer p)
 {
   switch (shipout_flag)
   {
@@ -1296,14 +1293,14 @@ found:
   scan_left_brace();
 }
 /* sec 0649 */
-halfword hpack_(halfword p, scaled w, small_number m)
+pointer hpack_(pointer p, scaled w, small_number m)
 {
-  halfword r;
-  halfword q;
+  pointer r;
+  pointer q;
   scaled h, d, x;
   scaled s;
-  halfword g;
-/*  glue_ord o;  */
+  pointer g;
+  /* glue_ord o; */
   int o;
   internal_font_number f;
   four_quarters i;
@@ -1546,23 +1543,22 @@ reswitch:
 
       if ((- (integer) x - total_shrink[normal] > hfuzz) || (hbadness < 100))
       {
-          if ((overfull_rule > 0) && (- (integer) x - total_shrink[0] > hfuzz))
-          {
-              while (link(q) != 0)
-                q = link(q);
- 
-              link(q) = new_rule();
-              width(link(q)) = overfull_rule;
-          }
-
-          print_ln();
-          print_nl("Overfull \\hbox (");
-          print_scaled(- (integer) x - total_shrink[normal]);
-          prints("pt too wide");
-
-          overfull_hbox++;
-
-          goto common_ending;
+        if ((overfull_rule > 0) && (- (integer) x - total_shrink[0] > hfuzz))
+        {
+          while (link(q) != 0)
+            q = link(q);
+          
+          link(q) = new_rule();
+          width(link(q)) = overfull_rule;
+        }
+        
+        print_ln();
+        print_nl("Overfull \\hbox (");
+        print_scaled(- (integer) x - total_shrink[normal]);
+        prints("pt too wide");
+        
+        overfull_hbox++;
+        goto common_ending;
       }
     }
     else if (o == normal)
@@ -1615,13 +1611,13 @@ exit:
   return r;
 }
 /* sec 0668 */
-halfword vpackage_(halfword p, scaled h, small_number m, scaled l)
+pointer vpackage_(pointer p, scaled h, small_number m, scaled l)
 {
-  halfword r;
+  pointer r;
   scaled w, d, x;
   scaled s;
-  halfword g;
-/*  glue_ord o;  */
+  pointer g;
+  /* glue_ord o; */
   int o;
 
   last_badness = 0;
@@ -1858,7 +1854,7 @@ exit:
   return r;
 }
 /* sec 0679 */
-void append_to_vlist_(halfword b)
+void append_to_vlist_(pointer b)
 {
   scaled d;
   pointer p;

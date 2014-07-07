@@ -834,10 +834,7 @@ void new_font_(small_number a)
           if (ignore_frozen == 0 || f > frozen_font_ptr)
           {
             if (trace_flag)
-            {
-              sprintf(log_line, "SKIPPING %lld ", s);
-              show_line(log_line, 0);
-            }
+              printf("SKIPPING %lld ", s);
             goto common_ending;
           }
         }
@@ -847,10 +844,7 @@ void new_font_(small_number a)
         if (ignore_frozen == 0 || f > frozen_font_ptr)
         {
           if (trace_flag)
-          {
-            sprintf(log_line, "SKIPPING %lld ", s);
-            show_line(log_line, 0);
-          }
+            printf("SKIPPING %lld ", s);
           goto common_ending;
         }
       }
@@ -864,10 +858,7 @@ void new_font_(small_number a)
 
 common_ending:
   if (trace_flag)
-  {
-    sprintf(log_line, "NEW FONT %lld ", f);
-    show_line(log_line, 0);
-  }
+    printf("NEW FONT %lld ", f);
 
   equiv(u) = f;
   eqtb[font_id_base + f] = eqtb[u];

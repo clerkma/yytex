@@ -673,15 +673,9 @@ void overflow_(char * s, integer n)
   if (!knuth_flag)
   {
     if (!strcmp(s, "pattern memory") && (n == trie_size))
-    {
-      sprintf(log_line, "\n  (Maybe use -h=... on command line in ini-TeX)\n");
-      show_line(log_line, 0);
-    }
+      printf("\n  (Maybe use -h=... on command line in ini-TeX)\n");
     else if (!strcmp(s, "exception dictionary") && (n == hyphen_prime))
-    {
-      sprintf(log_line, "\n  (Maybe use -e=... on command line in ini-TeX)\n");
-      show_line(log_line, 0);
-    }
+      printf("\n  (Maybe use -e=... on command line in ini-TeX)\n");
   }
 
   succumb();
@@ -747,8 +741,7 @@ boolean init_terminal (void)
     if (loc < last)
       return true;
 
-    sprintf(log_line, "%s\n", "Please type the name of your input file.");
-    show_line(log_line, 1);
+    printf("%s\n", "Please type the name of your input file.");
   }
 }
 /* sec 0043 */
@@ -1339,7 +1332,7 @@ void runaway (void)
 /* if not, extend memory at the top and grab from there --- new        */
 /* else fail ! paragraph 120                                           */
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
-halfword get_avail (void)
+pointer get_avail (void)
 {
   pointer p;
 
