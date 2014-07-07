@@ -140,7 +140,7 @@ void fix_date_and_time (void)
   (void) time(&clock);
 
   if (trace_flag)
-    printf("The time is %lld\n", clock);
+    printf("The time is %lld\n", (long long)clock);
 
   if (clock < 0)
     puts("Time not available!");
@@ -149,7 +149,7 @@ void fix_date_and_time (void)
 
   if (tmptr == NULL)
   {
-    printf("Cannot convert time (%0lld)!\n", clock);
+    printf("Cannot convert time (%0lld)!\n", (long long)clock);
     year     = 2038;
     month    = 1;
     day      = 18;
@@ -637,8 +637,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 
   if (strlen(command) + 1 >= commandlen)
   {
-    sprintf(log_line, "Command too long (%d > %d)\n", strlen(command) + 1, commandlen);
-    show_line(log_line, 1);
+    printf("Command too long (%ld > %d)\n", strlen(command) + 1, commandlen);
     uexit(EXIT_FAILURE);
   }
 

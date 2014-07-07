@@ -152,7 +152,7 @@ EXTERN integer max_buf_stack;
 /* min_halfword = 0 and double max_halfword ? */
 /* typedef unsigned long halfword; NO NO: since mem_min may be < 0 */
 /* sec 0113 */
-typedef long halfword;
+typedef int32_t halfword;
 typedef halfword pointer;
 typedef char two_choices;
 typedef char four_choices;

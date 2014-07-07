@@ -2071,11 +2071,8 @@ internal_font_number read_font_info_(halfword u, str_number nom, str_number aire
 #endif
   {
     if (trace_flag)
-    {
-      sprintf(log_line, "font_ptr %lld font_max %d fmem_ptr %lld lf %ld font_mem_size %ld\n",
+      printf("font_ptr %lld font_max %d fmem_ptr %lld lf %d font_mem_size %ld\n",
           font_ptr, font_max, fmem_ptr, lf, font_mem_size);
-      show_line(log_line, 0);
-    }
 
     print_err("Font ");
     sprint_cs(u);
