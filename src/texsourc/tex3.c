@@ -1494,7 +1494,7 @@ void end_name (void)
     cur_ext = 335;        // "" default extension 
     cur_name = make_string();
   } 
-  else            // did find an extension
+  else
   {
     cur_name = str_ptr;
     str_start[str_ptr + 1] = str_start[str_ptr] + ext_delimiter - area_delimiter - 1;
@@ -1556,10 +1556,7 @@ void pack_file_name_(str_number n, str_number a, str_number e)
     name_of_file [name_length+1] = '\0';
 
     if (trace_flag)
-    {
-      sprintf(log_line, " pack_file_name `%s' (%lld) ", name_of_file + 1, name_length); /* debugging */
-      show_line(log_line, 0);
-    }
+      printf(" pack_file_name `%s' (%lld) ", name_of_file + 1, name_length);
 
     name_of_file [name_length + 1] = ' ';
   }
@@ -1613,11 +1610,10 @@ void pack_buffered_name_(small_number n, integer a, integer b)
   else
     name_length = file_name_size - 1;
 
- /*  pad it out with spaces ... what for ? */
   for (k = name_length + 1; k <= file_name_size; k++)
     name_of_file[k]= ' ';
 
-  name_of_file[file_name_size] = '\0';    /* paranoia 94/Mar/24 */
+  name_of_file[file_name_size] = '\0';
 }
 /* sec 0525 */
 str_number make_name_string (void)
@@ -1712,7 +1708,7 @@ done:
 /* sec 0529 */
 void pack_job_name_(str_number s)
 {
-  cur_area = 335;       /* "" */
+  cur_area = 335; /* "" */
   cur_ext  = s;
   cur_name = job_name;
   pack_file_name(cur_name, cur_area, cur_ext);
@@ -1791,6 +1787,7 @@ void prompt_file_name_(char * s, str_number e)
 
       incr(k);
     }
+
 done:
     end_name();
   }
@@ -1842,7 +1839,7 @@ void open_log_file (void)
     months = " JANFEBMARAPRMAYJUNJULAUGSEPOCTNOVDEC";
 
     for (k = 3 * month - 2; k <= 3 * month; k++)
-      putc(months[k],  log_file);
+      putc(months[k], log_file);
 
     print_char(' ');
 
@@ -1880,54 +1877,6 @@ void open_log_file (void)
   }
 
   selector = old_setting + 2;
-}
-
-// Attempt to deal with foo.bar.tex given as foo.bar on command line
-// Makes copy of job_name with extension
-
-void more_name_copy(ASCII_code c)
-{
-#ifdef ALLOCATESTRING
-  if (pool_ptr + 1 > current_pool_size)
-    str_pool = realloc_str_pool (increment_pool_size);
-
-  if (pool_ptr + 1 > current_pool_size)
-  {
-    overflow("pool size", current_pool_size - init_pool_ptr);
-    return;
-  }
-#else
-  if (pool_ptr + 1 > pool_size)
-  {
-    overflow("pool size", pool_size - init_pool_ptr);
-    return;
-  }
-#endif
-
-  str_pool[pool_ptr] = c; 
-  incr(pool_ptr);
-}
-
-int end_name_copy(void)
-{
-#ifdef ALLOCATESTRING
-  if (str_ptr + 1 > current_max_strings)
-    str_start = realloc_str_start(increment_max_strings + 1);
-
-  if (str_ptr + 1 > current_max_strings)
-  {
-    overflow("number of strings", current_max_strings - init_str_ptr);
-    return 0;
-  }
-#else
-  if (str_ptr + 1 > max_strings)
-  {
-    overflow("number of strings", max_strings - init_str_ptr);
-    return 0;
-  }
-#endif
-
-  return make_string();
 }
 /* sec 0537 */
 void start_input(void)

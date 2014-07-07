@@ -206,10 +206,7 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     check_short_name(name_of_file + 1);
   
   if (open_trace_flag)
-  {
-    sprintf(log_line, " Open `%s' for input ", name_of_file + 1);
-    show_line(log_line, 0);
-  }
+    printf(" Open `%s' for input ", name_of_file + 1);
 
   switch (path_index)
   {
@@ -295,10 +292,7 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       source_direct = xstrdup((char *) name_of_file + 1);
 
       if (trace_flag)
-      {
-        sprintf(log_line, "Methinks the source %s is `%s'\n", "file", source_direct);
-        show_line(log_line, 0);
-      }
+        printf("Methinks the source %s is `%s'\n", "file", source_direct);
 
       if ((s = strrchr(source_direct, '/')) == NULL)
         *source_direct = '\0';
@@ -306,10 +300,7 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
         *(s + 1) = '\0';
 
       if (trace_flag)
-      {
-        sprintf(log_line, "Methinks the source %s is `%s'\n", "directory", source_direct);
-        show_line(log_line, 0);
-      }
+        printf("Methinks the source %s is `%s'\n", "directory", source_direct);
     }
 
     openable = true;
@@ -345,7 +336,6 @@ int check_fclose (FILE * f)
   return 0;
 }
 
-// open_output moved down here to avoid potential pragma problem
 boolean open_output (FILE **f, char *fopen_mode)
 {
   unsigned temp_length;
@@ -353,15 +343,11 @@ boolean open_output (FILE **f, char *fopen_mode)
   name_of_file[name_length + 1] = '\0';
 
   if (pseudo_tilde != 0 || pseudo_space !=  0)
-  {
     retwiddle(name_of_file + 1);
-  }
 
   /* 8 + 3 file names on Windows NT 95/Feb/20 */
   if (shorten_file_name)
-  {
     check_short_name(name_of_file + 1);
-  }
 
   if (prepend_path_if(name_of_file + 1, name_of_file + 1, ".dvi", (unsigned char *) dvi_directory) ||
       prepend_path_if(name_of_file + 1, name_of_file + 1, ".log", (unsigned char *) log_directory) ||
@@ -378,7 +364,7 @@ boolean open_output (FILE **f, char *fopen_mode)
 
   *f = fopen((char *) name_of_file + 1, fopen_mode);
 
-/* Can't open as given.  Try the envvar.  */
+  /* Can't open as given.  Try the envvar.  */
   if (*f == NULL)
   {
     string temp_dir = kpse_var_value("TEXMFOUTPUT");
@@ -394,12 +380,13 @@ boolean open_output (FILE **f, char *fopen_mode)
 
       if (deslash)
         unixify((char *) temp_name);
-
-/*  but we can assume this is opening here for *output* */
+      
+      /* but we can assume this is opening here for *output* */
       *f = fopen((char*)temp_name, fopen_mode);
-/*  If this succeeded, change name_of_file accordingly.  */
+      /* If this succeeded, change name_of_file accordingly.  */
       if (*f)
         strcpy((char*) name_of_file + 1, (char *) temp_name);
+
 #ifndef BUILDNAMEDIRECT
       free (temp_name);
 #endif

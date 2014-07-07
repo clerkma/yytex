@@ -29,6 +29,14 @@
   #define REALLOC realloc
 #endif
 
+#if defined(__clang__)
+const char * compiler = "Clang/LLVM";
+#elif defined(__GNUC__) || defined(__GNUG__)
+const char * compiler = "GCC";
+#elif defined(_MSC_VER)
+const char * compiler = "MSVC";
+#endif
+
 const char * compiletime  = __TIME__;
 const char * compiledate  = __DATE__;
 const char * yandyversion = "2.3.0";
@@ -42,8 +50,6 @@ char * log_directory = "";
 char * aux_directory = "";
 char * fmt_directory = "";
 char * pdf_directory = "";
-
-char * texpath = "";
 
 char log_line[MAXLINE]; // used also in tex9.c
 
@@ -171,7 +177,7 @@ void stamp_it (char *s)
   scivilize(date);
   sprintf(s, "%s %s ", application, yandyversion);
   s += strlen(s);
-  sprintf(s, "(compiled time: %s %s)", date, compiletime);
+  sprintf(s, "(compiled time: %s %s %s)", date, compiletime, compiler);
   s += strlen(s);
 }
 
@@ -202,24 +208,14 @@ void read_xchr_sub (FILE * xchr_input)
     if (from >= 0 && from < MAXCHRS && to >= 0 && to < MAXCHRS)
     {
       if (xchr[from] == (unsigned char) NOTDEF)
-      {
         xchr[from] = (unsigned char) to;
-      }
       else
-      {
-        sprintf(log_line, "NOTE: %s collision: %d => %d, %d\n", "xchr", from, xchr[from], to);
-        show_line(log_line, 0);
-      }
+        printf("NOTE: %s collision: %d => %d, %d\n", "xchr", from, xchr[from], to);
 
       if (xord[to] == NOTDEF)
-      {
         xord[to] = (unsigned char) from;
-      }
       else
-      {
-        sprintf(log_line, "NOTE: %s collision: %d => %d, %d\n", "xord", to, xord[to], from);
-        show_line(log_line, 0);
-      }
+        printf("NOTE: %s collision: %d => %d, %d\n", "xord", to, xord[to], from);
 
       count++;
     }
@@ -241,16 +237,12 @@ void read_xchr_sub (FILE * xchr_input)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Read %d xchr[] pairs:\n", count);
-    show_line(log_line, 0);
+    printf("Read %d xchr[] pairs:\n", count);
 
     for (k = 0; k < MAXCHRS; k++)
     {
       if (xchr[k] != NOTDEF)
-      {
-        sprintf(log_line, "%d => %d\n", k, xchr[k]);
-        show_line(log_line, 0);
-      }
+        printf("%d => %d\n", k, xchr[k]);
     }
   }
 }
@@ -317,23 +309,18 @@ void read_repl_sub (FILE * repl_input)
       if (chrs >= 0 && chrs < MAXCHRS)
         replacement[chrs] = xstrdup(charname);      
     }
-    else {
-      sprintf(log_line, "ERROR: don't understand %s", buffer);
-      show_line(log_line, 1);
-    }
+    else
+      printf("ERROR: don't understand %s", buffer);
   }
 
   if (trace_flag)
   {
-    puts("Key replacement table\n");
+    puts("Key replacement table");
 
     for (k = 0; k < MAXCHRS; k++)
     {
       if (replacement[k] != NULL)
-      {
-        sprintf(log_line, "%d\t%s\n", k, replacement[k]);
-        show_line(log_line, 0);
-      }
+        printf("%d\t%s\n", k, replacement[k]);
     }
   }
 }
@@ -350,19 +337,13 @@ int read_xchr_file (char *filename, int flag, char *argv[])
     return -1;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Reading xchr/repl %s\n", filename);
-    show_line(log_line, 0);
-  }
+    printf("Reading xchr/repl %s\n", filename);
 
-/*  first try using file as specified */
+  /* first try using file as specified */
   strcpy(infile, filename);
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Trying %s\n", infile);
-    show_line(log_line, 0);
-  }
+    printf("Trying %s\n", infile);
 
   xchr_input = fopen (infile, "r");
 
@@ -376,12 +357,9 @@ int read_xchr_file (char *filename, int flag, char *argv[])
         strcat(infile, ".key");
 
       if (trace_flag)
-      {
-        sprintf(log_line, "Trying %s\n", infile);
-        show_line(log_line, 0);
-      }
+        printf("Trying %s\n", infile);
       
-      xchr_input = fopen (infile, "r");
+      xchr_input = fopen(infile, "r");
     }
   }
 
@@ -399,10 +377,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
     strcat (infile, filename);
 
     if (trace_flag)
-    {
-      sprintf(log_line, "Trying %s\n", infile);
-      show_line(log_line, 0);
-    }
+      printf("Trying %s\n", infile);
 
     xchr_input = fopen (infile, "r");
 
@@ -416,10 +391,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
           strcat(infile, ".key");
 
         if (trace_flag)
-        {
-          sprintf(log_line, "Trying %s\n", infile);
-          show_line(log_line, 0);
-        }
+          printf("Trying %s\n", infile);
 
         xchr_input = fopen (infile, "r");
       }
@@ -437,14 +409,11 @@ int read_xchr_file (char *filename, int flag, char *argv[])
     else if ((s = strrchr (infile, ':')) != NULL)
       *(s+1) = '\0';
 
-    strcat (infile, "keyboard\\");
-    strcat (infile, filename);
+    strcat(infile, "keyboard\\");
+    strcat(infile, filename);
 
     if (trace_flag)
-    {
-      sprintf(log_line, "Trying %s\n", infile);
-      show_line(log_line, 0);
-    }
+      printf("Trying %s\n", infile);
 
     xchr_input = fopen (infile, "r");
 
@@ -458,10 +427,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
           strcat(infile, ".key");
 
         if (trace_flag)
-        {
-          sprintf(log_line, "Trying %s\n", infile);
-          show_line(log_line, 0);
-        }
+          printf("Trying %s\n", infile);
 
         xchr_input = fopen (infile, "r");
       }
@@ -470,9 +436,8 @@ int read_xchr_file (char *filename, int flag, char *argv[])
 /*  Note: can't look in TeX source file dir, since that is not known yet */
   if (xchr_input == NULL)
   {
-    sprintf(log_line, "ERROR: Sorry, cannot find %s file %s",
+    printf("ERROR: Sorry, cannot find %s file %s",
         flag ? " xchr[]" : "key mapping", filename);
-    show_line(log_line, 1);
     perrormod (filename);
     return 0;         // failed
   }
@@ -649,10 +614,7 @@ int allocate_tries (int trie_max)
   }
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Addresses trie_trl %p trie_tro %p trie_trc %p\n", trie_trl, trie_tro, trie_trc);
-    show_line(log_line, 0);
-  }
+    printf("Addresses trie_trl %p trie_tro %p trie_trc %p\n", trie_trl, trie_tro, trie_trc);
 
   update_statistics((long) trie_trl, nl, 0);
   update_statistics((long) trie_tro, no, 0);
@@ -680,8 +642,7 @@ int realloc_hyphen (int hyphen_prime)
 
   if (!prime(hyphen_prime))
   {
-    sprintf(log_line, "ERROR: non-prime hyphen exception number (%d)\n", hyphen_prime);
-    show_line(log_line, 1);
+    printf("ERROR: non-prime hyphen exception number (%d)\n", hyphen_prime);
     return -1;
   }
 
@@ -706,10 +667,7 @@ int realloc_hyphen (int hyphen_prime)
   }
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Addresses hyph_word %p hyph_list %p\n", hyph_word, hyph_list);
-    show_line(log_line, 0);
-  }
+    printf("Addresses hyph_word %p hyph_list %p\n", hyph_word, hyph_list);
 
 /*  cannot preserve old contents when hyphen prime is changed */
 #ifdef USEMEMSET
@@ -787,10 +745,7 @@ memory_word *allocate_main_memory (int size)
   }
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Address main memory == %p\n", main_memory);
-    show_line(log_line, 0);
-  }
+    printf("Address main memory == %p\n", main_memory);
 
   mem = main_memory;
 
@@ -798,10 +753,7 @@ memory_word *allocate_main_memory (int size)
     mem = main_memory - mem_start;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Offset address main memory == %p\n", mem);
-    show_line(log_line, 0);
-  }
+    printf("Offset address main memory == %p\n", mem);
 
   update_statistics((long) main_memory, n, (current_mem_size + 1) * sizeof (memory_word));
 /*  current_mem_size = (mem_max - mem_start + 1); */
@@ -829,14 +781,11 @@ memory_word * realloc_main (int lo_size, int hi_size)
   memory_word * new_memory = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "WARNING: Entering realloc_main lo %d hi %d\n", lo_size, hi_size);
-    show_line(log_line, 0);
-  }
+    printf("WARNING: Entering realloc_main lo %d hi %d\n", lo_size, hi_size);
 
   if (is_initex)
   {
-    puts("ERROR: Cannot extent main memory in iniTeX\n");
+    puts("ERROR: Cannot extent main memory in iniTeX");
 
     if (!knuth_flag)
       puts("Please use `-m=...' on command line");
@@ -845,16 +794,12 @@ memory_word * realloc_main (int lo_size, int hi_size)
   }
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n", "main memory", main_memory);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "main memory", main_memory);
 
   /* if we REALLY run up to limit ! */
   if (current_mem_size + 1 == max_mem_size)
   {
     memory_error("main memory", (max_mem_size + 1) * sizeof(memory_word));
-
     return NULL;
   }
 
@@ -925,10 +870,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
   }
 
   if (trace_flag)
-  {
-    sprintf(log_line, "New Address %s == %p\n", "main memory", new_memory);
-    show_line(log_line, 0);
-  }
+    printf("New Address %s == %p\n", "main memory", new_memory);
 
   if (lo_size > 0)
   {
@@ -983,10 +925,8 @@ memory_word * realloc_font_info (int size)
   int n = 0;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n",  "font_info", font_info);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "font_info", font_info);
+
 /*  during initial allocation, font_info == NULL - realloc acts like malloc */
 /*  during initial allocation current_font_mem_size == 0 */
   if (current_font_mem_size == font_mem_size)  /* if we REALLY run up to limit */
@@ -1038,10 +978,7 @@ memory_word * realloc_font_info (int size)
   font_info = new_font_info;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "New Address %s == %p\n", "font_info", font_info);
-    show_line(log_line, 0);
-  }
+    printf("New Address %s == %p\n", "font_info", font_info);
 
   update_statistics ((long) font_info, n, current_font_mem_size * sizeof(memory_word));
   current_font_mem_size = new_size;
@@ -1064,10 +1001,7 @@ packed_ASCII_code * realloc_str_pool (int size)
   packed_ASCII_code *newstrpool = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n", "string pool", str_pool);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "string pool", str_pool);
 
   if (current_pool_size == pool_size)
   {
@@ -1118,10 +1052,7 @@ packed_ASCII_code * realloc_str_pool (int size)
   current_pool_size = new_size;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "New Address %s == %p\n", "string pool", str_pool);
-    show_line(log_line, 0);
-  }
+    printf("New Address %s == %p\n", "string pool", str_pool);
   
   if (trace_flag)
     probe_show();
@@ -1141,10 +1072,7 @@ pool_pointer *realloc_str_start (int size)
   pool_pointer * new_str_start = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n", "string start", str_start);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "string start", str_start);
 
   if (current_max_strings == max_strings)
   {
@@ -1195,10 +1123,7 @@ pool_pointer *realloc_str_start (int size)
   current_max_strings = new_size;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "New Address %s == %p\n", "string start", str_start);
-    show_line(log_line, 0);
-  }
+    printf("New Address %s == %p\n", "string start", str_start);
 
   if (trace_flag)
     probe_show();
@@ -1242,11 +1167,8 @@ int allocate_ini (int size)
   
   if (trace_flag)
   {
-    sprintf(log_line, "Addresses trie_l %p trie_o %p trie_c %p\n", trie_l, trie_o, trie_c);
-    show_line(log_line, 0);
-    sprintf(log_line, "Addresses trie_r %p trie_hash %p trie_taken %p\n",
-      trie_r, trie_hash, trie_taken);
-    show_line(log_line, 0);
+    printf("Addresses trie_l %p trie_o %p trie_c %p\n", trie_l, trie_o, trie_c);
+    printf("Addresses trie_r %p trie_hash %p trie_taken %p\n", trie_r, trie_hash, trie_taken);
   }
 
   update_statistics ((long) trie_l, nl, 0);
@@ -1273,10 +1195,7 @@ memory_word *realloc_save_stack (int size)
   memory_word * new_save_stack = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n", "save stack", save_stack);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "save stack", save_stack);
 
   if (current_save_size == save_size)  /* arbitrary limit */
   {
@@ -1349,10 +1268,7 @@ in_state_record *realloc_input_stack (int size)
   in_state_record * new_input_stack = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n",  "input stack", input_stack);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "input stack", input_stack);
 
   if (current_stack_size == stack_size)  /* arbitrary limit */
   {
@@ -1404,14 +1320,12 @@ in_state_record *realloc_input_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Current %s %d\n", "stack_size", current_stack_size);
-    show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %p\n", "input stack", input_stack);
-    show_line(log_line, 0);
+    printf("Current %s %d\n", "stack_size", current_stack_size);
+    printf("New Address %s == %p\n", "input stack", input_stack);
   }
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
   return input_stack;
 }
@@ -1427,10 +1341,7 @@ list_state_record *realloc_nest_stack (int size)
   list_state_record * new_nest = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n",  "nest stack", nest);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "nest stack", nest);
 
   if (current_nest_size == nest_size)  /* arbitrary limit */
   {
@@ -1482,10 +1393,8 @@ list_state_record *realloc_nest_stack (int size)
 
   if (trace_flag)
   {
-    sprintf(log_line, "Current %s %d\n", "nest_size", current_nest_size);
-    show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %p\n", "nest stack", nest);
-    show_line(log_line, 0);
+    printf("Current %s %d\n", "nest_size", current_nest_size);
+    printf("New Address %s == %p\n", "nest stack", nest);
   }
 
   if (trace_flag)
@@ -1505,10 +1414,7 @@ halfword *realloc_param_stack (int size)
   halfword * new_param = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n",  "param stack", param_stack);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "param stack", param_stack);
 
   if (current_param_size == param_size) /* arbitrary limit */
   {
@@ -1532,12 +1438,12 @@ halfword *realloc_param_stack (int size)
     if (new_size > param_size)
       new_size = param_size;
 
-    n = (new_size + 1) * sizeof (halfword); /* param_stack[param_size + 1] */
+    n = (new_size + 1) * sizeof(pointer);
 
     if (trace_flag)
       trace_memory("param stack", n);
 
-    new_param = (halfword *) REALLOC (param_stack, n); 
+    new_param = (pointer *) REALLOC (param_stack, n);
 
     if (new_param != NULL)
       break;    /* did we get it ? */
@@ -1545,7 +1451,7 @@ halfword *realloc_param_stack (int size)
     if (current_param_size == 0)
       break; /* initial allocation must work */
 
-    size = size / 2;          /* else can retry smaller */
+    size = size / 2; /* else can retry smaller */
   }
 
   if (new_param == NULL)
@@ -1555,19 +1461,17 @@ halfword *realloc_param_stack (int size)
   }
 
   param_stack = new_param;
-  update_statistics ((long) param_stack, n, current_param_size);
+  update_statistics((long) param_stack, n, current_param_size);
   current_param_size = new_size;
 
   if (trace_flag)
   {
-    sprintf(log_line, "Current %s %d\n", "param_size", current_param_size);
-    show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %p\n", "param stack", param_stack);
-    show_line(log_line, 0);
+    printf("Current %s %d\n", "param_size", current_param_size);
+    printf("New Address %s == %p\n", "param stack", param_stack);
   }
 
   if (trace_flag)
-    probe_show();     /* 94/Mar/25 */
+    probe_show();
 
   return param_stack;
 }
@@ -1583,10 +1487,7 @@ ASCII_code * realloc_buffer (int size)
   ASCII_code * new_buffer = NULL;
 
   if (trace_flag)
-  {
-    sprintf(log_line, "Old Address %s == %p\n", "buffer", buffer);
-    show_line(log_line, 0);
-  }
+    printf("Old Address %s == %p\n", "buffer", buffer);
 
   if (current_buf_size == buf_size)
   {
@@ -1638,17 +1539,16 @@ ASCII_code * realloc_buffer (int size)
 #ifdef USEMEMSET
   memset(buffer + current_buf_size, 0, new_size - current_buf_size);
 #else
-  for (k = current_buf_size; k < new_size; k++) buffer[k]= 0;
+  for (k = current_buf_size; k < new_size; k++)
+    buffer[k] = 0;
 #endif
 
   current_buf_size = new_size;
 
   if (trace_flag)
   {
-    sprintf(log_line, "Current %s %d\n", "buffer", current_buf_size);
-    show_line(log_line, 0);
-    sprintf(log_line, "New Address %s == %p\n", "buffer", buffer);
-    show_line(log_line, 0);
+    printf("Current %s %d\n", "buffer", current_buf_size);
+    printf("New Address %s == %p\n", "buffer", buffer);
   }
 
   if (trace_flag)
@@ -2268,10 +2168,7 @@ char * grabenv (char * varname)
   if (lastname != NULL && strcasecmp(lastname, varname) == 0)
   {
     if (trace_flag)
-    {
-      sprintf(log_line, "Cache hit: %s=%s\n", lastname, lastvalue);
-      show_line(log_line, 0);
-    }
+      printf("Cache hit: %s=%s\n", lastname, lastvalue);
 
     return xstrdup(lastvalue);
   }
@@ -2479,7 +2376,7 @@ int analyze_flag (int c, char *optarg)
       civilize_flag = false; /* 93/Dec/16 */
       break; 
     case 'B':
-      open_trace_flag = true; /* openinou 1994/Jan/8 */
+      open_trace_flag = true;
       break;
     case 'Y':
       reorder_arg_flag = false; /* local */
@@ -2610,10 +2507,7 @@ int analyze_flag (int c, char *optarg)
         else if (!strcmp(format_spec, "xdv"))
           shipout_flag = out_xdv_flag;
         else
-        {
-          sprintf(log_line, "ERROR: Do not understand shipout flag `%s'\n", format_spec);
-          show_line(log_line, 1);
-        }
+          printf("ERROR: Do not understand shipout flag `%s'\n", format_spec);
       }
       break;
     case 'l':
@@ -2776,10 +2670,8 @@ int init_commands (int ac, char **av)
   mem_extra_high = 0;
   mem_extra_low  = 0;
   mem_initex     = 0;
-
-  format_name = "plain";
-
-  encoding_name = "";
+  format_name    = "plain";
+  encoding_name  = "";
 
   if (read_command_line(ac, av) < 0)
     return -1;
@@ -2863,10 +2755,7 @@ void initial_memory (void)
         new_hyphen_prime = new_hyphen_prime + 2;
 
       if (trace_flag)
-      {
-        sprintf(log_line, "Using %d as hyphen prime\n", new_hyphen_prime);
-        show_line(log_line, 0);
-      }
+        printf("Using %d as hyphen prime\n", new_hyphen_prime);
     }
   }
 
@@ -2884,8 +2773,7 @@ void initial_memory (void)
 
 void perrormod (char *s)
 {
-  sprintf(log_line, "`%s': %s\n", s, strerror(errno));
-  show_line(log_line, 1);
+  printf("`%s': %s\n", s, strerror(errno));
 }
 
 /*************************************************************************/
@@ -2902,10 +2790,7 @@ void hidetwiddle (char *tname)
 
 #ifdef DEBUGTWIDDLE
   if (trace_flag)
-  {
-    sprintf(log_line, "Hidetwiddle %s", tname);
-    show_line(log_line, 0);
-  }
+    printf("Hidetwiddle %s", tname);
 #endif
 
   while (*s != '\0')
@@ -2919,10 +2804,7 @@ void hidetwiddle (char *tname)
 
 #ifdef DEBUGTWIDDLE
   if (trace_flag)
-  {
-    sprintf(log_line, "=> %s\n", tname);
-    show_line(log_line, 0);
-  }
+    printf("=> %s\n", tname);
 #endif
 }
 
@@ -2960,8 +2842,6 @@ void deslash_all (int ac, char **av)
   if (*s == '\\' || *s == '/')
     *s = '\0';
 
-  texpath = xstrdup(buffer);
-
   if (strcmp(dvi_directory, "") != 0)
     flush_trailing_slash(dvi_directory);
 
@@ -2979,8 +2859,6 @@ void deslash_all (int ac, char **av)
 
   if (deslash)
   {
-    unixify (texpath);
-    
     if (strcmp(dvi_directory, "") != 0)
       unixify(dvi_directory);
     
@@ -3004,11 +2882,7 @@ void deslash_all (int ac, char **av)
     if (deslash)
     {
       if (trace_flag || debug_flag)
-      {
-        sprintf(log_line, "deslash: k %d argv[k] %s (argc %d)\n",
-          optind, av[optind], ac);
-        show_line(log_line, 0);
-      }
+        printf("deslash: k %d argv[k] %s (argc %d)\n", optind, av[optind], ac);
 
       unixify(av[optind]);
     }
@@ -3026,11 +2900,7 @@ void deslash_all (int ac, char **av)
         if (deslash)
         {
           if (trace_flag || debug_flag)
-          {
-            sprintf(log_line, "deslash: k %d argv[k] %s (argc %d)\n",
-              optind + 1, av[optind + 1], ac);
-            show_line(log_line, 0);
-          }
+            printf("deslash: k %d argv[k] %s (argc %d)\n", optind + 1, av[optind + 1], ac);
 
           unixify(av[optind + 1]);
         }
@@ -3187,7 +3057,7 @@ int endit(int flag)
   if (missing_characters)
   {
     sprintf(log_line, "! There %s %d missing character%s --- see log file\n",
-      (missing_characters == 1) ? "was" : "were",  missing_characters,
+      (missing_characters == 1) ? "was" : "were", missing_characters,
       (missing_characters == 1) ? "" : "s");
     show_line(log_line, 0);
   }
@@ -3233,17 +3103,11 @@ void print_cs_name (FILE *output, int h)
   memmove(log_line + c + n, "\n", 2);
 
   if (output == stderr)
-  {
     show_line(log_line, 1);
-  }
+  else if (output == stdout)
+    show_line(log_line, 0);
   else
-  {
-    if (output == stdout)
-      show_line(log_line, 0);
-    else
-      fprintf(output, "%s", log_line);
-  }
-
+    fprintf(output, "%s", log_line);
 }
 // prototype
 int compare_strn (int, int, int, int);
@@ -3311,16 +3175,11 @@ void print_cs_names (FILE *output, int pass)
       ccount, (pass == 1) ? "new" : "");
 
   if (output == stderr)
-  {
     show_line(log_line, 1);
-  }
+  else if (output == stdout)
+    show_line(log_line, 0);
   else
-  {
-    if (output == stdout)
-      show_line(log_line, 0);
-    else
-      fprintf(output, "%s", log_line);
-  }
+    fprintf(output, "%s", log_line);
 
   if (ccount > 0)
   {
@@ -3357,16 +3216,11 @@ void print_cs_names (FILE *output, int pass)
     sprintf(log_line, "\n");
 
     if (output == stderr)
-    {
       show_line(log_line, 1);
-    }
+    else if (output == stdout)
+      show_line(log_line, 0);
     else
-    {
-      if (output == stdout)
-        show_line(log_line, 0);
-      else
-        fprintf(output, "%s", log_line);
-    }
+      fprintf(output, "%s", log_line);
 
     free((void *)cnumtable);
   }

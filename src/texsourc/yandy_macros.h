@@ -1125,6 +1125,9 @@ while (0)
 /* sec 0644 */
 #define exactly    0
 #define additional 1
+#define natural 0, additional
+/* sec 0668 */
+#define vpack(a, b, c) vpackage(a, b, c, max_dimen)
 /* sec 0769 */
 #define u_part(a)     mem[(a) + height_offset].cint
 #define v_part(a)     mem[(a) + depth_offset].cint

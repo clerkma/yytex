@@ -127,7 +127,7 @@ continu:
 
       if (l > old_l)
       {
-        if ((minimum_demerits < awful_bad) && ((old_l != easyline) || (r == active)))
+        if ((minimum_demerits < awful_bad) && ((old_l != easy_line) || (r == active)))
         {
           if (no_break_yet)
           {
@@ -347,7 +347,7 @@ done:;
         if (r == active)
           goto exit;
 
-        if (l > easyline)
+        if (l > easy_line)
         {
           line_width = second_width;
           old_l = max_halfword - 1; /*262142L*/ /* 2^18 - 2 ? */
@@ -1155,7 +1155,7 @@ not_found:
   hc[hn + 1] = 0;
   hc[hn + 2] = 256;
 
-  for (j = 0; j <= hn - rhyf + 1; j++)
+  for (j = 0; j <= hn - r_hyf + 1; j++)
   {
     z = trie_trl[cur_lang + 1] + hc[j];
     l = j;
@@ -1185,13 +1185,13 @@ not_found:
   }
 
 found:
-  for (j = 0; j <= lhyf - 1; j++)
+  for (j = 0; j <= l_hyf - 1; j++)
     hyf[j] = 0;
 
-  for (j = 0; j <= rhyf - 1; j++)
+  for (j = 0; j <= r_hyf - 1; j++)
     hyf[hn - j]= 0;
 
-  for (j = lhyf; j <= hn - rhyf; j++)
+  for (j = l_hyf; j <= hn - r_hyf; j++)
     if (odd(hyf[j]))
       goto found1;
 
@@ -1202,7 +1202,7 @@ found1:
   link(hb) = 0;
   r = link(ha);
   link(ha) = 0;
-  bchar = hyfbchar;
+  bchar = hyf_bchar;
 
   if (is_char_node(ha))
     if (font(ha) != hf)

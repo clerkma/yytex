@@ -387,9 +387,9 @@ void line_break_ (integer final_widow_penalty)
   }
 
   if (looseness == 0)
-    easyline = last_special_line;
+    easy_line = last_special_line;
   else
-    easyline = empty_flag;
+    easy_line = empty_flag;
 
   threshold = pretolerance;
 
@@ -435,8 +435,8 @@ void line_break_ (integer final_widow_penalty)
 #endif
 
       cur_lang = init_cur_lang;
-      lhyf = init_l_hyf;
-      rhyf = init_r_hyf;
+      l_hyf = init_l_hyf;
+      r_hyf = init_r_hyf;
     }
 
     q = get_node(3);
@@ -490,8 +490,8 @@ void line_break_ (integer final_widow_penalty)
           if (subtype(cur_p) == language_node)
           {
             cur_lang = what_lang(cur_p);
-            lhyf = what_lhm(cur_p);
-            rhyf = what_rhm(cur_p);
+            l_hyf = what_lhm(cur_p);
+            r_hyf = what_rhm(cur_p);
           }
           break;
 
@@ -543,8 +543,8 @@ void line_break_ (integer final_widow_penalty)
                     if (subtype(s) == language_node)
                     {
                       cur_lang = what_lang(s);
-                      lhyf = what_lhm(s);
-                      rhyf = what_rhm(s);
+                      l_hyf = what_lhm(s);
+                      r_hyf = what_rhm(s);
                     }
                     goto continu;
                   }
@@ -571,7 +571,7 @@ done2:
 
                 ha = prevs;
 
-                if (lhyf + rhyf > 63)
+                if (l_hyf + r_hyf > 63)
                   goto done1;
 
                 hn = 0;
@@ -583,9 +583,9 @@ done2:
                     if (font(s) != hf)
                       goto done3;
 
-                    hyfbchar = character(s);
+                    hyf_bchar = character(s);
 
-                    c = hyfbchar;     /*  unsigned char c;  */
+                    c = hyf_bchar;     /*  unsigned char c;  */
 
                     if (lc_code(c) == 0)
                       goto done3;
@@ -597,7 +597,7 @@ done2:
                     incr(hn);
                     hu[hn] = c;
                     hc[hn]= lc_code(c);
-                    hyfbchar = non_char;
+                    hyf_bchar = non_char;
                   }
                   else if (type(s) == ligature_node)
                   {
@@ -608,7 +608,7 @@ done2:
                     q = lig_ptr(s);
 
                     if (q != 0) /* 94/Mar/23 BUG FIX */
-                      hyfbchar = character(q);
+                      hyf_bchar = character(q);
 
                     while (q != 0) /* 94/Mar/23 BUG FIX */
                     {
@@ -630,14 +630,14 @@ done2:
                     hn = j;
 
                     if (odd(subtype(s)))
-                      hyfbchar = font_bchar[hf];
+                      hyf_bchar = font_bchar[hf];
                     else
-                      hyfbchar = non_char;
+                      hyf_bchar = non_char;
                   }
                   else if ((type(s) == kern_node) && (subtype(s) == normal))
                   {
                     hb = s;
-                    hyfbchar = font_bchar[hf];
+                    hyf_bchar = font_bchar[hf];
                   }
                   else
                     goto done3;
@@ -645,7 +645,7 @@ done2:
                   s = link(s);
                 }
 done3:;
-                if (hn < lhyf + rhyf)
+                if (hn < l_hyf + r_hyf)
                   goto done1;
 
                 while (true)
@@ -1549,7 +1549,7 @@ boolean load_fmt_file (void)
     if (x > pool_size)
 #endif
     {
-      printf("%s%s\n",  "---! Must increase the ", "string pool size");
+      printf("%s%s\n", "---! Must increase the ", "string pool size");
       goto bad_fmt;
     }
     else
@@ -1576,7 +1576,7 @@ boolean load_fmt_file (void)
     if (x > max_strings)
 #endif
     {
-      printf("%s%s\n",  "---! Must increase the ", "max strings");
+      printf("%s%s\n", "---! Must increase the ", "max strings");
       goto bad_fmt;
     }
     else
@@ -2645,7 +2645,7 @@ boolean get_strings_started (void)
 
   if (g == 0)
   {
-    fprintf(stdout , "%s\n",  "! You have to increase POOLSIZE." );
+    fprintf(stdout, "%s\n", "! You have to increase POOLSIZE." );
     return false;
   }
 

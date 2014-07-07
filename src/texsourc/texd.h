@@ -253,9 +253,9 @@ EXTERN integer var_used, dyn_used;
 /* sec 0118 */
 EXTERN pointer avail;
 EXTERN pointer mem_end;
-EXTERN halfword mem_start; // for yandytex
+EXTERN pointer mem_start; // for yandytex
 /* sec 0124 */
-EXTERN halfword rover;
+EXTERN pointer rover;
 /* sec 0165 */
 /* NOTE: the following really also need to be dynamically allocated */
 #ifdef DEBUG
@@ -281,7 +281,7 @@ EXTERN char
   zzzac[mem_max - mem_bot + 1]; 
 #endif
 
-EXTERN halfword was_mem_end, was_lo_max, was_hi_min;
+EXTERN pointer was_mem_end, was_lo_max, was_hi_min;
 EXTERN boolean panicking;
 #endif /* DEBUG */
 
@@ -328,7 +328,7 @@ EXTERN quarterword zzzad[eqtb_size - int_base + 1];
   #define hash (zzzae - hash_base)
 #endif
 
-EXTERN halfword hash_used;
+EXTERN pointer hash_used;
 EXTERN boolean no_new_control_sequence;
 EXTERN integer cs_count;
 
@@ -354,7 +354,7 @@ EXTERN integer cur_boundary;
 EXTERN integer mag_set;
 EXTERN int cur_cmd;
 EXTERN int cur_chr;
-EXTERN halfword cur_cs;
+EXTERN pointer cur_cs;
 EXTERN halfword cur_tok;
 
 #ifdef ALLOCATENESTSTACK
@@ -375,10 +375,10 @@ EXTERN list_state_record cur_list;
   #define param_size           65536
   #define initial_param_size   100
   #define increment_param_size 200
-  EXTERN halfword * param_stack;
+  EXTERN pointer * param_stack;
 #else
   #define param_size 500
-EXTERN halfword param_stack[param_size + 1];
+  EXTERN pointer param_stack[param_size + 1];
 #endif
 
 EXTERN integer param_ptr;
@@ -405,23 +405,23 @@ EXTERN alpha_file input_file[max_in_open + 1];
 EXTERN integer line;
 EXTERN integer line_stack[max_in_open + 1];
 EXTERN int scanner_status;
-EXTERN halfword warning_index;
-EXTERN halfword def_ref;
+EXTERN pointer warning_index;
+EXTERN pointer def_ref;
 EXTERN integer align_state;
 EXTERN integer base_ptr;
-EXTERN halfword par_loc;
+EXTERN pointer par_loc;
 EXTERN halfword par_token;
 EXTERN boolean force_eof;
-EXTERN halfword cur_mark[6];
+EXTERN pointer cur_mark[6];
 EXTERN int long_state;
-EXTERN halfword pstack[10];
+EXTERN pointer pstack[10];
 EXTERN int cur_val;
 EXTERN int cur_val_level;
 EXTERN int radix;
 EXTERN int cur_order;
 EXTERN alpha_file read_file[16];
 EXTERN char read_open[20];
-EXTERN halfword cond_ptr;
+EXTERN pointer cond_ptr;
 EXTERN int if_limit;
 EXTERN int cur_if;
 EXTERN integer if_line;
@@ -463,7 +463,7 @@ EXTERN str_number font_name[font_max + 1];
 EXTERN str_number font_area[font_max + 1];
 EXTERN eight_bits font_bc[font_max + 1];
 EXTERN eight_bits font_ec[font_max + 1];
-EXTERN halfword font_glue[font_max + 1];
+EXTERN pointer font_glue[font_max + 1];
 EXTERN boolean font_used[font_max + 1];
 EXTERN integer hyphen_char[font_max + 1];
 EXTERN integer skew_char[font_max + 1];
@@ -487,9 +487,9 @@ EXTERN integer max_push;
 EXTERN integer last_bop;
 EXTERN integer dead_cycles;
 EXTERN boolean doing_leaders;
-EXTERN int c, f;
+EXTERN quarterword c, f;
 EXTERN scaled rule_ht, rule_dp, rule_wd;
-EXTERN halfword g;
+EXTERN pointer g;
 EXTERN integer lq, lr;
 EXTERN eight_bits dvi_buf[dvi_buf_size + 4];
 EXTERN dvi_index half_buf;
@@ -498,7 +498,7 @@ EXTERN dvi_index dvi_ptr;
 EXTERN integer dvi_offset;
 EXTERN integer pdf_offset;
 EXTERN integer dvi_gone;
-EXTERN halfword down_ptr, right_ptr;
+EXTERN pointer down_ptr, right_ptr;
 EXTERN scaled dvi_h, dvi_v;
 EXTERN scaled pdf_h, pdf_v;
 EXTERN scaled pdf_x, pdf_y;
@@ -509,49 +509,49 @@ EXTERN internal_font_number pdf_f;
 EXTERN integer cur_s;
 EXTERN scaled total_stretch[4], total_shrink[4];
 EXTERN integer last_badness;
-EXTERN halfword adjust_tail;
+EXTERN pointer adjust_tail;
 EXTERN integer pack_begin_line;
 EXTERN two_halves empty_field;
 EXTERN four_quarters null_delimiter;
-EXTERN halfword cur_mlist;
+EXTERN pointer cur_mlist;
 EXTERN int cur_style;
 EXTERN int cur_size;
 EXTERN scaled cur_mu;
 EXTERN boolean mlist_penalties;
 EXTERN internal_font_number cur_f;
-EXTERN int cur_c;
+EXTERN quarterword cur_c;
 EXTERN four_quarters cur_i;
 EXTERN integer magic_offset;
-EXTERN halfword cur_align;
-EXTERN halfword cur_span;
-EXTERN halfword cur_loop;
-EXTERN halfword align_ptr;
-EXTERN halfword cur_head, cur_tail;
-EXTERN halfword just_box;
-EXTERN halfword passive;
-EXTERN halfword printed_node;
+EXTERN pointer cur_align;
+EXTERN pointer cur_span;
+EXTERN pointer cur_loop;
+EXTERN pointer align_ptr;
+EXTERN pointer cur_head, cur_tail;
+EXTERN pointer just_box;
+EXTERN pointer passive;
+EXTERN pointer printed_node;
 EXTERN halfword pass_number;
 EXTERN scaled active_width[8];
 EXTERN scaled cur_active_width[8];
 EXTERN scaled background[8];
 EXTERN scaled break_width[8];
 EXTERN boolean no_shrink_error_yet;
-EXTERN halfword cur_p;
+EXTERN pointer cur_p;
 EXTERN boolean second_pass;
 EXTERN boolean final_pass;
 EXTERN integer threshold;
 EXTERN integer minimal_demerits[4];
 EXTERN integer minimum_demerits;
-EXTERN halfword best_place[4];
+EXTERN pointer best_place[4];
 EXTERN halfword best_pl_line[4];
 EXTERN scaled disc_width;
-EXTERN halfword easyline;
+EXTERN halfword easy_line;
 EXTERN halfword last_special_line;
 EXTERN scaled first_width;
 EXTERN scaled second_width;
 EXTERN scaled first_indent;
 EXTERN scaled second_indent;
-EXTERN halfword best_bet;
+EXTERN pointer best_bet;
 EXTERN integer fewest_demerits;
 EXTERN halfword best_line;
 EXTERN integer actual_looseness;
@@ -563,17 +563,17 @@ EXTERN int hf;
 EXTERN int hu[66];
 EXTERN int hyf_char;
 EXTERN int cur_lang, init_cur_lang;
-EXTERN integer lhyf, rhyf;
+EXTERN integer l_hyf, r_hyf;
 EXTERN integer init_l_hyf, init_r_hyf;
-EXTERN halfword hyfbchar;
+EXTERN halfword hyf_bchar;
 EXTERN char hyf[68];
-EXTERN halfword init_list;
+EXTERN pointer init_list;
 EXTERN boolean init_lig;
 EXTERN boolean init_lft;
 EXTERN int hyphen_passed;
-EXTERN int cur_l, cur_r;
-EXTERN halfword cur_q;
-EXTERN halfword lig_stack;
+EXTERN halfword cur_l, cur_r;
+EXTERN pointer cur_q;
+EXTERN pointer lig_stack;
 EXTERN boolean ligature_present;
 EXTERN boolean lft_hit, rt_hit;
 
@@ -647,7 +647,7 @@ EXTERN trie_op_code max_op_used;
 #endif
 
 EXTERN scaled best_height_plus_depth;
-EXTERN halfword page_tail;
+EXTERN pointer page_tail;
 EXTERN int page_contents;
 
 #if (half_error_line < 30) || (half_error_line > error_line - 15)
@@ -695,11 +695,11 @@ EXTERN int page_contents;
 #endif
 
 EXTERN scaled page_max_depth;
-EXTERN halfword best_page_break;
+EXTERN pointer best_page_break;
 EXTERN integer least_page_cost;
 EXTERN scaled best_size;
 EXTERN scaled page_so_far[8];
-EXTERN halfword last_glue;
+EXTERN pointer last_glue;
 EXTERN integer last_penalty;
 EXTERN scaled last_kern;
 EXTERN integer insert_penalties;
@@ -802,34 +802,31 @@ extern int current_stack_size;
 extern int current_nest_size;
 extern int current_param_size;
 extern int current_buf_size;
-extern const char *tex_version;
-extern const char *application;
-extern const char *yandyversion;
+extern const char * tex_version;
+extern const char * application;
+extern const char * yandyversion;
 extern unsigned char wintodos[128];
 extern char log_line[MAXLINE];
-extern char *texpath;
 
-memory_word * allocate_main_memory (int);
-memory_word * realloc_main (int, int);
-packed_ASCII_code * realloc_str_pool (int);
-pool_pointer * realloc_str_start (int);
-memory_word * realloc_save_stack (int);
-list_state_record * realloc_nest_stack (int);
-in_state_record * realloc_input_stack (int);
-halfword * realloc_param_stack (int);
-ASCII_code * realloc_buffer (int);
-memory_word * realloc_font_info (int);
+memory_word * allocate_main_memory(int size);
+memory_word * realloc_main(int lo_size, int hi_size);
+packed_ASCII_code * realloc_str_pool(int size);
+pool_pointer * realloc_str_start(int size);
+memory_word * realloc_save_stack(int size);
+list_state_record * realloc_nest_stack(int size);
+in_state_record * realloc_input_stack(int size);
+halfword * realloc_param_stack(int size);
+ASCII_code * realloc_buffer(int size);
+memory_word * realloc_font_info(int size);
 
-int realloc_hyphen (int);
-int allocate_tries (int);
-void check_eqtb (char *);
-void probe_memory (void);
-void print_cs_names (FILE *, int);
-void perrormod(char *);
-char *grabenv(char *);
-void stamp_it (char *);
-boolean prime (int);
-int endit (int);
+int realloc_hyphen(int hyphen_prime);
+int allocate_tries(int trie_max);
+void probe_memory(void);
+void print_cs_names (FILE * output, int pass);
+void perrormod(char * s);
+char * grabenv(char * varname);
+boolean prime(int x);
+int endit(int flag);
 
 void uexit (int unix_code);
 void t_open_in (void);
@@ -838,9 +835,9 @@ void t_open_in (void);
 void call_edit (ASCII_code *filename, pool_pointer fnstart,
                 integer fnlength, integer linenumber);
 
-void add_variable_space(int);
+void add_variable_space(int size);
 
-char *unixify (char *);
+char *unixify (char * t);
 
 #include "coerce.h"
 

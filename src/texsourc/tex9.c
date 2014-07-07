@@ -133,7 +133,7 @@ void close_files_and_terminate (void)
       fprintf(log_file, "%c%lld%s", ' ', (integer)(str_ptr - init_str_ptr), " string");
 
       if (str_ptr != init_str_ptr + 1)
-        putc('s',  log_file);
+        putc('s', log_file);
 
 #ifdef ALLOCATESTRING
       if (show_current)
@@ -160,7 +160,7 @@ void close_files_and_terminate (void)
       fprintf(log_file, "%c%lld%s%lld%s", ' ', (fmem_ptr), " words of font info for ", (font_ptr - font_base), " font");
 
       if (font_ptr != 1)
-        putc('s',  log_file);
+        putc('s', log_file);
 
 #ifdef ALLOCATEFONT
       if (show_current)
@@ -172,9 +172,9 @@ void close_files_and_terminate (void)
       fprintf(log_file, "%c%d%s", ' ', hyph_count, " hyphenation exception");
 
       if (hyph_count != 1)
-        putc('s',  log_file);
+        putc('s', log_file);
 
-      fprintf(log_file, "%s%lld\n",  " out of ", hyphen_prime);
+      fprintf(log_file, "%s%lld\n", " out of ", hyphen_prime);
       fprintf(log_file, " ");
       fprintf(log_file, "%d%s", (int) max_in_stack, "i,");
       fprintf(log_file, "%d%s", (int) max_nest_stack, "n,");
