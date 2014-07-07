@@ -3451,7 +3451,7 @@ done2:
   cs_count = frozen_control_sequence - 1 - hash_used;
 
   if (trace_flag)
-    printf("itex cs_count %lld hash_size %d hash_extra %d hash_used %ld",
+    printf("itex cs_count %lld hash_size %d hash_extra %d hash_used %d",
         cs_count, hash_size, hash_extra, hash_used);
 
   for (p = hash_base; p <= hash_used; p++)

@@ -57,9 +57,9 @@
 #include "zlib.h"
 #include "md5.h"
 
-typedef long long   integer;
-typedef double      glue_ratio;
-typedef double      real;
+typedef long long integer;
+typedef double    glue_ratio;
+typedef double    real;
 typedef FILE * alpha_file;
 typedef FILE * byte_file;
 typedef FILE * word_file;
@@ -106,7 +106,7 @@ extern boolean open_input (FILE **f, path_constant_type path_index, char *fopen_
 extern boolean open_output (FILE **f, char *fopen_mode);
 extern int check_fclose (FILE * f);
 
-#define show_line(str,flag) fputs(str,stdout)
+#define show_line(str, flag) fputs(str, stdout)
 #define show_char(chr) putc(chr, stdout)
 extern char log_line[];
 

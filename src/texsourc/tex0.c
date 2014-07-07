@@ -1513,10 +1513,7 @@ restart:
   if (mem_min - (block_size + 1) <= mem_start) /* check again */
   {
     if (trace_flag)
-    {
-      sprintf(log_line, "mem_min %lld, mem_start %ld, block_size %d\n", mem_min, mem_start, block_size);
-      show_line(log_line, 0);
-    }
+      printf("mem_min %lld, mem_start %d, block_size %d\n", mem_min, mem_start, block_size);
 
     overflow("main memory size", mem_max + 1 - mem_min); /* darn: allocation failed ! */
     return 0;
