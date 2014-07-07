@@ -1,0 +1,99 @@
+# Copyright 2007 TeX Users Group.
+# Copyright 2014 Clerk Ma.
+#
+# You may freely use, modify and/or distribute this file.
+
+# Makefile for Y&YTeX
+
+CC = clang-cl
+LINK = link
+RC = rc
+
+CFLAGS=/nologo /c /MT /GF /Ox /W4 /DMSDOS /DTeX \
+	/I"kpathsea" /I"zlib" /I"libmd5" /D_CRT_SECURE_NO_WARNINGS \
+	-Wno-char-subscripts -Wno-dangling-else \
+	-Wno-deprecated-declarations
+
+LFLAGS=/NOLOGO /MAP
+
+objs = yandytex.obj itex.obj openinou.obj subroute.obj local.obj \
+	tex0.obj tex1.obj tex2.obj tex3.obj tex4.obj \
+	tex5.obj tex6.obj tex7.obj tex8.obj tex9.obj \
+	yandy_pool.obj yandytex.res md5.obj yandy_inlines.obj
+
+yandytex.exe: $(objs)
+	$(LINK) $(LFLAGS) yandytex itex openinou subroute local \
+	tex0 tex1 tex2 tex3 tex4 tex5 tex6 tex7 tex8 tex9 \
+	yandy_pool yandytex.res md5 yandy_inlines \
+	kpathsea\kpathsea.lib zlib\zlib.lib
+	del ..\yandy\bin\yandytex.exe
+	copy yandytex.exe ..\yandy\bin\yandytex.exe
+
+md5.obj: libmd5\md5.c
+	$(CC) -Ilibmd5 $(CFLAGS) libmd5\md5.c
+
+yandytex.res: yandytex.rc
+	rc /nologo yandytex.rc
+
+yandytex.obj: yandytex.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+	$(CC) /DINITEX $(CFLAGS) yandytex.c
+
+itex.obj: itex.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+	$(CC) /DINITEX $(CFLAGS) itex.c
+
+openinou.obj: openinou.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+	$(CC) $(CFLAGS) openinou.c
+
+subroute.obj: subroute.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+	$(CC) $(CFLAGS) subroute.c
+
+local.obj: local.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+	$(CC) /DINITEX $(CFLAGS) local.c
+
+tex0.obj: tex0.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex1.obj: tex1.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex2.obj: tex2.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex3.obj: tex3.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex4.obj: tex4.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex5.obj: tex5.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex6.obj: tex6.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex7.obj: tex7.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex8.obj: tex8.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+tex9.obj: tex9.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+yandy_pool.obj: yandy_pool.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+yandy_inlines.obj: yandy_inlines.c \
+	texd.h texmf.h texmfmem.h coerce.h yandy_macros.h
+
+.SUFFIXES:
+.SUFFIXES: .obj .c
+
+c..obj:
+	$(CC) $(CFLAGS) $*.c
+

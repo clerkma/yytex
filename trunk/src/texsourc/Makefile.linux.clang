@@ -1,0 +1,83 @@
+#
+# Copyright (c) 2014 Clerk Ma
+#
+# You may freely use, modify and/or distribute this file.
+#
+# makefle for linux (tested in ubuntu 14.04: clang/LLVM 4.3).
+#
+# apt-get install libkpathsea6 libkpathsea-dev
+# apt-get install zlib1g zlib1g-dev
+#
+
+CC = clang
+CFLAGS = -O2 -DMSDOS -DTeX -DINITEX -DINI -Ilibmd5
+LDFLAGS = -lkpathsea -lz
+
+objects = yandytex.o itex.o openinou.o subroute.o local.o \
+	tex0.o tex1.o tex2.o tex3.o tex4.o \
+	tex5.o tex6.o tex7.o tex8.o tex9.o \
+	yandy_pool.o md5.o yandy_inlines.o
+
+headers = yandytex.h texd.h coerce.h texmf.h texmfmem.h
+
+yandytex: $(objects)
+	$(CC) -o yandytex $(objects) $(LDFLAGS)
+
+yandytex.o: yandytex.c $(headers)
+	$(CC) -c $(CFLAGS) yandytex.c
+ 
+itex.o: itex.c $(headers)
+	$(CC) -c $(CFLAGS) itex.c
+
+openinou.o: openinou.c $(headers)
+	$(CC) -c $(CFLAGS) openinou.c
+
+subroute.o: subroute.c $(headers)
+	$(CC) -c $(CFLAGS) subroute.c
+
+local.o: local.c $(headers)
+	$(CC) -c $(CFLAGS) local.c
+
+tex0.o: tex0.c $(headers)
+	$(CC) -c $(CFLAGS) tex0.c
+
+tex1.o: tex1.c $(headers)
+	$(CC) -c $(CFLAGS) tex1.c
+
+tex2.o: tex2.c $(headers)
+	$(CC) -c $(CFLAGS) tex2.c
+
+tex3.o: tex3.c $(headers)
+	$(CC) -c $(CFLAGS) tex3.c
+
+tex4.o: tex4.c $(headers)
+	$(CC) -c $(CFLAGS) tex4.c
+
+tex5.o: tex5.c $(headers)
+	$(CC) -c $(CFLAGS) tex5.c
+
+tex6.o: tex6.c $(headers)
+	$(CC) -c $(CFLAGS) tex6.c
+
+tex7.o: tex7.c $(headers)
+	$(CC) -c $(CFLAGS) tex7.c
+
+tex8.o: tex8.c $(headers)
+	$(CC) -c $(CFLAGS) tex8.c
+
+tex9.o: tex9.c $(headers)
+	$(CC) -c $(CFLAGS) tex9.c
+
+yandy_pool.o: yandy_pool.c $(headers)
+	$(CC) -c $(CFLAGS) yandy_pool.c
+
+md5.o: libmd5/md5.c $(headers)
+	$(CC) -c $(CFLAGS) libmd5/md5.c
+
+yandy_inlines.o: yandy_inlines.c $(headers)
+	$(CC) -c $(CFLAGS) yandy_inlines.c
+
+.PHONY: clean
+
+clean:
+	rm *.o
