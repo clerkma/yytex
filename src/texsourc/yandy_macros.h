@@ -1312,6 +1312,8 @@ while (0)
 #define downdate_width(a)     cur_active_width[(a)] = cur_active_width[(a)] - mem[prev_r + (a)].cint
 /* sec 0861 */
 #define update_active(a) active_width[(a)] = active_width[(a)] + mem[r + (a)].cint
+/* sec 0864 */
+#define store_background(a) active_width[a] = background[a]
 /* sec 0866 */
 #define act_width active_width[1]
 #define kern_break()                                \
