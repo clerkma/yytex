@@ -297,13 +297,13 @@ void initialize_aux (void)
 void line_break_ (integer final_widow_penalty)
 {
   boolean auto_breaking;
-  halfword prev_p;
-  halfword q, r, s, prevs;
+  pointer prev_p;
+  pointer q, r, s, prev_s;
   internal_font_number f;
-/*  small_number j;  */
-  int j;                /* 95/Jan/7 */
-/*  unsigned char c;  */
-  unsigned int c;           /* 95/Jan/7 */
+  /* small_number j; */
+  int j;
+  /* unsigned char c; */
+  unsigned int c;
 
   pack_begin_line = mode_line;
   link(temp_head) = link(head);
@@ -439,7 +439,7 @@ void line_break_ (integer final_widow_penalty)
       r_hyf = init_r_hyf;
     }
 
-    q = get_node(3);
+    q = get_node(active_node_size);
     type(q) = unhyphenated;
     fitness(q) = decent_fit;
     link(q) = active;
@@ -448,17 +448,11 @@ void line_break_ (integer final_widow_penalty)
     total_demerits(q) = 0;
     link(active) = q;
     act_width = background[1];
-    active_width[2] = background[2];
-    active_width[3] = background[3];
-    active_width[4] = background[4];
-    active_width[5] = background[5];
-    active_width[6] = background[6];
-
+    do_all_six(store_background);
     passive = 0;
     printed_node = temp_head;
     pass_number = 0;
-    font_in_short_display = 0;
-
+    font_in_short_display = null_font;
     cur_p = link(temp_head);
     auto_breaking = true;
     prev_p = cur_p;
@@ -501,7 +495,7 @@ void line_break_ (integer final_widow_penalty)
             {
               if (is_char_node(prev_p))
                 try_break(0, unhyphenated);
-              else if ((mem[prev_p].hh.b0 < 9))
+              else if (precedes_break(prev_p))
                 try_break(0, unhyphenated);
               else if ((type(prev_p) == kern_node) && (subtype(prev_p) != explicit))
                 try_break(0, unhyphenated);
@@ -515,8 +509,8 @@ void line_break_ (integer final_widow_penalty)
 
             if (second_pass && auto_breaking)
             {
-              prevs = cur_p;
-              s = link(prevs);
+              prev_s = cur_p;
+              s = link(prev_s);
 
               if (s != 0)
               {
@@ -552,13 +546,13 @@ void line_break_ (integer final_widow_penalty)
                     goto done1;
 
                   if (lc_code(c) != 0)
-                    if ((lc_code(c) == (halfword) c) || (uc_hyph > 0)) /* fixed signed tyoe */
+                    if ((lc_code(c) == (halfword) c) || (uc_hyph > 0))
                       goto done2;
                     else
                       goto done1;
 continu:
-                  prevs = s;
-                  s = link(prevs);
+                  prev_s = s;
+                  s = link(prev_s);
                 }
 done2:
                 hyf_char = hyphen_char[hf];
@@ -569,7 +563,7 @@ done2:
                 if (hyf_char > 255)
                   goto done1; /* ? */
 
-                ha = prevs;
+                ha = prev_s;
 
                 if (l_hyf + r_hyf > 63)
                   goto done1;
@@ -585,7 +579,7 @@ done2:
 
                     hyf_bchar = character(s);
 
-                    c = hyf_bchar;     /*  unsigned char c;  */
+                    c = hyf_bchar;
 
                     if (lc_code(c) == 0)
                       goto done3;
@@ -644,7 +638,7 @@ done2:
 
                   s = link(s);
                 }
-done3:;
+done3:
                 if (hn < l_hyf + r_hyf)
                   goto done1;
 
@@ -655,10 +649,12 @@ done3:;
                     {
                       case ligature_node:
                         break;
+    
                       case kern_node:
                         if (subtype(s) != normal)
                           goto done4;
                         break;
+
                       case whatsit_node:
                       case glue_node:
                       case penalty_node:
@@ -667,31 +663,35 @@ done3:;
                       case mark_node:
                         goto done4;
                         break;
+
                       default:
                         goto done1;
                         break;
                     }
                   s = link(s);
                 }
-done4:;
+done4:
                 hyphenate();
               }
 done1:;
             }
           }
           break;
+
         case kern_node:
           if (subtype(cur_p) == explicit)
             kern_break();
           else
             act_width = act_width + width(cur_p);
           break;
+
         case ligature_node:
           {
             f = font(lig_char(cur_p));
             act_width = act_width + char_width(f, char_info(f, character(lig_char(cur_p))));
           }
           break;
+
         case disc_node:
           {
             s = pre_break(cur_p);
@@ -713,15 +713,17 @@ done1:;
                   case ligature_node:
                     {
                       f = font(lig_char(s));
-                      disc_width = disc_width + font_info[width_base[f] + font_info[char_base[f]+ mem[s + 1].hh.b1].qqqq.b0].cint;
+                      disc_width = disc_width + char_width(f, char_info(f, character(lig_char(s))));
                     }
                     break;
+
                   case hlist_node:
                   case vlist_node:
                   case rule_node:
                   case kern_node:
                     disc_width = disc_width + width(s);
                     break;
+
                   default:
                     {
                       confusion("disc3");
@@ -737,6 +739,7 @@ done1:;
               try_break(hyphen_penalty, hyphenated);
               act_width = act_width - disc_width;
             }
+
             r = replace_count(cur_p);
             s = link(cur_p);
 
@@ -821,7 +824,7 @@ done5:;
 
         do
           {
-            if (type(r) != 2)
+            if (type(r) != delta_node)
               if (total_demerits(r) < fewest_demerits)
               {
                 fewest_demerits = total_demerits(r);
@@ -836,7 +839,7 @@ done5:;
 
         if (looseness == 0)
         {
-          goto done;           /* normal exit */
+          goto done; /* normal exit */
         }
 
         {
@@ -908,7 +911,7 @@ done5:;
 #endif
       threshold = tolerance;
       second_pass = true;
-      second_pass_count++;          /* 96 Feb 9 */
+      second_pass_count++;
       final_pass = (emergency_stretch <= 0);
     }
     else
@@ -920,12 +923,12 @@ done5:;
 
       background[2] = background[2] + emergency_stretch;
       final_pass = true;
-      ++final_pass_count;         /* 96 Feb 9 */
+      ++final_pass_count;
     }
   }
 
 done:
-  if (best_line == 2)
+  if (best_line == decent_fit)
     single_line++;
 
 #ifdef STAT
@@ -1500,9 +1503,9 @@ boolean load_fmt_file (void)
   mem = allocate_main_memory(x); /* allocate main memory at this point */
 
   if (mem == NULL)
-    exit(1);                     /* redundant sanity test ! */
+    exit(EXIT_FAILURE);
 
-  initialize_aux();              /* do `mem' part of initialize */
+  initialize_aux(); /* do `mem' part of initialize */
 #endif
 
   if (x != mem_top)
@@ -1571,7 +1574,7 @@ boolean load_fmt_file (void)
       str_start = realloc_str_start(x - current_max_strings + increment_max_strings);
     }
 
-    if (x > current_max_strings) /* 94/Jan/24 */
+    if (x > current_max_strings)
 #else
     if (x > max_strings)
 #endif
@@ -1583,10 +1586,10 @@ boolean load_fmt_file (void)
       str_ptr = x;
   }
 
-  if (undumpthings(str_start[0], str_ptr + 1)) /* undump string ptrs */
+  if (undumpthings(str_start[0], str_ptr + 1))
     return -1;
 
-  if (undumpthings(str_pool[0], pool_ptr)) /*  undump string pool */
+  if (undumpthings(str_pool[0], pool_ptr))
     return -1;
 
   init_str_ptr = str_ptr;
@@ -1879,7 +1882,7 @@ boolean load_fmt_file (void)
 
     if (x > trie_size)
     {
-      puts("---! Must increase the trie size\n");
+      puts("---! Must increase the trie size");
       goto bad_fmt;
     }
     else
@@ -1967,8 +1970,8 @@ boolean load_fmt_file (void)
 
   return true;
 
-bad_fmt:;
-  puts("(Fatal format file error; I'm stymied)\n");
+bad_fmt:
+  puts("(Fatal format file error; I'm stymied)");
 
   return false;
 }
@@ -1984,10 +1987,8 @@ void final_cleanup (void)
 
   while (input_ptr > 0)
   {
-    if (state == 0)
-    {
+    if (state == token_list)
       end_token_list();
-    }
     else
       end_file_reading();
   }
@@ -2050,7 +2051,8 @@ void final_cleanup (void)
 
       if (last_glue != max_halfword)
         delete_glue_ref(last_glue);
-      store_fmt_file(); // returns a value ?
+
+      store_fmt_file();
     }
 #endif
 
@@ -2331,7 +2333,7 @@ final_end:
 
     ready_already = 0;
 
-    if ((history != 0) && (history != 1))
+    if ((history != spotless) && (history != warning_issued))
       code = 1;
     else
       code = 0;
@@ -2413,9 +2415,9 @@ void reset_hyphen(void)
 /* split out to allow optimize for space, not time */
 void do_initex (void)
 {
-/*  integer i; */
+  /* integer i; */
   integer k;
-/*  hyph_pointer z; */
+  /* hyph_pointer z; */
 
   for (k = mem_bot + 1; k <= lo_mem_stat_max; k++)
     mem[k].cint = 0;
@@ -2660,7 +2662,7 @@ void sort_avail (void)
   pointer p, q, r;
   pointer old_rover;
 
-  p = get_node(1073741824L); /* 2^30 merge adjacent free nodes */
+  p = get_node(010000000000);
   p = rlink(rover);
   rlink(rover) = empty_flag;
   old_rover = rover;
@@ -2707,7 +2709,7 @@ void primitive_ (str_number s, quarterword c, halfword o)
 { 
   pool_pointer k;
   small_number j;
-/*  small_number l;  */
+  /* small_number l; */
   int l;
 
   if (s < 256)
@@ -2854,7 +2856,6 @@ void first_fit_ (trie_pointer p)
       if (trie_size <= h + 256)
       {
         overflow("pattern memory", trie_size);
-/*      not dynamic ---- but can be set -h=... from command line in ini-TeX */
         return;
       }
 
@@ -2882,11 +2883,13 @@ void first_fit_ (trie_pointer p)
     }
 
     goto found;
+
 not_found:
     z = trie_trl[z];
   }
+
 found:
-  trie_taken[h] = true; /* h may be used without ... */
+  trie_taken[h] = true;
   trie_hash[p] = h;
   q = p;
 
@@ -2964,30 +2967,27 @@ void trie_fix_ (trie_pointer p)
 /* sec 0960 */
 void new_patterns (void)
 {
-/* ******************************************************************* */
-/*  was small_number k, l;  in 3.141 */
   char k, l;
-/* ******************************************************************* */
-  boolean digitsensed;
+  boolean digit_sensed;
   trie_op_code v;
   trie_pointer p, q;
-  boolean firstchild;
-/*  ASCII_code c;  */
-  int c;                /* 95/Jan/7 */
+  boolean first_child;
+  /* ASCII_code c; */
+  int c;
 
   if (!trie_not_ready) /* new stuff */
   {
     if (allow_patterns)
     {
       if (trace_flag)
-        puts("Resetting patterns\n");
+        puts("Resetting patterns");
 
       reset_trie();         /* RESET PATTERNS -  93/Nov/26 */
 
       if (reset_exceptions)
       {
         if (trace_flag)
-          puts("Resetting exceptions\n");
+          puts("Resetting exceptions");
 
         reset_hyphen();     /* RESET HYPHENEXCEPTIONS -  93/Nov/26 */
       }
@@ -3000,7 +3000,7 @@ void new_patterns (void)
     scan_left_brace();
     k = 0;
     hyf[0] = 0;
-    digitsensed = false;
+    digit_sensed = false;
 
     while (true)
     {
@@ -3010,7 +3010,7 @@ void new_patterns (void)
       {
         case letter:
         case other_char:
-          if (digitsensed || (cur_chr < '0') || (cur_chr > '9'))
+          if (digit_sensed || (cur_chr < '0') || (cur_chr > '9'))
           {
             if (cur_chr == '.')
               cur_chr = 0;
@@ -3031,13 +3031,13 @@ void new_patterns (void)
               incr(k);
               hc[k] = cur_chr;
               hyf[k] = 0;
-              digitsensed = false;
+              digit_sensed = false;
             }
           }
           else if (k < 63)
           {
             hyf[k] = cur_chr - '0';
-            digitsensed = true;
+            digit_sensed = true;
           }
           break;
         case spacer:
@@ -3071,20 +3071,19 @@ done1:
                 c = hc[l];
                 incr(l);
                 p = trie_l[q];
-                firstchild = true;
+                first_child = true;
 
                 while ((p > 0) && (c > trie_c[p])) {
                   q = p;
                   p = trie_r[q];
-                  firstchild = false;
+                  first_child = false;
                 }
 
                 if ((p == 0) || (c < trie_c[p]))
                 {
                   if (trie_ptr == trie_size)
                   {
-                    overflow("pattern memory", trie_size);  /* pattern memory - NOT DYNAMIC */
-/*      not dynamic ---- but can be set -h=... from command line in ini-TeX */
+                    overflow("pattern memory", trie_size);
                     return;
                   }
 
@@ -3093,7 +3092,7 @@ done1:
                   p = trie_ptr;
                   trie_l[p] = 0;
 
-                  if (firstchild)
+                  if (first_child)
                     trie_l[q]= p;
                   else
                     trie_r[q]= p;
@@ -3101,6 +3100,7 @@ done1:
                   trie_c[p] = c;
                   trie_o[p] = min_trie_op;
                 }
+
                 q = p;
               }
 
@@ -3119,7 +3119,7 @@ done1:
 
             k = 0;
             hyf[0] = 0;
-            digitsensed = false;
+            digit_sensed = false;
           }
           break;
         default:
@@ -3148,9 +3148,9 @@ done:;
 void init_trie (void)
 {
   trie_pointer p;
-/*  integer j, k, t;  */
+  /* integer j, k, t; */
   integer j, k;
-  int t;                  /* 95/Jan/7 */
+  int t;
   trie_pointer r, s;
 
   op_start[0] = - (integer) min_trie_op;
@@ -3254,10 +3254,10 @@ void store_fmt_file (void)
 
   if (!is_initex)
   {
-    puts("! \\dump is performed only by INITEX\n");
+    puts("! \\dump is performed only by INITEX");
 
     if (!knuth_flag)
-      puts("  (Use -i on the command line)\n");
+      puts("  (Use -i on the command line)");
 
     return;
   }
@@ -3359,7 +3359,7 @@ void store_fmt_file (void)
   while (p != 0)
   {
     decr(dyn_used);
-    p = mem[p].hh.rh;
+    p = link(p);
   }
 
   dump_int(var_used);
@@ -3383,14 +3383,17 @@ void store_fmt_file (void)
           (eq_type(j) == eq_type(j + 1)) &&
           (eq_level(j) == eq_level(j + 1)))
           goto found1;
+
         incr(j);
       }
 
       l = (int_base);
       goto done1;
+
 found1:
       incr(j);
       l = j;
+
       while (j < (int_base - 1))
       {
         if ((equiv(j) != equiv(j + 1)) ||
@@ -3399,6 +3402,7 @@ found1:
           goto done1;
         incr(j);
       }
+
 done1:
       dump_int(l - k);
 
@@ -3418,11 +3422,13 @@ done1:
       {
         if (eqtb[j].cint == eqtb[j + 1].cint)
           goto found2;
+
         incr(j);
       }
 
       l = (eqtb_size + 1);
       goto done2;
+
 found2:
       incr(j);
       l = j;
@@ -3431,8 +3437,10 @@ found2:
       {
         if (eqtb[j].cint != eqtb[j + 1].cint)
           goto done2;
+
         incr(j);
       }
+
 done2:
       dump_int(l - k);
 
@@ -3824,63 +3832,63 @@ void init_prim (void)
   par_token = cs_token_flag + par_loc;
   primitive("input", input, 0);
   primitive("endinput", input, 1);
-  primitive("topmark", top_bot_mark, 0);
-  primitive("firstmark", top_bot_mark, 1);
-  primitive("botmark", top_bot_mark, 2);
-  primitive("splitfirstmark", top_bot_mark, 3);
-  primitive("splitbotmark", top_bot_mark, 4);
-  primitive("count", tex_register, 0);
-  primitive("dimen", tex_register, 1);
-  primitive("skip", tex_register, 2);
-  primitive("muskip", tex_register, 3);
-  primitive("spacefactor", set_aux, 102);
-  primitive("prevdepth", set_aux, 1);
+  primitive("topmark", top_bot_mark, top_mark_code);
+  primitive("firstmark", top_bot_mark, first_mark_code);
+  primitive("botmark", top_bot_mark, bot_mark_code);
+  primitive("splitfirstmark", top_bot_mark, split_first_mark_code);
+  primitive("splitbotmark", top_bot_mark, split_bot_mark_code);
+  primitive("count", tex_register, int_val);
+  primitive("dimen", tex_register, dimen_val);
+  primitive("skip", tex_register, glue_val);
+  primitive("muskip", tex_register, mu_val);
+  primitive("spacefactor", set_aux, hmode);
+  primitive("prevdepth", set_aux, vmode);
   primitive("deadcycles", set_page_int, 0);
   primitive("insertpenalties", set_page_int, 1);
-  primitive("wd", set_box_dimen, 1);
-  primitive("ht", set_box_dimen, 3);
-  primitive("dp", set_box_dimen, 2);
-  primitive("lastpenalty", last_item, 0);
-  primitive("lastkern", last_item, 1);
-  primitive("lastskip", last_item, 2);
-  primitive("inputlineno", last_item, 3);
-  primitive("badness", last_item, 4);
-  primitive("number", convert, 0);
-  primitive("romannumeral", convert, 1);
-  primitive("string", convert, 2);
-  primitive("meaning", convert, 3);
-  primitive("fontname", convert, 4);
-  primitive("jobname", convert, 5);
-  primitive("if", if_test, 0);
-  primitive("ifcat", if_test, 1);
-  primitive("ifnum", if_test, 2);
-  primitive("ifdim", if_test, 3);
-  primitive("ifodd", if_test, 4);
-  primitive("ifvmode", if_test, 5);
-  primitive("ifhmode", if_test, 6);
-  primitive("ifmmode", if_test, 7);
-  primitive("ifinner", if_test, 8);
-  primitive("ifvoid", if_test, 9);
-  primitive("ifhbox", if_test, 10);
-  primitive("ifvbox", if_test, 11);
-  primitive("ifx", if_test, 12);
-  primitive("ifeof", if_test, 13);
-  primitive("iftrue", if_test, 14);
-  primitive("iffalse", if_test, 15);
-  primitive("ifcase", if_test, 16);
-  primitive("fi", fi_or_else, 2);
+  primitive("wd", set_box_dimen, width_offset);
+  primitive("ht", set_box_dimen, height_offset);
+  primitive("dp", set_box_dimen, depth_offset);
+  primitive("lastpenalty", last_item, int_val);
+  primitive("lastkern", last_item, dimen_val);
+  primitive("lastskip", last_item, glue_val);
+  primitive("inputlineno", last_item, input_line_no_code);
+  primitive("badness", last_item, badness_code);
+  primitive("number", convert, number_code);
+  primitive("romannumeral", convert, roman_numeral_code);
+  primitive("string", convert, string_code);
+  primitive("meaning", convert, meaning_code);
+  primitive("fontname", convert, font_name_code);
+  primitive("jobname", convert, job_name_code);
+  primitive("if", if_test, if_char_code);
+  primitive("ifcat", if_test, if_cat_code);
+  primitive("ifnum", if_test, if_int_code);
+  primitive("ifdim", if_test, if_dim_code);
+  primitive("ifodd", if_test, if_odd_code);
+  primitive("ifvmode", if_test, if_vmode_code);
+  primitive("ifhmode", if_test, if_hmode_code);
+  primitive("ifmmode", if_test, if_mmode_code);
+  primitive("ifinner", if_test, if_inner_code);
+  primitive("ifvoid", if_test, if_void_code);
+  primitive("ifhbox", if_test, if_hbox_code);
+  primitive("ifvbox", if_test, if_vbox_code);
+  primitive("ifx", if_test, ifx_code);
+  primitive("ifeof", if_test, if_eof_code);
+  primitive("iftrue", if_test, if_true_code);
+  primitive("iffalse", if_test, if_false_code);
+  primitive("ifcase", if_test, if_case_code);
+  primitive("fi", fi_or_else, fi_code);
   text(frozen_fi) = make_string_pool("fi");
   eqtb[frozen_fi] = eqtb[cur_val];
-  primitive("or", fi_or_else, 4);
-  primitive("else", fi_or_else, 3);
-  primitive("nullfont", set_font, 0);
+  primitive("or", fi_or_else, or_code);
+  primitive("else", fi_or_else, else_code);
+  primitive("nullfont", set_font, null_font);
   text(frozen_null_font) = 795;
   eqtb[frozen_null_font] = eqtb[cur_val];
-  primitive("span", tab_mark, 256);
-  primitive("cr", car_ret, 257);
+  primitive("span", tab_mark, span_code);
+  primitive("cr", car_ret, cr_code);
   text(frozen_cr) = make_string_pool("cr");
   eqtb[frozen_cr] = eqtb[cur_val];
-  primitive("crcr", car_ret, 258);
+  primitive("crcr", car_ret, cr_cr_code);
   text(frozen_end_template) = make_string_pool("endtemplate");
   text(frozen_endv) = make_string_pool("endtemplate");
   eq_type(frozen_endv) = endv;
@@ -3898,72 +3906,72 @@ void init_prim (void)
   primitive("pagedepth", set_page_dimen, 7);
   primitive("end", end_match, 0);
   primitive("dump", stop, 1);
-  primitive("hskip", hskip, 4);
-  primitive("hfil", hskip, 0);
-  primitive("hfill", hskip, 1);
-  primitive("hss", hskip, 2);
-  primitive("hfilneg", hskip, 3);
-  primitive("vskip", vskip, 4);
-  primitive("vfil", vskip, 0);
-  primitive("vfill", vskip, 1);
-  primitive("vss", vskip, 2);
-  primitive("vfilneg", vskip, 3);
-  primitive("mskip", mskip, 5);
-  primitive("kern", kern, 1);
-  primitive("mkern", mkern, 99);
+  primitive("hskip", hskip, skip_code);
+  primitive("hfil", hskip, fil_code);
+  primitive("hfill", hskip, fill_code);
+  primitive("hss", hskip, ss_code);
+  primitive("hfilneg", hskip, fil_neg_code);
+  primitive("vskip", vskip, skip_code);
+  primitive("vfil", vskip, fil_code);
+  primitive("vfill", vskip, fill_code);
+  primitive("vss", vskip, ss_code);
+  primitive("vfilneg", vskip, fil_neg_code);
+  primitive("mskip", mskip, mskip_code);
+  primitive("kern", kern, explicit);
+  primitive("mkern", mkern, mu_glue);
   primitive("moveleft", hmove, 1);
   primitive("moveright", hmove, 0);
   primitive("raise", vmove, 1);
   primitive("lower", vmove, 0);
-  primitive("box", make_box, 0);
-  primitive("copy", make_box, 1);
-  primitive("lastbox", make_box, 2);
-  primitive("vsplit", make_box, 3);
-  primitive("vtop", make_box, 4);
-  primitive("vbox", make_box, 5);
-  primitive("hbox", make_box, 106);
-  primitive("shipout", leader_ship, 99);
-  primitive("leaders", leader_ship, 100);
-  primitive("cleaders", leader_ship, 101);
-  primitive("xleaders", leader_ship, 102);
+  primitive("box", make_box, box_code);
+  primitive("copy", make_box, copy_code);
+  primitive("lastbox", make_box, last_box_code);
+  primitive("vsplit", make_box, vsplit_code);
+  primitive("vtop", make_box, vtop_code);
+  primitive("vbox", make_box, vtop_code + vmode);
+  primitive("hbox", make_box, vtop_code + hmode);
+  primitive("shipout", leader_ship, a_leaders - 1);
+  primitive("leaders", leader_ship, a_leaders);
+  primitive("cleaders", leader_ship, c_leaders);
+  primitive("xleaders", leader_ship, x_leaders);
   primitive("indent", start_par, 1);
   primitive("noindent", start_par, 0);
-  primitive("unpenalty", remove_item, 12);
-  primitive("unkern", remove_item, 11);
-  primitive("unskip", remove_item, 10);
-  primitive("unhbox", un_hbox, 0);
-  primitive("unhcopy", un_hbox, 1);
-  primitive("unvbox", un_vbox, 0);
-  primitive("unvcopy", un_vbox, 1);
+  primitive("unpenalty", remove_item, penalty_node);
+  primitive("unkern", remove_item, kern_node);
+  primitive("unskip", remove_item, glue_node);
+  primitive("unhbox", un_hbox, box_code);
+  primitive("unhcopy", un_hbox, copy_code);
+  primitive("unvbox", un_vbox, box_code);
+  primitive("unvcopy", un_vbox, copy_code);
   primitive("-", discretionary, 1);
   primitive("discretionary", discretionary, 0);
   primitive("eqno", eq_no, 0);
   primitive("leqno", eq_no, 1);
-  primitive("mathord", math_comp, 16);
-  primitive("mathop", math_comp, 17);
-  primitive("mathbin", math_comp, 18);
-  primitive("mathrel", math_comp, 19);
-  primitive("mathopen", math_comp, 20);
-  primitive("mathclose", math_comp, 21);
-  primitive("mathpunct", math_comp, 22);
-  primitive("mathinner", math_comp, 23);
-  primitive("underline", math_comp, 26);
-  primitive("overline", math_comp, 27);
-  primitive("displaylimits", limit_switch, 0);
-  primitive("limits", limit_switch, 1);
-  primitive("nolimits", limit_switch, 2);
-  primitive("displaystyle", math_style, 0);
-  primitive("textstyle", math_style, 2);
-  primitive("scriptstyle", math_style, 4);
-  primitive("scriptscriptstyle", math_style, 6);
-  primitive("above", above, 0);
-  primitive("over", above, 1);
-  primitive("atop", above, 2);
-  primitive("abovewithdelims", above, 3);
-  primitive("overwithdelims", above, 4);
-  primitive("atopwithdelims", above, 5);
-  primitive("left", left_right, 30);
-  primitive("right", left_right, 31);
+  primitive("mathord", math_comp, ord_noad);
+  primitive("mathop", math_comp, op_noad);
+  primitive("mathbin", math_comp, bin_noad);
+  primitive("mathrel", math_comp, rel_noad);
+  primitive("mathopen", math_comp, open_noad);
+  primitive("mathclose", math_comp, close_noad);
+  primitive("mathpunct", math_comp, punct_noad);
+  primitive("mathinner", math_comp, inner_noad);
+  primitive("underline", math_comp, under_noad);
+  primitive("overline", math_comp, over_noad);
+  primitive("displaylimits", limit_switch, normal);
+  primitive("limits", limit_switch, limits);
+  primitive("nolimits", limit_switch, no_limits);
+  primitive("displaystyle", math_style, display_style);
+  primitive("textstyle", math_style, text_style);
+  primitive("scriptstyle", math_style, script_style);
+  primitive("scriptscriptstyle", math_style, script_script_style);
+  primitive("above", above, above_code);
+  primitive("over", above, over_code);
+  primitive("atop", above, atop_code);
+  primitive("abovewithdelims", above, delimited_code + above_code);
+  primitive("overwithdelims", above, delimited_code + over_code);
+  primitive("atopwithdelims", above, delimited_code + atop_code);
+  primitive("left", left_right, left_noad);
+  primitive("right", left_right, right_noad);
   text(frozen_right) = make_string_pool("right");
   eqtb[frozen_right] = eqtb[cur_val]; 
   primitive("long", prefix, 1);
@@ -3973,15 +3981,15 @@ void init_prim (void)
   primitive("gdef", def, 1);
   primitive("edef", def, 2);
   primitive("xdef", def, 3);
-  primitive("let", let, 0);
-  primitive("futurelet", let, 1);
-  primitive("chardef", shorthand_def, 0);
-  primitive("mathchardef", shorthand_def, 1);
-  primitive("countdef", shorthand_def, 2);
-  primitive("dimendef", shorthand_def, 3);
-  primitive("skipdef", shorthand_def, 4);
-  primitive("muskipdef", shorthand_def, 5);
-  primitive("toksdef", shorthand_def, 6);
+  primitive("let", let, normal);
+  primitive("futurelet", let, normal + 1);
+  primitive("chardef", shorthand_def, char_def_code);
+  primitive("mathchardef", shorthand_def, math_char_def_code);
+  primitive("countdef", shorthand_def, count_def_code);
+  primitive("dimendef", shorthand_def, dimen_def_code);
+  primitive("skipdef", shorthand_def, skip_def_code);
+  primitive("muskipdef", shorthand_def, mu_skip_def_code);
+  primitive("toksdef", shorthand_def, toks_def_code);
   primitive("catcode", def_code, cat_code_base);
   primitive("mathcode", def_code, math_code_base);
   primitive("lccode", def_code, lc_code_base);
@@ -3995,27 +4003,27 @@ void init_prim (void)
   primitive("patterns", hyph_data, 1);
   primitive("hyphenchar", assign_font_int, 0);
   primitive("skewchar", assign_font_int, 1);
-  primitive("batchmode", set_interaction, 0);
-  primitive("nonstopmode", set_interaction, 1);
-  primitive("scrollmode", set_interaction, 2);
-  primitive("errorstopmode", set_interaction, 3);
+  primitive("batchmode", set_interaction, batch_mode);
+  primitive("nonstopmode", set_interaction, nonstop_mode);
+  primitive("scrollmode", set_interaction, scroll_mode);
+  primitive("errorstopmode", set_interaction, error_stop_mode);
   primitive("openin", in_stream, 1);
   primitive("closein", in_stream, 0);
   primitive("message", message, 0);
   primitive("errmessage", message, 1);
   primitive("lowercase", case_shift, lc_code_base);
   primitive("uppercase", case_shift, uc_code_base);
-  primitive("show", xray, 0);
-  primitive("showbox", xray, 1);
-  primitive("showthe", xray, 2);
-  primitive("showlists", xray, 3);
-  primitive("openout", extension, 0);
-  primitive("write", extension, 1);
+  primitive("show", xray, show_code);
+  primitive("showbox", xray, show_box_code);
+  primitive("showthe", xray, show_the_code);
+  primitive("showlists", xray, show_lists);
+  primitive("openout", extension, open_node);
+  primitive("write", extension, write_node);
   write_loc = cur_val;
-  primitive("closeout", extension, 2);
-  primitive("special", extension, 3);
-  primitive("immediate", extension, 4);
-  primitive("setlanguage", extension, 5);
+  primitive("closeout", extension, close_node);
+  primitive("special", extension, special_node);
+  primitive("immediate", extension, immediate_code);
+  primitive("setlanguage", extension, set_language_code);
   no_new_control_sequence = true; 
 }
 #endif

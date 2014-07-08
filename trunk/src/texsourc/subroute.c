@@ -60,21 +60,6 @@ integer web2c_round (double r)
 
   return i;
 }
-// texk/web2c/lib/eofeoln.c
-boolean eoln (FILE * file)
-{
-  register int c;
-
-  if (feof (file))
-    return true;
-
-  c = getc (file);
-
-  if (c != EOF)
-    (void) ungetc (c, file);
-
-  return c == '\n' || c == '\r' || c == EOF;
-}
 // Unixify filename and path (turn \ into /)
 // --- assumes null terminated
 char * unixify (char * t)

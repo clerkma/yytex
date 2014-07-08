@@ -231,19 +231,19 @@ void scan_dimen_(boolean mu, boolean inf, boolean shortcut);
 #define scan_dimen(mu, inf, shortcut) scan_dimen_((boolean) (mu), (boolean) (inf), (boolean) (shortcut))
 void scan_glue_(small_number level);
 #define scan_glue(level) scan_glue_((small_number) (level))
-halfword scan_rule_spec(void);
-halfword str_toks_(pool_pointer b);
+pointer scan_rule_spec(void);
+pointer str_toks_(pool_pointer b);
 #define str_toks(b) str_toks_((pool_pointer) (b))
-halfword the_toks(void);
+pointer the_toks(void);
 void ins_the_toks(void);
 void conv_toks(void);
 pointer scan_toks_(boolean macro_def, boolean xpand);
 #define scan_toks(macro_def, xpand) scan_toks_((boolean) (macro_def), (boolean) (xpand))
-void read_toks_(integer n, halfword r);
-#define read_toks(n, r) read_toks_((integer) (n), (halfword) (r))
+void read_toks_(integer n, pointer r);
+#define read_toks(n, r) read_toks_((integer) (n), (pointer) (r))
 void pass_text(void);
-void change_if_limit_(small_number l, halfword p);
-#define change_if_limit(l, p) change_if_limit_((small_number) (l), (halfword) (p))
+void change_if_limit_(small_number l, pointer p);
+#define change_if_limit(l, p) change_if_limit_((small_number) (l), (pointer) (p))
 void conditional(void);
 void begin_name(void);
 boolean more_name_(ASCII_code c);

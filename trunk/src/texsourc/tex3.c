@@ -417,6 +417,8 @@ not_found:
     set_conversion(7227, 10160);
   else if (scan_keyword("H"))
     set_conversion(7227, 10160);
+  else if (scan_keyword("twip"))
+    set_conversion(1, 20);
   else if (scan_keyword("sp"))
     goto done;
   else
@@ -471,7 +473,7 @@ attach_sign:
 void scan_glue_(small_number level)
 {
   boolean negative;
-  halfword q;
+  pointer q;
   boolean mu;
 
   mu = (level == mu_val);
@@ -500,20 +502,15 @@ void scan_glue_(small_number level)
     if (cur_val_level >= glue_val)
     {
       if (cur_val_level != level)
-      {
         mu_error();
-      }
+
       return;
     }
 
     if (cur_val_level == int_val)
-    {
       scan_dimen(mu, false, true);
-    }
     else if (level == mu_val)
-    {
       mu_error();
-    }
   }
   else
   {
@@ -523,6 +520,7 @@ void scan_glue_(small_number level)
     if (negative)
       cur_val = - (integer) cur_val;
   }
+
   q = new_spec(zero_glue);
   width(q) = cur_val;
 
@@ -543,9 +541,9 @@ void scan_glue_(small_number level)
   cur_val = q;
 }
 /* sec 0463 */
-halfword scan_rule_spec (void)
+pointer scan_rule_spec (void)
 {
-  halfword q;
+  pointer q;
 
   q = new_rule();
 
@@ -583,10 +581,10 @@ reswitch:
   return q;
 }
 /* sec 0464 */
-halfword str_toks_(pool_pointer b)
+pointer str_toks_(pool_pointer b)
 {
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
   halfword t;
   pool_pointer k;
 
@@ -613,10 +611,10 @@ halfword str_toks_(pool_pointer b)
   return p;
 }
 /* sec 0465 */
-halfword the_toks (void)
+pointer the_toks (void)
 {
   char old_setting;
-  halfword p, q, r;
+  pointer p, q, r;
   pool_pointer b;
 
   get_x_token();
@@ -925,6 +923,7 @@ done2:
 
     store_new_token(cur_tok);
   }
+
 found:
   scanner_status = 0;
 
@@ -933,15 +932,14 @@ found:
 
   return p;
 }
-/* used only in ITEX.C */
 /* sec 0482 */
-void read_toks_(integer n, halfword r)
+void read_toks_(integer n, pointer r)
 {
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
   integer s;
-/*  small_number m;  */
-  int m; /* 95/Jan/7 */
+  /* small_number m; */
+  int m;
 
   scanner_status = defining;
   warning_index = r;
@@ -979,20 +977,20 @@ void read_toks_(integer n, halfword r)
           fatal_error("*** (cannot \\read from terminal in nonstop modes)");
           return;
         }
-      else if (read_open[m] == 1)
+      else if (read_open[m] == just_open)
         if (input_ln(read_file[m], false))
-          read_open[m] = 0;
+          read_open[m] = normal;
         else
         {
           (void) a_close(read_file[m]);
-          read_open[m] = 2;
+          read_open[m] = closed;
         }
       else
       {
         if (!input_ln(read_file[m], true))
         {
           (void) a_close(read_file[m]);
-          read_open[m] = 2;
+          read_open[m] = closed;
 
           if (align_state != 1000000L)
           {
@@ -1073,13 +1071,14 @@ void pass_text (void)
     else if (cur_cmd == if_test)
       incr(l);
   }
+
 done:
   scanner_status = save_scanner_status;
 }
 /* sec 0497 */
-void change_if_limit_(small_number l, halfword p)
+void change_if_limit_(small_number l, pointer p)
 {
-  halfword q;
+  pointer q;
 
   if (p == cond_ptr)
     if_limit = l;
@@ -1112,9 +1111,9 @@ void conditional (void)
   boolean b;
   char r;
   integer m, n;
-  halfword p, q;
+  pointer p, q;
   small_number save_scanner_status;
-  halfword save_cond_ptr;
+  pointer save_cond_ptr;
   small_number this_if;
 
   {
