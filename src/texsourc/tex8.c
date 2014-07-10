@@ -1327,7 +1327,7 @@ void handle_right_brace (void)
         f = floating_penalty;
         unsave();
         decr(save_ptr);
-        p = vpackage(link(head), 0, 1, 1073741823L);  /* 2^30 - 1 */
+        p = vpackage(link(head), 0, 1, max_dimen);
         pop_nest();
 
         if (saved(0) < 255)
@@ -1440,7 +1440,7 @@ void handle_right_brace (void)
         end_graf();
         unsave();
         save_ptr = save_ptr - 2;
-        p = vpackage(link(head), saved(1), saved(0), 1073741823L);   /* 2^30 - 1 */
+        p = vpackage(link(head), saved(1), saved(0), max_dimen);
         pop_nest();
         tail_append(new_noad());
         type(tail) = vcenter_noad;

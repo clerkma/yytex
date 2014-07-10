@@ -32,7 +32,6 @@
 #include <direct.h>     /* for _getcwd(); */
 #include <conio.h>
 
-
 #pragma warning(disable:4996)
 #pragma warning(disable:4127) // conditional expression is constant
 

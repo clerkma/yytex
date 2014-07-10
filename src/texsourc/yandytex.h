@@ -71,7 +71,7 @@ typedef integer str_number;
 typedef unsigned char packed_ASCII_code;
 typedef integer scaled;
 typedef integer nonnegative_integer;
-typedef char small_number;
+typedef unsigned char small_number;
 
 typedef enum
 {

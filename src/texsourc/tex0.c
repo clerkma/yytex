@@ -347,7 +347,7 @@ void print_cs_ (integer p)
   }
 }
 /* sec 0263 */
-void sprint_cs_(halfword p)
+void sprint_cs_(pointer p)
 { 
   if (p < hash_base)
     if (p < single_base)
@@ -651,7 +651,7 @@ continu:
   print_ln();
 }
 /* sec 0093 */
-void fatal_error(char * s)
+void fatal_error(const char * s)
 {
   normalize_selector();
   print_err("Emergency stop");
@@ -659,7 +659,7 @@ void fatal_error(char * s)
   succumb();
 }
 /* sec 0094 */
-void overflow_(char * s, integer n)
+void overflow_(const char * s, integer n)
 {
   normalize_selector();
   print_err("TeX capacity exceeded, sorry [");
@@ -704,7 +704,7 @@ void confusion_(const char * s)
 /* sec 0037 */
 boolean init_terminal (void)
 {
-  int flag;
+  boolean flag;
 
   t_open_in();
 
@@ -753,7 +753,7 @@ str_number make_string (void)
 
   if (str_ptr == current_max_strings)
   {
-    overflow("number of strings", current_max_strings - init_str_ptr); /* 97/Mar/9 */
+    overflow("number of strings", current_max_strings - init_str_ptr);
     return 0;
   }
 #else
@@ -906,7 +906,7 @@ void print_current_string (void)
 void term_input(void)
 { 
   integer k;
-  int flag;
+  boolean flag;
   
   if (!knuth_flag)
     show_line("\n", 0);
@@ -921,14 +921,14 @@ void term_input(void)
   }
 
   term_offset = 0;
-  decr(selector);     // shut off echo
+  decr(selector);
 
   if (last != first)
     for (k = first; k <= last - 1; k++)
       print(buffer[k]);
 
   print_ln();
-  incr(selector);     // reset selector again
+  incr(selector);
 }
 /* sec 0091 */
 void int_error_ (integer n)
@@ -955,8 +955,8 @@ void normalize_selector (void)
 /* sec 0098 */
 void pause_for_instructions (void)
 {
-   if (OK_to_interrupt)
-   {
+  if (OK_to_interrupt)
+  {
     interaction = error_stop_mode;
 
     if ((selector == log_only) || (selector == no_print))
@@ -1023,7 +1023,7 @@ void print_scaled_(scaled s)
   while (!(s <= delta));
 }
 /* sec 0105 */
-scaled mult_and_add_(integer n, scaled x, scaled y, scaled maxanswer)
+scaled mult_and_add_(integer n, scaled x, scaled y, scaled max_answer)
 {
   if (n < 0)
   {
@@ -1033,7 +1033,7 @@ scaled mult_and_add_(integer n, scaled x, scaled y, scaled maxanswer)
 
   if (n == 0)
     return y;
-  else if (((x <= (maxanswer - y) / n) && (- (integer) x <= (maxanswer + y) / n)))
+  else if (((x <= (max_answer - y) / n) && (- (integer) x <= (max_answer + y) / n)))
     return (n * x + y); 
   else
   {
@@ -1167,31 +1167,6 @@ void print_word_(memory_word w)
   print_int(w.qqqq.b2); 
   print_char(':');
   print_int(w.qqqq.b3);
-} 
-/* need this version only if SHORTFONTINFO defined */
-void zprintfword(memory_word w)
-{
-  print_int(w.cint);
-  print_char(' ');
-  print_scaled(w.cint);
-  print_char(' ');
-  print_scaled(round(unity * w.gr));
-  print_ln();
-  print_int(w.hh.lh);
-  print_char('=');
-  print_int(w.hh.b0);
-  print_char(':');
-  print_int(w .hh.b1);
-  print_char(';');
-  print_int(w.hh.rh);
-  print_char(' ');
-  print_int(w.qqqq.b0);
-  print_char(':');
-  print_int(w.qqqq.b1);
-  print_char(':');
-  print_int(w.qqqq.b2);
-  print_char(':');
-  print_int(w.qqqq.b3);
 }
 #endif
 /* sec 0292 */
@@ -1290,7 +1265,7 @@ void show_token_list_(integer p, integer q, integer l)
 /* sec 0306 */
 void runaway (void)
 {
-  halfword p;
+  pointer p;
 
   if (scanner_status > 1)
   {
@@ -1393,7 +1368,7 @@ void flush_list_(pointer p)
         r = link(r);
 #ifdef STAT
         decr(dyn_used);
-#endif /* STAT */
+#endif
       }
     while (!(r == 0));     /* r != null */
 
@@ -1408,8 +1383,8 @@ pointer get_node_(integer s)
   pointer q;
   integer r;
   integer t;
-restart:
 
+restart:
   p = rover;
 
   do
@@ -1455,7 +1430,7 @@ restart:
   if (s == 1073741824L)    /* 2^30 - special case - merge adjacent */
   {
     if (trace_flag)
-      puts("Merged adjacent multi-word nodes\n");
+      puts("Merged adjacent multi-word nodes");
 
     return max_halfword;
   }
@@ -1464,9 +1439,7 @@ restart:
   if (lo_mem_max + 2 < hi_mem_min)
     if (lo_mem_max + 2 <= mem_bot + max_halfword)  /* silly ? flush 93/Dec/16 */
     {
-      /* if (hi_mem_min - lo_mem_max >= 1998) */
       if (hi_mem_min - lo_mem_max >= (block_size + block_size - 2))
-        /* t = lo_mem_max + 1000; */
         t = lo_mem_max + block_size;
       else
         t = lo_mem_max + 1 + (hi_mem_min - lo_mem_max) / 2;
@@ -1495,7 +1468,7 @@ restart:
 /* try and add new block from below mem_bot *//* first check if space ! */
   if (mem_min - (block_size + 1) <= mem_start) /* extend lower memory downwards */
   {
-    mem = realloc_main (mem_top/2 + block_size, 0);  /* zzzaa = zmem = mem */
+    mem = realloc_main (mem_top / 2 + block_size, 0);  /* zzzaa = zmem = mem */
 
     if (mem == NULL)
     {
@@ -1520,12 +1493,12 @@ found:
 
 #ifdef STAT
   var_used = var_used + s; 
-#endif /* STAT */
+#endif
 
   return r; 
 } 
 /* sec 0130 */
-void free_node_(halfword p, halfword s)
+void free_node_(pointer p, halfword s)
 { 
   pointer q;
 
@@ -1539,7 +1512,7 @@ void free_node_(halfword p, halfword s)
 
 #ifdef STAT
   var_used = var_used - s; 
-#endif /* STAT */
+#endif
 }
 /* sec 0136 */
 pointer new_null_box (void) 
@@ -1707,17 +1680,23 @@ pointer new_penalty(integer m)
 
 #ifdef DEBUG
 /* sec 0167 */
-void check_mem(boolean printlocs)
+void check_mem(boolean print_locs)
 {
   pointer p, q;
   boolean clobbered;
 
-  for (p = mem_min; p <= lo_mem_max; p++) freearr[p] = false;
-  for (p = hi_mem_min; p <= mem_end; p++) freearr[p] = false;
+  for (p = mem_min; p <= lo_mem_max; p++)
+    freearr[p] = false;
+
+  for (p = hi_mem_min; p <= mem_end; p++)
+    freearr[p] = false;
+
   p = avail;
   q = 0;
   clobbered = false;
-  while (p != 0) {
+
+  while (p != 0)
+  {
     if ((p > mem_end) || (p < hi_mem_min))
       clobbered = true;
     else if (freearr[p])
@@ -1729,15 +1708,19 @@ void check_mem(boolean printlocs)
       print_int(q);
       goto done1;
     }
+
     freearr[p] = true;
     q = p;
     p = link(q);
   }
-done1:;
+
+done1:
   p = rover;
   q = 0;
   clobbered = false;
-  do {
+
+  do
+    {
       if ((p >= lo_mem_max) || (p < mem_min))
         clobbered = true;
       else if ((rlink(p) >= lo_mem_max) || (rlink(p) < mem_min))
@@ -1761,24 +1744,34 @@ done1:;
           print_int(q);
           goto done2;
         }
-        freearr[q]= true;
+
+        freearr[q] = true;
       }
+
       q = p;
       p = rlink(p);
-  } while (!(p == rover));
-done2:;
+    }
+  while (!(p == rover));
+
+done2:
   p = mem_min;
-  while (p <= lo_mem_max) {
+
+  while (p <= lo_mem_max)
+  {
     if (is_empty(p))
     {
       print_nl("Bad flag at ");
       print_int(p);
     }
-    while ((p <= lo_mem_max) && !freearr[p]) incr(p);
-    while ((p <= lo_mem_max) && freearr[p]) incr(p);
+
+    while ((p <= lo_mem_max) && !freearr[p])
+      incr(p);
+
+    while ((p <= lo_mem_max) && freearr[p])
+      incr(p);
   }
 
-  if (printlocs)
+  if (print_locs)
   {
     print_nl("New busy locs:");
 
@@ -1797,8 +1790,11 @@ done2:;
       }
   }
 
-  for (p = mem_min; p <= lo_mem_max; p++) wasfree[p] = freearr[p];
-  for (p = hi_mem_min; p <= mem_end; p++) wasfree[p] = freearr[p];
+  for (p = mem_min; p <= lo_mem_max; p++)
+    wasfree[p] = freearr[p];
+
+  for (p = hi_mem_min; p <= mem_end; p++)
+    wasfree[p] = freearr[p];
 
   was_mem_end = mem_end;
   was_lo_max = lo_mem_max;
@@ -1820,6 +1816,7 @@ void search_mem_(halfword p)
       print_int(q);
       print_char(')');
     }
+
     if (info(q) == p)
     {
       print_nl("INFO(");
@@ -1836,6 +1833,7 @@ void search_mem_(halfword p)
       print_int(q);
       print_char(')');
     }
+
     if (info(q) == p)
     {
       print_nl("INFO(");
@@ -1879,28 +1877,29 @@ void short_display_(integer p)
 
   while (p != 0) /* want p != null here ! */
   {
-     if (is_char_node(p))
-     {
-       if (p <= mem_end)
-       {
-         if (font(p) != font_in_short_display)
-         {
-           if ((font(p) > font_max))
-             print_char('*');
-           else
-           {
-             print_esc("");
-             print(font_id_text(font(p)));
-           }
-
-           print_char(' ');
-           font_in_short_display = font(p);
-         }
-         print(character(p));
-       }
-     }
-     else switch (mem[p].hh.b0)
-     {
+    if (is_char_node(p))
+    {
+      if (p <= mem_end)
+      {
+        if (font(p) != font_in_short_display)
+        {
+          if ((font(p) > font_max))
+            print_char('*');
+          else
+          {
+            print_esc("");
+            print(font_id_text(font(p)));
+          }
+          
+          print_char(' ');
+          font_in_short_display = font(p);
+        }
+        
+        print(character(p));
+      }
+    }
+    else switch (type(p))
+    {
       case hlist_node:
       case vlist_node:
       case ins_node:
@@ -1910,19 +1909,24 @@ void short_display_(integer p)
       case unset_node:
         prints("[]");
         break;
+
       case rule_node:
         print_char('|');
         break;
+
       case glue_node:
         if (glue_ptr(p) != 0)
           print_char(' ');
         break;
+
       case math_node:
         print_char('$');
         break;
+
       case ligature_node:
         short_display(lig_ptr(p));
         break;
+
       case disc_node:
         short_display(pre_break(p));
         short_display(post_break(p));
@@ -1936,9 +1940,11 @@ void short_display_(integer p)
           decr(n);
         }
         break;
+
       default:
         break;
     }
+    
     p = link(p);
   }
 }
@@ -1982,7 +1988,7 @@ void print_rule_dimen(scaled d)
     print_scaled(d);
 }
 /* sec 0177 */
-void print_glue_(scaled d, integer order, char * s)
+void print_glue_(scaled d, integer order, const char * s)
 {
   print_scaled(d); 
 
@@ -2002,7 +2008,7 @@ void print_glue_(scaled d, integer order, char * s)
     prints(s);
 }
 /* sec 0178 */
-void print_spec_(integer p, char * s)
+void print_spec_(integer p, const char * s)
 {
   if ((p < mem_min) || (p >= lo_mem_max)) 
     print_char('*');
@@ -2027,7 +2033,7 @@ void print_spec_(integer p, char * s)
   }
 }
 /* sec 0691 */
-void print_fam_and_char_(halfword p)
+void print_fam_and_char_(pointer p)
 {
   print_esc("fam");
   print_int(fam(p));
@@ -2035,7 +2041,7 @@ void print_fam_and_char_(halfword p)
   print(character(p));
 }
 /* sec 0691 */
-void print_delimiter_(halfword p)
+void print_delimiter_(pointer p)
 {
   integer a;
 
@@ -2048,7 +2054,7 @@ void print_delimiter_(halfword p)
     print_hex(a);
 }
 /* sec 0692 */
-void print_subsidiary_data_(halfword p, ASCII_code c)
+void print_subsidiary_data_(pointer p, ASCII_code c)
 {
   if ((pool_ptr - str_start[str_ptr]) >= depth_threshold)
   {
@@ -2210,7 +2216,8 @@ void show_node_list_(integer p)
 
   n = 0; 
 
-  while (p != 0) {      /* want p != null - bkph 93/Dec/15 NOTE: still not fixed in 3.14159 ! */
+  while (p != 0)     /* want p != null - bkph 93/Dec/15 NOTE: still not fixed in 3.14159 ! */
+  {
     print_ln(); 
     print_current_string(); 
 
@@ -2240,7 +2247,8 @@ void show_node_list_(integer p)
             print_esc("h");
           else if (type(p) == vlist_node)
             print_esc("v");
-          else print_esc("unset");
+          else
+            print_esc("unset");
 
           prints("box(");
           print_scaled(height(p));
@@ -2281,7 +2289,7 @@ void show_node_list_(integer p)
               if (glue_sign(p) == shrinking)
                 prints("- ");
 
-              if (fabs(g)> 20000.0)
+              if (fabs(g) > 20000.0)
               {
                 if (g > 0.0)
                   print_char('>');
@@ -2675,6 +2683,7 @@ void show_node_list_(integer p)
         prints("Unknown node type!");
         break;
     }
+
     p = link(p);
   }
 }

@@ -28,6 +28,7 @@
 **********************************************************************/
 
 #include "dvipsone.h"
+#include <windows.h>
 
 #define NEEDATMINI
 
@@ -43,9 +44,9 @@
 
 /* now required by packdatetime for PDFmark 95/Feb/25 */
 
-char *months="JanFebMarAprMayJunJulAugSepOctNovDec";  /* 1994/June/8 */
+char *months = "JanFebMarAprMayJunJulAugSepOctNovDec";  /* 1994/June/8 */
 
-int dvidictsize=DVIDICT;  /* size of `dvidict' */
+int dvidictsize = DVIDICT;  /* size of `dvidict' */
 
 /* NOTE: the defaults for these must match those in changeflag calls ... */
 
@@ -3936,6 +3937,7 @@ void writedocinfo (FILE *output)
     free(titlestring);
     titlestring = NULL;
   }
+
   sprintf(logline, "[ /Title (%s)\n", line);      /* optional */
   PSputs(logline, output);
   (void) time(&ltime);
@@ -4520,6 +4522,13 @@ double roundtime (long numer, long denom)
   return ((double) ((long) (x * 1000.0 + 0.5))) / 1000.0;
 }
 
+char * get_path(void)
+{
+  static char s[1024];
+  HMODULE h = GetModuleHandle(NULL);
+  GetModuleFileName(h, s, 1024);
+  return strdup(s);
+}
 /* top level control separated out for jumpout */
 
 int dvibody (int argc, char *argv[])
@@ -4567,10 +4576,11 @@ int dvibody (int argc, char *argv[])
   
 //  following assumes dvipsone and dviwindo are subdirectories of same thing
 
-  programpath = zstrdup(argv[0]);
-  stripname(programpath);   // flush executable name
-
-  strcpy(programpath, getenv("DVIPSONE")); // CM 20140401
+  programpath = get_path();
+  //programpath = zstrdup(argv[0]);
+  //stripname(programpath);
+  //
+  //strcpy(programpath, getenv("DVIPSONE")); // CM 20140401
 
 /*  if programpath doesn't exist - try and guess - not really likely ! */
   if (programpath == NULL || *programpath == '\0')

@@ -1949,7 +1949,7 @@ pointer overbar_(pointer b, scaled k, scaled t)
   p = new_kern(t);
   link(p) = q;
 
-  return vpackage(p, 0, 1, 1073741823L); /* 2^30 - 1 */
+  return vpackage(p, 0, 1, max_dimen);
 }
 /* sec 0709 */
 pointer char_box_(internal_font_number f, quarterword c)

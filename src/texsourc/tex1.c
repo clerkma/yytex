@@ -2355,7 +2355,7 @@ void eq_destroy_(memory_word w)
   }
 }
 /* sec 0276 */
-void eq_save_(halfword p, quarterword l)
+void eq_save_(pointer p, quarterword l)
 {
   check_full_save_stack();
 
@@ -2373,7 +2373,7 @@ void eq_save_(halfword p, quarterword l)
   incr(save_ptr);
 }
 /* sec 0277 */
-void eq_define_(halfword p, quarterword t, halfword e)
+void eq_define_(pointer p, quarterword t, halfword e)
 {
   if (eq_level(p) == cur_level)
     eq_destroy(eqtb[p]);
@@ -2385,7 +2385,7 @@ void eq_define_(halfword p, quarterword t, halfword e)
   equiv(p) = e;
 }
 /* sec 0278 */
-void eq_word_define_(halfword p, integer w)
+void eq_word_define_(pointer p, integer w)
 {
   if (xeq_level[p] != cur_level)
   {
@@ -2396,7 +2396,7 @@ void eq_word_define_(halfword p, integer w)
   eqtb[p].cint = w;
 }
 /* sec 0279 */
-void geq_define_(halfword p, quarterword t, halfword e)
+void geq_define_(pointer p, quarterword t, halfword e)
 {
   eq_destroy(eqtb[p]);
   eq_level(p) = level_one;
@@ -2404,7 +2404,7 @@ void geq_define_(halfword p, quarterword t, halfword e)
   equiv(p) = e;
 }
 /* sec 0279 */
-void geq_word_define_(halfword p, integer w)
+void geq_word_define_(pointer p, integer w)
 {
   eqtb[p].cint = w;
   xeq_level[p]= 1;
@@ -2412,7 +2412,7 @@ void geq_word_define_(halfword p, integer w)
 /* sec 0280 */
 void save_for_after_(halfword t)
 { 
-  if (cur_level > 1)
+  if (cur_level > level_one)
   {
     check_full_save_stack();
     save_type(save_ptr) = insert_token;

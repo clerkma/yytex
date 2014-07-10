@@ -1285,7 +1285,7 @@ void prefixed_command (void)
         scan_optional_equals();
         scan_int();
 
-        if (((cur_val < 0) && (p < del_code_base)) ||(cur_val > n))
+        if (((cur_val < 0) && (p < del_code_base)) || (cur_val > n))
         {
           print_err("Invalid code(");
           print_int(cur_val);

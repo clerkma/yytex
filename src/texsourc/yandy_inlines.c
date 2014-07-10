@@ -258,3 +258,13 @@ void synch_v(void)
     dvi_v = cur_v;
   }
 }
+/* sec 0985 */
+void print_plus(int i, const char * s)
+{
+  if (page_so_far[i] != 0)
+  {
+    prints(" plus ");
+    print_scaled(page_so_far[i]);
+    prints(s);
+  }
+}
