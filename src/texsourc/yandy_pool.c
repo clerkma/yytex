@@ -561,7 +561,7 @@ static const char *pool_file_arr[] =
 /* 0793 */  "", //"transcript file name",
 /* 0794 */  "  ",
 /* 0795 */  "nullfont",
-/* 0796 */  "Font ",
+/* 0796 */  "", //"Font ",
 /* 0797 */  "", //" scaled ",
 /* 0798 */  "", //" not loadable: Bad metric (TFM) file",
 /* 0799 */  "", //" not loadable: Metric (TFM) file not found",

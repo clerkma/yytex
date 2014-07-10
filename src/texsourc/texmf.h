@@ -32,19 +32,19 @@ enum
 };
 
 /* Read a line of input as quickly as possible.  */
-extern boolean input_line (FILE *);
+extern boolean input_line (FILE * f);
 #define input_ln(stream, flag) input_line(stream)
-
-#define b_open_in(f)  open_input  (&(f), TFMFILEPATH,   FOPEN_RBIN_MODE)
-#define w_open_in(f)  open_input  (&(f), TEXFORMATPATH, FOPEN_RBIN_MODE)
-#define b_open_out(f) open_output (&(f), FOPEN_WBIN_MODE)
-#define w_open_out    b_open_out
-#define b_close       a_close
-#define w_close       a_close
-#define gz_w_close    gzclose
-
-/* sec 0241 */
-extern void fix_date_and_time(void);
+/* sec 0027 */
+#define a_open_in(f, p) open_input  (&(f), p, FOPEN_R_MODE)
+#define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)
+#define b_open_in(f)    open_input  (&(f), TFMFILEPATH, FOPEN_RBIN_MODE)
+#define b_open_out(f)   open_output (&(f), FOPEN_WBIN_MODE)
+#define w_open_in(f)    open_input  (&(f), TEXFORMATPATH, FOPEN_RBIN_MODE)
+#define w_open_out      b_open_out
+#define a_close(f)	    (void) check_fclose(f)
+#define b_close         a_close
+#define w_close         a_close
+#define gz_w_close      gzclose
 
 /* If we're running under Unix, use system calls instead of standard I/O
    to read and write the output files; also, be able to make a core dump. */ 
@@ -55,12 +55,12 @@ extern void fix_date_and_time(void);
 #endif
 
 #ifdef COMPACTFORMAT
-extern int do_dump   (char *, int, int, gzFile);
-extern int do_undump (char *, int, int, gzFile);
+extern int do_dump   (char * p, int item_size, int nitems, gzFile out_file);
+extern int do_undump (char * p, int item_size, int nitems, gzFile out_file);
 #define dump_file gz_fmt_file
 #else
-extern int do_dump   (char *, int, int, FILE *);
-extern int do_undump (char *, int, int, FILE *);
+extern int do_dump   (char * p, int item_size, int nitems, FILE * out_file);
+extern int do_undump (char * p, int item_size, int nitems, FILE * out_file);
 #define dump_file fmt_file
 #endif
 
@@ -70,7 +70,7 @@ extern int do_undump (char *, int, int, FILE *);
 #define undumpthings(base, len)         \
   do_undump ((char *) &(base), sizeof (base), (int) (len), dump_file)
 
-/* Use the above for all the other dumping and undumping.  */
+/* Use the above for all the other dumping and undumping. */
 #define generic_dump(x)   dumpthings(x, 1)
 #define generic_undump(x) undumpthings(x, 1)
 

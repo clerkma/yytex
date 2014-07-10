@@ -93,20 +93,16 @@ typedef enum
 #define incr(x)  ++(x)
 #define fabs(x)  ((x) >= 0.0 ? (x) : -(x))
 #define toint(x) ((integer) (x))
-#define a_open_in(f, p) open_input (&(f), p, FOPEN_R_MODE)
-#define a_open_out(f)   open_output (&(f), FOPEN_W_MODE)
-#define a_close(f)	    check_fclose (f)
 
 #define MAXLINE 256
 
-extern integer web2c_round (double);
-extern boolean eoln (FILE * file);
-extern boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode);
-extern boolean open_output (FILE **f, char *fopen_mode);
-extern int check_fclose (FILE * f);
+extern integer web2c_round (double r);
+extern boolean open_input  (FILE ** f, path_constant_type path_index, char * fopen_mode);
+extern boolean open_output (FILE ** f, char * fopen_mode);
+extern int check_fclose    (FILE * f);
 
 #define show_line(str, flag) fputs(str, stdout)
-#define show_char(chr) putc(chr, stdout)
+#define show_char(chr)       putc(chr, stdout)
 extern char log_line[];
 
 #endif

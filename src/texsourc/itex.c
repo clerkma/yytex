@@ -2092,7 +2092,7 @@ int main_program (void)
   history = fatal_error_stop;
 
   if (ready_already == 314159L)
-    goto lab1;
+    goto start_of_TEX;
 
   bad = 0;
 
@@ -2196,27 +2196,39 @@ int main_program (void)
 
   ready_already = 314159L;
 
-lab1:
+start_of_TEX:
   selector = term_only;
   tally = 0;
   term_offset = 0;
   file_offset = 0;
-  show_line(tex_version, 0);
 
+  {
+    char dist_ver[256];
 #ifdef _WIN32
   #ifdef _WIN64
-    printf(" (%s %s/Win64)", application, yandyversion);
+    sprintf(dist_ver, "%s (%s %s/Win64)", tex_version, application, yandyversion);
   #else
-    printf(" (%s %s/Win32)", application, yandyversion);
+    sprintf(dist_ver, "%s (%s %s/Win32)", tex_version, application, yandyversion);
   #endif
 #else
-    printf(" (%s %s/Linux)", application, yandyversion);
+    sprintf(dist_ver, "%s (%s %s/Linux)", tex_version, application, yandyversion);
 #endif
+    prints(dist_ver);
+  }
 
-  if (format_ident > 0)
+  if (format_ident == 0)
+  {
+    prints(" (preloaded format=");
+    prints(format_name);
+    prints(")");
+    print_ln();
+  }
+  else
+  {
     slow_print(format_ident);
+    print_ln();
+  }
 
-  print_ln();
   update_terminal();
   job_name = 0;
   name_in_progress = false;
@@ -2260,16 +2272,15 @@ lab1:
       first = last + 1;
     }
     
-    if ((format_ident == 0) || (buffer[loc] == '&') ||
-      (buffer[loc] == '+'))
+    if ((format_ident == 0) || (buffer[loc] == '&') || (buffer[loc] == '+'))
     {
       if (format_ident != 0)
         initialize();
 
-      if (!open_fmt_file ())
+      if (!open_fmt_file())
         goto final_end;
 
-      if (!load_fmt_file ())
+      if (!load_fmt_file())
       {
 #ifdef COMPACTFORMAT
         gzclose(gz_fmt_file);
@@ -2601,8 +2612,8 @@ void do_initex (void)
 
   reset_trie();
   text(frozen_protection) = 1184; /* "inaccessible" */
-  format_ident = 1251;
-  text(end_write) = 1290;
+  format_ident = 1251;            /* " (INITEX)" */
+  text(end_write) = 1290;         /* "endwrite" */
   eq_level(end_write) = level_one;
   eq_type(end_write) = outer_call;
   equiv(end_write) = 0;

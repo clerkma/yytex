@@ -982,14 +982,14 @@ void read_toks_(integer n, pointer r)
           read_open[m] = normal;
         else
         {
-          (void) a_close(read_file[m]);
+          a_close(read_file[m]);
           read_open[m] = closed;
         }
       else
       {
         if (!input_ln(read_file[m], true))
         {
-          (void) a_close(read_file[m]);
+          a_close(read_file[m]);
           read_open[m] = closed;
 
           if (align_state != 1000000L)
