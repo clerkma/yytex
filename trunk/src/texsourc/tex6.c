@@ -956,21 +956,7 @@ continu:
               case 7:
               case 11:
                 {
-                  if (ligature_present)
-                  {
-                    p = new_ligature(hf, cur_l, mem[cur_q].hh.rh);
-
-                    if (lft_hit)
-                    {
-                      mem[p].hh.b1 = 2;
-                      lft_hit = false;
-                    }
-
-                    mem[cur_q].hh.rh = p;
-                    t = p;
-                    ligature_present = false;
-                  }
-
+                  wrap_lig(false);
                   cur_q = t;
                   cur_l = rem_byte(q);
                   ligature_present = true;
@@ -1292,7 +1278,7 @@ common_ending:
             major_tail = r;
             r_count = 0;
 
-            while (mem[major_tail].hh.rh != 0)
+            while (link(major_tail) != 0)
             {
               major_tail = link(major_tail);
               incr(r_count);
@@ -1381,7 +1367,7 @@ common_ending:
                 j = reconstitute(j, hn, bchar, non_char) + 1;
                 link(major_tail) = link(hold_head);
 
-                while (mem[major_tail].hh.rh != 0)
+                while (link(major_tail) != 0)
                 {
                   major_tail = link(major_tail);
                   incr(r_count);
@@ -1636,7 +1622,7 @@ pointer vert_break_(pointer p, scaled h, scaled d)
   integer least_cost;
   pointer best_place;
   scaled prev_dp; 
-/*  small_number t; */
+  /* small_number t; */
   int t;
 
   prev_p = p;
@@ -1852,7 +1838,7 @@ done:
   if (q == 0)
     box(n) = 0;
   else
-    box(n) = vpackage(q, 0, 1, 1073741823L);  /* 2^30 - 1 */
+    box(n) = vpackage(q, 0, 1, max_dimen);
 
   return vpackage(p, h, exactly, split_max_depth);
 }
@@ -1860,34 +1846,10 @@ done:
 void print_totals (void)
 {
   print_scaled(page_so_far[1]);
-
-  if (page_so_far[2] != 0)
-  {
-    prints(" plus ");
-    print_scaled(page_so_far[2]);
-    prints("");
-  }
-
-  if (page_so_far[3] != 0)
-  {
-    prints(" plus ");
-    print_scaled(page_so_far[3]);
-    prints("fil");
-  }
-
-  if (page_so_far[4] != 0)
-  {
-    prints(" plus ");
-    print_scaled(page_so_far[4]);
-    prints("fill");
-  }
-
-  if (page_so_far[5] != 0)
-  {
-    prints(" plus ");
-    print_scaled(page_so_far[5]);
-    prints("filll");
-  }
+  print_plus(2, "");
+  print_plus(3, "fil");
+  print_plus(4, "fill");
+  print_plus(5, "filll");
 
   if (page_so_far[6] != 0)
   {
@@ -1950,7 +1912,7 @@ void fire_up_(pointer c)
 {
   pointer p, q, r, s;
   pointer prev_p;
-/*  unsigned char n; */
+  /* unsigned char n; */
   unsigned int n;
   boolean wait;
   integer save_vbadness;
@@ -2056,7 +2018,7 @@ void fire_up_(pointer c)
 
                 if (ins_ptr(p) != 0)
                 {
-                  temp_ptr = vpackage(ins_ptr(p), 0, 1, 1073741823L);  /* 2^30 - 1 */
+                  temp_ptr = vpackage(ins_ptr(p), 0, 1, max_dimen);
                   height(p) = height(temp_ptr) + depth(temp_ptr);
                   free_node(temp_ptr, box_node_size);
                   wait = true;
@@ -2067,7 +2029,7 @@ void fire_up_(pointer c)
             n = subtype(r);
             temp_ptr = list_ptr(box(n));
             free_node(box(n), box_node_size);
-            box(n) = vpackage(temp_ptr, 0, 1, 1073741823L);  /* 2^30 - 1 */
+            box(n) = vpackage(temp_ptr, 0, 1, max_dimen);
           }
           else
           {

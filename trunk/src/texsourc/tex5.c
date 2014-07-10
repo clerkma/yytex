@@ -255,7 +255,7 @@ void make_under_(pointer q)
   p = new_kern(3 * default_rule_thickness);
   link(x) = p;
   link(p) = fraction_rule(default_rule_thickness);
-  y = vpackage(x, 0, 1, 1073741823L); /* 2^30 - 1 */
+  y = vpackage(x, 0, 1, max_dimen);
   delta = height(y) + depth(y) + default_rule_thickness;
   height(y) = height(x);
   depth(y) = delta - height(y);
@@ -415,7 +415,7 @@ done:
     p = new_kern(-(integer) delta);
     link(p) = x;
     link(y) = p;
-    y = vpackage(y, 0, 1, 1073741823L);  /* 2^30 - 1 */
+    y = vpackage(y, 0, 1, max_dimen);
     width(y) = width(x);
 
     if (height(y) < h)
@@ -1471,7 +1471,7 @@ void fin_row (void)
   }
   else
   {
-    p = vpackage(link(head), 0, 1, 1073741823L);   /* 2^30 - 1 */
+    p = vpackage(link(head), 0, 1, max_dimen);
     pop_nest();
     link(tail) = p;
     tail = p;
@@ -1612,7 +1612,7 @@ void fin_align (void)
       }
     while (!(q == 0));
 
-    p = vpackage(preamble, saved(1), saved(0), 1073741823L);  /* 2^30 - 1 */
+    p = vpackage(preamble, saved(1), saved(0), max_dimen);
     q = link(preamble);
 
     do
@@ -2257,7 +2257,7 @@ void make_scripts_(pointer q, scaled delta)
       p = new_kern((shift_up - depth(x)) - (height(y) - shift_down));
       link(x) = p;
       link(p) = y;
-      x = vpackage(x, 0, 1, 1073741823L);  /* 2^30 - 1 */
+      x = vpackage(x, 0, 1, max_dimen);
       shift_amount(x) = shift_down;
     }
   }

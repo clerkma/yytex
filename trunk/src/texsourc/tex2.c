@@ -22,7 +22,7 @@
 /* following bit used to be end of tex1.c */
 #ifdef STAT
 /* sec 0284 */
-void restore_trace_(halfword p, char * s)
+void restore_trace_(pointer p, const char * s)
 {
   begin_diagnostic();
   print_char('{');
@@ -36,7 +36,7 @@ void restore_trace_(halfword p, char * s)
 /* sec 0281 */
 void unsave (void)
 {
-  halfword p;
+  pointer p;
   quarterword l;
   halfword t;
 
@@ -106,6 +106,7 @@ void unsave (void)
         }
       }
     }
+
 done:
     cur_group = save_level(save_ptr);
     cur_boundary = save_index(save_ptr);
@@ -143,7 +144,7 @@ void prepare_mag (void)
   mag_set = mag;
 }
 /* sec 0295 */
-void token_show_ (halfword p)
+void token_show_ (pointer p)
 {
   if (p != 0)
     show_token_list(link(p), 0, 10000000L);
@@ -416,7 +417,7 @@ done:
   cur_input = input_stack[input_ptr];
 }
 /* sec 0323 */
-void begin_token_list_ (halfword p, quarterword t)
+void begin_token_list_ (pointer p, quarterword t)
 {
   push_input();
   state = token_list;
@@ -496,7 +497,7 @@ void end_token_list (void)
 /* sec 0325 */
 void back_input (void)
 {
-  halfword p;
+  pointer p;
 
   while ((state == 0) && (loc == 0) &&
       (index != v_template))
@@ -544,11 +545,12 @@ void begin_file_reading (void)
     overflow("text input levels", max_in_open);
     return;
   }
+
 #ifdef ALLOCATEBUFFER
   if (first == current_buf_size)
     buffer = realloc_buffer(increment_buf_size);
 
-  if (first == current_buf_size) /* check again after allocation */
+  if (first == current_buf_size)
   {
     overflow("buffer size", current_buf_size);
     return;
@@ -598,8 +600,8 @@ void clear_for_error_prompt (void)
 /* sec 0336 */
 void check_outer_validity (void)
 {
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
 
   if (scanner_status != 0)
   {
@@ -737,19 +739,19 @@ void get_token (void)
 /* sec 0389 */
 void macro_call (void)
 {
-  halfword r;
-  halfword p;
-  halfword q;
-  halfword s;
-  halfword t;
-  halfword u, v;
-  halfword rbrace_ptr;
+  pointer r;
+  pointer p;
+  pointer q;
+  pointer s;
+  pointer t;
+  pointer u, v;
+  pointer rbrace_ptr;
   small_number n;
   halfword unbalance;
   halfword m;
-  halfword ref_count;
+  pointer ref_count;
   small_number save_scanner_status;
-  halfword save_warning_index;
+  pointer save_warning_index;
   ASCII_code match_chr;
 
   save_scanner_status = scanner_status;
@@ -966,6 +968,7 @@ done1:
 
         if (info(r) < match_token)
           goto continu;
+
 found:
         if (s != 0)
         {
@@ -1034,6 +1037,7 @@ found:
 
     param_ptr = param_ptr + n;
   }
+
 exit:
   scanner_status = save_scanner_status;
   warning_index = save_warning_index;
@@ -1043,7 +1047,7 @@ void insert_relax (void)
 {
   cur_tok = cs_token_flag + cur_cs;
   back_input();
-  cur_tok = cs_token_flag + frozen_relax;  /* 96/Jan/10 */
+  cur_tok = cs_token_flag + frozen_relax;
   back_input();
   index = inserted;
 }
@@ -1055,7 +1059,7 @@ void expand (void)
   integer j;
   integer cv_backup;
   small_number cvl_backup, radix_backup, co_backup;
-  halfword backup_backup;
+  pointer backup_backup;
   small_number save_scanner_status;
 
   cv_backup = cur_val;
@@ -1340,8 +1344,8 @@ void scan_optional_equals (void)
 /* sec 0407 */
 boolean scan_keyword(const char * s)
 {
-  halfword p;
-  halfword q;
+  pointer p;
+  pointer q;
   const char * k;
 
   p = backup_head;
@@ -1882,6 +1886,7 @@ lab_switch:
     {
       cur_chr = buffer[loc];
       incr(loc);
+
 reswitch:
       cur_cmd = cat_code(cur_chr);
 
@@ -2014,10 +2019,12 @@ start_cs:
                           buffer[k] = buffer[k + d];
                           incr(k);
                         }
+
                         goto start_cs;
                       }
                     }
               }
+
               cur_cs = single_base + buffer[loc];
               incr(loc);
             }

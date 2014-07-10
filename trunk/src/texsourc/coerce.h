@@ -34,8 +34,8 @@ void print_int_(integer n);
 #define print_int(n) print_int_((integer) (n))
 void print_cs_(integer p);
 #define print_cs(p) print_cs_((integer) (p))
-void sprint_cs_(halfword p);
-#define sprint_cs(p) sprint_cs_((halfword) (p))
+void sprint_cs_(pointer p);
+#define sprint_cs(p) sprint_cs_((pointer) (p))
 void print_file_name_(integer n, integer a, integer e);
 #define print_file_name(n, a, e) print_file_name_((integer) (n), (integer) (a), (integer) (e))
 void print_size_(integer s);
@@ -44,9 +44,9 @@ void print_write_whatsit_(const char * s, pointer p);
 #define print_write_whatsit(s, p) print_write_whatsit_((const char *) (s), (pointer) (p))
 void jump_out(void);
 void error(void);
-void fatal_error(char * s);
-void overflow_(char * s, integer n);
-#define overflow(s, n) overflow_((char *) (s), (integer) (n))
+void fatal_error(const char * s);
+void overflow_(const char * s, integer n);
+#define overflow(s, n) overflow_((const char *) (s), (integer) (n))
 void confusion_(const char * s);
 #define confusion(s) confusion_((const char *) (s))
 boolean init_terminal(void);
@@ -74,8 +74,8 @@ scaled round_decimals_(small_number k);
 #define round_decimals(k) round_decimals_((small_number) (k))
 void print_scaled_(scaled s);
 #define print_scaled(s) print_scaled_((scaled) (s))
-scaled mult_and_add_(integer n, scaled x, scaled y, scaled maxanswer);
-#define mult_and_add(n, x, y, maxanswer) mult_and_add_((integer) (n), (scaled) (x), (scaled) (y), (scaled) (maxanswer))
+scaled mult_and_add_(integer n, scaled x, scaled y, scaled max_answer);
+#define mult_and_add(n, x, y, max_answer) mult_and_add_((integer) (n), (scaled) (x), (scaled) (y), (scaled) (max_answer))
 scaled x_over_n_(scaled x, integer n);
 #define x_over_n(x, n) x_over_n_((scaled) (x), (integer) (n))
 scaled xn_over_d_(scaled x, integer n, integer d);
@@ -92,8 +92,8 @@ void flush_list_(pointer p);
 #define flush_list(p) flush_list_((pointer) (p))
 pointer get_node_(integer s);
 #define get_node(s) get_node_((integer) (s))
-void free_node_(halfword p, halfword s);
-#define free_node(p, s) free_node_((halfword) (p), (halfword) (s))
+void free_node_(pointer p, halfword s);
+#define free_node(p, s) free_node_((pointer) (p), (halfword) (s))
 void sort_avail(void);
 pointer new_null_box(void);
 pointer new_rule(void);
@@ -108,48 +108,48 @@ pointer new_spec_(pointer p);
 #define new_spec(p) new_spec_((pointer) (p))
 pointer new_param_glue_(small_number n);
 #define new_param_glue(n) new_param_glue_((small_number) (n))
-pointer new_glue_(pointer);
+pointer new_glue_(pointer q);
 #define new_glue(q) new_glue_((pointer) (q))
-pointer new_skip_param_(small_number);
+pointer new_skip_param_(small_number n);
 #define new_skip_param(n) new_skip_param_((small_number) (n))
-pointer new_kern(scaled);
-pointer new_penalty(integer);
-void check_mem(boolean);
+pointer new_kern(scaled w);
+pointer new_penalty(integer m);
+void check_mem(boolean print_locs);
 void search_mem_(halfword);
 #define search_mem(p) search_mem_((halfword) (p))
 void short_display_(integer);
 #define short_display(p) short_display_((integer) (p))
 void print_font_and_char(integer);
-void print_mark_(integer);
+void print_mark_(integer p);
 #define print_mark(p) print_mark_((integer) (p))
-void print_rule_dimen(scaled);
-void print_glue_(scaled, integer, char *);
-#define print_glue(d, order, s) print_glue_((scaled) (d), (integer) (order), (char *) (s))
-void print_spec_(integer, char *);
-#define print_spec(p, s) print_spec_((integer) (p), (char *) (s))
-void print_fam_and_char_(halfword);
-#define print_fam_and_char(p) print_fam_and_char_((halfword) (p))
-void print_delimiter_(halfword);
-#define print_delimiter(p) print_delimiter_((halfword) (p))
-void print_subsidiary_data_(halfword, ASCII_code);
+void print_rule_dimen(scaled d);
+void print_glue_(scaled d, integer order, const char * s);
+#define print_glue(d, order, s) print_glue_((scaled) (d), (integer) (order), (const char *) (s))
+void print_spec_(integer p, const char * s);
+#define print_spec(p, s) print_spec_((integer) (p), (const char *) (s))
+void print_fam_and_char_(pointer p);
+#define print_fam_and_char(p) print_fam_and_char_((pointer) (p))
+void print_delimiter_(pointer p);
+#define print_delimiter(p) print_delimiter_((pointer) (p))
+void print_subsidiary_data_(pointer p, ASCII_code c);
 #define print_subsidiary_data(p, c) print_subsidiary_data_((halfword) (p), (ASCII_code) (c))
-void print_style_(integer);
+void print_style_(integer c);
 #define print_style(c) print_style_((integer) (c))
-void print_skip_param_(integer);
+void print_skip_param_(integer n);
 #define print_skip_param(n) print_skip_param_((integer) (n))
-void show_node_list_(integer);
+void show_node_list_(integer p);
 #define show_node_list(p) show_node_list_((integer) (p))
-void show_box_(pointer);
+void show_box_(pointer p);
 #define show_box(p) show_box_((pointer) (p))
-void delete_token_ref_(halfword);
-#define delete_token_ref(p) delete_token_ref_((halfword) (p))
-void delete_glue_ref_(halfword);
-#define delete_glue_ref(p) delete_glue_ref_((halfword) (p))
-void flush_node_list_(halfword);
-#define flush_node_list(p) flush_node_list_((halfword) (p))
-halfword copy_node_list_(halfword);
-#define copy_node_list(p) copy_node_list_((halfword) (p))
-void print_mode_(integer);
+void delete_token_ref_(pointer p);
+#define delete_token_ref(p) delete_token_ref_((pointer) (p))
+void delete_glue_ref_(pointer p);
+#define delete_glue_ref(p) delete_glue_ref_((pointer) (p))
+void flush_node_list_(pointer p);
+#define flush_node_list(p) flush_node_list_((pointer) (p))
+pointer copy_node_list_(pointer p);
+#define copy_node_list(p) copy_node_list_((pointer) (p))
+void print_mode_(integer m);
 #define print_mode(m) print_mode_((integer) (m))
 void push_nest(void);
 void pop_nest(void);
@@ -168,34 +168,34 @@ void show_eqtb_(halfword n);
 halfword id_lookup_(integer j, integer l);
 #define id_lookup(j, l) id_lookup_((integer) (j), (integer) (l))
 void primitive_(str_number s, quarterword c, halfword o);
-#define primitive(s, c, o) primitive_(make_string_pool((char *) s), (quarterword) (c), (halfword) (o))
+#define primitive(s, c, o) primitive_(make_string_pool((const char *) s), (quarterword) (c), (halfword) (o))
 void new_save_level_(group_code c);
 #define new_save_level(c) new_save_level_((group_code) (c))
 void eq_destroy_(memory_word w);
 #define eq_destroy(w) eq_destroy_((w))
-void eq_save_(halfword p, quarterword l);
-#define eq_save(p, l) eq_save_((halfword) (p), (quarterword) (l))
-void eq_define_(halfword p, quarterword t, halfword e);
-#define eq_define(p, t, e) eq_define_((halfword) (p), (quarterword) (t), (halfword) (e))
-void eq_word_define_(halfword p, integer w);
-#define eq_word_define(p, w) eq_word_define_((halfword) (p), (integer) (w))
-void geq_define_(halfword p, quarterword t, halfword e);
-#define geq_define(p, t, e) geq_define_((halfword) (p), (quarterword) (t), (halfword) (e))
-void geq_word_define_(halfword p, integer w);
-#define geq_word_define(p, w) geq_word_define_((halfword) (p), (integer) (w))
+void eq_save_(pointer p, quarterword l);
+#define eq_save(p, l) eq_save_((pointer) (p), (quarterword) (l))
+void eq_define_(pointer p, quarterword t, halfword e);
+#define eq_define(p, t, e) eq_define_((pointer) (p), (quarterword) (t), (halfword) (e))
+void eq_word_define_(pointer p, integer w);
+#define eq_word_define(p, w) eq_word_define_((pointer) (p), (integer) (w))
+void geq_define_(pointer p, quarterword t, halfword e);
+#define geq_define(p, t, e) geq_define_((pointer) (p), (quarterword) (t), (halfword) (e))
+void geq_word_define_(pointer p, integer w);
+#define geq_word_define(p, w) geq_word_define_((pointer) (p), (integer) (w))
 void save_for_after_(halfword t);
 #define save_for_after(t) save_for_after_((halfword) (t))
-void restore_trace_(halfword p, char * s);
-#define restore_trace(p, s) restore_trace_((halfword) (p), (char *) (s))
+void restore_trace_(pointer p, const char * s);
+#define restore_trace(p, s) restore_trace_((pointer) (p), (const char *) (s))
 void unsave(void);
 void prepare_mag(void);
-void token_show_(halfword p);
-#define token_show(p) token_show_((halfword) (p))
+void token_show_(pointer p);
+#define token_show(p) token_show_((pointer) (p))
 void print_meaning(void);
 void show_cur_cmd_chr(void);
 void show_context(void);
-void begin_token_list_(halfword p, quarterword t);
-#define begin_token_list(p, t) begin_token_list_((halfword) (p), (quarterword) (t))
+void begin_token_list_(pointer p, quarterword t);
+#define begin_token_list(p, t) begin_token_list_((pointer) (p), (quarterword) (t))
 void end_token_list(void);
 void back_input(void);
 void back_error(void);
@@ -262,9 +262,9 @@ str_number w_make_name_string_(void);
 #define w_make_name_string(f) w_make_name_string_()
 void scan_file_name(void);
 void pack_job_name_(str_number s);
-#define pack_job_name(s) pack_job_name_(make_string_pool((char*) (s)))
-void prompt_file_name_(char * s, str_number e);
-#define prompt_file_name(s, e) prompt_file_name_((char *) s, make_string_pool((char*) e))
+#define pack_job_name(s) pack_job_name_(make_string_pool((const char *) (s)))
+void prompt_file_name_(const char * s, str_number e);
+#define prompt_file_name(s, e) prompt_file_name_((const char *) s, make_string_pool((const char*) e))
 void open_log_file(void);
 void start_input(void);
 internal_font_number read_font_info_(halfword u, str_number nom, str_number arie, scaled s);

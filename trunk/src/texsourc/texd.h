@@ -866,6 +866,7 @@ extern void free_avail_(halfword p);
 extern void flush_string (void);
 extern str_number load_pool_strings (integer spare_size);
 extern str_number make_string_pool (const char *s);
+extern void print_plus(int i, const char *s);
 #define help0()     tex_help(0)
 #define help1(...)  tex_help(1, __VA_ARGS__)
 #define help2(...)  tex_help(2, __VA_ARGS__)

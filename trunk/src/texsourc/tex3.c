@@ -362,7 +362,7 @@ done1:
   }
 
 found:
-  cur_val = mult_and_add(save_cur_val, v, xn_over_d(v, f, 65536L), 1073741823L);   /* 2^30 - 1 */
+  cur_val = nx_plus_y(save_cur_val, v, xn_over_d(v, f, 65536L));
   goto attach_sign;
 
 not_found:
@@ -1714,7 +1714,7 @@ void pack_job_name_(str_number s)
 }
 /* sec 0530 */
 /* s - what can't be found, e - default */
-void prompt_file_name_(char * s, str_number e) 
+void prompt_file_name_(const char * s, str_number e) 
 {
   integer k;
 

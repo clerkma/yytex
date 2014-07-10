@@ -522,7 +522,8 @@ void logdo_bop(FILE *infile) /* beginning of page */
   }
 }
 
-void logdo_eop(FILE *infile) { /* end of page */
+void logdo_eop(FILE *infile)
+{
   int c;
 
   if (bAbort) abortjob();         /* 1992/Nov/24 */
@@ -548,7 +549,7 @@ void logdo_eop(FILE *infile) { /* end of page */
   skipflag = 0;
 }
 
-void logdo_right1(FILE *infile) /* rare */
+void logdo_right1(FILE *infile)
 {
   (void) getc(infile);
 }
@@ -764,24 +765,26 @@ void logdo_fnt4(FILE *infile) /* switch fonts */
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-void get_header_name (FILE *infile) /* new version 95/Aug/30 */
+void get_header_name (FILE *infile)
 {
   char fname[FNAMELEN];     /* buffer to get token into */
   char *s;
 
-/*  if (get_token(infile, headerfile, FNAMELEN) == 0) {*/
-  if (get_token(infile, fname, sizeof(fname)) == 0) {  /* FNAMELEN */
+  if (get_token(infile, fname, sizeof(fname)) == 0)
+  {
     showline(" Can't find header\n", 1);
     errcount(0); 
     return;
   }
 
-//  check whether this header file has already been listed 
-//  if ((s = strstr(headerfile, fname)) != NULL) {
-  if (headerfile != NULL) {
-    if ((s = strstr(headerfile, fname)) != NULL) {
+  if (headerfile != NULL)
+  {
+    if ((s = strstr(headerfile, fname)) != NULL)
+    {
       s += strlen(fname);
-      if (*s == '\0' || *s == ',') {
+    
+      if (*s == '\0' || *s == ',')
+      {
         return;
       }
     }
@@ -825,14 +828,13 @@ void get_header_name (FILE *infile) /* new version 95/Aug/30 */
 
 void get_custom_name (FILE *infile)
 {
-/*  int n=0; */
-
-  if (dscfile != NULL) {
+  if (dscfile != NULL)
+  {
     showline(" More than one DSCheader", 1);
     errcount(0);
     return;
   }
-/*  if (get_token(infile, line, MAXLINE) == 0) { */
+
   if (get_token(infile, line, sizeof(line)) == 0) { /* MAXLINE */
     showline(" Can't find header\n", 1);
     errcount(0); 
