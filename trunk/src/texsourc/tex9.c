@@ -120,7 +120,7 @@ void close_files_and_terminate (void)
   for (k = 0; k <= 15; k++)
     if (write_open[k])
     {
-      (void) a_close(write_file[k]);
+      a_close(write_file[k]);
     }
 
 #ifdef STAT

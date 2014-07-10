@@ -1860,7 +1860,6 @@ boolean prime (int x)
 
 int quitflag  = 0;
 boolean show_use = false;
-boolean floating = false;
 
 void complainarg (int c, char *s)
 {
@@ -2146,7 +2145,6 @@ void check_alloc_align (int flag)
 
 boolean backwardflag       = false; /* don't cripple all advanced features */
 boolean shorten_file_name  = false; /* don't shorten file names to 8+3 for DOS */
-boolean usesourcedirectory = true;  /* use source file directory as local when WorkingDirectory is set */
 
 /* cache to prevent allocating twice in a row */
 
@@ -2155,7 +2153,7 @@ char * lastvalue = NULL;
 
 /* returns allocated string -- these strings are not freed again */
 /* is it safe to do that now ? 98/Jan/31 */
-char * grabenv (char * varname)
+char * grabenv (const char * varname)
 {
   char *s;
 
@@ -2193,9 +2191,9 @@ char * grabenv (char * varname)
     return NULL;
 }
 
-void flush_trailing_slash (char *directory)
+void flush_trailing_slash(char * directory)
 {
-  char *s;
+  char * s;
 
   if (strcmp(directory, "") != 0)
   {
@@ -2224,11 +2222,9 @@ void knuthify (void)
   default_rule          = 26214; /* revert to default rule thickness */
   pseudo_tilde          = false;
   pseudo_space          = false;
-  show_texinput_flag    = false;
   truncate_long_lines   = false;
   allow_quoted_names    = false;
   show_cs_names         = false;
-  font_dimen_zero       = false;
   ignore_frozen         = false;
   suppress_f_ligs       = false;
   full_file_name_flag   = false;
@@ -2240,34 +2236,35 @@ void knuthify (void)
 char * xchr_file = NULL;
 char * repl_file = NULL;
 
-char * short_options = "m:e:h:0:H:g:P:o:l:a:wvpiKLZMdp2t?u";
+const char * short_options = "m:e:h:0:H:g:P:o:l:a:k:wvpiKLZMdp2t?u";
 
 static struct option long_options[] =
 {
-  {"main-memory",   1, 0, 'm'},
-  {"hyph-size",     1, 0, 'e'},
-  {"trie-size",     1, 0, 'h'},
-  {"backend",       1, 0, '0'},
-  {"tab-step",      1, 0, 'H'},
-  {"percent-grow",  1, 0, 'g'},
-  {"default-rule",  1, 0, 'P'},
-  {"dvi-dir",       1, 0, 'o'},
-  {"log-dir",       1, 0, 'l'},
-  {"aux-dir",       1, 0, 'a'},
-  {"showhex",       0, 0, 'w'},
-  {"verbose",       0, 0, 'v'},
-  {"patterns",      0, 0, 'p'},
-  {"initex",        0, 0, 'i'},
-  {"knuthify",      0, 0, 'K'},
-  {"cstyle",        0, 0, 'L'},
-  {"showtfm",       0, 0, 'Z'},
-  {"showmissing",   0, 0, 'M'},
-  {"deslash",       0, 0, 'd'},
-  {"patterns",      0, 0, 'p'},
-  {"suppressflig",  0, 0, '2'},
-  {"trace",         0, 0, 't'},
-  {"help",          0, 0, '?'},
-  {"usage",         0, 0, 'u'},
+  {"main-memory",   required_argument, NULL, 'm'},
+  {"hyph-size",     required_argument, NULL, 'e'},
+  {"trie-size",     required_argument, NULL, 'h'},
+  {"backend",       required_argument, NULL, '0'},
+  {"tab-step",      required_argument, NULL, 'H'},
+  {"percent-grow",  required_argument, NULL, 'g'},
+  {"default-rule",  required_argument, NULL, 'P'},
+  {"dvi-dir",       required_argument, NULL, 'o'},
+  {"log-dir",       required_argument, NULL, 'l'},
+  {"aux-dir",       required_argument, NULL, 'a'},
+  {"key-file",      required_argument, NULL, 'k'},
+  {"showhex",       no_argument,       NULL, 'w'},
+  {"verbose",       no_argument,       NULL, 'v'},
+  {"patterns",      no_argument,       NULL, 'p'},
+  {"initex",        no_argument,       NULL, 'i'},
+  {"knuthify",      no_argument,       NULL, 'K'},
+  {"cstyle",        no_argument,       NULL, 'L'},
+  {"showtfm",       no_argument,       NULL, 'Z'},
+  {"showmissing",   no_argument,       NULL, 'M'},
+  {"deslash",       no_argument,       NULL, 'd'},
+  {"patterns",      no_argument,       NULL, 'p'},
+  {"suppressflig",  no_argument,       NULL, '2'},
+  {"trace",         no_argument,       NULL, 't'},
+  {"help",          no_argument,       NULL, '?'},
+  {"usage",         no_argument,       NULL, 'u'},
   {NULL,            0, 0, 0}
 };
 
@@ -2282,29 +2279,29 @@ int analyze_flag (int c, char *optarg)
       is_initex = true;
       break;
     case 'Q':
-      interaction = batch_mode; /* quiet mode */
+      interaction = batch_mode;
       break;
     case 'R':
-      interaction = nonstop_mode; /* run mode */
+      interaction = nonstop_mode;
       break;
     case 'S':
-      interaction = scroll_mode; /* scroll mode */
+      interaction = scroll_mode;
       break;
     case 'T':
-      interaction = error_stop_mode; /* tex mode */
+      interaction = error_stop_mode;
       break;
     case 'K':
       backwardflag = true;
       knuthify(); /* revert to `standard' Knuth TeX */
       break;
     case 'L':
-      c_style_flag = true; /* C style error msg 94/Mar/21 */
+      c_style_flag = true;
       break;
     case 'Z':
-      show_tfm_flag = true; /* show TFM in log file 94/Jun/21 */
+      show_tfm_flag = true;
       break;
     case 'M':
-      show_missing = false; /* do not show missing 94/June/10 */
+      show_missing = false;
       break;
     case 'd':
       deslash = false; /* flipped 93/Nov/18 */
@@ -2324,9 +2321,6 @@ int analyze_flag (int c, char *optarg)
     case 'n':
       restrict_to_ascii = true; /* 0 - 127 1994/Jan/21 */
       break;
-    case '7':
-      usesourcedirectory = false; /* use working dir 98/Sep/29 */
-      break;
     case 'f':
       show_fonts_used = false; /* 97/Dec/24 */
       break;
@@ -2339,14 +2333,6 @@ int analyze_flag (int c, char *optarg)
     case '4':
       ignore_frozen = true; /* 98/Oct/5 */
       break;
-    case '5':
-      font_dimen_zero = false; /* 98/Oct/5 */
-      break;
-    case 'F':
-      show_texinput_flag = false; /* 98/Jan/28 */
-      break;
-/*  case 'X':  truncate_long_lines = false; */ /* 98/Feb/2 */
-              /* break; */
     case 'J':
       show_line_break_stats = false; /* 96/Feb/8 */
       break;
@@ -2450,6 +2436,7 @@ int analyze_flag (int c, char *optarg)
       if (tab_step == 0)
         complainarg(c, optarg);
       break;
+
     case 'x':
       if (optarg == 0)
         xchr_file = xstrdup("xchr.map");
@@ -2459,6 +2446,7 @@ int analyze_flag (int c, char *optarg)
       if (xchr_file == NULL || *xchr_file == '\0')
         complainarg(c, optarg);
       break;
+
     case 'k':
       if (optarg == 0)
         repl_file = xstrdup("repl.key");
@@ -2468,6 +2456,7 @@ int analyze_flag (int c, char *optarg)
       if (repl_file == NULL || *repl_file == '\0')
         complainarg(c, optarg);
       break;
+
     case 'P':
       if (optarg == 0)
         default_rule = 26214;
@@ -2477,12 +2466,14 @@ int analyze_flag (int c, char *optarg)
       if (default_rule == 0)
         complainarg(c, optarg);
       break;
+
     case 'E':
       if (optarg != 0)
         putenv(optarg);
       else
         complainarg(c, optarg);
       break;
+
     case 'o':
       if (optarg == 0)
         dvi_directory = "";
@@ -2493,6 +2484,7 @@ int analyze_flag (int c, char *optarg)
         complainarg(c, optarg);
 
       break;
+
     case '0':
       {
         char * format_spec = NULL;
@@ -2510,6 +2502,7 @@ int analyze_flag (int c, char *optarg)
           printf("ERROR: Do not understand shipout flag `%s'\n", format_spec);
       }
       break;
+
     case 'l':
       if (optarg == 0)
         log_directory = "";
@@ -2574,7 +2567,7 @@ int read_command_line (int ac, char **av)
     else
       optargnew = optarg;
 
-    analyze_flag (c, optargnew);
+    analyze_flag(c, optargnew);
   }
 
   if (show_use || quitflag == 3)
@@ -2582,9 +2575,6 @@ int read_command_line (int ac, char **av)
     stamp_it(log_line);
     strcat(log_line, "\n");
     show_line(log_line, 0);
-    //stampcopy(log_line);
-    //strcat(log_line, "\n");
-    //show_line(log_line, 0);
 
     if (show_use)
       show_usage();
@@ -2602,7 +2592,7 @@ int read_command_line (int ac, char **av)
     if (read_xchr_file(repl_file, 1, av))
     {
       if (trace_flag)
-        puts("KEY REPLACE ON\n");
+        puts("KEY REPLACE ON");
 
       key_replace = true;
     }
@@ -2613,7 +2603,7 @@ int read_command_line (int ac, char **av)
     if (read_xchr_file(xchr_file, 0, av))
     {
       if (trace_flag)
-        puts("NON ASCII ON\n");
+        puts("NON ASCII ON");
 
       non_ascii = true;
     }
@@ -2650,7 +2640,6 @@ int init_commands (int ac, char **av)
   show_fmt_flag         = true;  /* show format file in log */
   show_tfm_flag         = false; /* don't show metric file in log */
   shorten_file_name     = false; /* don't shorten file names to 8+3 */
-  show_texinput_flag    = true;  /* show TEXINPUTS and TEXFONTS */
   truncate_long_lines   = true;  /* truncate long lines */
   tab_step              = 0;     /* do not replace tabs with spaces */
   show_line_break_stats = true;  /* show line break statistics 96/Feb/8 */
@@ -2671,7 +2660,6 @@ int init_commands (int ac, char **av)
   mem_extra_low  = 0;
   mem_initex     = 0;
   format_name    = "plain";
-  encoding_name  = "";
 
   if (read_command_line(ac, av) < 0)
     return -1;
@@ -2699,8 +2687,9 @@ void initial_memory (void)
  #if defined(ALLOCATEHIGH) || defined(ALLOCATELOW)
     if (mem_extra_high != 0 || mem_extra_low != 0)
     {
-      puts("ERROR: Cannot extend main memory in iniTeX\n");
-      mem_extra_high = 0;   mem_extra_low = 0;
+      puts("ERROR: Cannot extend main memory in iniTeX");
+      mem_extra_high = 0;
+      mem_extra_low = 0;
     }
 #endif
   }
@@ -2708,13 +2697,13 @@ void initial_memory (void)
   {
     if (mem_initex != 0)
     {
-      puts("ERROR: Can only set initial main memory size in iniTeX\n");
+      puts("ERROR: Can only set initial main memory size in iniTeX");
       mem_initex = 0;
     }
 
     if (trie_size != 0)
     {
-      puts("ERROR: Need only set hyphenation trie size in iniTeX\n");
+      puts("ERROR: Need only set hyphenation trie size in iniTeX");
 /* trie_size = 0; */
     }
   }
@@ -2723,6 +2712,7 @@ void initial_memory (void)
 
   if (trie_size == 0)
     trie_size = default_trie_size;
+
 /* Just in case user mistakenly specified words instead of kilo words */
   if (mem_extra_high > 10000L * 1024L)
     mem_extra_high = mem_extra_high / 1024;
@@ -2735,7 +2725,7 @@ void initial_memory (void)
 
   if (mem_initex > 2048L * 1024L) /* extend main memory by 16 mega byte! */
   {
-    puts("WARNING: There may be no benefit to asking for so much memory\n");
+    puts("WARNING: There may be no benefit to asking for so much memory");
 /* mem_initex = 2048 * 1024; */
   }
 
@@ -2745,7 +2735,7 @@ void initial_memory (void)
   if (new_hyphen_prime > 0)
   {
     if (! is_initex)
-      puts("ERROR: Can only set hyphen prime in iniTeX\n");
+      puts("ERROR: Can only set hyphen prime in iniTeX");
     else
     {
       if (new_hyphen_prime % 2 == 0)
@@ -2769,14 +2759,10 @@ void initial_memory (void)
     percent_grow = 10;   /* lower limit - 10% */
 }
 
-/**********************************************************************/
-
-void perrormod (char *s)
+void perrormod (const char * s)
 {
   printf("`%s': %s\n", s, strerror(errno));
 }
-
-/*************************************************************************/
 
 /* convert tilde to pseudo_tilde to hide it from TeX --- 95/Sep/26 */
 /* convert space to pseudo_space to hide it from TeX --- 97/Jun/5 */
@@ -2881,14 +2867,14 @@ void deslash_all (int ac, char **av)
   {
     if (deslash)
     {
-      if (trace_flag || debug_flag)
+      if (trace_flag)
         printf("deslash: k %d argv[k] %s (argc %d)\n", optind, av[optind], ac);
 
       unixify(av[optind]);
     }
 
     if (pseudo_tilde != 0 || pseudo_space != 0)
-      hidetwiddle (av[optind]);
+      hidetwiddle(av[optind]);
 
     if (*av[optind] == '&' || *av[optind] == '+')
     {
@@ -2899,14 +2885,14 @@ void deslash_all (int ac, char **av)
       {
         if (deslash)
         {
-          if (trace_flag || debug_flag)
+          if (trace_flag)
             printf("deslash: k %d argv[k] %s (argc %d)\n", optind + 1, av[optind + 1], ac);
 
           unixify(av[optind + 1]);
         }
 
         if (pseudo_tilde != 0 || pseudo_space != 0)
-          hidetwiddle (av[optind + 1]);
+          hidetwiddle(av[optind + 1]);
       }
     }         
   }
@@ -2939,7 +2925,7 @@ int main_init (int ac, char **av)
 #ifdef ALLOCATEBUFFER
   buffer           = NULL;
   current_buf_size = 0;
-  buffer           = realloc_buffer (initial_buf_size);
+  buffer           = realloc_buffer(initial_buf_size);
 #endif
 
   hyph_list  = NULL;
@@ -2957,7 +2943,6 @@ int main_init (int ac, char **av)
   log_opened          = false;  /* so can tell whether opened */
   interaction         = -1;     /* default state => 3 */
   missing_characters  = 0;      /* none yet! */
-  font_dimen_zero     = true;   /* \fontdimen0 for checksum 98/Oct/5 */
   ignore_frozen       = false;  /* default is not to ignore 98/Oct/5 */
   suppress_f_ligs     = false;  /* default is not to ignore f-ligs */
 

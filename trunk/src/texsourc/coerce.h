@@ -501,5 +501,7 @@ void close_files_and_terminate(void);
 void final_cleanup(void);
 void init_prim(void);
 void debug_help(void);
+void fix_date_and_time(void);
+
 int main_program(void);
 int main_init(int ac, char ** av);
