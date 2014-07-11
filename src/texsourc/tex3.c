@@ -158,7 +158,7 @@ done:
     cur_val = - (integer) cur_val;
 }
 /* sec 0448 */
-void scan_dimen_(boolean mu, boolean inf, boolean shortcut)
+void scan_dimen (boolean mu, boolean inf, boolean shortcut)
 {
   boolean negative;
   integer f;
@@ -470,7 +470,7 @@ attach_sign:
     cur_val = - (integer) cur_val;
 }
 /* sec 0461 */
-void scan_glue_(small_number level)
+void scan_glue (small_number level)
 {
   boolean negative;
   pointer q;
@@ -581,7 +581,7 @@ reswitch:
   return q;
 }
 /* sec 0464 */
-pointer str_toks_(pool_pointer b)
+pointer str_toks (pool_pointer b)
 {
   pointer p;
   pointer q;
@@ -765,7 +765,7 @@ void conv_toks (void)
   begin_token_list(link(temp_head), 4);
 }
 /* sec 0473 */
-pointer scan_toks_(boolean macro_def, boolean xpand)
+pointer scan_toks (boolean macro_def, boolean xpand)
 {
   halfword t;
   halfword s;
@@ -933,7 +933,7 @@ found:
   return p;
 }
 /* sec 0482 */
-void read_toks_(integer n, pointer r)
+void read_toks (integer n, pointer r)
 {
   pointer p;
   pointer q;
@@ -1936,7 +1936,7 @@ done:
   }
 }
 /* sec 0560 */
-internal_font_number read_font_info_(halfword u, str_number nom, str_number aire, scaled s)
+internal_font_number read_font_info (pointer u, str_number nom, str_number aire, scaled s)
 {
   font_index k;
   boolean file_opened;

@@ -379,7 +379,7 @@ found:
   }
 }
 /* sec 0615 */
-void prune_movements_(integer l)
+void prune_movements (integer l)
 {
   pointer p;
 
@@ -405,7 +405,7 @@ done:
   }
 }
 /* sec 1368 */
-void special_out_(pointer p)
+void special_out (pointer p)
 {
   char old_setting;
   pool_pointer k;
@@ -444,7 +444,7 @@ void special_out_(pointer p)
   pool_ptr = str_start[str_ptr];
 }
 /* sec 1370 */
-void write_out_(pointer p)
+void write_out (pointer p)
 {
   char old_setting;
 /*  integer old_mode;  */
@@ -504,7 +504,7 @@ void write_out_(pointer p)
   selector = old_setting;
 }
 /* sec 1373 */
-void out_what_(pointer p)
+void out_what (pointer p)
 {
 /*  small_number j;  */
   int j;
@@ -1854,7 +1854,7 @@ exit:
   return r;
 }
 /* sec 0679 */
-void append_to_vlist_(pointer b)
+void append_to_vlist (pointer b)
 {
   scaled d;
   pointer p;

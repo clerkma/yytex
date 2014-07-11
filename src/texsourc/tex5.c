@@ -124,7 +124,7 @@ void flush_math (void)
   incompleat_noad = 0;
 }
 /* sec 0720 */
-halfword clean_box_(halfword p, small_number s)
+pointer clean_box_(pointer p, small_number s)
 {
   pointer q;
   small_number save_style;
@@ -239,14 +239,14 @@ void fetch_(pointer a)
   }
 }
 /* sec 0734 */
-void make_over_(pointer q)
+void make_over (pointer q)
 {
   info(nucleus(q)) = overbar(clean_box(nucleus(q), 2 * (cur_style / 2) + 1),
       3 * default_rule_thickness, default_rule_thickness);
   math_type(nucleus(q)) = sub_box;
 }
 /* sec 0735 */
-void make_under_(pointer q)
+void make_under (pointer q)
 {
   pointer p, x, y;
   scaled delta;
@@ -263,7 +263,7 @@ void make_under_(pointer q)
   math_type(nucleus(q)) = sub_box;
 }
 /* sec 0736 */
-void make_vcenter_(pointer q)
+void make_vcenter (pointer q)
 { 
   pointer v;
   scaled delta;
@@ -281,7 +281,7 @@ void make_vcenter_(pointer q)
   depth(v) = delta - height(v);
 }
 /* sec 0737 */
-void make_radical_(pointer q)
+void make_radical (pointer q)
 {
   pointer x, y;
   scaled delta, clr;
@@ -308,7 +308,7 @@ void make_radical_(pointer q)
   math_type(nucleus(q)) = sub_box;
 }
 /* sec 0738 */
-void make_math_accent_(pointer q)
+void make_math_accent (pointer q)
 {
   pointer p, x, y;
   integer a;
@@ -431,7 +431,7 @@ done:
   }
 }
 /* sec 0743 */
-void make_fraction_(pointer q)
+void make_fraction (pointer q)
 {
   pointer p, v, x, y, z;
   scaled delta, delta1, delta2, shift_up, shift_down, clr;
@@ -531,7 +531,7 @@ void make_fraction_(pointer q)
   new_hlist(q) = hpack(x, 0, 1);
 }
 /* sec 0752 */
-void make_ord_(pointer q)
+void make_ord (pointer q)
 {
   integer a;
   pointer p, r;
@@ -576,12 +576,7 @@ restart:
                         }
                         else
                         {
-                          {
-                            if (interrupt != 0)
-                            {
-                              pause_for_instructions();
-                            }
-                          }
+                          check_interrupt();
 
                           switch (op_byte(cur_i))
                           {
@@ -639,7 +634,7 @@ restart:
       }
 }
 /* sec 0762 */
-small_number make_left_right_(pointer q, small_number style, scaled max_d, scaled max_h)
+small_number make_left_right (pointer q, small_number style, scaled max_d, scaled max_h)
 {
   scaled delta, delta1, delta2;
 
@@ -661,6 +656,7 @@ small_number make_left_right_(pointer q, small_number style, scaled max_d, scale
     delta = delta2;
 
   new_hlist(q) = var_delimiter(delimiter(q), cur_size, delta);
+
   return type(q) - (left_noad - open_noad);
 }
 /* sec 0726 */
@@ -672,9 +668,9 @@ void mlist_to_hlist (void)
   small_number save_style;
   pointer q;
   pointer r;
-/*  small_number r_type;  */
+  /* small_number r_type; */
   int r_type;
-/*  small_number t; */
+  /* small_number t; */
   int t;
   pointer p, x, y, z;
   integer pen;
@@ -1407,7 +1403,7 @@ done:
   align_peek();
 }
 /* sec 0787 */
-void init_span_ (pointer p)
+void init_span (pointer p)
 {
   push_nest();
 
@@ -2056,7 +2052,7 @@ boolean fin_col (void)
   return false;
 }
 /* sec 0749 */
-scaled make_op_(pointer q)
+scaled make_op (pointer q)
 {
   scaled delta;
   pointer p, v, x, y, z;
@@ -2164,7 +2160,7 @@ scaled make_op_(pointer q)
   return delta;
 }
 /* sec 0756 */
-void make_scripts_(pointer q, scaled delta)
+void make_scripts (pointer q, scaled delta)
 {
   pointer p, x, y, z;
   scaled shift_up, shift_down, clr;

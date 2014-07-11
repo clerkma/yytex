@@ -81,7 +81,7 @@ void initialize (void)
   }
 
   for (i = 0; i <= 255; i++)
-    xord[chr(i)] = 127;
+    xord[chr(i)] = invalid_code;
 
 #ifdef JOKE
   for (i = 128; i <= 255 ; i++)
@@ -139,7 +139,7 @@ void initialize (void)
 
   nest_ptr = 0;
   max_nest_stack = 0;
-  mode = 1;
+  mode = vmode;
   head = contrib_head;
   tail = contrib_head;
   prev_depth = ignore_depth;
@@ -154,10 +154,10 @@ void initialize (void)
 #endif
     link(page_head) = 0;
 
-  last_glue = empty_flag;
+  last_glue = max_halfword;
   last_penalty = 0;
   last_kern = 0;
-  page_so_far[7] = 0;
+  page_depth = 0;
   page_max_depth = 0;
 
   for (k = int_base; k <= eqtb_size; k++)
@@ -182,15 +182,15 @@ void initialize (void)
   cur_mark[3] = 0;
   cur_mark[4] = 0;
   cur_val = 0;
-  cur_val_level = 0;
+  cur_val_level = int_val;
   radix = 0;
-  cur_order = 0;
+  cur_order = normal;
 
   for (k = 0; k <= 16; k++)
     read_open[k] = 2;
 
   cond_ptr = 0;
-  if_limit = 0;
+  if_limit = normal;
   cur_if = 0;
   if_line = 0;
 
@@ -294,7 +294,7 @@ void initialize_aux (void)
 }
 #endif  // end of ifdef ALLOCATEMAIN
 /* sec 0815 */
-void line_break_ (integer final_widow_penalty)
+void line_break (integer final_widow_penalty)
 {
   boolean auto_breaking;
   pointer prev_p;
@@ -2802,7 +2802,7 @@ trie_op_code new_trie_op_ (small_number d, small_number n, trie_op_code v)
   }
 }
 /* sec 0948 */
-trie_pointer trie_node_ (trie_pointer p)
+trie_pointer trie_node (trie_pointer p)
 {
   trie_pointer h;
   trie_pointer q;
@@ -2834,7 +2834,7 @@ trie_pointer trie_node_ (trie_pointer p)
   }
 }
 /* sec 0949 */
-trie_pointer compress_trie_ (trie_pointer p)
+trie_pointer compress_trie (trie_pointer p)
 {
   if (p == 0)
     return 0;
@@ -2842,11 +2842,12 @@ trie_pointer compress_trie_ (trie_pointer p)
   {
     trie_l[p] = compress_trie(trie_l[p]);
     trie_r[p] = compress_trie(trie_r[p]);
+
     return trie_node(p);
   }
 }
 /* sec 0953 */
-void first_fit_ (trie_pointer p)
+void first_fit (trie_pointer p)
 {
   trie_pointer h;
   trie_pointer z;
@@ -2933,7 +2934,7 @@ found:
   while (!(q == 0));
 }
 /* sec 0957 */
-void trie_pack_ (trie_pointer p)
+void trie_pack (trie_pointer p)
 {
   trie_pointer q;
 
@@ -2952,7 +2953,7 @@ void trie_pack_ (trie_pointer p)
   while (!(p == 0));
 }
 /* sec 0959 */
-void trie_fix_ (trie_pointer p)
+void trie_fix (trie_pointer p)
 {
   trie_pointer q;
   ASCII_code c;

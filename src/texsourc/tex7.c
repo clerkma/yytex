@@ -660,7 +660,7 @@ void normal_paragraph (void)
     eq_define(par_shape_loc, shape_ref, 0);
 }
 /* sec 1075 */
-void box_end_(integer box_context)
+void box_end (integer box_context)
 {
   pointer p;
 
@@ -739,7 +739,7 @@ void box_end_(integer box_context)
       ship_out(cur_box);
 }
 /* sec 1079 */
-void begin_box_(integer box_context)
+void begin_box (integer box_context)
 {
   pointer p, q;
   quarterword m;
@@ -919,7 +919,7 @@ small_number norm_min_ (integer h)
     return h;
 }
 /* sec 1091 */
-void new_graf_(boolean indented)
+void new_graf (boolean indented)
 {
   prev_graf = 0;
 
@@ -1876,7 +1876,7 @@ void append_choices (void)
   scan_left_brace();
 }
 /* sec 1184 */
-halfword fin_mlist_(halfword p)
+pointer fin_mlist_(pointer p)
 {
   pointer q;
 
@@ -1988,7 +1988,7 @@ void sub_sup (void)
   scan_math(p);
 }
 /* sec 1086 */
-void package_(small_number c)
+void package (small_number c)
 {
   scaled h;
   pointer p;

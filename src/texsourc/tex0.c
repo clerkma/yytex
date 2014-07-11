@@ -681,7 +681,7 @@ void overflow_(const char * s, integer n)
   succumb();
 }
 /* sec 0095 */
-void confusion_(const char * s)
+void confusion(const char * s)
 {
   normalize_selector();
 
@@ -1349,7 +1349,7 @@ pointer get_avail (void)
 
 #ifdef STAT
   incr(dyn_used); 
-#endif /* STAT */
+#endif
 
   return p; 
 } 
@@ -1586,7 +1586,7 @@ pointer new_disc (void)
   return p;
 }
 /* sec 0147 */
-pointer new_math_(scaled w, small_number s)
+pointer new_math (scaled w, small_number s)
 {
   pointer p;
 
@@ -1612,7 +1612,7 @@ pointer new_spec_(pointer p)
   return q;
 }
 /* se 0152 */
-pointer new_param_glue_(small_number n)
+pointer new_param_glue (small_number n)
 {
   pointer p;
   pointer q;
@@ -1628,7 +1628,7 @@ pointer new_param_glue_(small_number n)
   return p;
 }
 /* sec 0153 */
-pointer new_glue_(pointer q)
+pointer new_glue (pointer q)
 {
   pointer p;
 
@@ -1642,12 +1642,12 @@ pointer new_glue_(pointer q)
   return p;
 }
 /* sec 0154 */
-pointer new_skip_param_(small_number n)
+pointer new_skip_param (small_number n)
 {
   pointer p;
 
   temp_ptr = new_spec(glue_par(n));
-  p = new_glue(temp_ptr); 
+  p = new_glue(temp_ptr);
   glue_ref_count(temp_ptr) = 0;
   subtype(p) = n + 1;
 
@@ -1804,7 +1804,7 @@ done2:
 
 #ifdef DEBUG
 /* sec 0172 */
-void search_mem_(halfword p)
+void search_mem_(pointer p)
 {
   integer q;
 

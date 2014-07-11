@@ -22,7 +22,7 @@
 /* following bit used to be end of tex1.c */
 #ifdef STAT
 /* sec 0284 */
-void restore_trace_(pointer p, const char * s)
+void restore_trace (pointer p, const char * s)
 {
   begin_diagnostic();
   print_char('{');
@@ -144,7 +144,7 @@ void prepare_mag (void)
   mag_set = mag;
 }
 /* sec 0295 */
-void token_show_ (pointer p)
+void token_show (pointer p)
 {
   if (p != 0)
     show_token_list(link(p), 0, 10000000L);
@@ -1487,7 +1487,7 @@ void scan_font_ident (void)
   cur_val = f;
 }
 /* sec 0578 */
-void find_font_dimen_(boolean writing)
+void find_font_dimen(boolean writing)
 {
   internal_font_number f;
   integer n;
@@ -1555,7 +1555,7 @@ void find_font_dimen_(boolean writing)
   }
 }
 /* sec 0413 */
-void scan_something_internal_(small_number level, boolean negative)
+void scan_something_internal (small_number level, boolean negative)
 {
   halfword m;
   integer p;

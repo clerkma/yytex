@@ -253,7 +253,7 @@ EXTERN integer var_used, dyn_used;
 /* sec 0118 */
 EXTERN pointer avail;
 EXTERN pointer mem_end;
-EXTERN pointer mem_start; // for yandytex
+EXTERN pointer mem_start;
 /* sec 0124 */
 EXTERN pointer rover;
 /* sec 0165 */
@@ -353,7 +353,7 @@ EXTERN int cur_group;
 EXTERN integer cur_boundary;
 EXTERN integer mag_set;
 EXTERN int cur_cmd;
-EXTERN int cur_chr;
+EXTERN halfword cur_chr;
 EXTERN pointer cur_cs;
 EXTERN halfword cur_tok;
 
