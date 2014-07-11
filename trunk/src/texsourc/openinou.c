@@ -43,7 +43,7 @@ extern int shorten_file_name;
 
 
 #ifdef BUILDNAMEDIRECT
-char * xconcat (char *buffer, char *s1, char *s2)
+char * xconcat (char * buffer, char * s1, char * s2)
 {
   int n1 = strlen(s1);
   int n2 = strlen(s2);
@@ -173,6 +173,7 @@ void retwiddle (unsigned char *s)
       *s = '~';
     else if (*s == (unsigned char) pseudo_space)
       *s = ' ';
+
     s++;
   }
 }
@@ -264,7 +265,7 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
       gz_fmt_file = gzdopen(fileno(*f), "rb9");
 #endif
     }
-    else if (strstr((char *)name_of_file + 1, ".tfm") != NULL)
+    else if (strstr((char *) name_of_file + 1, ".tfm") != NULL)
     {
       if (show_tfm_flag && log_opened)
       {
@@ -382,7 +383,7 @@ boolean open_output (FILE **f, char *fopen_mode)
         unixify((char *) temp_name);
       
       /* but we can assume this is opening here for *output* */
-      *f = fopen((char*)temp_name, fopen_mode);
+      *f = fopen((char*) temp_name, fopen_mode);
       /* If this succeeded, change name_of_file accordingly.  */
       if (*f)
         strcpy((char*) name_of_file + 1, (char *) temp_name);

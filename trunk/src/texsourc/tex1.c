@@ -126,12 +126,7 @@ void flush_node_list_(pointer p)
           }
           break;
         case glue_node:
-          {
-            if (mem[mem[p + 1].hh.lh].hh.rh == 0)
-              free_node(mem[p + 1].hh.lh, 4);
-            else
-              decr(mem[mem[p + 1].hh.lh].hh.rh);
-          }
+          delete_glue_ref(p);
 
           if (leader_ptr(p) != 0)
             flush_node_list(leader_ptr(p));
@@ -865,7 +860,7 @@ void begin_diagnostic (void)
   }
 }
 /* sec 0245 */
-void end_diagnostic_(boolean blank_line)
+void end_diagnostic(boolean blank_line)
 {
   print_nl("");
 
@@ -2038,7 +2033,7 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
 }
 #ifdef STAT
 /* sec 0252 */
-void show_eqtb_(halfword n)
+void show_eqtb(pointer n)
 { 
   if (n < active_base)
     print_char('?');
@@ -2214,14 +2209,14 @@ void show_eqtb_(halfword n)
   else
     print_char('?');
 }
-#endif /* STAT */
+#endif
 /* sec 0259 */
-halfword id_lookup_(integer j, integer l)
+pointer id_lookup_(integer j, integer l)
 {
   integer h;
   integer d;
-  halfword p;
-  halfword k;
+  pointer p;
+  pointer k;
 
   h = buffer[j];
 
@@ -2303,7 +2298,7 @@ found:
   return p;
 }
 /* sec 0274 */
-void new_save_level_(group_code c)
+void new_save_level (group_code c)
 {
   check_full_save_stack();
   save_type(save_ptr) = level_boundary;
@@ -2322,9 +2317,9 @@ void new_save_level_(group_code c)
   cur_group = c;
 }
 /* sec 0275 */
-void eq_destroy_(memory_word w)
+void eq_destroy (memory_word w)
 {
-  halfword q;
+  pointer q;
 
   switch (eq_type_field(w))
   {
@@ -2355,7 +2350,7 @@ void eq_destroy_(memory_word w)
   }
 }
 /* sec 0276 */
-void eq_save_(pointer p, quarterword l)
+void eq_save (pointer p, quarterword l)
 {
   check_full_save_stack();
 
@@ -2410,7 +2405,7 @@ void geq_word_define_(pointer p, integer w)
   xeq_level[p]= 1;
 }
 /* sec 0280 */
-void save_for_after_(halfword t)
+void save_for_after (halfword t)
 { 
   if (cur_level > level_one)
   {

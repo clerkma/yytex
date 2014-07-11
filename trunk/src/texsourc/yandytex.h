@@ -31,6 +31,7 @@
 #include <stdarg.h>
 #include <setjmp.h>
 #include <time.h>
+#include <math.h>
 #include <signal.h>
 
 #include <kpathsea/c-auto.h>
@@ -84,14 +85,13 @@ typedef enum
   #undef link
 #endif
 
-#define abs(x)   ((integer)(x) >= 0 ? (integer)(x) : (integer)-(x))
+//#define abs(x)   ((integer)(x) >= 0 ? (integer)(x) : (integer)-(x))
+//#define fabs(x)  ((x) >= 0.0 ? (x) : -(x))
 #define chr(x)   (x)
-#define ord(x)   (x)
 #define odd(x)   ((x) % 2)
 #define round(x) web2c_round((double) (x))
 #define decr(x)  --(x)
 #define incr(x)  ++(x)
-#define fabs(x)  ((x) >= 0.0 ? (x) : -(x))
 #define toint(x) ((integer) (x))
 
 #define MAXLINE 256
@@ -102,7 +102,7 @@ extern boolean open_output (FILE ** f, char * fopen_mode);
 extern int check_fclose    (FILE * f);
 
 #define show_line(str, flag) fputs(str, stdout)
-#define show_char(chr)       putc(chr, stdout)
+#define show_char(s)         putc(s, stdout)
 extern char log_line[];
 
 #endif

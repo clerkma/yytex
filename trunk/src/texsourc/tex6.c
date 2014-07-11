@@ -53,7 +53,7 @@ restart:
   }
 }
 /* sec 0826 */
-pointer finite_shrink_(pointer p)
+pointer finite_shrink (pointer p)
 {
   pointer q;
 
@@ -323,7 +323,7 @@ done:;
                 else
                   print_int(serial(prev_break(passive)));
               }
-#endif /* STAT */
+#endif
             }
 
             minimal_demerits[fit_class] = awful_bad;
@@ -516,7 +516,7 @@ done1:;
         else
           print_int(d);
       }
-#endif /* STAT */
+#endif
 
       d = d + total_demerits(r);
 
@@ -584,11 +584,11 @@ exit:;
           printed_node = link(printed_node);
         }
       }
-#endif /* STAT */
+#endif
 }
 /* end of the old tex5.c here */
 /* sec 0877 */
-void post_line_break_(integer final_widow_penalty)
+void post_line_break (integer final_widow_penalty)
 {
   pointer q, r, s;
   boolean disc_break;
@@ -1391,7 +1391,7 @@ common_ending:
             hyphen_passed = j - 1;
             link(hold_head) = 0;
           }
-        while (!(! odd(hyf[j - 1])));
+        while (!(!odd(hyf[j - 1])));
     }
   while (!(j > hn));
 
@@ -1553,7 +1553,7 @@ not_found:
   }
 }
 /* sec 0968 */
-pointer prune_page_top_(pointer p)
+pointer prune_page_top (pointer p)
 {
   pointer prev_p;
   pointer q;
@@ -1613,7 +1613,7 @@ pointer prune_page_top_(pointer p)
   return link(temp_head);
 }
 /* sec 0970 */
-pointer vert_break_(pointer p, scaled h, scaled d)
+pointer vert_break (pointer p, scaled h, scaled d)
 {
   pointer prev_p;
   pointer q, r;
@@ -1767,7 +1767,7 @@ done:
   return best_place;
 }
 /* sec 0977 */
-pointer vsplit_(eight_bits n, scaled h)
+pointer vsplit (eight_bits n, scaled h)
 {
   pointer v;
   pointer p;
@@ -1880,7 +1880,7 @@ void freeze_page_specs_(small_number s)
 #endif
 }
 /* sec 0992 */
-void box_error_(eight_bits n)
+void box_error (eight_bits n)
 {
   error();
   begin_diagnostic();
@@ -1908,7 +1908,7 @@ void ensure_vbox_(eight_bits n)
     }
 }
 /* sec 1012 */
-void fire_up_(pointer c)
+void fire_up (pointer c)
 {
   pointer p, q, r, s;
   pointer prev_p;

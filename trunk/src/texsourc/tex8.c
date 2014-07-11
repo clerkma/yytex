@@ -233,7 +233,7 @@ void after_math (void)
 
   if (m < 0)
   {
-    tail_append(new_math(math_surround, 0));
+    tail_append(new_math(math_surround, before));
     cur_mlist = p;
     cur_style = text_style;
     mlist_penalties = (mode > 0);
@@ -243,7 +243,7 @@ void after_math (void)
     while (link(tail) != 0)
       tail = link(tail);
 
-    tail_append(new_math(math_surround, 1));
+    tail_append(new_math(math_surround, after));
     space_factor = 1000;
     unsave();
   }
@@ -455,7 +455,7 @@ void trap_zero_glue (void)
   }
 }
 /* sec 1236 */
-void do_register_command_ (small_number a)
+void do_register_command (small_number a)
 {
   pointer l, q, r, s;
   char p;
@@ -716,7 +716,7 @@ void alter_box_dimen (void)
     mem[box(b) + c].cint = cur_val;
 }
 /* sec 1257 */
-void new_font_(small_number a)
+void new_font(small_number a)
 {
   pointer u;
   scaled s;
@@ -1915,7 +1915,7 @@ reswitch:
 
     case mmode + non_script:
       {
-        tail_append(new_glue(0));
+        tail_append(new_glue(zero_glue));
         subtype(tail) = cond_math_glue;
       }
       break;

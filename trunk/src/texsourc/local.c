@@ -2236,7 +2236,7 @@ void knuthify (void)
 char * xchr_file = NULL;
 char * repl_file = NULL;
 
-const char * short_options = "m:e:h:0:H:g:P:o:l:a:k:wvpiKLZMdp2t?u";
+const char * short_options = "m:e:h:0:H:g:P:o:l:a:kwvpiKLZMdp2t?u";
 
 static struct option long_options[] =
 {
@@ -2652,7 +2652,7 @@ int init_commands (int ac, char **av)
   new_hyphen_prime      = 0;
 
 #ifdef VARIABLETRIESIZE
-/*  trie_size = default_trie_size; */
+  // trie_size = default_trie_size;
   trie_size = 0;
 #endif
 
