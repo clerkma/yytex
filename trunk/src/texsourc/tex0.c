@@ -77,7 +77,7 @@ void print_char_ (ASCII_code s)
       
       if (file_offset == max_print_line)
       {
-        putc ('\n', log_file);
+        putc('\n', log_file);
         file_offset = 0;
       }
 
@@ -114,7 +114,7 @@ void print_char_ (ASCII_code s)
     case new_string:
 #ifdef ALLOCATESTRING
       if (pool_ptr + 1 > current_pool_size)
-        str_pool = realloc_str_pool (increment_pool_size);
+        str_pool = realloc_str_pool(increment_pool_size);
       
       if (pool_ptr < current_pool_size)
         append_char(s);
@@ -216,7 +216,7 @@ void print_ (integer s)
 /* string version print. */
 void prints_ (const char *s)
 {
-  while (*s > 0)
+  while (*s)
     print_char(*s++);
 }
 /* sec 0060 */
@@ -2216,7 +2216,7 @@ void show_node_list_(integer p)
 
   n = 0; 
 
-  while (p != 0)     /* want p != null - bkph 93/Dec/15 NOTE: still not fixed in 3.14159 ! */
+  while (p != 0)
   {
     print_ln(); 
     print_current_string(); 

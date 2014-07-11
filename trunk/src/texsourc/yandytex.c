@@ -193,7 +193,7 @@ void fix_date_and_time (void)
 }
 
 /* I/O for TeX and Metafont.  */
-void complain_line (FILE *output)
+void complain_line (FILE * output)
 {
   show_line("\n", 0);
 
@@ -327,7 +327,7 @@ boolean input_line_finish (void)
    length(line except trailing whitespace).  */
 /* texmfmp.c */
 
-boolean input_line (FILE *f)
+boolean input_line (FILE * f)
 {
 //  int ch, flag;         /* for restrict_to_ascii case 94/Jan/21 */
   char *u;            /* 1994/July/3 for key_replace */
@@ -644,7 +644,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
   //flushall();
   fflush(NULL);
 
-  if (system (command) != 0)
+  if (system(command) != 0)
   {
     show_line("\n", 0);
     sprintf(log_line, "! Error in call: %s\n", command);
@@ -668,7 +668,6 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 #if !defined (WORDS_BIGENDIAN) && !defined (NO_FMTBASE_SWAP)
 
 /* We don't REALLY care what `endian' the machine is after all ! */
-/* But we do care about speed - so check exe file for following - bkph */
 
 // #ifdef MYDEBUG
 // char swapmarkerstring="ERROR: SWAPPING - NOT BigEndian AND NOT NoFmtBaseSwap";

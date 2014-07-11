@@ -398,7 +398,7 @@ int read_xchr_file (char *filename, int flag, char *argv[])
     }
   }
 
-  if (xchr_input == NULL)   /* 97/July/31 */
+  if (xchr_input == NULL)
   {
     strcpy (infile, argv[0]);     /* try TeX program path */
 
@@ -443,11 +443,11 @@ int read_xchr_file (char *filename, int flag, char *argv[])
   }
 
   if (flag == 0)
-    read_xchr_sub (xchr_input);
+    read_xchr_sub(xchr_input);
   else
-    read_repl_sub (xchr_input);
+    read_repl_sub(xchr_input);
 
-  (void) fclose (xchr_input);
+  (void) fclose(xchr_input);
 
   return 1;
 }
@@ -539,7 +539,7 @@ void *ourrealloc (void *old, size_t new_size)
 }
 #endif
 
-void memory_error (char *s, int n)
+void memory_error (const char * s, int n)
 {
   if (log_opened)
   {
@@ -551,7 +551,7 @@ void memory_error (char *s, int n)
   show_maximums(stderr);
 }
 
-void trace_memory (char *s, int n)
+void trace_memory (const char * s, int n)
 {
   printf("Allocating %d bytes for %s\n", n, s);
 }
@@ -716,7 +716,7 @@ int current_mem_size = 0;   /* current total words in main mem allocated -1 */
 
 #ifdef ALLOCATEMAIN   
 /* initial main memory alloc - mem_top */
-memory_word *allocate_main_memory (int size)
+memory_word * allocate_main_memory (int size)
 {
   int n;
 
@@ -1820,7 +1820,8 @@ int free_memory (void)
   if (source_direct != NULL)
     free(source_direct);
 
-  format_file = source_direct = NULL;
+  format_file = NULL;
+  source_direct = NULL;
 
   if (dvi_file_name != NULL)
     free(dvi_file_name);
@@ -1831,7 +1832,9 @@ int free_memory (void)
   if (pdf_file_name != NULL)
     free(pdf_file_name);
 
-  pdf_file_name = log_file_name = dvi_file_name = NULL;
+  pdf_file_name = NULL;
+  log_file_name = NULL;
+  dvi_file_name = NULL;
 
   return 0;
 }
