@@ -34,8 +34,8 @@ extern clock_t start_time, main_time, finish_time;
 void initialize (void)
 {
   integer i; 
-  integer k; 
-  integer flag; /* bkph */
+  integer k;
+  integer flag;
 
 #ifndef ALLOCATEHYPHEN
   hyph_pointer z;

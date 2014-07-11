@@ -90,5 +90,3 @@ extern int do_undump (char * p, int item_size, int nitems, FILE * out_file);
   while (0)
 
 #define undump_int  generic_undump
-
-extern void t_open_in();

@@ -348,10 +348,7 @@ void close_files_and_terminate (void)
           }
 
           if (trace_flag)
-          {
-            sprintf(log_line, "\ndviwrite %lld", dvi_gone);
-            show_line(log_line, 0);
-          }
+            printf("\ndvi_write %lld", dvi_gone);
 
           if (dvi_limit == half_buf)
             write_dvi(half_buf, dvi_buf_size - 1);

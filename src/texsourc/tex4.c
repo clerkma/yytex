@@ -37,7 +37,7 @@ void char_warning_(internal_font_number f, eight_bits c)
 
     print(c);
 
-    if (show_numeric) /* bkph 93/Dec/21 */
+    if (show_numeric)
     {
       print_char(' ');
       print_char('(');
@@ -72,7 +72,7 @@ void char_warning_(internal_font_number f, eight_bits c)
     if (show_missing == 0)
       end_diagnostic(false);
 
-    missing_characters++;           /* bkph 93/Dec/16 */
+    missing_characters++;
   }
 }
 /* sec 0582 */

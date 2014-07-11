@@ -21,8 +21,7 @@
 
 void do_nothing(void)
 {
-  if (trace_flag)
-    printf("DO_NOTHING.\n");
+  /* todo */
 }
 
 void update_terminal(void)
