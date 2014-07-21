@@ -469,179 +469,155 @@ boolean input_line (FILE * f)
 
 static char * edit_value = "c:\\yandy\\WinEdt\\WinEdt.exe [Open('%s');SelLine(%d,7)]";
 
-void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, integer linenumber)
+static int Isspace (char c)
 {
-  char *command, *s, *t, *u;
+  return (c == ' ' || c == '\t');
+}
+
+void call_edit (ASCII_code * filename, pool_pointer fnstart, integer fnlength, integer linenumber)
+{
+  char *temp, *command, *fullcmd;
   char c;
-  int sdone, ddone, ldone;
-  int i, n;
-  unsigned int commandlen;
-  ASCII_code *texfilename;
-  ASCII_code *log_file_name;
-  pool_pointer lgstart;
-  integer lglength;
+  int sdone, ddone, i;
 
-  if (log_opened)
-  {
-    lgstart = str_start[log_name];
-    lglength = length(log_name);
-    log_file_name = stringpool + lgstart;
-  }
-  else
-  {
-    lglength = 0;
-    log_file_name = (unsigned char *) "";
-  }
+#ifdef WIN32
+  char *fp, *ffp, *env, editorname[256], buffer[256];
+  int cnt = 0;
+  int dontchange = 0;
+#endif
 
-  sdone = ddone = ldone = 0;
-  texfilename = stringpool + fnstart;
+  sdone = ddone = 0;
+  filename += fnstart;
 
+  /* Close any open input files, since we're going to kill the job.  */
   for (i = 1; i <= in_open; i++)
-    (void) fclose (input_file[i]);
+#ifdef XeTeX
+    xfclose (input_file[i]->f, "inputfile");
+#else
+    xfclose (input_file[i], "inputfile");
+#endif
 
-  n = fcloseall();
+  /* Replace the default with the value of the appropriate environment
+     variable or config file value, if it's set.  */
+  temp = kpse_var_value("TEXEDIT");
 
-  if (n > 0 && verbose_flag)
-  {
-    sprintf(log_line, "Closed %d streams\n", n);
-    show_line(log_line, 0);
-  }
+  if (temp != NULL)
+    edit_value = temp;
 
-  s = kpse_var_value(edit_value);  
+  /* Construct the command string.  The `11' is the maximum length an
+     integer might be.  */
+  command = (char *) xmalloc (strlen (edit_value) + fnlength + 11);
 
-  if (s != NULL)
-    edit_value = s;
+  /* So we can construct it as we go.  */
+  temp = command;
 
-  commandlen = strlen (edit_value) + fnlength + lglength + 10 + 1 + 2;
-  command = (string) xmalloc (commandlen); 
+#ifdef WIN32
+  fp = editorname;
+  if ((isalpha(*edit_value) && *(edit_value + 1) == ':'
+        && IS_DIR_SEP (*(edit_value + 2)))
+      || (*edit_value == '"' && isalpha(*(edit_value + 1))
+        && *(edit_value + 2) == ':'
+        && IS_DIR_SEP (*(edit_value + 3)))
+     )
+    dontchange = 1;
+#endif
 
-  s = command;
-
-  u = edit_value;
-
-  while ((c = *u++) != 0)
+  while ((c = *edit_value++) != 0)
   {
     if (c == '%')
     {
-      switch (c = *u++)
+      switch (c = *edit_value++)
       {
         case 'd':
           if (ddone)
-          {
-#ifdef _WIN32
-            sprintf(log_line, "! bad command syntax (%c).\n", 'd');
-            show_line(log_line, 1);
-#else
-            sprintf(log_line, "! `%%d' cannot appear twice in editor command.\n");
-            show_line(log_line, 1);
-#endif
-            uexit(EXIT_FAILURE); 
-          }
-
-          (void) sprintf (s, "%lld", linenumber);
-
-          while (*s != '\0')
-            s++;
-
+            FATAL ("call_edit: `%%d' appears twice in editor command");
+          sprintf (temp, "%ld", (long int)linenumber);
+          while (*temp != '\0')
+            temp++;
           ddone = 1;
           break;
-
+        
         case 's':
           if (sdone)
-          {
-#ifdef _WIN32
-            sprintf(log_line, "! bad command syntax (%c).\n", 's'); 
-            show_line(log_line, 1);
-#else
-            sprintf(log_line, "! `%%s' cannot appear twice in editor command.\n");
-            show_line(log_line, 1);
-#endif
-            uexit(EXIT_FAILURE); 
-          }
-
-          t = (char *) texfilename;
-          n = fnlength;
-
-          if (non_ascii)
-            for (i = 0; i < n; i++)
-              *s++ = xchr [*t++];
-          else
-            for (i = 0; i < n; i++)
-              *s++ = (char) *t++;
-
+            FATAL ("call_edit: `%%s' appears twice in editor command");
+          for (i = 0; i < fnlength; i++)
+            *temp++ = xchr[(filename[i])];
           sdone = 1;
           break;
-
-        case 'l':
-          if (ldone)
-          {
-#ifdef __WIN32
-            sprintf(log_line, "! bad command syntax (%c).\n", 'l'); 
-            show_line(log_line, 1);
-#else
-            sprintf(log_line, "! `%%l' cannot appear twice in editor command.\n");
-            show_line(log_line, 1);
-#endif
-            uexit(EXIT_FAILURE); 
-          }
-
-          t = (char *) log_file_name;
-          n = lglength;
-
-          if (non_ascii)
-            for (i = 0; i < n; i++)
-              *s++ = xchr [*t++];
-          else
-            for (i = 0; i < n; i++)
-              *s++ = (char) *t++;
-
-          ldone = 1;
-          break;
-
+        
         case '\0':
-          *s++ = '%'; 
-          u--;
+          *temp++ = '%';
+          /* Back up to the null to force termination.  */
+          edit_value--;
           break;
-
+        
         default:
-          *s++ = '%';
-          *s++ = c;
+          *temp++ = '%';
+          *temp++ = c;
           break;
       }
     }
     else
-      *s++ = c;
-  }
-
-  *s = 0; /* terminate the command string */
-
-  if (strlen(command) + 1 >= commandlen)
-  {
-    printf("Command too long (%ld > %d)\n", strlen(command) + 1, commandlen);
-    uexit(EXIT_FAILURE);
-  }
-
-  //flushall();
-  fflush(NULL);
-
-  if (system(command) != 0)
-  {
-    show_line("\n", 0);
-    sprintf(log_line, "! Error in call: %s\n", command);
-    show_line(log_line, 1);
-
-#ifdef _WIN32
-    if (errno != 0)
-      perrormod("! DOS says");
+    {
+#ifdef WIN32
+      if (dontchange)
+        *temp++ = c;
+      else 
+      { 
+        if(Isspace(c) && cnt == 0)
+        {
+          cnt++;
+          temp = command;
+          *temp++ = c;
+          *fp = '\0';
+        }
+        else if(!Isspace(c) && cnt == 0)
+        {
+          *fp++ = c;
+        }
+        else
+        {
+          *temp++ = c;
+        }
+      }
+#else
+      *temp++ = c;
 #endif
-
-    sprintf(log_line, "  (TEXEDIT=%s)\n", edit_value);
-    show_line(log_line, 0);
-    puts("  (Editor specified may be missing or path may be wrong)\n");
-    puts("  (or there may be missing -- or extraneous -- quotation signs)\n");
+    }
   }
 
-  uexit(EXIT_FAILURE);
+  *temp = 0;
+
+#ifdef WIN32
+  if (dontchange == 0) {
+    if(editorname[0] == '.' ||
+       editorname[0] == '/' ||
+       editorname[0] == '\\') {
+      fprintf(stderr, "%s is not allowed to execute.\n", editorname);
+      uexit(1);
+    }
+    env = (char *)getenv("PATH");
+    if(SearchPath(env, editorname, ".exe", 256, buffer, &ffp)==0) {
+      if(SearchPath(env, editorname, ".bat", 256, buffer, &ffp)==0) {
+        fprintf(stderr, "I cannot find %s in the PATH.\n", editorname);
+        uexit(1);
+      }
+    }
+    fullcmd = (char *)xmalloc(strlen(buffer)+strlen(command)+5);
+    strcpy(fullcmd, "\"");
+    strcat(fullcmd, buffer);
+    strcat(fullcmd, "\"");
+    strcat(fullcmd, command);
+  } else
+#endif
+  fullcmd = command;
+
+  /* Execute the command.  */
+  if (system (fullcmd) != 0)
+    fprintf(stderr, "! Trouble executing `%s'.\n", command);
+
+  /* Quit, since we found an error.  */
+  uexit(1);
 }
 
 

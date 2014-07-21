@@ -37,6 +37,7 @@
 #include <kpathsea/c-auto.h>
 #include <kpathsea/c-std.h>
 #include <kpathsea/c-pathmx.h>
+#include <kpathsea/c-pathch.h>
 #include <kpathsea/c-fopen.h>
 #include <kpathsea/c-ctype.h>
 #include <kpathsea/c-proto.h>
@@ -51,6 +52,7 @@
 #include <kpathsea/absolute.h>
 #ifdef _WIN32
   #include <kpathsea/win32lib.h>
+  #include <kpathsea/concatn.h>
 #endif
 #include "zlib.h"
 #include "md5.h"
