@@ -17,7 +17,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 /* sec 0198 */
 void show_box_(pointer p)
@@ -2033,7 +2033,7 @@ void print_cmd_chr_ (quarterword cmd, halfword chr_code)
 }
 #ifdef STAT
 /* sec 0252 */
-void show_eqtb(pointer n)
+void show_eqtb (pointer n)
 { 
   if (n < active_base)
     print_char('?');
@@ -2283,7 +2283,7 @@ pointer id_lookup_(integer j, integer l)
         if (trace_flag)
         {
           str_pool[pool_ptr] = '\0';
-          printf(" tex1.c cs_count++ '%s' ", &str_pool[pool_ptr - l - d]);
+          printf(" tex1.c incr(cs_count): '%s' ", &str_pool[pool_ptr - l - d]);
         }
 #endif
       }
@@ -2402,7 +2402,7 @@ void geq_define_(pointer p, quarterword t, halfword e)
 void geq_word_define_(pointer p, integer w)
 {
   eqtb[p].cint = w;
-  xeq_level[p]= 1;
+  xeq_level[p]= level_one;
 }
 /* sec 0280 */
 void save_for_after (halfword t)
@@ -2416,4 +2416,3 @@ void save_for_after (halfword t)
     incr(save_ptr);
   }
 }
-/* restore_trace_, unsave followed in the old tex1.c */

@@ -17,7 +17,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 /* sec 1181 */
 void math_fraction (void)
@@ -716,7 +716,7 @@ void alter_box_dimen (void)
     mem[box(b) + c].cint = cur_val;
 }
 /* sec 1257 */
-void new_font(small_number a)
+void new_font (small_number a)
 {
   pointer u;
   scaled s;
@@ -799,7 +799,7 @@ void new_font(small_number a)
     k2 = str_start[cur_name];
     l1 = length(cur_area);
     l2 = length(cur_name);
-    show_char('\n');
+    wterm_cr();
     puts("FONT ");
 
     for (i = 0; i < l1; i++)
@@ -835,6 +835,7 @@ void new_font(small_number a)
           {
             if (trace_flag)
               printf("SKIPPING %lld ", s);
+
             goto common_ending;
           }
         }
@@ -919,22 +920,22 @@ void open_or_close_in (void)
     scan_file_name();
     pack_file_name(cur_name, cur_area, cur_ext);
 
-    if ((cur_ext != 335) && a_open_in(read_file[n], TEXINPUTPATH))
+    if ((cur_ext != 335) && a_open_in(read_file[n], kpse_tex_format))
       read_open[n] = 1;
     else if ((cur_ext != 785) && (name_length + 5 < file_name_size))
     {
       strncpy((char *) name_of_file + name_length + 1, ".tex ", 5);
       name_length = name_length + 4;
 
-      if (a_open_in(read_file[n], TEXINPUTPATH))
+      if (a_open_in(read_file[n], kpse_tex_format))
         read_open[n] = just_open;
       else
       {
         name_length = name_length - 4;
         name_of_file[name_length + 1] = ' ';
 
-        if ((cur_ext == 335) && a_open_in(read_file[n], TEXINPUTPATH))
-          read_open[n] = 1;
+        if ((cur_ext == 335) && a_open_in(read_file[n], kpse_tex_format))
+          read_open[n] = just_open;
       }
     }
   }
@@ -1105,15 +1106,19 @@ common_ending:
     decr(error_count);
   }
   else if (tracing_online > 0)
+  {
     help3("This isn't an error message; I'm just \\showing something.",
       "Type `I\\show...' to show more (e.g., \\show\\cs,",
       "\\showthe\\count10, \\showbox255, \\showlists).");
+  }
   else
+  {
     help5("This isn't an error message; I'm just \\showing something.",
       "Type `I\\show...' to show more (e.g., \\show\\cs,",
       "\\showthe\\count10, \\showbox255, \\showlists).",
       "And type `I\\tracingonline=1\\show...' to show boxes and",
       "lists on your terminal as well as in the transcript file.");
+  }
 
   error();
 }
@@ -1129,14 +1134,12 @@ void new_whatsit_(small_number s, small_number w)
   tail = p;
 }
 /* sec 1350 */
-void new_write_whatsit_(small_number w)
+void new_write_whatsit (small_number w)
 {
   new_whatsit(cur_chr, w);
 
   if (w != write_node_size)
-  {
     scan_four_bit_int();
-  }
   else
   {
     scan_int();
@@ -1246,7 +1249,7 @@ void do_extension (void)
 /* sec 1376 */
 void fix_language (void)
 {
-/*  ASCII_code l;  */
+  /* ASCII_code l; */
   int l;
 
   if (language <= 0)
@@ -1499,7 +1502,7 @@ void handle_right_brace (void)
 void main_control (void) 
 {
   integer t;
-  integer bSuppress; /* 199/Jan/5 */
+  boolean bSuppress;
 
   if (every_job != 0)
     begin_token_list(every_job, every_job_text);
@@ -2145,15 +2148,15 @@ main_lig_loop_1:
   main_j = font_info[main_k].qqqq;
 
 main_lig_loop_2:
-  bSuppress = 0;
+  bSuppress = false;
 
   if (suppress_f_ligs && next_char(main_j) == cur_r && op_byte(main_j) == no_tag)
   {
     if (cur_l == 'f')
-      bSuppress = 1;
+      bSuppress = true;
   }
 
-  if (next_char(main_j) == cur_r && bSuppress == 0)
+  if (next_char(main_j) == cur_r && bSuppress == false)
     if (skip_byte(main_j) <= stop_flag)
     {
       if (op_byte(main_j) >= kern_flag)

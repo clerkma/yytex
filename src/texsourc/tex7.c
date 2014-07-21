@@ -17,7 +17,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 /* sec 0994 */
 void build_page (void)
@@ -26,7 +26,7 @@ void build_page (void)
   pointer q, r;
   integer b, c;
   integer pi;
-/*  unsigned char n; */
+  /* unsigned char n; */
   unsigned int n;
   scaled delta, h, w;
 
@@ -1433,7 +1433,7 @@ void do_endv (void)
   {
     end_graf();
 
-    if (fin_col ())
+    if (fin_col())
       fin_row();
   }
   else
@@ -1448,7 +1448,7 @@ void cs_error (void)
   error();
 }
 /* sec 1136 */
-void push_math_(group_code c)
+void push_math (group_code c)
 {
   push_nest();
   mode = -mmode;
@@ -1595,7 +1595,7 @@ done:;
       if (prev_graf + 2 >= n)
         p = par_shape_ptr + 2 * n;
       else
-        p = par_shape_ptr + 2 *(prev_graf + 2);
+        p = par_shape_ptr + 2 * (prev_graf + 2);
 
       s = mem[p - 1].cint;
       l = mem[p].cint;
@@ -1644,7 +1644,7 @@ void start_eq_no (void)
   }
 }
 /* sec 1151 */
-void scan_math_(pointer p)
+void scan_math (pointer p)
 {
   integer c;
 
@@ -1778,9 +1778,7 @@ void math_limit_switch (void)
 void scan_delimiter_(pointer p, boolean r)
 {
    if (r)
-   {
      scan_twenty_seven_bit_int();
-   }
    else
    {
      do
@@ -1876,7 +1874,7 @@ void append_choices (void)
   scan_left_brace();
 }
 /* sec 1184 */
-pointer fin_mlist_(pointer p)
+pointer fin_mlist (pointer p)
 {
   pointer q;
 
@@ -1950,7 +1948,7 @@ void build_choices (void)
 /* sec 1176 */
 void sub_sup (void)
 {
-/*  small_number t; */
+  /* small_number t; */
   int t;
   pointer p;
 
@@ -1981,6 +1979,7 @@ void sub_sup (void)
         print_err("Double subscript");
         help1("I treat `x_1_2' essentially like `x_1{}_2'.");
       }
+
       error();
     }
   }

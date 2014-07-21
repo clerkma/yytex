@@ -19,12 +19,10 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 #define BEGINFMTCHECKSUM 367403084L
 #define ENDFMTCHECKSUM   69069L
-
-extern clock_t start_time, main_time, finish_time;
 
 #ifdef INITEX
   void do_initex (void);
@@ -33,7 +31,7 @@ extern clock_t start_time, main_time, finish_time;
 /* sec 0004 */
 void initialize (void)
 {
-  integer i; 
+  integer i;
   integer k;
   integer flag;
 
@@ -187,7 +185,7 @@ void initialize (void)
   cur_order = normal;
 
   for (k = 0; k <= 16; k++)
-    read_open[k] = 2;
+    read_open[k] = closed;
 
   cond_ptr = 0;
   if_limit = normal;
@@ -197,10 +195,10 @@ void initialize (void)
   for (k = 0; k <= font_max; k++)
     font_used[k] = false;
 
-  null_character.b0 = 0;
-  null_character.b1 = 0;
-  null_character.b2 = 0;
-  null_character.b3 = 0;
+  null_character.b0 = min_quarterword;
+  null_character.b1 = min_quarterword;
+  null_character.b2 = min_quarterword;
+  null_character.b3 = min_quarterword;
   total_pages = 0;
   max_v = 0;
   max_h = 0;
@@ -260,9 +258,7 @@ void initialize (void)
 
 #ifdef INITEX
   if (is_initex)
-  {
     do_initex();
-  }
 #endif
 }
 
@@ -281,7 +277,7 @@ void initialize_aux (void)
 
 /*  nest_ptr = 0; */
 /*  max_nest_stack = 0; */
-  mode = 1;
+  mode = vmode;
   head = contrib_head;
   tail = contrib_head;
   prev_depth = ignore_depth;
@@ -292,7 +288,7 @@ void initialize_aux (void)
   page_tail = page_head;
   link(page_head) = 0;
 }
-#endif  // end of ifdef ALLOCATEMAIN
+#endif
 /* sec 0815 */
 void line_break (integer final_widow_penalty)
 {
@@ -405,7 +401,7 @@ void line_break (integer final_widow_penalty)
 
     second_pass = false;
     final_pass = false;
-    first_pass_count++; /* 96 Feb 9 */
+    first_pass_count++;
   }
   else
   {
@@ -561,7 +557,7 @@ done2:
                   goto done1; 
 
                 if (hyf_char > 255)
-                  goto done1; /* ? */
+                  goto done1;
 
                 ha = prev_s;
 
@@ -601,10 +597,10 @@ done2:
                     j = hn;
                     q = lig_ptr(s);
 
-                    if (q != 0) /* 94/Mar/23 BUG FIX */
+                    if (q != 0)
                       hyf_bchar = character(q);
 
-                    while (q != 0) /* 94/Mar/23 BUG FIX */
+                    while (q != 0)
                     {
                       c = character(q);
 
@@ -702,37 +698,38 @@ done1:;
             else
             {
               do
-              {
-                if (is_char_node(s))
                 {
-                  f = font(s);
-                  disc_width = disc_width + char_width(f, char_info(f, character(s)));
-                }
-                else switch (type(s))
-                {
-                  case ligature_node:
-                    {
-                      f = font(lig_char(s));
-                      disc_width = disc_width + char_width(f, char_info(f, character(lig_char(s))));
-                    }
-                    break;
+                  if (is_char_node(s))
+                  {
+                    f = font(s);
+                    disc_width = disc_width + char_width(f, char_info(f, character(s)));
+                  }
+                  else switch (type(s))
+                  {
+                    case ligature_node:
+                      {
+                        f = font(lig_char(s));
+                        disc_width = disc_width + char_width(f, char_info(f, character(lig_char(s))));
+                      }
+                      break;
 
-                  case hlist_node:
-                  case vlist_node:
-                  case rule_node:
-                  case kern_node:
-                    disc_width = disc_width + width(s);
-                    break;
+                    case hlist_node:
+                    case vlist_node:
+                    case rule_node:
+                    case kern_node:
+                      disc_width = disc_width + width(s);
+                      break;
 
-                  default:
-                    {
-                      confusion("disc3");
-                      return;
-                    }
-                    break;
+                    default:
+                      {
+                        confusion("disc3");
+                        return;
+                      }
+                      break;
+                  }
+
+                  s = link(s);
                 }
-                s = link(s);
-              }
               while (!(s == 0));
 
               act_width = act_width + disc_width;
@@ -839,7 +836,7 @@ done5:;
 
         if (looseness == 0)
         {
-          goto done; /* normal exit */
+          goto done;
         }
 
         {
@@ -848,7 +845,7 @@ done5:;
 
           do
             {
-              if (type(r) != 2)
+              if (type(r) != delta_node)
               {
                 line_diff = toint(line_number(r)) - toint(best_line);
 
@@ -1007,7 +1004,7 @@ void prefixed_command (void)
     prints("' or `");
     print_esc("outer");
     prints("' with `");
-    print_cmd_chr(cur_cmd, cur_chr); 
+    print_cmd_chr(cur_cmd, cur_chr);
     print_char('\'');
     help1("I'll pretend you didn't say \\long or \\outer here.");
     error();
@@ -1500,7 +1497,7 @@ boolean load_fmt_file (void)
   if (trace_flag)
     printf("Read from fmt file mem_top = %lld TeX words\n", x);
 
-  mem = allocate_main_memory(x); /* allocate main memory at this point */
+  mem = allocate_main_memory(x);
 
   if (mem == NULL)
     exit(EXIT_FAILURE);
@@ -1544,7 +1541,7 @@ boolean load_fmt_file (void)
       if (trace_flag)
         printf("undump string pool reallocation (%lld > %d)\n", x, current_pool_size);
 
-      str_pool = realloc_str_pool (x - current_pool_size + increment_pool_size);
+      str_pool = realloc_str_pool(x - current_pool_size + increment_pool_size);
     }
 
     if (x > current_pool_size)
@@ -1586,12 +1583,8 @@ boolean load_fmt_file (void)
       str_ptr = x;
   }
 
-  if (undumpthings(str_start[0], str_ptr + 1))
-    return -1;
-
-  if (undumpthings(str_pool[0], pool_ptr))
-    return -1;
-
+  undumpthings(str_start[0], str_ptr + 1);
+  undumpthings(str_pool[0], pool_ptr);
   init_str_ptr = str_ptr;
   init_pool_ptr = pool_ptr;
   undump(lo_mem_stat_max + 1000, hi_mem_stat_min - 1, lo_mem_max);
@@ -1616,7 +1609,7 @@ boolean load_fmt_file (void)
   if (undumpthings(mem[p], lo_mem_max + 1 - p))
     return -1;
 
-  if (mem_min < mem_bot - 2) /*  ? splice in block below */
+  if (mem_min < mem_bot - 2)
   {
 /*  or call add_variable_space(mem_bot - (mem_min + 1)) */
     if (trace_flag)
@@ -1722,94 +1715,32 @@ boolean load_fmt_file (void)
   }
 
   {
-    if (undumpthings(font_info[0], fmem_ptr))
-      return -1;
-
-    {
-      undump_int(x); /* font_max */
-
-      if (x < 0)
-        goto bad_fmt;
-
-      if (x > font_max)
-      {
-        puts("---! Must increase the font max"); 
-        goto bad_fmt;
-      }
-      else
-        font_ptr = x;
-    }
-
+    undumpthings(font_info[0], fmem_ptr);
+    undump_size(font_base, font_max, "font max", font_ptr);
     frozen_font_ptr = font_ptr;
-
-    if (undumpthings(font_check[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_size[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_dsize[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_params[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(hyphen_char[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(skew_char[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_name[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_area[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_bc[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_ec[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(char_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(width_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(height_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(depth_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(italic_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(lig_kern_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(kern_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(exten_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(param_base[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_glue[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(bchar_label[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_bchar[0], font_ptr + 1))
-      return -1;
-
-    if (undumpthings(font_false_bchar[0], font_ptr + 1))
-      return -1;
+    undumpthings(font_check[0], font_ptr + 1);
+    undumpthings(font_size[0], font_ptr + 1);
+    undumpthings(font_dsize[0], font_ptr + 1);
+    undumpthings(font_params[0], font_ptr + 1);
+    undumpthings(hyphen_char[0], font_ptr + 1);
+    undumpthings(skew_char[0], font_ptr + 1);
+    undumpthings(font_name[0], font_ptr + 1);
+    undumpthings(font_area[0], font_ptr + 1);
+    undumpthings(font_bc[0], font_ptr + 1);
+    undumpthings(font_ec[0], font_ptr + 1);
+    undumpthings(char_base[0], font_ptr + 1);
+    undumpthings(width_base[0], font_ptr + 1);
+    undumpthings(height_base[0], font_ptr + 1);
+    undumpthings(depth_base[0], font_ptr + 1);
+    undumpthings(italic_base[0], font_ptr + 1);
+    undumpthings(lig_kern_base[0], font_ptr + 1);
+    undumpthings(kern_base[0], font_ptr + 1);
+    undumpthings(exten_base[0], font_ptr + 1);
+    undumpthings(param_base[0], font_ptr + 1);
+    undumpthings(font_glue[0], font_ptr + 1);
+    undumpthings(bchar_label[0], font_ptr + 1);
+    undumpthings(font_bchar[0], font_ptr + 1);
+    undumpthings(font_false_bchar[0], font_ptr + 1);
   }
 
 /* log not opened yet, so can't show fonts frozen into format */
@@ -1876,7 +1807,6 @@ boolean load_fmt_file (void)
     if (!is_initex)
     {
       allocate_tries(x); /* allocate only as much as is needed */
-/* trie_size = x; */ /* ??? */
     }
 #endif
 
@@ -1894,43 +1824,19 @@ boolean load_fmt_file (void)
     trie_max = j;
 #endif
 
-  if (undumpthings(trie_trl[0], j + 1))
-    return -1;
-
-  if (undumpthings(trie_tro[0], j + 1))
-    return -1;
-
-  if (undumpthings(trie_trc[0], j + 1))
-    return -1;
-
-  {
-    undump_int(x);
-
-    if (x < 0)
-      goto bad_fmt;
-
-    if (x > trie_op_size)
-    {
-      puts("---! Must increase the trie op size\n");
-      goto bad_fmt;
-    }
-    else
-      j = x;
-  }
+  undumpthings(trie_trl[0], j + 1);
+  undumpthings(trie_tro[0], j + 1);
+  undumpthings(trie_trc[0], j + 1);
+  undump_size(0, trie_op_size, "trie op size", j);
 
 #ifdef INITEX
   if (is_initex)
     trie_op_ptr = j;
 #endif
   
-  if (undumpthings(hyf_distance[1], j))
-    return -1;
-
-  if (undumpthings(hyf_num[1], j))
-    return -1;
-
-  if (undumpthings(hyf_next[1], j))
-    return -1;
+  undumpthings(hyf_distance[1], j);
+  undumpthings(hyf_num[1], j);
+  undumpthings(hyf_next[1], j);
 
 #ifdef INITEX
   if (is_initex)
@@ -2013,7 +1919,7 @@ void final_cleanup (void)
     print_nl("(");
     print_esc("end occurred ");
     prints("when ");
-    print_cmd_chr('i', cur_if);
+    print_cmd_chr(if_test, cur_if);
 
     if (if_line != 0)
     {
@@ -2022,7 +1928,7 @@ void final_cleanup (void)
     }
 
     prints(" was incomplete)");
-    if_line = mem[cond_ptr + 1].cint;
+    if_line = if_line_field(cond_ptr);
     cur_if = subtype(cond_ptr);
     temp_ptr = cond_ptr;
     cond_ptr = link(cond_ptr);
@@ -2044,10 +1950,8 @@ void final_cleanup (void)
     if (is_initex)
     {
       for (c = 0; c <= 4; c++)
-      {
         if (cur_mark[c] != 0)
           delete_token_ref(cur_mark[c]);
-      }
 
       if (last_glue != max_halfword)
         delete_glue_ref(last_glue);
@@ -2063,10 +1967,9 @@ void final_cleanup (void)
 
 void show_frozen (void)
 {
-  int i, j, n;
+  int i;
 
-  fprintf(log_file, "\n");
-  fprintf(log_file, "(%lld fonts frozen in format file:\n", font_ptr);
+  fprintf(log_file, "\n(%lld fonts frozen in format file:\n", font_ptr);
 
   for (i = 1; i <= font_ptr; i++)
   {
@@ -2076,12 +1979,7 @@ void show_frozen (void)
     if ((i % 8) == 0)
       fprintf(log_file, "\n");
 
-    n = str_start[font_name[i] + 1] - str_start[font_name[i]];
-
-    for (j = 0; j < n; j++)
-    {
-      putc(str_pool[str_start[font_name[i]] + j], log_file);
-    }
+    fwrite(&str_pool[str_start[font_name[i]]], 1, length(font_name[i]), log_file);
   }
 
   fprintf(log_file, ") ");
@@ -2202,19 +2100,7 @@ start_of_TEX:
   term_offset = 0;
   file_offset = 0;
 
-  {
-    char dist_ver[256];
-#ifdef _WIN32
-  #ifdef _WIN64
-    sprintf(dist_ver, "%s (%s %s/Win64)", tex_version, application, yandyversion);
-  #else
-    sprintf(dist_ver, "%s (%s %s/Win32)", tex_version, application, yandyversion);
-  #endif
-#else
-    sprintf(dist_ver, "%s (%s %s/Linux)", tex_version, application, yandyversion);
-#endif
-    prints(dist_ver);
-  }
+  print_banner();
 
   if (format_ident == 0)
   {
@@ -2338,10 +2224,7 @@ final_end:
   {
     int code;
 
-#ifndef _WINDOWS
-    fflush(stdout);
-#endif
-
+    update_terminal();
     ready_already = 0;
 
     if ((history != spotless) && (history != warning_issued))
@@ -2396,7 +2279,7 @@ void reset_trie (void)
 {
   integer k;
 
-  for (k = -(integer)trie_op_size; k <= trie_op_size; k++)
+  for (k = -(integer) trie_op_size; k <= trie_op_size; k++)
     trie_op_hash[k] = 0;
 
   for (k = 0; k <= 255; k++)
@@ -2580,7 +2463,7 @@ void do_initex (void)
     puts("initex cs_count = 0 ");
 
   eq_type(frozen_dont_expand) = dont_expand;
-  text(frozen_dont_expand) = 499;  /* notexpanded */
+  text(frozen_dont_expand) = 499;  /* "notexpanded:" */
 
   font_ptr                    = null_font;
   fmem_ptr                    = 7;
@@ -2658,7 +2541,7 @@ boolean get_strings_started (void)
 
   if (g == 0)
   {
-    fprintf(stdout, "%s\n", "! You have to increase POOLSIZE." );
+    printf("%s\n", "! You have to increase POOLSIZE." );
     return false;
   }
 
@@ -2728,7 +2611,7 @@ void primitive_ (str_number s, quarterword c, halfword o)
   else
   {
     k = str_start[s];
-    l = str_start[s + 1] - k; /* small_number l */
+    l = str_start[s + 1] - k;
 
     for (j = 0; j <= l - 1; j++)
       buffer[j] = str_pool[k + j];
@@ -2746,7 +2629,7 @@ void primitive_ (str_number s, quarterword c, halfword o)
 
 #ifdef INITEX
 /* sec 0944 */
-trie_op_code new_trie_op_ (small_number d, small_number n, trie_op_code v)
+trie_op_code new_trie_op (small_number d, small_number n, trie_op_code v)
 {
   integer h;
   trie_op_code u;
@@ -2790,7 +2673,7 @@ trie_op_code new_trie_op_ (small_number d, small_number n, trie_op_code v)
       return u;
     }
 
-    if ((hyf_distance[l]== d) && (hyf_num[l]== n) && (hyf_next[l]== v) && (trie_op_lang[l]== cur_lang))
+    if ((hyf_distance[l] == d) && (hyf_num[l] == n) && (hyf_next[l] == v) && (trie_op_lang[l] == cur_lang))
     {
       return trie_op_val[l];
     }
@@ -2987,25 +2870,25 @@ void new_patterns (void)
   /* ASCII_code c; */
   int c;
 
-  if (!trie_not_ready) /* new stuff */
+  if (!trie_not_ready)
   {
     if (allow_patterns)
     {
       if (trace_flag)
         puts("Resetting patterns");
 
-      reset_trie();         /* RESET PATTERNS -  93/Nov/26 */
+      reset_trie();
 
       if (reset_exceptions)
       {
         if (trace_flag)
           puts("Resetting exceptions");
 
-        reset_hyphen();     /* RESET HYPHENEXCEPTIONS -  93/Nov/26 */
+        reset_hyphen();
       }
     }
   }
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
+
   if (trie_not_ready)
   {
     set_cur_lang();
@@ -3066,7 +2949,8 @@ void new_patterns (void)
               l = k;
               v = min_trie_op;
 
-              while (true) {
+              while (true)
+              {
                 if (hyf[l]!= 0)
                   v = new_trie_op(k - l, hyf[l], v);
 
@@ -3079,13 +2963,15 @@ done1:
               q = 0;
               hc[0] = cur_lang;
 
-              while (l <= k) {
+              while (l <= k)
+              {
                 c = hc[l];
                 incr(l);
                 p = trie_l[q];
                 first_child = true;
 
-                while ((p > 0) && (c > trie_c[p])) {
+                while ((p > 0) && (c > trie_c[p]))
+                {
                   q = p;
                   p = trie_r[q];
                   first_child = false;
@@ -3105,9 +2991,9 @@ done1:
                   trie_l[p] = 0;
 
                   if (first_child)
-                    trie_l[q]= p;
+                    trie_l[q] = p;
                   else
-                    trie_r[q]= p;
+                    trie_r[q] = p;
 
                   trie_c[p] = c;
                   trie_o[p] = min_trie_op;
@@ -3116,14 +3002,14 @@ done1:
                 q = p;
               }
 
-              if (trie_o[q]!= min_trie_op)
+              if (trie_o[q] != min_trie_op)
               {
                 print_err("Duplicate pattern");
                 help1("(See Appendix H.)");
                 error();
               }
 
-              trie_o[q]= v;
+              trie_o[q] = v;
             }
 
             if (cur_cmd == right_brace)
@@ -3168,14 +3054,10 @@ void init_trie (void)
   op_start[0] = - (integer) min_trie_op;
 
   for (j = 1; j <= 255; j++)
-  {
     op_start[j] = op_start[j - 1] + trie_used[j - 1];
-  }
 
   for (j = 1; j <= trie_op_ptr; j++)
-  {
     trie_op_hash[j] = op_start[trie_op_lang[j]] + trie_op_val[j];
-  }
 
   for (j = 1; j <= trie_op_ptr; j++)
   {
@@ -3197,21 +3079,15 @@ void init_trie (void)
   }
 
   for (p = 0; p <= trie_size; p++)
-  {
     trie_hash[p] = 0;
-  }
 
   trie_l[0] = compress_trie(trie_l[0]);
 
   for (p = 0; p <= trie_ptr; p++)
-  {
-    trie_hash[p]= 0;
-  }
+    trie_hash[p] = 0;
 
   for (p = 0; p <= 255; p++)
-  {
     trie_min[p] = p + 1;
-  }
 
   trie_trl[0] = 1;
   trie_max = 0;
@@ -3230,6 +3106,7 @@ void init_trie (void)
       trie_tro[r] = min_trie_op;
       trie_trc[r] = 0;
     }
+
     trie_max = 256;
   }
   else
@@ -3240,6 +3117,7 @@ void init_trie (void)
     do
       {
         s = trie_trl[r];
+
         {
           trie_trl[r] = 0;
           trie_tro[r] = min_trie_op;
@@ -3282,7 +3160,7 @@ void store_fmt_file (void)
   }
 
   selector = new_string;
-  prints(" (format=");
+  prints(" (preloaded format=");
   print(job_name);
   print_char(' ');
   print_int(year);
@@ -3292,7 +3170,7 @@ void store_fmt_file (void)
   print_int(day);
   print_char(')');
 
-  if (interaction == 0)
+  if (interaction == batch_mode)
     selector = log_only;
   else
     selector = term_and_log;
@@ -3302,9 +3180,7 @@ void store_fmt_file (void)
   pack_job_name(".fmt");
 
   while (!w_open_out(fmt_file))
-  {
     prompt_file_name("format file name", ".fmt");
-  }
 
   print_nl("Beginning to dump on file ");
   slow_print(w_make_name_string(fmt_file));
@@ -3320,13 +3196,8 @@ void store_fmt_file (void)
   dump_int(hyphen_prime);
   dump_int(pool_ptr);
   dump_int(str_ptr);
-
-  if (dumpthings(str_start[0], str_ptr + 1))
-    return;
-
-  if (dumpthings(str_pool[0], pool_ptr))
-    return;
-
+  dumpthings(str_start[0], str_ptr + 1);
+  dumpthings(str_pool[0], pool_ptr);
   print_ln();
   print_int(str_ptr);
   prints(" strings of total length ");
@@ -3412,6 +3283,7 @@ found1:
           (eq_type(j) != eq_type(j + 1)) ||
           (eq_level(j) != eq_level(j + 1)))
           goto done1;
+
         incr(j);
       }
 
@@ -3483,7 +3355,7 @@ done2:
       incr(cs_count);
 
       if (trace_flag)
-        puts("itex cs_count++ ");
+        puts("itex.c store_fmt_file() cs_count++ ");
     }
   }
 
@@ -3498,79 +3370,31 @@ done2:
   dump_int(fmem_ptr);
 
   {
-    if (dumpthings(font_info[0], fmem_ptr))
-      return;
-
+    dumpthings(font_info[0], fmem_ptr);
     dump_int(font_ptr);
-
-    if (dumpthings(font_check[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_size[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_dsize[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_params[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(hyphen_char[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(skew_char[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_name[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_area[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_bc[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_ec[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(char_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(width_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(height_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(depth_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(italic_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(lig_kern_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(kern_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(exten_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(param_base[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_glue[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(bchar_label[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_bchar[0], font_ptr + 1))
-      return;
-
-    if (dumpthings(font_false_bchar[0], font_ptr + 1))
-      return;
+    dumpthings(font_check[0], font_ptr + 1);
+    dumpthings(font_size[0], font_ptr + 1);
+    dumpthings(font_dsize[0], font_ptr + 1);
+    dumpthings(font_params[0], font_ptr + 1);
+    dumpthings(hyphen_char[0], font_ptr + 1);
+    dumpthings(skew_char[0], font_ptr + 1);
+    dumpthings(font_name[0], font_ptr + 1);
+    dumpthings(font_area[0], font_ptr + 1);
+    dumpthings(font_bc[0], font_ptr + 1);
+    dumpthings(font_ec[0], font_ptr + 1);
+    dumpthings(char_base[0], font_ptr + 1);
+    dumpthings(width_base[0], font_ptr + 1);
+    dumpthings(height_base[0], font_ptr + 1);
+    dumpthings(depth_base[0], font_ptr + 1);
+    dumpthings(italic_base[0], font_ptr + 1);
+    dumpthings(lig_kern_base[0], font_ptr + 1);
+    dumpthings(kern_base[0], font_ptr + 1);
+    dumpthings(exten_base[0], font_ptr + 1);
+    dumpthings(param_base[0], font_ptr + 1);
+    dumpthings(font_glue[0], font_ptr + 1);
+    dumpthings(bchar_label[0], font_ptr + 1);
+    dumpthings(font_bchar[0], font_ptr + 1);
+    dumpthings(font_false_bchar[0], font_ptr + 1);
 
     for (k = 0; k <= font_ptr; k++)
     {
@@ -3592,17 +3416,17 @@ done2:
   print_ln();
   print_int(fmem_ptr - 7);
   prints(" words of font info for ");
-  print_int(font_ptr - 0);
+  print_int(font_ptr - font_base);
   prints(" preloaded font");
 
-  if (font_ptr != 1)
+  if (font_ptr != font_base + 1)
     print_char('s');
 
   dump_int(hyph_count);
 
   for (k = 0; k <= hyphen_prime; k++)
   {
-    if (hyph_word[k]!= 0)
+    if (hyph_word[k] != 0)
     {
       dump_int(k);
       dump_int(hyph_word[k]);
@@ -3621,27 +3445,13 @@ done2:
     init_trie();
 
   dump_int(trie_max);
-
-  if (dumpthings(trie_trl[0], trie_max + 1))
-    return;
-
-  if (dumpthings(trie_tro[0], trie_max + 1))
-    return;
-
-  if (dumpthings(trie_trc[0], trie_max + 1))
-    return;
-
+  dumpthings(trie_trl[0], trie_max + 1);
+  dumpthings(trie_tro[0], trie_max + 1);
+  dumpthings(trie_trc[0], trie_max + 1);
   dump_int(trie_op_ptr);
-
-  if (dumpthings(hyf_distance[1], trie_op_ptr))
-    return;
-
-  if (dumpthings(hyf_num[1], trie_op_ptr))
-    return;
-
-  if (dumpthings(hyf_next[1], trie_op_ptr))
-    return;
-
+  dumpthings(hyf_distance[1], trie_op_ptr);
+  dumpthings(hyf_num[1], trie_op_ptr);
+  dumpthings(hyf_next[1], trie_op_ptr);
   print_nl("Hyphenation trie of length ");
   print_int(trie_max);
   prints(" has ");
@@ -3673,7 +3483,7 @@ done2:
   tracing_stats = 0;
 
 #ifdef COMPACTFORMAT
-  gzclose(gz_fmt_file);
+  gz_w_close(gz_fmt_file);
 #else
   w_close(fmt_file);
 #endif
@@ -3916,7 +3726,7 @@ void init_prim (void)
   primitive("pagefilllstretch", set_page_dimen, 5);
   primitive("pageshrink", set_page_dimen, 6);
   primitive("pagedepth", set_page_dimen, 7);
-  primitive("end", end_match, 0);
+  primitive("end", stop, 0);
   primitive("dump", stop, 1);
   primitive("hskip", hskip, skip_code);
   primitive("hfil", hskip, fil_code);

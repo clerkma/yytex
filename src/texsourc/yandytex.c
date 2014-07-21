@@ -19,13 +19,13 @@
 
 #define EXTERN
 
-#include "texd.h"
+#include "yandytex.h"
 
 #define dump_ext_length     4
 #define edit_value          tex_edit_value
 
 extern char * replacement[];
-int    gargc;   /* number of args - set to zero after initialization */
+int    gargc;
 char **gargv;
 
 int jump_used = 0;
@@ -76,17 +76,11 @@ void t_open_in (void)
 {
   int i;
 
-  buffer[first] = 0;  /* In case there are no arguments.  */
+  buffer[first] = 0;
 
-#ifdef MSDOS
   if (gargc > optind && optind > 0)
   {
     for (i = optind; i < gargc; i++)
-#else
-  if (gargc > 1)
-  {
-    for (i = 1; i < gargc; i++)
-#endif
     {
       if (allow_quoted_names && strchr(gargv[i], ' ') != NULL)
       {
@@ -105,10 +99,10 @@ void t_open_in (void)
 
   /* Find the end of the buffer.  */
   for (last = first; buffer[last]; ++last)
-    ;
+    do_nothing();
 
   for (--last; last >= first && ISBLANK (buffer[last]) && buffer[last] != '\r'; --last)
-    ;
+    do_nothing();
 
   last++;
 
@@ -121,7 +115,7 @@ void t_open_in (void)
   }
 }
 
-static void catch_interrupt(int err)
+static void catch_interrupt (int err)
 {
   (void) err;
   (void) signal(SIGINT, SIG_IGN);
@@ -172,27 +166,24 @@ void fix_date_and_time (void)
   }
 
   {
-#ifdef MSDOS
-    if (!no_interrupts)
+#ifdef _WIN32
+    if (signal(SIGINT, catch_interrupt) == SIG_ERR)
     {
-      if (signal(SIGINT, catch_interrupt) == SIG_ERR)
-      {
-        puts(" CTRL-C handler not installed\n");
-#ifndef _WINDOWS
-        uexit(EXIT_FAILURE);  /* do we care when run as DLL ? */
-#endif
-      }
+      puts(" CTRL-C handler not installed");
+      uexit(EXIT_FAILURE);
     }
 #else
     void (*old_handler)();
 
-    if ((old_handler = signal (SIGINT, catch_interrupt)) != SIG_DFL)
-      (void) signal (SIGINT, old_handler);
+    old_handler = signal(SIGINT, catch_interrupt);
+
+    if (old_handler != SIG_DFL)
+      (void) signal(SIGINT, old_handler);
 #endif
   }
 }
 
-/* I/O for TeX and Metafont.  */
+/* I/O for TeX and Metafont. */
 void complain_line (FILE * output)
 {
   show_line("\n", 0);
@@ -207,7 +198,7 @@ void complain_line (FILE * output)
   puts("  (File may have a line termination problem.)");
 }
 
-void show_bad_line (FILE *output, int first, int last)
+void show_bad_line (FILE * output, int first, int last)
 {
   int i, c, d, ch;
   char *s = log_line;
@@ -325,15 +316,12 @@ boolean input_line_finish (void)
    We set `last' to `first' and return `false' if we get to eof.
    Otherwise, we return `true' and set last = first +
    length(line except trailing whitespace).  */
-/* texmfmp.c */
 
 boolean input_line (FILE * f)
 {
-//  int ch, flag;         /* for restrict_to_ascii case 94/Jan/21 */
-  char *u;            /* 1994/July/3 for key_replace */
+  char * u;        /* 1994/July/3 for key_replace */
   int i = '\0';
 
-/*  and here is the long way of doing this */
   last = first;
 /*  following is new version with tab expansion and key replacement */
 /*  may want to expand out separately for speed 1994/July/3 */
@@ -398,6 +386,7 @@ boolean input_line (FILE * f)
 #endif
       {
         buffer[last++] = (ASCII_code) *u++;
+
 #ifdef ALLOCATEBUFFER
         if (last >= current_buf_size)
         {
@@ -478,16 +467,7 @@ boolean input_line (FILE * f)
 /* This string specifies what the `e' option does in response to an
    error message.  */
 
-static char *edit_value = "c:\\yandy\\WinEdt\\WinEdt.exe [Open('%s');SelLine(%d,7)]";
-
-/* This procedure is due to sjc@s1-c.  TeX (or Metafont) calls it when
-   the user types `e' in response to an error, invoking a text editor on
-   the erroneous source file.  FNSTART is how far into STRINGPOOL the
-   actual filename starts; FNLENGTH is how long the filename is.
-   
-   See ../site.h for how to set the default, and how to override it.  */
-
-/* called from close_files_and_terminate in  tex9.c */
+static char * edit_value = "c:\\yandy\\WinEdt\\WinEdt.exe [Open('%s');SelLine(%d,7)]";
 
 void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, integer linenumber)
 {
@@ -503,8 +483,8 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
 
   if (log_opened)
   {
-    lgstart = str_start[texmf_log_name];
-    lglength = length(texmf_log_name);
+    lgstart = str_start[log_name];
+    lglength = length(log_name);
     log_file_name = stringpool + lgstart;
   }
   else
@@ -569,7 +549,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
         case 's':
           if (sdone)
           {
-#ifdef __WIN32
+#ifdef _WIN32
             sprintf(log_line, "! bad command syntax (%c).\n", 's'); 
             show_line(log_line, 1);
 #else
@@ -650,7 +630,7 @@ void call_edit (ASCII_code *stringpool, pool_pointer fnstart, integer fnlength, 
     sprintf(log_line, "! Error in call: %s\n", command);
     show_line(log_line, 1);
 
-#ifdef __WIN32
+#ifdef _WIN32
     if (errno != 0)
       perrormod("! DOS says");
 #endif
@@ -733,9 +713,9 @@ static int swap_items (char *p, int nitems, int size)
 #endif /* not WORDS_BIGENDIAN and not NO_FMTBASE_SWAP */
 
 #ifdef COMPACTFORMAT
-int do_dump(char *p, int item_size, int nitems, gzFile out_file)
+int do_dump (char *p, int item_size, int nitems, gzFile out_file)
 #else
-int do_dump(char *p, int item_size, int nitems, FILE *out_file)
+int do_dump (char *p, int item_size, int nitems, FILE *out_file)
 #endif
 {
 #if !defined (WORDS_BIGENDIAN) && !defined (NO_FMTBASE_SWAP)
@@ -748,10 +728,8 @@ int do_dump(char *p, int item_size, int nitems, FILE *out_file)
   if ((int) fwrite(p, item_size, nitems, out_file) != nitems)
 #endif
   {
-    show_line("\n", 0);
-    sprintf(log_line, "! Could not write %d %d-byte item%s.\n",
+    printf("\n! Could not write %d %d-byte item%s.\n",
                nitems, item_size, (nitems > 1) ? "s" : "");
-    show_line(log_line, 1);
     uexit(EXIT_FAILURE);
   }
 
@@ -764,9 +742,9 @@ int do_dump(char *p, int item_size, int nitems, FILE *out_file)
 }
 
 #ifdef COMPACTFORMAT
-int do_undump(char *p, int item_size, int nitems, gzFile in_file)
+int do_undump (char *p, int item_size, int nitems, gzFile in_file)
 #else
-int do_undump(char *p, int item_size, int nitems, FILE *in_file)
+int do_undump (char *p, int item_size, int nitems, FILE *in_file)
 #endif
 {
 #ifdef COMPACTFORMAT
@@ -775,10 +753,8 @@ int do_undump(char *p, int item_size, int nitems, FILE *in_file)
   if ((int) fread((void *) p, item_size, nitems, in_file) != nitems)
 #endif
   {
-    show_line("\n", 0);
-    sprintf(log_line, "! Could not read %d %d-byte item%s.\n",
+    printf("\n! Could not read %d %d-byte item%s.\n",
                nitems, item_size, (nitems > 1) ? "s" : "");
-    show_line(log_line, 1);
     uexit(EXIT_FAILURE);
   }
 

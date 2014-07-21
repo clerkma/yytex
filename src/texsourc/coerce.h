@@ -28,16 +28,13 @@ void slow_print_(integer s);
 #define slow_print(s) slow_print_((integer) (s))
 void print_nl (const char * s);
 void print_esc (const char * s);
-void print_the_digs_(eight_bits k);
-#define print_the_digs(k) print_the_digs_((eight_bits) (k))
+void print_the_digs (eight_bits k);
 void print_int_(integer n);
 #define print_int(n) print_int_((integer) (n))
 void print_cs_(integer p);
 #define print_cs(p) print_cs_((integer) (p))
-void sprint_cs_(pointer p);
-#define sprint_cs(p) sprint_cs_((pointer) (p))
-void print_file_name_(integer n, integer a, integer e);
-#define print_file_name(n, a, e) print_file_name_((integer) (n), (integer) (a), (integer) (e))
+void sprint_cs (pointer p);
+void print_file_name (integer n, integer a, integer e);
 void print_size_(integer s);
 #define print_size(s) print_size_((integer) (s))
 void print_write_whatsit_(const char * s, pointer p);
@@ -54,7 +51,7 @@ boolean str_eq_buf_(str_number s, integer k);
 #define str_eq_buf(s, k) str_eq_buf_((str_number) (s), (integer) (k))
 boolean str_eq_str_(str_number s, str_number t);
 #define str_eq_str(s, t) str_eq_str_((str_number) (s), (str_number) (t))
-boolean get_strings_started(void);
+boolean get_strings_started (void);
 void print_two_(integer n);
 #define print_two(n) print_two_((integer) (n))
 void print_hex_(integer n);
@@ -81,8 +78,7 @@ scaled xn_over_d_(scaled x, integer n, integer d);
 #define xn_over_d(x, n, d) xn_over_d_((scaled) (x), (integer) (n), (integer) (d))
 halfword badness_(scaled t, scaled s);
 #define badness(t, s) badness_((scaled) (t), (scaled) (s))
-void print_word_(memory_word w);
-#define print_word(w) print_word_((w))
+void print_word (memory_word w);
 void show_token_list_(integer p, integer q, integer l);
 #define show_token_list(p, q, l) show_token_list_((integer) (p), (integer) (q), (integer) (l))
 void runaway (void);
@@ -127,7 +123,7 @@ void print_fam_and_char_(pointer p);
 void print_delimiter_(pointer p);
 #define print_delimiter(p) print_delimiter_((pointer) (p))
 void print_subsidiary_data_(pointer p, ASCII_code c);
-#define print_subsidiary_data(p, c) print_subsidiary_data_((halfword) (p), (ASCII_code) (c))
+#define print_subsidiary_data(p, c) print_subsidiary_data_((pointer) (p), (ASCII_code) (c))
 void print_style_(integer c);
 #define print_style(c) print_style_((integer) (c))
 void print_skip_param_(integer n);
@@ -222,15 +218,12 @@ void conv_toks (void);
 pointer scan_toks (boolean macro_def, boolean xpand);
 void read_toks (integer n, pointer r);
 void pass_text (void);
-void change_if_limit_(small_number l, pointer p);
-#define change_if_limit(l, p) change_if_limit_((small_number) (l), (pointer) (p))
+void change_if_limit (small_number l, pointer p);
 void conditional (void);
 void begin_name (void);
-boolean more_name_(ASCII_code c);
-#define more_name(c) more_name_((ASCII_code) (c))
+boolean more_name (ASCII_code c);
 void end_name (void);
-void pack_file_name_(str_number n, str_number a, str_number e);
-#define pack_file_name(n, a, e) pack_file_name_((str_number) (n), (str_number) (a), (str_number) (e))
+void pack_file_name (str_number n, str_number a, str_number e);
 void pack_buffered_name_(small_number n, integer a, integer b);
 #define pack_buffered_name(n, a, b) pack_buffered_name_((small_number) (n), (integer) (a), (integer) (b))
 str_number make_name_string (void);
@@ -250,7 +243,7 @@ void start_input (void);
 internal_font_number read_font_info (pointer u, str_number nom, str_number arie, scaled s);
 void char_warning_(internal_font_number f, eight_bits c);
 #define char_warning(f, c) char_warning_((internal_font_number) (f), (eight_bits) (c))
-halfword new_character_(internal_font_number f, eight_bits c);
+pointer new_character_(internal_font_number f, eight_bits c);
 #define new_character(f, c) new_character_((internal_font_number) (f), (eight_bits) (c))
 void dvi_swap (void);
 void dvi_four_(integer x);
@@ -259,49 +252,35 @@ void dvi_pop_(integer l);
 #define dvi_pop(l) dvi_pop_((integer) (l))
 void dvi_font_def_(internal_font_number f);
 #define dvi_font_def(f) dvi_font_def_((internal_font_number) (f))
-void zmovement(scaled w, eight_bits o);
-#define movement(w, o) zmovement((scaled) (w), (eight_bits) (o))
+void movement (scaled w, eight_bits o);
 void special_out (pointer p);
 void hlist_out (void);
 void vlist_out (void);
-void ship_out_(pointer p);
-#define ship_out(p) ship_out_((pointer) (p))
+void ship_out (pointer p);
 void prune_movements (integer l);
 void write_out (pointer p);
 void out_what (pointer p);
-void scan_spec_(group_code c, boolean three_codes);
-#define scan_spec(c, three_codes) scan_spec_((group_code) (c), (boolean) (three_codes))
+void scan_spec (group_code c, boolean three_codes);
 pointer hpack_(pointer p, scaled w, small_number m);
 #define hpack(p, w, m) hpack_((pointer) (p), (scaled) (w), (small_number) (m))
 pointer vpackage_(pointer p, scaled h, small_number m, scaled l);
 #define vpackage(p, h, m, l) vpackage_((pointer) (p), (scaled) (h), (small_number) (m), (scaled) (l))
 void append_to_vlist (pointer b);
 pointer new_noad (void);
-pointer new_style_(small_number s);
-#define new_style(s) new_style_((small_number) (s))
+pointer new_style (small_number s);
 pointer new_choice (void);
 void show_info (void);
-pointer fraction_rule_(scaled t);
-#define fraction_rule(t) fraction_rule_((scaled) (t))
-pointer overbar_(pointer b, scaled k, scaled t);
-#define overbar(b, k, t) overbar_((pointer) (b), (scaled) (k), (scaled) (t))
-pointer char_box_(internal_font_number f, quarterword c);
-#define char_box(f, c) char_box_((internal_font_number) (f), (quarterword) (c))
-void stack_into_box_(pointer b, internal_font_number f, quarterword c);
-#define stack_into_box(b, f, c) stack_into_box_((pointer) (b), (internal_font_number) (f), (quarterword) (c))
-scaled height_plus_depth_(internal_font_number f, quarterword c);
-#define height_plus_depth(f, c) height_plus_depth_((internal_font_number) (f), (quarterword) (c))
-pointer var_delimiter_(pointer d, small_number s, scaled v);
-#define var_delimiter(d, s, v) var_delimiter_((pointer) (d), (small_number) (s), (scaled) (v))
-pointer rebox_(pointer b, scaled w);
-#define rebox(b, w) rebox_((pointer) (b), (scaled) (w))
-pointer math_glue_(pointer g, scaled m);
-#define math_glue(g, m) math_glue_((pointer) (g), (scaled) (m))
-void math_kern_(pointer p, scaled m);
-#define math_kern(p, m) math_kern_((pointer) (p), (scaled) (m))
+pointer fraction_rule (scaled t);
+pointer overbar (pointer b, scaled k, scaled t);
+pointer char_box (internal_font_number f, quarterword c);
+void stack_into_box (pointer b, internal_font_number f, quarterword c);
+scaled height_plus_depth (internal_font_number f, quarterword c);
+pointer var_delimiter (pointer d, small_number s, scaled v);
+pointer rebox (pointer b, scaled w);
+pointer math_glue (pointer g, scaled m);
+void math_kern (pointer p, scaled m);
 void flush_math (void);
-pointer clean_box_(pointer p, small_number s);
-#define clean_box(p, s) clean_box_((pointer) (p), (small_number) (s))
+pointer clean_box (pointer p, small_number s);
 void fetch_(pointer a);
 #define fetch(a) fetch_((pointer) (a))
 void make_over (pointer q);
@@ -327,15 +306,12 @@ void fin_row (void);
 void fin_align (void);
 void align_peek (void);
 pointer finite_shrink (pointer p);
-void try_break_(integer pi, small_number breaktype);
-#define try_break(pi, breaktype) try_break_((integer) (pi), (small_number) (breaktype))
+void try_break (integer pi, small_number breaktype);
 void post_line_break (integer final_widow_penalty);
-small_number reconstitute_(small_number j, small_number n, halfword bchar, halfword hchar);
-#define reconstitute(j, n, bchar, hchar) reconstitute_((small_number) (j), (small_number) (n), (halfword) (bchar), (halfword) (hchar))
+small_number reconstitute (small_number j, small_number n, halfword bchar, halfword hchar);
 void hyphenate (void);
-trie_op_code new_trie_op_(small_number d, small_number n, trie_op_code v);
-#define new_trie_op(d, n, v) new_trie_op_((small_number) (d), (small_number) (n), (trie_op_code) (v))
-trie_pointer trie_node_(trie_pointer p);
+trie_op_code new_trie_op (small_number d, small_number n, trie_op_code v);
+trie_pointer trie_node (trie_pointer p);
 trie_pointer compress_trie (trie_pointer p);
 void first_fit (trie_pointer p);
 void trie_pack (trie_pointer p);
@@ -348,8 +324,7 @@ pointer prune_page_top (pointer p);
 pointer vert_break (pointer p, scaled h, scaled d);
 pointer vsplit (eight_bits n, scaled h);
 void print_totals (void);
-void freeze_page_specs_(small_number s);
-#define freeze_page_specs(s) freeze_page_specs_((small_number) (s))
+void freeze_page_specs (small_number s);
 void box_error (eight_bits n);
 void ensure_vbox_(eight_bits n);
 #define ensure_vbox(n) ensure_vbox_((eight_bits) (n))
@@ -391,12 +366,10 @@ void noalign_error (void);
 void omit_error (void);
 void do_endv (void);
 void cs_error (void);
-void push_math_(group_code c);
-#define push_math(c) push_math_((group_code) (c))
+void push_math (group_code c);
 void init_math (void);
 void start_eq_no (void);
-void scan_math_(pointer p);
-#define scan_math(p) scan_math_((pointer) (p))
+void scan_math (pointer p);
 void set_math_char_(integer c);
 #define set_math_char(c) set_math_char_((integer) (c))
 void math_limit_switch(void);
@@ -405,8 +378,7 @@ void scan_delimiter_(pointer p, boolean r);
 void math_radical (void);
 void math_ac (void);
 void append_choices (void);
-pointer fin_mlist_(pointer p);
-#define fin_mlist(p) fin_mlist_((pointer) (p))
+pointer fin_mlist (pointer p);
 void build_choices (void);
 void sub_sup (void);
 void math_fraction (void);
@@ -432,8 +404,7 @@ void show_whatever (void);
 void store_fmt_file (void);
 void new_whatsit_(small_number s, small_number w);
 #define new_whatsit(s, w) new_whatsit_((small_number) (s), (small_number) (w))
-void new_write_whatsit_(small_number w);
-#define new_write_whatsit(w) new_write_whatsit_((small_number) (w))
+void new_write_whatsit (small_number w);
 void do_extension (void);
 void fix_language (void);
 void handle_right_brace (void);
@@ -446,6 +417,7 @@ void final_cleanup (void);
 void init_prim (void);
 void debug_help (void);
 void fix_date_and_time (void);
+void print_banner (void);
 
 int main_program (void);
 int main_init (int ac, char ** av);

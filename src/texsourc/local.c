@@ -18,7 +18,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 #define USEOUREALLOC
 #define USEMEMSET
@@ -41,7 +41,22 @@ const char * compiletime  = __TIME__;
 const char * compiledate  = __DATE__;
 const char * yandyversion = "2.3.0";
 const char * application  = "Y&Y TeX";
-const char * tex_version  = "This is TeX, Version 3.14159265";
+const char * banner       = "This is TeX, Version 3.14159265";
+
+void print_banner (void)
+{
+  char dist_ver[256];
+#ifdef _WIN32
+#ifdef _WIN64
+  sprintf(dist_ver, "%s (%s %s/Win64)", banner, application, yandyversion);
+#else
+  sprintf(dist_ver, "%s (%s %s/Win32)", banner, application, yandyversion);
+#endif
+#else
+  sprintf(dist_ver, "%s (%s %s/Linux)", banner, application, yandyversion);
+#endif
+  prints(dist_ver);
+}
 
 clock_t start_time, main_time, finish_time;
 
@@ -51,15 +66,14 @@ char * aux_directory = "";
 char * fmt_directory = "";
 char * pdf_directory = "";
 
-char log_line[MAXLINE]; // used also in tex9.c
+char log_line[256];
 
-int mem_spec_flag     = 0;    /* non-zero if `-m=...' was used */ 
-int format_spec       = 0;    /* non-zero if a format specified on command line */
-int closed_already    = 0;    /* make sure we don't try this more than once */
-boolean reorder_arg_flag = true; /* put command line flags/arguments first */
+boolean mem_spec_flag     = false;
+boolean format_spec       = false;
+int closed_already        = 0;     /* make sure we don't try this more than once */
+boolean reorder_arg_flag  = true;  /* put command line flags/arguments first */
 
 /* Mapping from Windows ANSI to DOS code page 850 96/Jan/20 */
-/* Used in tex0.c with wintodos[c-128]                      */
 
 unsigned char wintodos[128] =
 {
@@ -84,52 +98,33 @@ unsigned char wintodos[128] =
 void show_usage (void)
 {
   printf("\n"
-      " Useage: yanytex [OPTION]... [+format_file] [tex_file]\n\n"
-      "    --help    -?\n"
-      "        show this usage summary\n"
-      "    --initex  -i\n"
-      "        start up as iniTeX (create format file)\n"
-      "    --verbose -v\n"
-      "        be verbose (show implementation version number)\n"
-      "    -n    do not allow `non ASCII' characters in input files (complain instead)\n"
-      "    --showhex -w\n"
-      "        do not show `non ASCII' characters in hexadecimal (show as is)\n"
-      "    -d    do not allow DOS style file names - i.e. do not convert \\ to /\n"
-      "    -r    do not allow Mac style termination - i.e. do not convert \\r to \\n\n"
-      "    --patterns    -p\n"
-      "        allow use of \\patterns after loading format (iniTeX only)\n"
-      "    --knuthify    -K\n"
-      "        disable all extensions to basic TeX\n"
-      "    --main-memory -m\n"
-      "        initial main memory size in kilo words (iniTeX only)\n"
-      "    --hyph-size   -e\n"
-      "        hyphenation exception dictionary size (iniTeX only)\n"
-      "    --trie-size   -h\n"
-      "        hyphenation pattern trie size (iniTeX only)\n"
-      "    --xchr-file   -x\n"
-      "        use `non ASCII' character mapping (xchr[]) defined in file\n"
-      "    --key-file    -k\n"
-      "        use `key replacement' defined in file\n"
-      "    --dvi-dir     -o\n"
-      "        write DVI file in specified directory (default current directory)\n"
-      "    --log-dir     -l\n"
-      "        write LOG file in specified directory (default current directory)\n"
-      "    --aux-dir     -a\n"
-      "        write AUX file in specified directory (default current directory)\n");
-
-#ifndef _WINDOWS
-  uexit(EXIT_FAILURE);     // has this been setup yet ???
-#endif
+      "Useage: yanytex [OPTION]... [+format_file] [tex_file]\n\n"
+      "--help       -?  show this usage summary\n"
+      "--initex     -i  start up as initex (create format file)\n"
+      "--verbose    -v  be verbose (show implementation version number)\n"
+      "--ascii      -n  do not allow `non ASCII' characters in input files\n"
+      "                    (complain instead)\n"
+      "--showhex    -w  do not show `non ASCII' characters in hexadecimal\n"
+      "                    (show as is)\n"
+      "--nodos      -d  do not allow DOS style file names - i.e. do not convert\n"
+      "                    \\ to /\n"
+      "--nomac      -r  do not allow Mac style termination - i.e. do not convert\n"
+      "                    \\r to \\n\n"
+      "--patterns   -p  allow use of \\patterns after loading format (initex only)\n"
+      "--knuthify   -K  disable all extensions to basic TeX\n"
+      "--main-mem   -m  initial main memory size in kilo words (initex only)\n"
+      "--hyph-size  -e  hyphenation exception dictionary size (initex only)\n"
+      "--trie-size  -h  hyphenation pattern trie size (initex only)\n"
+      "--xchr-file  -x  use `non ASCII' character mapping (xchr[]) defined in file\n"
+      "--key-file   -k  use `key replacement' defined in file\n"
+      "--dvi-dir    -o  write DVI file in specified directory (default '.')\n"
+      "--log-dir    -l  write LOG file in specified directory (default '.')\n"
+      "--aux-dir    -a  write AUX file in specified directory (default '.')\n");
+  uexit(EXIT_FAILURE);
 }
 
-/* -z    do not discard control-Z at end of input file (treat as character)\n\ */
-
-/* \t-d\tallow DOS style file names - i.e. convert \\ to / \n\ */
-/* \t\t(applies to file name and format file name, if present)\n\ */
-/* \t-r\tallow Mac style line termination - i.e. convert \\r to \\n \n\ */
-
 // Sep 27 1990 => 1990 Sep 27
-// 012456789      0123456789
+// 0123456789     0123456789
 void scivilize (char * date)
 {
   int k;
@@ -146,7 +141,7 @@ void scivilize (char * date)
   date[4] = ' ';
 
   if (date[9] == ' ')
-    date[9] = '0'; /* replace space by '0' */
+    date[9] = '0';
 }
 
 // Thu Sep 27 06:26:35 1990 => 1990 Sep 27 06:26:35
@@ -155,10 +150,10 @@ void lcivilize (char * date)
   int k;
   char pyear[6];
 
-  strcpy (pyear, date + 20);
+  strcpy(pyear, date + 20);
 
   for (k = 18; k >= 0; k--)
-    date[k+1] = date[k];
+    date[k + 1] = date[k];
 
   date[20] = '\0';
 
@@ -168,16 +163,14 @@ void lcivilize (char * date)
   date[4] = ' ';
 }
 
-// now writes result into given buffer
-void stamp_it (char *s)
+void stamp_it (char * s)
 {
   char date[11 + 1];
 
   strcpy(date, compiledate);
   scivilize(date);
-  sprintf(s, "%s %s ", application, yandyversion);
-  s += strlen(s);
-  sprintf(s, "(compiled time: %s %s %s)", date, compiletime, compiler);
+  sprintf(s, "%s %s (compiled time: %s %s with %s)",
+    application, yandyversion, date, compiletime, compiler);
   s += strlen(s);
 }
 
@@ -188,7 +181,7 @@ void read_xchr_sub (FILE * xchr_input)
 {
   char buffer[file_name_size];
   int k, from, to, count = 0;
-  char *s;
+  char * s;
 
   memset(xchr, NOTDEF, MAXCHRS);
   memset(xord, NOTDEF, MAXCHRS);
@@ -247,7 +240,7 @@ void read_xchr_sub (FILE * xchr_input)
   }
 }
 
-char *replacement[MAXCHRS];     /* pointers to replacement strings */
+char * replacement[MAXCHRS];     /* pointers to replacement strings */
 
 void read_repl_sub (FILE * repl_input)
 {
@@ -255,7 +248,7 @@ void read_repl_sub (FILE * repl_input)
   char buffer[file_name_size];
   char charname[128];
   int charnum[10];
-  char *s, *t;
+  char * s, * t;
   
   memset(replacement, 0, MAXCHRS * sizeof(replacement[0]));
 
@@ -400,14 +393,14 @@ int read_xchr_file (char *filename, int flag, char *argv[])
 
   if (xchr_input == NULL)
   {
-    strcpy (infile, argv[0]);     /* try TeX program path */
+    strcpy(infile, argv[0]);     /* try TeX program path */
 
     if ((s = strrchr (infile, '\\')) != NULL)
-      *(s+1) = '\0';
+      *(s + 1) = '\0';
     else if ((s = strrchr (infile, '/')) != NULL)
-      *(s+1) = '\0';
+      *(s + 1) = '\0';
     else if ((s = strrchr (infile, ':')) != NULL)
-      *(s+1) = '\0';
+      *(s + 1) = '\0';
 
     strcat(infile, "keyboard\\");
     strcat(infile, filename);
@@ -433,13 +426,14 @@ int read_xchr_file (char *filename, int flag, char *argv[])
       }
     }
   }
-/*  Note: can't look in TeX source file dir, since that is not known yet */
+
+  /* Note: can't look in TeX source file dir, since that is not known yet */
   if (xchr_input == NULL)
   {
     printf("ERROR: Sorry, cannot find %s file %s",
         flag ? " xchr[]" : "key mapping", filename);
     perrormod (filename);
-    return 0;         // failed
+    return 0;
   }
 
   if (flag == 0)
@@ -455,8 +449,6 @@ int read_xchr_file (char *filename, int flag, char *argv[])
 /* need to also set `key_replace' here based on command line */
 /* need to also allocate `buffercopy' here and free at end */
 /* need to call `readreplace' in appropriate place */
-
-/* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
 #define MAXSPLITS 3
 
@@ -478,7 +470,7 @@ void show_maximums (FILE * output)
 /* also tries _expand first, which can avoid address growth ... */
 
 #ifdef USEOUREALLOC 
-void *ourrealloc (void *old, size_t new_size)
+void * ourrealloc (void * old, size_t new_size)
 {
   void * mnew;
   size_t old_size, overlap;
@@ -566,9 +558,9 @@ void update_statistics (long address, int size, int old_size)
 
 void probe_memory (void)
 {
-  char *s = (char *) malloc(sizeof(void *)); /* get current top address */
+  char * s = (char *) malloc(sizeof(void *));
   free(s);
-  update_statistics ((long) s, 0, 0); /* show where we are */
+  update_statistics ((long) s, 0, 0);
 }
 
 void probe_show (void)
@@ -649,7 +641,6 @@ int realloc_hyphen (int hyphen_prime)
 /*  need not/cannot preserve old contents when hyphen prime is changed */
 /*  if (hyph_list != NULL) free(hyph_list); */
 /*  if (hyph_word != NULL) free(hyph_word); */
-/*  important + 1 since str_number hyph_word[hyphen_prime + 1]  in original etc. */
   nw = (hyphen_prime + 1) * sizeof(str_number);
   nl = (hyphen_prime + 1) * sizeof(halfword);
   n = nw + nl;
@@ -730,7 +721,7 @@ memory_word * allocate_main_memory (int size)
   mem_max = mem_top;
   mem_start = 0;     /* bottom of memory allocated by system */
   mem_min = 0;       /* bottom of area made available to TeX */
-  n = (mem_max - mem_start + 1) * sizeof (memory_word); /* 256k * 8 = 2000 k */
+  n = (mem_max - mem_start + 1) * sizeof (memory_word);
 
   if (trace_flag)
     trace_memory("main memory", n);
@@ -740,7 +731,6 @@ memory_word * allocate_main_memory (int size)
   if (main_memory == NULL)
   {
     memory_error("initial main memory", n);
-//    exit (1);
     return NULL;
   }
 
@@ -785,7 +775,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
 
   if (is_initex)
   {
-    puts("ERROR: Cannot extent main memory in iniTeX");
+    puts("ERROR: Cannot extent main memory in initex");
 
     if (!knuth_flag)
       puts("Please use `-m=...' on command line");
@@ -897,9 +887,7 @@ memory_word * realloc_main (int lo_size, int hi_size)
   current_mem_size = new_size;
 
   if (current_mem_size != mem_max - mem_start)
-  {
     puts("ERROR: Impossible Memory Error");
-  }
 
   if (mem_start != 0)
     mem = main_memory - mem_start;
@@ -916,7 +904,6 @@ memory_word * realloc_main (int lo_size, int hi_size)
 #ifdef ALLOCATEFONT
 int current_font_mem_size = 0;
 
-/* fmemoryword can be either halfword or memory_word */
 memory_word * realloc_font_info (int size)
 {
   memory_word * new_font_info = NULL;
@@ -927,16 +914,16 @@ memory_word * realloc_font_info (int size)
   if (trace_flag)
     printf("Old Address %s == %p\n", "font_info", font_info);
 
-/*  during initial allocation, font_info == NULL - realloc acts like malloc */
-/*  during initial allocation current_font_mem_size == 0 */
+  /* during initial allocation, font_info == NULL - realloc acts like malloc */
+  /* during initial allocation current_font_mem_size == 0 */
   if (current_font_mem_size == font_mem_size)  /* if we REALLY run up to limit */
   {
-/*    memory_error("font", (font_mem_size + 1) * sizeof(memory_word)); */
+    /* memory_error("font", (font_mem_size + 1) * sizeof(memory_word)); */
     return font_info;    /* pass it back to TeX 99/Fabe/4 */
   }
-/*  try and prevent excessive frequent reallocations */
-/*  while avoiding over allocation by too much */
-/*  min_size = current_font_mem_size / 2; */
+  /* try and prevent excessive frequent reallocations */
+  /* while avoiding over allocation by too much */
+  /* min_size = current_font_mem_size / 2; */
   min_size = current_font_mem_size / 100 * percent_grow;
 
   if (size < min_size)
@@ -998,7 +985,7 @@ packed_ASCII_code * realloc_str_pool (int size)
   int k, min_size;
   int new_size = 0;
   int n = 0;
-  packed_ASCII_code *newstrpool = NULL;
+  packed_ASCII_code * new_str_pool = NULL;
 
   if (trace_flag)
     printf("Old Address %s == %p\n", "string pool", str_pool);
@@ -1030,9 +1017,9 @@ packed_ASCII_code * realloc_str_pool (int size)
     if (trace_flag)
       trace_memory("str_pool", n);
 
-    newstrpool = (packed_ASCII_code *) REALLOC (str_pool, n); /* 95/Sep/24 */
+    new_str_pool = (packed_ASCII_code *) REALLOC (str_pool, n); /* 95/Sep/24 */
 
-    if (newstrpool != NULL)
+    if (new_str_pool != NULL)
       break;    /* did we get it ? */
 
     if (current_pool_size == 0)
@@ -1041,13 +1028,13 @@ packed_ASCII_code * realloc_str_pool (int size)
     size = size / 2;          /* else can retry smaller */
   }
 
-  if (newstrpool == NULL)
+  if (new_str_pool == NULL)
   {
     memory_error("string pool", n);
     return str_pool;           /* try and continue !!! */
   }
 
-  str_pool = newstrpool;
+  str_pool = new_str_pool;
   update_statistics ((long) str_pool, n, current_pool_size);
   current_pool_size = new_size;
 
@@ -1064,7 +1051,7 @@ packed_ASCII_code * realloc_str_pool (int size)
 #ifdef ALLOCATESTRING
 int current_max_strings = 0;
 
-pool_pointer *realloc_str_start (int size)
+pool_pointer * realloc_str_start (int size)
 {
   int k, min_size;
   int n = 0;
@@ -1139,16 +1126,16 @@ int allocate_ini (int size)
 {
   int n, nl, no, nc, nr, nh, nt;
 
-  nh = nr = nl = (size + 1) *  sizeof(trie_pointer);
-  no = (size + 1) *  sizeof(trie_op_code);
-  nc = (size + 1) *  sizeof(packed_ASCII_code);
-/*    nt = (size + 1) *  sizeof(boolean); */
-  nt = (size + 1) *  sizeof(char);
+  nh = (size + 1) * sizeof(trie_pointer);
+  nr = (size + 1) * sizeof(trie_pointer);
+  nl = (size + 1) * sizeof(trie_pointer);
+  no = (size + 1) * sizeof(trie_op_code);
+  nc = (size + 1) * sizeof(packed_ASCII_code);
+  nt = (size + 1) * sizeof(char);
   n = nl + no + nc + nr + nh + nt;
-/*    n = (size + 1) * (sizeof(packed_ASCII_code) + sizeof(trie_op_code) +
-      3 *  sizeof(trie_pointer) + sizeof (char)); */
+
   if (trace_flag)
-    trace_memory ("iniTeX hyphen trie", n);
+    trace_memory ("initex hyphen trie", n);
 
   trie_l = (trie_pointer *) malloc (roundup(nl));
   trie_o = (trie_op_code *) malloc (roundup(no));
@@ -1160,15 +1147,14 @@ int allocate_ini (int size)
   if (trie_c == NULL || trie_o == NULL || trie_l == NULL || trie_r == NULL ||
       trie_hash == NULL || trie_taken == NULL)
   {
-    memory_error("iniTeX hyphen trie", n);
-//      exit (1);           /* serious error */
+    memory_error("initex hyphen trie", n);
     return -1;
   }
   
   if (trace_flag)
   {
-    printf("Addresses trie_l %p trie_o %p trie_c %p\n", trie_l, trie_o, trie_c);
-    printf("Addresses trie_r %p trie_hash %p trie_taken %p\n", trie_r, trie_hash, trie_taken);
+    printf("Addresses: trie_l %p trie_o %p trie_c %p\n", trie_l, trie_o, trie_c);
+    printf("Addresses: trie_r %p trie_hash %p trie_taken %p\n", trie_r, trie_hash, trie_taken);
   }
 
   update_statistics ((long) trie_l, nl, 0);
@@ -1177,7 +1163,7 @@ int allocate_ini (int size)
   update_statistics ((long) trie_r, nr, 0);
   update_statistics ((long) trie_hash, nh, 0);
   update_statistics ((long) trie_taken, nt, 0);
-/*    trie_size = size; */ /* ??? */
+
   if (trace_flag)
     probe_show();
 
@@ -1188,7 +1174,7 @@ int allocate_ini (int size)
 #ifdef ALLOCATESAVESTACK
 int current_save_size = 0;
 
-memory_word *realloc_save_stack (int size)
+memory_word * realloc_save_stack (int size)
 {
   int k, min_size;
   int n = 0, new_size = 0;
@@ -1197,11 +1183,9 @@ memory_word *realloc_save_stack (int size)
   if (trace_flag)
     printf("Old Address %s == %p\n", "save stack", save_stack);
 
-  if (current_save_size == save_size)  /* arbitrary limit */
+  if (current_save_size == save_size)
   {
-/*    memory_error ("save stack", (save_size + 1) * sizeof(memory_word)); */
-/*    exit (1); */
-    return save_stack;       /* let TeX handle the error */
+    return save_stack; /* let TeX handle the error */
   }
 
   min_size =  current_save_size / 100 * percent_grow;
@@ -1219,7 +1203,7 @@ memory_word *realloc_save_stack (int size)
     if (new_size > save_size)
       new_size = save_size;
 
-    n = (new_size + 1) * sizeof (memory_word); /* save_stack[save_size + 1] */
+    n = (new_size + 1) * sizeof (memory_word);
 
     if (trace_flag)
       trace_memory("save_stack", n);
@@ -1237,7 +1221,7 @@ memory_word *realloc_save_stack (int size)
 
   if (new_save_stack == NULL)
   {
-    memory_error("save stack", n);
+    memory_error("save_stack", n);
     return save_stack;           /* try and continue !!! */
   }
 
@@ -1261,7 +1245,7 @@ memory_word *realloc_save_stack (int size)
 #ifdef ALLOCATEINPUTSTACK
 int current_stack_size = 0;       /* input stack size */
 
-in_state_record *realloc_input_stack (int size)
+in_state_record * realloc_input_stack (int size)
 {
   int k, min_size;
   int n = 0, new_size = 0;
@@ -1270,10 +1254,8 @@ in_state_record *realloc_input_stack (int size)
   if (trace_flag)
     printf("Old Address %s == %p\n", "input stack", input_stack);
 
-  if (current_stack_size == stack_size)  /* arbitrary limit */
+  if (current_stack_size == stack_size)
   {
-/*    memory_error ("input stack", (stack_size + 1) * sizeof(in_state_record)); */
-/*    exit (1); */
     return input_stack;
   }
 
@@ -1292,7 +1274,7 @@ in_state_record *realloc_input_stack (int size)
     if (new_size > stack_size)
       new_size = stack_size;
 
-    n = (new_size + 1) * sizeof (in_state_record); /* input_stack[stack_size + 1] */
+    n = (new_size + 1) * sizeof(in_state_record);
 
     if (trace_flag)
       trace_memory("input_stack", n);
@@ -1334,7 +1316,7 @@ in_state_record *realloc_input_stack (int size)
 #ifdef ALLOCATENESTSTACK
 int current_nest_size = 0;        /* current nest size */
 
-list_state_record *realloc_nest_stack (int size)
+list_state_record * realloc_nest_stack (int size)
 {
   int k, min_size;
   int n = 0, new_size = 0;
@@ -1343,11 +1325,9 @@ list_state_record *realloc_nest_stack (int size)
   if (trace_flag)
     printf("Old Address %s == %p\n", "nest stack", nest);
 
-  if (current_nest_size == nest_size)  /* arbitrary limit */
+  if (current_nest_size == nest_size)
   {
-/*    memory_error ("nest stack", (nest_size + 1) * sizeof(list_state_record)); */
-/*    exit (1); */
-    return nest;        /* let TeX handle the error */
+    return nest;
   }
 
   min_size =  current_nest_size / 100 * percent_grow;
@@ -1365,7 +1345,7 @@ list_state_record *realloc_nest_stack (int size)
     if (new_size > nest_size)
       new_size = nest_size;
 
-    n = (new_size + 1) * sizeof (list_state_record); /* nest[nest_size + 1] */
+    n = (new_size + 1) * sizeof (list_state_record);
 
     if (trace_flag)
       trace_memory("nest stack", n);
@@ -1416,11 +1396,9 @@ halfword *realloc_param_stack (int size)
   if (trace_flag)
     printf("Old Address %s == %p\n", "param stack", param_stack);
 
-  if (current_param_size == param_size) /* arbitrary limit */
+  if (current_param_size == param_size)
   {
-/*    memory_error ("param stack", (param_size + 1) * sizeof(halfword)); */
-/*    exit (1); */
-    return param_stack;        /* let TeX handle the error */
+    return param_stack;
   }
 
   min_size =  current_param_size / 100 * percent_grow;
@@ -1491,9 +1469,7 @@ ASCII_code * realloc_buffer (int size)
 
   if (current_buf_size == buf_size)
   {
-/*    memory_error ("buffer", buf_size); */
-/*    exit (1); */
-    return buffer;    /* pass it back to TeX 99/Fabe/4 */
+    return buffer;
   }
 
   min_size =  current_buf_size / 100 * percent_grow;
@@ -1566,19 +1542,19 @@ int allocate_memory (void)
 #ifdef ALLOCATEINPUTSTACK
   input_stack = NULL;
   current_stack_size = 0;
-  input_stack = realloc_input_stack (initial_stack_size);  /* + 1 */
+  input_stack = realloc_input_stack(initial_stack_size);
 #endif
 
 #ifdef ALLOCATENESTSTACK
   nest = NULL;
   current_nest_size = 0;
-  nest = realloc_nest_stack (initial_nest_size);  /* + 1 */
+  nest = realloc_nest_stack(initial_nest_size);
 #endif
 
 #ifdef ALLOCATEPARAMSTACK
   param_stack = NULL;
   current_param_size = 0;
-  param_stack = realloc_param_stack (initial_param_size); /* + 1 */
+  param_stack = realloc_param_stack(initial_param_size);
 #endif
 
 #ifdef ALLOCATESAVESTACK
@@ -1603,9 +1579,9 @@ int allocate_memory (void)
   if (is_initex)
   {
     if (trace_flag)
-      puts("ini TeX pool and string allocation\n");
+      puts("ini TeX pool and string allocation");
 
-    str_pool = realloc_str_pool(initial_pool_size); 
+    str_pool = realloc_str_pool(initial_pool_size);
     str_start = realloc_str_start(initial_max_strings);
   }
 #endif
@@ -1614,10 +1590,10 @@ int allocate_memory (void)
 #ifdef ALLOCATEFONT
   font_info = NULL;
   current_font_mem_size = 0;
-/*  if not iniTeX, then do initial allocation on fmt file read in itex.c */
-/*  if ini-TeX we need to do it here - no format file read later */
+/* if not iniTeX, then do initial allocation on fmt file read in itex.c */
+/* if ini-TeX we need to do it here - no format file read later */
   if (is_initex)
-    font_info = realloc_font_info (initial_font_mem_size);
+    font_info = realloc_font_info(initial_font_mem_size);
 #endif
 
 #ifdef ALLOCATEMAIN
@@ -1626,16 +1602,15 @@ int allocate_memory (void)
   mem_min = mem_bot;        /* just to avoid complaints in texbody */
   mem_top = mem_initex;
   mem_max = mem_top;
-/*  allocate main memory here if this is iniTeX */
-/*  otherwise wait for format undumping in itex.c ... */  
+/* allocate main memory here if this is iniTeX */
+/* otherwise wait for format undumping in itex.c ... */
   if (is_initex)
   {
-/*    avoid this if format specified on command line ??? */
-/*    allocate_main_memory(mem_initex); */   /* made variable ! */
-    mem = allocate_main_memory(mem_initex);  /* made variable ! */
+    /* avoid this if format specified on command line ??? */
+    mem = allocate_main_memory(mem_initex); /* made variable ! */
+
     if (mem == NULL)
-//      exit (1);
-      return -1;            /* serious error */
+      return -1;
   }
 #endif
 
@@ -1643,9 +1618,9 @@ int allocate_memory (void)
 #ifdef ALLOCATEHYPHEN
   hyph_word = NULL;
   hyph_list = NULL;
-/*  this will be overridden later by what is in format file */
+/* this will be overridden later by what is in format file */
   hyphen_prime = default_hyphen_prime;
-/*  non ini-TeX use assumes format will be read and that specifies size */
+/* non ini-TeX use assumes format will be read and that specifies size */
   if (is_initex)
   {
     if (new_hyphen_prime)
@@ -1656,9 +1631,9 @@ int allocate_memory (void)
   }
 #endif
 
-/*  now for memory for the part of the hyphenation stuff that always needed */
-/*  if iniTeX, need to allocate pre-determined fixed amount - trie_size */
-/*  if iniTeX not selected, allocate only enough later - undump in itex.c ! */
+/* now for memory for the part of the hyphenation stuff that always needed */
+/* if iniTeX, need to allocate pre-determined fixed amount - trie_size */
+/* if iniTeX not selected, allocate only enough later - undump in itex.c ! */
 #ifdef ALLOCATETRIES
   if (is_initex)
   {
@@ -1667,7 +1642,7 @@ int allocate_memory (void)
   }
 #endif
 
-/*  now for memory for hyphenation stuff needed only when running iniTeX */
+/* now for memory for hyphenation stuff needed only when running iniTeX */
 #ifdef ALLOCATEINI
   if (is_initex)
   {
@@ -1676,9 +1651,12 @@ int allocate_memory (void)
   }
   else
   {
-    trie_l = trie_r = trie_o = trie_hash = NULL; /* (trie_size + 1) * integer */
-    trie_c = NULL;       /* (trie_size + 1) * char */
-    trie_taken = NULL;     /* (trie_size + 1) * boolean */
+    trie_l = NULL;
+    trie_r = NULL;
+    trie_o = NULL;
+    trie_hash = NULL;
+    trie_c = NULL;
+    trie_taken = NULL;
   }
 #endif
 
@@ -1707,7 +1685,7 @@ int free_memory (void)
     puts("Freeing memory again");
   }
 
-/*  only free memory if safe ... additional check */
+/* only free memory if safe ... additional check */
 #ifdef ALLOCATEINI
   if (is_initex)
   {
@@ -1730,7 +1708,9 @@ int free_memory (void)
       free(trie_l);
 
     trie_taken = NULL;
-    trie_hash = trie_l = trie_r = NULL;
+    trie_hash = NULL;
+    trie_l = NULL;
+    trie_r = NULL;
     trie_c = NULL;
     trie_o = NULL;
   }
@@ -1738,16 +1718,17 @@ int free_memory (void)
 
 #ifdef ALLOCATETRIES
   if (trie_trc != NULL)
-    free (trie_trc);
+    free(trie_trc);
 
   if (trie_tro != NULL)
-    free (trie_tro);
+    free(trie_tro);
 
   if (trie_trl != NULL)
-    free (trie_trl);
+    free(trie_trl);
 
   trie_trc = NULL;
-  trie_tro = trie_trl = NULL;
+  trie_tro = NULL;
+  trie_trl = NULL;
 #endif
 
 #ifdef ALLOCATEHYPHEN
@@ -1901,7 +1882,7 @@ void reorderargs (int ac, char **av)
   if (trace_flag)
   {
     show_line(takeargs, 0);
-    show_char('\n');
+    wterm_cr();
   }
   
   n = 1;
@@ -1962,7 +1943,7 @@ void reorderargs (int ac, char **av)
   }
 }
 
-int test_align (long address, int size, char *str)
+int test_align (long address, int size, const char *str)
 {
   int n;
 
@@ -1985,7 +1966,7 @@ void check_fixed_align (int flag)
 
   if (test_align ((long) &mem_top, 4, "FIXED ALIGNMENT"))
   {
-    puts("PLEASE RECOMPILE ME!\n");
+    puts("PLEASE RECOMPILE ME!");
   }
 
 #ifdef CHECKALIGNMENT
@@ -1997,8 +1978,8 @@ void check_fixed_align (int flag)
   test_align ((long) &mem_min, 4, "mem_min");
   test_align ((long) &bad, 4, "bad");
   test_align ((long) &trie_size, 4, "trie_size");
-  test_align ((long) &xord, sizeof(xord[0]), "xord"); /* no op */
-  test_align ((long) &xchr, sizeof(xchr[0]), "xchr"); /* no op */
+  test_align ((long) &xord, sizeof(xord[0]), "xord");
+  test_align ((long) &xchr, sizeof(xchr[0]), "xchr");
   test_align ((long) &name_length, 4, "name_length");
   test_align ((long) &first, 4, "first");
   test_align ((long) &last, 4, "last");
@@ -2034,11 +2015,10 @@ void check_fixed_align (int flag)
   test_align ((long) &depth_threshold, 4, "depth_threshold");
   test_align ((long) &breadth_max, 4, "breadth_max");
   test_align ((long) &nest, sizeof(nest[0]), "nest");
-/*  test_align ((long) &xeq_level, sizeof(xeq_level[0]), "xeq_level"); */
+  // test_align ((long) &xeq_level, sizeof(xeq_level[0]), "xeq_level");
   test_align ((long) &zzzad, sizeof(zzzad[0]), "zzzad");
-/*  test_align ((long) &hash, sizeof(hash[0]), "hash"); */
+  // test_align ((long) &hash, sizeof(hash[0]), "hash");
   test_align ((long) &zzzae, sizeof(zzzae[0]), "zzzae");
-
   test_align ((long) &save_stack, sizeof(save_stack[0]), "save_stack");
   test_align ((long) &input_stack, sizeof(input_stack[0]), "input_stack");
   test_align ((long) &input_file, sizeof(input_file[0]), "input_file");
@@ -2047,7 +2027,6 @@ void check_fixed_align (int flag)
   test_align ((long) &cur_mark, sizeof(cur_mark[0]), "cur_mark");
   test_align ((long) &pstack, sizeof(pstack[0]), "pstack");
   test_align ((long) &read_file, sizeof(read_file[0]), "read_file");
-
   test_align ((long) &font_check, sizeof(font_check[0]), "font_check");
   test_align ((long) &font_size, sizeof(font_size[0]), "font_size");
   test_align ((long) &font_dsize, sizeof(font_dsize[0]), "font_dsize");
@@ -2072,11 +2051,6 @@ void check_fixed_align (int flag)
   test_align ((long) &kern_base, sizeof(kern_base[0]), "kern_base");
   test_align ((long) &exten_base, sizeof(exten_base[0]), "exten_base");
   test_align ((long) &param_base, sizeof(param_base[0]), "param_base");
-
-#ifdef ALLOCATEDVIBUF
-  test_align ((long) &zdvibuf, sizeof(zdvibuf[0]), "zdvibuf"); /* no op */
-#endif
-
   test_align ((long) &total_stretch, sizeof(total_stretch[0]), "total_stretch");
   test_align ((long) &total_shrink, sizeof(total_shrink[0]), "total_shrink");
   test_align ((long) &active_width, sizeof(active_width[0]), "active_width");
@@ -2089,19 +2063,15 @@ void check_fixed_align (int flag)
   test_align ((long) &hc, sizeof(hc[0]), "hc");
   test_align ((long) &hu, sizeof(hu[0]), "hu");
   test_align ((long) &hyf, sizeof(hyf[0]), "hyf");
-/*  test_align ((long) &x, sizeof(x[0]), "x"); */
-
+  // test_align ((long) &x, sizeof(x[0]), "x");
   test_align ((long) &hyf_distance, sizeof(hyf_distance[0]), "hyf_distance");
   test_align ((long) &hyf_num, sizeof(hyf_num[0]), "hyf_num");
   test_align ((long) &hyf_next, sizeof(hyf_next[0]), "hyf_next");
   test_align ((long) &op_start, sizeof(op_start[0]), "op_start");
-
-/*  test_align ((long) &trie_op_hash, sizeof(trie_op_hash[0]), "trie_op_hash"); */
-  test_align ((long) &zzzaf, sizeof(zzzaf[0]), "zzzaf");
+  // test_align ((long) &trie_op_hash, sizeof(trie_op_hash[0]), "trie_op_hash");
   test_align ((long) &trie_used, sizeof(trie_used[0]), "trie_used");
 /*  test_align ((long) &trie_op_lang, sizeof(trie_op_lang[0]), "trie_op_lang");*/
   test_align ((long) &trie_op_val, sizeof(trie_op_val[0]), "trie_op_val");
-
   test_align ((long) &trie_min, sizeof(trie_min[0]), "trie_min");
   test_align ((long) &page_so_far, sizeof(page_so_far[0]), "page_so_far");
   test_align ((long) &write_file, sizeof(write_file[0]), "write_file");
@@ -2121,16 +2091,12 @@ void check_alloc_align (int flag)
     return;
 
 #ifndef ALLOCZEQTB
-  test_align ((long) zeqtb, sizeof(zeqtb[0]), "zeqtb"); 
-#endif
-
-#ifndef ALLOCATEDVIBUF
-  test_align ((long) &zdvibuf, sizeof(zdvibuf[0]), "zdvibuf");  /* no op */
+  test_align ((long) eqtb, sizeof(eqtb[0]), "eqtb"); 
 #endif
 
   test_align ((long) str_pool, sizeof(str_pool[0]), "str_pool"); /* no op */
   test_align ((long) str_start, sizeof(str_start[0]), "str_start");
-  test_align ((long) zmem, sizeof(zmem[0]), "main memory");
+  test_align ((long) mem, sizeof(mem[0]), "main memory");
   test_align ((long) font_info, sizeof(font_info[0]), "font memory");
   test_align ((long) trie_trl, sizeof(trie_trl[0]), "trie_trl");
   test_align ((long) trie_tro, sizeof(trie_tro[0]), "trie_tro");
@@ -2146,7 +2112,6 @@ void check_alloc_align (int flag)
 #endif
 }
 
-boolean backwardflag       = false; /* don't cripple all advanced features */
 boolean shorten_file_name  = false; /* don't shorten file names to 8+3 for DOS */
 
 /* cache to prevent allocating twice in a row */
@@ -2158,7 +2123,7 @@ char * lastvalue = NULL;
 /* is it safe to do that now ? 98/Jan/31 */
 char * grabenv (const char * varname)
 {
-  char *s;
+  char * s;
 
   if (varname == NULL)
     return NULL;
@@ -2194,7 +2159,7 @@ char * grabenv (const char * varname)
     return NULL;
 }
 
-void flush_trailing_slash(char * directory)
+void flush_trailing_slash (char * directory)
 {
   char * s;
 
@@ -2239,7 +2204,7 @@ void knuthify (void)
 char * xchr_file = NULL;
 char * repl_file = NULL;
 
-const char * short_options = "m:e:h:0:H:g:P:o:l:a:kwvpiKLZMdp2t?u";
+const char * short_options = "m:e:h:0:H:g:P:o:l:a:r:kwvpiKLZMd2t?u";
 
 static struct option long_options[] =
 {
@@ -2254,6 +2219,7 @@ static struct option long_options[] =
   {"log-dir",       required_argument, NULL, 'l'},
   {"aux-dir",       required_argument, NULL, 'a'},
   {"key-file",      required_argument, NULL, 'k'},
+  {"jobname",       required_argument, NULL, 'r'},
   {"showhex",       no_argument,       NULL, 'w'},
   {"verbose",       no_argument,       NULL, 'v'},
   {"patterns",      no_argument,       NULL, 'p'},
@@ -2263,7 +2229,6 @@ static struct option long_options[] =
   {"showtfm",       no_argument,       NULL, 'Z'},
   {"showmissing",   no_argument,       NULL, 'M'},
   {"deslash",       no_argument,       NULL, 'd'},
-  {"patterns",      no_argument,       NULL, 'p'},
   {"suppressflig",  no_argument,       NULL, '2'},
   {"trace",         no_argument,       NULL, 't'},
   {"help",          no_argument,       NULL, '?'},
@@ -2271,10 +2236,13 @@ static struct option long_options[] =
   {NULL,            0, 0, 0}
 };
 
-int analyze_flag (int c, char *optarg)
+int analyze_flag (int c, char * optarg)
 {
   switch (c)
   {
+    case 'r':
+      c_job_name = optarg;
+      break;
     case 'v':
       verbose_flag = true;
       break;
@@ -2294,8 +2262,7 @@ int analyze_flag (int c, char *optarg)
       interaction = error_stop_mode;
       break;
     case 'K':
-      backwardflag = true;
-      knuthify(); /* revert to `standard' Knuth TeX */
+      knuthify();
       break;
     case 'L':
       c_style_flag = true;
@@ -2307,34 +2274,31 @@ int analyze_flag (int c, char *optarg)
       show_missing = false;
       break;
     case 'd':
-      deslash = false; /* flipped 93/Nov/18 */
-      /* pseudo_tilde = 0; */ /* new 95/Sep/26 */
+      deslash = false;
       break;
     case 'p':
-      allow_patterns = true; /* 93/Nov/26 */
-      /* reset_exceptions = true; */ /* 93/Dec/23 */
+      allow_patterns = true;
       break;
-/*  case 'w':  show_in_hex = false; */ /* 94/Jan/26 */
     case 'w':
-      show_in_hex = true; /* flipped 00/Jun/18 */
+      show_in_hex = true;
       break;
     case 'j':
-      show_in_dos = true; /* 96/Jan/26 */
+      show_in_dos = true;
       break;
     case 'n':
       restrict_to_ascii = true; /* 0 - 127 1994/Jan/21 */
       break;
     case 'f':
-      show_fonts_used = false; /* 97/Dec/24 */
+      show_fonts_used = false;
       break;
     case '8':
-      shorten_file_name = true; /* 95/Feb/20 */
+      shorten_file_name = true;
       break;
     case '9':
-      show_cs_names = true; /* 98/Mar/31 */
+      show_cs_names = true;
       break;
     case '4':
-      ignore_frozen = true; /* 98/Oct/5 */
+      ignore_frozen = true;
       break;
     case 'J':
       show_line_break_stats = false; /* 96/Feb/8 */
@@ -2356,13 +2320,13 @@ int analyze_flag (int c, char *optarg)
       break;
 /* The following are really obscure and should not be advertized */
     case 's':
-      show_current = false; /* tex8 93/Dec/14 */
+      show_current = false;
       break;
     case 'N':
-      show_numeric = false; /* 93/Dec/21 */
+      show_numeric = false;
       break;
     case 'A':
-      civilize_flag = false; /* 93/Dec/16 */
+      civilize_flag = false;
       break; 
     case 'B':
       open_trace_flag = true;
@@ -2380,13 +2344,16 @@ int analyze_flag (int c, char *optarg)
       if (mem_initex == 0)
         complainarg(c, optarg);
 
-      mem_spec_flag = 1;
+      mem_spec_flag = true;
       break;
 
 #ifdef VARIABLETRIESIZE
     case 'h':
       if (optarg == 0)
+      {
+        //trie_size = atoi(kpse_var_value("trie_size"));
         trie_size = default_trie_size;
+      }
       else
         trie_size = atoi(optarg);
 
@@ -2486,24 +2453,6 @@ int analyze_flag (int c, char *optarg)
       if (strcmp(dvi_directory, "") == 0)
         complainarg(c, optarg);
 
-      break;
-
-    case '0':
-      {
-        char * format_spec = NULL;
-
-        if (optarg != 0)
-          format_spec = xstrdup(optarg);
-
-        if (!strcmp(format_spec, "pdf"))
-          shipout_flag = out_pdf_flag;
-        else if (!strcmp(format_spec, "dvi"))
-          shipout_flag = out_dvi_flag;
-        else if (!strcmp(format_spec, "xdv"))
-          shipout_flag = out_xdv_flag;
-        else
-          printf("ERROR: Do not understand shipout flag `%s'\n", format_spec);
-      }
       break;
 
     case 'l':
@@ -2634,13 +2583,13 @@ int init_commands (int ac, char **av)
   deslash               = true;
   pseudo_tilde          = 254;   /* default '~' replace 95/Sep/26 filledbox DOS 850 */
   pseudo_space          = 255;   /* default ' ' replace 97/June/5 nbspace DOS 850 */
-  default_rule          = 26214; /* default rule variable 95/Oct/9 */
+  default_rule          = 26214;
   show_current          = true;
   civilize_flag         = true;
   show_numeric          = true;
   show_missing          = true;
-  c_style_flag          = false; /* use c-style error output */
-  show_fmt_flag         = true;  /* show format file in log */
+  c_style_flag          = false;
+  show_fmt_flag         = true;
   show_tfm_flag         = false; /* don't show metric file in log */
   shorten_file_name     = false; /* don't shorten file names to 8+3 */
   truncate_long_lines   = true;  /* truncate long lines */
@@ -2649,7 +2598,7 @@ int init_commands (int ac, char **av)
   show_fonts_used       = true;  /* show fonts used in LOG file 97/Dec/24 */
   allow_quoted_names    = true;  /* allow quoted names with spaces 98/Mar/15 */
   show_cs_names         = false;
-  knuth_flag            = false; /* allow extensions to TeX */
+  knuth_flag            = false;
   full_file_name_flag   = true;  /* new default 2000 June 18 */
   errout                = stdout; /* as opposed to stderr say --- used ??? */
   new_hyphen_prime      = 0;
@@ -2690,7 +2639,7 @@ void initial_memory (void)
  #if defined(ALLOCATEHIGH) || defined(ALLOCATELOW)
     if (mem_extra_high != 0 || mem_extra_low != 0)
     {
-      puts("ERROR: Cannot extend main memory in iniTeX");
+      puts("ERROR: Cannot extend main memory in initex");
       mem_extra_high = 0;
       mem_extra_low = 0;
     }
@@ -2700,13 +2649,13 @@ void initial_memory (void)
   {
     if (mem_initex != 0)
     {
-      puts("ERROR: Can only set initial main memory size in iniTeX");
+      puts("ERROR: Can only set initial main memory size in initex");
       mem_initex = 0;
     }
 
     if (trie_size != 0)
     {
-      puts("ERROR: Need only set hyphenation trie size in iniTeX");
+      puts("ERROR: Need only set hyphenation trie size in initex");
 /* trie_size = 0; */
     }
   }
@@ -2738,7 +2687,7 @@ void initial_memory (void)
   if (new_hyphen_prime > 0)
   {
     if (! is_initex)
-      puts("ERROR: Can only set hyphen prime in iniTeX");
+      puts("ERROR: Can only set hyphen prime in initex");
     else
     {
       if (new_hyphen_prime % 2 == 0)
@@ -2864,7 +2813,7 @@ void deslash_all (int ac, char **av)
       unixify(pdf_directory);
   }
 
-  format_spec = 0;
+  format_spec = false;
 
   if (optind < ac && optind > 0)
   {
@@ -2881,7 +2830,7 @@ void deslash_all (int ac, char **av)
 
     if (*av[optind] == '&' || *av[optind] == '+')
     {
-      format_spec = 1;
+      format_spec = true;
       format_name = xstrdup(av[optind] + 1);
 
       if (optind + 1 < ac)
@@ -2901,10 +2850,7 @@ void deslash_all (int ac, char **av)
   }
 }
 
-/* note: those optarg == 0 test don't really work ... */
-/* note: optarg starts at = in case of x=... */
-
-int main_init (int ac, char **av)
+int main_init (int ac, char ** av)
 {
   kpse_set_program_name(av[0], NULL);
   xputenv("engine", "yandytex");
@@ -2978,7 +2924,7 @@ int main_init (int ac, char **av)
   closed_already    = 0;
 
   if (trace_flag)
-    puts("Entering init (local.c)");
+    puts("Entering main_init() (local.c).");
 
   probe_memory();
   ini_max_address = max_address;
@@ -2988,10 +2934,9 @@ int main_init (int ac, char **av)
 
   initial_memory();
   deslash_all(ac, av);
-  no_interrupts = 0;
 
   if (format_spec && mem_spec_flag)
-    puts("WARNING: Cannot change initial main memory size when format specified");
+    puts("WARNING: Cannot change initial main_memory size when format specified");
 
   if (allocate_memory() != 0)
     return -1;
@@ -2999,7 +2944,7 @@ int main_init (int ac, char **av)
   check_alloc_align(trace_flag);
 
   if (trace_flag)
-    puts("Leaving init (local.c)");
+    puts("Leaving main_init() (local.c).");
 
   return 0;
 }
@@ -3043,12 +2988,9 @@ int endit(int flag)
     flag = 1;
 
   if (missing_characters)
-  {
-    sprintf(log_line, "! There %s %d missing character%s --- see log file\n",
+    printf("! There %s %d missing character%s --- see log file\n",
       (missing_characters == 1) ? "was" : "were", missing_characters,
       (missing_characters == 1) ? "" : "s");
-    show_line(log_line, 0);
-  }
 
   if (free_memory() != 0)
     flag++;
@@ -3073,7 +3015,7 @@ int endit(int flag)
   return flag;
 }
 // printf control sequences' name
-void print_cs_name (FILE *output, int h)
+void print_cs_name (FILE * output, int h)
 {
   int c, textof, n;
 
@@ -3150,7 +3092,7 @@ void print_cs_names (FILE *output, int pass)
     if (pass == 1 && csused[h])
       continue;
 
-    if (hash[h].rh != 0)
+    if (text(h) != 0)
     {
       if (pass == 0)
         csused[h] = 1;
@@ -3248,7 +3190,7 @@ int compare_strn (int k1, int l1, int k2, int l2)
   return 0;         /* strings match */
 }
 /* compare two font names and their at sizes in qsort */
-int compare_fnt (const void *fp1, const void *fp2)
+int compare_fnt (const void * fp1, const void * fp2)
 {
   int f1, f2, l1, l2, k1, k2, s;
 
@@ -3286,7 +3228,7 @@ int compare_fnt_name (int f1, int f2)
   return s;
 }
 /* decode checksum information */
-unsigned long checkdefault = 0x59265920; /* default signature */
+const unsigned long checkdefault = 0x59265920;
 int decode_fourty (unsigned long checksum, char *codingvector)
 {
   int c;
@@ -3324,6 +3266,7 @@ int decode_fourty (unsigned long checksum, char *codingvector)
       
       codingvector[5-k] = (char) c;
     }
+
     codingvector[6] = '\0';
   }
 
@@ -3340,7 +3283,7 @@ double sclpnt (long x)
   return (pt);
 }
 
-void dvi_font_show(internal_font_number f, int suppressname)
+void dvi_font_show (internal_font_number f, int suppressname)
 {
   int a, l, k, n;
   unsigned long checksum;
@@ -3419,7 +3362,7 @@ void show_font_info (void)
   {
     if (m > 0)
     {
-      if (compare_fnt_name(fnumtable[m-1], fnumtable[m]) == 0)
+      if (compare_fnt_name(fnumtable[m - 1], fnumtable[m]) == 0)
         repeatflag = 1;
       else
         repeatflag = 0;

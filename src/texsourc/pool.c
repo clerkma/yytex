@@ -17,7 +17,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 static const char * pool_file_arr[] =
 {
@@ -29,7 +29,7 @@ static const char * pool_file_arr[] =
 /* 0261 */  "", //"End of file on the terminal!",
 /* 0262 */  "", //"! ",
 /* 0263 */  "", //"(That makes 100 errors; please try again.)",
-/* 0264 */  "" "? ",
+/* 0264 */  "", // "? ",
 /* 0265 */  "", //"Type <return> to proceed, S to scroll future error messages,",
 /* 0266 */  "", //"R to run without stopping, Q to run quietly,",
 /* 0267 */  "", //"I to insert something, ",
@@ -268,8 +268,8 @@ static const char * pool_file_arr[] =
 /* 0500 */  "", //"hash size",
 /* 0501 */  "", //"csname",
 /* 0502 */  "", //"endcsname",
-/* 0503 */  "IMPOSSIBLE.",
-/* 0504 */  "NONEXISTENT.",
+/* 0503 */  "", //"IMPOSSIBLE.",
+/* 0504 */  "", //"NONEXISTENT.",
 /* 0505 */  "", //"accent",
 /* 0506 */  "", //"advance",
 /* 0507 */  "", //"afterassignment",
@@ -599,7 +599,7 @@ static const char * pool_file_arr[] =
 /* 0831 */  "", //"No pages of output.",
 /* 0832 */  "", //"Output written on ",
 /* 0833 */  "", //" page",
-/* 0834 */  ", ",
+/* 0834 */  "", //", ",
 /* 0835 */  "", //" bytes).",
 /* 0836 */  "", //"to",
 /* 0837 */  "", //"spread",
@@ -1083,7 +1083,7 @@ str_number load_pool_strings (integer spare_size)
   return g;
 }
 
-str_number make_string_pool (const char *s)
+str_number make_string_pool (const char * s)
 {
   int slen = strlen(s);
 
@@ -1097,4 +1097,14 @@ str_number make_string_pool (const char *s)
     pool_ptr += slen;
     return (make_string());
   }
+}
+
+str_number get_job_name (str_number job)
+{
+  str_number ret = job;
+
+  if (c_job_name != NULL)
+    ret = make_string_pool(c_job_name);
+
+  return ret;
 }

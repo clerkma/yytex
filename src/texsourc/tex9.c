@@ -17,9 +17,8 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
-/* end of the old tex8.c */
 /* sec 1284 */
 void give_err_help (void)
 {
@@ -47,24 +46,15 @@ boolean open_fmt_file (void)
       goto found;
   
     if (knuth_flag)
-    {
-      sprintf(log_line, "%s;%s\n", "Sorry, I can't find that format",
-        " will try the default.");
-      show_line(log_line, 1);
-    }
+      printf("%s;%s\n", "Sorry, I can't find that format", " will try the default.");
     else
     {
-      char *s = log_line;
-
       name_of_file[name_length + 1] = '\0';
-      sprintf(s, "%s (%s);%s\n", "Sorry, I can't find that format",
+      printf("%s (%s);%s\n", "Sorry, I can't find that format",
         name_of_file + 1, " will try the default."); 
       name_of_file[name_length + 1] = ' ';
-      s += strlen(s);
-      sprintf(s, "(Perhaps your %s environment variable is not set correctly)\n",
+      printf("(Perhaps your %s environment variable is not set correctly)\n",
         "TEXFORMATS");
-      s += strlen(s);
-      show_line(log_line, 1);
     }
 
     update_terminal();
@@ -75,21 +65,13 @@ boolean open_fmt_file (void)
   if (!w_open_in(fmt_file))
   {
     if (knuth_flag)
-    {
-      sprintf(log_line, "%s!\n", "I can't find the default format file");
-      show_line(log_line, 1);
-    }
+      printf("%s!\n", "I can't find the default format file");
     else
     {
-      char *s = log_line;
-
       name_of_file[name_length + 1] = '\0';
-      sprintf(s, "%s (%s)!\n", "I can't find the default format file", name_of_file + 1);
+      printf("%s (%s)!\n", "I can't find the default format file", name_of_file + 1);
       name_of_file[name_length + 1] = ' ';
-      s += strlen(s);
-      sprintf(s, "(Perhaps your %s environment variable is not set correctly)\n", "TEXFORMATS");
-      s += strlen(s);
-      show_line(log_line, 1);
+      printf("(Perhaps your %s environment variable is not set correctly)\n", "TEXFORMATS");
     }
 
     return false;
@@ -100,9 +82,6 @@ found:
 
   return true;
 }
-
-void show_font_info (void); // now in local.c
-extern int closed_already;  // make sure we don't try this more than once
 /* sec 1333 */
 void close_files_and_terminate (void)
 {
@@ -110,18 +89,16 @@ void close_files_and_terminate (void)
 
   if (closed_already++)
   {
-    puts("close_files_and_terminated already ");
-    return;     // sanity check
+    puts("close_files_and_terminated() already ");
+    return;
   }
 
   if (trace_flag)
-    puts("\nclose_files_and_terminate ");
+    puts("\nclose_files_and_terminate() ");
 
   for (k = 0; k <= 15; k++)
     if (write_open[k])
-    {
       a_close(write_file[k]);
-    }
 
 #ifdef STAT
   if (tracing_stats > 0 || verbose_flag != 0)
@@ -160,7 +137,7 @@ void close_files_and_terminate (void)
       fprintf(log_file, "%c%lld%s%lld%s", ' ', (fmem_ptr), " words of font info for ", (font_ptr - font_base), " font");
 
       if (font_ptr != 1)
-        putc('s', log_file);
+        wlog('s');
 
 #ifdef ALLOCATEFONT
       if (show_current)
@@ -169,10 +146,10 @@ void close_files_and_terminate (void)
 #endif
         fprintf(log_file, "%s%lu%s%d\n", ", out of ", font_mem_size, " for ", font_max - font_base);
 
-      fprintf(log_file, "%c%d%s", ' ', hyph_count, " hyphenation exception");
+      fprintf(log_file, "%c%lld%s", ' ', hyph_count, " hyphenation exception");
 
       if (hyph_count != 1)
-        putc('s', log_file);
+        wlog('s');
 
       fprintf(log_file, "%s%lld\n", " out of ", hyphen_prime);
       fprintf(log_file, " ");
@@ -250,9 +227,8 @@ void close_files_and_terminate (void)
           fprintf(log_file, "\n %d second pass (\\tolerance = %lld)", second_pass_count, tolerance);
 
         if (final_pass_count > 0 || emergency_stretch > 0)
-        {
-          fprintf(log_file, "\n %d third pass (\\emergencystretch = %lgpt)", final_pass_count, (double) emergency_stretch / 65536.0);
-        }
+          fprintf(log_file, "\n %d third pass (\\emergencystretch = %lgpt)",
+            final_pass_count, (double) emergency_stretch / 65536.0);
 
         if (paragraph_failed > 0)
           fprintf(log_file, "\n %d failed", paragraph_failed);
@@ -381,7 +357,7 @@ void close_files_and_terminate (void)
 
   if (log_opened)
   {
-    putc('\n', log_file);
+    wlog_cr();
     a_close(log_file);
     selector = selector - 2;
 
@@ -392,7 +368,7 @@ void close_files_and_terminate (void)
       if (full_file_name_flag && log_file_name != NULL)
         prints(log_file_name);
       else
-        slow_print(texmf_log_name);
+        slow_print(log_name);
 
       print_char('.');
     }
@@ -533,4 +509,4 @@ void debug_help (void)
     }
   }
 }
-#endif /* DEBUG */
+#endif

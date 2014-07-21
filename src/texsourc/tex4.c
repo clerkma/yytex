@@ -17,7 +17,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 /* sec 0581 */
 void char_warning_(internal_font_number f, eight_bits c)
@@ -51,6 +51,7 @@ void char_warning_(internal_font_number f, eight_bits c)
       else
       {
         c = c - (c / 100) * 100;
+
         if (c / 10 > 0)
           print_char('0' + c / 10);
       }
@@ -65,8 +66,8 @@ void char_warning_(internal_font_number f, eight_bits c)
 
     if (show_missing)
     {
-      if (f != 0)
-        show_context();     /* not if its the nullfont */
+      if (f != null_font)
+        show_context();
     }
 
     if (show_missing == 0)
@@ -76,7 +77,7 @@ void char_warning_(internal_font_number f, eight_bits c)
   }
 }
 /* sec 0582 */
-halfword new_character_(internal_font_number f, eight_bits c)
+pointer new_character_(internal_font_number f, eight_bits c)
 {
   pointer p;
 
@@ -98,7 +99,7 @@ void dvi_swap (void)
 { 
   if (trace_flag)
   {
-    show_char('\n');
+    wterm_cr();
     printf("dvi_swap() %lld", dvi_gone);
   }
 
@@ -181,10 +182,10 @@ void dvi_font_def_(internal_font_number f)
     dvi_out(str_pool[k]);
 }
 /* sec 0607 */
-void zmovement(scaled w, eight_bits o)
+void movement (scaled w, eight_bits o)
 {
   small_number mstate;
-  halfword p, q;
+  pointer p, q;
   integer k;
 
   q = get_node(movement_node_size);
@@ -447,11 +448,11 @@ void special_out (pointer p)
 void write_out (pointer p)
 {
   char old_setting;
-/*  integer old_mode;  */
+  /* integer old_mode; */
   int old_mode;
-/*  small_number j;  */
+  /* small_number j; */
   int j;
-  halfword q, r;
+  pointer q, r;
 
   q = get_avail();
   info(q) = right_brace_token + '}';
@@ -506,7 +507,7 @@ void write_out (pointer p)
 /* sec 1373 */
 void out_what (pointer p)
 {
-/*  small_number j;  */
+  /* small_number j; */
   int j;
 
   switch (subtype(p))
@@ -534,7 +535,7 @@ void out_what (pointer p)
             cur_ext = open_ext(p); 
 
             if (cur_ext == 335) /* "" */
-              cur_ext = 785;    /* => ".tex" */
+              cur_ext = 785;    /* ".tex" */
 
             pack_file_name(cur_name, cur_area, cur_ext);
 
@@ -765,7 +766,7 @@ reswitch:
                   cur_h = cur_h + (lr / 2);
                 else
                 {
-                  lx =(2 * lr + lq + 1) / (2 * lq + 2);
+                  lx = (2 * lr + lq + 1) / (2 * lq + 2);
                   cur_h = cur_h + ((lr - (lq - 1)* lx) / 2);
                 }
               }
@@ -1091,7 +1092,7 @@ next_p:
   decr(cur_s);
 }
 /* sec 0638 */
-void dvi_ship_out_(halfword p)
+void dvi_ship_out_(pointer p)
 {
   integer page_loc;
   char j, k;
@@ -1247,7 +1248,7 @@ done:
   }
 #endif
 }
-void ship_out_(pointer p)
+void ship_out (pointer p)
 {
   switch (shipout_flag)
   {
@@ -1258,7 +1259,7 @@ void ship_out_(pointer p)
   }
 }
 /* sec 0645 */
-void scan_spec_(group_code c, boolean three_codes)
+void scan_spec (group_code c, boolean three_codes)
 {
   integer s;
   char spec_code;
@@ -1506,13 +1507,14 @@ reswitch:
           prints(" \\hbox (badness ");
           print_int(last_badness);
 
-          if (last_badness > 100) /* Y&Y TeX */
+          if (last_badness > 100)
             underfull_hbox++;
 
           goto common_ending;
         }
       }
-      goto exit;
+
+    goto exit;
   }
   else
   {
@@ -1574,7 +1576,8 @@ reswitch:
           goto common_ending;
         }
       }
-      goto exit;
+
+    goto exit;
   }
 
 common_ending:
@@ -1771,7 +1774,8 @@ pointer vpackage_(pointer p, scaled h, small_number m, scaled l)
           goto common_ending;
         }
       }
-      goto exit;
+
+    goto exit;
   }
   else
   {
@@ -1788,7 +1792,7 @@ pointer vpackage_(pointer p, scaled h, small_number m, scaled l)
     glue_sign(r) = shrinking;
 
     if (total_shrink[o] != 0)
-      glue_set(r) =(- (integer) x)/ ((double) total_shrink[o]);
+      glue_set(r) = (- (integer) x) / ((double) total_shrink[o]);
     else
     {
       glue_sign(r) = normal;
@@ -1824,6 +1828,7 @@ pointer vpackage_(pointer p, scaled h, small_number m, scaled l)
           goto common_ending;
         }
       }
+
     goto exit;
   }
 
@@ -1894,7 +1899,7 @@ pointer new_noad (void)
   return p;
 }
 /* sec 0688 */
-pointer new_style_(small_number s)
+pointer new_style (small_number s)
 {
   pointer p;
 
@@ -1927,7 +1932,7 @@ void show_info (void)
   show_node_list(info(temp_ptr));
 }
 /* sec 0704 */
-pointer fraction_rule_(scaled t)
+pointer fraction_rule (scaled t)
 {
   pointer p;
 
@@ -1938,7 +1943,7 @@ pointer fraction_rule_(scaled t)
   return p;
 }
 /* sec 0705 */
-pointer overbar_(pointer b, scaled k, scaled t)
+pointer overbar (pointer b, scaled k, scaled t)
 {
   pointer p, q;
 
@@ -1952,7 +1957,7 @@ pointer overbar_(pointer b, scaled k, scaled t)
   return vpackage(p, 0, 1, max_dimen);
 }
 /* sec 0709 */
-pointer char_box_(internal_font_number f, quarterword c)
+pointer char_box (internal_font_number f, quarterword c)
 {
   four_quarters q;
   eight_bits hd;
@@ -1972,7 +1977,7 @@ pointer char_box_(internal_font_number f, quarterword c)
   return b;
 }
 /* sec 0711 */
-void stack_into_box_(pointer b, internal_font_number f, quarterword c)
+void stack_into_box (pointer b, internal_font_number f, quarterword c)
 {
   pointer p;
 
@@ -1982,7 +1987,7 @@ void stack_into_box_(pointer b, internal_font_number f, quarterword c)
   height(b) = height(p);
 }
 /* sec 0712 */
-scaled height_plus_depth_(internal_font_number f, quarterword c)
+scaled height_plus_depth (internal_font_number f, quarterword c)
 {
   four_quarters q;
   eight_bits hd;
@@ -1993,7 +1998,7 @@ scaled height_plus_depth_(internal_font_number f, quarterword c)
   return char_height(f, hd) + char_depth(f, hd);
 }
 /* sec 0706 */
-pointer var_delimiter_(pointer d, small_number s, scaled v)
+pointer var_delimiter (pointer d, small_number s, scaled v)
 {
   pointer b;
   internal_font_number f, g;
@@ -2004,10 +2009,9 @@ pointer var_delimiter_(pointer d, small_number s, scaled v)
   four_quarters q;
   four_quarters r;
   eight_bits hd;
-/*  small_number z;  */
+  /* small_number z; */
   int z;
-/*  boolean large_attempt;  */
-  int large_attempt;
+  boolean large_attempt;
 
   f = null_font;
   w = 0;
@@ -2156,4 +2160,3 @@ found:
 
   return b;
 }
-/* rebox_ etc used to follow here in tex4.c */

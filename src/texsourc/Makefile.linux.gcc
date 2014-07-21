@@ -10,72 +10,72 @@
 #
 
 CC = gcc
-CFLAGS = -O2 -DMSDOS -DTeX -DINITEX -DINI -Ilibmd5
+CFLAGS = -c -O2 -Wno-unused-result -Ilibmd5
 LDFLAGS = -lkpathsea -lz
 
 objects = yandytex.o itex.o openinou.o subroute.o local.o \
 	tex0.o tex1.o tex2.o tex3.o tex4.o \
 	tex5.o tex6.o tex7.o tex8.o tex9.o \
-	yandy_pool.o md5.o yandy_inlines.o
+	pool.o md5.o utils.o
 
-headers = yandytex.h texd.h coerce.h texmf.h texmfmem.h
+headers = yandytex.h texd.h coerce.h macros.h memory.h
 
 yandytex: $(objects)
-	$(CC) -o yandytex $(objects) $(LDFLAGS)
+	$(CC) -s -o yandytex $(objects) $(LDFLAGS)
 
 yandytex.o: yandytex.c $(headers)
-	$(CC) -c $(CFLAGS) yandytex.c
+	$(CC) $(CFLAGS) yandytex.c
  
 itex.o: itex.c $(headers)
-	$(CC) -c $(CFLAGS) itex.c
+	$(CC) $(CFLAGS) itex.c
 
 openinou.o: openinou.c $(headers)
-	$(CC) -c $(CFLAGS) openinou.c
+	$(CC) $(CFLAGS) openinou.c
 
 subroute.o: subroute.c $(headers)
-	$(CC) -c $(CFLAGS) subroute.c
+	$(CC) $(CFLAGS) subroute.c
 
 local.o: local.c $(headers)
-	$(CC) -c $(CFLAGS) local.c
+	$(CC) $(CFLAGS) local.c
 
 tex0.o: tex0.c $(headers)
-	$(CC) -c $(CFLAGS) tex0.c
+	$(CC) $(CFLAGS) tex0.c
 
 tex1.o: tex1.c $(headers)
-	$(CC) -c $(CFLAGS) tex1.c
+	$(CC) $(CFLAGS) tex1.c
 
 tex2.o: tex2.c $(headers)
-	$(CC) -c $(CFLAGS) tex2.c
+	$(CC) $(CFLAGS) tex2.c
 
 tex3.o: tex3.c $(headers)
-	$(CC) -c $(CFLAGS) tex3.c
+	$(CC) $(CFLAGS) tex3.c
 
 tex4.o: tex4.c $(headers)
-	$(CC) -c $(CFLAGS) tex4.c
+	$(CC) $(CFLAGS) tex4.c
 
 tex5.o: tex5.c $(headers)
-	$(CC) -c $(CFLAGS) tex5.c
+	$(CC) $(CFLAGS) tex5.c
 
 tex6.o: tex6.c $(headers)
-	$(CC) -c $(CFLAGS) tex6.c
+	$(CC) $(CFLAGS) tex6.c
 
 tex7.o: tex7.c $(headers)
-	$(CC) -c $(CFLAGS) tex7.c
+	$(CC) $(CFLAGS) tex7.c
 
 tex8.o: tex8.c $(headers)
-	$(CC) -c $(CFLAGS) tex8.c
+	$(CC) $(CFLAGS) tex8.c
 
 tex9.o: tex9.c $(headers)
-	$(CC) -c $(CFLAGS) tex9.c
+	$(CC) $(CFLAGS) tex9.c
 
-yandy_pool.o: yandy_pool.c $(headers)
-	$(CC) -c $(CFLAGS) yandy_pool.c
+pool.o: pool.c $(headers)
+	$(CC) $(CFLAGS) pool.c
 
 md5.o: libmd5/md5.c $(headers)
-	$(CC) -c $(CFLAGS) libmd5/md5.c
+	$(CC) $(CFLAGS) libmd5/md5.c
 
-yandy_inlines.o: yandy_inlines.c $(headers)
-	$(CC) -c $(CFLAGS) yandy_inlines.c
+utils.o: utils.c $(headers)
+	$(CC) $(CFLAGS) utils.c
 
 .PHONY: clean
 
