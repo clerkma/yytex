@@ -14,6 +14,8 @@
    along with this program; if not, write to the Free Software
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
+#ifndef _YANDYTEX_MACROS_H
+#define _YANDYTEX_MACROS_H
 
 #define font_base 0
 /* sec 0022 */
@@ -938,6 +940,30 @@ while (0)
 #define fi_code          2
 #define else_code        3
 #define or_code          4
+/* sec 0506 */
+#define get_x_token_or_active_char()                    \
+do                                                      \
+{                                                       \
+  get_x_token();                                        \
+                                                        \
+  if (cur_cmd == relax)                                 \
+    if (cur_chr == no_expand_flag)                      \
+    {                                                   \
+      cur_cmd = active_char;                            \
+      cur_chr = cur_tok - cs_token_flag - active_base;  \
+    }                                                   \
+}                                                       \
+while (0)
+/* sec 0519 */
+#define append_to_name(a)       \
+do                              \
+{                               \
+  c = a; incr(k);               \
+                                \
+  if (k < file_name_size)       \
+    name_of_file[k] = xchr[c];  \
+}                               \
+while (0)
 /* sec 0544 */
 #define no_tag   0
 #define lig_tag  1
@@ -989,51 +1015,89 @@ while (0)
 #define x_height(f)      param(x_height_code, f)
 #define quad(f)          param(quad_code, f)
 #define extra_space(f)   param(extra_space_code, f)
+/* sec 0561 */
+#define start_font_error_message()  \
+do                                  \
+{                                   \
+  print_err("Font ");               \
+  sprint_cs(u);                     \
+  print_char('=');                  \
+  print_file_name(nom, aire, 335);  \
+                                    \
+  if (s >= 0)                       \
+  {                                 \
+    prints(" at ");                 \
+    print_scaled(s);                \
+    prints("pt");                   \
+  }                                 \
+  else if (s != -1000)              \
+  {                                 \
+    prints(" scaled ");             \
+    print_int(-(integer)s);         \
+  }                                 \
+}                                   \
+while (0)
 /* sec 0564 */
-#define read_sixteen(a)         \
-do                              \
-  {                             \
-    a = tfm_temp;               \
-    if (a > 127)                \
-      goto bad_tfm;             \
-    tfm_temp = getc(tfm_file);  \
-    a = a * 256 + tfm_temp;     \
-  }                             \
+#define read_sixteen(a) \
+do                      \
+  {                     \
+    a = fbyte;          \
+                        \
+    if (a > 127)        \
+      goto bad_tfm;     \
+                        \
+    fget();             \
+    a = a * 256 + fbyte;\
+  }                     \
 while (0)
 #define store_four_quarters(val)  \
 do                                \
   {                               \
-    tfm_temp = getc(tfm_file);    \
-    a = tfm_temp;                 \
-    qw.b0 = a;                    \
-    tfm_temp = getc(tfm_file);    \
-    b = tfm_temp;                 \
-    qw.b1 = b;                    \
-    tfm_temp = getc(tfm_file);    \
-    c = tfm_temp;                 \
-    qw.b2 = c;                    \
-    tfm_temp = getc(tfm_file);    \
-    d = tfm_temp;                 \
-    qw.b3 = d;                    \
+    fget(); a = fbyte; qw.b0 = a; \
+    fget(); b = fbyte; qw.b1 = b; \
+    fget(); c = fbyte; qw.b2 = c; \
+    fget(); d = fbyte; qw.b3 = d; \
     val = qw;                     \
   }                               \
 while (0)
+/* sec 0570 */
+#define check_byte_range(a) \
+do                          \
+{                           \
+  if ((a < bc) || (a > ec)) \
+    goto bad_tfm;           \
+}                           \
+  while (0)
 /* sec 0571 */
-/* sec 0573 */
-#define check_existence(a)    \
-do                            \
-{                             \
-  {                           \
-    if ((a < bc) || (a > ec)) \
-      goto bad_tfm;           \
-  }                           \
-                              \
-  qw = char_info(f, a);       \
-                              \
-  if (!(qw.b0 > 0))           \
-    goto bad_tfm;             \
-}                             \
+#define store_scaled(a)                                       \
+do                                                            \
+{                                                             \
+  fget(); a = fbyte; fget(); b = fbyte;                       \
+  fget(); c = fbyte; fget(); d = fbyte;                       \
+  sw = (((((d * z) / 256) + (c * z)) / 256) + (b * z)) / beta;\
+                                                              \
+  if (a == 0)                                                 \
+    a = sw;                                                   \
+  else if (a == 255)                                          \
+    a = sw - alpha;                                           \
+  else                                                        \
+    goto bad_tfm;                                             \
+}                                                             \
 while (0)
+/* sec 0573 */
+#define check_existence(a)  \
+do                          \
+{                           \
+  check_byte_range(a);      \
+                            \
+  qw = char_info(f, a);     \
+                            \
+  if (!char_exists(qw))     \
+    goto bad_tfm;           \
+}                           \
+while (0)
+/* sec 0576 */
+#define adjust(a) a[f] = a[f]
 /* sec 0585 */
 #define set1      128 // c[1]
 #define set2      129 // c[2]
@@ -1584,3 +1648,5 @@ while (0)
 #define set_language_code 5
 /* sec 1371 */
 #define end_write_token (cs_token_flag + end_write)
+
+#endif

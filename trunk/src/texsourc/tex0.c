@@ -16,7 +16,7 @@
    02110-1301 USA.  */
 
 #define EXTERN extern
-#include "texd.h"
+#include "yandytex.h"
 
 /* sec 0058 */
 void print_ln (void)
@@ -24,19 +24,19 @@ void print_ln (void)
   switch (selector)
   {
     case term_and_log:
-      show_char('\n');
+      wterm_cr();
       term_offset = 0;
-      putc('\n', log_file);
+      wlog_cr();
       file_offset = 0;
       break;
 
     case log_only:
-      putc('\n', log_file);
+      wlog_cr();
       file_offset = 0;
       break;
 
     case term_only:
-      show_char('\n');
+      wterm_cr();
       term_offset = 0;
       break;
 
@@ -64,27 +64,27 @@ void print_char_ (ASCII_code s)
   switch (selector)
   {
     case term_and_log:
-      show_char(xchr[s]);
+      wterm(xchr[s]);
       incr(term_offset);
-      putc(xchr[s], log_file);
+      wlog(xchr[s]);
       incr(file_offset);
 
       if (term_offset == max_print_line)
       {
-        show_char('\n');
+        wterm_cr();
         term_offset = 0;
       }
       
       if (file_offset == max_print_line)
       {
-        putc('\n', log_file);
+        wlog_cr();
         file_offset = 0;
       }
 
       break;
 
     case log_only:
-      putc(xchr[s], log_file);
+      wlog(xchr[s]);
       incr(file_offset);
 
       if (file_offset == max_print_line)
@@ -93,7 +93,7 @@ void print_char_ (ASCII_code s)
       break;
 
     case term_only:
-      show_char(xchr[s]);
+      wterm(xchr[s]);
       incr(term_offset);
 
       if (term_offset == max_print_line)
@@ -214,7 +214,7 @@ void print_ (integer s)
   }
 }
 /* string version print. */
-void prints_ (const char *s)
+void prints_ (const char * s)
 {
   while (*s)
     print_char(*s++);
@@ -260,7 +260,7 @@ void print_esc (const char * s)
   prints(s);
 }
 /* sec 0064 */
-void print_the_digs_ (eight_bits k)
+void print_the_digs (eight_bits k)
 {
   while (k > 0)
   {
@@ -347,7 +347,7 @@ void print_cs_ (integer p)
   }
 }
 /* sec 0263 */
-void sprint_cs_(pointer p)
+void sprint_cs (pointer p)
 { 
   if (p < hash_base)
     if (p < single_base)
@@ -368,7 +368,7 @@ void sprint_cs_(pointer p)
   }
 }
 /* sec 0518 */
-void print_file_name_(integer n, integer a, integer e)
+void print_file_name (integer n, integer a, integer e)
 {
   slow_print(a);
   slow_print(n);
@@ -393,7 +393,8 @@ void print_write_whatsit_(const char * s, pointer p)
     print_int(write_stream(p)); 
   else if (write_stream(p) == 16)
     print_char('*');
-  else print_char('-');
+  else
+    print_char('-');
 }
 /* sec 0081 */
 void jump_out (void) 
@@ -403,10 +404,7 @@ void jump_out (void)
   {
     int code;
 
-#ifndef _WINDOWS
     fflush(stdout); 
-#endif
-
     ready_already = 0;
 
     if (trace_flag)
@@ -421,8 +419,6 @@ void jump_out (void)
   }
 }
 /* sec 0082 */
-// deal with error by asking for user response 0-9, D, E, H, I, X, Q, R, S
-// NOTE: this may JUMPOUT either via X, or because of too many errors
 void error (void)
 {
   ASCII_code c;
@@ -568,7 +564,7 @@ continu:
         case 'S':
           {
             error_count = 0; 
-            interaction = 0 + c - 81; /* Q = 0, R = 1, S = 2, T = 3 */
+            interaction = 0 + c - 'Q';
             prints("OK, entering ");
 
             switch (c)
@@ -596,14 +592,14 @@ continu:
 
         case 'X':
           {
-            interaction = 2;
+            interaction = scroll_mode;
             jump_out();
           }
           break;
 
         default:
           break;
-      }           /* end of switch analysing response character */
+      }
 
       {
         prints("Type <return> to proceed, S to scroll future error messages,");
@@ -625,7 +621,7 @@ continu:
   if (error_count == 100)
   {
     print_nl("(That makes 100 errors; please try again.)");
-    history = 3;
+    history = fatal_error_stop;
     jump_out();
   }
 
@@ -651,7 +647,7 @@ continu:
   print_ln();
 }
 /* sec 0093 */
-void fatal_error(const char * s)
+void fatal_error (const char * s)
 {
   normalize_selector();
   print_err("Emergency stop");
@@ -673,15 +669,15 @@ void overflow_(const char * s, integer n)
   if (!knuth_flag)
   {
     if (!strcmp(s, "pattern memory") && (n == trie_size))
-      printf("\n  (Maybe use -h=... on command line in ini-TeX)\n");
+      printf("\n  (Maybe use -h=... on command line in initex)\n");
     else if (!strcmp(s, "exception dictionary") && (n == hyphen_prime))
-      printf("\n  (Maybe use -e=... on command line in ini-TeX)\n");
+      printf("\n  (Maybe use -e=... on command line in initex)\n");
   }
 
   succumb();
 }
 /* sec 0095 */
-void confusion(const char * s)
+void confusion (const char * s)
 {
   normalize_selector();
 
@@ -713,7 +709,7 @@ boolean init_terminal (void)
     loc = first;
 
     while ((loc < last) && (buffer[loc]== ' '))
-      incr(loc);    // step over initial white space
+      incr(loc);
 
     if (loc < last)
       return true;
@@ -728,7 +724,7 @@ boolean init_terminal (void)
 
     if (!flag)
     {
-      show_char('\n');
+      wterm_cr();
       puts("! End of file on the terminal... why?\n");
       return false;
     }
@@ -853,7 +849,7 @@ void print_roman_int_(integer n)
   pool_pointer j, k;
   nonnegative_integer u, v;
 
-  j = str_start[260]; /*  m2d5c2l5x2v5i */
+  j = str_start[260]; /* m2d5c2l5x2v5i */
   v = 1000;
 
   while (true)
@@ -903,7 +899,7 @@ void print_current_string (void)
 }
 
 /* sec 0071 */
-void term_input(void)
+void term_input (void)
 { 
   integer k;
   boolean flag;
@@ -1144,7 +1140,7 @@ halfword badness_(scaled t, scaled s)
 }
 /* sec 0114 */
 #ifdef DEBUG
-void print_word_(memory_word w)
+void print_word (memory_word w)
 { 
   print_int(w.cint); 
   print_char(' ');
@@ -1358,7 +1354,7 @@ void flush_list_(pointer p)
 { 
   pointer q, r;
 
-  if (p != 0)              /* null !!! */
+  if (p != 0)
   {
     r = p;
 
@@ -1370,7 +1366,7 @@ void flush_list_(pointer p)
         decr(dyn_used);
 #endif
       }
-    while (!(r == 0));     /* r != null */
+    while (!(r == 0));
 
     link(q) = avail;
     avail = p;
@@ -1485,7 +1481,7 @@ restart:
     return 0;
   }
 
-  add_variable_space (block_size);
+  add_variable_space(block_size);
   goto restart; /* go try get_node again */
 
 found:
@@ -1680,7 +1676,7 @@ pointer new_penalty(integer m)
 
 #ifdef DEBUG
 /* sec 0167 */
-void check_mem(boolean print_locs)
+void check_mem (boolean print_locs)
 {
   pointer p, q;
   boolean clobbered;
@@ -1869,7 +1865,7 @@ void search_mem_(pointer p)
       print_char(')');
     }
 }
-#endif /* DEBUG */
+#endif
 /* sec 0174 */
 void short_display_(integer p)
 {
@@ -2214,7 +2210,7 @@ void show_node_list_(integer p)
     return; 
   }
 
-  n = 0; 
+  n = 0;
 
   while (p != 0)
   {

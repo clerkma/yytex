@@ -28,7 +28,7 @@ VS_VERSION_INFO VERSIONINFO
     BLOCK "040904b0"
     {
       VALUE "CompanyName",        "Project Fandol.\0"
-      VALUE "FileDescription",    "Y&Y TeX 2.2.3 (WIN32)\0"
+      VALUE "FileDescription",    "Y&Y TeX 2.3.0 (WIN32)\0"
       VALUE "FileVersion",        "0.3.0.0\0"
       VALUE "LegalCopyright",     "(C) 2014 Clerk Ma.\0"
       VALUE "OriginalFilename",   "yandytex.exe\0"

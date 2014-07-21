@@ -17,7 +17,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 /* sec 0785 */
 void align_peek (void)
@@ -37,13 +37,11 @@ restart:
 
     new_save_level(no_align_group);
 
-    if (mode == -1)
+    if (mode == -vmode)
       normal_paragraph();
   }
   else if (cur_cmd == right_brace)
-  {
     fin_align();
-  }
   else if ((cur_cmd == car_ret) && (cur_chr == cr_cr_code))
     goto restart;
   else
@@ -76,7 +74,7 @@ pointer finite_shrink (pointer p)
   return q;
 }
 /* sec 0829 */
-void try_break_ (integer pi, small_number break_type)
+void try_break (integer pi, small_number break_type)
 {
   pointer r;
   pointer prev_r;
@@ -234,7 +232,7 @@ continu:
                     break;
 
                   case penalty_node:
-                    ;
+                    do_nothing();
                     break;
 
                   case math_node:
@@ -350,7 +348,7 @@ done:;
         if (l > easy_line)
         {
           line_width = second_width;
-          old_l = max_halfword - 1; /*262142L*/ /* 2^18 - 2 ? */
+          old_l = max_halfword - 1;
         }
         else
         {
@@ -452,7 +450,7 @@ done1:;
           else
             d = d + final_hyphen_demerits;
 
-        if (abs(toint(fit_class)- toint(fitness(r))) > 1)
+        if (abs(toint(fit_class) - toint(fitness(r))) > 1)
           d = d + adj_demerits;
       }
 
@@ -532,6 +530,7 @@ done1:;
 
       if (node_r_stays_active)
         goto continu;
+
 deactivate:
       link(prev_r) = link(r);
       free_node(r, active_node_size);
@@ -586,7 +585,6 @@ exit:;
       }
 #endif
 }
-/* end of the old tex5.c here */
 /* sec 0877 */
 void post_line_break (integer final_widow_penalty)
 {
@@ -808,7 +806,7 @@ done1:
   prev_graf = best_line - 1;
 }
 /* sec 0906 */
-small_number reconstitute_(small_number j, small_number n, halfword bchar, halfword hchar)
+small_number reconstitute (small_number j, small_number n, halfword bchar, halfword hchar)
 {
   pointer p;
   pointer t;
@@ -1019,7 +1017,7 @@ continu:
           goto done;
         }
 
-    if (q.b0 >= stop_flag)
+    if (skip_byte(q) >= stop_flag)
       if (cur_rh == non_char)
         goto done;
       else
@@ -1056,16 +1054,16 @@ done:
 /* sec 0895 */
 void hyphenate (void)
 {
-/*  char i, j, l;  */
+  /* char i, j, l; */
   char i, j;
-  int l;              /* 95/Jan/7 */
+  int l;
   pointer q, r, s;
   halfword bchar;
   pointer major_tail, minor_tail;
-/*  ASCII_code c;  */
+  /* ASCII_code c; */
   int c;
   char c_loc;
-/*  integer r_count; */
+  /* integer r_count; */
   int r_count;
   pointer hyf_node;
   trie_pointer z;
@@ -1258,7 +1256,7 @@ common_ending:
       {
         link(s) = link(hold_head);
 
-        while (link(s) != 0) /* l.17903 */
+        while (link(s) != 0)
           s = link(s);
 
         if (odd(hyf[j - 1]))
@@ -1316,7 +1314,7 @@ common_ending:
               }
             }
 
-            if (hyf_node != 0) /* if hyf_node<>null then l.17956 */
+            if (hyf_node != 0)
             {
               hu[i] = c;
               l = i;
@@ -1327,7 +1325,7 @@ common_ending:
             post_break(r) = 0;
             c_loc = 0;
 
-            if (bchar_label[hf] != non_address) /* i.e. 0 --- 96/Jan/15 */
+            if (bchar_label[hf] != non_address)
             {
               decr(l);
               c = hu[l];
@@ -1349,14 +1347,14 @@ common_ending:
 
                   if (link(hold_head) != 0)     /* BUG FIX */
                   {
-                    if (minor_tail == 0) /* begin if minor_tail=null then */
+                    if (minor_tail == 0)
                       post_break(r) = link(hold_head);
                     else
                       link(minor_tail) = link(hold_head);
 
                     minor_tail = link(hold_head);
 
-                    while (link(minor_tail) != 0)    /* ??? */
+                    while (link(minor_tail) != 0)
                       minor_tail = link(minor_tail);
                   }
                 }
@@ -1512,6 +1510,7 @@ reswitch:
                   incr(v);
                 }
               while (!(u == str_start[k + 1]));
+
 found:
               q = hyph_list[h];
               hyph_list[h] = p;
@@ -1691,7 +1690,7 @@ pointer vert_break (pointer p, scaled h, scaled d)
     if (pi < inf_penalty)
     {
       if (cur_height < h)
-        if ((active_width[3] != 0) || (active_width[4] != 0) || (active_width[5]!= 0))
+        if ((active_width[3] != 0) || (active_width[4] != 0) || (active_width[5] != 0))
           b = 0;
         else
           b = badness(h - cur_height, active_width[2]);
@@ -1851,14 +1850,14 @@ void print_totals (void)
   print_plus(4, "fill");
   print_plus(5, "filll");
 
-  if (page_so_far[6] != 0)
+  if (page_shrink != 0)
   {
     prints(" minus ");
-    print_scaled(page_so_far[6]);
+    print_scaled(page_shrink);
   }
 }
 /* sec 0987 */
-void freeze_page_specs_(small_number s)
+void freeze_page_specs (small_number s)
 {
   page_contents = s;
   page_goal = vsize;
@@ -2072,6 +2071,7 @@ void fire_up (pointer c)
       bot_mark = mark_ptr(p);
       add_token_ref(bot_mark);
     }
+
     prev_p = p;
     p = link(prev_p);
   }

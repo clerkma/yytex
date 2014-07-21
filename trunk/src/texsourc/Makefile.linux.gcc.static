@@ -3,15 +3,13 @@
 #
 # You may freely use, modify and/or distribute this file.
 #
-# makefle for linux (tested in ubuntu 14.04: clang/LLVM 4.3).
-#
-# apt-get install libkpathsea6 libkpathsea-dev
-# apt-get install zlib1g zlib1g-dev
+# makefle for linux (tested in ubuntu 14.04: gcc 4.8).
+# linked libkpathsea.a and libz.a
 #
 
-CC = clang
-CFLAGS = -c -O2 -Ilibmd5
-LDFLAGS = -lkpathsea -lz
+CC = gcc
+CFLAGS = -c -O2 -Wno-unused-result -Ilibmd5
+LDFLAGS = /home/clerk/dev/android/lib/libkpathsea.a /home/clerk/dev/android/lib/libz.a
 
 objects = yandytex.o itex.o openinou.o subroute.o local.o \
 	tex0.o tex1.o tex2.o tex3.o tex4.o \

@@ -17,10 +17,10 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 /* sec 0715 */
-pointer rebox_(pointer b, scaled w)
+pointer rebox (pointer b, scaled w)
 {
   pointer p;
   internal_font_number f;
@@ -58,9 +58,8 @@ pointer rebox_(pointer b, scaled w)
     return b;
   }
 }
-/* This is to be the start of tex5.c */
 /* sec 0716 */
-pointer math_glue_(pointer g, scaled m)
+pointer math_glue (pointer g, scaled m)
 {
   pointer p;
   integer n;
@@ -94,7 +93,7 @@ pointer math_glue_(pointer g, scaled m)
   return p;
 }
 /* sec 0717 */
-void math_kern_ (pointer p, scaled m)
+void math_kern (pointer p, scaled m)
 {
   integer n;
   scaled f;
@@ -124,7 +123,7 @@ void flush_math (void)
   incompleat_noad = 0;
 }
 /* sec 0720 */
-pointer clean_box_(pointer p, small_number s)
+pointer clean_box (pointer p, small_number s)
 {
   pointer q;
   small_number save_style;
@@ -486,7 +485,7 @@ void make_fraction (pointer q)
 
     delta = half(thickness(q));
     delta1 = clr - ((shift_up - depth(x)) - (axis_height(cur_size) + delta));
-    delta2 = clr -((axis_height(cur_size) - delta) - (height(z) - shift_down));
+    delta2 = clr - ((axis_height(cur_size) - delta) - (height(z) - shift_down));
 
     if (delta1 > 0)
       shift_up = shift_up + delta1;
@@ -1286,7 +1285,7 @@ void init_align (void)
   push_alignment();
   align_state = -1000000L;
 
-  if ((mode == mmode) && ((tail != cur_list.head_field) || (incompleat_noad != 0)))
+  if ((mode == mmode) && ((tail != head) || (incompleat_noad != 0)))
   {
     print_err("Improper ");
     print_esc("halign");

@@ -17,71 +17,17 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
+/* sec 0016 */
 void do_nothing(void)
 {
   /* todo */
 }
-
+/* sec 0034 */
 void update_terminal(void)
 {
-#ifndef _WINDOWS
   fflush(stdout);
-#endif
-}
-
-void check_full_save_stack(void)
-{
-  if (save_ptr > max_save_stack)
-  {
-    max_save_stack = save_ptr;
-
-#ifdef ALLOCATESAVESTACK
-    if (max_save_stack > current_save_size - 6)
-      save_stack = realloc_save_stack(increment_save_size);
-    
-    if (max_save_stack > current_save_size - 6)
-    {
-      overflow("save size", current_save_size);
-      return;
-    }
-#else
-    if (max_save_stack > save_size - 6)
-    {
-      overflow("save size", save_size);
-      return;
-    }
-#endif
-  }
-}
-void write_dvi(size_t a, size_t b)
-{
-  if (fwrite((char *) &dvi_buf[a], sizeof(dvi_buf[a]),
-    ((b) - (a) + 1), dvi_file) != ((b) - (a) + 1))
-    FATAL_PERROR ("\n! dvi file");
-}
-void prompt_input(const char * s)
-{
-  prints(s);
-  term_input();
-}
-void set_cur_lang(void)
-{
-  if (language <= 0)
-    cur_lang = 0;
-  else if (language > 255)
-    cur_lang = 0;
-  else
-    cur_lang = language;
-}
-void free_avail_(halfword p)
-{
-  link(p) = avail;
-  avail = p;
-#ifdef STAT
-  decr(dyn_used);
-#endif
 }
 /* sec 0042 */
 void append_char (ASCII_code c)
@@ -117,6 +63,7 @@ void append_lc_hex (ASCII_code c)
   else
     append_char(c - 10 + 'a');
 }
+/* sec 0056 */
 /* sec 0073 */
 void print_err (const char * s)
 {
@@ -125,6 +72,12 @@ void print_err (const char * s)
   
   print_nl("! ");
   prints(s);
+}
+/* sec 0071 */
+void prompt_input(const char * s)
+{
+  prints(s);
+  term_input();
 }
 /* sec 0079 */
 void tex_help (unsigned int n, ...)
@@ -150,9 +103,7 @@ void succumb (void)
     interaction = scroll_mode;
 
   if (log_opened)
-  {
     error();
-  }
 
 #ifdef DEBUG
   if (interaction > 0)
@@ -162,8 +113,17 @@ void succumb (void)
   history = error_stop_mode;
   jump_out();
 }
+/* sec 0121 */
+void free_avail_(halfword p)
+{
+  link(p) = avail;
+  avail = p;
+#ifdef STAT
+  decr(dyn_used);
+#endif
+}
 /* sec 0180 */
-void node_list_display(integer p)
+void node_list_display (integer p)
 {
   append_char('.');
   show_node_list(p);
@@ -174,6 +134,31 @@ void tail_append_ (pointer val)
 {
   link(tail) = val;
   tail = link(tail);
+}
+/* sec 0273 */
+void check_full_save_stack(void)
+{
+  if (save_ptr > max_save_stack)
+  {
+    max_save_stack = save_ptr;
+
+#ifdef ALLOCATESAVESTACK
+    if (max_save_stack > current_save_size - 6)
+      save_stack = realloc_save_stack(increment_save_size);
+
+    if (max_save_stack > current_save_size - 6)
+    {
+      overflow("save size", current_save_size);
+      return;
+    }
+#else
+    if (max_save_stack > save_size - 6)
+    {
+      overflow("save size", save_size);
+      return;
+    }
+#endif
+  }
 }
 /* sec 0321 */
 void push_input(void)
@@ -210,7 +195,7 @@ void pop_input(void)
   cur_input = input_stack[input_ptr];
 }
 /* sec 0532 */
-void ensure_dvi_open(void)
+void ensure_dvi_open (void)
 {
   if (output_file_name == 0)
   {
@@ -220,17 +205,24 @@ void ensure_dvi_open(void)
     pack_job_name(".dvi");
 
     while (!b_open_out(dvi_file))
-    {
       prompt_file_name("file name for output", ".dvi");
-    }
 
     output_file_name = b_make_name_string(dvi_file);
   }
 }
+/* sec 0564 */
+void fget (void)
+{
+  fbyte = getc(tfm_file);
+}
+/* sec 0597 */
+void write_dvi(size_t a, size_t b)
+{
+  if (fwrite((char *)&dvi_buf[a], sizeof(dvi_buf[a]),
+    (b - a + 1), dvi_file) != (b - a + 1))
+    FATAL_PERROR("\n! dvi file");
+}
 /* sec 0598 */
-md5_state_t dvi_md5_state;
-md5_byte_t  dvi_md5_digest[16];
-
 void dvi_out_(ASCII_code op)
 {
   dvi_buf[dvi_ptr] = op;
@@ -240,7 +232,7 @@ void dvi_out_(ASCII_code op)
     dvi_swap();
 }
 /* sec 0616 */
-void synch_h(void)
+void synch_h (void)
 {
   if (cur_h != dvi_h)
   {
@@ -249,7 +241,7 @@ void synch_h(void)
   }
 }
 /* sec 0616 */
-void synch_v(void)
+void synch_v (void)
 {
   if (cur_v != dvi_v)
   {
@@ -257,8 +249,18 @@ void synch_v(void)
     dvi_v = cur_v;
   }
 }
+/* sec 0934 */
+void set_cur_lang (void)
+{
+  if (language <= 0)
+    cur_lang = 0;
+  else if (language > 255)
+    cur_lang = 0;
+  else
+    cur_lang = language;
+}
 /* sec 0985 */
-void print_plus(int i, const char * s)
+void print_plus (int i, const char * s)
 {
   if (page_so_far[i] != 0)
   {

@@ -17,7 +17,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 
 /* following bit used to be end of tex1.c */
 #ifdef STAT
@@ -117,7 +117,6 @@ done:
     return;
   }
 }
-/* This is where the old tex2.c used to start */
 /* sec 0288 */
 void prepare_mag (void) 
 {
@@ -572,7 +571,7 @@ void begin_file_reading (void)
   index = in_open;
   line_stack[index] = line;
   start = first;
-  state = 1;
+  state = mid_line;
   name = 0;
 }
 /* sec 0329 */
@@ -1115,6 +1114,7 @@ void expand (void)
       case cs_name:
         r = get_avail();
         p = r;
+
         do
           {
             get_x_token();
@@ -1342,7 +1342,7 @@ void scan_optional_equals (void)
     back_input();
 }
 /* sec 0407 */
-boolean scan_keyword(const char * s)
+boolean scan_keyword (const char * s)
 {
   pointer p;
   pointer q;
@@ -1487,7 +1487,7 @@ void scan_font_ident (void)
   cur_val = f;
 }
 /* sec 0578 */
-void find_font_dimen(boolean writing)
+void find_font_dimen (boolean writing)
 {
   internal_font_number f;
   integer n;
@@ -1871,7 +1871,7 @@ void get_next (void)
 {
   integer k;
   halfword t;
-/* char cat; */
+  /* char cat; */
   int cat;
   ASCII_code c, cc;
   char d;
@@ -1988,7 +1988,7 @@ start_cs:
                     {
                       c = buffer[k + 1];
 
-                      if (c < 128)             /* ? */
+                      if (c < 128)
                       {
                         d = 2;
 
@@ -2152,7 +2152,7 @@ found:
         case skip_blanks + right_brace:
         case new_line + right_brace:
           {
-            state = 1;
+            state = mid_line;
             decr(align_state);
           }
           break;

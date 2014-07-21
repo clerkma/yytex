@@ -1,5 +1,6 @@
 /* Copyright 2007 TeX Users Group
    Copyright 2014 Clerk Ma
+
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
    the Free Software Foundation; either version 2 of the License, or
@@ -17,9 +18,7 @@
 
 #define EXTERN extern
 
-#include "texd.h"
-
-#define PATH_SEP '/'
+#include "yandytex.h"
 
 // texk/web2c/lib/uexit.c
 void uexit (int unix_code)
@@ -37,7 +36,7 @@ void uexit (int unix_code)
 
   if (jump_used)
   {
-    printf("Jump Buffer already used\n");
+    printf("Jump Buffer already used.\n");
     exit(1);
   }
 
@@ -74,7 +73,7 @@ char * unixify (char * t)
     while (*s != '\0')
     {
       if (*s == '\\')
-        *s = PATH_SEP;
+        *s = '/';
 
       s++;
     }
@@ -86,34 +85,20 @@ char * unixify (char * t)
   return t;
 }
 
-char * md5_file_name(const char * file_name)
+char * md5_file_name (const char * file_name)
 {
-  md5_state_t md5_ship;
-  md5_byte_t  md5_data[1024];
-  md5_byte_t  md5_digest[16];
   static char md5_hex[33];
-  int         md5_len;
   FILE * ship_file;
-  int i;
 
   ship_file = fopen(file_name, "rb");
-
-  md5_init(&md5_ship);
-
-  while ((md5_len = fread(md5_data, 1, 1024, ship_file)) != 0)
-    md5_append(&md5_ship, md5_data, md5_len);
-
-  md5_finish(&md5_ship, md5_digest);
-
+  memset(md5_hex, 0, 33);
+  memcpy(md5_hex, md5_file(ship_file), 32);
   fclose(ship_file);
-
-  for (i = 0; i < 16; ++i)
-    sprintf(md5_hex + i * 2, "%02X", md5_digest[i]);
 
   return md5_hex;
 }
 
-char * md5_file(FILE * in_file)
+char * md5_file (FILE * in_file)
 {
   md5_state_t md5_ship;
   md5_byte_t  md5_data[1024];

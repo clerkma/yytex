@@ -17,18 +17,10 @@
    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
    02110-1301 USA.  */
 
-/* openinout.c: open input and output files. */
-
 #define EXTERN extern
 
-#include "texd.h"
+#include "yandytex.h"
 #undef name
-
-extern char * dvi_directory;
-extern char * log_directory;
-extern char * aux_directory;
-extern char * fmt_directory;
-extern char * pdf_directory;
 
 #define PATH_SEP        '/'
 #define PATH_SEP_STRING "/"
@@ -40,7 +32,6 @@ extern int shorten_file_name;
 #ifdef FUNNY_CORE_DUMP
   extern void funny_core_dump(void);
 #endif
-
 
 #ifdef BUILDNAMEDIRECT
 char * xconcat (char * buffer, char * s1, char * s2)
@@ -84,18 +75,17 @@ char * xconcat3 (char *buffer, char *s1, char *s2, char *s3)
 }
 #endif
 
-// assumes path does not end in PATH_SEP
-void patch_in_path (unsigned char *buffer, unsigned char *name, unsigned char *path)
+void patch_in_path (ASCII_code * buffer, ASCII_code *name, ASCII_code * path)
 {
   if (*path == '\0')
     strcpy((char *) buffer, (char *) name);
   else
-    xconcat3((char *) buffer, (char *) path, PATH_SEP_STRING, (char *) name);
+    xconcat3((char *) buffer, (char *) path, "/", (char *) name);
 }
 
-int qualified (unsigned char * name)
+int qualified (ASCII_code * name)
 {
-  if (strchr((char *) name, PATH_SEP) != NULL ||
+  if (strchr((char *) name, '/') != NULL ||
       strchr((char *) name, '\\') != NULL ||
       strchr((char *) name, ':') != NULL)
     return 1;
@@ -107,7 +97,7 @@ int qualified (unsigned char * name)
     (ii)  name not qualified
     (iii) ext match
 */
-int prepend_path_if (unsigned char *buffer, unsigned char *name, char *ext, unsigned char *path)
+int prepend_path_if(ASCII_code * buffer, ASCII_code * name, const char * ext, char *path)
 {
   if (path == NULL)
     return 0;
@@ -121,7 +111,7 @@ int prepend_path_if (unsigned char *buffer, unsigned char *name, char *ext, unsi
   if (strstr((char *) name, ext) == NULL)
     return 0;
 
-  patch_in_path(buffer, name, path);
+  patch_in_path(buffer, name, (ASCII_code *)path);
 
   return 1;
 }
@@ -161,10 +151,7 @@ void check_short_name (unsigned char *s)
 }
 
 /* Following works on both null-terminated names */
-/* reconvert 254 to '~' in file name 95/Sep/26 */
-/* reconvert 255 to ' ' in file name 95/Sep/26 */
-/* we do this in tex3.c start_input() -> scan_file_name() now 95/Sep/26 */
-/* kpathsea/tilde.c */
+
 void retwiddle (unsigned char *s)
 {
   while (*s != '\0')
@@ -178,14 +165,13 @@ void retwiddle (unsigned char *s)
   }
 }
 
-/* in lib/openclose.c */
-boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
+boolean open_input (FILE ** f, kpse_file_format_type file_fmt, const char * fopen_mode)
 {
   boolean openable = false;
   char * file_name = NULL;
 
 #if defined (FUNNY_CORE_DUMP) && !defined (BibTeX)
-  if (path_index == TEXINPUTPATH &&
+  if (file_fmt == kpse_tex_format &&
     strncmp(name_of_file + 1, "HackyInputFileNameForCoreDump.tex", 33) == 0)
     funny_core_dump();
 #endif
@@ -198,8 +184,7 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 
   name_of_file[name_length + 1] = '\0';
 
-  /* reinsert '~' and ' ' in file names -  95/June/5 */
-  /* done late to prevent problems with  null_terminate / space_terminate */  
+  /* reinsert '~' and ' ' in file names */  
   if (pseudo_tilde != 0 || pseudo_space != 0)
     retwiddle(name_of_file + 1);
 
@@ -209,20 +194,7 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
   if (open_trace_flag)
     printf(" Open `%s' for input ", name_of_file + 1);
 
-  switch (path_index)
-  {
-    case TEXINPUTPATH:
-      file_name = kpse_find_file((const_string) name_of_file + 1, kpse_tex_format, 0);
-      break;
-
-    case TEXFORMATPATH:
-      file_name = kpse_find_file((const_string) name_of_file + 1, kpse_fmt_format, 0);
-      break;
-
-    case TFMFILEPATH:
-      file_name = kpse_find_file((const_string) name_of_file + 1, kpse_tfm_format, 0);
-      break;
-  }
+  file_name = kpse_find_file((const_string) name_of_file + 1, file_fmt, false);
 
   if (file_name != NULL)
   {
@@ -249,17 +221,15 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
     else
       name_length = strlen((char *) name_of_file + 1);
       
-    if (path_index == TFMFILEPATH)
+    if (file_fmt == kpse_tfm_format)
     {
-      tfm_temp = getc(*f);
+      fbyte = getc(*f);
     } 
 
     if (strstr((char *) name_of_file + 1, ".fmt") != NULL)
     {
       if (format_file == NULL)
-      {
         format_file = xstrdup((char *) name_of_file + 1);
-      }
 
 #ifdef COMPACTFORMAT
       gz_fmt_file = gzdopen(fileno(*f), "rb9");
@@ -274,18 +244,16 @@ boolean open_input (FILE **f, path_constant_type path_index, char *fopen_mode)
 
         if (file_offset + n > max_print_line)
         {
-          putc('\n', log_file);
+          (void) putc('\n', log_file);
           file_offset = 0;
         }
         else
-          putc(' ', log_file);
+          (void) putc(' ', log_file);
 
         fprintf(log_file, "(%s)", name_of_file + 1);
         file_offset += n + 3;
       }
     }
-/*    code added 98/Sep/29 to catch first file input */
-/*    is there a problem if this file bombs ? */
     else if (source_direct == NULL)
     {
       char *s;
@@ -337,7 +305,22 @@ int check_fclose (FILE * f)
   return 0;
 }
 
-boolean open_output (FILE **f, char *fopen_mode)
+char * xstrdup_name (void)
+{
+  if (qualified(name_of_file + 1))
+    *log_line = '\0';
+  else
+  {
+    (void) getcwd(log_line, sizeof(log_line));
+    strcat(log_line, PATH_SEP_STRING);
+  }
+
+  strcat(log_line, (char *) name_of_file + 1);
+  unixify(log_line);
+  return xstrdup(log_line);
+}
+
+boolean open_output (FILE ** f, const char * fopen_mode)
 {
   unsigned temp_length;
 
@@ -350,11 +333,11 @@ boolean open_output (FILE **f, char *fopen_mode)
   if (shorten_file_name)
     check_short_name(name_of_file + 1);
 
-  if (prepend_path_if(name_of_file + 1, name_of_file + 1, ".dvi", (unsigned char *) dvi_directory) ||
-      prepend_path_if(name_of_file + 1, name_of_file + 1, ".log", (unsigned char *) log_directory) ||
-      prepend_path_if(name_of_file + 1, name_of_file + 1, ".aux", (unsigned char *) aux_directory) ||
-      prepend_path_if(name_of_file + 1, name_of_file + 1, ".fmt", (unsigned char *) fmt_directory) ||
-      prepend_path_if(name_of_file + 1, name_of_file + 1, ".pdf", (unsigned char *) pdf_directory))
+  if (prepend_path_if(name_of_file + 1, name_of_file + 1, ".dvi", dvi_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".log", log_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".aux", aux_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".fmt", fmt_directory) ||
+      prepend_path_if(name_of_file + 1, name_of_file + 1, ".pdf", pdf_directory))
   {
     if (open_trace_flag)
       printf("After prepend %s\n", name_of_file + 1);
@@ -365,7 +348,6 @@ boolean open_output (FILE **f, char *fopen_mode)
 
   *f = fopen((char *) name_of_file + 1, fopen_mode);
 
-  /* Can't open as given.  Try the envvar.  */
   if (*f == NULL)
   {
     string temp_dir = kpse_var_value("TEXMFOUTPUT");
@@ -376,17 +358,17 @@ boolean open_output (FILE **f, char *fopen_mode)
       unsigned char temp_name[file_name_size];
       xconcat3((char *) temp_name, temp_dir, PATH_SEP_STRING, (char *) name_of_file + 1);
 #else
-      string temp_name = concat3 (temp_dir, PATH_SEP_STRING, name_of_file + 1);
+      string temp_name = concat3(temp_dir, PATH_SEP_STRING, name_of_file + 1);
 #endif
 
       if (deslash)
         unixify((char *) temp_name);
       
       /* but we can assume this is opening here for *output* */
-      *f = fopen((char*) temp_name, fopen_mode);
-      /* If this succeeded, change name_of_file accordingly.  */
+      *f = fopen((char *) temp_name, fopen_mode);
+      /* If this succeeded, change name_of_file accordingly. */
       if (*f)
-        strcpy((char*) name_of_file + 1, (char *) temp_name);
+        strcpy((char *) name_of_file + 1, (char *) temp_name);
 
 #ifndef BUILDNAMEDIRECT
       free (temp_name);
@@ -400,50 +382,14 @@ boolean open_output (FILE **f, char *fopen_mode)
 #endif
 
   if (strstr((char *) name_of_file + 1, ".dvi") != NULL)
-  {
-    if (qualified(name_of_file + 1))
-      *log_line = '\0';
-    else
-    {
-      getcwd(log_line, sizeof(log_line));
-      strcat(log_line, PATH_SEP_STRING);
-    }
-
-    strcat(log_line, (char*) name_of_file + 1);
-    unixify(log_line);
-    dvi_file_name = xstrdup(log_line);
-  }
+    dvi_file_name = xstrdup_name();
   else if (strstr((char *) name_of_file + 1, ".pdf") != NULL)
-  {
-    if (qualified(name_of_file + 1))
-      *log_line = '\0';
-    else
-    {
-      getcwd(log_line, sizeof(log_line));
-      strcat(log_line, PATH_SEP_STRING);
-    }
+    pdf_file_name = xstrdup_name();
+  else if (strstr((char *) name_of_file + 1, ".log") != NULL)
+    log_file_name = xstrdup_name();
 
-    strcat(log_line, (char*) name_of_file + 1);
-    unixify(log_line);
-    pdf_file_name = xstrdup(log_line);
-  }
-  else if (strstr((char *)name_of_file + 1, ".log") != NULL)
-  {
-    if (qualified(name_of_file + 1))
-      *log_line = '\0';
-    else
-    {
-      getcwd(log_line, sizeof(log_line));
-      strcat(log_line, PATH_SEP_STRING);
-    }
-
-    strcat(log_line, (char *) name_of_file + 1);
-    unixify(log_line);
-    log_file_name = xstrdup(log_line);
-  }
-
-  temp_length = strlen ((char *)name_of_file + 1);
-  name_of_file[temp_length+1] = ' ';
+  temp_length = strlen((char *) name_of_file + 1);
+  name_of_file[temp_length + 1] = ' ';
 
   if (*f)
     name_length = temp_length;
