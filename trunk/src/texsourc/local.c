@@ -29,8 +29,10 @@
   #define REALLOC realloc
 #endif
 
-#ifdef __ANDROID__
+#if   defined (__ANDROID__)
   #define malloc_usable_size dlmalloc_usable_size
+#elif defined (__APPLE__)
+  #define malloc_usable_size malloc_size
 #endif
 
 #if   defined (__clang__)
