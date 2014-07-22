@@ -464,12 +464,9 @@ boolean input_line (FILE * f)
   return input_line_finish();
 }
 
-/* This string specifies what the `e' option does in response to an
-   error message.  */
-
 static char * edit_value = "c:\\yandy\\WinEdt\\WinEdt.exe [Open('%s');SelLine(%d,7)]";
 
-static int Isspace (char c)
+static inline int Isspace (char c)
 {
   return (c == ' ' || c == '\t');
 }

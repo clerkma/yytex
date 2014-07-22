@@ -29,12 +29,30 @@
   #define REALLOC realloc
 #endif
 
-#if defined(__clang__)
+#ifdef __ANDROID__
+  #define malloc_usable_size dlmalloc_usable_size
+#endif
+
+#if   defined (__clang__)
 const char * compiler = "Clang/LLVM";
-#elif defined(__GNUC__) || defined(__GNUG__)
+#elif defined (__GNUC__) || defined(__GNUG__)
 const char * compiler = "GCC";
-#elif defined(_MSC_VER)
+#elif defined (_MSC_VER)
 const char * compiler = "MSVC";
+#endif
+
+#if   defined (_WIN64)
+const char * dist = "Win64";
+#elif defined (_WIN32)
+const char * dist = "Win32";
+#elif defined (__ANDROID__)
+const char * dist = "Android";
+#elif defined (__APPLE__)
+const char * dist = "Darwin";
+#elif defined (__gnu_linux__)
+const char * dist = "Linux";
+#else
+const char * dist = "Unknown";
 #endif
 
 const char * compiletime  = __TIME__;
@@ -46,15 +64,7 @@ const char * banner       = "This is TeX, Version 3.14159265";
 void print_banner (void)
 {
   char dist_ver[256];
-#ifdef _WIN32
-#ifdef _WIN64
-  sprintf(dist_ver, "%s (%s %s/Win64)", banner, application, yandyversion);
-#else
-  sprintf(dist_ver, "%s (%s %s/Win32)", banner, application, yandyversion);
-#endif
-#else
-  sprintf(dist_ver, "%s (%s %s/Linux)", banner, application, yandyversion);
-#endif
+  sprintf(dist_ver, "%s (%s %s/%s)", banner, application, yandyversion, dist);
   prints(dist_ver);
 }
 
@@ -98,7 +108,7 @@ unsigned char wintodos[128] =
 void show_usage (void)
 {
   printf("\n"
-      "Useage: yanytex [OPTION]... [+format_file] [tex_file]\n\n"
+      "Useage: yandytex [OPTION]... [+format_file] [tex_file]\n\n"
       "--help       -?  show this usage summary\n"
       "--initex     -i  start up as initex (create format file)\n"
       "--verbose    -v  be verbose (show implementation version number)\n"
