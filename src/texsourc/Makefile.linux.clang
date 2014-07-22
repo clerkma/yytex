@@ -3,7 +3,7 @@
 #
 # You may freely use, modify and/or distribute this file.
 #
-# makefle for linux (tested in ubuntu 14.04: clang/LLVM 4.3).
+# makefile for linux (tested in ubuntu 14.04: clang/LLVM 4.3).
 #
 # apt-get install libkpathsea6 libkpathsea-dev
 # apt-get install zlib1g zlib1g-dev
