@@ -87,12 +87,6 @@ void close_files_and_terminate (void)
 {
   integer k; 
 
-  if (closed_already++)
-  {
-    puts("close_files_and_terminated() already ");
-    return;
-  }
-
   if (trace_flag)
     puts("\nclose_files_and_terminate() ");
 

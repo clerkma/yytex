@@ -66,6 +66,7 @@ const char * banner       = "This is TeX, Version 3.14159265";
 void print_banner (void)
 {
   char dist_ver[256];
+  memset(dist_ver, 0, sizeof(dist_ver));
   sprintf(dist_ver, "%s (%s %s/%s)", banner, application, yandyversion, dist);
   prints(dist_ver);
 }
@@ -82,7 +83,6 @@ char log_line[256];
 
 boolean mem_spec_flag     = false;
 boolean format_spec       = false;
-int closed_already        = 0;     /* make sure we don't try this more than once */
 boolean reorder_arg_flag  = true;  /* put command line flags/arguments first */
 
 /* Mapping from Windows ANSI to DOS code page 850 96/Jan/20 */
@@ -142,7 +142,7 @@ void scivilize (char * date)
   int k;
   char pyear[6];
 
-  strcpy (pyear, date + 7);
+  strcpy(pyear, date + 7);
 
   for (k = 5; k >= 0; k--)
     date[k + 5] = date[k];
@@ -212,7 +212,7 @@ void read_xchr_sub (FILE * xchr_input)
 
     if (from >= 0 && from < MAXCHRS && to >= 0 && to < MAXCHRS)
     {
-      if (xchr[from] == (unsigned char) NOTDEF)
+      if (xchr[from] == NOTDEF)
         xchr[from] = (unsigned char) to;
       else
         printf("NOTE: %s collision: %d => %d, %d\n", "xchr", from, xchr[from], to);
@@ -2933,7 +2933,6 @@ int main_init (int ac, char ** av)
   underfull_hbox    = 0;
   overfull_vbox     = 0;
   underfull_vbox    = 0;
-  closed_already    = 0;
 
   if (trace_flag)
     puts("Entering main_init() (local.c).");

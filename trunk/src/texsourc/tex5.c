@@ -201,7 +201,7 @@ found:
   return x;
 }
 /* sec 0722 */
-void fetch_(pointer a)
+void fetch (pointer a)
 {
   cur_c = character(a);
   cur_f = fam_fnt(fam(a) + cur_size);

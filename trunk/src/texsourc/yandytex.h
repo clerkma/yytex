@@ -795,7 +795,6 @@ extern char * aux_directory;
 extern char * fmt_directory;
 extern char * pdf_directory;
 extern clock_t start_time, main_time, finish_time;
-extern int closed_already;
 
 extern memory_word * allocate_main_memory (int size);
 extern memory_word * realloc_main (int lo_size, int hi_size);

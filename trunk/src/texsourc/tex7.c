@@ -909,7 +909,7 @@ void scan_box_(integer box_context)
   }
 }
 /* sec 1091 */
-small_number norm_min_ (integer h)
+small_number norm_min (integer h)
 {
   if (h <= 0)
     return 1;

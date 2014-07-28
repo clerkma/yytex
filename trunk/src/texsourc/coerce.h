@@ -111,8 +111,7 @@ void search_mem_(pointer p);
 void short_display_(integer p);
 #define short_display(p) short_display_((integer) (p))
 void print_font_and_char(integer p);
-void print_mark_(integer p);
-#define print_mark(p) print_mark_((integer) (p))
+void print_mark (integer p);
 void print_rule_dimen (scaled d);
 void print_glue_(scaled d, integer order, const char * s);
 #define print_glue(d, order, s) print_glue_((scaled) (d), (integer) (order), (const char *) (s))
@@ -250,8 +249,7 @@ void dvi_four_(integer x);
 #define dvi_four(x) dvi_four_((integer) (x))
 void dvi_pop_(integer l);
 #define dvi_pop(l) dvi_pop_((integer) (l))
-void dvi_font_def_(internal_font_number f);
-#define dvi_font_def(f) dvi_font_def_((internal_font_number) (f))
+void dvi_font_def (internal_font_number f);
 void movement (scaled w, eight_bits o);
 void special_out (pointer p);
 void hlist_out (void);
@@ -281,8 +279,7 @@ pointer math_glue (pointer g, scaled m);
 void math_kern (pointer p, scaled m);
 void flush_math (void);
 pointer clean_box (pointer p, small_number s);
-void fetch_(pointer a);
-#define fetch(a) fetch_((pointer) (a))
+void fetch (pointer a);
 void make_over (pointer q);
 void make_under (pointer q);
 void make_vcenter (pointer q);
@@ -346,8 +343,7 @@ void begin_box (integer box_content);
 void scan_box_(integer box_content);
 #define scan_box(box_context) scan_box_((integer) (box_context))
 void package (small_number c);
-small_number norm_min_(integer h);
-#define norm_min(h) norm_min_((integer) (h))
+small_number norm_min (integer h);
 void new_graf (boolean indented);
 void indent_in_hmode (void);
 void head_for_vmode (void);
