@@ -145,7 +145,7 @@ void dvi_pop_(integer l)
     dvi_out(pop);
 }
 /* sec 0602 */
-void dvi_font_def_(internal_font_number f)
+void dvi_font_def (internal_font_number f)
 {
   pool_pointer k;
 

@@ -1964,7 +1964,7 @@ void print_font_and_char (integer p)
   }
 }
 /* sec 0176 */
-void print_mark_ (integer p)
+void print_mark (integer p)
 { 
   print_char('{');
 
