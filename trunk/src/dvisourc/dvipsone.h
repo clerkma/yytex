@@ -36,9 +36,9 @@
 #pragma warning(disable:4127) // conditional expression is constant
 
 #ifdef _WINDOWS
-#define PSputs(str,output) psputs(str,output)
+  #define PSputs(str,output) psputs(str, output)
 #else
-#define PSputs(str,output) fputs(str,output)
+  #define PSputs(str,output) fputs(str, output)
 #endif
 
 // PSputc done as macro for speed
@@ -66,8 +66,6 @@
   } while(0)
 #endif
 
-//////////////////////////////////////////////////////////
-
 #define ID_BYTE 2     /* for version of DVI files that we understand */
 
 /* Introduce new convenient structure for color info 98/Jul/18 */
@@ -81,63 +79,23 @@ typedef struct
 }
 COLORSPEC;
 
-/* #define FILENAME_MAX 128 */ /* 16 bit compiler stdio.h */
-/* #define FILENAME_MAX 260 */ /* 32 bit compiler stdio.h */
-
-#define MAXFILENAME FILENAME_MAX  /*  128 DOS stdio.h  *//*  260 NT  stdio.h  */
+#define MAXFILENAME FILENAME_MAX
 #define FNAMELEN    FILENAME_MAX  /* max file name length */
 #define MAXPATHLEN  FILENAME_MAX  /* max path name length */
-/* #define MAX_PATH   260 */      /* in NT windef.h ? */
-/* #define FNAMELEN   80  */      /* max file name length in DOS ? */
-/* #define MAXPATHLEN 64  */      /* max path name length in DOS ? */
-
-#define MAXCOMMENT 256    /* max length of TeX comment in DVI file */
-/* #define MAXLINE 256 */ /* max length of input line (afm - tfm) */
-#define MAXLINE    512    /* max length of input line 1994/Feb/24 */
-
-/* #define MAXTEXNAME  33 */ /* (16?) max length of font name in  TeX */
-/* #define MAXTEXNAME  32 */ /* (16?) max length of font name in  TeX - align */
-/* #define MAXTEXNAME  34 */ /* (16?) max length of font name in  TeX - align */
-/* #define MAXFONTNAME 33 */ /* max length of substitute fontname */
-/* #define MAXFONTNAME 32 */ /* max length of substitute fontname - align */
-/* #define MAXFONTNAME 34 */ /* max length of substitute fontname - align */
-/* NOTE: MAXFONTNAME >= MAXTEXNAME since we copy sometimes from one to other */
-/* #define MAXVECNAME 9  */  /* max length of encoding vector name */
-/* #define MAXVECNAME 10 */  /* max length of encoding vector name - align */
-/* #define MAXVECNAME 24 */  /* compromise - why would anyone want... */
-
-/* #define MAXCHARNAME 33 */ /* (25?) max length of character name */
-#define MAXCHARNAME 32      /* (25?) max length of character name - align */
+#define MAXCOMMENT  256           /* max length of TeX comment in DVI file */
+#define MAXLINE     512           /* max length of input line 1994/Feb/24 */
+#define MAXCHARNAME 32            /* (25?) max length of character name - align */
 /* MAXCHARNAME no longer limits length of char name just space allocation */
-#define MAXCHRS     256     /* max number of characters codes */
-#define TEXCHRS     128     /* max number of characters in a TeX font */
-
-/* maximum number assigned to a font by TeX + 1 */
-/* fixed allocation sizeof(int) * MAXFONTNUMBERS */
-
-/* #define MAXFONTNUMBERS 512 *//* >= 256 max number assigned to a font + 1 */
-#define MAXFONTNUMBERS 1024 /* 1999/Feb/22 */
-/* #define MAXFONTNUMBERS 256 */  /* >= 256 max number assigned TeX 82 */
-
-/* maximum number of fonts allowed in any one DVI file */
-/* careful MAXFONTS * MAXCHRS must fit in unsigned int in doallocation */
-
-#define MAXFONTS 512U   /* 1999/Nov/3 for Larry Tseng */
-/* #define MAXFONTS 256U */ /* 72 >= 64 max number of fonts in DVI file */
-/* #define MAXFONTS 128U */ /* 72 >= 64 max number of fonts in DVI file */
-
-#define MAXSUBSTITUTE 512   /* max fonts in substitution table */
-/* #define MAXSUBSTITUTE 256 */ /* 128 max fonts in substitution table */
-
-#define WRAPCOLUMN 64   /* were to start thinking about wrapping special */
-#define MAXSHOWONLINE 6   /* max shows in a row before newline */
-#define MAXERRORS 64    /* error count before giving up */
-
-#define MAXRANGES 16    /* max number of page ranges - now expands */
-/* #define MAXRANGES 12 */    /* max number of page ranges */
-
-/* #define DVIDICT 256 */ /* allocation for DVIDICT in printer */
-#define DVIDICT 300     /* allocation for DVIDICT in printer */
+#define MAXCHRS     256           /* max number of characters codes */
+#define TEXCHRS     128           /* max number of characters in a TeX font */
+#define MAXFONTNUMBERS  1024      /* 1999/Feb/22 */
+#define MAXFONTS        512U      /* 1999/Nov/3 for Larry Tseng */
+#define MAXSUBSTITUTE   512       /* max fonts in substitution table */
+#define WRAPCOLUMN      64        /* were to start thinking about wrapping special */
+#define MAXSHOWONLINE   6         /* max shows in a row before newline */
+#define MAXERRORS       64        /* error count before giving up */
+#define MAXRANGES       16        /* max number of page ranges - now expands */
+#define DVIDICT         300       /* allocation for DVIDICT in printer */
 /* dvidict needs less to 256 (plus space for fonts */
 /* but user may define a few extra things in dvidict ... */
 /* can use command line -D=... to increase */
@@ -229,9 +187,6 @@ enum dvicom
   pre = 247, post, post_post
 };
 
-/* srefl = 250, erefl = 251 used for `right-to-left' languages in TeX-XeT */
-/* need for these was later removed in TeX--XeT */
-
 /* what DVI commands translate to: */
 
 /*
@@ -253,156 +208,111 @@ enum dvicom
 
 /* AND: O => oo, U => u u, M => o u */
 
-extern unsigned char decrypt_byte(unsigned char, unsigned short *);
-extern void preextract(void);            /* in dviextra.c */
-extern void writetextext(FILE *);        /* in dviextra.c */
-/* extern void write_ansi_code(FILE *); */      /* in dviextra.c */
-extern void write_ansi_code(FILE *, char *);      /* in dviextra.c */
-/* extern void writetextencode(FILE *, char *); */  /* in dviextra.c */
-extern int read_text_encode(char *);        /* in dviextra.c */
-extern void write_dvi_encode(FILE *);       /* in dviextra.c */
-/*extern void extract(FILE *);  */        /* in dviextra.c */
-extern int extractfonts(FILE *);        /* in dviextra.c */
-extern void fontsetup(FILE *);          /* in dviextra.c */
-extern unsigned long readlength(FILE*);     /* in dviextra.c */
-extern void make_file_name(char *, char *);   /* in dviextra.c */
-extern int underscore(char *);          /* in dviextra.c */
-extern int remove_under(char *);       /* in dviextra.c */
-extern int ResidentFont(char *);        /* in dviextra.c */
-extern int FindFileName (char *, char *);   /* in dviextra.c */
-extern int MarkUnusedFonts(void);       /* in dviextra.c */
-extern int GetSubstitutes(void);        /* in dviextra.c */
-
-extern int scanlogfile(FILE *);       /* in dvipslog.c */
-extern void resetpagerangehit (int);      /* in dvipslog.c */
-extern char *alias (char *);          /* in dvipslog.c */
-extern char *nextpathname(char *, char *);    /* in dvipslog.c */
-extern int searchalongpath (char *, char *, char *, int);
-extern FILE *findandopen(char *, char *, char *, char *, int);
-// extern int ReadATMReg(char *, char *);     /* in dvipslog.c */
-extern int LookupATMReg(char *, char *);      /* in dvipslog.c */
-extern int SetupATMReg(void);         /* in dvipslog.c */
-extern void freebackground (void);        /* in dvipslog.c */
-
-extern int readtfm(char *, FILE *, long widths[]);
-extern int readafm(char *, FILE *, long widths[]);
-extern int readpfm(char *, FILE *, long widths[]);
-
-/* extern int NamesFromPFM (FILE *, char *, int, char *, int); */
-extern int NamesFromPFM (FILE *, char *, int, char *, int, char *);
-
-extern int scan_dvi_file(FILE *, FILE *, int);  /* in dvianal.c */
-extern long goto_post(FILE *);     /* in dvianal.c */
-
-
-/* extern FILE *findepsfile(char *, int); */  /* in dvispeci.c */
-/* extern FILE *findepsfile(char *, int, char *); *//* in dvispeci.c */
-extern FILE *findepsfile(char *, char *, int, int); /* in dvispeci.c */
-extern int scan_special(FILE *, char *, int);  /* in dvispeci.c */
-extern int scan_special_raw(FILE *, char *, int); /* in dvispeci.c */
-extern FILE *fopenfont (char *, char *, int); /* in dvispeci.c */
-extern int FindMMBaseFile (int k);        /* in dvispeci.c */
-extern int checkCTM(FILE *);          /* in dvispeci.c */
-extern int checkColorStack(FILE *);       /* in dvispeci.c */
-extern int doColorPopAll(int);
-extern int doColorPop(int);
-extern int doColorPush(int);
-extern void doColorSet(FILE *, int);
-extern double decodeunits(char *);        /* in dvispeci.c */
-
+/* in dviextra.c */
+extern unsigned char decrypt_byte(unsigned char cipher, unsigned short * crypter);
+extern void preextract(void);
+extern void writetextext(FILE * fp_out);
+extern void write_ansi_code(FILE * fp_out, char * textenconame);
+extern int read_text_encode(char * textencoding);
+extern void write_dvi_encode(FILE * fp_out);
+extern int extractfonts(FILE * fp_out);
+extern void fontsetup(FILE * fp_out);
+extern unsigned long readlength(FILE * input);
+extern void make_file_name(char * filepath, char * fontname);
+extern int underscore(char * filename);
+extern int remove_under(char * filename);
+extern int ResidentFont(char * FileName);
+extern int FindFileName(char * fontname, char * filename);
+extern int MarkUnusedFonts(void);
+extern int GetSubstitutes(void);
+/* in dvipslog.c */
+extern int scanlogfile(FILE * fp_in);
+extern void resetpagerangehit(int flag);
+extern char * alias(char * name);
+extern char * nextpathname(char * pathname, char * searchpath);
+extern int searchalongpath(char * filename, char * pathlist, char * pathname, int current);
+extern FILE * findandopen(char * filename, char * pathlist, char * pathname, char * mode, int current);
+extern int LookupATMReg(char * szPSFontName, char * szPSFileName);
+extern int SetupATMReg(void);
+extern void freebackground(void);
+extern int readtfm(char * font, FILE * fp_tfm, long widths[]);
+extern int readafm(char * font, FILE * fp_tfm, long widths[]);
+extern int readpfm(char * font, FILE * fp_tfm, long widths[]);
+extern int NamesFromPFM (FILE * input, char * FaceName, int nface, char * FontName, int nfont, char * FileName);
+/* in dvianal.c */
+extern int scan_dvi_file(FILE * output, FILE * input, int lastflag);
+extern long goto_post(FILE * input);
+/* in dvispeci.c */
+extern FILE * findepsfile(char * name, char * ext, int warnflag, int readflag);
+extern int scan_special(FILE * input, char * buff, int nmax);
+extern int scan_special_raw(FILE * input, char * buff, int nmax);
+extern FILE * fopenfont(char * FontName, char * FileName, int mmflag);
+extern int FindMMBaseFile(int k);
+extern int checkCTM(FILE * output);
+extern int checkColorStack(FILE * output);
+extern int doColorPopAll(int pageno);
+extern int doColorPop(int pageno);
+extern int doColorPush(int pageno);
+extern void doColorSet(FILE * output, int popflag);
+extern double decodeunits(char * units);
+/* in dvipsone.c */
 extern int readcommands(char *filename);
-
-// extern void errcount(void);
-extern void errcount(int);
-extern void giveup(int);
-/* extern void tellwhere(FILE *); */
-extern void tellwhere(FILE *, int);
-extern void ShowLine(char *, int);      /* new in dvipsone.c */
-
-extern int get_alpha_token(FILE *, char *, int);
-extern int get_token(FILE *, char *, int);
-extern void flush_special(FILE *);
-extern int skip_this_page(long);
-extern int readspecial(FILE *, FILE *, unsigned long);
-extern void prereadspecial(FILE *, unsigned long);
-extern void lowercase(char *, char *);
-extern void uppercase(char *, char *);
-extern void extension(char *, char *);
-extern void forceexten(char *, char *);
-char *extractfilename(char *);
-extern void removeexten(char *);
-extern int getline(FILE *, char *);
-extern int getrealline(FILE *, char *);
-/* extern char *nextpathname(char *, char *); */
-extern char *removepath(char *);
-extern int copyepssimple(FILE *, FILE *);
-extern int setupatmini(void);     /* dvipsone.c */
-extern void checkexit(int);       /* dvipsone.c */
-extern char *zstrdup(char *);     /* dvipsone.c */
-
-extern void abortjob(void);        /* dvipsone.c */
-extern char *grabenv (char *);      /* dvipsone.c */
-
-extern void setupinifilesub(char*, char *); /* in dvipsone.c */
-extern int uexit (int);         /* in dvipsone.c */
-
-extern void setupfontchar(int);     /* set up wantchrs for one font */
-
-extern void map850topdf(char *, int); /* in dvispeci.c */
-extern void complainspecial(FILE *); 
-
-/* extern void init_enc(void); */ /* dviextra.c */
-extern void init_enc(int);    /* dviextra.c */
-extern int decompress_font(FILE *, FILE *, char *); /* dviextra.c */
-
-extern int newspecials(FILE *, FILE *);   /* dvitiff.c */
-extern int dohptag(FILE *, FILE *);     /* dvitiff.c */
-
-extern unsigned long codefourty (char *);
-
-extern void DeAllocStringsIn(void);     /* dvitiff.c */
-extern void DeAllocStringsOut(void);    /* dvitiff.c */
-
-extern void doColor (FILE *, FILE *, int, int); /* dvispeci.c */
-extern void RestoreColorStack(int);       /* dvipslog.c */
-extern void freecolorsave (void);     /* dvipslog.c */
-
-extern void doClipBoxPopAll(FILE *);    /* dvispeci.c */
-
-/* extern unsigned int ureadone(FILE *); */
-/* extern unsigned int ureadtwo(FILE *); */
-/* extern int sreadone(FILE *); */
-/* extern int sreadtwo(FILE *); */
-/* extern unsigned long ureadthree(FILE *); */
-/* extern unsigned long ureadfour(FILE *); */
-/* extern long sreadthree(FILE *); */
-/* extern long sreadfour(FILE *); */
-
-void scivilize (char *);
-
-void lcivilize (char *);
-
-void perrormod (char *);
-
-FILE *open_font(char *font, int flag);
-
-FILE *open_pfm (char *font);
-
+extern void errcount(int flag);
+extern void giveup(int code);
+extern void tellwhere(FILE * input, int errflag);
+extern int get_alpha_token(FILE * input, char * token, int nmax);
+extern int get_token(FILE * input, char * buff, int nmax);
+extern void flush_special(FILE * input);
+extern int skip_this_page(long pageno);
+extern int readspecial(FILE * output, FILE * input, unsigned long ns);
+extern void prereadspecial(FILE * input, unsigned long ns);
+extern void lowercase(char * t, char * s);
+extern void uppercase(char * t, char * s);
+extern void extension(char * fname, char * ext);
+extern void forceexten(char * fname, char * ext);
+extern char * extractfilename(char * pathname);
+extern void removeexten(char * fname);
+extern int getline(FILE * input, char * buff);
+extern int getrealline(FILE * input, char * buff);
+extern char * removepath(char * pathname);
+extern int copyepssimple(FILE * output, FILE * special);
+extern int setupatmini(void);
+extern void checkexit(int n);
+extern char * zstrdup(char * s);
+extern void abortjob(void);
+extern char * grabenv(char * varname);
+extern void setupinifilesub(char * ininame, char * fullfilename);
+extern int uexit(int code);
+extern void setupfontchar(int fnt);
+extern void map850topdf(char * buffer, int nlen);
+extern void complainspecial(FILE * input); 
+extern void init_enc(int ansitexflag);
+extern int decompress_font(FILE * output, FILE * input, char * FontName);
+extern int newspecials(FILE * output, FILE * input);
+extern int dohptag(FILE * output, FILE * input);
+extern unsigned long codefourty(char * codingvecctor);
+extern void DeAllocStringsIn(void);
+extern void DeAllocStringsOut(void);
+extern void doColor(FILE * output, FILE * input, int c, int outflag);
+extern void RestoreColorStack(int page);
+extern void freecolorsave(void);
+extern void doClipBoxPopAll(FILE * output);
+void scivilize(char * date);
+void lcivilize(char * date);
+void perrormod(char * s);
+FILE * open_font(char * font, int flag);
+FILE * open_pfm(char * font);
 int LoadATMREG (void);
 
 ////////////////////////////////////////////////////////////////////
 
-extern FILE *errout;    /* where to send error output */
-
+extern FILE * errout;    /* where to send error output */
 extern int logfileflag;   /* write log file 99/Apr/20 */
-extern FILE *logfile;   /* 1999/Apr/20 */
-
-extern FILE *input;       /* used by tellwhere */
-
+extern FILE * logfile;   /* 1999/Apr/20 */
+extern FILE * input;       /* used by tellwhere */
 extern int volatile bAbort;   /* set by user control-C */ /* 1992/Nov/24 */
 extern int abortflag;
-
-extern char *task;      /* current task -  for error message */
+extern char * task;      /* current task -  for error message */
 
 extern int const statisticsflag;  /* non-zero => output stack depth, fonts used */
 extern int const complainflag;    /* non-zero implies complain sub table warnings */
