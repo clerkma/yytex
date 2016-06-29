@@ -1,5 +1,5 @@
 # Copyright 2007 TeX Users Group
-# Copyright 2014 Clerk Ma
+# Copyright 2014, 2015, 2016 Clerk Ma
 # You may freely use, modify and/or distribute this file.
 
 # Makefile for DVIPSONE

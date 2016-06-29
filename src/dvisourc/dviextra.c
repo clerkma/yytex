@@ -1,6 +1,6 @@
 /* Copyright 1990,1991,1992,1993,1994,1995,1996,1997,1998,1999 Y&Y, Inc.
    Copyright 2007 TeX Users Group
-   Copyright 2014 Clerk Ma
+   Copyright 2014, 2015, 2016 Clerk Ma
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
