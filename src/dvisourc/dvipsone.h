@@ -28,7 +28,6 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <sys/stat.h>   /* for _stat etc. */
-#include <sys/utime.h>  /* for _utimbuf etc. */
 #include <direct.h>     /* for _getcwd(); */
 #include <conio.h>
 
