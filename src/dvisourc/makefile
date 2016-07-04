@@ -42,7 +42,7 @@ LFLAGS=/nologo /MAP /RELEASE
 
 # objs = cextra.obj citex.obj openinou.obj local.obj 
 objs = dvipsone.obj  dviextra.obj \
-	 dvianal.obj dvispeci.obj dvitiff.obj dvipslog.obj dvipsone.res
+	 dvianal.obj dvispeci.obj dvitiff.obj dvipslog.obj
 
 # ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ### ###
 
@@ -72,9 +72,6 @@ dvispeci.obj: dvispeci.c dvipsone.h
 
 dvitiff.obj: dvitiff.c dvipsone.h
 	$(CC) $(CFLAGS) dvitiff.c
-
-dvipsone.res: dvipsone.rc
-	rc /nologo dvipsone.rc
 
 .SUFFIXES:
 .SUFFIXES: .obj .c

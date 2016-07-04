@@ -5209,7 +5209,7 @@ typedef struct ATMRegRec
   char *MMMName;      // File Name of PFM (T1 or MMM instance), MMM (for MM master)
   char *PFBName;      // File Name of PFB (blank for MM instance)
   char *PFMName;      // File Name of PFM (for MM master), MMM (for MM instance)
-};
+} ATMRegRec;
 
 extern struct ATMRegRec *ATMFonts;
 

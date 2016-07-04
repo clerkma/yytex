@@ -32,17 +32,10 @@
 #include <direct.h>     /* for _getcwd(); */
 #include <conio.h>
 
-#pragma warning(disable:4996)
-#pragma warning(disable:4127) // conditional expression is constant
-
 #ifdef _WINDOWS
+  #pragma warning(disable:4996)
+  #pragma warning(disable:4127) // conditional expression is constant
   #define PSputs(str,output) psputs(str, output)
-#else
-  #define PSputs(str,output) fputs(str, output)
-#endif
-
-// PSputc done as macro for speed
-#ifdef _WINDOWS
 // #define PSputc(chr,output) psputc(str, output);
 #define PSputc(chr,output)              \
   do{                                   \
@@ -51,13 +44,10 @@
          (chr == '\n'))                 \
     sendpsbuffer(output);               \
   } while(0)
-#else
-#define PSputc(chr,output) putc(chr,output)
-#endif
-
-#ifdef _WINDOWS
 #define showline(str,flag) ShowLine(str,flag)
 #else
+  #define PSputs(str,output) fputs(str, output)
+  #define PSputc(chr,output) putc(chr,output)
 #define showline(str,flag)  \
   do{                       \
     fputs(str,stdout);      \
@@ -76,8 +66,7 @@ typedef struct
   float B;
   float C;
   float D;
-}
-COLORSPEC;
+} COLORSPEC;
 
 #define MAXFILENAME FILENAME_MAX
 #define FNAMELEN    FILENAME_MAX  /* max file name length */

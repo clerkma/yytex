@@ -3239,7 +3239,7 @@ typedef struct ATMRegRec {
   char *MMMName;      // File Name of PFM (T1 or MMM instance), MMM (for MM master)
   char *PFBName;      // File Name of PFB (blank for MM instance)
   char *PFMName;      // File Name of PFM (for MM master), MMM (for MM instance)
-};
+} ATMRegRec;
 
 struct ATMRegRec *ATMFonts=NULL;
 
@@ -3445,7 +3445,6 @@ int SearchATMReg (char *szPSFontName, char *szPFBFileName)
 int ScanATMReg (FILE *input, unsigned long endfontlist)
 {
   int c, k;
-  unsigned int stroffset, nlen;
   unsigned long next;
   int boldflag, italicflag;   /* style bits */
   int ttfflag;

@@ -1991,7 +1991,6 @@ void do_post (FILE *output, FILE *input)
 void do_post_post (FILE *output, FILE *input)
 {
   unsigned long previous;
-  unsigned int id;
 
   if (traceflag)
     showline("Hit POSTPOST!\n", 0);  /* never ? */
