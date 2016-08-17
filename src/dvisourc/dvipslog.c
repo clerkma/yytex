@@ -3445,6 +3445,7 @@ int SearchATMReg (char *szPSFontName, char *szPFBFileName)
 int ScanATMReg (FILE *input, unsigned long endfontlist)
 {
   int c, k;
+  unsigned int stroffset, nlen;
   unsigned long next;
   int boldflag, italicflag;   /* style bits */
   int ttfflag;
