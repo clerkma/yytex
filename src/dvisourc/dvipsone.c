@@ -31,9 +31,7 @@
 #include <windows.h>
 
 #define NEEDATMINI
-
 #define CONTROLBREAK    /* handle control break */
-
 #define USELOGFILE      /* allow writing of log file */
 
 /* #define DEBUGFLUSH */  /* flush output buffers for debugging */
@@ -2293,7 +2291,7 @@ void writestruct (FILE *outfile)
 
   PSputs("%%Copyright: (C) 1990--2000, Y&Y, Inc.\n", output);
   PSputs("%%Copyright: (C) 2007, TeX Users Group.\n", output);
-  PSputs("%%Copyright: (C) 2014, Clerk Ma.\n", output);
+  PSputs("%%Copyright: (C) 2014, 2015, 2016 Clerk Ma.\n", output);
   PSputs("%%EndComments", outfile);    /* may omit if next line ... */
   PSputc('\n', outfile);
 }

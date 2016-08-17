@@ -31,9 +31,12 @@
 #include <direct.h>     /* for _getcwd(); */
 #include <conio.h>
 
+#ifdef WIN32
+#pragma warning(disable:4996)
+#pragma warning(disable:4127) // conditional expression is constant
+#endif
+
 #ifdef _WINDOWS
-  #pragma warning(disable:4996)
-  #pragma warning(disable:4127) // conditional expression is constant
   #define PSputs(str,output) psputs(str, output)
 // #define PSputc(chr,output) psputc(str, output);
 #define PSputc(chr,output)              \

@@ -30,8 +30,8 @@
 /* NOTE: S = s w, T = s x, W = w<n>, X = x<n>, Y = y<n>, Z = z<n> */
 /* bp = bop, ep = eop, pr = put_rule, sr = set_rule */
 
-int firstpage = 0; /* non-zero when nothing has been output yet */
-int skiptoend = 0; /* non-zero => still need to skip to last page */
+static int firstpage = 0; /* non-zero when nothing has been output yet */
+static int skiptoend = 0; /* non-zero => still need to skip to last page */
 int finish    = 0; /* non-zero => have hit end of DVI file */
 int showcount = 0; /* on when last sent out "set" or "put" */
 int freshflag = 0; /* on after fresh line is started (\n) */
@@ -39,11 +39,11 @@ int freshflag = 0; /* on after fresh line is started (\n) */
 int stinx;        /* stack index - to avoid overflow */ 
 int maxstinx;     /* max stack index seen  - not used here */
 
-long currentpagestart;    /* 95/Aug/27 */
+static long currentpagestart;    /* 95/Aug/27 */
 
 /* int escapecode[14] = {'b', 't', 'n', 'v', 'f', 'r'}; */
 
-char *escapecode = "btnvfr";  /* special codes for 8, 9, 10, 12, and 13 */
+static char *escapecode = "btnvfr";  /* special codes for 8, 9, 10, 12, and 13 */
 
 /* we don't have to worry about sign extension here - no need for short int */
 
@@ -117,7 +117,7 @@ static long sreadfour (FILE *input)
 
 /* don't need to optimize `push pop' since doesn't happen ever? */
 
-void do_push(FILE *output, FILE *input)
+static void do_push (FILE *output, FILE *input)
 {
   int c;
 
@@ -150,7 +150,7 @@ void do_push(FILE *output, FILE *input)
 
 /* Are we sure the `O' = `o o' works when at edge of 64 size stack ? */
 
-void do_pop(FILE *output, FILE *input)
+static void do_pop (FILE *output, FILE *input)
 {
   int c;
 
@@ -189,7 +189,7 @@ void do_pop(FILE *output, FILE *input)
   }
 }
 
-void complain_char_code(unsigned long c)
+static void complain_char_code (unsigned long c)
 {
   sprintf(logline, " Character code %lu > 255\n", c);
   showline(logline, 1);
@@ -198,7 +198,7 @@ void complain_char_code(unsigned long c)
 /* come here either with character code 0 - 127 --- or from set1 */
 /* in the case of set1 we need to read the next byte, which likely is > 127 */
 
-void normal_char (FILE *output, FILE *input, int c)
+static void normal_char (FILE *output, FILE *input, int c)
 {
   int d;
 
@@ -325,7 +325,7 @@ void normal_char (FILE *output, FILE *input, int c)
 
 /* separated out 1995/June/30 */  /* third arg is `s' or `p' */
 
-void do_charsub (FILE *output, unsigned long c, char code)
+static void do_charsub (FILE *output, unsigned long c, char code)
 {
   if (skipflag == 0)
   {
@@ -395,8 +395,8 @@ void do_charsub (FILE *output, unsigned long c, char code)
 
 /* could be more efficient here if we ever see several in a row OK */
 /* model on "normal_char" if needed OK */
-    
-void do_set1(FILE *output, FILE *input)
+
+static void do_set1 (FILE *output, FILE *input)
 {
   if (skipflag == 0)
   {
@@ -410,39 +410,39 @@ void do_set1(FILE *output, FILE *input)
 /* used (normally only) for characters in range 128 to 255 */
 }
 
-void do_set2(FILE *output, FILE *input)
+static void do_set2 (FILE *output, FILE *input)
 {
   do_charsub(output, ureadtwo(input), 's');
 }
 
-void do_set3(FILE *output, FILE *input)
+static void do_set3 (FILE *output, FILE *input)
 {
   do_charsub(output, ureadthree(input), 's');
 }
 
-void do_set4(FILE *output, FILE *input)
+static void do_set4 (FILE *output, FILE *input)
 {
   do_charsub(output, ureadfour(input), 's');
 }
 
 /* set character c and DO NOT increase h by width of character */
 
-void do_put1(FILE *output, FILE *input)
+static void do_put1 (FILE *output, FILE *input)
 {
   do_charsub(output, getc(input), 'p');
 }
 
-void do_put2(FILE *output, FILE *input)
+static void do_put2 (FILE *output, FILE *input)
 {
   do_charsub(output, ureadtwo(input), 'p');
 }
 
-void do_put3(FILE *output, FILE *input)
+static void do_put3 (FILE *output, FILE *input)
 {
   do_charsub(output, ureadthree(input), 'p');
 }
 
-void do_put4(FILE *output, FILE *input)
+static void do_put4 (FILE *output, FILE *input)
 {
   do_charsub(output, ureadfour(input), 'p');
 }
@@ -451,7 +451,7 @@ void do_put4(FILE *output, FILE *input)
 /* but we don't adjust the position of the rule ... and */
 /* if we were to adjust width of vertical rules we'd need to adjust position */
 
-void do_common_rule (FILE *output, FILE *input, char *s)
+static void do_common_rule (FILE *output, FILE *input, char *s)
 {
   long a, b; /* height, width */
 
@@ -557,18 +557,18 @@ void do_common_rule (FILE *output, FILE *input, char *s)
   }
 }
 
-void do_set_rule(FILE *output, FILE *input)
+static void do_set_rule (FILE *output, FILE *input)
 {
   do_common_rule (output, input, "sr");
 }
 
-void do_put_rule(FILE *output, FILE *input)
+static void do_put_rule (FILE *output, FILE *input)
 {
   do_common_rule (output, input, "pr");
 }
 
 /* write TeX /counter's */
-char *show_counters(char *s)
+static char *show_counters (char *s)
 {
   int k;
   int kmax = 0;
@@ -704,7 +704,7 @@ long goto_post(FILE *input)
   return 0;
 }
 
-void insert_blank(FILE *output, long page)
+static void insert_blank (FILE *output, long page)
 {
   PSputs("dvidict begin\n", output);
 
@@ -722,7 +722,7 @@ void insert_blank(FILE *output, long page)
   PSputs("% blank page\n", output);
 }
 
-void do_counter_comment (FILE *output)
+static void do_counter_comment (FILE *output)
 {
   char *s;
 
@@ -735,7 +735,7 @@ void do_counter_comment (FILE *output)
 }
 
 /* beginning of page */
-void do_bop(FILE *output, FILE *input)
+static void do_bop (FILE *output, FILE *input)
 {
   int k;
   long pageno;        /* page number logical or physical */
@@ -937,7 +937,7 @@ void do_bop(FILE *output, FILE *input)
 }
 
 /* end of page */
-void do_eop(FILE *output, FILE *input)
+static void do_eop (FILE *output, FILE *input)
 {
   int c;
 
@@ -1041,7 +1041,7 @@ void do_eop(FILE *output, FILE *input)
 }
 
 /* rare */
-void do_right1(FILE *output, FILE *input)
+static void do_right1 (FILE *output, FILE *input)
 {
   int b;
 
@@ -1070,7 +1070,7 @@ void do_right1(FILE *output, FILE *input)
   }
 }
 
-void do_right2(FILE *output, FILE *input)
+static void do_right2 (FILE *output, FILE *input)
 {
   int b;
 
@@ -1099,7 +1099,7 @@ void do_right2(FILE *output, FILE *input)
   }
 } 
 
-void do_rightsub(FILE *output, long b)
+static void do_rightsub (FILE *output, long b)
 {
   if (skipflag == 0)
   {
@@ -1124,17 +1124,17 @@ void do_rightsub(FILE *output, long b)
   }
 }
 
-void do_right3(FILE *output, FILE *input)
+static void do_right3 (FILE *output, FILE *input)
 {
   do_rightsub(output, sreadthree(input));
 }
 
-void do_right4(FILE *output, FILE *input)
+static void do_right4 (FILE *output, FILE *input)
 {
   do_rightsub(output, sreadfour(input));
 }
 
-void do_w0(FILE * output)
+static void do_w0 (FILE * output)
 {
   if (skipflag == 0)
   {
@@ -1145,7 +1145,7 @@ void do_w0(FILE * output)
 }
 
 /* rare */
-void do_w1(FILE *output, FILE *input)
+static void do_w1 (FILE *output, FILE *input)
 {
   long w; /* trial */
 
@@ -1174,7 +1174,7 @@ void do_w1(FILE *output, FILE *input)
   }
 }
 
-void do_w2(FILE *output, FILE *input)
+static void do_w2 (FILE *output, FILE *input)
 {
   long w; /* trial */
 
@@ -1203,7 +1203,7 @@ void do_w2(FILE *output, FILE *input)
   }
 }
 
-void do_wsub(FILE *output, long w)
+static void do_wsub (FILE *output, long w)
 {
   if (skipflag == 0)
   {
@@ -1228,17 +1228,17 @@ void do_wsub(FILE *output, long w)
   }
 }
 
-void do_w3(FILE *output, FILE *input)
+static void do_w3 (FILE *output, FILE *input)
 {
   do_wsub(output, sreadthree(input));
 }
 
-void do_w4(FILE *output, FILE *input)
+static void do_w4 (FILE *output, FILE *input)
 {
   do_wsub(output, sreadfour(input));
 }
 
-void do_x0(FILE *output)
+static void do_x0 (FILE *output)
 {
   if (skipflag == 0)
   {
@@ -1249,7 +1249,7 @@ void do_x0(FILE *output)
 }
 
 /* rare */
-void do_x1(FILE *output, FILE *input)
+static void do_x1 (FILE *output, FILE *input)
 {
   long x; /* trial */
 
@@ -1278,7 +1278,7 @@ void do_x1(FILE *output, FILE *input)
   }
 }
 
-void do_x2(FILE *output, FILE *input)
+static void do_x2 (FILE *output, FILE *input)
 {
   long x; /* trial */
 
@@ -1307,7 +1307,7 @@ void do_x2(FILE *output, FILE *input)
   }
 }
 
-void do_xsub(FILE *output, long x)
+static void do_xsub (FILE *output, long x)
 {
   if (skipflag == 0)
   {
@@ -1332,18 +1332,18 @@ void do_xsub(FILE *output, long x)
   }
 }
 
-void do_x3(FILE *output, FILE *input)
+static void do_x3 (FILE *output, FILE *input)
 {
   do_xsub(output, sreadthree(input));
 }
 
-void do_x4(FILE *output, FILE *input)
+static void do_x4 (FILE *output, FILE *input)
 {
   do_xsub(output, sreadfour(input));
 }
 
 /* rare */
-void do_down1(FILE *output, FILE *input)
+static void do_down1 (FILE *output, FILE *input)
 {
   int a;
 
@@ -1373,7 +1373,7 @@ void do_down1(FILE *output, FILE *input)
 }
 
 /* rare */
-void do_down2(FILE *output, FILE *input)
+static void do_down2 (FILE *output, FILE *input)
 {
   int a;
 
@@ -1402,7 +1402,7 @@ void do_down2(FILE *output, FILE *input)
   }
 }
 
-void do_downsub(FILE *output, long a)
+static void do_downsub (FILE *output, long a)
 {
   if (skipflag == 0)
   {
@@ -1427,17 +1427,17 @@ void do_downsub(FILE *output, long a)
   }
 }
 
-void do_down3(FILE *output, FILE *input)
+static void do_down3 (FILE *output, FILE *input)
 {
   do_downsub(output, sreadthree(input));
 }
 
-void do_down4(FILE *output, FILE *input)
+static void do_down4 (FILE *output, FILE *input)
 {
   do_downsub(output, sreadfour(input));
 }
 
-void do_y0(FILE *output)
+static void do_y0 (FILE *output)
 {
   if (skipflag == 0)
   {
@@ -1448,7 +1448,7 @@ void do_y0(FILE *output)
 }
 
 /* rare */
-void do_y1(FILE *output, FILE *input)
+static void do_y1 (FILE *output, FILE *input)
 {
   long y; /* trial */
 
@@ -1477,7 +1477,7 @@ void do_y1(FILE *output, FILE *input)
   }
 }
 
-void do_y2(FILE *output, FILE *input)
+static void do_y2 (FILE *output, FILE *input)
 {
   long y; /* trial */
 
@@ -1506,7 +1506,7 @@ void do_y2(FILE *output, FILE *input)
   }
 }
 
-void do_ysub(FILE *output, long y)
+static void do_ysub (FILE *output, long y)
 {
   if (skipflag == 0)
   {
@@ -1531,18 +1531,18 @@ void do_ysub(FILE *output, long y)
   }
 }
 
-void do_y3(FILE *output, FILE *input)
+static void do_y3 (FILE *output, FILE *input)
 {
   do_ysub(output, sreadthree(input));
 }
 
 /* not used */
-void do_y4(FILE *output, FILE *input)
+static void do_y4 (FILE *output, FILE *input)
 {
   do_ysub(output, sreadfour(input));
 } 
 
-void do_z0(FILE *output)
+static void do_z0 (FILE *output)
 {
   if (skipflag == 0)
   {
@@ -1553,7 +1553,7 @@ void do_z0(FILE *output)
 }
 
 /* rare */
-void do_z1(FILE *output, FILE *input)
+static void do_z1 (FILE *output, FILE *input)
 {
   long z; /* trial */
 
@@ -1582,7 +1582,7 @@ void do_z1(FILE *output, FILE *input)
   }
 }
 
-void do_z2(FILE *output, FILE *input)
+static void do_z2 (FILE *output, FILE *input)
 {
   long z; /* trial */
 
@@ -1611,7 +1611,7 @@ void do_z2(FILE *output, FILE *input)
   }
 }
 
-void do_zsub(FILE *output, long z)
+static void do_zsub (FILE *output, long z)
 {
   if (skipflag == 0)
   {
@@ -1636,25 +1636,26 @@ void do_zsub(FILE *output, long z)
   }
 }
 
-void do_z3(FILE *output, FILE *input)
+static void do_z3 (FILE *output, FILE *input)
 {
   do_zsub(output, sreadthree(input));
 }
 
-void do_z4(FILE *output, FILE *input)
+static void do_z4 (FILE *output, FILE *input)
 {
   do_zsub(output, sreadfour(input));
 }
 
 /* *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** */
 
-void complain_font_code(unsigned long fs)
+static void complain_font_code (unsigned long fs)
 {
   sprintf(logline, " Bad font code %lu (> %u)\n", fs, MAXFONTNUMBERS-1);
   showline(logline, 1);
 }
+
 /* switching to other font */
-void switch_font(FILE *output, int fs)
+static void switch_font (FILE *output, int fs)
 {
   int fn;
 
@@ -1683,16 +1684,17 @@ void switch_font(FILE *output, int fs)
 
   showcount = 0;
 }
+
 /* switch fonts */
-void do_fnt1(FILE *output, FILE *input)
+static void do_fnt1 (FILE *output, FILE *input)
 {
   unsigned int fs;
 
   fs = getc(input);
   switch_font(output, (int) fs);
 }
-/* switch fonts */
-void do_fnt2(FILE *output, FILE *input)
+
+static void do_fnt2 (FILE *output, FILE *input)
 {
   unsigned int fs;
 
@@ -1707,7 +1709,7 @@ void do_fnt2(FILE *output, FILE *input)
   switch_font(output, (int) fs);
 }
 
-void do_fntsub(FILE *output, unsigned long fs)
+static void do_fntsub (FILE *output, unsigned long fs)
 {
   if (fs >= MAXFONTNUMBERS)
   {
@@ -1717,14 +1719,13 @@ void do_fntsub(FILE *output, unsigned long fs)
 
   switch_font(output, (int) fs);
 }
-/* switch fonts */
-void do_fnt3(FILE *output, FILE *input)
+
+static void do_fnt3 (FILE *output, FILE *input)
 {
   do_fntsub(output, ureadthree(input));
 }
 
-/* switch fonts */
-void do_fnt4(FILE *output, FILE *input)
+static void do_fnt4 (FILE *output, FILE *input)
 {
   long fs;
 
@@ -1740,7 +1741,7 @@ void do_fnt4(FILE *output, FILE *input)
   do_fntsub(output, (unsigned long) fs);
 }
 
-void do_xxxi (FILE *output, FILE *input, unsigned int n)
+static void do_xxxi (FILE *output, FILE *input, unsigned int n)
 {
 /*  int c; */
   unsigned int k;
@@ -1757,8 +1758,8 @@ void do_xxxi (FILE *output, FILE *input, unsigned int n)
 
   showcount = 0;
 }
-/* for /special */
-void do_xxx1 (FILE *output, FILE *input)
+
+static void do_xxx1 (FILE *output, FILE *input)
 {
   unsigned n;
 
@@ -1766,8 +1767,7 @@ void do_xxx1 (FILE *output, FILE *input)
   do_xxxi(output, input, n);
 }
 
-/* for /special */
-void do_xxx2 (FILE *output, FILE *input)
+static void do_xxx2 (FILE *output, FILE *input)
 {
   unsigned int n;
 
@@ -1775,7 +1775,7 @@ void do_xxx2 (FILE *output, FILE *input)
   do_xxxi(output, input, n);
 }
 
-void do_xxxl (FILE *output, FILE *input, unsigned long n)
+static void do_xxxl (FILE *output, FILE *input, unsigned long n)
 {
   unsigned long k;
 
@@ -1791,7 +1791,7 @@ void do_xxxl (FILE *output, FILE *input, unsigned long n)
   showcount = 0;
 }
 
-void do_xxx3 (FILE *output, FILE *input)
+static void do_xxx3 (FILE *output, FILE *input)
 {
   unsigned long n;
 
@@ -1799,7 +1799,7 @@ void do_xxx3 (FILE *output, FILE *input)
   do_xxxl(output, input, n);
 }
 
-void do_xxx4 (FILE *output, FILE *input)
+static void do_xxx4 (FILE *output, FILE *input)
 {
   unsigned long n;
 
@@ -1811,7 +1811,7 @@ void do_xxx4 (FILE *output, FILE *input)
 
 /* nothing much should actually happen here !!! */
 
-void fnt_def (FILE *output, FILE *input, unsigned int k)
+static void fnt_def (FILE *output, FILE *input, unsigned int k)
 {
   unsigned int na, nl, i;
   int f, newfont = 1;
@@ -1882,16 +1882,15 @@ void fnt_def (FILE *output, FILE *input, unsigned int k)
   }
 }
 
-/* define font */
-void do_fnt_def1 (FILE *output, FILE *input)
+static void do_fnt_def1 (FILE *output, FILE *input)
 {
   unsigned int k;
 
   k = getc(input);
   fnt_def(output, input, k);
 }
-/* define font */
-void do_fnt_def2 (FILE *output, FILE *input)
+
+static void do_fnt_def2 (FILE *output, FILE *input)
 {
   unsigned int k;
 
@@ -1906,7 +1905,7 @@ void do_fnt_def2 (FILE *output, FILE *input)
   fnt_def(output, input, (unsigned int) k);
 }
 
-void do_fnt_defsub (FILE *output, FILE *input, unsigned long k)
+static void do_fnt_defsub (FILE *output, FILE *input, unsigned long k)
 {
   if (k >= MAXFONTNUMBERS)
   {
@@ -1917,14 +1916,12 @@ void do_fnt_defsub (FILE *output, FILE *input, unsigned long k)
   fnt_def(output, input, (unsigned int) k);
 }
 
-/* define font */
-void do_fnt_def3 (FILE *output, FILE *input)
+static void do_fnt_def3 (FILE *output, FILE *input)
 {
   do_fnt_defsub(output, input, ureadthree(input));
 }
 
-/* define font */
-void do_fnt_def4(FILE *output, FILE *input)
+static void do_fnt_def4 (FILE *output, FILE *input)
 {
   long k;
 
@@ -1942,7 +1939,7 @@ void do_fnt_def4(FILE *output, FILE *input)
 
 /* need to do this even if skipping pages */
 /* doesn't do output */
-void do_pre (FILE *output, FILE *input)
+static void do_pre (FILE *output, FILE *input)
 {
   unsigned int k, j;
 
@@ -1962,7 +1959,7 @@ void do_pre (FILE *output, FILE *input)
 
 /* need to do this even if skipping pages */
 /* doesn't do output */
-void do_post (FILE *output, FILE *input)
+static void do_post (FILE *output, FILE *input)
 {
   int k;
 
@@ -1988,7 +1985,7 @@ void do_post (FILE *output, FILE *input)
 }
 
 /* only in reverse ? */
-void do_post_post (FILE *output, FILE *input)
+static void do_post_post (FILE *output, FILE *input)
 {
   unsigned long previous;
   unsigned int id;

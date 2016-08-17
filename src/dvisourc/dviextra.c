@@ -30,20 +30,20 @@
 #define NOTDEF       256 /* special code for .notdef = MAXCHRS */
 #define COORDINATE   "+" /* prefix for reencoded font 97/June/1 */
 
-unsigned short int cryptin;   /* current seed for input decryption */
-unsigned short int cryptout;  /* current seed for output encryption */
+static unsigned short int cryptin;   /* current seed for input decryption */
+static unsigned short int cryptout;  /* current seed for output encryption */
 
-char charseen[MAXCHRS + 1]; /* new - which CharStrings unpacked + NOTDEF */
+static char charseen[MAXCHRS + 1]; /* new - which CharStrings unpacked + NOTDEF */
 
-int clm;          /* current output column */
+static int clm;          /* current output column */
 
-int binaryin = 0;     /* non-zero => input binary, not hex */
-int wantcreation=1;     /* copy creation date through to output */
-int aliasesexist=0;     /* if *alias* found in font substitution file */
-int syntheticsexist=0;    /* if *synthetic* in font substitution file */
+static int binaryin = 0;     /* non-zero => input binary, not hex */
+static int wantcreation=1;     /* copy creation date through to output */
+static int aliasesexist=0;     /* if *alias* found in font substitution file */
+static int syntheticsexist=0;    /* if *synthetic* in font substitution file */
               /* normally not set to avoid need to check table */
 
-int type3flag = 0;      /* non-zero => font file is PKTOPS output */
+static int type3flag = 0;      /* non-zero => font file is PKTOPS output */
               /* zero => font file is Adobe Type 1 style */
 int mmflag=0;       /* non-zero => Multiple Master Font 94/Dec/6 */
 
@@ -64,16 +64,16 @@ int bBaseNameDone = 1;    /* if zero, need not add BaseFontName anymore */
 /* int stripbadend=0; */  /* for now 95/Mar/1 */
 
 // static char filefontname[MAXFONTNAME]=""; /* from file name */
-static char filefontname[FNAMELEN]=""; /* from file name */
-static char realfontname[FNAMELEN]="";    /* from /FontName */
+static char filefontname[FNAMELEN] = ""; /* from file name */
+static char realfontname[FNAMELEN] = "";    /* from /FontName */
                       /* but first guess from %!PS line */
 
-int chrs = -1;        /* current character working on */
-unsigned long len;      /* counter of bytes in binary input */
+static int chrs = -1;        /* current character working on */
+static unsigned long len;      /* counter of bytes in binary input */
 
 /* Fonts, that --- in Oblique or Narrow form --- are synthetic: */
 
-char *syntheticfonts[] =
+static char *syntheticfonts[] =
 {
   "Helvetica",
   "Courier",
@@ -685,7 +685,7 @@ int original (int k)
 }
 
 /* an experiment */
-void show_font_table (void)
+static void show_font_table (void)
 {
   int k, flag, originalfont;
   double atsize;
@@ -852,7 +852,7 @@ int remove_under (char *filename)
 
 /* Consolidated code for TFM, AFM, and PFM in one place 95/Mar/31 */
 
-FILE *look_for_metrics (char *font, char *extension, char *path)
+static FILE *look_for_metrics (char *font, char *extension, char *path)
 {
   char fn_met[FNAMELEN];
   FILE *fp_met=NULL;
@@ -924,7 +924,7 @@ FILE *look_for_metrics (char *font, char *extension, char *path)
 /* pfm is searched last because widths are restricted to being integers */
 /* returns max numeric code of character in metric info */
 
-int read_widths (char *font, long widths[])
+static int read_widths (char *font, long widths[])
 {
   FILE *fp_met = NULL;
   int k;
@@ -994,7 +994,7 @@ int read_widths (char *font, long widths[])
 
 /* stuff for dealing with font file itself */
 /* get next byte from input */
-int next_byte_in (FILE *input)
+static int next_byte_in (FILE *input)
 {
   int c, d;
 
@@ -1161,7 +1161,7 @@ unsigned char decrypt_byte (unsigned char cipher, unsigned short *crypter)
 }
 
 /* read byte and decrypt */
-unsigned char in_decrypt(FILE *input)
+static unsigned char in_decrypt (FILE *input)
 {
   unsigned char cipher;
   unsigned char plain;
@@ -1180,7 +1180,7 @@ unsigned char in_decrypt(FILE *input)
 /* stuff for encrypted input and output */
 
 /* encrypt and write */
-void out_encrypt(unsigned char plain, FILE *output)
+void out_encrypt (unsigned char plain, FILE *output)
 {
   int c, d;
   unsigned char cipher;
@@ -1222,7 +1222,7 @@ void out_encrypt(unsigned char plain, FILE *output)
   }
 }
 
-void flush_encrypt (FILE *output)
+static void flush_encrypt (FILE *output)
 {
   char *s = logline + clm;
 
@@ -1237,7 +1237,7 @@ void flush_encrypt (FILE *output)
 
 /* 93/Sep/14 --- avoid using get_en_line for this in case ^M or ^J */
 /* get the magic encrypt start bytes */
-int get_magic(FILE *input, char *buff)
+static int get_magic (FILE *input, char *buff)
 {
   char *s = buff;
   int k = 0;
@@ -1257,7 +1257,7 @@ int get_magic(FILE *input, char *buff)
 /* so be prepared to see an isolated return or newline at start of line */
 
 /* read encrypted line */
-int get_en_line(FILE *input, char *buff)
+static int get_en_line (FILE *input, char *buff)
 {
   char *s = buff;
   int d, k = 0;
@@ -1304,7 +1304,7 @@ int get_en_line(FILE *input, char *buff)
 
 /* This version assumes string is null terminated */
 /* write encrypted line */
-void put_en_line(FILE *output, char *buff)
+static void put_en_line (FILE *output, char *buff)
 {
   int d; 
 
@@ -1315,7 +1315,7 @@ void put_en_line(FILE *output, char *buff)
 
 /* This version specifies length rather than null terminated */
 /* write encrypted line */
-void put_en_linen(FILE *output, char *buff, int n)
+static void put_en_linen (FILE *output, char *buff, int n)
 {
   int d, k; 
   
@@ -1340,7 +1340,7 @@ void put_en_linen(FILE *output, char *buff, int n)
 /* reads until it hits RD, -|, end, ND, |-, noaccess def, readonly def */
 /* which may mean it reads past end of line ... */
 
-int get_char_line(char *buff, FILE *input, int subrflag)
+static int get_char_line (char *buff, FILE *input, int subrflag)
 {
   int d;
   char *t = buff, *s = buff;
@@ -1388,7 +1388,7 @@ int get_char_line(char *buff, FILE *input, int subrflag)
 }
 
 /* flush rest of CharString */
-void flush_char_string(FILE *input, int n)
+static void flush_char_string (FILE *input, int n)
 {
   int k, d;
   
@@ -1409,7 +1409,7 @@ void flush_char_string(FILE *input, int n)
 /* copy CharString or Subr string */
 /* the fix may be slightly dicey since it may generate blank line at */
 
-void copy_char_string(FILE *output, FILE *input, int n)
+static void copy_char_string (FILE *output, FILE *input, int n)
 {
   int d, k; /* c, e */
 
@@ -1442,7 +1442,7 @@ void copy_char_string(FILE *output, FILE *input, int n)
 /* this will slow things down a bit, but be a lot safer ! */
 /* make sure charnames[] is cleaned out before encoding is read from font */
 
-int want_this_name (char *charname, int k, char *wantchrs)
+static int want_this_name (char *charname, int k, char *wantchrs)
 {
   int i;
 
@@ -1475,7 +1475,7 @@ int want_this_name (char *charname, int k, char *wantchrs)
 /* May need to add more characters to basecharacterlist */
 /* use `N' command line argument to deactivate this bug work around */
 
-int copy_subrs(FILE *output, FILE *input)
+static int copy_subrs (FILE *output, FILE *input)
 {
   int subrnum, nbin;
 /*  char buffer[FNAMELEN]; */ /* compromise only for hires Subrs line */
@@ -1537,7 +1537,7 @@ int copy_subrs(FILE *output, FILE *input)
 /* Tries to find encoding vector first in dvi file directory */
 /* - then tries default encoding vector directory */
 
-FILE * open_vector(char *vector)
+static FILE * open_vector (char *vector)
 {
   FILE *fp_vec;
   char fn_vec[FNAMELEN];
@@ -1652,7 +1652,7 @@ FILE * open_vector(char *vector)
 }
 
 /*  Clear out charnames */
-void clean_enc (int start, int end)
+static void clean_enc (int start, int end)
 {
   int k;
 
@@ -1663,7 +1663,7 @@ void clean_enc (int start, int end)
     charnames[k] = namestring;
 }
 
-void copy_enc(char *charnames[], char *encoding[], int n)
+static void copy_enc (char *charnames[], char *encoding[], int n)
 {
   int k;
 
@@ -1681,7 +1681,7 @@ void copy_enc(char *charnames[], char *encoding[], int n)
 
 /* we have duplication here if repeated encoding in vector */
 
-void add_enc (int k, char *charname)      /* 93/Nov/15 */
+static void add_enc (int k, char *charname)      /* 93/Nov/15 */
 {
   int n = strlen(charname) + 1; /* space needed */
 
@@ -1699,7 +1699,7 @@ void add_enc (int k, char *charname)      /* 93/Nov/15 */
 
 /* now return 0 if successful, non-zero if failed */
 
-int read_enc (char *vector)
+static int read_enc (char *vector)
 {
   char charname[FNAMELEN];    /* just to be safe */
 
@@ -1759,7 +1759,7 @@ int read_enc (char *vector)
   return 0;         /* succeeded */
 }
 
-void write_vector (FILE *fp_out, char *vector, int n)
+static void write_vector (FILE *fp_out, char *vector, int n)
 {
   int k, knext=0;   /* n is MAXCHRS */
   int kn;
@@ -1863,12 +1863,12 @@ void write_vector (FILE *fp_out, char *vector, int n)
   PSputs("]def\n", fp_out);
 }
 
-void write_dvi_start(FILE *fp_out)
+static void write_dvi_start (FILE *fp_out)
 {
   PSputs("dvidict begin\n", fp_out);
 }
 
-void write_dvi_end(FILE *fp_out)
+static void write_dvi_end (FILE *fp_out)
 {
   PSputs("end", fp_out);
 
@@ -1888,7 +1888,7 @@ void write_dvi_end(FILE *fp_out)
 /* 10 1 99{dup 100 add 3 dvicodemake} for */
 /* 100 1 255{dup 1000 add 4 dvicodemake} for */
 
-void write_dvi_encode(FILE *fp_out)
+void write_dvi_encode (FILE *fp_out)
 {
   int k;
   char charname[5];   /* space for a255 + zero */
@@ -1906,7 +1906,7 @@ void write_dvi_encode(FILE *fp_out)
   write_dvi_end(fp_out);        /* 1993/Sep/30 */
 }
 
-void writetextext(FILE *fp_out)
+void writetextext (FILE *fp_out)
 {
   write_dvi_start(fp_out);
   copy_enc(charnames, tex_text, TEXCHRS);
@@ -1924,7 +1924,7 @@ void writetextext(FILE *fp_out)
 
 /* Write Windows ANSI encoding or what user defined in ENCODING env var */
 
-void write_ansi_code(FILE *fp_out, char *textenconame)  /* 1995/Feb/3 */
+void write_ansi_code (FILE *fp_out, char *textenconame)  /* 1995/Feb/3 */
 {
   write_dvi_start(fp_out);
   copy_enc(charnames, ansi_enc, MAXCHRS);

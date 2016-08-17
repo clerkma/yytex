@@ -965,7 +965,7 @@ int setup_atm_fonts_map (void)
   } /* end of loop for ATMFONTS.MAP through directory path in PSFONTS */
 #endif
   if (traceflag) {
-    sprintf(logline, " atmfonts.map: `%'s ", atmfilename);  /* 98/Jan/9 */
+    sprintf(logline, " atmfonts.map: `%s' ", atmfilename);  /* 98/Jan/9 */
     showline(logline, 0);
   }
   if (atmfile != NULL) fclose(atmfile);

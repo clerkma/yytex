@@ -33,8 +33,6 @@
 
 /* #define DEBUGCOLORSTACK */
 
-/* #define DEBUGATM */
-
 COLORSPEC CurrColor;
 
 /* tables to store background color for each page on prescan 98/Jun/30 */
@@ -3538,18 +3536,6 @@ int ScanATMReg (FILE *input, unsigned long endfontlist)
 /*    if (testflag == 0) removeunderscores (MMMName); */  /* ??? */
 /*    Make all uppercase ? It's a file name so its safe at least */
 /*    makeuppercase (MMMName); */ /* ??? */
-#ifdef DEBUGATM
-    if (traceflag) {
-//      sprintf(logline, "%s %s %s%s %s (%d)\n", MMMName, FaceName,
-//          boldflag ? "BOLD" : "",
-//          italicflag ? "ITALIC" : "",
-//          ttfflag ? "(TT)" : "", pscount);
-//      showline(logline, 0);
-      sprintf(logline, "Face: `%s' Style: `%s' Full: `%s' Font: `%s' MMM: `%s' PFB: `%s' PFM: `%s'",
-          FaceName, StyleName, FullName, FontName, MMMName, PFBName, PFMName);
-      showline(logline, 0);
-    }
-#endif
     if (ttfflag) goto donext;
     ATMFonts[ATMfontindex].nMMM = (unsigned char) nMMM;
     ATMFonts[ATMfontindex].nPFB = (unsigned char) nPFB;
